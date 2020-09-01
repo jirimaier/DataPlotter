@@ -37,23 +37,6 @@ private:
   int roundToStandardValue(double value);
   bool isStandardValue(double value);
 
-public slots:
-  void on_pushButtonComRefresh_clicked();
-  void on_pushButtonConnect_clicked();
-  void on_pushButtonDisconnect_clicked();
-  void on_pushButtonSendCommand_clicked();
-  void changeLanguage();
-  void clearBuffer() { buffer.clear(); };
-  void showPlotStatus(int type);
-  void setHDivLimits(double hRange);
-  void setVDivLimits(double vRange);
-  void serialErrorOccurred();
-  void setCursorBounds(double xmin, double xmax, double ymin, double ymax, double xminfull, double xmaxfull, double yminfull, double ymaxfull);
-  void setDataMode(int mode);
-  void showErrorMessage(QByteArray message);
-  void showProcessedCommand(QPair<bool, QByteArray> message);
-  void printMessage(QByteArray data, bool urgent);
-
 private slots:
   void on_sliderRefreshRate_valueChanged(int value);
   void on_tabs_right_currentChanged(int index);
@@ -75,6 +58,21 @@ private slots:
   void on_spinBoxDataBinaryBits_valueChanged(int arg1);
   void on_spinBoxBinaryDataNumCh_valueChanged(int arg1);
   void setBitMode(int bits, double valMin, double valMax, double timeStep, int numCh, int firstCh);
+  void on_pushButtonComRefresh_clicked();
+  void on_pushButtonConnect_clicked();
+  void on_pushButtonDisconnect_clicked();
+  void on_pushButtonSendCommand_clicked();
+  void changeLanguage();
+  void clearBuffer() { buffer.clear(); };
+  void showPlotStatus(int type);
+  void setHDivLimits(double hRange);
+  void setVDivLimits(double vRange);
+  void serialErrorOccurred();
+  void setCursorBounds(double xmin, double xmax, double ymin, double ymax, double xminfull, double xmaxfull, double yminfull, double ymaxfull);
+  void setDataMode(int mode);
+  void showErrorMessage(QByteArray message);
+  void showProcessedCommand(QPair<bool, QByteArray> message);
+  void printMessage(QByteArray data, bool urgent);
 };
 
 #endif // MAINWINDOW_H
