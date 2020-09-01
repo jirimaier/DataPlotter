@@ -1,9 +1,5 @@
 #include "myterminal.h"
 
-#include "enums.h"
-#include <QTableWidget>
-#include <QTableWidgetItem>
-
 MyTerminal::MyTerminal(QWidget *parent) : QTableWidget(parent) {
   QPalette p = this->palette(); // define pallete for textEdit..
   p.setColor(QPalette::Base, Qt::black);

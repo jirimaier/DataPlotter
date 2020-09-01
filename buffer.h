@@ -6,6 +6,8 @@
 #include <QPair>
 #include <QTimer>
 
+#include "enums.h"
+
 class Buffer : public QObject {
   Q_OBJECT
 

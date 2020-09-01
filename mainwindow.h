@@ -1,11 +1,13 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QColorDialog>
 #include <QMainWindow>
+#include <QMessageBox>
+#include <QTime>
 #include <QTranslator>
-#include <QVector>
-#include <QtSerialPort/QSerialPort>
 
+#include "enums.h"
 #include "plotting.h"
 #include "serialHandler.h"
 

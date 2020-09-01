@@ -1,7 +1,6 @@
 #ifndef PLOTTING_H
 #define PLOTTING_H
 
-#include <QMainWindow>
 #include <QObject>
 #include <QTimer>
 #include <QVector>

@@ -1,9 +1,5 @@
 #include "channel.h"
 
-#include <QColorDialog>
-
-#include "qcustomplot.h"
-
 Channel::Channel(int number, QCustomPlot *plot, QColor color) {
   this->dataChannelNumber = (number - 1);
   this->plot = plot;

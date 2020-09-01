@@ -1,11 +1,5 @@
 #include "plotting.h"
 
-#include <QDebug>
-#include <QVector>
-
-#include "channel.h"
-#include "qcustomplot.h"
-
 Plotting::Plotting(QCustomPlot *plotWidget, QTableWidget *tableWidget, QScrollBar *horizontalPos) {
   plot = plotWidget;
   table = tableWidget;

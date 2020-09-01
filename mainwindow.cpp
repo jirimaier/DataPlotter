@@ -1,14 +1,4 @@
 #include "mainwindow.h"
-
-#include <QColorDialog>
-#include <QMessageBox>
-#include <QTime>
-#include <QTranslator>
-#include <QtDebug>
-#include <QtSerialPort/QSerialPort>
-#include <QtSerialPort/QSerialPortInfo>
-
-#include "enums.h"
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {

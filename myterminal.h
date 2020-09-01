@@ -2,6 +2,9 @@
 #define MYTERMINAL_H
 
 #include <QTableWidget>
+#include <QTableWidgetItem>
+
+#include "enums.h"
 
 class MyTerminal : public QTableWidget {
   Q_OBJECT

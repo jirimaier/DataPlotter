@@ -1,10 +1,12 @@
 #ifndef CHANNEL_H
 #define CHANNEL_H
 
-#include "enums.h"
-#include "qcustomplot.h"
 #include <QObject>
 #include <QVector>
+
+#include "enums.h"
+#include "qcustomplot.h"
+
 class Channel {
 public:
   Channel(int number, QCustomPlot *plot, QColor color);

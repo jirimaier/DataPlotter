@@ -1,10 +1,5 @@
 #include "serialHandler.h"
 
-#include "buffer.h"
-#include <QDebug>
-#include <QtSerialPort/QSerialPort>
-#include <QtSerialPort/QSerialPortInfo>
-
 SerialHandler::SerialHandler() {
   this->serial = new QSerialPort(this);
   this->buffer = new Buffer();

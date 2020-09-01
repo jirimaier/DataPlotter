@@ -1,9 +1,4 @@
 #include "buffer.h"
-#include "enums.h"
-#include <QByteArrayMatcher>
-#include <QDebug>
-#include <QMainWindow>
-#include <QObject>
 
 void Buffer::timeout() {
   list.append(QPair<bool, QByteArray>(false, buffer));
