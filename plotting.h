@@ -59,7 +59,7 @@ public slots:
   void setCurXen(bool en);
   void setCurYen(bool en);
   void newDataString(QByteArray data);
-  void newDataBin(QByteArray data, int bits, double valMin, double valMax, double timeStep, int numCh, int firstCh);
+  void newDataBin(QByteArray data, int bits, double valMin, double valMax, double timeStep, int numCh, int firstCh, bool continous);
 
 signals:
   void showPlotStatus(int code);

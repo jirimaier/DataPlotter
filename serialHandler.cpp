@@ -38,7 +38,7 @@ void SerialHandler::parseBinaryDataHeader(QByteArray data) {
   QByteArrayList list = data.split(',');
   if (list.length() != 7)
     return;
-  emit changedBitMode(list.at(1).toInt(), list.at(2).toDouble(), list.at(3).toDouble(), list.at(4).toDouble(), list.at(5).toInt(), list.at(6).toInt());
+  emit changedBitMode(list.at(1).toInt(), list.at(2).toDouble(), list.at(3).toDouble(), list.at(4).toDouble(), list.at(5).toInt(), list.at(6).toInt(), false);
 }
 
 void SerialHandler::write(QByteArray data) {
@@ -66,7 +66,7 @@ void SerialHandler::readBuffer() {
     if (mode == DATA_MODE_TERMINAL)
       emit printToTerminal(line.second);
     if (mode == DATA_MODE_DATA_BINARY)
-      emit newDataBin(line.second, bits, valueMin, valueMax, timeStep, numCh, firstCh);
+      emit newDataBin(line.second, bits, valueMin, valueMax, timeStep, numCh, firstCh, continous);
   } else {
     if (line.second == "data")
       emit changedMode(DATA_MODE_DATA_STRING);
@@ -76,7 +76,7 @@ void SerialHandler::readBuffer() {
       emit changedMode(DATA_MODE_MESSAGE_WARNING);
     else if (line.second == "terminal")
       emit changedMode(DATA_MODE_TERMINAL);
-    else if (line.second.left(4) == "data") {
+    else if (line.second.left(5) == "data,") {
       emit changedMode(DATA_MODE_DATA_BINARY);
       parseBinaryDataHeader(line.second);
     }

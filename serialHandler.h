@@ -35,6 +35,7 @@ private:
   double timeStep = 1;
   int numCh = 1;
   int firstCh = 1;
+  bool continous = false;
 public slots:
   void write(QByteArray data);
   void disconnectSerial();
@@ -45,6 +46,7 @@ public slots:
   void setValueMin(double value) { this->valueMin = value; }
   void setValueMax(double value) { this->valueMax = value; }
   void setTimeStep(double value) { this->timeStep = value; }
+  void setContinous(bool value) { this->continous = value; }
 private slots:
   void readData();
   void readBuffer();
@@ -57,8 +59,8 @@ signals:
   void printMessage(QByteArray message, bool urgent);
   void newDataString(QByteArray data);
   void newProcessedCommand(QPair<bool, QByteArray>);
-  void changedBitMode(int bits, double valMin, double valMax, double timeStep, int numCh, int firstCh);
-  void newDataBin(QByteArray data, int bits, double valMin, double valMax, double timeStep, int numCh, int firstCh);
+  void changedBitMode(int bits, double valMin, double valMax, double timeStep, int numCh, int firstCh, bool continous);
+  void newDataBin(QByteArray data, int bits, double valMin, double valMax, double timeStep, int numCh, int firstCh, bool continous);
 };
 
 #endif // SERIALHANDLER_H

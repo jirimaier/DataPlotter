@@ -20,12 +20,12 @@ Channel::Channel(int number, QCustomPlot *plot, QColor color) {
 }
 
 void Channel::clear() {
-  if (!this->isEmpty())
+  if (!this->isEmpty()) {
     lastSetMaxTime = time.at(time.length() - 1);
-  else
+    time.clear();
+    value.clear();
+  } else
     lastSetMaxTime = -INFINITY;
-  time.clear();
-  value.clear();
 }
 
 void Channel::addValue(QByteArray in_value, QByteArray in_time) {
@@ -55,6 +55,13 @@ double Channel::lastDrawnTime() {
     return 0;
   else
     return time.at(lastDrawnIndex);
+}
+
+double Channel::lastTime() {
+  if (time.isEmpty())
+    return 0;
+  else
+    return time.at(time.length() - 1);
 }
 
 void Channel::setStyle(int type) {

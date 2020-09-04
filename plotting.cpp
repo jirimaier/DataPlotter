@@ -192,18 +192,21 @@ void Plotting::setCurYen(bool en) {
   cursorY2->setVisible(en);
 }
 
-void Plotting::newDataBin(QByteArray data, int bits, double valMin, double valMax, double timeStep, int numCh, int firstCh) {
-  if (bits <= 8) {
-    for (int i = 0; i < data.length(); i++) {
-      double value = (quint8)data[i];
-      value = (value / (1 << bits) * (valMax - valMin)) + valMin;
-      channels.at(firstCh + (i % numCh) - 1)->addValue(value, (i / numCh) * timeStep);
+void Plotting::newDataBin(QByteArray data, int bits, double valMin, double valMax, double timeStep, int numCh, int firstCh, bool continous) {
+  int bytes = ceil(bits / 8.0f);
+  if (data.length() % bytes != 0)
+    data = data.left(data.length() - data.length() % bytes);
+  if (!continous)
+    for (int ch = firstCh; ch < firstCh + numCh; ch++)
+      this->channel(ch)->clear();
+  for (int i = 0; i < data.length() - 1; i += bytes) {
+    quint64 value = 0;
+    for (int byte = 0; byte < bytes; byte++) {
+      value = value << 8;
+      value |= (quint8)data.at(i + byte);
     }
-  } else if (bits <= 16) {
-    for (int i = 0; i < data.length() - 1; i += 2) {
-      double value = ((quint8)data[i] << 8) | (quint8)data[i + 1];
-      value = (value / (1 << bits) * (valMax - valMin)) + valMin;
-      channels.at(firstCh + ((i / 2) % numCh) - 1)->addValue(value, ((i / 2) / numCh) * timeStep);
-    }
+    double value_d = value;
+    value_d = (value_d / (1 << bits) * (valMax - valMin)) + valMin;
+    channels.at(firstCh + ((i / bytes) % numCh) - 1)->addValue(value_d, channels.at(firstCh + (i % numCh) - 1)->lastTime() + timeStep);
   }
 }

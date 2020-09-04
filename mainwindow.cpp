@@ -64,7 +64,7 @@ void MainWindow::connectSignals() {
   connect(serial, SIGNAL(showErrorMessage(QByteArray)), this, SLOT(showErrorMessage(QByteArray)));
   connect(serial, SIGNAL(printMessage(QByteArray, bool)), this, SLOT(printMessage(QByteArray, bool)));
   connect(serial, SIGNAL(newProcessedCommand(QPair<bool, QByteArray>)), this, SLOT(showProcessedCommand(QPair<bool, QByteArray>)));
-  connect(serial, SIGNAL(changedBitMode(int, double, double, double, int, int)), this, SLOT(setBitMode(int, double, double, double, int, int)));
+  connect(serial, SIGNAL(changedBitMode(int, double, double, double, int, int, bool)), this, SLOT(setBitMode(int, double, double, double, int, int, bool)));
 
   // GUI -> Serial
   connect(ui->listWidgetDataMode, SIGNAL(currentRowChanged(int)), serial, SLOT(changeMode(int)));
@@ -74,10 +74,11 @@ void MainWindow::connectSignals() {
   connect(ui->doubleSpinBoxBinaryDataMin, SIGNAL(valueChanged(double)), serial, SLOT(setValueMin(double)));
   connect(ui->doubleSpinBoxBinarydataMax, SIGNAL(valueChanged(double)), serial, SLOT(setValueMax(double)));
   connect(ui->doubleSpinBoxBinaryTimestep, SIGNAL(valueChanged(double)), serial, SLOT(setTimeStep(double)));
+  connect(ui->checkBoxBinContinous, SIGNAL(toggled(bool)), serial, SLOT(setContinous(bool)));
 
   // Serial -> Plotting
   connect(serial, SIGNAL(newDataString(QByteArray)), plotting, SLOT(newDataString(QByteArray)));
-  connect(serial, SIGNAL(newDataBin(QByteArray, int, double, double, double, int, int)), plotting, SLOT(newDataBin(QByteArray, int, double, double, double, int, int)));
+  connect(serial, SIGNAL(newDataBin(QByteArray, int, double, double, double, int, int, bool)), plotting, SLOT(newDataBin(QByteArray, int, double, double, double, int, int, bool)));
 
   // Serial -> Terminal
   connect(serial, SIGNAL(printToTerminal(QByteArray)), ui->myTerminal, SLOT(printToTerminal(QByteArray)));
@@ -421,13 +422,13 @@ void MainWindow::on_pushButtonSendCommand_clicked() {
 }
 
 void MainWindow::on_spinBoxDataBinaryBits_valueChanged(int arg1) {
-  ui->doubleSpinBoxBinarydataMax->setPrefix("0x" + QString::number((1 << arg1) - 1, 16).toUpper() + " = ");
+  ui->doubleSpinBoxBinarydataMax->setPrefix("0x" + QString::number(((quint64)1 << arg1) - 1, 16).toUpper() + " = ");
   ui->doubleSpinBoxBinarydataMax->setValue((1 << arg1) - 1);
 }
 
 void MainWindow::on_spinBoxBinaryDataNumCh_valueChanged(int arg1) { ui->spinBoxBinaryDataFirstCh->setMaximum(65 - arg1); }
 
-void MainWindow::setBitMode(int bits, double valMin, double valMax, double timeStep, int numCh, int firstCh) {
+void MainWindow::setBitMode(int bits, double valMin, double valMax, double timeStep, int numCh, int firstCh, bool continous) {
   if (!ui->checkBoxBinarySettingsOverride->isChecked()) {
     ui->spinBoxDataBinaryBits->setValue(bits);
     ui->doubleSpinBoxBinaryDataMin->setValue(valMin);
@@ -435,6 +436,7 @@ void MainWindow::setBitMode(int bits, double valMin, double valMax, double timeS
     ui->doubleSpinBoxBinaryTimestep->setValue(timeStep);
     ui->spinBoxBinaryDataNumCh->setValue(numCh);
     ui->spinBoxBinaryDataFirstCh->setValue(firstCh);
+    ui->checkBoxBinContinous->setChecked(continous);
   }
 }
 

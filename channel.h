@@ -20,6 +20,7 @@ public:
   void setStyle(int type);
   double upperTimeRange();
   double lastDrawnTime();
+  double lastTime();
   double firstTime() { return time.at(0); }
   double getOffset() { return offset; }
   double getScale() { return scale; }
