@@ -1,11 +1,10 @@
 #include "myterminal.h"
 
 MyTerminal::MyTerminal(QWidget *parent) : QTableWidget(parent) {
-  QPalette p = this->palette(); // define pallete for textEdit..
+  QPalette p = this->palette();
   p.setColor(QPalette::Base, Qt::black);
   p.setColor(QPalette::Text, Qt::white);
-  p.setColor(QPalette::Window,
-             Qt::cyan); // set color "Red" for textedit base
+  p.setColor(QPalette::Window, Qt::cyan);
   this->setPalette(p);
 }
 

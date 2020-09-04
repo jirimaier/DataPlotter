@@ -21,24 +21,25 @@ void MainWindow::init() {
 
   ui->tabs_right->setCurrentIndex(0);
   ui->tabs_Plot->setCurrentIndex(0);
+  ui->tabWidgetMainArea->setCurrentIndex(0);
   on_sliderRefreshRate_valueChanged(ui->sliderRefreshRate->value());
-  ui->listWidgetDataMode->setCurrentRow(0);
   on_pushButtonComRefresh_clicked();
 
-  QPixmap pixmap(1, 1);
+  QPixmap pixmap(30, 30);
   pixmap.fill(defaultColors[0]);
-  ui->labelChanelColor->setPixmap(pixmap);
+  ui->pushButtonChannelColor->setIcon(pixmap);
   ui->labelCursorChanelColor->setPixmap(pixmap);
 
   ui->labelPauseResume->setPixmap(resume);
 
   useSettings(defaultSettings);
+
+  updateChScale();
 }
 
 void MainWindow::connectSignals() {
   // GUI -> Plotting
   connect(ui->doubleSpinBoxRangeVerticalRange, SIGNAL(valueChanged(double)), plotting, SLOT(setVerticalRange(double)));
-  connect(ui->doubleSpinBoxRangeVerticalDiv, SIGNAL(valueChanged(double)), plotting, SLOT(setVerticalDiv(double)));
   connect(ui->doubleSpinBoxRangeHorizontal, SIGNAL(valueChanged(double)), plotting, SLOT(setRollingLength(double)));
   connect(ui->doubleSpinBoxRangeHorizontalDiv, SIGNAL(valueChanged(double)), plotting, SLOT(setHorizontalDiv(double)));
   connect(ui->verticalScrollBarVerticalCenter, SIGNAL(valueChanged(int)), plotting, SLOT(setVerticalCenter(int)));
@@ -236,6 +237,11 @@ bool MainWindow::isStandardValue(double value) {
   return false;
 }
 
+void MainWindow::updateChScale() {
+  double perDiv = ui->doubleSpinBoxRangeVerticalDiv->value() / plotting->channel(ui->spinBoxChannelSelect->value())->getScale();
+  ui->labelChScale->setText(QString::number(perDiv) + tr(" / Div"));
+}
+
 void MainWindow::useSettings(QString settings) {
   QStringList lines = settings.split("\n");
   for (QStringList::Iterator it = lines.begin(); it != lines.end(); it++) {
@@ -341,19 +347,26 @@ void MainWindow::on_pushButtonClearChannels_clicked() { plotting->clearChannels(
 
 void MainWindow::on_pushButtonChannelColor_clicked() {
   QColor color = QColorDialog::getColor(plotting->channel(ui->spinBoxChannelSelect->value())->getColor());
+  if (!color.isValid())
+    return;
   plotting->channel(ui->spinBoxChannelSelect->value())->changeColor(color);
   on_spinBoxChannelSelect_valueChanged(ui->spinBoxChannelSelect->value());
 }
 
 void MainWindow::on_spinBoxChannelSelect_valueChanged(int arg1) {
   ui->comboBoxGraphStyle->setCurrentIndex(plotting->channel(arg1)->getStyle());
-  QPixmap pixmap(1, 1);
+  QPixmap pixmap(30, 30);
   pixmap.fill(plotting->channel(arg1)->getColor());
-  ui->labelChanelColor->setPixmap(pixmap);
+  ui->pushButtonChannelColor->setIcon(pixmap);
   double offset = plotting->channel(arg1)->getOffset();
+  double scale = plotting->channel(arg1)->getScale();
   ui->doubleSpinBoxChOffset->setValue(offset);
   if (offset < ui->doubleSpinBoxRangeVerticalRange->value() / 2)
     ui->dialOffset->setValue(offset / ui->doubleSpinBoxRangeVerticalRange->value() * 100 * 2);
+  ui->doubleSpinBoxChScale->setValue(scale);
+  if (isStandardValue(scale))
+    ui->dialChScale->setValue(roundToStandardValue(scale));
+  updateChScale();
 }
 
 void MainWindow::on_doubleSpinBoxChOffset_valueChanged(double arg1) {
@@ -363,8 +376,6 @@ void MainWindow::on_doubleSpinBoxChOffset_valueChanged(double arg1) {
 }
 
 void MainWindow::on_dialOffset_valueChanged(int value) { ui->doubleSpinBoxChOffset->setValue(ui->doubleSpinBoxRangeVerticalRange->value() / 2 * value * 0.01); }
-
-void MainWindow::on_pushButtonOffsetZero_clicked() { ui->dialOffset->setValue(0); }
 
 void MainWindow::on_dialVerticalDiv_valueChanged(int value) { ui->doubleSpinBoxRangeVerticalDiv->setValue(logaritmicSettings[value]); }
 
@@ -382,10 +393,10 @@ void MainWindow::scrollBarCursor_valueChanged() {
 
   ui->labelCursorX1->setText("X1: " + QString::number(x1, 'f', 3));
   ui->labelCursorX2->setText("X2: " + QString::number(x2, 'f', 3));
-  ui->labelCursorY1->setText("Y1: " + QString::number(y1 - plotting->channel(ui->spinBoxCursorCh->value())->getOffset(), 'f', 3));
-  ui->labelCursorY2->setText("Y2: " + QString::number(y2 - plotting->channel(ui->spinBoxCursorCh->value())->getOffset(), 'f', 3));
+  ui->labelCursorY1->setText("Y1: " + QString::number((y1 - plotting->channel(ui->spinBoxCursorCh->value())->getOffset()) / plotting->channel(ui->spinBoxCursorCh->value())->getScale(), 'f', 3));
+  ui->labelCursorY2->setText("Y2: " + QString::number((y2 - plotting->channel(ui->spinBoxCursorCh->value())->getOffset()) / plotting->channel(ui->spinBoxCursorCh->value())->getScale(), 'f', 3));
   ui->labelCursordX->setText(tr("dX: ") + QString::number(abs(x2 - x1)));
-  ui->labelCursordY->setText(tr("dY: ") + QString::number(abs(y2 - y1)));
+  ui->labelCursordY->setText(tr("dY: ") + QString::number(abs(y2 - y1) / plotting->channel(ui->spinBoxCursorCh->value())->getScale()));
   plotting->updateCursors(x1, x2, y1, y2);
 }
 
@@ -425,4 +436,25 @@ void MainWindow::setBitMode(int bits, double valMin, double valMax, double timeS
     ui->spinBoxBinaryDataNumCh->setValue(numCh);
     ui->spinBoxBinaryDataFirstCh->setValue(firstCh);
   }
+}
+
+void MainWindow::on_doubleSpinBoxChScale_valueChanged(double arg1) {
+  plotting->channel(ui->spinBoxChannelSelect->value())->changeScale(arg1);
+  if (ui->spinBoxCursorCh->value() == ui->spinBoxChannelSelect->value())
+    scrollBarCursor_valueChanged();
+  updateChScale();
+}
+
+void MainWindow::on_dialChScale_valueChanged(int value) {
+  if (isStandardValue(ui->doubleSpinBoxChScale->value()))
+    ui->doubleSpinBoxChScale->setValue(logaritmicSettings[value]);
+  else {
+    ui->dialChScale->setValue(roundToStandardValue(ui->doubleSpinBoxChScale->value()));
+    ui->doubleSpinBoxChScale->setValue(logaritmicSettings[ui->dialChScale->value()]);
+  }
+}
+
+void MainWindow::on_doubleSpinBoxRangeVerticalDiv_valueChanged(double arg1) {
+  plotting->setVerticalDiv(arg1);
+  updateChScale();
 }

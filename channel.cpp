@@ -34,7 +34,7 @@ void Channel::addValue(QByteArray in_value, QByteArray in_time) {
     if (in_time_double <= this->time.at(this->time.length() - 1))
       clear();
   this->time.append(in_time_double);
-  this->value.append(in_value.toDouble() + offset);
+  this->value.append(in_value.toDouble() * scale + offset);
 }
 
 void Channel::addValue(double in_value, double in_time) {
@@ -42,7 +42,7 @@ void Channel::addValue(double in_value, double in_time) {
     if (in_time <= this->time.at(this->time.length() - 1))
       clear();
   this->time.append(in_time);
-  this->value.append(in_value + offset);
+  this->value.append(in_value * scale + offset);
 }
 
 void Channel::draw() {
@@ -83,13 +83,22 @@ void Channel::changeColor(QColor color) {
   this->plot->graph(this->dataChannelNumber)->setPen(QPen(color));
 }
 
-void Channel::changeOffset(double offset) {
+void Channel::changeOffset(double in_offset) {
   QCPGraphDataContainer *data = plot->graph(dataChannelNumber)->data().data();
   for (QCPGraphDataContainer::iterator it = data->begin(); it != data->end(); it++)
-    it->value += offset - this->offset;
+    it->value += in_offset - this->offset;
   for (QVector<double>::iterator it = value.begin(); it != value.end(); it++)
-    *it += offset - this->offset;
-  this->offset = offset;
-  zeroLine->start->setCoords(0, offset);
-  zeroLine->end->setCoords(1, offset);
+    *it += in_offset - this->offset;
+  this->offset = in_offset;
+  zeroLine->start->setCoords(0, in_offset);
+  zeroLine->end->setCoords(1, in_offset);
+}
+
+void Channel::changeScale(double in_scale) {
+  QCPGraphDataContainer *data = plot->graph(dataChannelNumber)->data().data();
+  for (QCPGraphDataContainer::iterator it = data->begin(); it != data->end(); it++)
+    it->value = (it->value - this->offset) / this->scale * in_scale + this->offset;
+  for (QVector<double>::iterator it = value.begin(); it != value.end(); it++)
+    *it = (*it - this->offset) / this->scale * in_scale + this->offset;
+  this->scale = in_scale;
 }

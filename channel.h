@@ -12,6 +12,7 @@ public:
   Channel(int number, QCustomPlot *plot, QColor color);
   void changeColor(QColor color);
   void changeOffset(double offset);
+  void changeScale(double in_scale);
   void addValue(QByteArray in_value, QByteArray in_time);
   void addValue(double in_value, double in_time);
   void clear();
@@ -21,6 +22,7 @@ public:
   double lastDrawnTime();
   double firstTime() { return time.at(0); }
   double getOffset() { return offset; }
+  double getScale() { return scale; }
   bool isEmpty() { return time.length() == 0; }
   int getStyle() { return style; }
   QColor getColor() { return color; }
@@ -37,6 +39,7 @@ private:
   double lastSetMaxTime = -INFINITY;
   int style = PLOT_STYLE_LINE;
   double offset = 0;
+  double scale = 1;
 };
 
 #endif // CHANNEL_H

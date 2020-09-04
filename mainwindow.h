@@ -38,6 +38,7 @@ private:
   void useSettings(QString settings);
   int roundToStandardValue(double value);
   bool isStandardValue(double value);
+  void updateChScale();
 
 private slots:
   void on_sliderRefreshRate_valueChanged(int value);
@@ -50,7 +51,6 @@ private slots:
   void on_spinBoxChannelSelect_valueChanged(int arg1);
   void on_doubleSpinBoxChOffset_valueChanged(double arg1);
   void on_dialOffset_valueChanged(int value);
-  void on_pushButtonOffsetZero_clicked();
   void on_dialVerticalDiv_valueChanged(int value);
   void on_pushButtonVerticalZero_clicked();
   void on_dialhorizontalDiv_valueChanged(int value);
@@ -75,6 +75,9 @@ private slots:
   void showErrorMessage(QByteArray message);
   void showProcessedCommand(QPair<bool, QByteArray> message);
   void printMessage(QByteArray data, bool urgent);
+  void on_doubleSpinBoxChScale_valueChanged(double arg1);
+  void on_dialChScale_valueChanged(int value);
+  void on_doubleSpinBoxRangeVerticalDiv_valueChanged(double arg1);
 };
 
 #endif // MAINWINDOW_H
