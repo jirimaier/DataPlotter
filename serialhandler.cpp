@@ -1,4 +1,4 @@
-#include "serialHandler.h"
+#include "serialhandler.h"
 
 SerialHandler::SerialHandler() {
   this->serial = new QSerialPort(this);
@@ -36,9 +36,32 @@ QStringList SerialHandler::refresh() {
 
 void SerialHandler::parseBinaryDataHeader(QByteArray data) {
   QByteArrayList list = data.split(',');
-  if (list.length() != 7)
-    return;
-  emit changedBitMode(list.at(1).toInt(), list.at(2).toDouble(), list.at(3).toDouble(), list.at(4).toDouble(), list.at(5).toInt(), list.at(6).toInt(), false);
+  int bits_new = bits, numCh_new = numCh, firstCh_new = firstCh;
+  double valueMin_new = valueMin, valueMax_new = valueMax, timeStep_new = timeStep;
+  bool continuous_new = continuous;
+  // bin,bits,chNum,maxVal,minVal,time,cont,firstch
+  if (list.length() >= 2)
+    if (list.at(1).length() > 0)
+      bits_new = list.at(1).toInt();
+  if (list.length() >= 3)
+    if (list.at(2).length() > 0)
+      numCh_new = list.at(2).toInt();
+  if (list.length() >= 4)
+    if (list.at(3).length() > 0)
+      valueMax_new = list.at(3).toDouble();
+  if (list.length() >= 5)
+    if (list.at(4).length() > 0)
+      valueMin_new = list.at(4).toDouble();
+  if (list.length() >= 6)
+    if (list.at(5).length() > 0)
+      timeStep_new = list.at(5).toDouble();
+  if (list.length() >= 7)
+    if (list.at(6).length() > 0)
+      continuous_new = list.at(6).toInt() == 1;
+  if (list.length() >= 8)
+    if (list.at(7).length() > 0)
+      firstCh_new = list.at(7).toInt();
+  emit changedBitMode(bits_new, valueMin_new, valueMax_new, timeStep_new, numCh_new, firstCh_new, continuous_new);
 }
 
 void SerialHandler::write(QByteArray data) {
@@ -66,7 +89,7 @@ void SerialHandler::readBuffer() {
     if (mode == DATA_MODE_TERMINAL)
       emit printToTerminal(line.second);
     if (mode == DATA_MODE_DATA_BINARY)
-      emit newDataBin(line.second, bits, valueMin, valueMax, timeStep, numCh, firstCh, continous);
+      emit newDataBin(line.second, bits, valueMin, valueMax, timeStep, numCh, firstCh, continuous);
   } else {
     if (line.second == "data")
       emit changedMode(DATA_MODE_DATA_STRING);
@@ -76,7 +99,7 @@ void SerialHandler::readBuffer() {
       emit changedMode(DATA_MODE_MESSAGE_WARNING);
     else if (line.second == "terminal")
       emit changedMode(DATA_MODE_TERMINAL);
-    else if (line.second.left(5) == "data,") {
+    else if (line.second.left(3) == "bin") {
       emit changedMode(DATA_MODE_DATA_BINARY);
       parseBinaryDataHeader(line.second);
     }

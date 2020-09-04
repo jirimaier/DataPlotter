@@ -192,11 +192,11 @@ void Plotting::setCurYen(bool en) {
   cursorY2->setVisible(en);
 }
 
-void Plotting::newDataBin(QByteArray data, int bits, double valMin, double valMax, double timeStep, int numCh, int firstCh, bool continous) {
+void Plotting::newDataBin(QByteArray data, int bits, double valMin, double valMax, double timeStep, int numCh, int firstCh, bool continuous) {
   int bytes = ceil(bits / 8.0f);
   if (data.length() % bytes != 0)
     data = data.left(data.length() - data.length() % bytes);
-  if (!continous)
+  if (!continuous)
     for (int ch = firstCh; ch < firstCh + numCh; ch++)
       this->channel(ch)->clear();
   for (int i = 0; i < data.length() - 1; i += bytes) {

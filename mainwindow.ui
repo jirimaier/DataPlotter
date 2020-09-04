@@ -174,7 +174,7 @@
              <enum>QTabWidget::Rounded</enum>
             </property>
             <property name="currentIndex">
-             <number>1</number>
+             <number>0</number>
             </property>
             <property name="tabBarAutoHide">
              <bool>true</bool>
@@ -1994,9 +1994,9 @@
             </widget>
            </item>
            <item row="6" column="0">
-            <widget class="QCheckBox" name="checkBoxBinContinous">
+            <widget class="QCheckBox" name="checkBoxBinContinuous">
              <property name="text">
-              <string>Continous</string>
+              <string>Continuous</string>
              </property>
             </widget>
            </item>

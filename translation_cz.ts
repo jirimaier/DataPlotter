@@ -268,8 +268,9 @@
     </message>
     <message>
         <location filename="mainwindow.ui" line="1999"/>
-        <source>Continous</source>
-        <translation>Napojovat</translation>
+        <source>Continuous</source>
+        <oldsource>Continous</oldsource>
+        <translation type="unfinished">Napojovat</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="2010"/>

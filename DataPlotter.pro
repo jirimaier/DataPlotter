@@ -23,7 +23,7 @@ SOURCES += \
     myterminal.cpp \
     plotting.cpp \
     qcustomplot.cpp \
-    serialHandler.cpp
+    serialhandler.cpp
 
 HEADERS += \
     buffer.h \
@@ -33,7 +33,7 @@ HEADERS += \
     myterminal.h \
     plotting.h \
     qcustomplot.h \
-    serialHandler.h
+    serialhandler.h
 FORMS += \
     mainwindow.ui
 

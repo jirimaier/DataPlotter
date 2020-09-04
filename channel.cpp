@@ -99,6 +99,7 @@ void Channel::changeOffset(double in_offset) {
   this->offset = in_offset;
   zeroLine->start->setCoords(0, in_offset);
   zeroLine->end->setCoords(1, in_offset);
+  zeroLine->setVisible(offset != 0);
 }
 
 void Channel::changeScale(double in_scale) {

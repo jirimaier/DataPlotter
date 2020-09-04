@@ -9,7 +9,7 @@
 
 #include "enums.h"
 #include "plotting.h"
-#include "serialHandler.h"
+#include "serialhandler.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -59,7 +59,7 @@ private slots:
   void on_spinBoxCursorCh_valueChanged(int arg1);
   void on_spinBoxDataBinaryBits_valueChanged(int arg1);
   void on_spinBoxBinaryDataNumCh_valueChanged(int arg1);
-  void setBitMode(int bits, double valMin, double valMax, double timeStep, int numCh, int firstCh, bool continous);
+  void setBitMode(int bits, double valMin, double valMax, double timeStep, int numCh, int firstCh, bool continuous);
   void on_pushButtonComRefresh_clicked();
   void on_pushButtonConnect_clicked();
   void on_pushButtonDisconnect_clicked();

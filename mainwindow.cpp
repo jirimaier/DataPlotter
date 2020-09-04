@@ -74,7 +74,7 @@ void MainWindow::connectSignals() {
   connect(ui->doubleSpinBoxBinaryDataMin, SIGNAL(valueChanged(double)), serial, SLOT(setValueMin(double)));
   connect(ui->doubleSpinBoxBinarydataMax, SIGNAL(valueChanged(double)), serial, SLOT(setValueMax(double)));
   connect(ui->doubleSpinBoxBinaryTimestep, SIGNAL(valueChanged(double)), serial, SLOT(setTimeStep(double)));
-  connect(ui->checkBoxBinContinous, SIGNAL(toggled(bool)), serial, SLOT(setContinous(bool)));
+  connect(ui->checkBoxBinContinuous, SIGNAL(toggled(bool)), serial, SLOT(setContinuous(bool)));
 
   // Serial -> Plotting
   connect(serial, SIGNAL(newDataString(QByteArray)), plotting, SLOT(newDataString(QByteArray)));
@@ -206,7 +206,6 @@ void MainWindow::showProcessedCommand(QPair<bool, QByteArray> message) {
     message.second.replace(QChar('\t'), "<font color=navy>[TAB]</font>");
     message.second.replace(QChar(27), "<font color=navy>[ESC]</font>");
   }
-
   ui->textEditSerialDebug->append(QString("<font color=gray>%1</font><font color=black>%2</font>").arg(message.first ? "Cmd: " : "Data: ", stringMessage));
 }
 
@@ -428,7 +427,7 @@ void MainWindow::on_spinBoxDataBinaryBits_valueChanged(int arg1) {
 
 void MainWindow::on_spinBoxBinaryDataNumCh_valueChanged(int arg1) { ui->spinBoxBinaryDataFirstCh->setMaximum(65 - arg1); }
 
-void MainWindow::setBitMode(int bits, double valMin, double valMax, double timeStep, int numCh, int firstCh, bool continous) {
+void MainWindow::setBitMode(int bits, double valMin, double valMax, double timeStep, int numCh, int firstCh, bool continuous) {
   if (!ui->checkBoxBinarySettingsOverride->isChecked()) {
     ui->spinBoxDataBinaryBits->setValue(bits);
     ui->doubleSpinBoxBinaryDataMin->setValue(valMin);
@@ -436,7 +435,7 @@ void MainWindow::setBitMode(int bits, double valMin, double valMax, double timeS
     ui->doubleSpinBoxBinaryTimestep->setValue(timeStep);
     ui->spinBoxBinaryDataNumCh->setValue(numCh);
     ui->spinBoxBinaryDataFirstCh->setValue(firstCh);
-    ui->checkBoxBinContinous->setChecked(continous);
+    ui->checkBoxBinContinuous->setChecked(continuous);
   }
 }
 
