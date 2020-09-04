@@ -1770,7 +1770,7 @@
            <bool>false</bool>
           </property>
           <property name="currentRow">
-           <number>0</number>
+           <number>-1</number>
           </property>
           <item>
            <property name="text">
@@ -1784,7 +1784,7 @@
           </item>
           <item>
            <property name="text">
-            <string notr="true">Plot data - binary</string>
+            <string>Plot data - binary</string>
            </property>
           </item>
           <item>
