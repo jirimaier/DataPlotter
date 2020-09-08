@@ -1,8 +1,7 @@
 #include "plotting.h"
 
-Plotting::Plotting(QCustomPlot *plotWidget, QTableWidget *tableWidget, QScrollBar *horizontalPos) {
+Plotting::Plotting(QCustomPlot *plotWidget, QScrollBar *horizontalPos) {
   plot = plotWidget;
-  table = tableWidget;
   this->horizontalPos = horizontalPos;
   for (int i = 1; i <= CHANNEL_COUNT; i++)
     channels.append(new Channel(i, plot, defaultColors[(i > 8) ? 7 : i - 1]));

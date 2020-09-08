@@ -13,7 +13,7 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::init() {
-  plotting = new Plotting(ui->plot, ui->tableWidget, ui->horizontalScrollBarHorizontal);
+  plotting = new Plotting(ui->plot, ui->horizontalScrollBarHorizontal);
   serial = new SerialHandler();
   connectSignals();
   changeLanguage();

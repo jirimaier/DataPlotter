@@ -13,7 +13,7 @@
 class Plotting : public QObject {
   Q_OBJECT
 public:
-  Plotting(QCustomPlot *plotWidget, QTableWidget *tableWidget, QScrollBar *horizontalPos);
+  Plotting(QCustomPlot *plotWidget, QScrollBar *horizontalPos);
   ~Plotting();
   void clearChannels();
   void autoset();
@@ -29,7 +29,6 @@ private:
   int zoom = 1000;
   int plottingStatus = PLOT_STATUS_RUN;
   int plottingRangeType = PLOT_RANGE_FIXED;
-  QTableWidget *table;
   QScrollBar *horizontalPos;
   void addPoint(QByteArray point);
   QTimer *timer = new QTimer(this);

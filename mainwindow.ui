@@ -22,6 +22,9 @@
         <property name="currentIndex">
          <number>0</number>
         </property>
+        <property name="tabBarAutoHide">
+         <bool>true</bool>
+        </property>
         <widget class="QWidget" name="tab">
          <attribute name="title">
           <string>Plot</string>
@@ -1629,34 +1632,6 @@
               </item>
              </layout>
             </widget>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-        <widget class="QWidget" name="tab_2">
-         <attribute name="title">
-          <string>Table</string>
-         </attribute>
-         <layout class="QVBoxLayout" name="verticalLayout_5">
-          <item>
-           <widget class="QTableWidget" name="tableWidget">
-            <property name="rowCount">
-             <number>3</number>
-            </property>
-            <property name="columnCount">
-             <number>5</number>
-            </property>
-            <attribute name="horizontalHeaderVisible">
-             <bool>false</bool>
-            </attribute>
-            <row/>
-            <row/>
-            <row/>
-            <column/>
-            <column/>
-            <column/>
-            <column/>
-            <column/>
            </widget>
           </item>
          </layout>
