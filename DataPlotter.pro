@@ -40,10 +40,6 @@ FORMS += \
 TRANSLATIONS += \
     translation_en.ts translation_cz.ts
 
-DEFINES += QCUSTOMPLOT_USE_OPENGL
-
-LIBS += -lOpenGL32
-
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin

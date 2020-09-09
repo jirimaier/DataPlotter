@@ -48,7 +48,6 @@ void MainWindow::connectSignals() {
   connect(ui->checkBoxVerticalValues, SIGNAL(toggled(bool)), plotting, SLOT(setShowVerticalValues(bool)));
   connect(ui->checkBoxHorizontalValues, SIGNAL(toggled(bool)), plotting, SLOT(setShowHorizontalValues(bool)));
   connect(ui->dialZoom, SIGNAL(valueChanged(int)), plotting, SLOT(setZoom(int)));
-  connect(ui->checkBoxPlotOprnGL, SIGNAL(toggled(bool)), plotting, SLOT(setOpenGL(bool)));
   connect(ui->checkBoxCurXEn, SIGNAL(toggled(bool)), plotting, SLOT(setCurXen(bool)));
   connect(ui->checkBoxCurYEn, SIGNAL(toggled(bool)), plotting, SLOT(setCurYen(bool)));
 

@@ -5,7 +5,6 @@ Plotting::Plotting(QCustomPlot *plotWidget, QScrollBar *horizontalPos) {
   this->horizontalPos = horizontalPos;
   for (int i = 1; i <= CHANNEL_COUNT; i++)
     channels.append(new Channel(i, plot, defaultColors[(i > 8) ? 7 : i - 1]));
-  plot->setOpenGl(false);
   connect(timer, SIGNAL(timeout()), this, SLOT(update()));
   timer->start(100); // ms
   plot->yAxis->setBasePen(Qt::NoPen);

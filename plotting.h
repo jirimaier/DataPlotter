@@ -53,7 +53,6 @@ public slots:
   void setShowVerticalValues(bool enabled);
   void setShowHorizontalValues(bool enabled);
   void setRollingLength(double value) { rollingRange = value; }
-  void setOpenGL(bool enabled) { plot->setOpenGl(enabled); }
   void setZoom(int value) { zoom = value; }
   void setCurXen(bool en);
   void setCurYen(bool en);
