@@ -207,5 +207,9 @@ void Plotting::newDataBin(QByteArray data, int bits, double valMin, double valMa
     double value_d = value;
     value_d = (value_d / (1 << bits) * (valMax - valMin)) + valMin;
     channels.at(firstCh + ((i / bytes) % numCh) - 1)->addValue(value_d, channels.at(firstCh + (i % numCh) - 1)->lastTime() + timeStep);
+    if (plottingStatus == PLOT_STATUS_SINGLETRIGER) {
+      plottingStatus = PLOT_STATUS_PAUSE;
+      emit showPlotStatus(plottingStatus);
+    }
   }
 }

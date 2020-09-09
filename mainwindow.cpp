@@ -197,14 +197,15 @@ void MainWindow::showErrorMessage(QByteArray message) {
 
 void MainWindow::showProcessedCommand(QPair<bool, QByteArray> message) {
   QString stringMessage;
-  if (!message.first && serial->currentMode() == DATA_MODE_DATA_BINARY)
+  if (!message.first && serial->currentMode() == DATA_MODE_DATA_BINARY) {
     stringMessage = message.second.toHex(' ');
-  else {
+    stringMessage = "<font color=navy>" + stringMessage + "</font>";
+  } else {
     stringMessage = QString(message.second);
-    message.second.replace(QChar('\r'), "<font color=navy>[CR]</font>");
-    message.second.replace(QChar('\n'), "<font color=navy>[LF]</font>");
-    message.second.replace(QChar('\t'), "<font color=navy>[TAB]</font>");
-    message.second.replace(QChar(27), "<font color=navy>[ESC]</font>");
+    stringMessage.replace(QChar('\r'), "<font color=navy>[CR]</font>");
+    stringMessage.replace(QChar('\n'), "<font color=navy>[LF]</font>");
+    stringMessage.replace(QChar('\t'), "<font color=navy>[TAB]</font>");
+    stringMessage.replace(QChar(27), "<font color=navy>[ESC]</font>");
   }
   ui->textEditSerialDebug->append(QString("<font color=gray>%1</font><font color=black>%2</font>").arg(message.first ? "Cmd: " : "Data: ", stringMessage));
 }

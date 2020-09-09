@@ -9,322 +9,312 @@
         <translation>Vykreslovač dat</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="27"/>
-        <location filename="mainwindow.ui" line="2107"/>
+        <location filename="mainwindow.ui" line="30"/>
+        <location filename="mainwindow.ui" line="2087"/>
         <source>Plot</source>
         <translation>Graf</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="103"/>
+        <location filename="mainwindow.ui" line="106"/>
         <source>Pause</source>
         <translation>Pozastavit</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="117"/>
+        <location filename="mainwindow.ui" line="120"/>
         <source>clear all channels</source>
         <translation>Vymazat kanály</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="110"/>
+        <location filename="mainwindow.ui" line="113"/>
         <source>single</source>
         <translation>Načíst jednou</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="184"/>
-        <location filename="mainwindow.ui" line="1000"/>
+        <location filename="mainwindow.ui" line="187"/>
+        <location filename="mainwindow.ui" line="1003"/>
         <source>Range</source>
         <translation>Rozsah</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="211"/>
+        <location filename="mainwindow.ui" line="214"/>
         <source>rolling length</source>
         <translation>Délka posouvajícího se grafu</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="534"/>
-        <location filename="mainwindow.ui" line="1526"/>
+        <location filename="mainwindow.ui" line="537"/>
+        <location filename="mainwindow.ui" line="1529"/>
         <source>CH </source>
         <translation>CH </translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="582"/>
+        <location filename="mainwindow.ui" line="585"/>
         <source>Line</source>
         <translation>Jen čára</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="587"/>
+        <location filename="mainwindow.ui" line="590"/>
         <source>Points only</source>
         <translation>Jen body</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="592"/>
+        <location filename="mainwindow.ui" line="595"/>
         <source>Line and points</source>
         <translation>Čára a body</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="597"/>
+        <location filename="mainwindow.ui" line="600"/>
         <source>Hidden</source>
         <translation>Skrytý</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="611"/>
+        <location filename="mainwindow.ui" line="614"/>
         <source>fixed horizontal zoom</source>
         <translation>Nastavení vodorovné osy</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="724"/>
-        <location filename="mainwindow.ui" line="1218"/>
+        <location filename="mainwindow.ui" line="727"/>
+        <location filename="mainwindow.ui" line="1221"/>
         <source>Value labels</source>
         <translation>Zobrazit čísla</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="734"/>
-        <location filename="mainwindow.ui" line="1162"/>
+        <location filename="mainwindow.ui" line="737"/>
+        <location filename="mainwindow.ui" line="1165"/>
         <source>Grid</source>
         <translation>Velikost mřížky</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="832"/>
+        <location filename="mainwindow.ui" line="835"/>
         <source>Zoom</source>
         <translation>Zvětšení vodorovné osy</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="472"/>
+        <location filename="mainwindow.ui" line="475"/>
         <source>range</source>
         <translation>Typ zobrazení grafu</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="318"/>
+        <location filename="mainwindow.ui" line="321"/>
         <source>Channel offset</source>
         <translation>Svislý posuv kanálu</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="429"/>
+        <location filename="mainwindow.ui" line="432"/>
         <source>Channel value scale:</source>
         <translation>Měřítko kanálu:</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="478"/>
+        <location filename="mainwindow.ui" line="481"/>
         <source>free</source>
         <translation>Volný</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="488"/>
+        <location filename="mainwindow.ui" line="491"/>
         <source>fixed</source>
         <translation>Pevný</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="498"/>
+        <location filename="mainwindow.ui" line="501"/>
         <source>rolling</source>
         <translation>Posuvný</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="508"/>
+        <location filename="mainwindow.ui" line="511"/>
         <source>Select channel</source>
         <translation>Výběr kanálu</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="870"/>
+        <location filename="mainwindow.ui" line="873"/>
         <source>Channel Scale</source>
         <translation>Zvětšení kanálu</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="967"/>
+        <location filename="mainwindow.ui" line="970"/>
         <source>vertical axis</source>
         <translation>Nastavení svislé osy</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1299"/>
+        <location filename="mainwindow.ui" line="1302"/>
         <source>Measurements</source>
         <translation>Měření</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1549"/>
+        <location filename="mainwindow.ui" line="1552"/>
         <source>time cursor</source>
         <translation>Kursor času</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1638"/>
-        <source>Table</source>
-        <translation>Tabulka</translation>
-    </message>
-    <message>
-        <location filename="mainwindow.ui" line="1690"/>
+        <location filename="mainwindow.ui" line="1665"/>
         <source>connection</source>
         <translation>Připojení</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1820"/>
+        <location filename="mainwindow.ui" line="1800"/>
         <source>refresh</source>
         <translation>Obnovit</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1737"/>
+        <location filename="mainwindow.ui" line="1717"/>
         <source>connect</source>
         <translation>Připojit</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1717"/>
-        <location filename="mainwindow.ui" line="2212"/>
+        <location filename="mainwindow.ui" line="1692"/>
+        <location filename="mainwindow.ui" line="2192"/>
         <source>clear</source>
         <translation>Vymazat</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1813"/>
+        <location filename="mainwindow.ui" line="1793"/>
         <source>disconnect</source>
         <translation>Odpojit</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1429"/>
+        <location filename="mainwindow.ui" line="1432"/>
         <source>value cursor</source>
         <translation>Kursor hodnot</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1495"/>
+        <location filename="mainwindow.ui" line="1498"/>
         <source>dY: 0</source>
         <translation>ΔY: 0</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1539"/>
-        <location filename="mainwindow.ui" line="1555"/>
+        <location filename="mainwindow.ui" line="1542"/>
+        <location filename="mainwindow.ui" line="1558"/>
         <source>Enabled</source>
         <translation>Zobrazit</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1591"/>
+        <location filename="mainwindow.ui" line="1594"/>
         <source>dX: 0</source>
         <translation>ΔX: 0</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1696"/>
-        <location filename="mainwindow.ui" line="1992"/>
+        <location filename="mainwindow.ui" line="1671"/>
+        <location filename="mainwindow.ui" line="1972"/>
         <source>Prevent automatic change</source>
         <translation>Nastavit ručně</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1703"/>
+        <location filename="mainwindow.ui" line="1678"/>
         <source>Data mode:</source>
         <translation>Režim zpracování data:</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1710"/>
+        <location filename="mainwindow.ui" line="1685"/>
         <source>Received:</source>
         <translation>Přijato:</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1777"/>
+        <location filename="mainwindow.ui" line="1757"/>
         <source>Unknown</source>
         <translation>Neznámé</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1782"/>
+        <location filename="mainwindow.ui" line="1762"/>
         <source>Plot data - string</source>
         <translation>Data pro graf (textový řetězec)</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1787"/>
+        <location filename="mainwindow.ui" line="1767"/>
         <source>Plot data - binary</source>
         <translation>Data pro graf (binární)</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1792"/>
+        <location filename="mainwindow.ui" line="1772"/>
         <source>Terminal</source>
         <translation>Terminál</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1797"/>
+        <location filename="mainwindow.ui" line="1777"/>
         <source>Message - info</source>
         <translation>Zpráva (informace)</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1802"/>
+        <location filename="mainwindow.ui" line="1782"/>
         <source>Message - warning</source>
         <translation>Zpráva (upozornění)</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1872"/>
+        <location filename="mainwindow.ui" line="1852"/>
         <source>Binary values scaling</source>
         <translation>Parametry zpracování binárních dat</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1922"/>
+        <location filename="mainwindow.ui" line="1902"/>
         <source>Time step: </source>
         <translation>Časový interval: </translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1925"/>
+        <location filename="mainwindow.ui" line="1905"/>
         <source> / sample</source>
         <translation> / vzorek</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1963"/>
+        <location filename="mainwindow.ui" line="1943"/>
         <source>First channel: </source>
         <translation>První použitý kanál: </translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1976"/>
+        <location filename="mainwindow.ui" line="1956"/>
         <source> channels</source>
         <translation> kanály</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="1999"/>
+        <location filename="mainwindow.ui" line="1979"/>
         <source>Continuous</source>
         <oldsource>Continous</oldsource>
-        <translation type="unfinished">Napojovat</translation>
+        <translation>Napojovat</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="2010"/>
+        <location filename="mainwindow.ui" line="1990"/>
         <source>settings</source>
         <translation>Nastavení</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="2022"/>
+        <location filename="mainwindow.ui" line="2002"/>
         <source>language</source>
         <translation>Jazyk</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="2028"/>
+        <location filename="mainwindow.ui" line="2008"/>
         <source>english</source>
         <translation>English</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="2038"/>
+        <location filename="mainwindow.ui" line="2018"/>
         <source>czech</source>
         <translation>Čeština</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="2054"/>
+        <location filename="mainwindow.ui" line="2034"/>
         <source>refresh plot</source>
         <translation>Obnovovací frekvence grafu</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="2116"/>
+        <location filename="mainwindow.ui" line="2096"/>
         <source>Use OpenGL</source>
         <translation>Použít OpenGL</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="2140"/>
+        <location filename="mainwindow.ui" line="2120"/>
         <source>terminal</source>
         <translation>Terminál</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="2229"/>
+        <location filename="mainwindow.ui" line="2212"/>
         <source>send data to device:</source>
         <oldsource>send data to device</oldsource>
         <translation>Poslat data do připojeného zařízení:</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="2236"/>
+        <location filename="mainwindow.ui" line="2222"/>
         <source>send</source>
         <translation>Odeslat</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="2243"/>
-        <source>grid</source>
-        <translation>Zobrazit mřížku</translation>
-    </message>
-    <message>
-        <location filename="mainwindow.ui" line="2251"/>
+        <location filename="mainwindow.ui" line="2230"/>
         <source>about</source>
         <translation>O programu</translation>
     </message>

@@ -1695,6 +1695,11 @@
         </item>
         <item row="4" column="1" colspan="3">
          <widget class="QTextEdit" name="textEditSerialDebug">
+          <property name="font">
+           <font>
+            <family>Courier New</family>
+           </font>
+          </property>
           <property name="verticalScrollBarPolicy">
            <enum>Qt::ScrollBarAlwaysOn</enum>
           </property>
@@ -2200,6 +2205,9 @@
         </item>
         <item row="3" column="0" colspan="2">
          <widget class="QLineEdit" name="lineEditCommand">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="placeholderText">
            <string>send data to device:</string>
           </property>
@@ -2207,15 +2215,11 @@
         </item>
         <item row="3" column="2">
          <widget class="QPushButton" name="pushButtonSendCommand">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="text">
            <string>send</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QCheckBox" name="checkBox_2">
-          <property name="text">
-           <string>grid</string>
           </property>
          </widget>
         </item>
@@ -2290,7 +2294,6 @@
   <tabstop>lineEditCommand</tabstop>
   <tabstop>pushButtonSendCommand</tabstop>
   <tabstop>myTerminal</tabstop>
-  <tabstop>checkBox_2</tabstop>
   <tabstop>pushButton</tabstop>
   <tabstop>textEditMessages</tabstop>
   <tabstop>tabs_Plot</tabstop>
@@ -2374,22 +2377,6 @@
     <hint type="destinationlabel">
      <x>1232</x>
      <y>379</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkBox_2</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>myTerminal</receiver>
-   <slot>setShowGrid(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1158</x>
-     <y>518</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1279</x>
-     <y>459</y>
     </hint>
    </hints>
   </connection>
