@@ -8,7 +8,6 @@
 
 #include "channel.h"
 #include "enums.h"
-#include "qcustomplot.h"
 
 class Plotting : public QObject {
   Q_OBJECT
