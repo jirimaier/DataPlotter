@@ -30,10 +30,8 @@ private:
   Plotting *plotting;
   QTranslator translator;
   QByteArray buffer;
-  QPixmap resume, pause, single;
   void init();
   void dataParser(QByteArray message);
-  void loadIcons();
   void connectSignals();
   void useSettings(QString settings);
   int roundToStandardValue(double value);

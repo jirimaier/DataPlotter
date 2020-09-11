@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>icons/pause.png</file>
+        <file>icons/run.png</file>
+        <file>icons/single.png</file>
+    </qresource>
+    <qresource prefix="/translations">
+        <file>translation_cz.qm</file>
+        <file>translation_en.qm</file>
+    </qresource>
+</RCC>

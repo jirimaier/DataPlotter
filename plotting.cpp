@@ -139,9 +139,10 @@ void Plotting::update() {
 
 void Plotting::setRangeType(int type) {
   this->plottingRangeType = type;
-  if (type == PLOT_RANGE_FREE)
-    plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
-  else {
+  if (type == PLOT_RANGE_FREE) {
+    plot->setInteraction(QCP::iRangeDrag, true);
+    plot->setInteraction(QCP::iRangeZoom, true);
+  } else {
     plot->setInteraction(QCP::iRangeDrag, false);
     plot->setInteraction(QCP::iRangeZoom, false);
   }

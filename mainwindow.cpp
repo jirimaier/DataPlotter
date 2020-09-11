@@ -17,7 +17,6 @@ void MainWindow::init() {
   serial = new SerialHandler();
   connectSignals();
   changeLanguage();
-  loadIcons();
 
   ui->tabs_right->setCurrentIndex(0);
   ui->tabs_Plot->setCurrentIndex(0);
@@ -30,7 +29,7 @@ void MainWindow::init() {
   ui->pushButtonChannelColor->setIcon(pixmap);
   ui->labelCursorChanelColor->setPixmap(pixmap);
 
-  ui->labelPauseResume->setPixmap(resume);
+  ui->labelPauseResume->setPixmap(QPixmap(":/images/icons/run.png"));
 
   useSettings(defaultSettings);
 
@@ -96,7 +95,7 @@ void MainWindow::printMessage(QByteArray data, bool urgent) {
 
 void MainWindow::changeLanguage() {
   if (ui->radioButtonCz->isChecked()) {
-    if (!translator.load("translation_cz", QCoreApplication::applicationDirPath() + "/languages")) {
+    if (!translator.load(":/translations/translation_cz.qm")) {
       QMessageBox msgBox;
       msgBox.setText("Can't load translation file.");
       msgBox.setInformativeText("translation_cz.qm");
@@ -106,7 +105,7 @@ void MainWindow::changeLanguage() {
     }
   }
   if (ui->radioButtonEn->isChecked()) {
-    if (!translator.load("translation_en", QCoreApplication::applicationDirPath() + "/languages")) {
+    if (!translator.load(":/translations/translation_en.qm")) {
       QMessageBox msgBox;
       msgBox.setText("Can't load translation file.");
       msgBox.setInformativeText("translation_en.qm");
@@ -122,15 +121,15 @@ void MainWindow::changeLanguage() {
 void MainWindow::showPlotStatus(int type) {
   if (type == PLOT_STATUS_PAUSE) {
     ui->pushButtonPause->setText(tr("resume"));
-    ui->labelPauseResume->setPixmap(pause);
+    ui->labelPauseResume->setPixmap(QPixmap(":/images/icons/pause.png"));
   }
   if (type == PLOT_STATUS_RUN) {
     ui->pushButtonPause->setText(tr("pause"));
-    ui->labelPauseResume->setPixmap(resume);
+    ui->labelPauseResume->setPixmap(QPixmap(":/images/icons/run.png"));
   }
   if (type == PLOT_STATUS_SINGLETRIGER) {
     ui->pushButtonPause->setText(tr("normal"));
-    ui->labelPauseResume->setPixmap(single);
+    ui->labelPauseResume->setPixmap(QPixmap(":/images/icons/single.png"));
   }
   ui->pushButtonSingleTriger->setEnabled(type != PLOT_STATUS_SINGLETRIGER);
 }
@@ -207,20 +206,6 @@ void MainWindow::showProcessedCommand(QPair<bool, QByteArray> message) {
     stringMessage.replace(QChar(27), "<font color=navy>[ESC]</font>");
   }
   ui->textEditSerialDebug->append(QString("<font color=gray>%1</font><font color=black>%2</font>").arg(message.first ? "Cmd: " : "Data: ", stringMessage));
-}
-
-void MainWindow::loadIcons() {
-  bool failed = false;
-  failed |= !resume.load(QCoreApplication::applicationDirPath() + "/icons/run.png");
-  failed |= !pause.load(QCoreApplication::applicationDirPath() + "/icons/pause.png");
-  failed |= !single.load(QCoreApplication::applicationDirPath() + "/icons/single.png");
-  if (failed) {
-    QMessageBox msgBox;
-    msgBox.setText(tr("Can not load icons."));
-    msgBox.setIcon(QMessageBox::Warning);
-    msgBox.exec();
-    return;
-  }
 }
 
 int MainWindow::roundToStandardValue(double value) {
