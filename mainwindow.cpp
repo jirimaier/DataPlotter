@@ -21,6 +21,8 @@ void MainWindow::init() {
   ui->tabs_right->setCurrentIndex(0);
   ui->tabs_Plot->setCurrentIndex(0);
   ui->tabWidgetMainArea->setCurrentIndex(0);
+
+  ui->labelBuildDate->setText(tr("Built: ") + QString(__DATE__) + " " + QString(__TIME__));
   on_sliderRefreshRate_valueChanged(ui->sliderRefreshRate->value());
   on_pushButtonComRefresh_clicked();
 
@@ -94,26 +96,12 @@ void MainWindow::printMessage(QByteArray data, bool urgent) {
 }
 
 void MainWindow::changeLanguage() {
-  if (ui->radioButtonCz->isChecked()) {
-    if (!translator.load(":/translations/translation_cz.qm")) {
-      QMessageBox msgBox;
-      msgBox.setText("Can't load translation file.");
-      msgBox.setInformativeText("translation_cz.qm");
-      msgBox.setIcon(QMessageBox::Warning);
-      msgBox.exec();
+  if (ui->radioButtonCz->isChecked())
+    if (!translator.load(":/translations/translation_cz.qm"))
       return;
-    }
-  }
-  if (ui->radioButtonEn->isChecked()) {
-    if (!translator.load(":/translations/translation_en.qm")) {
-      QMessageBox msgBox;
-      msgBox.setText("Can't load translation file.");
-      msgBox.setInformativeText("translation_en.qm");
-      msgBox.setIcon(QMessageBox::Warning);
-      msgBox.exec();
+  if (ui->radioButtonEn->isChecked())
+    if (!translator.load(":/translations/translation_en.qm"))
       return;
-    }
-  }
   qApp->installTranslator(&translator);
   ui->retranslateUi(this);
 }
@@ -194,6 +182,8 @@ void MainWindow::showErrorMessage(QByteArray message) {
 }
 
 void MainWindow::showProcessedCommand(QPair<bool, QByteArray> message) {
+  if (!ui->checkBoxShowCommands->isChecked())
+    return;
   QString stringMessage;
   if (!message.first && serial->currentMode() == DATA_MODE_DATA_BINARY) {
     stringMessage = message.second.toHex(' ');
