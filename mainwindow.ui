@@ -30,7 +30,7 @@
        <number>6</number>
       </property>
       <property name="childrenCollapsible">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <widget class="QWidget" name="layoutWidget">
        <layout class="QVBoxLayout" name="verticalLayout">
@@ -102,7 +102,7 @@
                 <string/>
                </attribute>
                <layout class="QGridLayout" name="gridLayout_3">
-                <item row="3" column="1">
+                <item row="5" column="1">
                  <spacer name="verticalSpacer_5">
                   <property name="orientation">
                    <enum>Qt::Vertical</enum>
@@ -114,6 +114,27 @@
                    </size>
                   </property>
                  </spacer>
+                </item>
+                <item row="2" column="0" colspan="2">
+                 <widget class="QPushButton" name="pushButtonClearChannels">
+                  <property name="text">
+                   <string>clear all channels</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="0" colspan="2">
+                 <widget class="QPushButton" name="pushButtonSelectedCSV">
+                  <property name="text">
+                   <string>Export selected to CSV</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0" colspan="2">
+                 <widget class="QPushButton" name="pushButtonSingleTriger">
+                  <property name="text">
+                   <string>single</string>
+                  </property>
+                 </widget>
                 </item>
                 <item row="0" column="1">
                  <widget class="QPushButton" name="pushButtonPause">
@@ -130,20 +151,6 @@
                   </property>
                   <property name="text">
                    <string>Pause</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="0" colspan="2">
-                 <widget class="QPushButton" name="pushButtonSingleTriger">
-                  <property name="text">
-                   <string>single</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="2" column="0" colspan="2">
-                 <widget class="QPushButton" name="pushButtonClearChannels">
-                  <property name="text">
-                   <string>clear all channels</string>
                   </property>
                  </widget>
                 </item>
@@ -175,6 +182,13 @@
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="4" column="0" colspan="2">
+                 <widget class="QPushButton" name="pushButtonAllCSV">
+                  <property name="text">
+                   <string>Export all to CSV</string>
                   </property>
                  </widget>
                 </item>

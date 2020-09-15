@@ -4,6 +4,7 @@
 #include <QByteArrayMatcher>
 #include <QObject>
 #include <QPair>
+#include <QQueue>
 #include <QTimer>
 
 #include "enums.h"
@@ -16,7 +17,7 @@ private:
   QByteArray buffer;
   QByteArrayMatcher head;
   QByteArrayMatcher tail;
-  QList<QPair<bool, QByteArray>> list;
+  QQueue<QPair<bool, QByteArray>> queue;
 
 public:
   Buffer();

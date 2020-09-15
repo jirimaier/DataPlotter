@@ -26,6 +26,10 @@
 #define CHANNEL_COUNT 64
 #define BUFFER_LINE_TIMEOUT 5
 
+#define CMD_BEGIN "<cmd>"
+#define CMD_END "<\\cmd>"
+#define CMD_END_LENGHT 6
+
 const char defaultSettings[] = "vrange:100\nvdiv:10\nhdiv:50\nrollrange:500";
 
 const float refreshRates[8] = {10.0f, 20.0f, 30.0f, 40.0f, 50.0f, 60.0f, 100.0f, 144.0f};

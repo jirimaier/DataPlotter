@@ -76,6 +76,7 @@ private slots:
   void on_doubleSpinBoxChScale_valueChanged(double arg1);
   void on_dialChScale_valueChanged(int value);
   void on_doubleSpinBoxRangeVerticalDiv_valueChanged(double arg1);
+  void on_pushButtonSelectedCSV_clicked();
 };
 
 #endif // MAINWINDOW_H

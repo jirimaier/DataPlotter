@@ -213,3 +213,12 @@ void Plotting::newDataBin(QByteArray data, int bits, double valMin, double valMa
     }
   }
 }
+
+QString Plotting::chToCSV(int ch) {
+  QString output = QString("Time;CH%1\n").arg(ch);
+  QCPGraphDataContainer *data = plot->graph(ch - 1)->data().data();
+  for (QCPGraphDataContainer::iterator it = data->begin(); it != data->end(); it++)
+    output.append(QString("%1;%2\n").arg(it->key).arg(it->value = (it->value - channels.at(ch - 1)->getOffset()) / channels.at(ch + 1)->getScale()));
+  output.replace('.', ',');
+  return output;
+}

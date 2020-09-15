@@ -57,6 +57,7 @@ public slots:
   void setCurYen(bool en);
   void newDataString(QByteArray data);
   void newDataBin(QByteArray data, int bits, double valMin, double valMax, double timeStep, int numCh, int firstCh, bool continuous);
+  QString chToCSV(int ch);
 
 signals:
   void showPlotStatus(int code);

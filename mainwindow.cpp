@@ -22,7 +22,7 @@ void MainWindow::init() {
   ui->tabs_Plot->setCurrentIndex(0);
   ui->tabWidgetMainArea->setCurrentIndex(0);
 
-  ui->labelBuildDate->setText(tr("Built: ") + QString(__DATE__) + " " + QString(__TIME__));
+  ui->labelBuildDate->setText("Build: " + QString(__DATE__) + " " + QString(__TIME__));
   on_sliderRefreshRate_valueChanged(ui->sliderRefreshRate->value());
   on_pushButtonComRefresh_clicked();
 
@@ -175,7 +175,7 @@ void MainWindow::setDataMode(int mode) {
 
 void MainWindow::showErrorMessage(QByteArray message) {
   QMessageBox msgBox;
-  msgBox.setText(tr("message from connected device:"));
+  msgBox.setText(tr("Error:"));
   msgBox.setInformativeText(QString(message));
   msgBox.setIcon(QMessageBox::Critical);
   msgBox.exec();
@@ -433,4 +433,22 @@ void MainWindow::on_dialChScale_valueChanged(int value) {
 void MainWindow::on_doubleSpinBoxRangeVerticalDiv_valueChanged(double arg1) {
   plotting->setVerticalDiv(arg1);
   updateChScale();
+}
+
+void MainWindow::on_pushButtonSelectedCSV_clicked() {
+  int ch = ui->spinBoxChannelSelect->value();
+  QString fileName = QFileDialog::getSaveFileName(this, tr("Export Channel %1").arg(ch), QString(QCoreApplication::applicationDirPath()), tr("Comma separated values (*.csv)"));
+  if (fileName.isEmpty())
+    return;
+  QFile file(fileName);
+  if (file.open(QFile::WriteOnly | QFile::Truncate)) {
+    file.write(plotting->chToCSV(ch).toUtf8());
+    file.close();
+  } else {
+    QMessageBox msgBox;
+    msgBox.setText(tr("Cant write to file."));
+    msgBox.setInformativeText(tr("This may be because file is opened in another program."));
+    msgBox.setIcon(QMessageBox::Critical);
+    msgBox.exec();
+  }
 }
