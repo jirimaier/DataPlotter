@@ -3,10 +3,10 @@
 myPlot::myPlot(QWidget *parent) : QCustomPlot(parent) {}
 
 void myPlot::initCursors() {
-  cursorX1 = new QCPItemLine(plot);
-  cursorX2 = new QCPItemLine(plot);
-  cursorY1 = new QCPItemLine(plot);
-  cursorY2 = new QCPItemLine(plot);
+  cursorX1 = new QCPItemLine(this);
+  cursorX2 = new QCPItemLine(this);
+  cursorY1 = new QCPItemLine(this);
+  cursorY2 = new QCPItemLine(this);
   QPen cursorpen;
   cursorpen.setColor(Qt::black);
   cursorX1->setPen(cursorpen);
@@ -36,14 +36,31 @@ void myPlot::initCursors() {
   updateCursors(curX1, curX2, curY1, curY2);
 }
 
-void Plotting::clearChannels() {
-  for (int ch = 0; ch < CHANNEL_COUNT; ch++)
-    channels.at(ch)->clear();
+double myPlot::minTime() {
+  QVector<double> times;
+  for (int i = 0; i < CHANNEL_COUNT; i++)
+    if (!this->graph(i)->data()->isEmpty())
+      times.append(this->graph(i)->data()->begin()->key);
+  if (times.isEmpty())
+    return 0;
+  else
+    return *std::min_element(times.begin(), times.end());
 }
 
-void Plotting::autoset() {}
+double myPlot::maxTime() {
+  QVector<double> times;
+  for (int i = 0; i < CHANNEL_COUNT; i++)
+    if (!this->graph(i)->data()->isEmpty()) {
+      QCPGraphDataContainer::iterator it = this->graph(i)->data()->end();
+      times.append((--it)->key);
+    }
+  if (times.isEmpty())
+    return 1;
+  else
+    return *std::max_element(times.begin(), times.end());
+}
 
-void Plotting::updateCursors(double x1, double x2, double y1, double y2) {
+void myPlot::updateCursors(double x1, double x2, double y1, double y2) {
   curX1 = x1;
   curX2 = x2;
   curY1 = y1;
@@ -58,47 +75,68 @@ void Plotting::updateCursors(double x1, double x2, double y1, double y2) {
   cursorY2->end->setCoords(1, curY2);
 }
 
-void Plotting::update() {
-  horizontalPos->setMaximum(1000 - zoom / 2);
-  horizontalPos->setMinimum(zoom / 2);
-  horizontalPos->setPageStep(zoom);
-  double minT = 0;
-  double maxT = 10;
-  if (plottingRangeType != PLOT_RANGE_FREE) {
-    minT = minTime();
-    maxT = maxTime();
-    plot->yAxis->setRange((verticalCenter * 0.01 - 1) * 0.5 * verticalRange, (verticalCenter * 0.01 + 1) * 0.5 * verticalRange);
-  }
-  if (plottingRangeType == PLOT_RANGE_FIXED) {
-    double dataLenght = maxT - minT;
-    plot->xAxis->setRange(minT + dataLenght * 0.001 * (horizontalPos->value() - zoom / 2), minT + dataLenght * 0.001 * (horizontalPos->value() + zoom / 2));
-  } else if (plottingRangeType == PLOT_RANGE_ROLLING) {
-    plot->xAxis->setRange(maxT - rollingRange, maxT);
+void myPlot::init(Settings *in_settings, PlotData *in_plotData) {
+  this->settings = in_settings;
+  this->plotData = in_plotData;
+  resetChannels();
+  initCursors();
+  updateVisuals();
+  connect(&updateTimer, SIGNAL(timeout()), this, SLOT(update()));
+  updateTimer.start(100);
+}
+
+void myPlot::update() {
+  double minT = minTime();
+  double maxT = maxTime();
+  if (plotData->newDataFlag) {
+    if (plottingStatus == PLOT_STATUS_RUN || plottingStatus == PLOT_STATUS_SINGLETRIGER) {
+      for (int ch = 0; ch < CHANNEL_COUNT; ch++) {
+        if (plotData->channels.at(ch)->isEmpty())
+          continue;
+        if ((!this->graph(ch)->data()->isEmpty()) && this->graph(ch)->data()->end()->key > plotData->channels.at(ch)->firstTime())
+          this->graph(ch)->setData(plotData->channels.at(ch)->time, plotData->channels.at(ch)->value, true);
+        else
+          this->graph(ch)->addData(plotData->channels.at(ch)->time, plotData->channels.at(ch)->value, true);
+        plotData->channels.at(ch)->clear();
+      }
+    }
+    if (plottingStatus == PLOT_STATUS_SINGLETRIGER) {
+      plottingStatus = PLOT_STATUS_PAUSE;
+      emit showPlotStatus(plottingStatus);
+    }
+    plotData->newDataFlag = false;
   }
 
-  if (plottingStatus == PLOT_STATUS_RUN || plottingStatus == PLOT_STATUS_SINGLETRIGER) {
-    for (int ch = 0; ch < CHANNEL_COUNT; ch++) {
-      channels.at(ch)->draw();
+  if (plottingRangeType != PLOT_RANGE_FREE) {
+
+    this->yAxis->setRange((settings->plotSettings.verticalCenter * 0.01 - 1) * 0.5 * settings->plotSettings.verticalRange, (settings->plotSettings.verticalCenter * 0.01 + 1) * 0.5 * settings->plotSettings.verticalRange);
+    if (plottingRangeType == PLOT_RANGE_FIXED) {
+      double dataLenght = maxT - minT;
+      this->xAxis->setRange(minT + dataLenght * 0.001 * (settings->plotSettings.horizontalPos - settings->plotSettings.zoom / 2), minT + dataLenght * 0.001 * (settings->plotSettings.horizontalPos + settings->plotSettings.zoom / 2));
+    } else if (plottingRangeType == PLOT_RANGE_ROLLING) {
+      this->xAxis->setRange(maxT - settings->plotSettings.rollingRange, maxT);
     }
   }
-  emit setCursorBounds(plot->xAxis->range().lower, plot->xAxis->range().upper, plot->yAxis->range().lower, plot->yAxis->range().upper, minT, maxT, verticalCenter - verticalRange / 2, verticalCenter + verticalRange / 2);
-  emit setVDivLimits(plot->yAxis->range().upper - plot->yAxis->range().lower);
-  emit setHDivLimits(plot->xAxis->range().upper - plot->xAxis->range().lower);
-  plot->replot();
+
+  emit setCursorBounds(this->xAxis->range().lower, this->xAxis->range().upper, this->yAxis->range().lower, this->yAxis->range().upper, minT, maxT, settings->plotSettings.verticalCenter - settings->plotSettings.verticalRange / 2,
+                       settings->plotSettings.verticalCenter + settings->plotSettings.verticalRange / 2);
+  emit setVDivLimits(this->yAxis->range().upper - this->yAxis->range().lower);
+  emit setHDivLimits(this->xAxis->range().upper - this->xAxis->range().lower);
+  this->replot();
 }
 
-void Plotting::setRangeType(int type) {
+void myPlot::setRangeType(int type) {
   this->plottingRangeType = type;
   if (type == PLOT_RANGE_FREE) {
-    plot->setInteraction(QCP::iRangeDrag, true);
-    plot->setInteraction(QCP::iRangeZoom, true);
+    this->setInteraction(QCP::iRangeDrag, true);
+    this->setInteraction(QCP::iRangeZoom, true);
   } else {
-    plot->setInteraction(QCP::iRangeDrag, false);
-    plot->setInteraction(QCP::iRangeZoom, false);
+    this->setInteraction(QCP::iRangeDrag, false);
+    this->setInteraction(QCP::iRangeZoom, false);
   }
 }
 
-void Plotting::pauseClicked() {
+void myPlot::pauseClicked() {
   if (plottingStatus == PLOT_STATUS_RUN)
     plottingStatus = PLOT_STATUS_PAUSE;
   else if (plottingStatus == PLOT_STATUS_SINGLETRIGER)
@@ -108,67 +146,61 @@ void Plotting::pauseClicked() {
   emit showPlotStatus(plottingStatus);
 }
 
-void Plotting::singleTrigerClicked() {
+void myPlot::singleTrigerClicked() {
   plottingStatus = PLOT_STATUS_SINGLETRIGER;
   emit showPlotStatus(plottingStatus);
 }
 
-void Plotting::setVerticalDiv(double value) {
+void myPlot::setVerticalDiv(double value) {
   QSharedPointer<QCPAxisTickerFixed> fixedTicker(new QCPAxisTickerFixed);
-  plot->yAxis->setTicker(fixedTicker);
+  this->yAxis->setTicker(fixedTicker);
   fixedTicker->setTickStep(value);
   fixedTicker->setScaleStrategy(QCPAxisTickerFixed::ssNone);
 }
 
-void Plotting::setHorizontalDiv(double value) {
+void myPlot::setHorizontalDiv(double value) {
   QSharedPointer<QCPAxisTickerFixed> fixedTicker(new QCPAxisTickerFixed);
-  plot->xAxis->setTicker(fixedTicker);
+  this->xAxis->setTicker(fixedTicker);
   fixedTicker->setTickStep(value);
   fixedTicker->setScaleStrategy(QCPAxisTickerFixed::ssNone);
 }
 
-void Plotting::setShowVerticalValues(bool enabled) { plot->yAxis->setTicks(enabled); }
+void myPlot::setShowVerticalValues(bool enabled) { this->yAxis->setTicks(enabled); }
 
-void Plotting::setShowHorizontalValues(bool enabled) { plot->xAxis->setTicks(enabled); }
+void myPlot::setShowHorizontalValues(bool enabled) { this->xAxis->setTicks(enabled); }
 
-void Plotting::setCurXen(bool en) {
+void myPlot::setCurXen(bool en) {
   cursorX1->setVisible(en);
   cursorX2->setVisible(en);
 }
 
-void Plotting::setCurYen(bool en) {
+void myPlot::setCurYen(bool en) {
   cursorY1->setVisible(en);
   cursorY2->setVisible(en);
 }
 
-void Plotting::newDataBin(QByteArray data, int bits, double valMin, double valMax, double timeStep, int numCh, int firstCh, bool continuous) {
-  int bytes = ceil(bits / 8.0f);
-  if (data.length() % bytes != 0)
-    data = data.left(data.length() - data.length() % bytes);
-  if (!continuous)
-    for (int ch = firstCh; ch < firstCh + numCh; ch++)
-      this->channel(ch)->clear();
-  for (int i = 0; i < data.length() - 1; i += bytes) {
-    quint64 value = 0;
-    for (int byte = 0; byte < bytes; byte++) {
-      value = value << 8;
-      value |= (quint8)data.at(i + byte);
+void myPlot::updateVisuals() {
+  for (int i = 0; i < CHANNEL_COUNT; i++) {
+    this->graph(i)->setPen(QPen(settings->channelSettings.at(i)->color));
+    this->graph(i)->setVisible((settings->channelSettings.at(i)->style != PLOT_STYLE_HIDDEN));
+
+    if (settings->channelSettings.at(i)->style == PLOT_STYLE_LINEANDPIONT) {
+      this->graph(i)->setScatterStyle(QCPScatterStyle::ssDisc);
+      this->graph(i)->setLineStyle(QCPGraph::lsLine);
     }
-    double value_d = value;
-    value_d = (value_d / (1 << bits) * (valMax - valMin)) + valMin;
-    channels.at(firstCh + ((i / bytes) % numCh) - 1)->addValue(value_d, channels.at(firstCh + (i % numCh) - 1)->lastTime() + timeStep);
-    if (plottingStatus == PLOT_STATUS_SINGLETRIGER) {
-      plottingStatus = PLOT_STATUS_PAUSE;
-      emit showPlotStatus(plottingStatus);
+    if (settings->channelSettings.at(i)->style == PLOT_STYLE_LINE) {
+      this->graph(i)->setScatterStyle(QCPScatterStyle::ssNone);
+      this->graph(i)->setLineStyle(QCPGraph::lsLine);
+    }
+    if (settings->channelSettings.at(i)->style == PLOT_STYLE_POINT) {
+      this->graph(i)->setScatterStyle(QCPScatterStyle::ssDisc);
+      this->graph(i)->setLineStyle(QCPGraph::lsNone);
     }
   }
 }
 
-QString Plotting::chToCSV(int ch) {
-  QString output = QString("Time;CH%1\n").arg(ch);
-  QCPGraphDataContainer *data = plot->graph(ch - 1)->data().data();
-  for (QCPGraphDataContainer::iterator it = data->begin(); it != data->end(); it++)
-    output.append(QString("%1;%2\n").arg(it->key).arg(it->value = (it->value - channels.at(ch - 1)->getOffset()) / channels.at(ch + 1)->getScale()));
-  output.replace('.', ',');
-  return output;
+void myPlot::resetChannels() {
+  this->clearGraphs();
+  for (int i = 0; i < CHANNEL_COUNT; i++)
+    this->addGraph();
 }

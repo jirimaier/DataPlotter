@@ -1,6 +1,7 @@
 #include "serialhandler.h"
 
-SerialHandler::SerialHandler() {
+SerialHandler::SerialHandler(Settings *in_settings) {
+  this->settings = in_settings;
   this->serial = new QSerialPort(this);
   this->buffer = new Buffer();
   connect(serial, SIGNAL(readyRead()), this, SLOT(readData()));
@@ -36,32 +37,30 @@ QStringList SerialHandler::refresh() {
 
 void SerialHandler::parseBinaryDataHeader(QByteArray data) {
   QByteArrayList list = data.split(',');
-  int bits_new = bits, numCh_new = numCh, firstCh_new = firstCh;
-  double valueMin_new = valueMin, valueMax_new = valueMax, timeStep_new = timeStep;
-  bool continuous_new = continuous;
+  Settings::binDataSettings_t newSettings = settings->binDataSettings;
   // bin,bits,chNum,maxVal,minVal,time,cont,firstch
   if (list.length() >= 2)
     if (list.at(1).length() > 0)
-      bits_new = list.at(1).toInt();
+      newSettings.bits = list.at(1).toInt();
   if (list.length() >= 3)
     if (list.at(2).length() > 0)
-      numCh_new = list.at(2).toInt();
+      newSettings.numCh = list.at(2).toInt();
   if (list.length() >= 4)
     if (list.at(3).length() > 0)
-      valueMax_new = list.at(3).toDouble();
+      newSettings.valueMax = list.at(3).toDouble();
   if (list.length() >= 5)
     if (list.at(4).length() > 0)
-      valueMin_new = list.at(4).toDouble();
+      newSettings.valueMin = list.at(4).toDouble();
   if (list.length() >= 6)
     if (list.at(5).length() > 0)
-      timeStep_new = list.at(5).toDouble();
+      newSettings.timeStep = list.at(5).toDouble();
   if (list.length() >= 7)
     if (list.at(6).length() > 0)
-      continuous_new = list.at(6).toInt() == 1;
+      newSettings.continuous = list.at(6).toInt() == 1;
   if (list.length() >= 8)
     if (list.at(7).length() > 0)
-      firstCh_new = list.at(7).toInt();
-  emit changedBitMode(bits_new, valueMin_new, valueMax_new, timeStep_new, numCh_new, firstCh_new, continuous_new);
+      newSettings.firstCh = list.at(7).toInt();
+  emit changedBinSettings(newSettings);
 }
 
 void SerialHandler::write(QByteArray data) {
@@ -80,16 +79,16 @@ void SerialHandler::readBuffer() {
   QPair<bool, QByteArray> line = buffer->next();
   emit newProcessedCommand(line);
   if (line.first == false) {
-    if (mode == DATA_MODE_DATA_STRING)
+    if (settings->dataMode == DATA_MODE_DATA_STRING)
       emit newDataString(line.second);
-    if (mode == DATA_MODE_MESSAGE_INFO)
+    if (settings->dataMode == DATA_MODE_MESSAGE_INFO)
       emit printMessage(line.second, false);
-    if (mode == DATA_MODE_MESSAGE_WARNING)
+    if (settings->dataMode == DATA_MODE_MESSAGE_WARNING)
       emit printMessage(line.second, true);
-    if (mode == DATA_MODE_TERMINAL)
+    if (settings->dataMode == DATA_MODE_TERMINAL)
       emit printToTerminal(line.second);
-    if (mode == DATA_MODE_DATA_BINARY)
-      emit newDataBin(line.second, bits, valueMin, valueMax, timeStep, numCh, firstCh, continuous);
+    if (settings->dataMode == DATA_MODE_DATA_BINARY)
+      emit newDataBin(line.second);
   } else {
     if (line.second == "data")
       emit changedMode(DATA_MODE_DATA_STRING);

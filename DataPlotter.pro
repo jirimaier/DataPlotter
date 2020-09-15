@@ -9,9 +9,10 @@ SOURCES += \
     mainwindow.cpp \
     myplot.cpp \
     myterminal.cpp \
-    plotting.cpp \
+    plotdata.cpp \
     qcustomplot.cpp \
-    serialhandler.cpp
+    serialhandler.cpp \
+    settings.cpp
 
 HEADERS += \
     buffer.h \
@@ -20,9 +21,10 @@ HEADERS += \
     mainwindow.h \
     myplot.h \
     myterminal.h \
-    plotting.h \
+    plotdata.h \
     qcustomplot.h \
-    serialhandler.h
+    serialhandler.h \
+    settings.h
 
 FORMS += mainwindow.ui
 

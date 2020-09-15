@@ -18,7 +18,6 @@ void MyTerminal::printChar(char text) {
     this->item(cursorY, cursorX)->setText(QString(text));
   else
     this->setItem(cursorY, cursorX, new QTableWidgetItem(QString(text)));
-
   this->item(cursorY, cursorX)->setBackground(backColor);
   this->item(cursorY, cursorX)->setForeground(fontColor);
   this->item(cursorY, cursorX)->setFont(font);

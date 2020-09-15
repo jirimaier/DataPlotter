@@ -8,8 +8,9 @@
 #include <QTranslator>
 
 #include "enums.h"
-#include "plotting.h"
+#include "plotdata.h"
 #include "serialhandler.h"
+#include "settings.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -27,13 +28,14 @@ public:
 private:
   Ui::MainWindow *ui;
   SerialHandler *serial;
-  Plotting *plotting;
+  PlotData *plotData;
+  Settings *settings;
   QTranslator translator;
   QByteArray buffer;
   void init();
   void dataParser(QByteArray message);
   void connectSignals();
-  void useSettings(QString settings);
+  // void useSettings(QString settings);
   int roundToStandardValue(double value);
   bool isStandardValue(double value);
   void updateChScale();
@@ -57,7 +59,6 @@ private slots:
   void on_spinBoxCursorCh_valueChanged(int arg1);
   void on_spinBoxDataBinaryBits_valueChanged(int arg1);
   void on_spinBoxBinaryDataNumCh_valueChanged(int arg1);
-  void setBitMode(int bits, double valMin, double valMax, double timeStep, int numCh, int firstCh, bool continuous);
   void on_pushButtonComRefresh_clicked();
   void on_pushButtonConnect_clicked();
   void on_pushButtonDisconnect_clicked();
@@ -70,6 +71,7 @@ private slots:
   void serialErrorOccurred();
   void setCursorBounds(double xmin, double xmax, double ymin, double ymax, double xminfull, double xmaxfull, double yminfull, double ymaxfull);
   void setDataMode(int mode);
+  void changeBinSettings(Settings::binDataSettings_t in_settings);
   void showErrorMessage(QByteArray message);
   void showProcessedCommand(QPair<bool, QByteArray> message);
   void printMessage(QByteArray data, bool urgent);
@@ -77,6 +79,17 @@ private slots:
   void on_dialChScale_valueChanged(int value);
   void on_doubleSpinBoxRangeVerticalDiv_valueChanged(double arg1);
   void on_pushButtonSelectedCSV_clicked();
+  void on_doubleSpinBoxBinarydataMax_valueChanged(double arg1) { settings->binDataSettings.valueMax = arg1; }
+  void on_doubleSpinBoxBinaryDataMin_valueChanged(double arg1) { settings->binDataSettings.valueMin = arg1; }
+  void on_doubleSpinBoxBinaryTimestep_valueChanged(double arg1) { settings->binDataSettings.timeStep = arg1; }
+  void on_spinBoxBinaryDataFirstCh_valueChanged(int arg1) { settings->binDataSettings.firstCh = arg1; }
+  void on_checkBoxBinContinuous_toggled(bool checked) { settings->binDataSettings.continuous = checked; }
+  void on_dialZoom_valueChanged(int value);
+  void on_horizontalScrollBarHorizontal_valueChanged(int value) { settings->plotSettings.horizontalPos = value; }
+  void on_doubleSpinBoxRangeHorizontal_valueChanged(double arg1) { settings->plotSettings.rollingRange = arg1; }
+  void on_doubleSpinBoxRangeVerticalRange_valueChanged(double arg1) { settings->plotSettings.verticalRange = arg1; }
+  void on_verticalScrollBarVerticalCenter_valueChanged(int value) { settings->plotSettings.verticalCenter = value; }
+  void on_doubleSpinBoxRangeHorizontalDiv_valueChanged(double arg1);
 };
 
 #endif // MAINWINDOW_H

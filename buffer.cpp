@@ -16,8 +16,7 @@ Buffer::Buffer() {
 
 void Buffer::add(QByteArray data) {
   buffer.append(data);
-  // Timeout po 10 cyklech
-  for (quint8 i = 0; i < 10; i++) {
+  forever {
     timeoutTimer->stop();
     int begin = head.indexIn(buffer);
     int end = tail.indexIn(buffer);

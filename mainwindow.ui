@@ -226,7 +226,7 @@
                <enum>QTabWidget::Rounded</enum>
               </property>
               <property name="currentIndex">
-               <number>0</number>
+               <number>1</number>
               </property>
               <property name="tabBarAutoHide">
                <bool>true</bool>
@@ -1142,10 +1142,10 @@
                       </size>
                      </property>
                      <property name="minimum">
-                      <number>0</number>
+                      <number>500</number>
                      </property>
                      <property name="maximum">
-                      <number>1000</number>
+                      <number>500</number>
                      </property>
                      <property name="singleStep">
                       <number>10</number>
@@ -1861,7 +1861,7 @@
         </size>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <property name="usesScrollButtons">
         <bool>true</bool>
