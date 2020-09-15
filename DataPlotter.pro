@@ -7,6 +7,7 @@ SOURCES += \
     channel.cpp \
     main.cpp \
     mainwindow.cpp \
+    myplot.cpp \
     myterminal.cpp \
     plotting.cpp \
     qcustomplot.cpp \
@@ -17,6 +18,7 @@ HEADERS += \
     channel.h \
     enums.h \
     mainwindow.h \
+    myplot.h \
     myterminal.h \
     plotting.h \
     qcustomplot.h \

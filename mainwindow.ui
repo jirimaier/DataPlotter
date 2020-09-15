@@ -197,7 +197,7 @@
              </widget>
             </item>
             <item row="0" column="0" colspan="2">
-             <widget class="QCustomPlot" name="plot" native="true"/>
+             <widget class="myPlot" name="plot" native="true"/>
             </item>
             <item row="1" column="0">
              <widget class="QTabWidget" name="tabs_Plot">
@@ -2508,9 +2508,9 @@
    </slots>
   </customwidget>
   <customwidget>
-   <class>QCustomPlot</class>
+   <class>myPlot</class>
    <extends>QWidget</extends>
-   <header location="global">qcustomplot.h</header>
+   <header>myplot.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
