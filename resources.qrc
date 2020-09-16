@@ -3,6 +3,7 @@
         <file>icons/pause.png</file>
         <file>icons/run.png</file>
         <file>icons/single.png</file>
+        <file>icons/logoKatedry.png</file>
     </qresource>
     <qresource prefix="/translations">
         <file>translation_cz.qm</file>
