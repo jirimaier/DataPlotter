@@ -17,13 +17,12 @@ void PlotData::newDataString(QByteArray data) {
         channels.at(ch - 1)->addValue(values.at(ch).toDouble(), values.at(0).isEmpty() ? channels.at(0)->lastTime() + 1 : values.at(0).toDouble());
     }
   }
-  newDataFlag = true;
+  emit dataReady(&channels);
 }
 
 void PlotData::clearChannels() {
   for (int ch = 0; ch < CHANNEL_COUNT; ch++)
     channels.at(ch)->clear();
-  newDataFlag = false;
 }
 
 void PlotData::newDataBin(QByteArray data) {
@@ -43,12 +42,5 @@ void PlotData::newDataBin(QByteArray data) {
     value_d = (value_d / (1 << settings->binDataSettings.bits) * (settings->binDataSettings.valueMax - settings->binDataSettings.valueMin)) + settings->binDataSettings.valueMin;
     channels.at(settings->binDataSettings.firstCh + ((i / bytes) % settings->binDataSettings.numCh) - 1)->addValue(value_d, channels.at(settings->binDataSettings.firstCh + (i % settings->binDataSettings.numCh) - 1)->lastTime() + settings->binDataSettings.timeStep);
   }
-  newDataFlag = true;
-}
-
-void PlotData::dataRequest() {
-  if (newDataFlag) {
-    emit sendData(&channels);
-    newDataFlag = false;
-  }
+  emit dataReady(&channels);
 }

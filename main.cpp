@@ -13,7 +13,11 @@ int main(int argc, char *argv[]) {
   Settings settings;
   PlotData plotData(&settings);
   SerialHandler serialHandler(&settings);
-  w.init(&settings, &serialHandler, &plotData);
+  w.init(&settings);
+  QObject::connect(&w, &MainWindow::connectSerial, &serialHandler, &SerialHandler::connectSerial);
+  QObject::connect(&w, &MainWindow::disconnectSerial, &serialHandler, &SerialHandler::disconnectSerial);
+  QObject::connect(&serialHandler, &SerialHandler::connectionResult, &w, &MainWindow::serialConnectResult);
+  QObject::connect(&plotData, &PlotData::dataReady, &w, &MainWindow::addDataToPlot);
   // Serial -> MainWindow
   QObject::connect(&serialHandler, &SerialHandler::serialErrorOccurredSignal, &w, &MainWindow::serialErrorOccurred);
   QObject::connect(&serialHandler, &SerialHandler::changedMode, &w, &MainWindow::setDataMode);

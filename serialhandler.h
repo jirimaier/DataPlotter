@@ -2,8 +2,7 @@
 #define SERIALHANDLER_H
 
 #include <QObject>
-#include <QtSerialPort/QSerialPort>
-#include <QtSerialPort/QSerialPortInfo>
+#include <QSerialPort>
 
 #include "buffer.h"
 #include "enums.h"
@@ -16,15 +15,10 @@ class SerialHandler : public QObject {
 public:
   SerialHandler(Settings *in_settings);
   ~SerialHandler();
-  bool connectSerial(int portIndex, long baud);
-  QStringList refresh();
-  QString currentPort() { return serial->portName(); }
-  unsigned int currentBaud() { return serial->baudRate(); }
 
 private:
   Settings *settings;
   QSerialPort *serial;
-  QStringList portList;
   Buffer *buffer;
   void parseCommand(QByteArray);
   void parseData(QByteArray);
@@ -33,6 +27,7 @@ private:
 public slots:
   void write(QByteArray data);
   void disconnectSerial();
+  void connectSerial(QString portName, long baud);
 
 private slots:
   void readData();
@@ -40,7 +35,7 @@ private slots:
   void serialErrorOccurred();
 
 signals:
-  void serialErrorOccurredSignal();
+  void serialErrorOccurredSignal(QString error);
   void changedMode(int);
   void showErrorMessage(QByteArray message);
   void printToTerminal(QByteArray message);
@@ -50,6 +45,7 @@ signals:
   void newProcessedCommand(QPair<bool, QByteArray>);
   void changedBinSettings(Settings::binDataSettings_t);
   void changedDataMode(int mode);
+  void connectionResult(bool, QString);
 };
 
 #endif // SERIALHANDLER_H

@@ -29,8 +29,7 @@ private:
   double minTime();
   double maxTime();
   double graphLastTime(quint8 i);
-  double minT;
-  double maxT;
+  double minT = 0.0, maxT = 1.0;
 public slots:
   void setRefreshPeriod(int period) { updateTimer.setInterval(period); }
   void update();
@@ -55,7 +54,6 @@ signals:
   void setHDivLimits(double hRange);
   void setVDivLimits(double vRange);
   void setCursorBounds(double xmin, double xmax, double ymin, double ymax, double xminull, double xmaxfull, double yminfull, double ymaxfull);
-  void requestNewData();
 };
 
 #endif // MYPLOT_H

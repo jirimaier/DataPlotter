@@ -14,25 +14,15 @@ SerialHandler::~SerialHandler() {
   delete buffer;
 }
 
-bool SerialHandler::connectSerial(int portIndex, long baud) {
-  serial->setPortName(portList.at(portIndex));
+void SerialHandler::connectSerial(QString port, long baud) {
+  serial->setPortName(port);
   serial->setBaudRate(baud);
   serial->setDataBits(QSerialPort::Data8);
   serial->setParity(QSerialPort::NoParity);
   serial->setStopBits(QSerialPort::OneStop);
   serial->setFlowControl(QSerialPort::NoFlowControl);
   serial->open(QIODevice::ReadWrite);
-  return serial->isOpen();
-}
-
-QStringList SerialHandler::refresh() {
-  QStringList portsWithDescription;
-  portList.clear();
-  foreach (const QSerialPortInfo &serialPortInfo, QSerialPortInfo::availablePorts()) {
-    portsWithDescription.append(serialPortInfo.portName() + " - " + serialPortInfo.description());
-    portList.append(serialPortInfo.portName());
-  }
-  return portsWithDescription;
+  emit connectionResult(serial->isOpen(), serial->isOpen() ? tr("Connected to ") + serial->portName() + tr(" at ") + QString::number(serial->baudRate()) + tr(" bps") : tr("Error: ") + serial->errorString());
 }
 
 void SerialHandler::parseBinaryDataHeader(QByteArray data) {
@@ -107,5 +97,5 @@ void SerialHandler::readBuffer() {
 
 void SerialHandler::serialErrorOccurred() {
   disconnectSerial();
-  emit serialErrorOccurredSignal();
+  emit serialErrorOccurredSignal(tr("Error: ") + serial->errorString());
 }

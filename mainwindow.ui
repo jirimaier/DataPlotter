@@ -1861,7 +1861,7 @@
         </size>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <property name="usesScrollButtons">
         <bool>true</bool>
@@ -1886,7 +1886,7 @@
           </widget>
          </item>
          <item row="5" column="1" colspan="3">
-          <widget class="QPushButton" name="pushButton_2">
+          <widget class="QPushButton" name="pushButtonClearReceivedList">
            <property name="text">
             <string>clear</string>
            </property>
@@ -2522,7 +2522,7 @@
   <tabstop>pushButtonDisconnect</tabstop>
   <tabstop>lineEditPortInfo</tabstop>
   <tabstop>textEditSerialDebug</tabstop>
-  <tabstop>pushButton_2</tabstop>
+  <tabstop>pushButtonClearReceivedList</tabstop>
   <tabstop>tabs_right</tabstop>
   <tabstop>radioButtonEn</tabstop>
   <tabstop>radioButtonCz</tabstop>
@@ -2537,7 +2537,7 @@
  <resources/>
  <connections>
   <connection>
-   <sender>pushButton_2</sender>
+   <sender>pushButtonClearReceivedList</sender>
    <signal>clicked()</signal>
    <receiver>textEditSerialDebug</receiver>
    <slot>clear()</slot>
@@ -2613,22 +2613,6 @@
     <hint type="destinationlabel">
      <x>1232</x>
      <y>379</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_2</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>clearBuffer()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1435</x>
-     <y>454</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1086</x>
-     <y>914</y>
     </hint>
    </hints>
   </connection>

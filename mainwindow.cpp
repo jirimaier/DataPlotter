@@ -5,10 +5,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 MainWindow::~MainWindow() { delete ui; }
 
-void MainWindow::init(Settings *in_settings, SerialHandler *in_serial, PlotData *in_plotData) {
+void MainWindow::init(Settings *in_settings) {
   this->settings = in_settings;
-  this->serial = in_serial;
-  this->plotData = in_plotData;
   ui->plot->init(in_settings);
   connectSignals();
   changeLanguage();
@@ -45,12 +43,7 @@ void MainWindow::connectSignals() {
   connect(ui->plot, SIGNAL(setHDivLimits(double)), this, SLOT(setHDivLimits(double)));
   connect(ui->plot, SIGNAL(setVDivLimits(double)), this, SLOT(setVDivLimits(double)));
   connect(ui->plot, SIGNAL(setCursorBounds(double, double, double, double, double, double, double, double)), this, SLOT(setCursorBounds(double, double, double, double, double, double, double, double)));
-
-  // PlotData -> Plot
-  connect(plotData, &PlotData::sendData, ui->plot, &myPlot::newData);
-  connect(ui->plot, &myPlot::requestNewData, plotData, &PlotData::dataRequest);
 }
-
 void MainWindow::printMessage(QByteArray data, bool urgent) {
   QString message = QString("<font color=grey>%1: </font>").arg(QString(QTime::currentTime().toString("hh:mm:ss")));
   if (urgent)
@@ -99,10 +92,11 @@ void MainWindow::setVDivLimits(double vRange) {
   ui->dialVerticalDiv->setMaximum(i - 1);
 }
 
-void MainWindow::serialErrorOccurred() {
-  ui->lineEditPortInfo->setText(tr("Error"));
+void MainWindow::serialErrorOccurred(QString error) {
   ui->pushButtonDisconnect->setEnabled(false);
   ui->pushButtonConnect->setEnabled(true);
+  ui->lineEditPortInfo->setText(error);
+  ui->lineEditPortInfo->setCursorPosition(0);
 }
 
 void MainWindow::setCursorBounds(double xmin, double xmax, double ymin, double ymax, double xminfull, double xmaxfull, double yminfull, double ymaxfull) {
@@ -199,81 +193,16 @@ void MainWindow::updateChScale() {
   ui->labelChScale->setText(QString::number(perDiv) + tr(" / Div"));
 }
 
-/*void MainWindow::useSettings(QString settings) {
-  QStringList lines = settings.split("\n");
-  for (QStringList::Iterator it = lines.begin(); it != lines.end(); it++) {
-    *it = it->toLower();
-    if (it->left(2) == "//")
-      continue;
-    if (it->left(it->indexOf(':')) == "vrange") {
-      double value = it->mid(it->indexOf(':') + 1).toDouble();
-      ui->dialVerticalRange->setValue(roundToStandardValue(value));
-      ui->doubleSpinBoxRangeVerticalRange->setValue(value);
-      plotting->setVerticalRange(value);
-      continue;
-    }
-    if (it->left(it->indexOf(':')) == "vdiv") {
-      double value = it->mid(it->indexOf(':') + 1).toDouble();
-      ui->dialVerticalDiv->setValue(roundToStandardValue(value));
-      ui->doubleSpinBoxRangeVerticalDiv->setValue(value);
-      plotting->setVerticalDiv(value);
-      continue;
-    }
-    if (it->left(it->indexOf(':')) == "rollrange") {
-      double value = it->mid(it->indexOf(':') + 1).toDouble();
-      ui->dialRollingRange->setValue(roundToStandardValue(value));
-      ui->doubleSpinBoxRangeHorizontal->setValue(value);
-      plotting->setRollingLength(value);
-      continue;
-    }
-    if (it->left(it->indexOf(':')) == "hdiv") {
-      double value = it->mid(it->indexOf(':') + 1).toDouble();
-      ui->dialhorizontalDiv->setValue(roundToStandardValue(value));
-      ui->doubleSpinBoxRangeHorizontalDiv->setValue(value);
-      plotting->setHorizontalDiv(value);
-      continue;
-    }
-    if (it->left(it->indexOf(':')) == "chclr") {
-      QStringList value = it->mid(it->indexOf(':') + 1).split(',');
-      if (value.length() == 4 && value.at(0).toInt() > 0 && value.at(0).toInt() <= 64) {
-        plotting->channel(value.at(0).toInt())->changeColor(QColor::fromRgb(value.at(1).toInt(), value.at(2).toInt(), value.at(3).toInt()));
-        on_spinBoxChannelSelect_valueChanged(ui->spinBoxChannelSelect->value()-1);
-        continue;
-      }
-    }
-    if (it->left(it->indexOf(':')) == "choff") {
-      QStringList value = it->mid(it->indexOf(':') + 1).split(',');
-      if (value.length() == 2 && value.at(0).toInt() > 0 && value.at(0).toInt() <= 64) {
-        plotting->channel(value.at(0).toInt())->changeOffset(value.at(1).toDouble());
-        on_spinBoxChannelSelect_valueChanged(ui->spinBoxChannelSelect->value()-1);
-        continue;
-      }
-    }
-    QMessageBox msgBox;
-    msgBox.setText(tr("Unknown settings line."));
-    msgBox.setInformativeText(*it);
-    msgBox.setIcon(QMessageBox::Warning);
-    msgBox.exec();
-    return;
-  }
-}*/
-
 void MainWindow::on_pushButtonComRefresh_clicked() {
   ui->comboBoxCom->clear();
-  ui->comboBoxCom->addItems(serial->refresh());
-}
-
-void MainWindow::on_pushButtonConnect_clicked() {
-  if (serial->connectSerial(ui->comboBoxCom->currentIndex(), ui->comboBoxBaud->currentText().toUInt())) {
-    ui->lineEditPortInfo->setText(tr("Connected to ") + serial->currentPort() + tr(" at ") + QString::number(serial->currentBaud()) + tr(" bps"));
-    ui->pushButtonDisconnect->setEnabled(true);
-    ui->pushButtonConnect->setEnabled(false);
-  } else {
-    ui->lineEditPortInfo->setText(tr("Failed"));
-    ui->pushButtonDisconnect->setEnabled(false);
-    ui->pushButtonConnect->setEnabled(true);
+  portList.clear();
+  foreach (const QSerialPortInfo &serialPortInfo, QSerialPortInfo::availablePorts()) {
+    ui->comboBoxCom->addItem(serialPortInfo.portName() + " - " + serialPortInfo.description());
+    portList.append(serialPortInfo.portName());
   }
 }
+
+void MainWindow::on_pushButtonConnect_clicked() { emit connectSerial(portList.at(ui->comboBoxCom->currentIndex()), ui->comboBoxBaud->currentText().toInt()); }
 
 void MainWindow::on_sliderRefreshRate_valueChanged(int value) {
   ui->labelRefreshRate->setText(QString::number((int)refreshRates[value]) + " Hz");
@@ -371,16 +300,20 @@ void MainWindow::on_spinBoxCursorCh_valueChanged(int arg1) {
 }
 
 void MainWindow::on_pushButtonDisconnect_clicked() {
-  serial->disconnectSerial();
-  ui->lineEditPortInfo->setText(tr("Not connected"));
+  emit disconnectSerial();
   ui->pushButtonDisconnect->setEnabled(false);
   ui->pushButtonConnect->setEnabled(true);
+  ui->lineEditPortInfo->setText(tr("Not connected"));
 }
 
-void MainWindow::on_pushButtonSendCommand_clicked() {
-  QByteArray data = ui->lineEditCommand->text().toUtf8();
-  serial->write(data);
-  ui->lineEditCommand->clear();
+void MainWindow::on_pushButtonSendCommand_clicked() {}
+
+void MainWindow::addDataToPlot(QVector<Channel *> *channels) { ui->plot->newData(channels); }
+
+void MainWindow::serialConnectResult(bool connected, QString message) {
+  ui->pushButtonDisconnect->setEnabled(connected);
+  ui->pushButtonConnect->setEnabled(!connected);
+  ui->lineEditPortInfo->setText(message);
 }
 
 void MainWindow::on_spinBoxDataBinaryBits_valueChanged(int arg1) {

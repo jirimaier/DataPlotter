@@ -109,7 +109,6 @@ void myPlot::init(Settings *in_settings) {
 }
 
 void myPlot::update() {
-  emit requestNewData();
   if (plottingRangeType != PLOT_RANGE_FREE) {
     this->yAxis->setRange((settings->plotSettings.verticalCenter * 0.01 - 1) * 0.5 * settings->plotSettings.verticalRange, (settings->plotSettings.verticalCenter * 0.01 + 1) * 0.5 * settings->plotSettings.verticalRange);
     if (plottingRangeType == PLOT_RANGE_FIXED) {
@@ -119,7 +118,6 @@ void myPlot::update() {
       this->xAxis->setRange(maxT - settings->plotSettings.rollingRange, maxT);
     }
   }
-
   emit setCursorBounds(this->xAxis->range().lower, this->xAxis->range().upper, this->yAxis->range().lower, this->yAxis->range().upper, minT, maxT, settings->plotSettings.verticalCenter - settings->plotSettings.verticalRange / 2,
                        settings->plotSettings.verticalCenter + settings->plotSettings.verticalRange / 2);
   emit setVDivLimits(this->yAxis->range().upper - this->yAxis->range().lower);

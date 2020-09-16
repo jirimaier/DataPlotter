@@ -20,8 +20,6 @@ public:
     double rollingRange = 100;
     int zoom = 1000;
     double horizontalPos = 500;
-    void replaceData();
-    void clearGraphs();
     double verticalRange = 10;
     int verticalCenter = 0;
   } plotSettings;

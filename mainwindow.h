@@ -4,6 +4,7 @@
 #include <QColorDialog>
 #include <QMainWindow>
 #include <QMessageBox>
+#include <QSerialPortInfo>
 #include <QTime>
 #include <QTranslator>
 
@@ -23,17 +24,15 @@ class MainWindow : public QMainWindow {
 
 public:
   MainWindow(QWidget *parent = nullptr);
-  void init(Settings *in_settings, SerialHandler *in_serial, PlotData *in_plotData);
+  void init(Settings *in_settings);
   ~MainWindow();
 
 private:
   Ui::MainWindow *ui;
   Settings *settings;
-  SerialHandler *serial;
-  PlotData *plotData;
   QTranslator translator;
   QByteArray buffer;
-
+  QStringList portList;
   void dataParser(QByteArray message);
   void connectSignals();
   // void useSettings(QString settings);
@@ -64,7 +63,6 @@ private slots:
   void on_pushButtonConnect_clicked();
   void on_pushButtonDisconnect_clicked();
   void on_pushButtonSendCommand_clicked();
-
   void on_doubleSpinBoxChScale_valueChanged(double arg1);
   void on_dialChScale_valueChanged(int value);
   void on_doubleSpinBoxRangeVerticalDiv_valueChanged(double arg1);
@@ -82,7 +80,7 @@ private slots:
   void on_doubleSpinBoxRangeHorizontalDiv_valueChanged(double arg1);
 
 public slots:
-  void serialErrorOccurred();
+  void serialErrorOccurred(QString error);
   void setCursorBounds(double xmin, double xmax, double ymin, double ymax, double xminfull, double xmaxfull, double yminfull, double ymaxfull);
   void setDataMode(int mode);
   void changeBinSettings(Settings::binDataSettings_t in_settings);
@@ -93,5 +91,11 @@ public slots:
   void showPlotStatus(int type);
   void setHDivLimits(double hRange);
   void setVDivLimits(double vRange);
+  void addDataToPlot(QVector<Channel *> *channels);
+  void serialConnectResult(bool connected, QString message);
+
+signals:
+  void connectSerial(QString port, int baud);
+  void disconnectSerial();
 };
 #endif // MAINWINDOW_H
