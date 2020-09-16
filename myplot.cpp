@@ -36,6 +36,25 @@ void myPlot::initCursors() {
   updateCursors(curX1, curX2, curY1, curY2);
 }
 
+void myPlot::initZeroLines() {
+  QPen zeroPen;
+  zeroPen.setWidth(1);
+  zeroPen.setStyle(Qt::DotLine);
+  for (int i = 0; i < CHANNEL_COUNT; i++) {
+    zeroPen.setColor(settings->channelSettings.at(i)->color);
+    QCPItemLine *zeroLine = new QCPItemLine(this);
+    zeroLine->setPen(zeroPen);
+    zeroLine->start->setTypeY(QCPItemPosition::ptPlotCoords);
+    zeroLine->start->setTypeX(QCPItemPosition::ptViewportRatio);
+    zeroLine->end->setTypeY(QCPItemPosition::ptPlotCoords);
+    zeroLine->end->setTypeX(QCPItemPosition::ptViewportRatio);
+    zeroLine->start->setCoords(0, settings->channelSettings.at(i)->offset);
+    zeroLine->end->setCoords(1, settings->channelSettings.at(i)->offset);
+    zeroLine->setVisible(settings->channelSettings.at(i)->offset != 0);
+    zeroLines.append(zeroLine);
+  }
+}
+
 double myPlot::minTime() {
   QVector<double> times;
   for (int i = 0; i < CHANNEL_COUNT; i++)
@@ -51,13 +70,17 @@ double myPlot::maxTime() {
   QVector<double> times;
   for (int i = 0; i < CHANNEL_COUNT; i++)
     if (!this->graph(i)->data()->isEmpty()) {
-      QCPGraphDataContainer::iterator it = this->graph(i)->data()->end();
-      times.append((--it)->key);
+      times.append(graphLastTime(i));
     }
   if (times.isEmpty())
     return 1;
   else
     return *std::max_element(times.begin(), times.end());
+}
+
+double myPlot::graphLastTime(quint8 i) {
+  QCPGraphDataContainer::iterator it = this->graph(i)->data()->end();
+  return (--it)->key;
 }
 
 void myPlot::updateCursors(double x1, double x2, double y1, double y2) {
@@ -75,10 +98,10 @@ void myPlot::updateCursors(double x1, double x2, double y1, double y2) {
   cursorY2->end->setCoords(1, curY2);
 }
 
-void myPlot::init(Settings *in_settings, PlotData *in_plotData) {
+void myPlot::init(Settings *in_settings) {
   this->settings = in_settings;
-  this->plotData = in_plotData;
   resetChannels();
+  initZeroLines();
   initCursors();
   updateVisuals();
   connect(&updateTimer, SIGNAL(timeout()), this, SLOT(update()));
@@ -86,29 +109,8 @@ void myPlot::init(Settings *in_settings, PlotData *in_plotData) {
 }
 
 void myPlot::update() {
-  double minT = minTime();
-  double maxT = maxTime();
-  if (plotData->newDataFlag) {
-    if (plottingStatus == PLOT_STATUS_RUN || plottingStatus == PLOT_STATUS_SINGLETRIGER) {
-      for (int ch = 0; ch < CHANNEL_COUNT; ch++) {
-        if (plotData->channels.at(ch)->isEmpty())
-          continue;
-        if ((!this->graph(ch)->data()->isEmpty()) && this->graph(ch)->data()->end()->key > plotData->channels.at(ch)->firstTime())
-          this->graph(ch)->setData(plotData->channels.at(ch)->time, plotData->channels.at(ch)->value, true);
-        else
-          this->graph(ch)->addData(plotData->channels.at(ch)->time, plotData->channels.at(ch)->value, true);
-        plotData->channels.at(ch)->clear();
-      }
-    }
-    if (plottingStatus == PLOT_STATUS_SINGLETRIGER) {
-      plottingStatus = PLOT_STATUS_PAUSE;
-      emit showPlotStatus(plottingStatus);
-    }
-    plotData->newDataFlag = false;
-  }
-
+  emit requestNewData();
   if (plottingRangeType != PLOT_RANGE_FREE) {
-
     this->yAxis->setRange((settings->plotSettings.verticalCenter * 0.01 - 1) * 0.5 * settings->plotSettings.verticalRange, (settings->plotSettings.verticalCenter * 0.01 + 1) * 0.5 * settings->plotSettings.verticalRange);
     if (plottingRangeType == PLOT_RANGE_FIXED) {
       double dataLenght = maxT - minT;
@@ -203,4 +205,41 @@ void myPlot::resetChannels() {
   this->clearGraphs();
   for (int i = 0; i < CHANNEL_COUNT; i++)
     this->addGraph();
+}
+
+void myPlot::rescale(int ch, double relativeScale) {
+  for (QCPGraphDataContainer::iterator it = graph(ch)->data()->begin(); it != graph(ch)->data()->end(); it++) {
+    (*it).value -= settings->channelSettings.at(ch)->offset;
+    (*it).value *= relativeScale;
+    (*it).value += settings->channelSettings.at(ch)->offset;
+  }
+}
+
+void myPlot::reoffset(int ch, double relativeOffset) {
+  zeroLines.at(ch)->start->setCoords(0, settings->channelSettings.at(ch)->offset + relativeOffset);
+  zeroLines.at(ch)->end->setCoords(1, settings->channelSettings.at(ch)->offset + relativeOffset);
+  zeroLines.at(ch)->setVisible(settings->channelSettings.at(ch)->offset + relativeOffset != 0);
+  for (QCPGraphDataContainer::iterator it = graph(ch)->data()->begin(); it != graph(ch)->data()->end(); it++)
+    (*it).value += relativeOffset;
+}
+
+void myPlot::newData(QVector<Channel *> *channels) {
+  if (plottingStatus == PLOT_STATUS_RUN || plottingStatus == PLOT_STATUS_SINGLETRIGER) {
+    for (int ch = 0; ch < CHANNEL_COUNT; ch++) {
+      if (channels->at(ch)->isEmpty())
+        continue;
+      channels->at(ch)->applyScaleAndOffset(settings->channelSettings.at(ch)->scale, settings->channelSettings.at(ch)->offset);
+      if ((!this->graph(ch)->data()->isEmpty()) && graphLastTime(ch) > channels->at(ch)->firstTime())
+        this->graph(ch)->setData(channels->at(ch)->time, channels->at(ch)->value, true);
+      else
+        this->graph(ch)->addData(channels->at(ch)->time, channels->at(ch)->value, true);
+      channels->at(ch)->clear();
+    }
+  }
+  if (plottingStatus == PLOT_STATUS_SINGLETRIGER) {
+    plottingStatus = PLOT_STATUS_PAUSE;
+    emit showPlotStatus(plottingStatus);
+  }
+  minT = minTime();
+  maxT = maxTime();
 }

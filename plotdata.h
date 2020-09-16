@@ -24,6 +24,10 @@ private:
 public slots:
   void newDataString(QByteArray data);
   void newDataBin(QByteArray data);
+  void dataRequest();
+
+signals:
+  void sendData(QVector<Channel *> *channels);
 };
 
 #endif // PLOTTING_H

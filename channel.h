@@ -12,11 +12,12 @@ public:
   Channel();
   void addValue(double in_value, double in_time);
   void clear();
-  double lastTime() { return time.at(time.length() - 1); }
+  double lastTime();
   double firstTime() { return time.at(0); }
   bool isEmpty() { return time.isEmpty(); }
   QVector<double> value;
   QVector<double> time;
+  void applyScaleAndOffset(double scale, double offset);
 };
 
 #endif // CHANNEL_H

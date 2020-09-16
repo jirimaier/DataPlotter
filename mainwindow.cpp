@@ -1,23 +1,14 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
-  ui->setupUi(this);
-  init();
-}
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) { ui->setupUi(this); }
 
-MainWindow::~MainWindow() {
-  delete plotData;
-  delete serial;
-  delete settings;
-  delete ui;
-}
+MainWindow::~MainWindow() { delete ui; }
 
-void MainWindow::init() {
-  settings = new Settings();
-  plotData = new PlotData(settings);
-  serial = new SerialHandler(settings);
-  ui->plot->init(settings, plotData);
+void MainWindow::init(Settings *in_settings, SerialHandler *in_serial) {
+  this->settings = in_settings;
+  this->serial = in_serial;
+  ui->plot->init(in_settings);
   connectSignals();
   changeLanguage();
 
@@ -53,21 +44,6 @@ void MainWindow::connectSignals() {
   connect(ui->plot, SIGNAL(setHDivLimits(double)), this, SLOT(setHDivLimits(double)));
   connect(ui->plot, SIGNAL(setVDivLimits(double)), this, SLOT(setVDivLimits(double)));
   connect(ui->plot, SIGNAL(setCursorBounds(double, double, double, double, double, double, double, double)), this, SLOT(setCursorBounds(double, double, double, double, double, double, double, double)));
-
-  // Serial -> MainWindow
-  connect(serial, SIGNAL(serialErrorOccurredSignal()), this, SLOT(serialErrorOccurred()));
-  connect(serial, SIGNAL(changedMode(int)), this, SLOT(setDataMode(int)));
-  connect(serial, SIGNAL(showErrorMessage(QByteArray)), this, SLOT(showErrorMessage(QByteArray)));
-  connect(serial, SIGNAL(printMessage(QByteArray, bool)), this, SLOT(printMessage(QByteArray, bool)));
-  connect(serial, SIGNAL(newProcessedCommand(QPair<bool, QByteArray>)), this, SLOT(showProcessedCommand(QPair<bool, QByteArray>)));
-  connect(serial, SIGNAL(changedBinSettings(Settings::binDataSettings_t)), this, SLOT(changeBinSettings(Settings::binDataSettings_t)));
-
-  // Serial -> Plotting
-  connect(serial, SIGNAL(newDataString(QByteArray)), plotData, SLOT(newDataString(QByteArray)));
-  connect(serial, SIGNAL(newDataBin(QByteArray)), plotData, SLOT(newDataBin(QByteArray)));
-
-  // Serial -> Terminal
-  connect(serial, SIGNAL(printToTerminal(QByteArray)), ui->myTerminal, SLOT(printToTerminal(QByteArray)));
 }
 
 void MainWindow::printMessage(QByteArray data, bool urgent) {
@@ -320,10 +296,7 @@ void MainWindow::on_dialRollingRange_valueChanged(int value) { ui->doubleSpinBox
 
 void MainWindow::on_dialVerticalRange_valueChanged(int value) { ui->doubleSpinBoxRangeVerticalRange->setValue(logaritmicSettings[value]); }
 
-void MainWindow::on_pushButtonClearChannels_clicked() {
-  plotData->clearChannels();
-  ui->plot->resetChannels();
-}
+void MainWindow::on_pushButtonClearChannels_clicked() { ui->plot->resetChannels(); }
 
 void MainWindow::on_pushButtonChannelColor_clicked() {
   QColor color = QColorDialog::getColor(settings->channelSettings.at(ui->spinBoxChannelSelect->value() - 1)->color);
@@ -351,6 +324,7 @@ void MainWindow::on_spinBoxChannelSelect_valueChanged(int arg1) {
 }
 
 void MainWindow::on_doubleSpinBoxChOffset_valueChanged(double arg1) {
+  ui->plot->reoffset(ui->spinBoxChannelSelect->value() - 1, arg1 - settings->channelSettings.at(ui->spinBoxChannelSelect->value() - 1)->offset);
   settings->channelSettings.at(ui->spinBoxChannelSelect->value() - 1)->offset = arg1;
   if (ui->spinBoxCursorCh->value() == ui->spinBoxChannelSelect->value())
     scrollBarCursor_valueChanged();
@@ -416,6 +390,7 @@ void MainWindow::on_spinBoxBinaryDataNumCh_valueChanged(int arg1) {
 }
 
 void MainWindow::on_doubleSpinBoxChScale_valueChanged(double arg1) {
+  ui->plot->rescale(ui->spinBoxChannelSelect->value() - 1, arg1 / settings->channelSettings.at(ui->spinBoxChannelSelect->value() - 1)->scale);
   settings->channelSettings.at(ui->spinBoxChannelSelect->value() - 1)->scale = arg1;
   if (ui->spinBoxCursorCh->value() == ui->spinBoxChannelSelect->value() - 1)
     scrollBarCursor_valueChanged();

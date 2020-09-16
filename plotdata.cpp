@@ -43,4 +43,12 @@ void PlotData::newDataBin(QByteArray data) {
     value_d = (value_d / (1 << settings->binDataSettings.bits) * (settings->binDataSettings.valueMax - settings->binDataSettings.valueMin)) + settings->binDataSettings.valueMin;
     channels.at(settings->binDataSettings.firstCh + ((i / bytes) % settings->binDataSettings.numCh) - 1)->addValue(value_d, channels.at(settings->binDataSettings.firstCh + (i % settings->binDataSettings.numCh) - 1)->lastTime() + settings->binDataSettings.timeStep);
   }
+  newDataFlag = true;
+}
+
+void PlotData::dataRequest() {
+  if (newDataFlag) {
+    emit sendData(&channels);
+    newDataFlag = false;
+  }
 }

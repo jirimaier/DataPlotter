@@ -23,16 +23,16 @@ class MainWindow : public QMainWindow {
 
 public:
   MainWindow(QWidget *parent = nullptr);
+  void init(Settings *in_settings, SerialHandler *in_serial);
   ~MainWindow();
 
 private:
   Ui::MainWindow *ui;
-  SerialHandler *serial;
-  PlotData *plotData;
   Settings *settings;
+  SerialHandler *serial;
   QTranslator translator;
   QByteArray buffer;
-  void init();
+
   void dataParser(QByteArray message);
   void connectSignals();
   // void useSettings(QString settings);
@@ -63,18 +63,7 @@ private slots:
   void on_pushButtonConnect_clicked();
   void on_pushButtonDisconnect_clicked();
   void on_pushButtonSendCommand_clicked();
-  void changeLanguage();
-  void clearBuffer() { buffer.clear(); };
-  void showPlotStatus(int type);
-  void setHDivLimits(double hRange);
-  void setVDivLimits(double vRange);
-  void serialErrorOccurred();
-  void setCursorBounds(double xmin, double xmax, double ymin, double ymax, double xminfull, double xmaxfull, double yminfull, double ymaxfull);
-  void setDataMode(int mode);
-  void changeBinSettings(Settings::binDataSettings_t in_settings);
-  void showErrorMessage(QByteArray message);
-  void showProcessedCommand(QPair<bool, QByteArray> message);
-  void printMessage(QByteArray data, bool urgent);
+
   void on_doubleSpinBoxChScale_valueChanged(double arg1);
   void on_dialChScale_valueChanged(int value);
   void on_doubleSpinBoxRangeVerticalDiv_valueChanged(double arg1);
@@ -90,6 +79,18 @@ private slots:
   void on_doubleSpinBoxRangeVerticalRange_valueChanged(double arg1) { settings->plotSettings.verticalRange = arg1; }
   void on_verticalScrollBarVerticalCenter_valueChanged(int value) { settings->plotSettings.verticalCenter = value; }
   void on_doubleSpinBoxRangeHorizontalDiv_valueChanged(double arg1);
-};
 
+public slots:
+  void serialErrorOccurred();
+  void setCursorBounds(double xmin, double xmax, double ymin, double ymax, double xminfull, double xmaxfull, double yminfull, double ymaxfull);
+  void setDataMode(int mode);
+  void changeBinSettings(Settings::binDataSettings_t in_settings);
+  void showErrorMessage(QByteArray message);
+  void showProcessedCommand(QPair<bool, QByteArray> message);
+  void printMessage(QByteArray data, bool urgent);
+  void changeLanguage();
+  void showPlotStatus(int type);
+  void setHDivLimits(double hRange);
+  void setVDivLimits(double vRange);
+};
 #endif // MAINWINDOW_H
