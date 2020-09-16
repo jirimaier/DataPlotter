@@ -23,13 +23,14 @@ class MainWindow : public QMainWindow {
 
 public:
   MainWindow(QWidget *parent = nullptr);
-  void init(Settings *in_settings, SerialHandler *in_serial);
+  void init(Settings *in_settings, SerialHandler *in_serial, PlotData *in_plotData);
   ~MainWindow();
 
 private:
   Ui::MainWindow *ui;
   Settings *settings;
   SerialHandler *serial;
+  PlotData *plotData;
   QTranslator translator;
   QByteArray buffer;
 

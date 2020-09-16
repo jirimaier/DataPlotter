@@ -5,9 +5,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 MainWindow::~MainWindow() { delete ui; }
 
-void MainWindow::init(Settings *in_settings, SerialHandler *in_serial) {
+void MainWindow::init(Settings *in_settings, SerialHandler *in_serial, PlotData *in_plotData) {
   this->settings = in_settings;
   this->serial = in_serial;
+  this->plotData = in_plotData;
   ui->plot->init(in_settings);
   connectSignals();
   changeLanguage();
@@ -44,6 +45,10 @@ void MainWindow::connectSignals() {
   connect(ui->plot, SIGNAL(setHDivLimits(double)), this, SLOT(setHDivLimits(double)));
   connect(ui->plot, SIGNAL(setVDivLimits(double)), this, SLOT(setVDivLimits(double)));
   connect(ui->plot, SIGNAL(setCursorBounds(double, double, double, double, double, double, double, double)), this, SLOT(setCursorBounds(double, double, double, double, double, double, double, double)));
+
+  // PlotData -> Plot
+  connect(plotData, &PlotData::sendData, ui->plot, &myPlot::newData);
+  connect(ui->plot, &myPlot::requestNewData, plotData, &PlotData::dataRequest);
 }
 
 void MainWindow::printMessage(QByteArray data, bool urgent) {
