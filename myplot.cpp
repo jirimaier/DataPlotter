@@ -1,8 +1,8 @@
 #include "myplot.h"
 
-myPlot::myPlot(QWidget *parent) : QCustomPlot(parent) {}
+MyPlot::MyPlot(QWidget *parent) : QCustomPlot(parent) {}
 
-void myPlot::initCursors() {
+void MyPlot::initCursors() {
   cursorX1 = new QCPItemLine(this);
   cursorX2 = new QCPItemLine(this);
   cursorY1 = new QCPItemLine(this);
@@ -36,7 +36,7 @@ void myPlot::initCursors() {
   updateCursors(curX1, curX2, curY1, curY2);
 }
 
-void myPlot::initZeroLines() {
+void MyPlot::initZeroLines() {
   QPen zeroPen;
   zeroPen.setWidth(1);
   zeroPen.setStyle(Qt::DotLine);
@@ -55,7 +55,7 @@ void myPlot::initZeroLines() {
   }
 }
 
-double myPlot::minTime() {
+double MyPlot::minTime() {
   QVector<double> times;
   for (int i = 0; i < CHANNEL_COUNT; i++)
     if (!this->graph(i)->data()->isEmpty())
@@ -66,7 +66,7 @@ double myPlot::minTime() {
     return *std::min_element(times.begin(), times.end());
 }
 
-double myPlot::maxTime() {
+double MyPlot::maxTime() {
   QVector<double> times;
   for (int i = 0; i < CHANNEL_COUNT; i++)
     if (!this->graph(i)->data()->isEmpty()) {
@@ -78,12 +78,12 @@ double myPlot::maxTime() {
     return *std::max_element(times.begin(), times.end());
 }
 
-double myPlot::graphLastTime(quint8 i) {
+double MyPlot::graphLastTime(quint8 i) {
   QCPGraphDataContainer::iterator it = this->graph(i)->data()->end();
   return (--it)->key;
 }
 
-void myPlot::updateCursors(double x1, double x2, double y1, double y2) {
+void MyPlot::updateCursors(double x1, double x2, double y1, double y2) {
   curX1 = x1;
   curX2 = x2;
   curY1 = y1;
@@ -98,17 +98,16 @@ void myPlot::updateCursors(double x1, double x2, double y1, double y2) {
   cursorY2->end->setCoords(1, curY2);
 }
 
-void myPlot::init(Settings *in_settings) {
+void MyPlot::init(Settings *in_settings) {
   this->settings = in_settings;
-  resetChannels();
-  initZeroLines();
   initCursors();
-  updateVisuals();
+  initZeroLines();
+  resetChannels();
   connect(&updateTimer, SIGNAL(timeout()), this, SLOT(update()));
   updateTimer.start(100);
 }
 
-void myPlot::update() {
+void MyPlot::update() {
   if (plottingRangeType != PLOT_RANGE_FREE) {
     this->yAxis->setRange((settings->plotSettings.verticalCenter * 0.01 - 1) * 0.5 * settings->plotSettings.verticalRange, (settings->plotSettings.verticalCenter * 0.01 + 1) * 0.5 * settings->plotSettings.verticalRange);
     if (plottingRangeType == PLOT_RANGE_FIXED) {
@@ -125,7 +124,7 @@ void myPlot::update() {
   this->replot();
 }
 
-void myPlot::setRangeType(int type) {
+void MyPlot::setRangeType(int type) {
   this->plottingRangeType = type;
   if (type == PLOT_RANGE_FREE) {
     this->setInteraction(QCP::iRangeDrag, true);
@@ -136,7 +135,7 @@ void myPlot::setRangeType(int type) {
   }
 }
 
-void myPlot::pauseClicked() {
+void MyPlot::pauseClicked() {
   if (plottingStatus == PLOT_STATUS_RUN)
     plottingStatus = PLOT_STATUS_PAUSE;
   else if (plottingStatus == PLOT_STATUS_SINGLETRIGER)
@@ -146,44 +145,44 @@ void myPlot::pauseClicked() {
   emit showPlotStatus(plottingStatus);
 }
 
-void myPlot::singleTrigerClicked() {
+void MyPlot::singleTrigerClicked() {
   plottingStatus = PLOT_STATUS_SINGLETRIGER;
   emit showPlotStatus(plottingStatus);
 }
 
-void myPlot::setVerticalDiv(double value) {
+void MyPlot::setVerticalDiv(double value) {
   QSharedPointer<QCPAxisTickerFixed> fixedTicker(new QCPAxisTickerFixed);
   this->yAxis->setTicker(fixedTicker);
   fixedTicker->setTickStep(value);
   fixedTicker->setScaleStrategy(QCPAxisTickerFixed::ssNone);
 }
 
-void myPlot::setHorizontalDiv(double value) {
+void MyPlot::setHorizontalDiv(double value) {
   QSharedPointer<QCPAxisTickerFixed> fixedTicker(new QCPAxisTickerFixed);
   this->xAxis->setTicker(fixedTicker);
   fixedTicker->setTickStep(value);
   fixedTicker->setScaleStrategy(QCPAxisTickerFixed::ssNone);
 }
 
-void myPlot::setShowVerticalValues(bool enabled) { this->yAxis->setTicks(enabled); }
+void MyPlot::setShowVerticalValues(bool enabled) { this->yAxis->setTicks(enabled); }
 
-void myPlot::setShowHorizontalValues(bool enabled) { this->xAxis->setTicks(enabled); }
+void MyPlot::setShowHorizontalValues(bool enabled) { this->xAxis->setTicks(enabled); }
 
-void myPlot::setCurXen(bool en) {
+void MyPlot::setCurXen(bool en) {
   cursorX1->setVisible(en);
   cursorX2->setVisible(en);
 }
 
-void myPlot::setCurYen(bool en) {
+void MyPlot::setCurYen(bool en) {
   cursorY1->setVisible(en);
   cursorY2->setVisible(en);
 }
 
-void myPlot::updateVisuals() {
+void MyPlot::updateVisuals() {
   for (int i = 0; i < CHANNEL_COUNT; i++) {
     this->graph(i)->setPen(QPen(settings->channelSettings.at(i)->color));
     this->graph(i)->setVisible((settings->channelSettings.at(i)->style != PLOT_STYLE_HIDDEN));
-
+    zeroLines.at(i)->setVisible((settings->channelSettings.at(i)->offset != 0) && (settings->channelSettings.at(i)->style != PLOT_STYLE_HIDDEN));
     if (settings->channelSettings.at(i)->style == PLOT_STYLE_LINEANDPIONT) {
       this->graph(i)->setScatterStyle(QCPScatterStyle::ssDisc);
       this->graph(i)->setLineStyle(QCPGraph::lsLine);
@@ -199,13 +198,14 @@ void myPlot::updateVisuals() {
   }
 }
 
-void myPlot::resetChannels() {
+void MyPlot::resetChannels() {
   this->clearGraphs();
   for (int i = 0; i < CHANNEL_COUNT; i++)
     this->addGraph();
+  updateVisuals();
 }
 
-void myPlot::rescale(int ch, double relativeScale) {
+void MyPlot::rescale(int ch, double relativeScale) {
   for (QCPGraphDataContainer::iterator it = graph(ch)->data()->begin(); it != graph(ch)->data()->end(); it++) {
     (*it).value -= settings->channelSettings.at(ch)->offset;
     (*it).value *= relativeScale;
@@ -213,15 +213,15 @@ void myPlot::rescale(int ch, double relativeScale) {
   }
 }
 
-void myPlot::reoffset(int ch, double relativeOffset) {
+void MyPlot::reoffset(int ch, double relativeOffset) {
   zeroLines.at(ch)->start->setCoords(0, settings->channelSettings.at(ch)->offset + relativeOffset);
   zeroLines.at(ch)->end->setCoords(1, settings->channelSettings.at(ch)->offset + relativeOffset);
-  zeroLines.at(ch)->setVisible(settings->channelSettings.at(ch)->offset + relativeOffset != 0);
+  zeroLines.at(ch)->setVisible((settings->channelSettings.at(ch)->offset + relativeOffset != 0) && (settings->channelSettings.at(ch)->style != PLOT_STYLE_HIDDEN));
   for (QCPGraphDataContainer::iterator it = graph(ch)->data()->begin(); it != graph(ch)->data()->end(); it++)
     (*it).value += relativeOffset;
 }
 
-void myPlot::newData(QVector<Channel *> *channels) {
+void MyPlot::newData(QVector<Channel *> *channels) {
   if (plottingStatus == PLOT_STATUS_RUN || plottingStatus == PLOT_STATUS_SINGLETRIGER) {
     for (int ch = 0; ch < CHANNEL_COUNT; ch++) {
       if (channels->at(ch)->isEmpty())

@@ -43,7 +43,6 @@ private:
 private slots:
   void on_sliderRefreshRate_valueChanged(int value);
   void on_tabs_right_currentChanged(int index);
-  void radioButtonRangeType_toggled(bool checked);
   void on_dialRollingRange_valueChanged(int value);
   void on_dialVerticalRange_valueChanged(int value);
   void on_pushButtonClearChannels_clicked();
@@ -56,7 +55,6 @@ private slots:
   void on_dialhorizontalDiv_valueChanged(int value);
   void on_comboBoxGraphStyle_currentIndexChanged(int index);
   void scrollBarCursor_valueChanged();
-  void on_spinBoxCursorCh_valueChanged(int arg1);
   void on_spinBoxDataBinaryBits_valueChanged(int arg1);
   void on_spinBoxBinaryDataNumCh_valueChanged(int arg1);
   void on_pushButtonComRefresh_clicked();
@@ -78,6 +76,8 @@ private slots:
   void on_doubleSpinBoxRangeVerticalRange_valueChanged(double arg1) { settings->plotSettings.verticalRange = arg1; }
   void on_verticalScrollBarVerticalCenter_valueChanged(int value) { settings->plotSettings.verticalCenter = value; }
   void on_doubleSpinBoxRangeHorizontalDiv_valueChanged(double arg1);
+
+  void on_comboBoxPlotRangeType_currentIndexChanged(int index);
 
 public slots:
   void serialErrorOccurred(QString error);

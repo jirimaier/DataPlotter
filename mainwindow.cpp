@@ -13,7 +13,6 @@ void MainWindow::init(Settings *in_settings) {
 
   ui->tabs_right->setCurrentIndex(0);
   ui->tabs_Plot->setCurrentIndex(0);
-  ui->tabWidgetMainArea->setCurrentIndex(0);
 
   ui->labelBuildDate->setText("Build: " + QString(__DATE__) + " " + QString(__TIME__));
   on_sliderRefreshRate_valueChanged(ui->sliderRefreshRate->value());
@@ -22,7 +21,6 @@ void MainWindow::init(Settings *in_settings) {
   QPixmap pixmap(30, 30);
   pixmap.fill(defaultColors[0]);
   ui->pushButtonChannelColor->setIcon(pixmap);
-  ui->labelCursorChanelColor->setPixmap(pixmap);
 
   ui->labelPauseResume->setPixmap(QPixmap(":/images/icons/run.png"));
 
@@ -30,19 +28,16 @@ void MainWindow::init(Settings *in_settings) {
 }
 
 void MainWindow::connectSignals() {
-  // GUI -> Plotting
-  connect(ui->pushButtonPause, SIGNAL(clicked()), ui->plot, SLOT(pauseClicked()));
-  connect(ui->pushButtonSingleTriger, SIGNAL(clicked()), ui->plot, SLOT(singleTrigerClicked()));
-  connect(ui->checkBoxCurXEn, SIGNAL(toggled(bool)), ui->plot, SLOT(setCurXen(bool)));
-  connect(ui->checkBoxCurYEn, SIGNAL(toggled(bool)), ui->plot, SLOT(setCurYen(bool)));
-  connect(ui->checkBoxVerticalValues, SIGNAL(toggled(bool)), ui->plot, SLOT(setShowVerticalValues(bool)));
-  connect(ui->checkBoxHorizontalValues, SIGNAL(toggled(bool)), ui->plot, SLOT(setShowHorizontalValues(bool)));
-
-  // Plotting -> MainWindow
-  connect(ui->plot, SIGNAL(showPlotStatus(int)), this, SLOT(showPlotStatus(int)));
-  connect(ui->plot, SIGNAL(setHDivLimits(double)), this, SLOT(setHDivLimits(double)));
-  connect(ui->plot, SIGNAL(setVDivLimits(double)), this, SLOT(setVDivLimits(double)));
-  connect(ui->plot, SIGNAL(setCursorBounds(double, double, double, double, double, double, double, double)), this, SLOT(setCursorBounds(double, double, double, double, double, double, double, double)));
+  connect(ui->pushButtonPause, &QPushButton::clicked, ui->plot, &MyPlot::pauseClicked);
+  connect(ui->pushButtonSingleTriger, &QPushButton::clicked, ui->plot, &MyPlot::singleTrigerClicked);
+  connect(ui->checkBoxCurXEn, &QCheckBox::toggled, ui->plot, &MyPlot::setCurXen);
+  connect(ui->checkBoxCurYEn, &QCheckBox::toggled, ui->plot, &MyPlot::setCurYen);
+  connect(ui->checkBoxVerticalValues, &QCheckBox::toggled, ui->plot, &MyPlot::setShowVerticalValues);
+  connect(ui->checkBoxHorizontalValues, &QCheckBox::toggled, ui->plot, &MyPlot::setShowHorizontalValues);
+  connect(ui->plot, &MyPlot::showPlotStatus, this, &MainWindow::showPlotStatus);
+  connect(ui->plot, &MyPlot::setHDivLimits, this, &MainWindow::setHDivLimits);
+  connect(ui->plot, &MyPlot::setVDivLimits, this, &MainWindow::setVDivLimits);
+  connect(ui->plot, &MyPlot::setCursorBounds, this, &MainWindow::setCursorBounds);
 }
 void MainWindow::printMessage(QByteArray data, bool urgent) {
   QString message = QString("<font color=grey>%1: </font>").arg(QString(QTime::currentTime().toString("hh:mm:ss")));
@@ -214,18 +209,6 @@ void MainWindow::on_tabs_right_currentChanged(int index) {
     ui->lineEditCommand->setFocus();
 }
 
-void MainWindow::radioButtonRangeType_toggled(bool checked) {
-  if (checked == false)
-    return;
-  int type = PLOT_RANGE_FIXED;
-  if (ui->radioButtonRangeFree->isChecked())
-    type = PLOT_RANGE_FREE;
-  if (ui->radioButtonRangeRolling->isChecked())
-    type = PLOT_RANGE_ROLLING;
-  settings->plotRangeType = type;
-  ui->plot->setRangeType(type);
-}
-
 void MainWindow::on_dialRollingRange_valueChanged(int value) { ui->doubleSpinBoxRangeHorizontal->setValue(logaritmicSettings[value]); }
 
 void MainWindow::on_dialVerticalRange_valueChanged(int value) { ui->doubleSpinBoxRangeVerticalRange->setValue(logaritmicSettings[value]); }
@@ -260,8 +243,7 @@ void MainWindow::on_spinBoxChannelSelect_valueChanged(int arg1) {
 void MainWindow::on_doubleSpinBoxChOffset_valueChanged(double arg1) {
   ui->plot->reoffset(ui->spinBoxChannelSelect->value() - 1, arg1 - settings->channelSettings.at(ui->spinBoxChannelSelect->value() - 1)->offset);
   settings->channelSettings.at(ui->spinBoxChannelSelect->value() - 1)->offset = arg1;
-  if (ui->spinBoxCursorCh->value() == ui->spinBoxChannelSelect->value())
-    scrollBarCursor_valueChanged();
+  scrollBarCursor_valueChanged();
 }
 
 void MainWindow::on_dialOffset_valueChanged(int value) { ui->doubleSpinBoxChOffset->setValue(ui->doubleSpinBoxRangeVerticalRange->value() / 2 * value * 0.01); }
@@ -285,18 +267,11 @@ void MainWindow::scrollBarCursor_valueChanged() {
 
   ui->labelCursorX1->setText("X1: " + QString::number(x1, 'f', 3));
   ui->labelCursorX2->setText("X2: " + QString::number(x2, 'f', 3));
-  ui->labelCursorY1->setText("Y1: " + QString::number((y1 - settings->channelSettings.at(ui->spinBoxCursorCh->value() - 1)->offset) / settings->channelSettings.at(ui->spinBoxCursorCh->value() - 1)->scale, 'f', 3));
-  ui->labelCursorY2->setText("Y2: " + QString::number((y2 - settings->channelSettings.at(ui->spinBoxCursorCh->value() - 1)->offset) / settings->channelSettings.at(ui->spinBoxCursorCh->value() - 1)->scale, 'f', 3));
+  ui->labelCursorY1->setText("Y1: " + QString::number((y1 - settings->channelSettings.at(ui->spinBoxChannelSelect->value() - 1)->offset) / settings->channelSettings.at(ui->spinBoxChannelSelect->value() - 1)->scale, 'f', 3));
+  ui->labelCursorY2->setText("Y2: " + QString::number((y2 - settings->channelSettings.at(ui->spinBoxChannelSelect->value() - 1)->offset) / settings->channelSettings.at(ui->spinBoxChannelSelect->value() - 1)->scale, 'f', 3));
   ui->labelCursordX->setText(tr("dX: ") + QString::number(abs(x2 - x1)));
-  ui->labelCursordY->setText(tr("dY: ") + QString::number(abs(y2 - y1) / settings->channelSettings.at(ui->spinBoxCursorCh->value() - 1)->scale));
+  ui->labelCursordY->setText(tr("dY: ") + QString::number(abs(y2 - y1) / settings->channelSettings.at(ui->spinBoxChannelSelect->value() - 1)->scale));
   ui->plot->updateCursors(x1, x2, y1, y2);
-}
-
-void MainWindow::on_spinBoxCursorCh_valueChanged(int arg1) {
-  QPixmap pixmap(1, 1);
-  pixmap.fill(settings->channelSettings.at(arg1 - 1)->color);
-  ui->labelCursorChanelColor->setPixmap(pixmap);
-  scrollBarCursor_valueChanged();
 }
 
 void MainWindow::on_pushButtonDisconnect_clicked() {
@@ -330,8 +305,7 @@ void MainWindow::on_spinBoxBinaryDataNumCh_valueChanged(int arg1) {
 void MainWindow::on_doubleSpinBoxChScale_valueChanged(double arg1) {
   ui->plot->rescale(ui->spinBoxChannelSelect->value() - 1, arg1 / settings->channelSettings.at(ui->spinBoxChannelSelect->value() - 1)->scale);
   settings->channelSettings.at(ui->spinBoxChannelSelect->value() - 1)->scale = arg1;
-  if (ui->spinBoxCursorCh->value() == ui->spinBoxChannelSelect->value() - 1)
-    scrollBarCursor_valueChanged();
+  scrollBarCursor_valueChanged();
   updateChScale();
 }
 
@@ -375,3 +349,8 @@ void MainWindow::on_dialZoom_valueChanged(int value) {
 }
 
 void MainWindow::on_doubleSpinBoxRangeHorizontalDiv_valueChanged(double arg1) { ui->plot->setHorizontalDiv(arg1); }
+
+void MainWindow::on_comboBoxPlotRangeType_currentIndexChanged(int index) {
+  settings->plotRangeType = index;
+  ui->plot->setRangeType(index);
+}

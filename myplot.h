@@ -9,10 +9,10 @@
 #include <QTimer>
 #include <QWidget>
 
-class myPlot : public QCustomPlot {
+class MyPlot : public QCustomPlot {
   Q_OBJECT
 public:
-  explicit myPlot(QWidget *parent = nullptr);
+  explicit MyPlot(QWidget *parent = nullptr);
   void updateCursors(double x1, double x2, double y1, double y2);
   void init(Settings *in_settings);
 
