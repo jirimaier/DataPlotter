@@ -14,8 +14,10 @@ Buffer::Buffer() {
   timeoutTimer->setSingleShot(true);
 }
 
-void Buffer::add(QByteArray data) {
-  buffer.append(data);
+void Buffer::readNew() {
+  serial.readAll();
+  return;
+
   forever {
     timeoutTimer->stop();
     int begin = head.indexIn(buffer);

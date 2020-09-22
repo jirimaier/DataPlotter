@@ -10,7 +10,7 @@
 
 #include "enums.h"
 #include "plotdata.h"
-#include "serialhandler.h"
+#include "serialparser.h"
 #include "settings.h"
 
 QT_BEGIN_NAMESPACE
@@ -51,7 +51,6 @@ private slots:
   void on_doubleSpinBoxChOffset_valueChanged(double arg1);
   void on_dialOffset_valueChanged(int value);
   void on_dialVerticalDiv_valueChanged(int value);
-  void on_pushButtonVerticalZero_clicked();
   void on_dialhorizontalDiv_valueChanged(int value);
   void on_comboBoxGraphStyle_currentIndexChanged(int index);
   void scrollBarCursor_valueChanged();
@@ -80,11 +79,9 @@ private slots:
   void on_comboBoxPlotRangeType_currentIndexChanged(int index);
 
 public slots:
-  void serialErrorOccurred(QString error);
   void setCursorBounds(double xmin, double xmax, double ymin, double ymax, double xminfull, double xmaxfull, double yminfull, double ymaxfull);
   void setDataMode(int mode);
   void changeBinSettings(Settings::binDataSettings_t in_settings);
-  void showErrorMessage(QByteArray message);
   void showProcessedCommand(QPair<bool, QByteArray> message);
   void printMessage(QByteArray data, bool urgent);
   void changeLanguage();

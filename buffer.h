@@ -5,6 +5,7 @@
 #include <QObject>
 #include <QPair>
 #include <QQueue>
+#include <QSerialPort>
 #include <QTimer>
 
 #include "enums.h"
@@ -13,6 +14,7 @@ class Buffer : public QObject {
   Q_OBJECT
 
 private:
+  QSerialPort serial;
   QTimer *timeoutTimer;
   QByteArray buffer;
   QByteArrayMatcher head;
@@ -21,11 +23,13 @@ private:
 
 public:
   Buffer();
-  void add(QByteArray data);
   QPair<bool, QByteArray> next();
 
 private slots:
   void timeout();
+
+public slots:
+  void readNew();
 
 signals:
   void newEntry();

@@ -24,7 +24,7 @@ void MainWindow::init(Settings *in_settings) {
 
   ui->labelPauseResume->setPixmap(QPixmap(":/images/icons/run.png"));
 
-  // updateChScale();
+  updateChScale();
 }
 
 void MainWindow::connectSignals() {
@@ -85,13 +85,10 @@ void MainWindow::setVDivLimits(double vRange) {
   int i = roundToStandardValue(vRange);
   ui->dialVerticalDiv->setMinimum(i - 5);
   ui->dialVerticalDiv->setMaximum(i - 1);
-}
-
-void MainWindow::serialErrorOccurred(QString error) {
-  ui->pushButtonDisconnect->setEnabled(false);
-  ui->pushButtonConnect->setEnabled(true);
-  ui->lineEditPortInfo->setText(error);
-  ui->lineEditPortInfo->setCursorPosition(0);
+  if (ui->dialVerticalDiv->value() == ui->dialVerticalDiv->maximum())
+    ui->dialVerticalDiv->setValue(ui->dialVerticalDiv->maximum() - 1);
+  if (ui->dialVerticalDiv->value() == ui->dialVerticalDiv->minimum())
+    ui->dialVerticalDiv->setValue(ui->dialVerticalDiv->minimum() + 1);
 }
 
 void MainWindow::setCursorBounds(double xmin, double xmax, double ymin, double ymax, double xminfull, double xmaxfull, double yminfull, double ymaxfull) {
@@ -142,14 +139,6 @@ void MainWindow::changeBinSettings(Settings::binDataSettings_t in_settings) {
     ui->spinBoxBinaryDataFirstCh->setValue(settings->binDataSettings.firstCh);
     ui->checkBoxBinContinuous->setChecked(settings->binDataSettings.continuous);
   }
-}
-
-void MainWindow::showErrorMessage(QByteArray message) {
-  QMessageBox msgBox;
-  msgBox.setText(tr("Error:"));
-  msgBox.setInformativeText(QString(message));
-  msgBox.setIcon(QMessageBox::Critical);
-  msgBox.exec();
 }
 
 void MainWindow::showProcessedCommand(QPair<bool, QByteArray> message) {
@@ -250,8 +239,6 @@ void MainWindow::on_dialOffset_valueChanged(int value) { ui->doubleSpinBoxChOffs
 
 void MainWindow::on_dialVerticalDiv_valueChanged(int value) { ui->doubleSpinBoxRangeVerticalDiv->setValue(logaritmicSettings[value]); }
 
-void MainWindow::on_pushButtonVerticalZero_clicked() { ui->verticalScrollBarVerticalCenter->setValue(0); }
-
 void MainWindow::on_dialhorizontalDiv_valueChanged(int value) { ui->doubleSpinBoxRangeHorizontalDiv->setValue(logaritmicSettings[value]); }
 
 void MainWindow::on_comboBoxGraphStyle_currentIndexChanged(int index) {
@@ -276,9 +263,7 @@ void MainWindow::scrollBarCursor_valueChanged() {
 
 void MainWindow::on_pushButtonDisconnect_clicked() {
   emit disconnectSerial();
-  ui->pushButtonDisconnect->setEnabled(false);
-  ui->pushButtonConnect->setEnabled(true);
-  ui->lineEditPortInfo->setText(tr("Not connected"));
+  ui->lineEditPortInfo->setText(tr("Disconnecting..."));
 }
 
 void MainWindow::on_pushButtonSendCommand_clicked() {}
