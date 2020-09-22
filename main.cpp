@@ -15,7 +15,6 @@ int main(int argc, char *argv[]) {
   PlotData plotData;
   SerialParser serialParser;
   SerialThread serialThread;
-  w.init();
 
   QObject::connect(&w, &MainWindow::connectSerial, &serialThread, &SerialThread::begin);
   QObject::connect(&w, &MainWindow::disconnectSerial, &serialThread, &SerialThread::end);
@@ -40,6 +39,8 @@ int main(int argc, char *argv[]) {
   QObject::connect(&w, &MainWindow::setBinMin, &serialParser, &SerialParser::setBinMin);
   QObject::connect(&w, &MainWindow::setBinNCh, &serialParser, &SerialParser::setBinNCh);
   QObject::connect(&w, &MainWindow::setBinStep, &serialParser, &SerialParser::setBinStep);
+
+  w.init();
   w.show();
   return a.exec();
 }

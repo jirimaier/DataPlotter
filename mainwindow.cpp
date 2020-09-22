@@ -49,13 +49,12 @@ void MainWindow::printMessage(QByteArray data, bool urgent) {
   ui->textEditMessages->append(message);
 }
 
-void MainWindow::changeLanguage() {
-  if (ui->radioButtonCz->isChecked())
-    if (!translator.load(":/translations/translation_cz.qm"))
-      return;
-  if (ui->radioButtonEn->isChecked())
-    if (!translator.load(":/translations/translation_en.qm"))
-      return;
+void MainWindow::changeLanguage(QString code) {
+  QTranslator translator;
+  if (!translator.load(QString(":/translations/translation_%1.qm").arg(code))) {
+    qDebug() << "Can not load " << QString(":/translations/translation_%1.qm").arg(code);
+    return;
+  }
   qApp->installTranslator(&translator);
   ui->retranslateUi(this);
 }
@@ -329,3 +328,13 @@ void MainWindow::on_dialZoom_valueChanged(int value) {
 void MainWindow::on_comboBoxPlotRangeType_currentIndexChanged(int index) { ui->plot->setRangeType(index); }
 
 void MainWindow::on_listWidgetDataMode_currentRowChanged(int currentRow) { emit setMode(currentRow); }
+
+void MainWindow::on_radioButtonEn_toggled(bool checked) {
+  if (checked)
+    changeLanguage("en");
+}
+
+void MainWindow::on_radioButtonCz_toggled(bool checked) {
+  if (checked)
+    changeLanguage("cz");
+}

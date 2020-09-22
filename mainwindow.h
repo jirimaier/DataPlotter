@@ -29,8 +29,6 @@ public:
 
 private:
   Ui::MainWindow *ui;
-  QTranslator translator;
-  QByteArray buffer;
   QStringList portList;
   void dataParser(QByteArray message);
   void connectSignals();
@@ -38,6 +36,7 @@ private:
   int roundToStandardValue(double value);
   bool isStandardValue(double value);
   void updateChScale();
+  void changeLanguage(QString code = "en");
 
 private slots:
   void on_tabs_right_currentChanged(int index);
@@ -71,13 +70,16 @@ private slots:
   void on_comboBoxPlotRangeType_currentIndexChanged(int index);
   void on_listWidgetDataMode_currentRowChanged(int currentRow);
 
+  void on_radioButtonEn_toggled(bool checked);
+
+  void on_radioButtonCz_toggled(bool checked);
+
 public slots:
   void setCursorBounds(double xmin, double xmax, double ymin, double ymax, double xminfull, double xmaxfull, double yminfull, double ymaxfull);
   void changedDataMode(int mode);
   void changeBinSettings(binDataSettings_t in_settings);
   void showProcessedCommand(QPair<bool, QByteArray> message);
   void printMessage(QByteArray data, bool urgent);
-  void changeLanguage();
   void showPlotStatus(int type);
   void setHDivLimits(double hRange);
   void setVDivLimits(double vRange);

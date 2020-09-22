@@ -8,6 +8,7 @@ MyPlot::MyPlot(QWidget *parent) : QCustomPlot(parent) {
   initCursors();
   initZeroLines();
   resetChannels();
+  connect(&updateTimer, &QTimer::timeout, this, &MyPlot::allowUpdate);
 }
 
 void MyPlot::initCursors() {
@@ -107,6 +108,8 @@ void MyPlot::updateCursors(double x1, double x2, double y1, double y2) {
 }
 
 void MyPlot::update() {
+  if (noUpdateYet)
+    return;
   if (plottingRangeType != PLOT_RANGE_FREE) {
     this->yAxis->setRange((plotSettings.verticalCenter * 0.01 - 1) * 0.5 * plotSettings.verticalRange, (plotSettings.verticalCenter * 0.01 + 1) * 0.5 * plotSettings.verticalRange);
     if (plottingRangeType == PLOT_RANGE_FIXED) {
@@ -119,7 +122,10 @@ void MyPlot::update() {
   emit setCursorBounds(this->xAxis->range().lower, this->xAxis->range().upper, this->yAxis->range().lower, this->yAxis->range().upper, minT, maxT, plotSettings.verticalCenter - plotSettings.verticalRange / 2, plotSettings.verticalCenter + plotSettings.verticalRange / 2);
   emit setVDivLimits(this->yAxis->range().upper - this->yAxis->range().lower);
   emit setHDivLimits(this->xAxis->range().upper - this->xAxis->range().lower);
+
   this->replot();
+  noUpdateYet = true;
+  updateTimer.start(updatePeriod);
 }
 
 void MyPlot::setRangeType(int type) {

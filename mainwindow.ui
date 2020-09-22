@@ -2399,6 +2399,12 @@
               <property name="text">
                <string>english</string>
               </property>
+              <property name="iconSize">
+               <size>
+                <width>16</width>
+                <height>16</height>
+               </size>
+              </property>
               <property name="checked">
                <bool>true</bool>
               </property>
@@ -2669,8 +2675,8 @@
    <slot>scrollBarCursor_valueChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>73</x>
-     <y>788</y>
+     <x>87</x>
+     <y>665</y>
     </hint>
     <hint type="destinationlabel">
      <x>1401</x>
@@ -2685,8 +2691,8 @@
    <slot>scrollBarCursor_valueChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>340</x>
-     <y>587</y>
+     <x>131</x>
+     <y>665</y>
     </hint>
     <hint type="destinationlabel">
      <x>1401</x>
@@ -2701,12 +2707,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>397</x>
-     <y>651</y>
+     <x>131</x>
+     <y>665</y>
     </hint>
     <hint type="destinationlabel">
-     <x>378</x>
-     <y>587</y>
+     <x>131</x>
+     <y>665</y>
     </hint>
    </hints>
   </connection>
@@ -2717,12 +2723,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>198</x>
-     <y>651</y>
+     <x>131</x>
+     <y>665</y>
     </hint>
     <hint type="destinationlabel">
-     <x>73</x>
-     <y>735</y>
+     <x>87</x>
+     <y>665</y>
     </hint>
    </hints>
   </connection>
@@ -2733,8 +2739,8 @@
    <slot>scrollBarCursor_valueChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>47</x>
-     <y>768</y>
+     <x>61</x>
+     <y>665</y>
     </hint>
     <hint type="destinationlabel">
      <x>1401</x>
@@ -2749,8 +2755,8 @@
    <slot>setHDivLimits(double)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>639</x>
-     <y>602</y>
+     <x>535</x>
+     <y>685</y>
     </hint>
     <hint type="destinationlabel">
      <x>1401</x>
@@ -2765,12 +2771,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>198</x>
-     <y>651</y>
+     <x>131</x>
+     <y>665</y>
     </hint>
     <hint type="destinationlabel">
-     <x>53</x>
-     <y>788</y>
+     <x>67</x>
+     <y>665</y>
     </hint>
    </hints>
   </connection>
@@ -2781,8 +2787,8 @@
    <slot>scrollBarCursor_valueChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>211</x>
-     <y>567</y>
+     <x>131</x>
+     <y>665</y>
     </hint>
     <hint type="destinationlabel">
      <x>1401</x>
@@ -2797,12 +2803,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>397</x>
-     <y>651</y>
+     <x>131</x>
+     <y>665</y>
     </hint>
     <hint type="destinationlabel">
-     <x>396</x>
-     <y>567</y>
+     <x>131</x>
+     <y>665</y>
     </hint>
    </hints>
   </connection>

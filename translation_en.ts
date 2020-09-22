@@ -68,7 +68,7 @@
     <message>
         <location filename="mainwindow.ui" line="722"/>
         <source>Zoom</source>
-        <translation>Horizontal zoom</translation>
+        <translation>Zoom</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="481"/>
@@ -107,7 +107,7 @@
     </message>
     <message>
         <location filename="mainwindow.ui" line="2115"/>
-        <location filename="mainwindow.ui" line="2506"/>
+        <location filename="mainwindow.ui" line="2512"/>
         <source>clear</source>
         <translation>Clear</translation>
     </message>
@@ -305,121 +305,90 @@
         <translation>English</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="2410"/>
+        <location filename="mainwindow.ui" line="2416"/>
         <source>czech</source>
         <translation>Čeština</translation>
     </message>
     <message>
-        <source>refresh plot</source>
-        <translation type="vanished">Plot refresh rate</translation>
-    </message>
-    <message>
-        <location filename="mainwindow.ui" line="2616"/>
+        <location filename="mainwindow.ui" line="2622"/>
         <source>Translation: none</source>
-        <translation>Translations: none</translation>
+        <translation>Translations: EN_23/09/2020</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="2434"/>
+        <location filename="mainwindow.ui" line="2440"/>
         <source>terminal</source>
         <translation>Terminal</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="2534"/>
+        <location filename="mainwindow.ui" line="2540"/>
         <source>send data to device:</source>
         <oldsource>send data to device</oldsource>
         <translation>Send data to device:</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="2544"/>
+        <location filename="mainwindow.ui" line="2550"/>
         <source>send</source>
         <translation>Send</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="2554"/>
+        <location filename="mainwindow.ui" line="2560"/>
         <source>about</source>
         <translation>About</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="65"/>
+        <location filename="mainwindow.cpp" line="64"/>
         <source>resume</source>
         <translation>Resume</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="69"/>
+        <location filename="mainwindow.cpp" line="68"/>
         <source>pause</source>
         <translation>Pause</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="73"/>
+        <location filename="mainwindow.cpp" line="72"/>
         <source>normal</source>
         <translation>Normal</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="176"/>
+        <location filename="mainwindow.cpp" line="175"/>
         <source> / Div</source>
         <translation> / Div</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="260"/>
+        <location filename="mainwindow.cpp" line="259"/>
         <source>Disconnecting...</source>
-        <translation type="unfinished"></translation>
+        <translation>Disconnecting...</translation>
     </message>
     <message>
-        <source>Error:</source>
-        <translation type="vanished">Error:</translation>
-    </message>
-    <message>
-        <location filename="mainwindow.cpp" line="253"/>
+        <location filename="mainwindow.cpp" line="252"/>
         <source>dX: </source>
         <translation>ΔX: </translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="254"/>
+        <location filename="mainwindow.cpp" line="253"/>
         <source>dY: </source>
         <translation>ΔY: </translation>
     </message>
     <message>
-        <source>Not connected</source>
-        <translation type="vanished">Not connected</translation>
-    </message>
-    <message>
-        <location filename="mainwindow.cpp" line="306"/>
+        <location filename="mainwindow.cpp" line="305"/>
         <source>Export Channel %1</source>
         <translation>Export channel %1</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="306"/>
+        <location filename="mainwindow.cpp" line="305"/>
         <source>Comma separated values (*.csv)</source>
-        <translation type="unfinished">Comma separated values (*.csv)</translation>
+        <translation>Comma separated values (*.csv)</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="315"/>
+        <location filename="mainwindow.cpp" line="314"/>
         <source>Cant write to file.</source>
         <translation>Can not write to file.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="316"/>
+        <location filename="mainwindow.cpp" line="315"/>
         <source>This may be because file is opened in another program.</source>
         <translation>This may be caused by the file being opened in another program.</translation>
-    </message>
-</context>
-<context>
-    <name>SerialHandler</name>
-    <message>
-        <source>Connected to </source>
-        <translation type="vanished">Connected to </translation>
-    </message>
-    <message>
-        <source> at </source>
-        <translation type="vanished"> at </translation>
-    </message>
-    <message>
-        <source> bps</source>
-        <translation type="vanished"> bps</translation>
-    </message>
-    <message>
-        <source>Error: </source>
-        <translation type="vanished">Error: </translation>
     </message>
 </context>
 <context>
@@ -427,27 +396,27 @@
     <message>
         <location filename="serialthread.cpp" line="35"/>
         <source>Connected to </source>
-        <translation type="unfinished">Connected to </translation>
+        <translation>Connected to </translation>
     </message>
     <message>
         <location filename="serialthread.cpp" line="35"/>
         <source> at </source>
-        <translation type="unfinished"> at </translation>
+        <translation> at </translation>
     </message>
     <message>
         <location filename="serialthread.cpp" line="35"/>
         <source> bps</source>
-        <translation type="unfinished"> bps</translation>
+        <translation> bps</translation>
     </message>
     <message>
         <location filename="serialthread.cpp" line="35"/>
         <source>Error: </source>
-        <translation type="unfinished">Error: </translation>
+        <translation>Error: </translation>
     </message>
     <message>
         <location filename="serialthread.cpp" line="71"/>
         <source>Not connected</source>
-        <translation type="unfinished">Not connected</translation>
+        <translation>Not connected</translation>
     </message>
 </context>
 </TS>
