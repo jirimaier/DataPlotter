@@ -1,6 +1,14 @@
 #include "myplot.h"
 
-MyPlot::MyPlot(QWidget *parent) : QCustomPlot(parent) {}
+MyPlot::MyPlot(QWidget *parent) : QCustomPlot(parent) {
+  for (int i = 0; i < CHANNEL_COUNT; i++)
+    channelSettings.append(new channelSettings_t);
+  for (int i = 0; i < 8; i++)
+    channelSettings.at(i)->color = defaultColors[i];
+  initCursors();
+  initZeroLines();
+  resetChannels();
+}
 
 void MyPlot::initCursors() {
   cursorX1 = new QCPItemLine(this);
@@ -41,16 +49,16 @@ void MyPlot::initZeroLines() {
   zeroPen.setWidth(1);
   zeroPen.setStyle(Qt::DotLine);
   for (int i = 0; i < CHANNEL_COUNT; i++) {
-    zeroPen.setColor(settings->channelSettings.at(i)->color);
+    zeroPen.setColor(channelSettings.at(i)->color);
     QCPItemLine *zeroLine = new QCPItemLine(this);
     zeroLine->setPen(zeroPen);
     zeroLine->start->setTypeY(QCPItemPosition::ptPlotCoords);
     zeroLine->start->setTypeX(QCPItemPosition::ptViewportRatio);
     zeroLine->end->setTypeY(QCPItemPosition::ptPlotCoords);
     zeroLine->end->setTypeX(QCPItemPosition::ptViewportRatio);
-    zeroLine->start->setCoords(0, settings->channelSettings.at(i)->offset);
-    zeroLine->end->setCoords(1, settings->channelSettings.at(i)->offset);
-    zeroLine->setVisible(settings->channelSettings.at(i)->offset != 0);
+    zeroLine->start->setCoords(0, channelSettings.at(i)->offset);
+    zeroLine->end->setCoords(1, channelSettings.at(i)->offset);
+    zeroLine->setVisible(channelSettings.at(i)->offset != 0);
     zeroLines.append(zeroLine);
   }
 }
@@ -98,27 +106,17 @@ void MyPlot::updateCursors(double x1, double x2, double y1, double y2) {
   cursorY2->end->setCoords(1, curY2);
 }
 
-void MyPlot::init(Settings *in_settings) {
-  this->settings = in_settings;
-  initCursors();
-  initZeroLines();
-  resetChannels();
-  connect(&updateTimer, SIGNAL(timeout()), this, SLOT(update()));
-  updateTimer.start(100);
-}
-
 void MyPlot::update() {
   if (plottingRangeType != PLOT_RANGE_FREE) {
-    this->yAxis->setRange((settings->plotSettings.verticalCenter * 0.01 - 1) * 0.5 * settings->plotSettings.verticalRange, (settings->plotSettings.verticalCenter * 0.01 + 1) * 0.5 * settings->plotSettings.verticalRange);
+    this->yAxis->setRange((plotSettings.verticalCenter * 0.01 - 1) * 0.5 * plotSettings.verticalRange, (plotSettings.verticalCenter * 0.01 + 1) * 0.5 * plotSettings.verticalRange);
     if (plottingRangeType == PLOT_RANGE_FIXED) {
       double dataLenght = maxT - minT;
-      this->xAxis->setRange(minT + dataLenght * 0.001 * (settings->plotSettings.horizontalPos - settings->plotSettings.zoom / 2), minT + dataLenght * 0.001 * (settings->plotSettings.horizontalPos + settings->plotSettings.zoom / 2));
+      this->xAxis->setRange(minT + dataLenght * 0.001 * (plotSettings.horizontalPos - plotSettings.zoom / 2), minT + dataLenght * 0.001 * (plotSettings.horizontalPos + plotSettings.zoom / 2));
     } else if (plottingRangeType == PLOT_RANGE_ROLLING) {
-      this->xAxis->setRange(maxT - settings->plotSettings.rollingRange, maxT);
+      this->xAxis->setRange(maxT - plotSettings.rollingRange, maxT);
     }
   }
-  emit setCursorBounds(this->xAxis->range().lower, this->xAxis->range().upper, this->yAxis->range().lower, this->yAxis->range().upper, minT, maxT, settings->plotSettings.verticalCenter - settings->plotSettings.verticalRange / 2,
-                       settings->plotSettings.verticalCenter + settings->plotSettings.verticalRange / 2);
+  emit setCursorBounds(this->xAxis->range().lower, this->xAxis->range().upper, this->yAxis->range().lower, this->yAxis->range().upper, minT, maxT, plotSettings.verticalCenter - plotSettings.verticalRange / 2, plotSettings.verticalCenter + plotSettings.verticalRange / 2);
   emit setVDivLimits(this->yAxis->range().upper - this->yAxis->range().lower);
   emit setHDivLimits(this->xAxis->range().upper - this->xAxis->range().lower);
   this->replot();
@@ -180,18 +178,18 @@ void MyPlot::setCurYen(bool en) {
 
 void MyPlot::updateVisuals() {
   for (int i = 0; i < CHANNEL_COUNT; i++) {
-    this->graph(i)->setPen(QPen(settings->channelSettings.at(i)->color));
-    this->graph(i)->setVisible((settings->channelSettings.at(i)->style != PLOT_STYLE_HIDDEN));
-    zeroLines.at(i)->setVisible((settings->channelSettings.at(i)->offset != 0) && (settings->channelSettings.at(i)->style != PLOT_STYLE_HIDDEN));
-    if (settings->channelSettings.at(i)->style == PLOT_STYLE_LINEANDPIONT) {
+    this->graph(i)->setPen(QPen(channelSettings.at(i)->color));
+    this->graph(i)->setVisible((channelSettings.at(i)->style != PLOT_STYLE_HIDDEN));
+    zeroLines.at(i)->setVisible((channelSettings.at(i)->offset != 0) && (channelSettings.at(i)->style != PLOT_STYLE_HIDDEN));
+    if (channelSettings.at(i)->style == PLOT_STYLE_LINEANDPIONT) {
       this->graph(i)->setScatterStyle(QCPScatterStyle::ssDisc);
       this->graph(i)->setLineStyle(QCPGraph::lsLine);
     }
-    if (settings->channelSettings.at(i)->style == PLOT_STYLE_LINE) {
+    if (channelSettings.at(i)->style == PLOT_STYLE_LINE) {
       this->graph(i)->setScatterStyle(QCPScatterStyle::ssNone);
       this->graph(i)->setLineStyle(QCPGraph::lsLine);
     }
-    if (settings->channelSettings.at(i)->style == PLOT_STYLE_POINT) {
+    if (channelSettings.at(i)->style == PLOT_STYLE_POINT) {
       this->graph(i)->setScatterStyle(QCPScatterStyle::ssDisc);
       this->graph(i)->setLineStyle(QCPGraph::lsNone);
     }
@@ -207,31 +205,31 @@ void MyPlot::resetChannels() {
 
 void MyPlot::rescale(int ch, double relativeScale) {
   for (QCPGraphDataContainer::iterator it = graph(ch)->data()->begin(); it != graph(ch)->data()->end(); it++) {
-    (*it).value -= settings->channelSettings.at(ch)->offset;
+    (*it).value -= channelSettings.at(ch)->offset;
     (*it).value *= relativeScale;
-    (*it).value += settings->channelSettings.at(ch)->offset;
+    (*it).value += channelSettings.at(ch)->offset;
   }
 }
 
 void MyPlot::reoffset(int ch, double relativeOffset) {
-  zeroLines.at(ch)->start->setCoords(0, settings->channelSettings.at(ch)->offset + relativeOffset);
-  zeroLines.at(ch)->end->setCoords(1, settings->channelSettings.at(ch)->offset + relativeOffset);
-  zeroLines.at(ch)->setVisible((settings->channelSettings.at(ch)->offset + relativeOffset != 0) && (settings->channelSettings.at(ch)->style != PLOT_STYLE_HIDDEN));
+  zeroLines.at(ch)->start->setCoords(0, channelSettings.at(ch)->offset + relativeOffset);
+  zeroLines.at(ch)->end->setCoords(1, channelSettings.at(ch)->offset + relativeOffset);
+  zeroLines.at(ch)->setVisible((channelSettings.at(ch)->offset + relativeOffset != 0) && (channelSettings.at(ch)->style != PLOT_STYLE_HIDDEN));
   for (QCPGraphDataContainer::iterator it = graph(ch)->data()->begin(); it != graph(ch)->data()->end(); it++)
     (*it).value += relativeOffset;
 }
 
-void MyPlot::newData(QVector<Channel *> *channels) {
+void MyPlot::newData(QVector<Channel *> channels) {
   if (plottingStatus == PLOT_STATUS_RUN || plottingStatus == PLOT_STATUS_SINGLETRIGER) {
     for (int ch = 0; ch < CHANNEL_COUNT; ch++) {
-      if (channels->at(ch)->isEmpty())
+      if (channels.at(ch)->isEmpty())
         continue;
-      channels->at(ch)->applyScaleAndOffset(settings->channelSettings.at(ch)->scale, settings->channelSettings.at(ch)->offset);
-      if ((!this->graph(ch)->data()->isEmpty()) && graphLastTime(ch) > channels->at(ch)->firstTime())
-        this->graph(ch)->setData(channels->at(ch)->time, channels->at(ch)->value, true);
+      channels.at(ch)->applyScaleAndOffset(channelSettings.at(ch)->scale, channelSettings.at(ch)->offset);
+      if ((!this->graph(ch)->data()->isEmpty()) && graphLastTime(ch) > channels.at(ch)->firstTime())
+        this->graph(ch)->setData(channels.at(ch)->time, channels.at(ch)->value, true);
       else
-        this->graph(ch)->addData(channels->at(ch)->time, channels->at(ch)->value, true);
-      channels->at(ch)->clear();
+        this->graph(ch)->addData(channels.at(ch)->time, channels.at(ch)->value, true);
+      channels.at(ch)->clear();
     }
   }
   if (plottingStatus == PLOT_STATUS_SINGLETRIGER) {
@@ -240,4 +238,30 @@ void MyPlot::newData(QVector<Channel *> *channels) {
   }
   minT = minTime();
   maxT = maxTime();
+  update();
+}
+
+void MyPlot::setRollingRange(double value) {
+  plotSettings.rollingRange = value;
+  update();
+}
+
+void MyPlot::setHorizontalPos(double value) {
+  plotSettings.horizontalPos = value;
+  update();
+}
+
+void MyPlot::setVerticalRange(double value) {
+  plotSettings.verticalRange = value;
+  update();
+}
+
+void MyPlot::setZoomRange(int value) {
+  plotSettings.zoom = value;
+  update();
+}
+
+void MyPlot::setVerticalCenter(int value) {
+  plotSettings.verticalCenter = value;
+  update();
 }

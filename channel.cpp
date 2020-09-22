@@ -33,4 +33,5 @@ void Channel::addValue(double in_value, double in_time) {
       clear();
   this->time.append(in_time);
   this->value.append(in_value);
+  lastAddedTime = in_time;
 }

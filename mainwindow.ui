@@ -1908,7 +1908,7 @@
         </size>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <property name="usesScrollButtons">
         <bool>true</bool>
@@ -2244,25 +2244,6 @@
             <string>Binary values scaling</string>
            </property>
            <layout class="QGridLayout" name="gridLayout_17">
-            <item row="1" column="0" colspan="2">
-             <widget class="QSpinBox" name="spinBoxDataBinaryBits">
-              <property name="wrapping">
-               <bool>false</bool>
-              </property>
-              <property name="suffix">
-               <string notr="true"> bit</string>
-              </property>
-              <property name="minimum">
-               <number>1</number>
-              </property>
-              <property name="maximum">
-               <number>64</number>
-              </property>
-              <property name="value">
-               <number>8</number>
-              </property>
-             </widget>
-            </item>
             <item row="2" column="0" colspan="2">
              <widget class="QDoubleSpinBox" name="doubleSpinBoxBinarydataMax">
               <property name="prefix">
@@ -2285,6 +2266,48 @@
               </property>
               <property name="value">
                <double>255.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="0">
+             <widget class="QSpinBox" name="spinBoxBinaryDataNumCh">
+              <property name="suffix">
+               <string> channels</string>
+              </property>
+              <property name="prefix">
+               <string/>
+              </property>
+              <property name="minimum">
+               <number>1</number>
+              </property>
+              <property name="maximum">
+               <number>64</number>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0" colspan="2">
+             <widget class="QSpinBox" name="spinBoxDataBinaryBits">
+              <property name="wrapping">
+               <bool>false</bool>
+              </property>
+              <property name="suffix">
+               <string notr="true"> bit</string>
+              </property>
+              <property name="minimum">
+               <number>1</number>
+              </property>
+              <property name="maximum">
+               <number>64</number>
+              </property>
+              <property name="value">
+               <number>8</number>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0" colspan="2">
+             <widget class="QCheckBox" name="checkBoxBinarySettingsOverride">
+              <property name="text">
+               <string>Prevent automatic change</string>
               </property>
              </widget>
             </item>
@@ -2342,29 +2365,6 @@
               </property>
              </widget>
             </item>
-            <item row="5" column="0">
-             <widget class="QSpinBox" name="spinBoxBinaryDataNumCh">
-              <property name="suffix">
-               <string> channels</string>
-              </property>
-              <property name="prefix">
-               <string/>
-              </property>
-              <property name="minimum">
-               <number>1</number>
-              </property>
-              <property name="maximum">
-               <number>64</number>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="0" colspan="2">
-             <widget class="QCheckBox" name="checkBoxBinarySettingsOverride">
-              <property name="text">
-               <string>Prevent automatic change</string>
-              </property>
-             </widget>
-            </item>
             <item row="6" column="0" colspan="2">
              <widget class="QCheckBox" name="checkBoxBinContinuous">
               <property name="text">
@@ -2408,65 +2408,6 @@
              <widget class="QRadioButton" name="radioButtonCz">
               <property name="text">
                <string>czech</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <widget class="QGroupBox" name="groupBox">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="title">
-            <string>refresh plot</string>
-           </property>
-           <layout class="QGridLayout" name="gridLayout_4">
-            <item row="0" column="0">
-             <widget class="QSlider" name="sliderRefreshRate">
-              <property name="minimum">
-               <number>0</number>
-              </property>
-              <property name="maximum">
-               <number>7</number>
-              </property>
-              <property name="value">
-               <number>5</number>
-              </property>
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="invertedAppearance">
-               <bool>false</bool>
-              </property>
-              <property name="invertedControls">
-               <bool>false</bool>
-              </property>
-              <property name="tickPosition">
-               <enum>QSlider::NoTicks</enum>
-              </property>
-              <property name="tickInterval">
-               <number>10</number>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QLabel" name="labelRefreshRate">
-              <property name="minimumSize">
-               <size>
-                <width>50</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="text">
-               <string notr="true">60 Hz</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
               </property>
              </widget>
             </item>

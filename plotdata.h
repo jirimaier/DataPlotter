@@ -6,27 +6,25 @@
 #include <QWidget>
 
 #include "channel.h"
-#include "enums.h"
+#include "serialparser.h"
 #include "settings.h"
 
 class PlotData : public QObject {
   Q_OBJECT
 public:
-  PlotData(Settings *in_settings);
+  PlotData();
   ~PlotData();
   void clearChannels();
   bool newDataFlag = false;
   QVector<Channel *> channels;
 
 private:
-  Settings *settings;
-
 public slots:
   void newDataString(QByteArray data);
-  void newDataBin(QByteArray data);
+  void newDataBin(QByteArray data, binDataSettings_t settings);
 
 signals:
-  void dataReady(QVector<Channel *> *channels);
+  void dataReady(QVector<Channel *> channels);
 };
 
 #endif // PLOTTING_H

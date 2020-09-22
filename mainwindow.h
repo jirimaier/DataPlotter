@@ -2,13 +2,13 @@
 #define MAINWINDOW_H
 
 #include <QColorDialog>
+#include <QDoubleSpinBox>
 #include <QMainWindow>
 #include <QMessageBox>
 #include <QSerialPortInfo>
 #include <QTime>
 #include <QTranslator>
 
-#include "enums.h"
 #include "plotdata.h"
 #include "serialparser.h"
 #include "settings.h"
@@ -24,12 +24,11 @@ class MainWindow : public QMainWindow {
 
 public:
   MainWindow(QWidget *parent = nullptr);
-  void init(Settings *in_settings);
+  void init();
   ~MainWindow();
 
 private:
   Ui::MainWindow *ui;
-  Settings *settings;
   QTranslator translator;
   QByteArray buffer;
   QStringList portList;
@@ -41,7 +40,6 @@ private:
   void updateChScale();
 
 private slots:
-  void on_sliderRefreshRate_valueChanged(int value);
   void on_tabs_right_currentChanged(int index);
   void on_dialRollingRange_valueChanged(int value);
   void on_dialVerticalRange_valueChanged(int value);
@@ -64,35 +62,38 @@ private slots:
   void on_dialChScale_valueChanged(int value);
   void on_doubleSpinBoxRangeVerticalDiv_valueChanged(double arg1);
   void on_pushButtonSelectedCSV_clicked();
-  void on_doubleSpinBoxBinarydataMax_valueChanged(double arg1) { settings->binDataSettings.valueMax = arg1; }
-  void on_doubleSpinBoxBinaryDataMin_valueChanged(double arg1) { settings->binDataSettings.valueMin = arg1; }
-  void on_doubleSpinBoxBinaryTimestep_valueChanged(double arg1) { settings->binDataSettings.timeStep = arg1; }
-  void on_spinBoxBinaryDataFirstCh_valueChanged(int arg1) { settings->binDataSettings.firstCh = arg1; }
-  void on_checkBoxBinContinuous_toggled(bool checked) { settings->binDataSettings.continuous = checked; }
+  void on_doubleSpinBoxBinarydataMax_valueChanged(double arg1) { emit setBinMax(arg1); }
+  void on_doubleSpinBoxBinaryDataMin_valueChanged(double arg1) { emit setBinMin(arg1); }
+  void on_doubleSpinBoxBinaryTimestep_valueChanged(double arg1) { emit setBinStep(arg1); }
+  void on_spinBoxBinaryDataFirstCh_valueChanged(int arg1) { emit setBinFCh(arg1); }
+  void on_checkBoxBinContinuous_toggled(bool checked) { emit setBinCont(checked); }
   void on_dialZoom_valueChanged(int value);
-  void on_horizontalScrollBarHorizontal_valueChanged(int value) { settings->plotSettings.horizontalPos = value; }
-  void on_doubleSpinBoxRangeHorizontal_valueChanged(double arg1) { settings->plotSettings.rollingRange = arg1; }
-  void on_doubleSpinBoxRangeVerticalRange_valueChanged(double arg1) { settings->plotSettings.verticalRange = arg1; }
-  void on_verticalScrollBarVerticalCenter_valueChanged(int value) { settings->plotSettings.verticalCenter = value; }
-  void on_doubleSpinBoxRangeHorizontalDiv_valueChanged(double arg1);
-
   void on_comboBoxPlotRangeType_currentIndexChanged(int index);
+  void on_listWidgetDataMode_currentRowChanged(int currentRow);
 
 public slots:
   void setCursorBounds(double xmin, double xmax, double ymin, double ymax, double xminfull, double xmaxfull, double yminfull, double ymaxfull);
-  void setDataMode(int mode);
-  void changeBinSettings(Settings::binDataSettings_t in_settings);
+  void changedDataMode(int mode);
+  void changeBinSettings(binDataSettings_t in_settings);
   void showProcessedCommand(QPair<bool, QByteArray> message);
   void printMessage(QByteArray data, bool urgent);
   void changeLanguage();
   void showPlotStatus(int type);
   void setHDivLimits(double hRange);
   void setVDivLimits(double vRange);
-  void addDataToPlot(QVector<Channel *> *channels);
+  void addDataToPlot(QVector<Channel *> channels);
   void serialConnectResult(bool connected, QString message);
 
 signals:
   void connectSerial(QString port, int baud);
   void disconnectSerial();
+  void setBinBits(int value);
+  void setBinMin(double value);
+  void setBinMax(double value);
+  void setBinStep(double value);
+  void setBinNCh(int value);
+  void setBinFCh(int value);
+  void setBinCont(bool value);
+  void setMode(int mode);
 };
 #endif // MAINWINDOW_H

@@ -3,7 +3,6 @@ QT += core gui serialport widgets printsupport
 CONFIG += c++11
 
 SOURCES += \
-    buffer.cpp \
     channel.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -12,13 +11,10 @@ SOURCES += \
     plotdata.cpp \
     qcustomplot.cpp \
     serialparser.cpp \
-    serialthread.cpp \
-    settings.cpp
+    serialthread.cpp
 
 HEADERS += \
-    buffer.h \
     channel.h \
-    enums.h \
     mainwindow.h \
     myplot.h \
     myterminal.h \

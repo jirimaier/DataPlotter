@@ -4,7 +4,7 @@
 #include <QTableWidget>
 #include <QTableWidgetItem>
 
-#include "enums.h"
+#include "settings.h"
 
 class MyTerminal : public QTableWidget {
   Q_OBJECT

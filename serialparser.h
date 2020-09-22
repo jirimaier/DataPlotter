@@ -4,8 +4,6 @@
 #include <QObject>
 #include <QSerialPort>
 
-#include "buffer.h"
-#include "enums.h"
 #include "myterminal.h"
 #include "plotdata.h"
 #include "serialthread.h"
@@ -14,17 +12,25 @@
 class SerialParser : public QObject {
   Q_OBJECT
 public:
-  SerialParser(Settings *in_settings);
+  SerialParser();
   ~SerialParser();
 
 private:
-  Settings *settings;
-  Buffer *buffer;
+  binDataSettings_t binDataSettings;
+  int dataMode = DATA_MODE_DATA_UNKNOWN;
   void parseBinaryDataHeader(QByteArray data);
 
 public slots:
   void parseCommand(QByteArray line);
   void parseData(QByteArray line);
+  void setBinBits(int value) { binDataSettings.bits = value; }
+  void setBinMin(double value) { binDataSettings.valueMin = value; }
+  void setBinMax(double value) { binDataSettings.valueMax = value; }
+  void setBinStep(double value) { binDataSettings.timeStep = value; }
+  void setBinNCh(int value) { binDataSettings.numCh = value; }
+  void setBinFCh(int value) { binDataSettings.firstCh = value; }
+  void setBinCont(bool value) { binDataSettings.continuous = value; }
+  void setMode(int mode) { dataMode = mode; }
 
 signals:
   void changedMode(int);
@@ -32,9 +38,9 @@ signals:
   void printToTerminal(QByteArray message);
   void printMessage(QByteArray message, bool urgent);
   void newDataString(QByteArray data);
-  void newDataBin(QByteArray data);
+  void newDataBin(QByteArray data, binDataSettings_t settings);
   void newProcessedCommand(QPair<bool, QByteArray>);
-  void changedBinSettings(Settings::binDataSettings_t);
+  void changedBinSettings(binDataSettings_t);
   void changedDataMode(int mode);
 };
 

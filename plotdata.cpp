@@ -1,7 +1,6 @@
 #include "plotdata.h"
 
-PlotData::PlotData(Settings *in_settings) {
-  this->settings = in_settings;
+PlotData::PlotData() {
   for (int i = 0; i < CHANNEL_COUNT; i++)
     channels.append(new Channel());
 }
@@ -14,10 +13,10 @@ void PlotData::newDataString(QByteArray data) {
     QByteArrayList values = pointList.at(i).split(',');
     for (int ch = 1; ch < values.length(); ch++) {
       if (!values.at(ch).isEmpty())
-        channels.at(ch - 1)->addValue(values.at(ch).toDouble(), values.at(0).isEmpty() ? channels.at(0)->lastTime() + 1 : values.at(0).toDouble());
+        channels.at(ch - 1)->addValue(values.at(ch).toDouble(), values.at(0).isEmpty() ? channels.at(0)->lastAddedTime + 1 : values.at(0).toDouble());
     }
   }
-  emit dataReady(&channels);
+  emit dataReady(channels);
 }
 
 void PlotData::clearChannels() {
@@ -25,13 +24,13 @@ void PlotData::clearChannels() {
     channels.at(ch)->clear();
 }
 
-void PlotData::newDataBin(QByteArray data) {
-  int bytes = ceil(settings->binDataSettings.bits / 8.0f);
+void PlotData::newDataBin(QByteArray data, binDataSettings_t settings) {
+  int bytes = ceil(settings.bits / 8.0f);
   if (data.length() % bytes != 0)
     data = data.left(data.length() - data.length() % bytes);
-  if (!settings->binDataSettings.continuous)
-    for (int ch = settings->binDataSettings.firstCh; ch < settings->binDataSettings.firstCh + settings->binDataSettings.numCh; ch++)
-      this->channels.at(ch - 1)->clear();
+  if (!settings.continuous)
+    for (int ch = settings.firstCh; ch < settings.firstCh + settings.numCh; ch++)
+      this->channels.at(ch - 1)->lastAddedTime = 0;
   for (int i = 0; i < data.length() - 1; i += bytes) {
     quint64 value = 0;
     for (int byte = 0; byte < bytes; byte++) {
@@ -39,8 +38,8 @@ void PlotData::newDataBin(QByteArray data) {
       value |= (quint8)data.at(i + byte);
     }
     double value_d = value;
-    value_d = (value_d / (1 << settings->binDataSettings.bits) * (settings->binDataSettings.valueMax - settings->binDataSettings.valueMin)) + settings->binDataSettings.valueMin;
-    channels.at(settings->binDataSettings.firstCh + ((i / bytes) % settings->binDataSettings.numCh) - 1)->addValue(value_d, channels.at(settings->binDataSettings.firstCh + (i % settings->binDataSettings.numCh) - 1)->lastTime() + settings->binDataSettings.timeStep);
+    value_d = (value_d / (1 << settings.bits) * (settings.valueMax - settings.valueMin)) + settings.valueMin;
+    channels.at(settings.firstCh + ((i / bytes) % settings.numCh) - 1)->addValue(value_d, channels.at(settings.firstCh + (i % settings.numCh) - 1)->lastAddedTime + settings.timeStep);
   }
-  emit dataReady(&channels);
+  emit dataReady(channels);
 }

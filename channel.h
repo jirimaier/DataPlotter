@@ -4,7 +4,6 @@
 #include <QObject>
 #include <QVector>
 
-#include "enums.h"
 #include "qcustomplot.h"
 
 class Channel {
@@ -18,6 +17,7 @@ public:
   QVector<double> value;
   QVector<double> time;
   void applyScaleAndOffset(double scale, double offset);
+  double lastAddedTime = 0;
 };
 
 #endif // CHANNEL_H

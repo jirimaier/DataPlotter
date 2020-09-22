@@ -1,7 +1,7 @@
 #ifndef SERIALTHREAD_H
 #define SERIALTHREAD_H
 
-#include "enums.h"
+#include "settings.h"
 #include <QApplication>
 #include <QByteArrayMatcher>
 #include <QMutex>
@@ -24,10 +24,9 @@ signals:
 private:
   QMutex mutex;
   void run() override;
-  bool quit_flag = false;
-  bool error_flag = false;
   QString port;
   int baud;
+  int lineTimeout = 5;
 
 public slots:
   void begin(QString portName, int baudRate);

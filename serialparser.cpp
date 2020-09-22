@@ -1,13 +1,13 @@
 #include "serialparser.h"
 
-SerialParser::SerialParser(Settings *in_settings) { this->settings = in_settings; }
+SerialParser::SerialParser() {}
 
 SerialParser::~SerialParser() {}
 
 void SerialParser::parseBinaryDataHeader(QByteArray data) {
   QByteArrayList list = data.split(',');
-  Settings::binDataSettings_t newSettings = settings->binDataSettings;
-  // bin,bits,chNum,maxVal,minVal,time,cont,firstch
+  binDataSettings_t newSettings = binDataSettings;
+  // bin,bits,chNum,maxVal,minVal,time,firstch
   if (list.length() >= 2)
     if (list.at(1).length() > 0)
       newSettings.bits = list.at(1).toInt();
@@ -25,25 +25,22 @@ void SerialParser::parseBinaryDataHeader(QByteArray data) {
       newSettings.timeStep = list.at(5).toDouble();
   if (list.length() >= 7)
     if (list.at(6).length() > 0)
-      newSettings.continuous = list.at(6).toInt() == 1;
-  if (list.length() >= 8)
-    if (list.at(7).length() > 0)
-      newSettings.firstCh = list.at(7).toInt();
+      newSettings.firstCh = list.at(6).toInt();
   emit changedBinSettings(newSettings);
 }
 
 void SerialParser::parseData(QByteArray line) {
   emit newProcessedCommand(QPair<bool, QByteArray>(false, line));
-  if (settings->dataMode == DATA_MODE_DATA_STRING)
+  if (dataMode == DATA_MODE_DATA_STRING)
     emit newDataString(line);
-  if (settings->dataMode == DATA_MODE_MESSAGE_INFO)
+  if (dataMode == DATA_MODE_MESSAGE_INFO)
     emit printMessage(line, false);
-  if (settings->dataMode == DATA_MODE_MESSAGE_WARNING)
+  if (dataMode == DATA_MODE_MESSAGE_WARNING)
     emit printMessage(line, true);
-  if (settings->dataMode == DATA_MODE_TERMINAL)
+  if (dataMode == DATA_MODE_TERMINAL)
     emit printToTerminal(line);
-  if (settings->dataMode == DATA_MODE_DATA_BINARY)
-    emit newDataBin(line);
+  if (dataMode == DATA_MODE_DATA_BINARY)
+    emit newDataBin(line, binDataSettings);
 }
 
 void SerialParser::parseCommand(QByteArray line) {
