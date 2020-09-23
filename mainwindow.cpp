@@ -254,7 +254,10 @@ void MainWindow::scrollBarCursor_valueChanged() {
   ui->plot->updateCursors(x1, x2, y1, y2);
 }
 
-void MainWindow::on_pushButtonDisconnect_clicked() { emit disconnectSerial(); }
+void MainWindow::on_pushButtonDisconnect_clicked() {
+  emit disconnectSerial();
+  ui->lineEditPortInfo->setText(tr("Disconnecting..."));
+}
 
 void MainWindow::on_pushButtonSendCommand_clicked() {}
 

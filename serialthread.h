@@ -24,15 +24,9 @@ signals:
 private:
   QMutex mutex;
   void run() override;
-  QByteArray buffer;
   QString port;
-  QSerialPort serial;
   int baud;
-  QByteArrayMatcher head;
-  QByteArrayMatcher tail;
-  long reading = 0;
-private slots:
-  void readyRead();
+  int lineTimeout = 5;
 
 public slots:
   void begin(QString portName, int baudRate);

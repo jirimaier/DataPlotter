@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
+<<<<<<< HEAD
 <!-- Written by QtCreator 4.13.0, 2020-09-23T19:28:28. -->
+=======
+<!-- Written by QtCreator 4.13.0, 2020-09-23T16:34:55. -->
+>>>>>>> parent of cdcf973... asynchronous serial attempt
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
