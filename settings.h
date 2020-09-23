@@ -33,12 +33,8 @@
 #define CMD_END "<end>"
 #define CMD_END_LENGHT 5
 
-#define SERIAL_LINE_TIMEOUT 10
-#define SERIAL_READ_LOOP_TIMEOUT 1000
-
-#define PLOT_MIN_UPDATE_PERIOD 5
-
-const char defaultSettings[] = "vrange:100\nvdiv:10\nhdiv:50\nrollrange:500";
+#define SERIAL_LINE_TIMEOUT 20
+#define SERIAL_READ_LOOP_TIMEOUT 500
 
 const float refreshRates[8] = {10.0f, 20.0f, 30.0f, 40.0f, 50.0f, 60.0f, 100.0f, 144.0f};
 
