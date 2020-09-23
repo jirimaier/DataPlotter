@@ -1908,7 +1908,7 @@
         </size>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <property name="usesScrollButtons">
         <bool>true</bool>
@@ -1920,19 +1920,6 @@
         <layout class="QVBoxLayout" name="verticalLayout_11">
          <item>
           <layout class="QGridLayout" name="gridLayout">
-           <item row="0" column="2">
-            <widget class="QPushButton" name="pushButtonComRefresh">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string>refresh</string>
-             </property>
-            </widget>
-           </item>
            <item row="1" column="2">
             <widget class="QPushButton" name="pushButtonDisconnect">
              <property name="enabled">
@@ -2000,19 +1987,6 @@
              </item>
             </widget>
            </item>
-           <item row="0" column="0" colspan="2">
-            <widget class="QComboBox" name="comboBoxCom">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>1</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="currentText">
-              <string notr="true"/>
-             </property>
-            </widget>
-           </item>
            <item row="1" column="1">
             <widget class="QPushButton" name="pushButtonConnect">
              <property name="sizePolicy">
@@ -2036,6 +2010,19 @@
              </property>
              <property name="readOnly">
               <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0" colspan="3">
+            <widget class="QComboBox" name="comboBoxCom">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>1</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="currentText">
+              <string notr="true"/>
              </property>
             </widget>
            </item>
@@ -2066,16 +2053,6 @@
              </property>
              <property name="buddy">
               <cstring>textEditSerialDebug</cstring>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QCheckBox" name="checkBoxShowCommands">
-             <property name="text">
-              <string>Show received commands</string>
-             </property>
-             <property name="checked">
-              <bool>true</bool>
              </property>
             </widget>
            </item>
