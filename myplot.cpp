@@ -8,6 +8,7 @@ MyPlot::MyPlot(QWidget *parent) : QCustomPlot(parent) {
   initCursors();
   initZeroLines();
   resetChannels();
+  connect(&updateTimer, &QTimer::timeout, this, &MyPlot::allowUpdate);
 }
 
 void MyPlot::initCursors() {
@@ -107,8 +108,8 @@ void MyPlot::updateCursors(double x1, double x2, double y1, double y2) {
 }
 
 void MyPlot::update() {
-  minT = minTime();
-  maxT = maxTime();
+  if (noUpdateYet)
+    return;
   if (plottingRangeType != PLOT_RANGE_FREE) {
     this->yAxis->setRange((plotSettings.verticalCenter * 0.01 - 1) * 0.5 * plotSettings.verticalRange, (plotSettings.verticalCenter * 0.01 + 1) * 0.5 * plotSettings.verticalRange);
     if (plottingRangeType == PLOT_RANGE_FIXED) {
@@ -123,6 +124,8 @@ void MyPlot::update() {
   emit setHDivLimits(this->xAxis->range().upper - this->xAxis->range().lower);
 
   this->replot();
+  noUpdateYet = true;
+  updateTimer.start(updatePeriod);
 }
 
 void MyPlot::setRangeType(int type) {
@@ -239,30 +242,32 @@ void MyPlot::newData(QVector<Channel *> channels) {
     plottingStatus = PLOT_STATUS_PAUSE;
     emit showPlotStatus(plottingStatus);
   }
-  // update();
+  minT = minTime();
+  maxT = maxTime();
+  update();
 }
 
 void MyPlot::setRollingRange(double value) {
   plotSettings.rollingRange = value;
-  // update();
+  update();
 }
 
 void MyPlot::setHorizontalPos(double value) {
   plotSettings.horizontalPos = value;
-  // update();
+  update();
 }
 
 void MyPlot::setVerticalRange(double value) {
   plotSettings.verticalRange = value;
-  // update();
+  update();
 }
 
 void MyPlot::setZoomRange(int value) {
   plotSettings.zoom = value;
-  // update();
+  update();
 }
 
 void MyPlot::setVerticalCenter(int value) {
   plotSettings.verticalCenter = value;
-  // update();
+  update();
 }

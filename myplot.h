@@ -17,6 +17,9 @@ public:
   QVector<channelSettings_t *> getChannelSettings() { return channelSettings; }
 
 private:
+  int updatePeriod = 10;
+  QTimer updateTimer;
+  bool noUpdateYet = false;
   plotSettings_t plotSettings;
   QVector<channelSettings_t *> channelSettings;
   int plotRangeType = PLOT_RANGE_FIXED;
@@ -31,6 +34,9 @@ private:
   double maxTime();
   double graphLastTime(quint8 i);
   double minT = 0.0, maxT = 1.0;
+
+private slots:
+  void allowUpdate() { noUpdateYet = false; }
 
 public slots:
   void update();

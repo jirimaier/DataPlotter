@@ -30,7 +30,7 @@ void SerialParser::parseBinaryDataHeader(QByteArray data) {
 }
 
 void SerialParser::parseData(QByteArray line) {
-  emit newProcessedCommand("Dat: " + line);
+  emit newProcessedCommand(QPair<bool, QByteArray>(false, line));
   if (dataMode == DATA_MODE_DATA_STRING)
     emit newDataString(line);
   if (dataMode == DATA_MODE_MESSAGE_INFO)
@@ -44,7 +44,7 @@ void SerialParser::parseData(QByteArray line) {
 }
 
 void SerialParser::parseCommand(QByteArray line) {
-  emit newProcessedCommand("Cmd: " + line);
+  emit newProcessedCommand(QPair<bool, QByteArray>(true, line));
   if (line == "data")
     emit changedMode(DATA_MODE_DATA_STRING);
   else if (line == "info")

@@ -39,7 +39,7 @@ signals:
   void printMessage(QByteArray message, bool urgent);
   void newDataString(QByteArray data);
   void newDataBin(QByteArray data, binDataSettings_t settings);
-  void newProcessedCommand(QByteArray);
+  void newProcessedCommand(QPair<bool, QByteArray>);
   void changedBinSettings(binDataSettings_t);
   void changedDataMode(int mode);
 };

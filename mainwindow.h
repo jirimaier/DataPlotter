@@ -7,7 +7,6 @@
 #include <QMessageBox>
 #include <QSerialPortInfo>
 #include <QTime>
-#include <QTimer>
 #include <QTranslator>
 
 #include "plotdata.h"
@@ -29,12 +28,8 @@ public:
   ~MainWindow();
 
 private:
-  QTimer plotUpdateTimer;
-  QTimer listUpdateTimer;
-  QTimer portsRefreshTimer;
   Ui::MainWindow *ui;
-  QList<QSerialPortInfo> portList;
-  QString receivedListBuffer;
+  QStringList portList;
   void dataParser(QByteArray message);
   void connectSignals();
   // void useSettings(QString settings);
@@ -58,6 +53,7 @@ private slots:
   void scrollBarCursor_valueChanged();
   void on_spinBoxDataBinaryBits_valueChanged(int arg1);
   void on_spinBoxBinaryDataNumCh_valueChanged(int arg1);
+  void on_pushButtonComRefresh_clicked();
   void on_pushButtonConnect_clicked();
   void on_pushButtonDisconnect_clicked();
   void on_pushButtonSendCommand_clicked();
@@ -73,15 +69,16 @@ private slots:
   void on_dialZoom_valueChanged(int value);
   void on_comboBoxPlotRangeType_currentIndexChanged(int index);
   void on_listWidgetDataMode_currentRowChanged(int currentRow);
+
   void on_radioButtonEn_toggled(bool checked);
+
   void on_radioButtonCz_toggled(bool checked);
-  void updateReceivedList();
+
 public slots:
-  void comRefresh();
   void setCursorBounds(double xmin, double xmax, double ymin, double ymax, double xminfull, double xmaxfull, double yminfull, double ymaxfull);
   void changedDataMode(int mode);
   void changeBinSettings(binDataSettings_t in_settings);
-  void showProcessedCommand(QByteArray message);
+  void showProcessedCommand(QPair<bool, QByteArray> message);
   void printMessage(QByteArray data, bool urgent);
   void showPlotStatus(int type);
   void setHDivLimits(double hRange);

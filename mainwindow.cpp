@@ -13,6 +13,7 @@ void MainWindow::init() {
   ui->tabs_Plot->setCurrentIndex(0);
 
   ui->labelBuildDate->setText("Build: " + QString(__DATE__) + " " + QString(__TIME__));
+  on_pushButtonComRefresh_clicked();
 
   QPixmap pixmap(30, 30);
   pixmap.fill(defaultColors[0]);
@@ -21,16 +22,6 @@ void MainWindow::init() {
   ui->labelPauseResume->setPixmap(QPixmap(":/images/icons/run.png"));
 
   updateChScale();
-
-  portsRefreshTimer.setInterval(500);
-  plotUpdateTimer.setInterval(10);
-  listUpdateTimer.setInterval(100);
-  connect(&plotUpdateTimer, &QTimer::timeout, ui->plot, &MyPlot::update);
-  connect(&listUpdateTimer, &QTimer::timeout, this, &MainWindow::updateReceivedList);
-  connect(&portsRefreshTimer, &QTimer::timeout, this, &MainWindow::comRefresh);
-  plotUpdateTimer.start();
-  listUpdateTimer.start();
-  portsRefreshTimer.start();
 }
 
 void MainWindow::connectSignals() {
@@ -149,25 +140,20 @@ void MainWindow::changeBinSettings(binDataSettings_t settings) {
   }
 }
 
-void MainWindow::showProcessedCommand(QByteArray message) {
-  QString stringMessage = QString(message);
-  if (stringMessage.length() == message.length()) {
+void MainWindow::showProcessedCommand(QPair<bool, QByteArray> message) {
+  if (!ui->checkBoxShowCommands->isChecked())
+    return;
+  QString stringMessage = QString(message.second);
+  if (stringMessage.length() == message.second.length()) {
     stringMessage.replace(QChar('\r'), "<font color=navy>[CR]</font>");
     stringMessage.replace(QChar('\n'), "<font color=navy>[LF]</font>");
     stringMessage.replace(QChar('\t'), "<font color=navy>[TAB]</font>");
     stringMessage.replace(QChar(27), "<font color=navy>[ESC]</font>");
   } else {
-    stringMessage = message.toHex(' ');
+    stringMessage = message.second.toHex(' ');
     stringMessage = "<font color=navy>" + stringMessage + "</font>";
   }
-  receivedListBuffer.append(stringMessage + "\n");
-}
-
-void MainWindow::updateReceivedList() {
-  if (!receivedListBuffer.isEmpty()) {
-    ui->textEditSerialDebug->append(receivedListBuffer.trimmed());
-    receivedListBuffer.clear();
-  }
+  ui->textEditSerialDebug->append(QString("<font color=gray>%1</font><font color=black>%2</font>").arg(message.first ? "Cmd: " : "Data: ", stringMessage));
 }
 
 int MainWindow::roundToStandardValue(double value) {
@@ -189,36 +175,16 @@ void MainWindow::updateChScale() {
   ui->labelChScale->setText(QString::number(perDiv) + tr(" / Div"));
 }
 
-void MainWindow::comRefresh() {
-  QList<QSerialPortInfo> newPorts = QSerialPortInfo::availablePorts();
-  bool change = false;
-  if (newPorts.length() == portList.length()) {
-    for (quint8 i = 0; i < newPorts.length(); i++)
-      if (newPorts.at(i).portName() != portList.at(i).portName()) {
-        change = true;
-        break;
-      }
-  } else
-    change = true;
-  if (change) {
-    qDebug() << "change";
-    QString currect = ui->comboBoxCom->currentText();
-    ui->comboBoxCom->clear();
-    portList = newPorts;
-    foreach (QSerialPortInfo port, portList)
-      ui->comboBoxCom->addItem(port.portName() + " - " + port.description());
-    int i = ui->comboBoxCom->findText(currect);
-    if (i == -1) {
-      if (ui->pushButtonDisconnect->isEnabled()) {
-        on_pushButtonDisconnect_clicked();
-        ui->comboBoxBaud->setCurrentIndex(0);
-      }
-    } else
-      ui->comboBoxCom->setCurrentIndex(i);
+void MainWindow::on_pushButtonComRefresh_clicked() {
+  ui->comboBoxCom->clear();
+  portList.clear();
+  foreach (const QSerialPortInfo &serialPortInfo, QSerialPortInfo::availablePorts()) {
+    ui->comboBoxCom->addItem(serialPortInfo.portName() + " - " + serialPortInfo.description());
+    portList.append(serialPortInfo.portName());
   }
 }
 
-void MainWindow::on_pushButtonConnect_clicked() { emit connectSerial(portList.at(ui->comboBoxCom->currentIndex()).portName(), ui->comboBoxBaud->currentText().toInt()); }
+void MainWindow::on_pushButtonConnect_clicked() { emit connectSerial(portList.at(ui->comboBoxCom->currentIndex()), ui->comboBoxBaud->currentText().toInt()); }
 
 void MainWindow::on_tabs_right_currentChanged(int index) {
   if (index == 2)
@@ -297,8 +263,6 @@ void MainWindow::addDataToPlot(QVector<Channel *> channels) { ui->plot->newData(
 void MainWindow::serialConnectResult(bool connected, QString message) {
   ui->pushButtonDisconnect->setEnabled(connected);
   ui->pushButtonConnect->setEnabled(!connected);
-  ui->comboBoxCom->setEnabled(!connected);
-  ui->comboBoxBaud->setEnabled(!connected);
   ui->lineEditPortInfo->setText(message);
 }
 
