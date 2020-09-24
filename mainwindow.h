@@ -34,7 +34,7 @@ private:
   QTimer portsRefreshTimer;
   Ui::MainWindow *ui;
   QList<QSerialPortInfo> portList;
-  QString receivedListBuffer;
+  QStringList receivedListBuffer;
   void dataParser(QByteArray message);
   void connectSignals();
   // void useSettings(QString settings);
@@ -52,8 +52,6 @@ private slots:
   void on_spinBoxChannelSelect_valueChanged(int arg1);
   void on_doubleSpinBoxChOffset_valueChanged(double arg1);
   void on_dialOffset_valueChanged(int value);
-  void on_dialVerticalDiv_valueChanged(int value);
-  void on_dialhorizontalDiv_valueChanged(int value);
   void on_comboBoxGraphStyle_currentIndexChanged(int index);
   void scrollBarCursor_valueChanged();
   void on_spinBoxDataBinaryBits_valueChanged(int arg1);
@@ -63,7 +61,6 @@ private slots:
   void on_pushButtonSendCommand_clicked();
   void on_doubleSpinBoxChScale_valueChanged(double arg1);
   void on_dialChScale_valueChanged(int value);
-  void on_doubleSpinBoxRangeVerticalDiv_valueChanged(double arg1);
   void on_pushButtonSelectedCSV_clicked();
   void on_doubleSpinBoxBinarydataMax_valueChanged(double arg1) { emit setBinMax(arg1); }
   void on_doubleSpinBoxBinaryDataMin_valueChanged(double arg1) { emit setBinMin(arg1); }
@@ -76,6 +73,11 @@ private slots:
   void on_radioButtonEn_toggled(bool checked);
   void on_radioButtonCz_toggled(bool checked);
   void updateReceivedList();
+  void on_lineEditCommand_returnPressed();
+  void updateDivs(double vertical, double horizontal);
+
+  void on_checkBoxChInvert_toggled(bool checked);
+
 public slots:
   void comRefresh();
   void setCursorBounds(double xmin, double xmax, double ymin, double ymax, double xminfull, double xmaxfull, double yminfull, double ymaxfull);
@@ -84,10 +86,10 @@ public slots:
   void showProcessedCommand(QByteArray message);
   void printMessage(QByteArray data, bool urgent);
   void showPlotStatus(int type);
-  void setHDivLimits(double hRange);
-  void setVDivLimits(double vRange);
   void addDataToPlot(QVector<Channel *> channels);
   void serialConnectResult(bool connected, QString message);
+  void printToTerminal(QByteArray data);
+  void serialFinishedWriting();
 
 signals:
   void connectSerial(QString port, int baud);
@@ -100,5 +102,6 @@ signals:
   void setBinFCh(int value);
   void setBinCont(bool value);
   void setMode(int mode);
+  void writeToSerial(QByteArray data);
 };
 #endif // MAINWINDOW_H

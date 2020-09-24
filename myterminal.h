@@ -27,7 +27,7 @@ private:
 private:
   uint16_t cursorX = 0;
   uint16_t cursorY = 0;
-  QColor fontColor = Qt::blue;
+  QColor fontColor = Qt::white;
   QColor backColor = Qt::black;
   QFont font = QFont("Courier New", 18, QFont::Normal);
   void resetFont();

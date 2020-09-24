@@ -106,6 +106,26 @@ void MyPlot::updateCursors(double x1, double x2, double y1, double y2) {
   cursorY2->end->setCoords(1, curY2);
 }
 
+void MyPlot::setChStyle(int ch, int style) {
+  channelSettings.at(ch - 1)->style = style;
+  updateVisuals();
+}
+
+void MyPlot::setChColor(int ch, QColor color) {
+  channelSettings.at(ch - 1)->color = color;
+  updateVisuals();
+}
+
+void MyPlot::changeChOffset(int ch, double offset) {
+  reoffset(ch - 1, offset - channelSettings.at(ch - 1)->offset);
+  channelSettings.at(ch - 1)->offset = offset;
+}
+
+void MyPlot::changeChScale(int ch, double scale) {
+  rescale(ch - 1, scale / channelSettings.at(ch - 1)->scale);
+  channelSettings.at(ch - 1)->scale = scale;
+}
+
 void MyPlot::update() {
   minT = minTime();
   maxT = maxTime();
@@ -119,8 +139,7 @@ void MyPlot::update() {
     }
   }
   emit setCursorBounds(this->xAxis->range().lower, this->xAxis->range().upper, this->yAxis->range().lower, this->yAxis->range().upper, minT, maxT, plotSettings.verticalCenter - plotSettings.verticalRange / 2, plotSettings.verticalCenter + plotSettings.verticalRange / 2);
-  emit setVDivLimits(this->yAxis->range().upper - this->yAxis->range().lower);
-  emit setHDivLimits(this->xAxis->range().upper - this->xAxis->range().lower);
+  emit updateDivs(this->yAxis->range().upper - this->yAxis->range().lower, this->xAxis->range().upper - this->xAxis->range().lower);
 
   this->replot();
 }
@@ -156,6 +175,7 @@ void MyPlot::setVerticalDiv(double value) {
   this->yAxis->setTicker(fixedTicker);
   fixedTicker->setTickStep(value);
   fixedTicker->setScaleStrategy(QCPAxisTickerFixed::ssNone);
+  vdiv = value;
 }
 
 void MyPlot::setHorizontalDiv(double value) {
@@ -163,6 +183,7 @@ void MyPlot::setHorizontalDiv(double value) {
   this->xAxis->setTicker(fixedTicker);
   fixedTicker->setTickStep(value);
   fixedTicker->setScaleStrategy(QCPAxisTickerFixed::ssNone);
+  hdiv = value;
 }
 
 void MyPlot::setShowVerticalValues(bool enabled) { this->yAxis->setTicks(enabled); }

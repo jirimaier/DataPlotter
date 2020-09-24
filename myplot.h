@@ -14,9 +14,20 @@ public:
   explicit MyPlot(QWidget *parent = nullptr);
   void updateCursors(double x1, double x2, double y1, double y2);
   void init();
-  QVector<channelSettings_t *> getChannelSettings() { return channelSettings; }
+  double getVDiv() { return vdiv; }
+  double getHDiv() { return hdiv; }
+  double getCHDiv(int ch) { return vdiv / abs(channelSettings.at(ch - 1)->scale); }
+  double getChScale(int ch) { return abs(channelSettings.at(ch - 1)->scale); }
+  double getChOffset(int ch) { return channelSettings.at(ch - 1)->offset; }
+  int getChStyle(int ch) { return channelSettings.at(ch - 1)->style; }
+  QColor getChColor(int ch) { return channelSettings.at(ch - 1)->color; }
+  void setChStyle(int ch, int style);
+  void setChColor(int ch, QColor color);
+  void changeChOffset(int ch, double offset);
+  void changeChScale(int ch, double scale);
 
 private:
+  double vdiv, hdiv;
   plotSettings_t plotSettings;
   QVector<channelSettings_t *> channelSettings;
   int plotRangeType = PLOT_RANGE_FIXED;
@@ -57,8 +68,7 @@ public slots:
 signals:
   void updateHPosSlider(double min, double max, int step);
   void showPlotStatus(int code);
-  void setHDivLimits(double hRange);
-  void setVDivLimits(double vRange);
+  void updateDivs(double vertical, double horizontal);
   void setCursorBounds(double xmin, double xmax, double ymin, double ymax, double xminull, double xmaxfull, double yminfull, double ymaxfull);
 };
 

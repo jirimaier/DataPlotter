@@ -33,8 +33,9 @@
 #define CMD_END "<end>"
 #define CMD_END_LENGHT 5
 
-#define SERIAL_LINE_TIMEOUT 20
-#define SERIAL_READ_LOOP_TIMEOUT 500
+#define SERIAL_LINE_TIMEOUT 100
+
+const QString lineEndings[4] = {"", "\n", "\r", "\r\n"};
 
 const float refreshRates[8] = {10.0f, 20.0f, 30.0f, 40.0f, 50.0f, 60.0f, 100.0f, 144.0f};
 
@@ -77,4 +78,6 @@ struct plotSettings_t {
   double verticalRange = 10;
   int verticalCenter = 0;
 };
+
+Q_DECLARE_METATYPE(binDataSettings_t)
 #endif // SETTINGS_H
