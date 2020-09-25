@@ -213,7 +213,7 @@
                            <number>3</number>
                           </property>
                           <property name="minimum">
-                           <double>-1000000.000000000000000</double>
+                           <double>0.000000000000000</double>
                           </property>
                           <property name="maximum">
                            <double>1000000.000000000000000</double>
@@ -1815,7 +1815,7 @@
         </size>
        </property>
        <property name="currentIndex">
-        <number>2</number>
+        <number>0</number>
        </property>
        <property name="usesScrollButtons">
         <bool>false</bool>
@@ -2241,6 +2241,9 @@
               <property name="maximum">
                <double>1000000.000000000000000</double>
               </property>
+              <property name="stepType">
+               <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
+              </property>
              </widget>
             </item>
             <item row="5" column="1">
@@ -2602,8 +2605,8 @@
    <slot>scrollBarCursor_valueChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>75</x>
-     <y>675</y>
+     <x>89</x>
+     <y>564</y>
     </hint>
     <hint type="destinationlabel">
      <x>1021</x>
@@ -2618,8 +2621,8 @@
    <slot>scrollBarCursor_valueChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>181</x>
-     <y>583</y>
+     <x>131</x>
+     <y>564</y>
     </hint>
     <hint type="destinationlabel">
      <x>1021</x>
@@ -2634,12 +2637,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>396</x>
-     <y>647</y>
+     <x>131</x>
+     <y>564</y>
     </hint>
     <hint type="destinationlabel">
-     <x>181</x>
-     <y>583</y>
+     <x>131</x>
+     <y>564</y>
     </hint>
    </hints>
   </connection>
@@ -2650,12 +2653,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>203</x>
-     <y>647</y>
+     <x>131</x>
+     <y>564</y>
     </hint>
     <hint type="destinationlabel">
-     <x>75</x>
-     <y>675</y>
+     <x>89</x>
+     <y>564</y>
     </hint>
    </hints>
   </connection>
@@ -2666,28 +2669,12 @@
    <slot>scrollBarCursor_valueChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>55</x>
-     <y>675</y>
+     <x>69</x>
+     <y>564</y>
     </hint>
     <hint type="destinationlabel">
      <x>1021</x>
      <y>789</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>doubleSpinBoxRangeHorizontal</sender>
-   <signal>valueChanged(double)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>setHDivLimits(double)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>434</x>
-     <y>589</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1021</x>
-     <y>709</y>
     </hint>
    </hints>
   </connection>
@@ -2698,12 +2685,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>203</x>
-     <y>647</y>
+     <x>131</x>
+     <y>564</y>
     </hint>
     <hint type="destinationlabel">
-     <x>55</x>
-     <y>675</y>
+     <x>69</x>
+     <y>564</y>
     </hint>
    </hints>
   </connection>
@@ -2714,8 +2701,8 @@
    <slot>scrollBarCursor_valueChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>181</x>
-     <y>563</y>
+     <x>131</x>
+     <y>564</y>
     </hint>
     <hint type="destinationlabel">
      <x>1021</x>
@@ -2730,12 +2717,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>396</x>
-     <y>647</y>
+     <x>131</x>
+     <y>564</y>
     </hint>
     <hint type="destinationlabel">
-     <x>181</x>
-     <y>563</y>
+     <x>131</x>
+     <y>564</y>
     </hint>
    </hints>
   </connection>
@@ -2762,12 +2749,12 @@
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>997</x>
-     <y>515</y>
+     <x>844</x>
+     <y>47</y>
     </hint>
     <hint type="destinationlabel">
-     <x>937</x>
-     <y>606</y>
+     <x>844</x>
+     <y>52</y>
     </hint>
    </hints>
   </connection>
@@ -2778,12 +2765,12 @@
    <slot>clearTerminal()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>889</x>
-     <y>510</y>
+     <x>844</x>
+     <y>47</y>
     </hint>
     <hint type="destinationlabel">
-     <x>902</x>
-     <y>450</y>
+     <x>844</x>
+     <y>484</y>
     </hint>
    </hints>
   </connection>

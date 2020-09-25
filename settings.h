@@ -33,7 +33,7 @@
 #define CMD_END "<end>"
 #define CMD_END_LENGHT 5
 
-#define SERIAL_LINE_TIMEOUT 100
+#define SERIAL_LINE_TIMEOUT 1000
 
 const QString lineEndings[4] = {"", "\n", "\r", "\r\n"};
 
@@ -54,7 +54,7 @@ const uint32_t colorCodes256[256] = {0x000000, 0x800000, 0x008000, 0x808000, 0x0
                                      0xff8700, 0xff875f, 0xff8787, 0xff87af, 0xff87d7, 0xff87ff, 0xffaf00, 0xffaf5f, 0xffaf87, 0xffafaf, 0xffafd7, 0xffafff, 0xffd700, 0xffd75f, 0xffd787, 0xffd7af, 0xffd7d7, 0xffd7ff, 0xffff00, 0xffff5f, 0xffff87, 0xffffaf, 0xffffd7, 0xffffff, 0x080808, 0x121212,
                                      0x1c1c1c, 0x262626, 0x303030, 0x3a3a3a, 0x444444, 0x4e4e4e, 0x585858, 0x626262, 0x6c6c6c, 0x767676, 0x808080, 0x8a8a8a, 0x949494, 0x9e9e9e, 0xa8a8a8, 0xb2b2b2, 0xbcbcbc, 0xc6c6c6, 0xd0d0d0, 0xdadada, 0xe4e4e4, 0xeeeeee};
 
-struct binDataSettings_t {
+struct BinDataSettings_t {
   int bits = 8;
   double valueMin = 0;
   double valueMax = 255;
@@ -64,14 +64,14 @@ struct binDataSettings_t {
   bool continuous = false;
 };
 
-struct channelSettings_t {
+struct ChannelSettings_t {
   QColor color = QColor(Qt::black);
   double offset = 0;
   double scale = 1;
   int style = PLOT_STYLE_LINE;
 };
 
-struct plotSettings_t {
+struct PlotSettings_t {
   double rollingRange = 100;
   int zoom = 1000;
   double horizontalPos = 500;
@@ -79,5 +79,8 @@ struct plotSettings_t {
   int verticalCenter = 0;
 };
 
-Q_DECLARE_METATYPE(binDataSettings_t)
+Q_DECLARE_METATYPE(BinDataSettings_t)
+Q_DECLARE_METATYPE(ChannelSettings_t)
+Q_DECLARE_METATYPE(PlotSettings_t)
+
 #endif // SETTINGS_H

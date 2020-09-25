@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QtGlobal>
+
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) { ui->setupUi(this); }
 
 MainWindow::~MainWindow() { delete ui; }
@@ -11,7 +13,7 @@ void MainWindow::init() {
 
   ui->tabs_right->setCurrentIndex(0);
   ui->tabs_Plot->setCurrentIndex(0);
-
+  ui->comboBoxPlotRangeType->setCurrentIndex(PLOT_RANGE_FIXED);
   ui->labelBuildDate->setText("Build: " + QString(__DATE__) + " " + QString(__TIME__));
 
   QPixmap pixmap(30, 30);
@@ -118,7 +120,7 @@ void MainWindow::changedDataMode(int mode) {
   emit
 }
 
-void MainWindow::changeBinSettings(binDataSettings_t settings) {
+void MainWindow::changeBinSettings(BinDataSettings_t settings) {
   if (ui->checkBoxBinarySettingsOverride->isChecked())
     return;
   if (!ui->checkBoxBinarySettingsOverride->isChecked()) {
@@ -140,7 +142,12 @@ void MainWindow::showProcessedCommand(QByteArray message) {
     stringMessage.replace(QChar('\t'), "<font color=navy>[TAB]</font>");
     stringMessage.replace(QChar(27), "<font color=navy>[ESC]</font>");
   } else {
+// Oddělení bajtů mezerami nefunguje v starším Qt (Win XP)
+#if QT_VERSION >= 0x050900
     stringMessage = message.toHex(' ');
+#else
+    stringMessage = message.toHex();
+#endif
     stringMessage = "<font color=navy>" + stringMessage + "</font>";
   }
   receivedListBuffer.append(stringMessage);
@@ -183,7 +190,7 @@ void MainWindow::comRefresh() {
   } else
     change = true;
   if (change) {
-    qDebug() << "change";
+    qDebug() << "Available ports changed";
     QString currect = ui->comboBoxCom->currentText();
     ui->comboBoxCom->clear();
     portList = newPorts;

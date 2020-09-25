@@ -1,11 +1,12 @@
 #include "plotdata.h"
+#include <QDebug>
 
 PlotData::PlotData() {
   for (int i = 0; i < CHANNEL_COUNT; i++)
     channels.append(new Channel());
 }
 
-PlotData::~PlotData() {}
+PlotData::~PlotData() { qDebug() << "PlotData deleted"; }
 
 void PlotData::newDataString(QByteArray data) {
   QByteArrayList pointList = data.split(';');
@@ -24,7 +25,7 @@ void PlotData::clearChannels() {
     channels.at(ch)->clear();
 }
 
-void PlotData::newDataBin(QByteArray data, binDataSettings_t settings) {
+void PlotData::newDataBin(QByteArray data, BinDataSettings_t settings) {
   int bytes = ceil(settings.bits / 8.0f);
   if (data.length() % bytes != 0)
     data = data.left(data.length() - data.length() % bytes);

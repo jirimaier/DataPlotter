@@ -16,7 +16,7 @@ public:
   ~SerialParser();
 
 private:
-  binDataSettings_t binDataSettings;
+  BinDataSettings_t binDataSettings;
   int dataMode = DATA_MODE_DATA_UNKNOWN;
   void parseBinaryDataHeader(QByteArray data);
 
@@ -38,9 +38,9 @@ signals:
   void printToTerminal(QByteArray message);
   void printMessage(QByteArray message, bool urgent);
   void newDataString(QByteArray data);
-  void newDataBin(QByteArray data, binDataSettings_t settings);
+  void newDataBin(QByteArray data, BinDataSettings_t settings);
   void newProcessedCommand(QByteArray);
-  void changedBinSettings(binDataSettings_t);
+  void changedBinSettings(BinDataSettings_t);
   void changedDataMode(int mode);
 };
 

@@ -82,7 +82,7 @@ public slots:
   void comRefresh();
   void setCursorBounds(double xmin, double xmax, double ymin, double ymax, double xminfull, double xmaxfull, double yminfull, double ymaxfull);
   void changedDataMode(int mode);
-  void changeBinSettings(binDataSettings_t in_settings);
+  void changeBinSettings(BinDataSettings_t in_settings);
   void showProcessedCommand(QByteArray message);
   void printMessage(QByteArray data, bool urgent);
   void showPlotStatus(int type);

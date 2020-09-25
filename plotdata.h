@@ -21,7 +21,7 @@ public:
 private:
 public slots:
   void newDataString(QByteArray data);
-  void newDataBin(QByteArray data, binDataSettings_t settings);
+  void newDataBin(QByteArray data, BinDataSettings_t settings);
 
 signals:
   void dataReady(QVector<Channel *> channels);

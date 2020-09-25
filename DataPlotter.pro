@@ -11,7 +11,7 @@ SOURCES += \
     plotdata.cpp \
     qcustomplot.cpp \
     serialparser.cpp \
-    serialthread.cpp
+    serialworker.cpp
 
 HEADERS += \
     channel.h \
@@ -21,7 +21,7 @@ HEADERS += \
     plotdata.h \
     qcustomplot.h \
     serialparser.h \
-    serialthread.h \
+    serialworker.h \
     settings.h
 
 FORMS += mainwindow.ui

@@ -2,11 +2,11 @@
 
 SerialParser::SerialParser() {}
 
-SerialParser::~SerialParser() {}
+SerialParser::~SerialParser() { qDebug() << "SerialParser deleted"; }
 
 void SerialParser::parseBinaryDataHeader(QByteArray data) {
   QByteArrayList list = data.split(',');
-  binDataSettings_t newSettings = binDataSettings;
+  BinDataSettings_t newSettings = binDataSettings;
   // bin,bits,chNum,maxVal,minVal,time,firstch
   if (list.length() >= 2)
     if (list.at(1).length() > 0)

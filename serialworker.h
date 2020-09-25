@@ -1,19 +1,16 @@
-#ifndef SERIALTHREAD_H
-#define SERIALTHREAD_H
+#ifndef SERIALWORKER_H
+#define SERIALWORKER_H
 
 #include "settings.h"
-#include <QApplication>
 #include <QByteArrayMatcher>
-#include <QMutex>
 #include <QObject>
 #include <QSerialPort>
-#include <QThread>
 
-class SerialReader : public QThread {
+class SerialWorker : public QObject {
   Q_OBJECT
 public:
-  SerialReader();
-  ~SerialReader();
+  explicit SerialWorker(QObject *parent = nullptr);
+  ~SerialWorker();
 
 signals:
   void error(QString);
@@ -23,12 +20,11 @@ signals:
   void finishedWriting();
 
 private:
-  QMutex mutex;
-  void run() override;
-  QString port;
-  QByteArray writeBuffer;
-  int baud;
-  int lineTimeout = 5;
+  QSerialPort serial;
+  QByteArray buffer;
+
+private slots:
+  void read();
 
 public slots:
   void begin(QString portName, int baudRate);
@@ -36,4 +32,4 @@ public slots:
   void write(QByteArray data);
 };
 
-#endif // SERIALTHREAD_H
+#endif // SERIALWORKER_H

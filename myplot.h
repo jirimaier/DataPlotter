@@ -28,8 +28,8 @@ public:
 
 private:
   double vdiv, hdiv;
-  plotSettings_t plotSettings;
-  QVector<channelSettings_t *> channelSettings;
+  PlotSettings_t plotSettings;
+  QVector<ChannelSettings_t *> channelSettings;
   int plotRangeType = PLOT_RANGE_FIXED;
   QVector<QCPItemLine *> zeroLines;
   double curX1 = 0, curX2 = 0, curY1 = 0, curY2 = 0;
