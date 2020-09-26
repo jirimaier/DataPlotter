@@ -4,16 +4,24 @@
 SerialWorker::SerialWorker(QObject *parent) : QObject(parent) {}
 
 SerialWorker::~SerialWorker() {
-  delete timer;
+  delete lineTimeouter;
   delete buffer;
   delete serial;
   qDebug() << "SerialWorker deleted";
 }
 
 void SerialWorker::init() {
-  timer = new QTimer;
   buffer = new QByteArray;
   serial = new QSerialPort;
+  lineTimeouter = new QTimer;
+  lineTimeouter->setSingleShot(true);
+  connect(lineTimeouter, &QTimer::timeout, this, &SerialWorker::lineTimedOut);
+  connect(serial, &QSerialPort::readyRead, this, &SerialWorker::read);
+
+// V starším Qt (Win XP) není signál pro error
+#if QT_VERSION >= 0x050800
+  connect(serial, &QSerialPort::errorOccurred, this, &SerialWorker::errorOccurred);
+#endif
 }
 
 void SerialWorker::read() {
@@ -27,7 +35,7 @@ void SerialWorker::read() {
     begin = head.indexIn(*buffer);
     end = tail.indexIn(*buffer);
     if (begin == -1 && end == -1) {
-      timer->start(lineTimeout);
+      lineTimeouter->start(lineTimeout);
       break;
     }
     if (end != -1 && (end < begin || begin == -1)) {
@@ -58,16 +66,17 @@ void SerialWorker::lineTimedOut() {
   }
 }
 
-void SerialWorker::errorOccured() {
+void SerialWorker::errorOccurred() {
   if (serial->isOpen())
     serial->close();
+  if (lineTimeouter->isActive())
+    lineTimeouter->stop();
   emit connectionResult(false, tr("Error: ") + serial->errorString());
 }
 
+void SerialWorker::requestedBufferDebug() { emit bufferDebug(*buffer); }
+
 void SerialWorker::begin(QString portName, int baudRate) {
-  connect(timer, &QTimer::timeout, this, &SerialWorker::lineTimedOut);
-  connect(serial, &QSerialPort::readyRead, this, &SerialWorker::read);
-  connect(serial, &QSerialPort::errorOccurred, this, &SerialWorker::errorOccured);
   serial->setPortName(portName);
   serial->setBaudRate(baudRate);
   serial->setDataBits(QSerialPort::Data8);
@@ -85,6 +94,8 @@ void SerialWorker::begin(QString portName, int baudRate) {
 void SerialWorker::end() {
   if (serial->isOpen())
     serial->close();
+  if (lineTimeouter->isActive())
+    lineTimeouter->stop();
   emit connectionResult(false, tr("Not connected"));
 }
 

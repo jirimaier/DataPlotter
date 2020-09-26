@@ -18,9 +18,10 @@ signals:
   void connectionResult(bool, QString);
   void newLine(QByteArray);
   void finishedWriting();
+  void bufferDebug(QByteArray);
 
 private:
-  QTimer *timer;
+  QTimer *lineTimeouter;
   int lineTimeout = 100;
   QSerialPort *serial;
   QByteArray *buffer;
@@ -28,13 +29,14 @@ private:
 private slots:
   void read();
   void lineTimedOut();
-  void errorOccured();
+  void errorOccurred();
 
 public slots:
   void changeLineTimeout(int value) { lineTimeout = value; }
   void begin(QString portName, int baudRate);
   void end();
   void write(QByteArray data);
+  void requestedBufferDebug();
 };
 
 #endif // SERIALWORKER_H

@@ -77,6 +77,7 @@ private slots:
   void updateDivs(double vertical, double horizontal);
   void on_checkBoxChInvert_toggled(bool checked);
   void on_horizontalSliderLineTimeout_valueChanged(int value);
+  void on_pushButtonPrintBuffer_clicked();
 
 public slots:
   void comRefresh();
@@ -90,6 +91,7 @@ public slots:
   void serialConnectResult(bool connected, QString message);
   void printToTerminal(QByteArray data);
   void serialFinishedWriting();
+  void bufferDebug(QByteArray data);
 
 signals:
   void connectSerial(QString port, int baud);
@@ -104,5 +106,6 @@ signals:
   void setMode(int mode);
   void writeToSerial(QByteArray data);
   void changeLineTimeout(int);
+  void requestBufferDebug();
 };
 #endif // MAINWINDOW_H

@@ -49,6 +49,7 @@ void MainWindow::connectSignals() {
   connect(ui->doubleSpinBoxRangeVerticalRange, SIGNAL(valueChanged(double)), ui->plot, SLOT(setVerticalRange(double)));
   connect(ui->verticalScrollBarVerticalCenter, &QScrollBar::valueChanged, ui->plot, &MyPlot::setVerticalCenter);
   connect(ui->horizontalScrollBarHorizontal, &QScrollBar::valueChanged, ui->plot, &MyPlot::setHorizontalPos);
+  connect(ui->pushButtonPrintBuffer, &QPushButton::clicked, this, &MainWindow::requestBufferDebug);
 }
 void MainWindow::printMessage(QByteArray data, bool urgent) {
   QString message = QString("<font color=grey>%1: </font>").arg(QString(QTime::currentTime().toString("hh:mm:ss")));
@@ -151,12 +152,17 @@ void MainWindow::showProcessedCommand(QByteArray message) {
       message = message.left(message.length() - CMD_END_LENGTH);
       suffix = CMD_END;
     }
+
 // Oddělení bajtů mezerami nefunguje v starším Qt (Win XP)
 #if QT_VERSION >= 0x050900
     stringMessage = message.toHex(' ') + suffix;
 #else
-    stringMessage = message.toHex() + " " + suffix;
+    stringMessage.clear();
+    foreach (byte b, message)
+      stringMessage.append(QString::number(b, 16) + " ");
+    stringMessage = stringMessage.trimmed();
 #endif
+
     stringMessage = "<font color=navy>" + stringMessage + "</font>";
   }
   stringMessage.replace(CMD_BEGIN, QString("<font color=orange>%1<cmd></font>").arg(QString(CMD_BEGIN).replace('<', "&lt;").replace('>', "&gt;")));
@@ -206,7 +212,7 @@ void MainWindow::comRefresh() {
   // Aktualizuje seznam portů
   if (change) {
     qDebug() << "Available ports changed";
-    QString currect = ui->comboBoxCom->currentText();
+    QString current = ui->comboBoxCom->currentText();
     ui->comboBoxCom->clear();
     portList = newPorts;
     int portWithStName = -1;
@@ -220,7 +226,7 @@ void MainWindow::comRefresh() {
     }
 
     // Znovu vypere původní port; pokud neexistuje, vybere port který je asi Nucleo, pokud žádný popisem neodpovídá, vybere ten první.
-    ui->comboBoxCom->setCurrentIndex(MAX(ui->comboBoxCom->findText(currect), MAX(portWithStName, 0)));
+    ui->comboBoxCom->setCurrentIndex(ui->comboBoxCom->findText(current) == -1 ? MAX(portWithStName, 0) : ui->comboBoxCom->findText(current));
   }
 }
 
@@ -292,7 +298,7 @@ void MainWindow::scrollBarCursor_valueChanged() {
 
 void MainWindow::on_pushButtonDisconnect_clicked() {
   emit disconnectSerial();
-  ui->lineEditPortInfo->setText(tr("Disconnecting..."));
+  ui->labelPortInfo->setText(tr("Disconnecting..."));
 }
 
 void MainWindow::on_pushButtonSendCommand_clicked() {
@@ -307,12 +313,31 @@ void MainWindow::serialConnectResult(bool connected, QString message) {
   ui->pushButtonConnect->setEnabled(!connected);
   ui->comboBoxCom->setEnabled(!connected);
   ui->comboBoxBaud->setEnabled(!connected);
-  ui->lineEditPortInfo->setText(message);
+  ui->labelPortInfo->setText(message);
 }
 
 void MainWindow::printToTerminal(QByteArray data) { ui->myTerminal->printToTerminal(data); }
 
 void MainWindow::serialFinishedWriting() { ui->lineEditCommand->clear(); }
+
+void MainWindow::bufferDebug(QByteArray data) {
+  QString stringData = QString(data);
+  if (stringData.length() == data.length()) {
+    ui->textEditSerialDebug->append(QString("<font color=red>%1</font color>").arg(tr("Buffer content (Text): ")));
+    ui->textEditSerialDebug->append(stringData.simplified());
+  }
+  ui->textEditSerialDebug->append(QString("<font color=red>%1</font color> %2 %3").arg(tr("Buffer content (Hex):")).arg(data.length()).arg(tr("bytes")));
+
+  // Oddělení bajtů mezerami nefunguje v starším Qt (Win XP)
+#if QT_VERSION >= 0x050900
+  ui->textEditSerialDebug->append(QString("<font color=navy>%1</font color>").arg(QString(data.toHex(' '))));
+#else
+  QString data2 foreach (byte b, data) stringMessage.append(QString::number(b, 16) + " ");
+  data2 = data2.trimmed();
+  ui->textEditSerialDebug->append(QString("<font color=red>%1</font color>").arg(data2.trimmed()));
+#endif
+  ui->textEditSerialDebug->append("");
+}
 
 void MainWindow::on_spinBoxDataBinaryBits_valueChanged(int arg1) {
   if (arg1 != 64)
@@ -403,3 +428,5 @@ void MainWindow::on_horizontalSliderLineTimeout_valueChanged(int value) {
   ui->labelLineTimeout->setText(QString::number(logaritmicSettings[value]) + " ms");
   emit changeLineTimeout(logaritmicSettings[value]);
 }
+
+void MainWindow::on_pushButtonPrintBuffer_clicked() {}
