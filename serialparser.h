@@ -6,7 +6,6 @@
 
 #include "myterminal.h"
 #include "plotdata.h"
-#include "serialthread.h"
 #include "settings.h"
 
 class SerialParser : public QObject {
@@ -21,8 +20,7 @@ private:
   void parseBinaryDataHeader(QByteArray data);
 
 public slots:
-  void parseCommand(QByteArray line);
-  void parseData(QByteArray line);
+  void parseLine(QByteArray line);
   void setBinBits(int value) { binDataSettings.bits = value; }
   void setBinMin(double value) { binDataSettings.valueMin = value; }
   void setBinMax(double value) { binDataSettings.valueMax = value; }
@@ -34,12 +32,11 @@ public slots:
 
 signals:
   void changedMode(int);
-  void showErrorMessage(QByteArray message);
   void printToTerminal(QByteArray message);
   void printMessage(QByteArray message, bool urgent);
   void newDataString(QByteArray data);
   void newDataBin(QByteArray data, BinDataSettings_t settings);
-  void newProcessedCommand(QByteArray);
+  void newProcessedLine(QByteArray);
   void changedBinSettings(BinDataSettings_t);
   void changedDataMode(int mode);
 };

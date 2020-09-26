@@ -75,8 +75,8 @@ private slots:
   void updateReceivedList();
   void on_lineEditCommand_returnPressed();
   void updateDivs(double vertical, double horizontal);
-
   void on_checkBoxChInvert_toggled(bool checked);
+  void on_horizontalSliderLineTimeout_valueChanged(int value);
 
 public slots:
   void comRefresh();
@@ -103,5 +103,6 @@ signals:
   void setBinCont(bool value);
   void setMode(int mode);
   void writeToSerial(QByteArray data);
+  void changeLineTimeout(int);
 };
 #endif // MAINWINDOW_H

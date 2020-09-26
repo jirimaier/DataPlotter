@@ -29,32 +29,35 @@ void SerialParser::parseBinaryDataHeader(QByteArray data) {
   emit changedBinSettings(newSettings);
 }
 
-void SerialParser::parseData(QByteArray line) {
-  emit newProcessedCommand("Dat: " + line);
-  if (dataMode == DATA_MODE_DATA_STRING)
-    emit newDataString(line);
-  if (dataMode == DATA_MODE_MESSAGE_INFO)
-    emit printMessage(line, false);
-  if (dataMode == DATA_MODE_MESSAGE_WARNING)
-    emit printMessage(line, true);
-  if (dataMode == DATA_MODE_TERMINAL)
-    emit printToTerminal(line);
-  if (dataMode == DATA_MODE_DATA_BINARY)
-    emit newDataBin(line, binDataSettings);
-}
-
-void SerialParser::parseCommand(QByteArray line) {
-  emit newProcessedCommand("Cmd: " + line);
-  if (line == "data")
-    emit changedMode(DATA_MODE_DATA_STRING);
-  else if (line == "info")
-    emit changedMode(DATA_MODE_MESSAGE_INFO);
-  else if (line == "warning")
-    emit changedMode(DATA_MODE_MESSAGE_WARNING);
-  else if (line == "terminal")
-    emit changedMode(DATA_MODE_TERMINAL);
-  else if (line.left(3) == "bin") {
-    emit changedMode(DATA_MODE_DATA_BINARY);
-    parseBinaryDataHeader(line);
+void SerialParser::parseLine(QByteArray line) {
+  if (line.left(CMD_BEGIN_LENGTH) == CMD_BEGIN) {
+    line = line.mid(CMD_BEGIN_LENGTH, line.length() - CMD_END_LENGTH - CMD_BEGIN_LENGTH);
+    if (line == "data")
+      emit changedMode(DATA_MODE_DATA_STRING);
+    else if (line == "info")
+      emit changedMode(DATA_MODE_MESSAGE_INFO);
+    else if (line == "warning")
+      emit changedMode(DATA_MODE_MESSAGE_WARNING);
+    else if (line == "terminal")
+      emit changedMode(DATA_MODE_TERMINAL);
+    else if (line.left(3) == "bin") {
+      emit changedMode(DATA_MODE_DATA_BINARY);
+      parseBinaryDataHeader(line);
+    }
+  } else {
+    if (line.endsWith(TIMEOUT_SYMBOL))
+      line = line.left(line.length() - TIMEOUT_SYMBOL_LENGTH);
+    if (line.endsWith(CMD_END))
+      line = line.left(line.length() - CMD_END_LENGTH);
+    if (dataMode == DATA_MODE_DATA_STRING)
+      emit newDataString(line);
+    if (dataMode == DATA_MODE_MESSAGE_INFO)
+      emit printMessage(line, false);
+    if (dataMode == DATA_MODE_MESSAGE_WARNING)
+      emit printMessage(line, true);
+    if (dataMode == DATA_MODE_TERMINAL)
+      emit printToTerminal(line);
+    if (dataMode == DATA_MODE_DATA_BINARY)
+      emit newDataBin(line, binDataSettings);
   }
 }

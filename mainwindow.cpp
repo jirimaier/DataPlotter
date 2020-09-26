@@ -142,14 +142,26 @@ void MainWindow::showProcessedCommand(QByteArray message) {
     stringMessage.replace(QChar('\t'), "<font color=navy>[TAB]</font>");
     stringMessage.replace(QChar(27), "<font color=navy>[ESC]</font>");
   } else {
+    QString suffix = "";
+    if (message.endsWith(TIMEOUT_SYMBOL)) {
+      message = message.left(message.length() - TIMEOUT_SYMBOL_LENGTH);
+      suffix = TIMEOUT_SYMBOL;
+    }
+    if (message.endsWith(CMD_END)) {
+      message = message.left(message.length() - CMD_END_LENGTH);
+      suffix = CMD_END;
+    }
 // Oddělení bajtů mezerami nefunguje v starším Qt (Win XP)
 #if QT_VERSION >= 0x050900
-    stringMessage = message.toHex(' ');
+    stringMessage = message.toHex(' ') + suffix;
 #else
-    stringMessage = message.toHex();
+    stringMessage = message.toHex() + " " + suffix;
 #endif
     stringMessage = "<font color=navy>" + stringMessage + "</font>";
   }
+  stringMessage.replace(CMD_BEGIN, QString("<font color=orange>%1<cmd></font>").arg(QString(CMD_BEGIN).replace('<', "&lt;").replace('>', "&gt;")));
+  stringMessage.replace(CMD_END, QString("<font color=orange>%1<cmd></font>").arg(QString(CMD_END).replace('<', "&lt;").replace('>', "&gt;")));
+  stringMessage.replace(TIMEOUT_SYMBOL, QString("<font color=orange>%1<cmd></font>").arg(QString(TIMEOUT_SYMBOL).replace('<', "&lt;").replace('>', "&gt;")));
   receivedListBuffer.append(stringMessage);
 }
 
@@ -179,6 +191,7 @@ void MainWindow::updateChScale() {
 }
 
 void MainWindow::comRefresh() {
+  // Zjistí, jestli nastala změna v portech.
   QList<QSerialPortInfo> newPorts = QSerialPortInfo::availablePorts();
   bool change = false;
   if (newPorts.length() == portList.length()) {
@@ -189,21 +202,25 @@ void MainWindow::comRefresh() {
       }
   } else
     change = true;
+
+  // Aktualizuje seznam portů
   if (change) {
     qDebug() << "Available ports changed";
     QString currect = ui->comboBoxCom->currentText();
     ui->comboBoxCom->clear();
     portList = newPorts;
-    foreach (QSerialPortInfo port, portList)
+    int portWithStName = -1;
+
+    // Nandá nové porty do comboboxu, pokusí se najít port jehož popis poukazuje na Nucleo
+    for (int i = 0; i < portList.length(); i++) {
+      QSerialPortInfo port = portList.at(i);
       ui->comboBoxCom->addItem(port.portName() + " - " + port.description());
-    int i = ui->comboBoxCom->findText(currect);
-    if (i == -1) {
-      if (ui->pushButtonDisconnect->isEnabled()) {
-        on_pushButtonDisconnect_clicked();
-        ui->comboBoxBaud->setCurrentIndex(0);
-      }
-    } else
-      ui->comboBoxCom->setCurrentIndex(i);
+      if (port.description().contains(PORT_NUCLEO_DESCRIPTION_IDENTIFIER))
+        portWithStName = i;
+    }
+
+    // Znovu vypere původní port; pokud neexistuje, vybere port který je asi Nucleo, pokud žádný popisem neodpovídá, vybere ten první.
+    ui->comboBoxCom->setCurrentIndex(MAX(ui->comboBoxCom->findText(currect), MAX(portWithStName, 0)));
   }
 }
 
@@ -368,8 +385,8 @@ void MainWindow::on_radioButtonCz_toggled(bool checked) {
 void MainWindow::on_lineEditCommand_returnPressed() { on_pushButtonSendCommand_clicked(); }
 
 void MainWindow::updateDivs(double vertical, double horizontal) {
-  ui->plot->setVerticalDiv(logaritmicSettings[roundToStandardValue(vertical) + ui->dialVerticalDiv->value()]);
-  ui->plot->setHorizontalDiv(logaritmicSettings[roundToStandardValue(horizontal) + ui->dialhorizontalDiv->value()]);
+  ui->plot->setVerticalDiv(logaritmicSettings[MAX(roundToStandardValue(vertical) + ui->dialVerticalDiv->value(), 0)]);
+  ui->plot->setHorizontalDiv(logaritmicSettings[MAX(roundToStandardValue(horizontal) + ui->dialhorizontalDiv->value(), 0)]);
   updateChScale();
   ui->labelHDiv->setText(QString::number(ui->plot->getHDiv()) + tr(" / Div"));
   ui->labelVDiv->setText(QString::number(ui->plot->getVDiv()) + tr(" / Div"));
@@ -380,4 +397,9 @@ void MainWindow::on_checkBoxChInvert_toggled(bool checked) {
     ui->doubleSpinBoxChScale->setValue(-ui->doubleSpinBoxChScale->value());
   else if (checked == true && ui->doubleSpinBoxChScale->value() > 0)
     ui->doubleSpinBoxChScale->setValue(-ui->doubleSpinBoxChScale->value());
+}
+
+void MainWindow::on_horizontalSliderLineTimeout_valueChanged(int value) {
+  ui->labelLineTimeout->setText(QString::number(logaritmicSettings[value]) + " ms");
+  emit changeLineTimeout(logaritmicSettings[value]);
 }
