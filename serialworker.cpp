@@ -1,22 +1,28 @@
 #include "serialworker.h"
 #include <QtDebug>
 
-SerialWorker::SerialWorker(QObject *parent) : QObject(parent) {}
+SerialWorker::SerialWorker(QObject *parent) : QObject(parent) { qDebug() << "SerialWorker created from " << QThread::currentThreadId(); }
 
 SerialWorker::~SerialWorker() {
   delete lineTimeouter;
   delete buffer;
   delete serial;
-  qDebug() << "SerialWorker deleted";
+  delete commandBeginningMatcher;
+  delete commandEndMatcher;
+  qDebug() << "SerialWorker deleted from " << QThread::currentThreadId();
 }
 
 void SerialWorker::init() {
   buffer = new QByteArray;
   serial = new QSerialPort;
   lineTimeouter = new QTimer;
+  commandBeginningMatcher = new QByteArrayMatcher(CMD_BEGIN);
+  commandEndMatcher = new QByteArrayMatcher(CMD_END);
   lineTimeouter->setSingleShot(true);
   connect(lineTimeouter, &QTimer::timeout, this, &SerialWorker::lineTimedOut);
   connect(serial, &QSerialPort::readyRead, this, &SerialWorker::read);
+  connect(serial, &QSerialPort::bytesWritten, this, &SerialWorker::finishedWriting);
+  qDebug() << "SerialWorker initialised from " << QThread::currentThreadId();
 
 // V starším Qt (Win XP) není signál pro error
 #if QT_VERSION >= 0x050800
@@ -25,15 +31,11 @@ void SerialWorker::init() {
 }
 
 void SerialWorker::read() {
-  QByteArrayMatcher head;
-  QByteArrayMatcher tail;
-  head.setPattern(CMD_BEGIN);
-  tail.setPattern(CMD_END);
   int begin, end;
   buffer->append(serial->readAll());
   while (!buffer->isEmpty()) {
-    begin = head.indexIn(*buffer);
-    end = tail.indexIn(*buffer);
+    begin = commandBeginningMatcher->indexIn(*buffer);
+    end = commandEndMatcher->indexIn(*buffer);
     if (begin == -1 && end == -1) {
       lineTimeouter->start(lineTimeout);
       break;
@@ -99,4 +101,4 @@ void SerialWorker::end() {
   emit connectionResult(false, tr("Not connected"));
 }
 
-void SerialWorker::write(QByteArray data) {}
+void SerialWorker::write(QByteArray data) { serial->write(data); }

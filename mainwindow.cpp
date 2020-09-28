@@ -13,7 +13,9 @@ void MainWindow::init() {
 
   ui->tabs_right->setCurrentIndex(0);
   ui->tabs_Plot->setCurrentIndex(0);
+  ui->checkBoxModeManual->setChecked(false);
   ui->comboBoxPlotRangeType->setCurrentIndex(PLOT_RANGE_FIXED);
+  on_pushButtonDataModeApply_clicked();
   ui->labelBuildDate->setText("Build: " + QString(__DATE__) + " " + QString(__TIME__));
 
   QPixmap pixmap(30, 30);
@@ -27,8 +29,8 @@ void MainWindow::init() {
   portsRefreshTimer.setInterval(500);
   plotUpdateTimer.setInterval(10);
   listUpdateTimer.setInterval(100);
-  connect(&plotUpdateTimer, &QTimer::timeout, ui->plot, &MyPlot::update);
-  connect(&listUpdateTimer, &QTimer::timeout, this, &MainWindow::updateReceivedList);
+  connect(&plotUpdateTimer, &QTimer::timeout, this, &MainWindow::updatePlot);
+  connect(&listUpdateTimer, &QTimer::timeout, this, &MainWindow::updateInfo);
   connect(&portsRefreshTimer, &QTimer::timeout, this, &MainWindow::comRefresh);
   plotUpdateTimer.start();
   listUpdateTimer.start();
@@ -115,66 +117,35 @@ void MainWindow::setCursorBounds(double xmin, double xmax, double ymin, double y
 }
 
 void MainWindow::changedDataMode(int mode) {
-  if (ui->checkBoxPreventModeChange->isChecked())
+  ui->labelBinSettings->setVisible(ui->checkBoxModeManual->isChecked() || mode == DATA_MODE_DATA_BINARY);
+  ui->labelDataMode->setText(tr("Data mode: ") + ui->comboBoxDataMode->itemText(mode));
+  ui->comboBoxDataMode->setCurrentIndex(mode);
+}
+
+void MainWindow::showProcessedCommand(QString message) { receivedListBuffer.append(message); }
+
+void MainWindow::updateInfo() {
+  if (receivedListBuffer.isEmpty())
     return;
-  ui->listWidgetDataMode->setCurrentRow(mode);
-  emit
-}
-
-void MainWindow::changeBinSettings(BinDataSettings_t settings) {
-  if (ui->checkBoxBinarySettingsOverride->isChecked())
-    return;
-  if (!ui->checkBoxBinarySettingsOverride->isChecked()) {
-    ui->spinBoxDataBinaryBits->setValue(settings.bits);
-    ui->doubleSpinBoxBinaryDataMin->setValue(settings.valueMin);
-    ui->doubleSpinBoxBinarydataMax->setValue(settings.valueMax);
-    ui->doubleSpinBoxBinaryTimestep->setValue(settings.timeStep);
-    ui->spinBoxBinaryDataNumCh->setValue(settings.numCh);
-    ui->spinBoxBinaryDataFirstCh->setValue(settings.firstCh);
-    ui->checkBoxBinContinuous->setChecked(settings.continuous);
-  }
-}
-
-void MainWindow::showProcessedCommand(QByteArray message) {
-  QString stringMessage = QString(message);
-  if (stringMessage.length() == message.length()) {
-    stringMessage.replace(QChar('\r'), "<font color=navy>[CR]</font>");
-    stringMessage.replace(QChar('\n'), "<font color=navy>[LF]</font>");
-    stringMessage.replace(QChar('\t'), "<font color=navy>[TAB]</font>");
-    stringMessage.replace(QChar(27), "<font color=navy>[ESC]</font>");
-  } else {
-    QString suffix = "";
-    if (message.endsWith(TIMEOUT_SYMBOL)) {
-      message = message.left(message.length() - TIMEOUT_SYMBOL_LENGTH);
-      suffix = TIMEOUT_SYMBOL;
-    }
-    if (message.endsWith(CMD_END)) {
-      message = message.left(message.length() - CMD_END_LENGTH);
-      suffix = CMD_END;
-    }
-
-// Oddělení bajtů mezerami nefunguje v starším Qt (Win XP)
-#if QT_VERSION >= 0x050900
-    stringMessage = message.toHex(' ') + suffix;
-#else
-    stringMessage.clear();
-    foreach (byte b, message)
-      stringMessage.append(QString::number(b, 16) + " ");
-    stringMessage = stringMessage.trimmed();
-#endif
-
-    stringMessage = "<font color=navy>" + stringMessage + "</font>";
-  }
-  stringMessage.replace(CMD_BEGIN, QString("<font color=orange>%1<cmd></font>").arg(QString(CMD_BEGIN).replace('<', "&lt;").replace('>', "&gt;")));
-  stringMessage.replace(CMD_END, QString("<font color=orange>%1<cmd></font>").arg(QString(CMD_END).replace('<', "&lt;").replace('>', "&gt;")));
-  stringMessage.replace(TIMEOUT_SYMBOL, QString("<font color=orange>%1<cmd></font>").arg(QString(TIMEOUT_SYMBOL).replace('<', "&lt;").replace('>', "&gt;")));
-  receivedListBuffer.append(stringMessage);
-}
-
-void MainWindow::updateReceivedList() {
   foreach (QString line, receivedListBuffer)
     ui->textEditSerialDebug->append(line);
   receivedListBuffer.clear();
+
+  QString text = tr("Binary mode settings:");
+  text.append(QString::number(binSettings.bits) + tr(" bits") + "\n");
+  if (binSettings.bits != 64)
+    text.append("Max (0x" + QString::number(((quint64)1 << binSettings.bits) - 1, 16).toUpper() + "): " + QString::number(binSettings.valueMax) + "\n");
+  else
+    text.append("Max (0xFFFFFFFFFFFFFFFF): " + QString::number(binSettings.valueMax) + "\n");
+  text.append("Min (0x00): " + QString::number(binSettings.valueMin) + "\n");
+  text.append(tr("Time step: ") + QString::number(binSettings.timeStep) + tr(" / sample") + "\n");
+  if (binSettings.numCh == 1)
+    text.append(tr("Channel ") + QString::number(binSettings.firstCh) + "\n");
+  else
+    text.append(tr("Channels ") + QString::number(binSettings.firstCh) + tr(" - ") + QString::number(binSettings.firstCh + binSettings.numCh - 1) + "\n");
+  if (binSettings.continuous)
+    text.append(tr("continous") + "\n");
+  ui->labelBinSettings->setText(text.trimmed());
 }
 
 int MainWindow::roundToStandardValue(double value) {
@@ -241,7 +212,10 @@ void MainWindow::on_dialRollingRange_valueChanged(int value) { ui->doubleSpinBox
 
 void MainWindow::on_dialVerticalRange_valueChanged(int value) { ui->doubleSpinBoxRangeVerticalRange->setValue(logaritmicSettings[value]); }
 
-void MainWindow::on_pushButtonClearChannels_clicked() { ui->plot->resetChannels(); }
+void MainWindow::on_pushButtonClearChannels_clicked() {
+  ui->plot->resetChannels();
+  emit resetChannels();
+}
 
 void MainWindow::on_pushButtonChannelColor_clicked() {
   QColor color = QColorDialog::getColor(ui->plot->getChColor(ui->spinBoxChannelSelect->value()));
@@ -306,7 +280,7 @@ void MainWindow::on_pushButtonSendCommand_clicked() {
   emit writeToSerial(text.toUtf8());
 }
 
-void MainWindow::addDataToPlot(QVector<Channel *> channels) { ui->plot->newData(channels); }
+void MainWindow::addDataToPlot(int ch, QVector<double> *time, QVector<double> *value, bool continous) { ui->plot->newData(ch, time, value, continous); }
 
 void MainWindow::serialConnectResult(bool connected, QString message) {
   ui->pushButtonDisconnect->setEnabled(connected);
@@ -314,6 +288,7 @@ void MainWindow::serialConnectResult(bool connected, QString message) {
   ui->comboBoxCom->setEnabled(!connected);
   ui->comboBoxBaud->setEnabled(!connected);
   ui->labelPortInfo->setText(message);
+  ui->pushButtonSendCommand->setEnabled(connected);
 }
 
 void MainWindow::printToTerminal(QByteArray data) { ui->myTerminal->printToTerminal(data); }
@@ -337,19 +312,6 @@ void MainWindow::bufferDebug(QByteArray data) {
   ui->textEditSerialDebug->append(QString("<font color=red>%1</font color>").arg(data2.trimmed()));
 #endif
   ui->textEditSerialDebug->append("");
-}
-
-void MainWindow::on_spinBoxDataBinaryBits_valueChanged(int arg1) {
-  if (arg1 != 64)
-    ui->doubleSpinBoxBinarydataMax->setPrefix("Max (0x" + QString::number(((quint64)1 << arg1) - 1, 16).toUpper() + "): ");
-  else
-    ui->doubleSpinBoxBinarydataMax->setPrefix("Max (0xFFFFFFFFFFFFFFFF): ");
-  emit setBinBits(arg1);
-}
-
-void MainWindow::on_spinBoxBinaryDataNumCh_valueChanged(int arg1) {
-  ui->spinBoxBinaryDataFirstCh->setMaximum(65 - arg1);
-  emit setBinNCh(arg1);
 }
 
 void MainWindow::on_doubleSpinBoxChScale_valueChanged(double arg1) {
@@ -395,8 +357,6 @@ void MainWindow::on_dialZoom_valueChanged(int value) {
 
 void MainWindow::on_comboBoxPlotRangeType_currentIndexChanged(int index) { ui->plot->setRangeType(index); }
 
-void MainWindow::on_listWidgetDataMode_currentRowChanged(int currentRow) { emit setMode(currentRow); }
-
 void MainWindow::on_radioButtonEn_toggled(bool checked) {
   if (checked)
     changeLanguage("en");
@@ -430,3 +390,38 @@ void MainWindow::on_horizontalSliderLineTimeout_valueChanged(int value) {
 }
 
 void MainWindow::on_pushButtonPrintBuffer_clicked() {}
+
+void MainWindow::on_pushButtonDataModeApply_clicked() {
+  emit setMode(ui->comboBoxDataMode->currentIndex());
+  BinDataSettings_t settings;
+  settings.bits = ui->spinBoxDataBinaryBits->value();
+  settings.continuous = ui->checkBoxBinContinuous->isChecked();
+  settings.firstCh = ui->spinBoxBinaryDataFirstCh->value();
+  settings.numCh = ui->spinBoxBinaryDataNumCh->value();
+  settings.timeStep = ui->doubleSpinBoxBinaryTimestep->value();
+  settings.valueMax = ui->doubleSpinBoxBinarydataMax->value();
+  settings.valueMin = ui->doubleSpinBoxBinaryDataMin->value();
+  emit setBinParameters(settings);
+}
+
+void MainWindow::on_checkBoxModeManual_toggled(bool checked) {
+  emit allowModeChange(!checked);
+  if (checked) {
+    ui->spinBoxDataBinaryBits->setValue(binSettings.bits);
+    ui->doubleSpinBoxBinaryDataMin->setValue(binSettings.valueMin);
+    ui->doubleSpinBoxBinarydataMax->setValue(binSettings.valueMax);
+    ui->doubleSpinBoxBinaryTimestep->setValue(binSettings.timeStep);
+    ui->spinBoxBinaryDataNumCh->setValue(binSettings.numCh);
+    ui->spinBoxBinaryDataFirstCh->setValue(binSettings.firstCh);
+    ui->checkBoxBinContinuous->setChecked(binSettings.continuous);
+  }
+  if (checked)
+    ui->labelBinSettings->setVisible(true);
+}
+
+void MainWindow::updatePlot() {
+  ui->plot->update();
+  emit requestNewDataForPlot(ui->plot->getOffsets(), ui->plot->getScales());
+}
+
+void MainWindow::on_comboBoxOutputLevel_currentIndexChanged(int index) { emit setOutputLevel(index); }

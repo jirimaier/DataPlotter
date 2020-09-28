@@ -14,17 +14,17 @@ class PlotData : public QObject {
 public:
   PlotData();
   ~PlotData();
-  void clearChannels();
-  bool newDataFlag = false;
-  QVector<Channel *> channels;
+  void init();
 
 private:
+  double lastTimes[CHANNEL_COUNT];
 public slots:
   void newDataString(QByteArray data);
   void newDataBin(QByteArray data, BinDataSettings_t settings);
+  void reset();
 
 signals:
-  void dataReady(QVector<Channel *> channels);
+  void updatePlot(int ch, QVector<double> *time, QVector<double> *value, bool continous);
 };
 
 #endif // PLOTTING_H

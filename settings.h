@@ -32,6 +32,10 @@
 #define TIMEOUT_SYMBOL "<timeout>"
 #define CMD_END "<end>"
 
+#define CMD_OUTPUT_LEVEL_NONE 0
+#define CMD_OUTPUT_LEVEL_LOW 1
+#define CMD_OUTPUT_LEVEL_HIGH 2
+
 #define PORT_NUCLEO_DESCRIPTION_IDENTIFIER "STLink"
 
 const QString lineEndings[4] = {"", "\n", "\r", "\r\n"};
@@ -67,8 +71,6 @@ struct BinDataSettings_t {
 
 struct ChannelSettings_t {
   QColor color = QColor(Qt::black);
-  double offset = 0;
-  double scale = 1;
   int style = PLOT_STYLE_LINE;
 };
 

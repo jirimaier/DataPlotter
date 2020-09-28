@@ -10,6 +10,7 @@ SOURCES += \
     myterminal.cpp \
     plotdata.cpp \
     qcustomplot.cpp \
+    receivedoutputhandler.cpp \
     serialparser.cpp \
     serialworker.cpp
 
@@ -20,6 +21,7 @@ HEADERS += \
     myterminal.h \
     plotdata.h \
     qcustomplot.h \
+    receivedoutputhandler.h \
     serialparser.h \
     serialworker.h \
     settings.h

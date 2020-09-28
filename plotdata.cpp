@@ -1,37 +1,49 @@
 #include "plotdata.h"
 #include <QDebug>
 
-PlotData::PlotData() {
-  for (int i = 0; i < CHANNEL_COUNT; i++)
-    channels.append(new Channel());
-}
+PlotData::PlotData() {}
 
 PlotData::~PlotData() { qDebug() << "PlotData deleted"; }
 
+void PlotData::init() { reset(); }
+
 void PlotData::newDataString(QByteArray data) {
+  QVector<QVector<double> *> times;
+  QVector<QVector<double> *> values;
   QByteArrayList pointList = data.split(';');
   for (long i = 0; i < pointList.length(); i++) {
-    QByteArrayList values = pointList.at(i).split(',');
-    for (int ch = 1; ch < values.length(); ch++) {
-      if (!values.at(ch).isEmpty())
-        channels.at(ch - 1)->addValue(values.at(ch).toDouble(), values.at(0).isEmpty() ? channels.at(0)->lastAddedTime + 1 : values.at(0).toDouble());
+    QByteArrayList val = pointList.at(i).split(',');
+    for (int ch = 1; ch < val.length(); ch++) {
+      if (times.length() < ch) {
+        times.append(new QVector<double>);
+        values.append(new QVector<double>);
+      }
+      if (!val.at(ch).isEmpty()) {
+        values.at(ch - 1)->append(val.at(ch).toDouble());
+        times.at(ch - 1)->append(val.at(0).isEmpty() ? i : val.at(0).toDouble());
+      }
     }
   }
-  emit dataReady(channels);
-}
-
-void PlotData::clearChannels() {
-  for (int ch = 0; ch < CHANNEL_COUNT; ch++)
-    channels.at(ch)->clear();
+  for (int i = 0; i < values.length(); i++) {
+    double thisLastTime = times.at(i)->last();
+    emit updatePlot(i + 1, times.at(i), values.at(i), times.at(i)->first() > lastTimes[i]);
+    lastTimes[i] = thisLastTime;
+  }
 }
 
 void PlotData::newDataBin(QByteArray data, BinDataSettings_t settings) {
+  QVector<QVector<double> *> times, values;
+  for (int i = 0; i < settings.numCh; i++) {
+    times.append(new QVector<double>);
+    values.append(new QVector<double>);
+  }
+  if (!settings.continuous) {
+    for (int i = settings.firstCh; i < settings.numCh + settings.firstCh; i++)
+      lastTimes[i - 1] = 0;
+  }
   int bytes = ceil(settings.bits / 8.0f);
   if (data.length() % bytes != 0)
     data = data.left(data.length() - data.length() % bytes);
-  if (!settings.continuous)
-    for (int ch = settings.firstCh; ch < settings.firstCh + settings.numCh; ch++)
-      this->channels.at(ch - 1)->lastAddedTime = 0;
   for (int i = 0; i < data.length() - 1; i += bytes) {
     quint64 value = 0;
     for (int byte = 0; byte < bytes; byte++) {
@@ -39,8 +51,21 @@ void PlotData::newDataBin(QByteArray data, BinDataSettings_t settings) {
       value |= (quint8)data.at(i + byte);
     }
     double value_d = value;
+    int chIndex = ((i / bytes) % settings.numCh);
     value_d = (value_d / (1 << settings.bits) * (settings.valueMax - settings.valueMin)) + settings.valueMin;
-    channels.at(settings.firstCh + ((i / bytes) % settings.numCh) - 1)->addValue(value_d, channels.at(settings.firstCh + (i % settings.numCh) - 1)->lastAddedTime + settings.timeStep);
+    values.at(chIndex)->append(value_d);
+    if (times.at(chIndex)->isEmpty())
+      times.at(chIndex)->append(lastTimes[chIndex + settings.firstCh - 1]);
+    else
+      times.at(chIndex)->append(times.at(chIndex)->last() + settings.timeStep);
   }
-  emit dataReady(channels);
+  for (int i = 0; i < settings.numCh; i++) {
+    lastTimes[i + settings.firstCh - 1] = times.at(i)->last();
+    emit updatePlot(i + settings.firstCh, times.at(i), values.at(i), settings.continuous);
+  }
+}
+
+void PlotData::reset() {
+  for (int i = 0; i < CHANNEL_COUNT; i++)
+    lastTimes[i] = 0;
 }
