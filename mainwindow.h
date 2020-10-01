@@ -43,6 +43,7 @@ private:
   bool isStandardValue(double value);
   void updateChScale();
   void changeLanguage(QString code = "en");
+  void exportCSV(bool all = false, int ch = 1);
 
 private slots:
   void on_tabs_right_currentChanged(int index);
@@ -74,8 +75,8 @@ private slots:
   void on_pushButtonDataModeApply_clicked();
   void on_checkBoxModeManual_toggled(bool checked);
   void updatePlot();
-
   void on_comboBoxOutputLevel_currentIndexChanged(int index);
+  void on_pushButtonAllCSV_clicked();
 
 public slots:
   void comRefresh();
@@ -85,7 +86,7 @@ public slots:
   void showProcessedCommand(QString message);
   void printMessage(QByteArray data, bool urgent);
   void showPlotStatus(int type);
-  void addDataToPlot(int ch, QVector<double> *time, QVector<double> *value, bool continous);
+  void addDataToPlot(int ch, QVector<double> *time, QVector<double> *value, bool continous, bool sorted);
   void serialConnectResult(bool connected, QString message);
   void printToTerminal(QByteArray data);
   void serialFinishedWriting();
@@ -103,5 +104,6 @@ signals:
   void requestNewDataForPlot(QVector<double> offsets, QVector<double> scales);
   void resetChannels();
   void setOutputLevel(int);
+  void requestMath(int resultCh, int operation, QPair<QVector<double>, QVector<double>> data1, QPair<QVector<double>, QVector<double>> data2);
 };
 #endif // MAINWINDOW_H

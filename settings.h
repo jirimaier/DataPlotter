@@ -36,7 +36,13 @@
 #define CMD_OUTPUT_LEVEL_LOW 1
 #define CMD_OUTPUT_LEVEL_HIGH 2
 
-#define PORT_NUCLEO_DESCRIPTION_IDENTIFIER "STLink"
+#define PORT_NUCLEO_DESCRIPTION_IDENTIFIER "ST"
+
+#define MATH_ADD 0
+#define MATH_SUB 1
+#define MATH_MUL 2
+#define MATH_DIV 3
+#define MATH_XY 4
 
 const QString lineEndings[4] = {"", "\n", "\r", "\r\n"};
 

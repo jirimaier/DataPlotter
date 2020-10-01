@@ -9,6 +9,7 @@ SOURCES += \
     myplot.cpp \
     myterminal.cpp \
     plotdata.cpp \
+    plotmath.cpp \
     qcustomplot.cpp \
     receivedoutputhandler.cpp \
     serialparser.cpp \
@@ -20,6 +21,7 @@ HEADERS += \
     myplot.h \
     myterminal.h \
     plotdata.h \
+    plotmath.h \
     qcustomplot.h \
     receivedoutputhandler.h \
     serialparser.h \

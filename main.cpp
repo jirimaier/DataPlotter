@@ -15,6 +15,7 @@
 #include "mainwindow.h"
 #include "myterminal.h"
 #include "plotdata.h"
+#include "plotmath.h"
 #include "qcustomplot.h"
 #include "receivedoutputhandler.h"
 #include "serialparser.h"
@@ -29,19 +30,24 @@ int main(int argc, char *argv[]) {
   qRegisterMetaType<BinDataSettings_t>();
   qRegisterMetaType<ChannelSettings_t>();
   qRegisterMetaType<PlotSettings_t>();
+  qRegisterMetaType<QPair<QVector<double>, QVector<double>>>();
 
   MainWindow mainWindow;
   PlotData *plotData = new PlotData;
   SerialParser *serialParser = new SerialParser;
   SerialWorker *serialWorker = new SerialWorker;
   ReceivedOutputHandler *receivedOutputHandler = new ReceivedOutputHandler;
+  PlotMath *plotMath = new PlotMath;
+
   QThread plotDataThread;
   QThread serialParserThread;
   QThread serialWorkerThread;
   QThread receivedOutputHandlerThread;
+  QThread plotMathThread;
 
   // Data pro graf -> GUI
   QObject::connect(plotData, &PlotData::updatePlot, &mainWindow, &MainWindow::addDataToPlot);
+  QObject::connect(plotMath, &PlotMath::sendResult, &mainWindow, &MainWindow::addDataToPlot);
 
   // GUI -> Zpracování příkazů
   QObject::connect(serialParser, &SerialParser::changedDataMode, &mainWindow, &MainWindow::changedDataMode);
@@ -73,6 +79,8 @@ int main(int argc, char *argv[]) {
   QObject::connect(serialWorker, &SerialWorker::newLine, receivedOutputHandler, &ReceivedOutputHandler::input);
   QObject::connect(&mainWindow, &MainWindow::setOutputLevel, receivedOutputHandler, &ReceivedOutputHandler::setLevel);
 
+  QObject::connect(&mainWindow, &MainWindow::requestMath, plotMath, &PlotMath::doMath);
+
   QObject::connect(&serialWorkerThread, &QThread::started, serialWorker, &SerialWorker::init);
   QObject::connect(&serialParserThread, &QThread::started, serialParser, &SerialParser::init);
   QObject::connect(&plotDataThread, &QThread::started, plotData, &PlotData::init);
@@ -81,10 +89,13 @@ int main(int argc, char *argv[]) {
   serialParser->moveToThread(&serialParserThread);
   plotData->moveToThread(&plotDataThread);
   receivedOutputHandler->moveToThread(&receivedOutputHandlerThread);
+  plotMath->moveToThread(&plotMathThread);
+
   serialWorkerThread.start();
   serialParserThread.start();
   plotDataThread.start();
   receivedOutputHandlerThread.start();
+  plotMathThread.start();
 
   mainWindow.init();
   mainWindow.show();
@@ -95,16 +106,19 @@ int main(int argc, char *argv[]) {
   plotData->deleteLater();
   serialParser->deleteLater();
   receivedOutputHandler->deleteLater();
+  plotMath->deleteLater();
 
   serialWorkerThread.quit();
   serialParserThread.quit();
   plotDataThread.quit();
   receivedOutputHandlerThread.quit();
+  plotMathThread.quit();
 
   serialWorkerThread.wait();
   serialParserThread.wait();
   plotDataThread.wait();
   receivedOutputHandlerThread.wait();
+  plotMathThread.wait();
 
   return returnValue;
 }

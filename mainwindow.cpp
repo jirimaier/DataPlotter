@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QtCore>
 #include <QtGlobal>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) { ui->setupUi(this); }
@@ -17,6 +18,9 @@ void MainWindow::init() {
   ui->comboBoxPlotRangeType->setCurrentIndex(PLOT_RANGE_FIXED);
   on_pushButtonDataModeApply_clicked();
   ui->labelBuildDate->setText("Build: " + QString(__DATE__) + " " + QString(__TIME__));
+
+  if (locale().toString(1.1).contains(','))
+    ui->radioButtonCSVComma->setChecked(true);
 
   QPixmap pixmap(30, 30);
   pixmap.fill(defaultColors[0]);
@@ -70,6 +74,28 @@ void MainWindow::changeLanguage(QString code) {
   }
   qApp->installTranslator(&translator);
   ui->retranslateUi(this);
+}
+
+void MainWindow::exportCSV(bool all, int ch) {
+  QString fileName = QFileDialog::getSaveFileName(this, tr("Export Channel %1").arg(ch), QString(QCoreApplication::applicationDirPath()), tr("Comma separated values (*.csv)"));
+  if (fileName.isEmpty())
+    return;
+  QFile file(fileName);
+  if (file.open(QFile::WriteOnly | QFile::Truncate)) {
+    char decimal = ui->radioButtonCSVDot->isChecked() ? '.' : ',';
+    char separator = ui->radioButtonCSVDot->isChecked() ? ',' : ';';
+    if (all)
+      file.write(ui->plot->exportAllCSV(separator, decimal, ui->spinBoxCSVPrecision->value(), ui->checkBoxCSVoffsets->isChecked()));
+    else
+      file.write(ui->plot->exportChannelCSV(separator, decimal, ch, ui->spinBoxCSVPrecision->value(), ui->checkBoxCSVoffsets->isChecked()));
+    file.close();
+  } else {
+    QMessageBox msgBox;
+    msgBox.setText(tr("Cant write to file."));
+    msgBox.setInformativeText(tr("This may be because file is opened in another program."));
+    msgBox.setIcon(QMessageBox::Critical);
+    msgBox.exec();
+  }
 }
 
 void MainWindow::showPlotStatus(int type) {
@@ -265,8 +291,8 @@ void MainWindow::scrollBarCursor_valueChanged() {
   ui->labelCursorX2->setText("X2: " + QString::number(x2, 'f', 3));
   ui->labelCursorY1->setText("Y1: " + QString::number(y1 - ui->plot->getChOffset(ui->spinBoxChannelSelect->value()) / ui->plot->getChScale(ui->spinBoxChannelSelect->value()), 'f', 3));
   ui->labelCursorY2->setText("Y2: " + QString::number(y2 - ui->plot->getChOffset(ui->spinBoxChannelSelect->value()) / ui->plot->getChScale(ui->spinBoxChannelSelect->value()), 'f', 3));
-  ui->labelCursordX->setText(tr("dX: ") + QString::number(abs(x2 - x1)));
-  ui->labelCursordY->setText(tr("dY: ") + QString::number(abs(y2 - y1) / ui->plot->getChScale(ui->spinBoxChannelSelect->value())));
+  ui->labelCursordX->setText(tr("dX: ") + QString::number(fabs(x2 - x1)));
+  ui->labelCursordY->setText(tr("dY: ") + QString::number(fabs(y2 - y1) / ui->plot->getChScale(ui->spinBoxChannelSelect->value())));
   ui->plot->updateCursors(x1, x2, y1, y2);
 }
 
@@ -280,7 +306,7 @@ void MainWindow::on_pushButtonSendCommand_clicked() {
   emit writeToSerial(text.toUtf8());
 }
 
-void MainWindow::addDataToPlot(int ch, QVector<double> *time, QVector<double> *value, bool continous) { ui->plot->newData(ch, time, value, continous); }
+void MainWindow::addDataToPlot(int ch, QVector<double> *time, QVector<double> *value, bool continous, bool sorted) { ui->plot->newData(ch, time, value, continous, sorted); }
 
 void MainWindow::serialConnectResult(bool connected, QString message) {
   ui->pushButtonDisconnect->setEnabled(connected);
@@ -307,7 +333,9 @@ void MainWindow::bufferDebug(QByteArray data) {
 #if QT_VERSION >= 0x050900
   ui->textEditSerialDebug->append(QString("<font color=navy>%1</font color>").arg(QString(data.toHex(' '))));
 #else
-  QString data2 foreach (byte b, data) stringMessage.append(QString::number(b, 16) + " ");
+  QString data2;
+  foreach (byte b, data)
+    data2.append(QString::number(b, 16) + " ");
   data2 = data2.trimmed();
   ui->textEditSerialDebug->append(QString("<font color=red>%1</font color>").arg(data2.trimmed()));
 #endif
@@ -322,31 +350,15 @@ void MainWindow::on_doubleSpinBoxChScale_valueChanged(double arg1) {
 }
 
 void MainWindow::on_dialChScale_valueChanged(int value) {
-  if (isStandardValue(abs(ui->doubleSpinBoxChScale->value())))
+  if (isStandardValue(fabs(ui->doubleSpinBoxChScale->value())))
     ui->doubleSpinBoxChScale->setValue(logaritmicSettings[value] * (ui->checkBoxChInvert->isChecked() ? -1 : 1));
   else {
-    ui->dialChScale->setValue(roundToStandardValue(abs(ui->doubleSpinBoxChScale->value())));
+    ui->dialChScale->setValue(roundToStandardValue(fabs(ui->doubleSpinBoxChScale->value())));
     ui->doubleSpinBoxChScale->setValue(logaritmicSettings[ui->dialChScale->value()] * (ui->checkBoxChInvert->isChecked() ? -1 : 1));
   }
 }
 
-void MainWindow::on_pushButtonSelectedCSV_clicked() {
-  int ch = ui->spinBoxChannelSelect->value() - 1;
-  QString fileName = QFileDialog::getSaveFileName(this, tr("Export Channel %1").arg(ch), QString(QCoreApplication::applicationDirPath()), tr("Comma separated values (*.csv)"));
-  if (fileName.isEmpty())
-    return;
-  QFile file(fileName);
-  if (file.open(QFile::WriteOnly | QFile::Truncate)) {
-    // file.write(plotting->chToCSV(ch).toUtf8());
-    file.close();
-  } else {
-    QMessageBox msgBox;
-    msgBox.setText(tr("Cant write to file."));
-    msgBox.setInformativeText(tr("This may be because file is opened in another program."));
-    msgBox.setIcon(QMessageBox::Critical);
-    msgBox.exec();
-  }
-}
+void MainWindow::on_pushButtonSelectedCSV_clicked() { exportCSV(false, ui->spinBoxChannelSelect->value() - 1); }
 
 void MainWindow::on_dialZoom_valueChanged(int value) {
   ui->plot->setZoomRange(value);
@@ -421,7 +433,36 @@ void MainWindow::on_checkBoxModeManual_toggled(bool checked) {
 
 void MainWindow::updatePlot() {
   ui->plot->update();
-  emit requestNewDataForPlot(ui->plot->getOffsets(), ui->plot->getScales());
+  if (ui->checkBoxMath1->isChecked()) {
+    int firstch = ui->spinBoxMath1First->value();
+    int secondch = ui->spinBoxMath1Second->value();
+    int resultch = ui->spinBoxMath1Result->value();
+    int operation = ui->comboBoxMath1Op->currentIndex();
+    emit requestMath(resultch, operation, ui->plot->getDataVector(firstch - 1, false), ui->plot->getDataVector(secondch - 1, false));
+  }
+  if (ui->checkBoxMath2->isChecked()) {
+    int firstch = ui->spinBoxMath2First->value();
+    int secondch = ui->spinBoxMath2Second->value();
+    int resultch = ui->spinBoxMath2Result->value();
+    int operation = ui->comboBoxMath2Op->currentIndex();
+    emit requestMath(resultch, operation, ui->plot->getDataVector(firstch - 1, false), ui->plot->getDataVector(secondch - 1, false));
+  }
+  if (ui->checkBoxMath3->isChecked()) {
+    int firstch = ui->spinBoxMath3First->value();
+    int secondch = ui->spinBoxMath3Second->value();
+    int resultch = ui->spinBoxMath3Result->value();
+    int operation = ui->comboBoxMath3Op->currentIndex();
+    emit requestMath(resultch, operation, ui->plot->getDataVector(firstch - 1, false), ui->plot->getDataVector(secondch - 1, false));
+  }
+  if (ui->checkBoxMath4->isChecked()) {
+    int firstch = ui->spinBoxMath4First->value();
+    int secondch = ui->spinBoxMath4Second->value();
+    int resultch = ui->spinBoxMath4Result->value();
+    int operation = ui->comboBoxMath4Op->currentIndex();
+    emit requestMath(resultch, operation, ui->plot->getDataVector(firstch - 1, false), ui->plot->getDataVector(secondch - 1, false));
+  }
 }
 
 void MainWindow::on_comboBoxOutputLevel_currentIndexChanged(int index) { emit setOutputLevel(index); }
+
+void MainWindow::on_pushButtonAllCSV_clicked() { exportCSV(true); }

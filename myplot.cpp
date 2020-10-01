@@ -96,6 +96,20 @@ double MyPlot::graphLastTime(quint8 i) {
   return (--it)->key;
 }
 
+QPair<QVector<double>, QVector<double>> MyPlot::getDataVector(int ch, bool includeOffsets) {
+  QVector<double> keys, values;
+  for (QCPGraphDataContainer::iterator it = graph(ch)->data()->begin(); it != graph(ch)->data()->end(); it++) {
+    if (includeOffsets) {
+      keys.append(it->key);
+      values.append(it->value);
+    } else {
+      keys.append(it->key);
+      values.append((it->value - offsets.at(ch)) / scales.at(ch));
+    }
+  }
+  return QPair<QVector<double>, QVector<double>>(keys, values);
+}
+
 void MyPlot::updateCursors(double x1, double x2, double y1, double y2) {
   curX1 = x1;
   curX2 = x2;
@@ -272,14 +286,14 @@ void MyPlot::reoffset(int ch, double relativeOffset) {
     (*it).value += relativeOffset;
 }
 
-void MyPlot::newData(int ch, QVector<double> *time, QVector<double> *value, bool continous) {
+void MyPlot::newData(int ch, QVector<double> *time, QVector<double> *value, bool continous, bool sorted) {
   if (plottingStatus != PLOT_STATUS_PAUSE) {
     for (QVector<double>::iterator it = value->begin(); it != value->end(); it++)
       *it = *it * scales.at(ch - 1) + offsets.at(ch - 1);
     if (continous)
-      this->graph(ch - 1)->addData(*time, *value, true);
+      this->graph(ch - 1)->addData(*time, *value, sorted);
     else
-      this->graph(ch - 1)->setData(*time, *value, true);
+      this->graph(ch - 1)->setData(*time, *value, sorted);
 
     if (plottingStatus == PLOT_STATUS_SINGLETRIGER) {
       plottingStatus = PLOT_STATUS_PAUSE;
@@ -300,4 +314,53 @@ void MyPlot::newData(int ch, QVector<double> *time, QVector<double> *value, bool
   lastWasContinous = continous;
   delete time;
   delete value;
+}
+
+QByteArray MyPlot::exportChannelCSV(char separator, char decimal, int channel, int precision, bool offseted) {
+  QByteArray output = (QString("time%1ch%2\n").arg(separator).arg(channel + 1)).toUtf8();
+  for (QCPGraphDataContainer::iterator it = graph(channel)->data()->begin(); it != graph(channel)->data()->end(); it++) {
+    output.append(QString::number(it->key, 'f', precision).replace('.', decimal).toUtf8());
+    output.append(separator);
+    output.append(QString::number(offseted ? it->value : (it->value - offsets.at(channel)) / scales.at(channel), 'f', precision).replace('.', decimal).toUtf8());
+    output.append('\n');
+  }
+  return output;
+}
+
+QByteArray MyPlot::exportAllCSV(char separator, char decimal, int precision, bool offseted) {
+  QByteArray output = "";
+  QVector<QPair<QVector<double>, QVector<double>>> channels;
+  bool firstNonEmpty = true;
+  for (int i = 0; i < CHANNEL_COUNT; i++) {
+    if (!graph(i)->data()->isEmpty()) {
+      if (firstNonEmpty) {
+        firstNonEmpty = false;
+        output.append("time");
+      }
+      channels.append(getDataVector(i, offseted));
+      output.append(separator);
+      output.append(QString("ch%1").arg(i + 1).toUtf8());
+    }
+  }
+  QList<double> times;
+  for (QVector<QPair<QVector<double>, QVector<double>>>::iterator it = channels.begin(); it != channels.end(); it++)
+    foreach (double time, it->first)
+      if (!times.contains(time))
+        times.append(time);
+  std::sort(times.begin(), times.end());
+
+  foreach (double time, times) {
+    output.append('\n');
+    output.append(QString::number(time, 'f', precision).replace('.', decimal).toUtf8());
+    for (QVector<QPair<QVector<double>, QVector<double>>>::iterator it = channels.begin(); it != channels.end(); it++) {
+      output.append(',');
+      if (!it->first.isEmpty())
+        if (it->first.first() == time) {
+          output.append(QString::number(it->second.first(), 'f', precision).replace('.', decimal).toUtf8());
+          it->first.pop_front();
+          it->second.pop_front();
+        }
+    }
+  }
+  return output;
 }

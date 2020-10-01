@@ -26,7 +26,7 @@ void PlotData::newDataString(QByteArray data) {
   }
   for (int i = 0; i < values.length(); i++) {
     double thisLastTime = times.at(i)->last();
-    emit updatePlot(i + 1, times.at(i), values.at(i), times.at(i)->first() > lastTimes[i]);
+    emit updatePlot(i + 1, times.at(i), values.at(i), times.at(i)->first() > lastTimes[i], true);
     lastTimes[i] = thisLastTime;
   }
 }
@@ -61,7 +61,7 @@ void PlotData::newDataBin(QByteArray data, BinDataSettings_t settings) {
   }
   for (int i = 0; i < settings.numCh; i++) {
     lastTimes[i + settings.firstCh - 1] = times.at(i)->last();
-    emit updatePlot(i + settings.firstCh, times.at(i), values.at(i), settings.continuous);
+    emit updatePlot(i + settings.firstCh, times.at(i), values.at(i), settings.continuous, true);
   }
 }
 

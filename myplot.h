@@ -28,6 +28,9 @@ public:
   bool isPaused() { return plottingStatus == PLOT_STATUS_RUN || plottingStatus == PLOT_STATUS_SINGLETRIGER; }
   QVector<double> getOffsets() { return offsets; }
   QVector<double> getScales() { return scales; }
+  QByteArray exportChannelCSV(char separator, char decimal, int channel, int precision, bool offseted);
+  QByteArray exportAllCSV(char separator, char decimal, int precision, bool offseted);
+  QPair<QVector<double>, QVector<double>> getDataVector(int ch, bool includeOffsets);
 
 private:
   void resume();
@@ -67,7 +70,7 @@ public slots:
   void resetChannels();
   void rescale(int ch, double relativeScale);
   void reoffset(int ch, double relativeOffset);
-  void newData(int ch, QVector<double> *time, QVector<double> *value, bool continous);
+  void newData(int ch, QVector<double> *time, QVector<double> *value, bool continous, bool sorted);
   void setRollingRange(double value) { plotSettings.rollingRange = value; }
   void setHorizontalPos(double value) { plotSettings.horizontalPos = value; }
   void setVerticalRange(double value) { plotSettings.verticalRange = value; }

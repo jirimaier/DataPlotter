@@ -4,6 +4,7 @@
         <file>icons/run.png</file>
         <file>icons/single.png</file>
         <file>icons/logoKatedry.png</file>
+        <file>icons/arrow.png</file>
     </qresource>
     <qresource prefix="/translations">
         <file>translation_cz.qm</file>

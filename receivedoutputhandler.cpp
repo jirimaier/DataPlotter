@@ -31,7 +31,7 @@ void ReceivedOutputHandler::input(QByteArray message) {
       stringMessage = message.toHex(' ') + suffix;
 #else
       stringMessage.clear();
-      foreach (byte b, message)
+      foreach (unsigned char b, message)
         stringMessage.append(QString::number(b, 16) + " ");
       stringMessage = stringMessage.trimmed();
 #endif
