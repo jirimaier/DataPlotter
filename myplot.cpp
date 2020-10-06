@@ -71,7 +71,7 @@ void MyPlot::initZeroLines() {
 double MyPlot::minTime() {
   QVector<double> times;
   for (int i = 0; i < CHANNEL_COUNT; i++)
-    if (!this->graph(i)->data()->isEmpty())
+    if (!this->graph(i)->data()->isEmpty() && channelSettings.at(i)->style != GraphStyle::hidden)
       times.append(this->graph(i)->data()->begin()->key);
   if (times.isEmpty())
     return 0;
@@ -82,7 +82,7 @@ double MyPlot::minTime() {
 double MyPlot::maxTime() {
   QVector<double> times;
   for (int i = 0; i < CHANNEL_COUNT; i++)
-    if (!this->graph(i)->data()->isEmpty()) {
+    if (!this->graph(i)->data()->isEmpty() && channelSettings.at(i)->style != GraphStyle::hidden) {
       times.append(graphLastTime(i));
     }
   if (times.isEmpty())
@@ -146,7 +146,6 @@ void MyPlot::changeChScale(int ch, double scale) {
 }
 
 void MyPlot::resume() {
-  plottingStatus = PLOT_STATUS_RUN;
   for (int i = 0; i < CHANNEL_COUNT; i++) {
     if (!pauseBufferTime.at(i)->isEmpty()) {
       for (QVector<double>::iterator it = pauseBufferValue.at(i)->begin(); it != pauseBufferValue.at(i)->end(); it++)
@@ -164,12 +163,12 @@ void MyPlot::resume() {
 void MyPlot::update() {
   minT = minTime();
   maxT = maxTime();
-  if (plottingRangeType != PLOT_RANGE_FREE) {
+  if (plottingRangeType != PlotRange::freeMove) {
     this->yAxis->setRange((plotSettings.verticalCenter * 0.01 - 1) * 0.5 * plotSettings.verticalRange, (plotSettings.verticalCenter * 0.01 + 1) * 0.5 * plotSettings.verticalRange);
-    if (plottingRangeType == PLOT_RANGE_FIXED) {
+    if (plottingRangeType == PlotRange::fixed) {
       double dataLenght = maxT - minT;
       this->xAxis->setRange(minT + dataLenght * 0.001 * (plotSettings.horizontalPos - plotSettings.zoom / 2), minT + dataLenght * 0.001 * (plotSettings.horizontalPos + plotSettings.zoom / 2));
-    } else if (plottingRangeType == PLOT_RANGE_ROLLING) {
+    } else if (plottingRangeType == PlotRange::rolling) {
       this->xAxis->setRange(maxT - plotSettings.rollingRange, maxT);
     }
   }
@@ -180,7 +179,7 @@ void MyPlot::update() {
 
 void MyPlot::setRangeType(int type) {
   this->plottingRangeType = type;
-  if (type == PLOT_RANGE_FREE) {
+  if (type == PlotRange::freeMove) {
     this->setInteraction(QCP::iRangeDrag, true);
     this->setInteraction(QCP::iRangeZoom, true);
   } else {
@@ -190,17 +189,21 @@ void MyPlot::setRangeType(int type) {
 }
 
 void MyPlot::pauseClicked() {
-  if (plottingStatus == PLOT_STATUS_RUN)
-    plottingStatus = PLOT_STATUS_PAUSE;
-  else if (plottingStatus == PLOT_STATUS_SINGLETRIGER)
+  if (plottingStatus == PlotStatus::run)
+    plottingStatus = PlotStatus::pause;
+  else if (plottingStatus == PlotStatus::single) {
+    plottingStatus = PlotStatus::run;
     resume();
-  else if (plottingStatus == PLOT_STATUS_PAUSE)
+  } else if (plottingStatus == PlotStatus::pause) {
+    plottingStatus = PlotStatus::run;
     resume();
+  }
   emit showPlotStatus(plottingStatus);
 }
 
 void MyPlot::singleTrigerClicked() {
-  plottingStatus = PLOT_STATUS_SINGLETRIGER;
+  plottingStatus = PlotStatus::single;
+  resume();
   emit showPlotStatus(plottingStatus);
 }
 
@@ -243,18 +246,18 @@ void MyPlot::setCurYen(bool en) {
 void MyPlot::updateVisuals() {
   for (int i = 0; i < CHANNEL_COUNT; i++) {
     this->graph(i)->setPen(QPen(channelSettings.at(i)->color));
-    this->graph(i)->setVisible((channelSettings.at(i)->style != PLOT_STYLE_HIDDEN));
-    zeroLines.at(i)->setVisible((offsets.at(i) != 0) && (channelSettings.at(i)->style != PLOT_STYLE_HIDDEN));
-    if (channelSettings.at(i)->style == PLOT_STYLE_LINEANDPIONT) {
-      this->graph(i)->setScatterStyle(QCPScatterStyle::ssDisc);
+    this->graph(i)->setVisible((channelSettings.at(i)->style != GraphStyle::hidden));
+    zeroLines.at(i)->setVisible((offsets.at(i) != 0) && (channelSettings.at(i)->style != GraphStyle::hidden));
+    if (channelSettings.at(i)->style == GraphStyle::linePoint) {
+      this->graph(i)->setScatterStyle(POINT_STYLE);
       this->graph(i)->setLineStyle(QCPGraph::lsLine);
     }
-    if (channelSettings.at(i)->style == PLOT_STYLE_LINE) {
+    if (channelSettings.at(i)->style == GraphStyle::line) {
       this->graph(i)->setScatterStyle(QCPScatterStyle::ssNone);
       this->graph(i)->setLineStyle(QCPGraph::lsLine);
     }
-    if (channelSettings.at(i)->style == PLOT_STYLE_POINT) {
-      this->graph(i)->setScatterStyle(QCPScatterStyle::ssDisc);
+    if (channelSettings.at(i)->style == GraphStyle::point) {
+      this->graph(i)->setScatterStyle(POINT_STYLE);
       this->graph(i)->setLineStyle(QCPGraph::lsNone);
     }
   }
@@ -281,13 +284,13 @@ void MyPlot::rescale(int ch, double relativeScale) {
 void MyPlot::reoffset(int ch, double relativeOffset) {
   zeroLines.at(ch)->start->setCoords(0, offsets.at(ch) + relativeOffset);
   zeroLines.at(ch)->end->setCoords(1, offsets.at(ch) + relativeOffset);
-  zeroLines.at(ch)->setVisible((offsets.at(ch) + relativeOffset != 0) && (channelSettings.at(ch)->style != PLOT_STYLE_HIDDEN));
+  zeroLines.at(ch)->setVisible((offsets.at(ch) + relativeOffset != 0) && (channelSettings.at(ch)->style != GraphStyle::hidden));
   for (QCPGraphDataContainer::iterator it = graph(ch)->data()->begin(); it != graph(ch)->data()->end(); it++)
     (*it).value += relativeOffset;
 }
 
 void MyPlot::newData(int ch, QVector<double> *time, QVector<double> *value, bool continous, bool sorted) {
-  if (plottingStatus != PLOT_STATUS_PAUSE) {
+  if (plottingStatus != PlotStatus::pause) {
     for (QVector<double>::iterator it = value->begin(); it != value->end(); it++)
       *it = *it * scales.at(ch - 1) + offsets.at(ch - 1);
     if (continous)
@@ -295,8 +298,8 @@ void MyPlot::newData(int ch, QVector<double> *time, QVector<double> *value, bool
     else
       this->graph(ch - 1)->setData(*time, *value, sorted);
 
-    if (plottingStatus == PLOT_STATUS_SINGLETRIGER) {
-      plottingStatus = PLOT_STATUS_PAUSE;
+    if (plottingStatus == PlotStatus::single) {
+      plottingStatus = PlotStatus::pause;
       emit showPlotStatus(plottingStatus);
     }
   } else {
@@ -306,8 +309,8 @@ void MyPlot::newData(int ch, QVector<double> *time, QVector<double> *value, bool
     }
     pauseBufferTime.at(ch - 1)->append(*time);
     pauseBufferValue.at(ch - 1)->append(*value);
-    if (plottingStatus == PLOT_STATUS_SINGLETRIGER) {
-      plottingStatus = PLOT_STATUS_PAUSE;
+    if (plottingStatus == PlotStatus::single) {
+      plottingStatus = PlotStatus::pause;
       emit showPlotStatus(plottingStatus);
     }
   }

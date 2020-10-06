@@ -14,6 +14,7 @@ public:
   explicit MyPlot(QWidget *parent = nullptr);
   void updateCursors(double x1, double x2, double y1, double y2);
   void init();
+  bool isChUsed(int ch) { return !graph(ch - 1)->data()->isEmpty(); }
   double getVDiv() { return vdiv; }
   double getHDiv() { return hdiv; }
   double getCHDiv(int ch) { return vdiv / abs(scales.at(ch - 1)); }
@@ -25,7 +26,7 @@ public:
   void setChColor(int ch, QColor color);
   void changeChOffset(int ch, double offset);
   void changeChScale(int ch, double scale);
-  bool isPaused() { return plottingStatus == PLOT_STATUS_RUN || plottingStatus == PLOT_STATUS_SINGLETRIGER; }
+  bool isPaused() { return plottingStatus == PlotStatus::run || plottingStatus == PlotStatus::single; }
   QVector<double> getOffsets() { return offsets; }
   QVector<double> getScales() { return scales; }
   QByteArray exportChannelCSV(char separator, char decimal, int channel, int precision, bool offseted);
@@ -42,14 +43,14 @@ private:
   double vdiv, hdiv;
   PlotSettings_t plotSettings;
   QVector<ChannelSettings_t *> channelSettings;
-  int plotRangeType = PLOT_RANGE_FIXED;
+  int plotRangeType = PlotRange::fixed;
   QVector<QCPItemLine *> zeroLines;
   double curX1 = 0, curX2 = 0, curY1 = 0, curY2 = 0;
   QCPItemLine *cursorX1, *cursorX2, *cursorY1, *cursorY2;
   void initCursors();
   void initZeroLines();
-  int plottingStatus = PLOT_STATUS_RUN;
-  int plottingRangeType = PLOT_RANGE_FIXED;
+  int plottingStatus = PlotStatus::run;
+  int plottingRangeType = PlotStatus::pause;
   double minTime();
   double maxTime();
   double graphLastTime(quint8 i);

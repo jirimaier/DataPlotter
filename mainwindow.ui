@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1105</width>
-    <height>730</height>
+    <height>758</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -74,7 +74,7 @@
               <enum>QTabWidget::Rounded</enum>
              </property>
              <property name="currentIndex">
-              <number>2</number>
+              <number>0</number>
              </property>
              <property name="tabBarAutoHide">
               <bool>true</bool>
@@ -112,7 +112,7 @@
                          <number>5</number>
                         </property>
                         <item row="0" column="1">
-                         <widget class="QDial" name="dialVerticalRange">
+                         <widget class="myDial" name="dialVerticalRange">
                           <property name="enabled">
                            <bool>true</bool>
                           </property>
@@ -147,7 +147,7 @@
                            <number>1</number>
                           </property>
                           <property name="value">
-                           <number>14</number>
+                           <number>15</number>
                           </property>
                           <property name="invertedControls">
                            <bool>false</bool>
@@ -197,11 +197,8 @@
                           <property name="maximum">
                            <double>1000000.000000000000000</double>
                           </property>
-                          <property name="stepType">
-                           <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
-                          </property>
                           <property name="value">
-                           <double>50.000000000000000</double>
+                           <double>10.000000000000000</double>
                           </property>
                          </widget>
                         </item>
@@ -569,16 +566,13 @@
                           <property name="maximum">
                            <double>1000000.000000000000000</double>
                           </property>
-                          <property name="stepType">
-                           <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
-                          </property>
                           <property name="value">
                            <double>100.000000000000000</double>
                           </property>
                          </widget>
                         </item>
                         <item>
-                         <widget class="QDial" name="dialRollingRange">
+                         <widget class="myDial" name="dialRollingRange">
                           <property name="enabled">
                            <bool>true</bool>
                           </property>
@@ -1702,10 +1696,13 @@
                  <property name="orientation">
                   <enum>Qt::Vertical</enum>
                  </property>
+                 <property name="sizeType">
+                  <enum>QSizePolicy::Expanding</enum>
+                 </property>
                  <property name="sizeHint" stdset="0">
                   <size>
                    <width>20</width>
-                   <height>40</height>
+                   <height>10</height>
                   </size>
                  </property>
                 </spacer>
@@ -1793,7 +1790,7 @@ Comma</string>
                       <widget class="QRadioButton" name="radioButtonCSVComma">
                        <property name="text">
                         <string>Comma
-Semicoloumn</string>
+Semicolon</string>
                        </property>
                       </widget>
                      </item>
@@ -1912,6 +1909,12 @@ Horizontal</string>
                <string>Channel</string>
               </attribute>
               <layout class="QVBoxLayout" name="verticalLayout_7">
+               <property name="spacing">
+                <number>2</number>
+               </property>
+               <property name="bottomMargin">
+                <number>2</number>
+               </property>
                <item>
                 <layout class="QGridLayout" name="gridLayout_11">
                  <property name="horizontalSpacing">
@@ -2053,14 +2056,20 @@ Horizontal</string>
                  <property name="sizeHint" stdset="0">
                   <size>
                    <width>20</width>
-                   <height>5</height>
+                   <height>2</height>
                   </size>
                  </property>
                 </spacer>
                </item>
                <item>
-                <layout class="QVBoxLayout" name="verticalLayout_6">
-                 <item>
+                <layout class="QGridLayout" name="gridLayout_5">
+                 <property name="horizontalSpacing">
+                  <number>6</number>
+                 </property>
+                 <property name="verticalSpacing">
+                  <number>1</number>
+                 </property>
+                 <item row="0" column="0">
                   <widget class="QLabel" name="label_11">
                    <property name="text">
                     <string>Channel settings</string>
@@ -2070,237 +2079,220 @@ Horizontal</string>
                    </property>
                   </widget>
                  </item>
-                 <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_10">
+                 <item row="0" column="2">
+                  <widget class="QCheckBox" name="checkBoxSelectOnlyUsed">
+                   <property name="text">
+                    <string>Used only</string>
+                   </property>
+                   <property name="checked">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="0">
+                  <widget class="QSpinBox" name="spinBoxChannelSelect">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>10</pointsize>
+                    </font>
+                   </property>
+                   <property name="focusPolicy">
+                    <enum>Qt::WheelFocus</enum>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                   <property name="buttonSymbols">
+                    <enum>QAbstractSpinBox::UpDownArrows</enum>
+                   </property>
+                   <property name="specialValueText">
+                    <string notr="true"/>
+                   </property>
+                   <property name="correctionMode">
+                    <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
+                   </property>
+                   <property name="prefix">
+                    <string>CH </string>
+                   </property>
+                   <property name="minimum">
+                    <number>1</number>
+                   </property>
+                   <property name="maximum">
+                    <number>64</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="1">
+                  <widget class="QPushButton" name="pushButtonChannelColor">
+                   <property name="minimumSize">
+                    <size>
+                     <width>25</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>25</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string notr="true"/>
+                   </property>
+                   <property name="iconSize">
+                    <size>
+                     <width>30</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="flat">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="2">
+                  <widget class="QComboBox" name="comboBoxGraphStyle">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>8</pointsize>
+                    </font>
+                   </property>
                    <item>
-                    <widget class="QSpinBox" name="spinBoxChannelSelect">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>0</width>
-                       <height>0</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>16777215</width>
-                       <height>16777215</height>
-                      </size>
-                     </property>
-                     <property name="font">
-                      <font>
-                       <pointsize>10</pointsize>
-                      </font>
-                     </property>
-                     <property name="alignment">
-                      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                     </property>
-                     <property name="buttonSymbols">
-                      <enum>QAbstractSpinBox::UpDownArrows</enum>
-                     </property>
-                     <property name="prefix">
-                      <string>CH </string>
-                     </property>
-                     <property name="minimum">
-                      <number>1</number>
-                     </property>
-                     <property name="maximum">
-                      <number>64</number>
-                     </property>
-                    </widget>
+                    <property name="text">
+                     <string>Line</string>
+                    </property>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="pushButtonChannelColor">
-                     <property name="minimumSize">
-                      <size>
-                       <width>25</width>
-                       <height>25</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>25</width>
-                       <height>25</height>
-                      </size>
-                     </property>
-                     <property name="text">
-                      <string notr="true"/>
-                     </property>
-                     <property name="iconSize">
-                      <size>
-                       <width>30</width>
-                       <height>30</height>
-                      </size>
-                     </property>
-                     <property name="flat">
-                      <bool>true</bool>
-                     </property>
-                    </widget>
+                    <property name="text">
+                     <string>Points only</string>
+                    </property>
                    </item>
                    <item>
-                    <widget class="QComboBox" name="comboBoxGraphStyle">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>0</width>
-                       <height>0</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>16777215</width>
-                       <height>16777215</height>
-                      </size>
-                     </property>
-                     <property name="font">
-                      <font>
-                       <pointsize>8</pointsize>
-                      </font>
-                     </property>
-                     <item>
-                      <property name="text">
-                       <string>Line</string>
-                      </property>
-                     </item>
-                     <item>
-                      <property name="text">
-                       <string>Points only</string>
-                      </property>
-                     </item>
-                     <item>
-                      <property name="text">
-                       <string>Line and points</string>
-                      </property>
-                     </item>
-                     <item>
-                      <property name="text">
-                       <string>Hidden</string>
-                      </property>
-                     </item>
-                    </widget>
+                    <property name="text">
+                     <string>Line and points</string>
+                    </property>
                    </item>
-                  </layout>
+                   <item>
+                    <property name="text">
+                     <string>Hidden</string>
+                    </property>
+                   </item>
+                  </widget>
                  </item>
                 </layout>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_11" stretch="1,1">
+                <layout class="QHBoxLayout" name="horizontalLayout_11" stretch="0,1">
                  <item>
-                  <layout class="QGridLayout" name="gridLayout_6">
-                   <item row="0" column="0">
-                    <widget class="QLabel" name="label_8">
+                  <layout class="QVBoxLayout" name="verticalLayout_27">
+                   <item>
+                    <widget class="QCheckBox" name="checkBoxChInvert">
                      <property name="text">
-                      <string>Offset</string>
-                     </property>
-                     <property name="alignment">
-                      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-                     </property>
-                     <property name="buddy">
-                      <cstring>doubleSpinBoxChOffset</cstring>
+                      <string>Inverted</string>
                      </property>
                     </widget>
                    </item>
-                   <item row="0" column="1">
-                    <widget class="QDial" name="dialOffset">
-                     <property name="enabled">
-                      <bool>true</bool>
-                     </property>
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>40</width>
-                       <height>40</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>40</width>
-                       <height>40</height>
-                      </size>
-                     </property>
-                     <property name="minimum">
-                      <number>-100</number>
-                     </property>
-                     <property name="maximum">
-                      <number>100</number>
-                     </property>
-                     <property name="pageStep">
-                      <number>1</number>
-                     </property>
-                     <property name="tracking">
-                      <bool>true</bool>
-                     </property>
-                     <property name="notchTarget">
-                      <double>10.000000000000000</double>
-                     </property>
-                     <property name="notchesVisible">
-                      <bool>true</bool>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="1" column="0" colspan="2">
-                    <widget class="QDoubleSpinBox" name="doubleSpinBoxChOffset">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>0</width>
-                       <height>0</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>16777215</width>
-                       <height>16777215</height>
-                      </size>
-                     </property>
-                     <property name="font">
-                      <font>
-                       <pointsize>10</pointsize>
-                      </font>
-                     </property>
-                     <property name="alignment">
-                      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                     </property>
-                     <property name="decimals">
-                      <number>3</number>
-                     </property>
-                     <property name="minimum">
-                      <double>-1000000.000000000000000</double>
-                     </property>
-                     <property name="maximum">
-                      <double>1000000.000000000000000</double>
-                     </property>
-                     <property name="stepType">
-                      <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
-                     </property>
-                    </widget>
+                   <item>
+                    <layout class="QVBoxLayout" name="verticalLayout_6">
+                     <item>
+                      <widget class="QLabel" name="label_8">
+                       <property name="text">
+                        <string>Offset</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+                       </property>
+                       <property name="buddy">
+                        <cstring>doubleSpinBoxChOffset</cstring>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QDoubleSpinBox" name="doubleSpinBoxChOffset">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>0</width>
+                         <height>0</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>16777215</width>
+                         <height>16777215</height>
+                        </size>
+                       </property>
+                       <property name="font">
+                        <font>
+                         <pointsize>10</pointsize>
+                        </font>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                       <property name="decimals">
+                        <number>3</number>
+                       </property>
+                       <property name="minimum">
+                        <double>-1000000.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>1000000.000000000000000</double>
+                       </property>
+                       <property name="singleStep">
+                        <double>0.100000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
                    </item>
                   </layout>
                  </item>
                  <item>
                   <layout class="QGridLayout" name="gridLayout_10">
                    <item row="0" column="1">
-                    <widget class="QDial" name="dialChScale">
+                    <widget class="myDial" name="dialChScale">
                      <property name="enabled">
                       <bool>true</bool>
                      </property>
@@ -2335,7 +2327,7 @@ Horizontal</string>
                       <number>1</number>
                      </property>
                      <property name="value">
-                      <number>9</number>
+                      <number>12</number>
                      </property>
                      <property name="invertedControls">
                       <bool>false</bool>
@@ -2385,9 +2377,6 @@ Horizontal</string>
                      <property name="maximum">
                       <double>1000000.000000000000000</double>
                      </property>
-                     <property name="stepType">
-                      <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
-                     </property>
                      <property name="value">
                       <double>1.000000000000000</double>
                      </property>
@@ -2401,17 +2390,10 @@ Horizontal</string>
                         <string>Scale</string>
                        </property>
                        <property name="alignment">
-                        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                        <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
                        </property>
                        <property name="buddy">
                         <cstring>doubleSpinBoxChScale</cstring>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QCheckBox" name="checkBoxChInvert">
-                       <property name="text">
-                        <string>Invert</string>
                        </property>
                       </widget>
                      </item>
@@ -2699,6 +2681,13 @@ Horizontal</string>
                 </widget>
                </item>
                <item>
+                <widget class="QLineEdit" name="lineEditManualInput">
+                 <property name="placeholderText">
+                  <string>Manual input (press enter to send)</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
                 <layout class="QHBoxLayout" name="horizontalLayout_18">
                  <item>
                   <widget class="QPushButton" name="pushButtonPrintBuffer">
@@ -2861,9 +2850,6 @@ Horizontal</string>
                   <property name="maximum">
                    <double>1000000.000000000000000</double>
                   </property>
-                  <property name="stepType">
-                   <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
-                  </property>
                  </widget>
                 </item>
                 <item>
@@ -2888,9 +2874,6 @@ Horizontal</string>
                   </property>
                   <property name="maximum">
                    <double>1000000.000000000000000</double>
-                  </property>
-                  <property name="stepType">
-                   <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
                   </property>
                   <property name="value">
                    <double>255.000000000000000</double>
@@ -2919,9 +2902,6 @@ Horizontal</string>
                   </property>
                   <property name="maximum">
                    <double>1000000.000000000000000</double>
-                  </property>
-                  <property name="stepType">
-                   <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
                   </property>
                   <property name="value">
                    <double>1.000000000000000</double>
@@ -3054,13 +3034,23 @@ Horizontal</string>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_17">
                 <item>
+                 <widget class="QCheckBox" name="checkBoxClearOnReconnect">
+                  <property name="text">
+                   <string>Clear channels on reconect</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
                  <layout class="QVBoxLayout" name="verticalLayout_16">
                   <item>
                    <layout class="QHBoxLayout" name="horizontalLayout_16">
                     <item>
                      <widget class="QLabel" name="label_14">
                       <property name="text">
-                       <string>Line separation timeout</string>
+                       <string>Line timeout</string>
                       </property>
                      </widget>
                     </item>
@@ -3105,7 +3095,7 @@ Horizontal</string>
                <property name="sizeHint" stdset="0">
                 <size>
                  <width>20</width>
-                 <height>40</height>
+                 <height>0</height>
                 </size>
                </property>
               </spacer>
@@ -3408,6 +3398,11 @@ Horizontal</string>
    <extends>QWidget</extends>
    <header>myplot.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>myDial</class>
+   <extends>QDial</extends>
+   <header>mydial.h</header>
   </customwidget>
  </customwidgets>
  <resources>

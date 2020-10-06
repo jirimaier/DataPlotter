@@ -15,7 +15,8 @@ void MainWindow::init() {
   ui->tabs_right->setCurrentIndex(0);
   ui->tabs_Plot->setCurrentIndex(0);
   ui->checkBoxModeManual->setChecked(false);
-  ui->comboBoxPlotRangeType->setCurrentIndex(PLOT_RANGE_FIXED);
+  ui->comboBoxPlotRangeType->setCurrentIndex(PlotRange::fixed);
+  ui->comboBoxOutputLevel->setCurrentIndex(OutputLevel::low);
   on_pushButtonDataModeApply_clicked();
   ui->labelBuildDate->setText("Build: " + QString(__DATE__) + " " + QString(__TIME__));
 
@@ -32,13 +33,15 @@ void MainWindow::init() {
 
   portsRefreshTimer.setInterval(500);
   plotUpdateTimer.setInterval(10);
-  listUpdateTimer.setInterval(100);
+  listUpdateTimer.setInterval(200);
   connect(&plotUpdateTimer, &QTimer::timeout, this, &MainWindow::updatePlot);
   connect(&listUpdateTimer, &QTimer::timeout, this, &MainWindow::updateInfo);
   connect(&portsRefreshTimer, &QTimer::timeout, this, &MainWindow::comRefresh);
   plotUpdateTimer.start();
   listUpdateTimer.start();
   portsRefreshTimer.start();
+
+  setAdaptiveSpinBoxes();
 }
 
 void MainWindow::connectSignals() {
@@ -77,7 +80,8 @@ void MainWindow::changeLanguage(QString code) {
 }
 
 void MainWindow::exportCSV(bool all, int ch) {
-  QString fileName = QFileDialog::getSaveFileName(this, tr("Export Channel %1").arg(ch), QString(QCoreApplication::applicationDirPath()), tr("Comma separated values (*.csv)"));
+  QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/export/%1.csv").arg(all ? "all" : QString("ch%1").arg(ch + 1));
+  QString fileName = QFileDialog::getSaveFileName(this, all ? tr("Export Channel %1").arg(ch + 1) : tr("Export all channels"), defaultName, tr("Comma separated values (*.csv)"));
   if (fileName.isEmpty())
     return;
   QFile file(fileName);
@@ -98,20 +102,32 @@ void MainWindow::exportCSV(bool all, int ch) {
   }
 }
 
+void MainWindow::setAdaptiveSpinBoxes() {
+// Adaptivní krok není v starším Qt (Win XP)
+#if QT_VERSION >= 0x050C00
+  ui->doubleSpinBoxBinaryDataMin->setStepType(QAbstractSpinBox::AdaptiveDecimalStepType);
+  ui->doubleSpinBoxBinaryTimestep->setStepType(QAbstractSpinBox::AdaptiveDecimalStepType);
+  ui->doubleSpinBoxBinarydataMax->setStepType(QAbstractSpinBox::AdaptiveDecimalStepType);
+  ui->doubleSpinBoxChScale->setStepType(QAbstractSpinBox::AdaptiveDecimalStepType);
+  ui->doubleSpinBoxRangeHorizontal->setStepType(QAbstractSpinBox::AdaptiveDecimalStepType);
+  ui->doubleSpinBoxRangeVerticalRange->setStepType(QAbstractSpinBox::AdaptiveDecimalStepType);
+#endif
+}
+
 void MainWindow::showPlotStatus(int type) {
-  if (type == PLOT_STATUS_PAUSE) {
-    ui->pushButtonPause->setText(tr("resume"));
+  if (type == PlotStatus::pause) {
+    ui->pushButtonPause->setText(tr("Resume"));
     ui->labelPauseResume->setPixmap(QPixmap(":/images/icons/pause.png"));
   }
-  if (type == PLOT_STATUS_RUN) {
-    ui->pushButtonPause->setText(tr("pause"));
+  if (type == PlotStatus::run) {
+    ui->pushButtonPause->setText(tr("Pause"));
     ui->labelPauseResume->setPixmap(QPixmap(":/images/icons/run.png"));
   }
-  if (type == PLOT_STATUS_SINGLETRIGER) {
-    ui->pushButtonPause->setText(tr("normal"));
+  if (type == PlotStatus::single) {
+    ui->pushButtonPause->setText(tr("Normal"));
     ui->labelPauseResume->setPixmap(QPixmap(":/images/icons/single.png"));
   }
-  ui->pushButtonSingleTriger->setEnabled(type != PLOT_STATUS_SINGLETRIGER);
+  ui->pushButtonSingleTriger->setEnabled(type != PlotStatus::single);
 }
 
 void MainWindow::setCursorBounds(double xmin, double xmax, double ymin, double ymax, double xminfull, double xmaxfull, double yminfull, double ymaxfull) {
@@ -143,7 +159,7 @@ void MainWindow::setCursorBounds(double xmin, double xmax, double ymin, double y
 }
 
 void MainWindow::changedDataMode(int mode) {
-  ui->labelBinSettings->setVisible(ui->checkBoxModeManual->isChecked() || mode == DATA_MODE_DATA_BINARY);
+  ui->labelBinSettings->setVisible(ui->checkBoxModeManual->isChecked() || mode == DataMode::bin);
   ui->labelDataMode->setText(tr("Data mode: ") + ui->comboBoxDataMode->itemText(mode));
   ui->comboBoxDataMode->setCurrentIndex(mode);
 }
@@ -227,16 +243,22 @@ void MainWindow::comRefresh() {
   }
 }
 
-void MainWindow::on_pushButtonConnect_clicked() { emit connectSerial(portList.at(ui->comboBoxCom->currentIndex()).portName(), ui->comboBoxBaud->currentText().toInt()); }
+void MainWindow::on_pushButtonConnect_clicked() {
+  if (ui->comboBoxCom->currentIndex() >= 0) {
+    emit connectSerial(portList.at(ui->comboBoxCom->currentIndex()).portName(), ui->comboBoxBaud->currentText().toInt());
+    if (ui->checkBoxModeManual->isChecked())
+      emit setMode(DataMode::unknown);
+  }
+}
 
 void MainWindow::on_tabs_right_currentChanged(int index) {
   if (index == 2)
     ui->lineEditCommand->setFocus();
 }
 
-void MainWindow::on_dialRollingRange_valueChanged(int value) { ui->doubleSpinBoxRangeHorizontal->setValue(logaritmicSettings[value]); }
+void MainWindow::on_dialRollingRange_realValueChanged(double value) { ui->doubleSpinBoxRangeHorizontal->setValue(value); }
 
-void MainWindow::on_dialVerticalRange_valueChanged(int value) { ui->doubleSpinBoxRangeVerticalRange->setValue(logaritmicSettings[value]); }
+void MainWindow::on_dialVerticalRange_realValueChanged(double value) { ui->doubleSpinBoxRangeVerticalRange->setValue(value); }
 
 void MainWindow::on_pushButtonClearChannels_clicked() {
   ui->plot->resetChannels();
@@ -254,6 +276,26 @@ void MainWindow::on_pushButtonChannelColor_clicked() {
 }
 
 void MainWindow::on_spinBoxChannelSelect_valueChanged(int arg1) {
+  if (ui->checkBoxSelectOnlyUsed->isChecked()) {
+    if (!ui->plot->isChUsed(arg1)) {
+      if (arg1 == CHANNEL_COUNT) {
+        lastSelectedChannel = arg1;
+        ui->spinBoxChannelSelect->setValue(arg1 - 1);
+        return;
+      }
+      if (arg1 != 1) {
+        if (lastSelectedChannel < arg1) {
+          ui->spinBoxChannelSelect->setValue(arg1 + 1);
+          return;
+        }
+        if (lastSelectedChannel > arg1) {
+          ui->spinBoxChannelSelect->setValue(arg1 - 1);
+          return;
+        }
+      }
+    }
+  }
+  lastSelectedChannel = arg1;
   ui->comboBoxGraphStyle->setCurrentIndex(ui->plot->getChStyle(arg1));
   QPixmap pixmap(30, 30);
   pixmap.fill(ui->plot->getChColor(arg1));
@@ -261,8 +303,6 @@ void MainWindow::on_spinBoxChannelSelect_valueChanged(int arg1) {
   double offset = ui->plot->getChOffset(arg1);
   double scale = ui->plot->getChScale(arg1);
   ui->doubleSpinBoxChOffset->setValue(offset);
-  if (offset < ui->doubleSpinBoxRangeVerticalRange->value() / 2)
-    ui->dialOffset->setValue(offset / ui->doubleSpinBoxRangeVerticalRange->value() * 100 * 2);
   ui->doubleSpinBoxChScale->setValue(scale);
   if (isStandardValue(scale))
     ui->dialChScale->setValue(roundToStandardValue(scale));
@@ -273,8 +313,6 @@ void MainWindow::on_doubleSpinBoxChOffset_valueChanged(double arg1) {
   ui->plot->changeChOffset(ui->spinBoxChannelSelect->value(), arg1);
   scrollBarCursor_valueChanged();
 }
-
-void MainWindow::on_dialOffset_valueChanged(int value) { ui->doubleSpinBoxChOffset->setValue(ui->doubleSpinBoxRangeVerticalRange->value() / 2 * value * 0.01); }
 
 void MainWindow::on_comboBoxGraphStyle_currentIndexChanged(int index) {
   ui->plot->setChStyle(ui->spinBoxChannelSelect->value(), index);
@@ -315,6 +353,11 @@ void MainWindow::serialConnectResult(bool connected, QString message) {
   ui->comboBoxBaud->setEnabled(!connected);
   ui->labelPortInfo->setText(message);
   ui->pushButtonSendCommand->setEnabled(connected);
+
+  if (connected && ui->checkBoxClearOnReconnect->isChecked()) {
+    ui->plot->resetChannels();
+    emit resetChannels();
+  }
 }
 
 void MainWindow::printToTerminal(QByteArray data) { ui->myTerminal->printToTerminal(data); }
@@ -349,9 +392,9 @@ void MainWindow::on_doubleSpinBoxChScale_valueChanged(double arg1) {
   updateChScale();
 }
 
-void MainWindow::on_dialChScale_valueChanged(int value) {
+void MainWindow::on_dialChScale_realValueChanged(double value) {
   if (isStandardValue(fabs(ui->doubleSpinBoxChScale->value())))
-    ui->doubleSpinBoxChScale->setValue(logaritmicSettings[value] * (ui->checkBoxChInvert->isChecked() ? -1 : 1));
+    ui->doubleSpinBoxChScale->setValue(value * (ui->checkBoxChInvert->isChecked() ? -1 : 1));
   else {
     ui->dialChScale->setValue(roundToStandardValue(fabs(ui->doubleSpinBoxChScale->value())));
     ui->doubleSpinBoxChScale->setValue(logaritmicSettings[ui->dialChScale->value()] * (ui->checkBoxChInvert->isChecked() ? -1 : 1));
@@ -466,3 +509,10 @@ void MainWindow::updatePlot() {
 void MainWindow::on_comboBoxOutputLevel_currentIndexChanged(int index) { emit setOutputLevel(index); }
 
 void MainWindow::on_pushButtonAllCSV_clicked() { exportCSV(true); }
+
+void MainWindow::on_doubleSpinBoxRangeVerticalRange_valueChanged(double arg1) { ui->doubleSpinBoxChOffset->setSingleStep(pow(10, floor(log10(arg1)) - 2)); }
+
+void MainWindow::on_lineEditManualInput_returnPressed() {
+  emit sendManaulInput(ui->lineEditManualInput->text().toUtf8());
+  ui->lineEditManualInput->clear();
+}

@@ -20,7 +20,7 @@ signals:
   /// Pošle informaci jestli je port připojen
   void connectionResult(bool, QString);
   /// Předá celý úsek dat k dalšímu zpracování
-  void newLine(QByteArray);
+  void newLine(QByteArray, int);
   /// Oznámý dokončení zápisu dat do portu
   void finishedWriting();
   /// Předá aktuální obsah bufferu

@@ -18,7 +18,7 @@ public:
 private:
   bool modeChangeAllowed = true;
   BinDataSettings_t binDataSettings;
-  int dataMode = DATA_MODE_DATA_UNKNOWN;
+  int dataMode = DataMode::unknown;
   void parseBinaryDataHeader(QByteArray data);
   void changeMode(int mode);
 
@@ -47,6 +47,8 @@ signals:
   void changedBinSettings(BinDataSettings_t);
   /// Pošle aktuální režim
   void changedDataMode(int mode);
+  /// Pošle zprávu o chybě v nastavení
+  void parseError(QString);
 };
 
 #endif // SERIALHANDLER_H

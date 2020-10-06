@@ -1,11 +1,11 @@
 #include "plotdata.h"
 #include <QDebug>
 
-PlotData::PlotData() {}
+PlotData::PlotData() {qDebug() << "PlotData created from " << QThread::currentThreadId();}
 
-PlotData::~PlotData() { qDebug() << "PlotData deleted"; }
+PlotData::~PlotData() { qDebug() << "PlotData deleted from " << QThread::currentThreadId(); }
 
-void PlotData::init() { reset(); }
+void PlotData::init() { qDebug() << "PlotData initialised from " << QThread::currentThreadId();reset(); }
 
 void PlotData::newDataString(QByteArray data) {
   QVector<QVector<double> *> times;

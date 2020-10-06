@@ -4,6 +4,7 @@
 #include <QTableWidget>
 #include <QTableWidgetItem>
 
+#include "colorCodes256.h"
 #include "settings.h"
 
 class MyTerminal : public QTableWidget {

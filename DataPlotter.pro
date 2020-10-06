@@ -6,24 +6,27 @@ SOURCES += \
     channel.cpp \
     main.cpp \
     mainwindow.cpp \
+    mydial.cpp \
     myplot.cpp \
     myterminal.cpp \
+    outputworker.cpp \
     plotdata.cpp \
     plotmath.cpp \
     qcustomplot.cpp \
-    receivedoutputhandler.cpp \
     serialparser.cpp \
     serialworker.cpp
 
 HEADERS += \
     channel.h \
+    colorCodes256.h \
     mainwindow.h \
+    mydial.h \
     myplot.h \
     myterminal.h \
+    outputworker.h \
     plotdata.h \
     plotmath.h \
     qcustomplot.h \
-    receivedoutputhandler.h \
     serialparser.h \
     serialworker.h \
     settings.h

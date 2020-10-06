@@ -3,11 +3,14 @@
 
 #include "settings.h"
 #include <QObject>
+#include <QDebug>
+#include <QThread>
 
 class PlotMath : public QObject {
   Q_OBJECT
 public:
   explicit PlotMath(QObject *parent = nullptr);
+    ~PlotMath();
 public slots:
   void doMath(int resultCh, int operation, QPair<QVector<double>, QVector<double>> data, QPair<QVector<double>, QVector<double>> data2);
 signals:

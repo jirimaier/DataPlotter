@@ -41,19 +41,19 @@ void SerialWorker::read() {
       break;
     }
     if (end != -1 && (end < begin || begin == -1)) {
-      emit newLine(buffer->left(end + CMD_END_LENGTH));
-      buffer->remove(0, end + CMD_END_LENGTH);
+      emit newLine(buffer->left(end), DataLineType::data);
+      buffer->remove(0, end);
       continue;
     }
     if (begin > 0) {
-      emit newLine(buffer->left(begin));
+      emit newLine(buffer->left(begin), DataLineType::data);
       buffer->remove(0, begin);
       continue;
     }
     if (begin == 0 && end == -1)
       break;
     if (begin == 0 && end > begin) {
-      emit newLine(buffer->mid(begin, end - begin + CMD_END_LENGTH));
+      emit newLine(buffer->mid(begin + CMD_BEGIN_LENGTH, end - begin - CMD_BEGIN_LENGTH), DataLineType::command);
       buffer->remove(0, end + CMD_END_LENGTH);
       continue;
     }
@@ -63,7 +63,7 @@ void SerialWorker::read() {
 void SerialWorker::lineTimedOut() {
   qDebug() << "Line timed out";
   if (!buffer->isEmpty()) {
-    emit newLine(*buffer + "<timeout>");
+    emit newLine(*buffer, DataLineType::timeouted);
     buffer->clear();
   }
 }
@@ -91,14 +91,20 @@ void SerialWorker::begin(QString portName, int baudRate) {
     emit connectionResult(true, tr("Read-only  ") + serial->portName() + tr(" at ") + QString::number(serial->baudRate()) + tr(" bps"));
   else
     emit connectionResult(false, tr("Error: ") + serial->errorString());
+  if (serial->isOpen()) {
+    if (serial->bytesAvailable() > 0)
+      serial->readAll();
+  }
 }
 
 void SerialWorker::end() {
+  serial->clear();
   if (serial->isOpen())
     serial->close();
   if (lineTimeouter->isActive())
     lineTimeouter->stop();
   emit connectionResult(false, tr("Not connected"));
+  buffer->clear();
 }
 
 void SerialWorker::write(QByteArray data) { serial->write(data); }

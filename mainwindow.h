@@ -44,23 +44,24 @@ private:
   void updateChScale();
   void changeLanguage(QString code = "en");
   void exportCSV(bool all = false, int ch = 1);
+  int lastSelectedChannel = 1;
 
 private slots:
+  void setAdaptiveSpinBoxes();
   void on_tabs_right_currentChanged(int index);
-  void on_dialRollingRange_valueChanged(int value);
-  void on_dialVerticalRange_valueChanged(int value);
+  void on_dialRollingRange_realValueChanged(double value);
+  void on_dialVerticalRange_realValueChanged(double value);
   void on_pushButtonClearChannels_clicked();
   void on_pushButtonChannelColor_clicked();
   void on_spinBoxChannelSelect_valueChanged(int arg1);
   void on_doubleSpinBoxChOffset_valueChanged(double arg1);
-  void on_dialOffset_valueChanged(int value);
   void on_comboBoxGraphStyle_currentIndexChanged(int index);
   void scrollBarCursor_valueChanged();
   void on_pushButtonConnect_clicked();
   void on_pushButtonDisconnect_clicked();
   void on_pushButtonSendCommand_clicked();
   void on_doubleSpinBoxChScale_valueChanged(double arg1);
-  void on_dialChScale_valueChanged(int value);
+  void on_dialChScale_realValueChanged(double value);
   void on_pushButtonSelectedCSV_clicked();
   void on_dialZoom_valueChanged(int value);
   void on_comboBoxPlotRangeType_currentIndexChanged(int index);
@@ -77,6 +78,8 @@ private slots:
   void updatePlot();
   void on_comboBoxOutputLevel_currentIndexChanged(int index);
   void on_pushButtonAllCSV_clicked();
+  void on_doubleSpinBoxRangeVerticalRange_valueChanged(double arg1);
+  void on_lineEditManualInput_returnPressed();
 
 public slots:
   void comRefresh();
@@ -105,5 +108,6 @@ signals:
   void resetChannels();
   void setOutputLevel(int);
   void requestMath(int resultCh, int operation, QPair<QVector<double>, QVector<double>> data1, QPair<QVector<double>, QVector<double>> data2);
+  void sendManaulInput(QByteArray data);
 };
 #endif // MAINWINDOW_H

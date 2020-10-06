@@ -1,10 +1,10 @@
 #include "serialparser.h"
 
-SerialParser::SerialParser() {}
+SerialParser::SerialParser() { qDebug() << "SerialParser created from " << QThread::currentThreadId(); }
 
-SerialParser::~SerialParser() { qDebug() << "SerialParser deleted"; }
+SerialParser::~SerialParser() { qDebug() << "SerialParser deleted from " << QThread::currentThreadId(); }
 
-void SerialParser::init() {}
+void SerialParser::init() { qDebug() << "SerialParser initialised from " << QThread::currentThreadId(); }
 
 void SerialParser::parseBinaryDataHeader(QByteArray data) {
   if (modeChangeAllowed) {
@@ -30,6 +30,28 @@ void SerialParser::parseBinaryDataHeader(QByteArray data) {
       if (list.at(6).length() > 0)
         newSettings.firstCh = list.at(6).toInt();
 
+    if (newSettings.bits <= 0) {
+      emit parseError(tr("Invalid settings: ") + QString("bits = %1").arg(newSettings.bits));
+      newSettings.bits = binDataSettings.bits;
+    }
+    if (newSettings.firstCh < 1 || newSettings.firstCh > CHANNEL_COUNT) {
+      emit parseError(tr("Invalid settings: ") + QString("firstCh = %1").arg(newSettings.bits));
+      newSettings.firstCh = binDataSettings.firstCh;
+    }
+    if (newSettings.numCh < 1 || newSettings.numCh > CHANNEL_COUNT - newSettings.firstCh + 1) {
+      emit parseError(tr("Invalid settings: ") + QString("bits = %1").arg(newSettings.bits));
+      newSettings.numCh = binDataSettings.numCh;
+    }
+    if (newSettings.timeStep <= 0) {
+      emit parseError(tr("Invalid settings: ") + QString("bits = %1").arg(newSettings.bits));
+      newSettings.timeStep = binDataSettings.timeStep;
+    }
+    if (newSettings.valueMax < newSettings.valueMin) {
+      double min = newSettings.valueMin;
+      newSettings.valueMin = newSettings.valueMax;
+      newSettings.valueMax = min;
+    }
+
     binDataSettings = newSettings;
     emit changedBinSettings(newSettings);
   }
@@ -46,15 +68,17 @@ void SerialParser::parseLine(QByteArray line) {
   if (line.left(CMD_BEGIN_LENGTH) == CMD_BEGIN) {
     line = line.mid(CMD_BEGIN_LENGTH, line.length() - CMD_END_LENGTH - CMD_BEGIN_LENGTH);
     if (line == "data")
-      changeMode(DATA_MODE_DATA_STRING);
+      changeMode(DataMode::string);
     else if (line == "info")
-      changeMode(DATA_MODE_MESSAGE_INFO);
+      changeMode(DataMode::info);
+    else if (line == "unknown")
+      changeMode(DataMode::unknown);
     else if (line == "warning")
-      changeMode(DATA_MODE_MESSAGE_WARNING);
+      changeMode(DataMode::warning);
     else if (line == "terminal")
-      changeMode(DATA_MODE_TERMINAL);
+      changeMode(DataMode::terminal);
     else if (line.left(3) == "bin") {
-      changeMode(DATA_MODE_DATA_BINARY);
+      changeMode(DataMode::bin);
       parseBinaryDataHeader(line);
     }
   } else {
@@ -62,15 +86,15 @@ void SerialParser::parseLine(QByteArray line) {
       line = line.left(line.length() - TIMEOUT_SYMBOL_LENGTH);
     if (line.endsWith(CMD_END))
       line = line.left(line.length() - CMD_END_LENGTH);
-    if (dataMode == DATA_MODE_DATA_STRING)
+    if (dataMode == DataMode::string)
       emit newDataString(line);
-    if (dataMode == DATA_MODE_MESSAGE_INFO)
+    if (dataMode == DataMode::info)
       emit printMessage(line, false);
-    if (dataMode == DATA_MODE_MESSAGE_WARNING)
+    if (dataMode == DataMode::warning)
       emit printMessage(line, true);
-    if (dataMode == DATA_MODE_TERMINAL)
+    if (dataMode == DataMode::terminal)
       emit printToTerminal(line);
-    if (dataMode == DATA_MODE_DATA_BINARY)
+    if (dataMode == DataMode::bin)
       emit newDataBin(line, binDataSettings);
   }
 }

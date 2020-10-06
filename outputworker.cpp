@@ -1,8 +1,13 @@
-#include "receivedoutputhandler.h"
+#include "outputworker.h"
 
-ReceivedOutputHandler::ReceivedOutputHandler(QObject *parent) : QObject(parent) {}
+OutputWorker::OutputWorker(QObject *parent) : QObject(parent) {qDebug() << "OutputWorker created from " << QThread::currentThreadId();}
 
-void ReceivedOutputHandler::input(QByteArray message) {
+OutputWorker::~OutputWorker()
+{
+    qDebug() << "OutputWorker deleted from " << QThread::currentThreadId();
+}
+
+void OutputWorker::input(QByteArray message) {
   if (outputLevel == 0)
     return;
   if (outputLevel == 1) {
