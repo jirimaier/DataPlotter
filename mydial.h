@@ -1,10 +1,11 @@
 #ifndef MYDIAL_H
 #define MYDIAL_H
 
+#include <QDebug>
 #include <QDial>
 #include <QObject>
 
-#include "settings.h"
+#include "enums_defines_constants.h"
 
 class myDial : public QDial {
   Q_OBJECT
@@ -12,10 +13,15 @@ public:
   explicit myDial(QWidget *parent = nullptr);
 
 private:
-  double realValue = 10000;
+  int lastPosition;
+  bool var = false;
+  int roundToStandardValue(double value);
 
 private slots:
   void positionChanged(int position);
+
+public slots:
+  void updatePosition(double value);
 
 signals:
   void realValueChanged(double);

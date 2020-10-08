@@ -1,10 +1,9 @@
 #ifndef MYPLOT_H
 #define MYPLOT_H
 
-#include "channel.h"
+#include "enums_defines_constants.h"
 #include "plotdata.h"
 #include "qcustomplot.h"
-#include "settings.h"
 #include <QTimer>
 #include <QWidget>
 
@@ -19,6 +18,7 @@ public:
   double getHDiv() { return hdiv; }
   double getCHDiv(int ch) { return vdiv / abs(scales.at(ch - 1)); }
   double getChScale(int ch) { return abs(scales.at(ch - 1)); }
+  bool isInverted(int ch) { return scales.at(ch - 1) < 0; }
   double getChOffset(int ch) { return offsets.at(ch - 1); }
   int getChStyle(int ch) { return channelSettings.at(ch - 1)->style; }
   QColor getChColor(int ch) { return channelSettings.at(ch - 1)->color; }
@@ -43,7 +43,7 @@ private:
   double vdiv, hdiv;
   PlotSettings_t plotSettings;
   QVector<ChannelSettings_t *> channelSettings;
-  int plotRangeType = PlotRange::fixed;
+  int plotRangeType = PlotRange::fixedRange;
   QVector<QCPItemLine *> zeroLines;
   double curX1 = 0, curX2 = 0, curY1 = 0, curY2 = 0;
   QCPItemLine *cursorX1, *cursorX2, *cursorY1, *cursorY2;

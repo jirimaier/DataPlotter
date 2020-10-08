@@ -1,7 +1,7 @@
 #ifndef PLOTMATH_H
 #define PLOTMATH_H
 
-#include "settings.h"
+#include "enums_defines_constants.h"
 #include <QObject>
 #include <QDebug>
 #include <QThread>

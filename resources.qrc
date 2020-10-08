@@ -10,4 +10,7 @@
         <file>translation_cz.qm</file>
         <file>translation_en.qm</file>
     </qresource>
+    <qresource prefix="/documents">
+        <file>settings/defaultSettings.txt</file>
+    </qresource>
 </RCC>

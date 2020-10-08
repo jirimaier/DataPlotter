@@ -1,5 +1,4 @@
 #include "serialworker.h"
-#include <QtDebug>
 
 SerialWorker::SerialWorker(QObject *parent) : QObject(parent) { qDebug() << "SerialWorker created from " << QThread::currentThreadId(); }
 
@@ -39,14 +38,16 @@ void SerialWorker::read() {
     if (begin == -1 && end == -1) {
       lineTimeouter->start(lineTimeout);
       break;
+    } else {
+      lineTimeouter->stop();
     }
     if (end != -1 && (end < begin || begin == -1)) {
-      emit newLine(buffer->left(end), DataLineType::data);
-      buffer->remove(0, end);
+      emit newLine(buffer->left(end), DataLineType::dataEnded);
+      buffer->remove(0, end + CMD_END_LENGTH);
       continue;
     }
     if (begin > 0) {
-      emit newLine(buffer->left(begin), DataLineType::data);
+      emit newLine(buffer->left(begin), DataLineType::dataImplicitEnded);
       buffer->remove(0, begin);
       continue;
     }
@@ -63,7 +64,7 @@ void SerialWorker::read() {
 void SerialWorker::lineTimedOut() {
   qDebug() << "Line timed out";
   if (!buffer->isEmpty()) {
-    emit newLine(*buffer, DataLineType::timeouted);
+    emit newLine(*buffer, DataLineType::dataTimeouted);
     buffer->clear();
   }
 }
@@ -75,6 +76,8 @@ void SerialWorker::errorOccurred() {
     lineTimeouter->stop();
   emit connectionResult(false, tr("Error: ") + serial->errorString());
 }
+
+void SerialWorker::changeLineTimeout(int value) { lineTimeout = value; }
 
 void SerialWorker::requestedBufferDebug() { emit bufferDebug(*buffer); }
 

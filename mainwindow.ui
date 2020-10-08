@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1105</width>
-    <height>758</height>
+    <height>760</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -74,7 +74,7 @@
               <enum>QTabWidget::Rounded</enum>
              </property>
              <property name="currentIndex">
-              <number>0</number>
+              <number>1</number>
              </property>
              <property name="tabBarAutoHide">
               <bool>true</bool>
@@ -141,7 +141,7 @@
                            <number>3</number>
                           </property>
                           <property name="maximum">
-                           <number>30</number>
+                           <number>31</number>
                           </property>
                           <property name="pageStep">
                            <number>1</number>
@@ -595,10 +595,10 @@
                            </size>
                           </property>
                           <property name="minimum">
-                           <number>6</number>
+                           <number>9</number>
                           </property>
                           <property name="maximum">
-                           <number>30</number>
+                           <number>31</number>
                           </property>
                           <property name="pageStep">
                            <number>1</number>
@@ -609,8 +609,14 @@
                           <property name="invertedControls">
                            <bool>false</bool>
                           </property>
-                          <property name="notchesVisible">
+                          <property name="wrapping">
                            <bool>false</bool>
+                          </property>
+                          <property name="notchTarget">
+                           <double>2.000000000000000</double>
+                          </property>
+                          <property name="notchesVisible">
+                           <bool>true</bool>
                           </property>
                          </widget>
                         </item>
@@ -1268,7 +1274,7 @@
                       <number>64</number>
                      </property>
                      <property name="value">
-                      <number>10</number>
+                      <number>61</number>
                      </property>
                     </widget>
                    </item>
@@ -1402,7 +1408,7 @@
                       <number>64</number>
                      </property>
                      <property name="value">
-                      <number>11</number>
+                      <number>62</number>
                      </property>
                     </widget>
                    </item>
@@ -1536,7 +1542,7 @@
                       <number>64</number>
                      </property>
                      <property name="value">
-                      <number>12</number>
+                      <number>63</number>
                      </property>
                     </widget>
                    </item>
@@ -1670,7 +1676,7 @@
                       <number>64</number>
                      </property>
                      <property name="value">
-                      <number>13</number>
+                      <number>64</number>
                      </property>
                     </widget>
                    </item>
@@ -1819,6 +1825,30 @@ Semicolon</string>
                   <string>Plot settings</string>
                  </property>
                  <layout class="QVBoxLayout" name="verticalLayout_25">
+                  <item>
+                   <widget class="QCheckBox" name="checkBoxSelectOnlyUsed">
+                    <property name="text">
+                     <string>Select only
+used channels</string>
+                    </property>
+                    <property name="checked">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="verticalSpacer_10">
+                    <property name="orientation">
+                     <enum>Qt::Vertical</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>20</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
                   <item>
                    <widget class="QCheckBox" name="checkBoxVerticalValues">
                     <property name="sizePolicy">
@@ -2079,16 +2109,6 @@ Horizontal</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="0" column="2">
-                  <widget class="QCheckBox" name="checkBoxSelectOnlyUsed">
-                   <property name="text">
-                    <string>Used only</string>
-                   </property>
-                   <property name="checked">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
                  <item row="1" column="0">
                   <widget class="QSpinBox" name="spinBoxChannelSelect">
                    <property name="sizePolicy">
@@ -2321,7 +2341,7 @@ Horizontal</string>
                       <number>3</number>
                      </property>
                      <property name="maximum">
-                      <number>21</number>
+                      <number>22</number>
                      </property>
                      <property name="pageStep">
                       <number>1</number>
@@ -2333,7 +2353,7 @@ Horizontal</string>
                       <bool>false</bool>
                      </property>
                      <property name="notchTarget">
-                      <double>1.000000000000000</double>
+                      <double>2.000000000000000</double>
                      </property>
                      <property name="notchesVisible">
                       <bool>true</bool>
@@ -2372,7 +2392,7 @@ Horizontal</string>
                       <number>3</number>
                      </property>
                      <property name="minimum">
-                      <double>-1000000.000000000000000</double>
+                      <double>0.001000000000000</double>
                      </property>
                      <property name="maximum">
                       <double>1000000.000000000000000</double>
@@ -2476,7 +2496,7 @@ Horizontal</string>
             </size>
            </property>
            <property name="currentIndex">
-            <number>0</number>
+            <number>1</number>
            </property>
            <property name="usesScrollButtons">
             <bool>false</bool>
@@ -2672,6 +2692,9 @@ Horizontal</string>
                  <property name="verticalScrollBarPolicy">
                   <enum>Qt::ScrollBarAlwaysOn</enum>
                  </property>
+                 <property name="undoRedoEnabled">
+                  <bool>false</bool>
+                 </property>
                  <property name="lineWrapMode">
                   <enum>QTextEdit::NoWrap</enum>
                  </property>
@@ -2681,11 +2704,29 @@ Horizontal</string>
                 </widget>
                </item>
                <item>
-                <widget class="QLineEdit" name="lineEditManualInput">
-                 <property name="placeholderText">
-                  <string>Manual input (press enter to send)</string>
-                 </property>
-                </widget>
+                <layout class="QHBoxLayout" name="horizontalLayout_10" stretch="1,0">
+                 <item>
+                  <widget class="QLineEdit" name="lineEditManualInput">
+                   <property name="placeholderText">
+                    <string>Manual input (press enter to send)</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QComboBox" name="comboBoxManualInput">
+                   <item>
+                    <property name="text">
+                     <string>Cmd</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Data</string>
+                    </property>
+                   </item>
+                  </widget>
+                 </item>
+                </layout>
                </item>
                <item>
                 <layout class="QHBoxLayout" name="horizontalLayout_18">
@@ -2780,6 +2821,11 @@ Horizontal</string>
                   <item>
                    <property name="text">
                     <string>Print message (highlighted)</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Settings</string>
                    </property>
                   </item>
                  </widget>
@@ -3100,6 +3146,43 @@ Horizontal</string>
                </property>
               </spacer>
              </item>
+             <item>
+              <widget class="QGroupBox" name="groupBox_11">
+               <property name="title">
+                <string>Settings file</string>
+               </property>
+               <layout class="QGridLayout" name="gridLayout_6">
+                <item row="0" column="0">
+                 <widget class="QPushButton" name="pushButtonDefaults">
+                  <property name="text">
+                   <string>Defaults</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QPushButton" name="pushButtonLoadFile">
+                  <property name="text">
+                   <string>Load</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QPushButton" name="pushButtonReset">
+                  <property name="text">
+                   <string>Reset</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QPushButton" name="pushButtonSaveSettings">
+                  <property name="text">
+                   <string>Save</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
             </layout>
            </widget>
            <widget class="QWidget" name="tab_9">
@@ -3413,11 +3496,11 @@ Horizontal</string>
    <sender>verticalScrollBarCursorY2</sender>
    <signal>valueChanged(int)</signal>
    <receiver>MainWindow</receiver>
-   <slot>scrollBarCursor_valueChanged()</slot>
+   <slot>scrollBarCursorValueChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>75</x>
-     <y>658</y>
+     <x>66</x>
+     <y>703</y>
     </hint>
     <hint type="destinationlabel">
      <x>1004</x>
@@ -3429,11 +3512,11 @@ Horizontal</string>
    <sender>horizontalScrollBarCursorX2</sender>
    <signal>valueChanged(int)</signal>
    <receiver>MainWindow</receiver>
-   <slot>scrollBarCursor_valueChanged()</slot>
+   <slot>scrollBarCursorValueChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>195</x>
-     <y>499</y>
+     <x>211</x>
+     <y>555</y>
     </hint>
     <hint type="destinationlabel">
      <x>1004</x>
@@ -3448,12 +3531,12 @@ Horizontal</string>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>380</x>
-     <y>563</y>
+     <x>258</x>
+     <y>583</y>
     </hint>
     <hint type="destinationlabel">
-     <x>195</x>
-     <y>499</y>
+     <x>211</x>
+     <y>555</y>
     </hint>
    </hints>
   </connection>
@@ -3464,12 +3547,12 @@ Horizontal</string>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>217</x>
-     <y>563</y>
+     <x>165</x>
+     <y>583</y>
     </hint>
     <hint type="destinationlabel">
-     <x>75</x>
-     <y>658</y>
+     <x>66</x>
+     <y>703</y>
     </hint>
    </hints>
   </connection>
@@ -3477,11 +3560,11 @@ Horizontal</string>
    <sender>verticalScrollBarCursorY1</sender>
    <signal>valueChanged(int)</signal>
    <receiver>MainWindow</receiver>
-   <slot>scrollBarCursor_valueChanged()</slot>
+   <slot>scrollBarCursorValueChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>55</x>
-     <y>658</y>
+     <x>46</x>
+     <y>703</y>
     </hint>
     <hint type="destinationlabel">
      <x>1004</x>
@@ -3496,12 +3579,12 @@ Horizontal</string>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>217</x>
-     <y>563</y>
+     <x>165</x>
+     <y>583</y>
     </hint>
     <hint type="destinationlabel">
-     <x>55</x>
-     <y>658</y>
+     <x>46</x>
+     <y>703</y>
     </hint>
    </hints>
   </connection>
@@ -3509,11 +3592,11 @@ Horizontal</string>
    <sender>horizontalScrollBarCursorX1</sender>
    <signal>valueChanged(int)</signal>
    <receiver>MainWindow</receiver>
-   <slot>scrollBarCursor_valueChanged()</slot>
+   <slot>scrollBarCursorValueChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>195</x>
-     <y>479</y>
+     <x>211</x>
+     <y>535</y>
     </hint>
     <hint type="destinationlabel">
      <x>1004</x>
@@ -3528,28 +3611,12 @@ Horizontal</string>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>380</x>
-     <y>563</y>
+     <x>258</x>
+     <y>583</y>
     </hint>
     <hint type="destinationlabel">
-     <x>195</x>
-     <y>479</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButtonClearReceivedList</sender>
-   <signal>clicked()</signal>
-   <receiver>textEditSerialDebug</receiver>
-   <slot>clear()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>971</x>
-     <y>263</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>972</x>
-     <y>235</y>
+     <x>211</x>
+     <y>535</y>
     </hint>
    </hints>
   </connection>
@@ -3560,8 +3627,8 @@ Horizontal</string>
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>973</x>
-     <y>530</y>
+     <x>1073</x>
+     <y>502</y>
     </hint>
     <hint type="destinationlabel">
      <x>973</x>
@@ -3576,12 +3643,12 @@ Horizontal</string>
    <slot>clearTerminal()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>973</x>
-     <y>530</y>
+     <x>1073</x>
+     <y>502</y>
     </hint>
     <hint type="destinationlabel">
-     <x>844</x>
-     <y>484</y>
+     <x>1073</x>
+     <y>475</y>
     </hint>
    </hints>
   </connection>
@@ -3592,12 +3659,28 @@ Horizontal</string>
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>896</x>
-     <y>288</y>
+     <x>1072</x>
+     <y>333</y>
     </hint>
     <hint type="destinationlabel">
-     <x>887</x>
-     <y>324</y>
+     <x>1073</x>
+     <y>606</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonClearReceivedList</sender>
+   <signal>clicked()</signal>
+   <receiver>textEditSerialDebug</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1071</x>
+     <y>299</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>972</x>
+     <y>235</y>
     </hint>
    </hints>
   </connection>
@@ -3605,8 +3688,7 @@ Horizontal</string>
  <slots>
   <slot>changeLanguage()</slot>
   <slot>clearBuffer()</slot>
-  <slot>radioButtonRangeType_toggled(bool)</slot>
   <slot>setHDivLimits(double)</slot>
-  <slot>scrollBarCursor_valueChanged()</slot>
+  <slot>scrollBarCursorValueChanged()</slot>
  </slots>
 </ui>

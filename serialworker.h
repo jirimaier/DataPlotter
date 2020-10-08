@@ -1,8 +1,9 @@
 #ifndef SERIALWORKER_H
 #define SERIALWORKER_H
 
-#include "settings.h"
+#include "enums_defines_constants.h"
 #include <QByteArrayMatcher>
+#include <QDebug>
 #include <QObject>
 #include <QSerialPort>
 #include <QThread>
@@ -41,7 +42,7 @@ private slots:
 
 public slots:
   /// Změní timeout pro ukončením řádku
-  void changeLineTimeout(int value) { lineTimeout = value; }
+  void changeLineTimeout(int value);
   /// Pokusí se otevřít port
   void begin(QString portName, int baudRate);
   /// Zavře port

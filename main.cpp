@@ -5,13 +5,12 @@
 
 // Pro Window XP nutno použít Qt 5.7
 // V Qt 5.7 nefungují adaptivní spinboxy,
-// nutno vymazat řádky "... setStepType(QAbstractSpinBox::AdaptiveDecimalStepType)"
-// z ui_mainwindow.h
 
 #include <QApplication>
 #include <QSerialPort>
 #include <QTimer>
 
+#include "enums_defines_constants.h"
 #include "mainwindow.h"
 #include "myterminal.h"
 #include "outputworker.h"
@@ -20,11 +19,11 @@
 #include "qcustomplot.h"
 #include "serialparser.h"
 #include "serialworker.h"
-#include "settings.h"
 
 int main(int argc, char *argv[]) {
-  qDebug() << "Main thread is " << QThread::currentThreadId();
   QApplication application(argc, argv);
+
+  qDebug() << "Main thread is " << QThread::currentThreadId();
 
   // Zaregistruje typy aby je šlo posílat signály mezi vlákny
   qRegisterMetaType<BinDataSettings_t>();
@@ -45,6 +44,7 @@ int main(int argc, char *argv[]) {
   QThread outputWorkerThread;
   QThread plotMathThread;
 
+  QObject::connect(outputWorker, &OutputWorker::output, &mainWindow, &MainWindow::showProcessedCommand);
   QObject::connect(&mainWindow, &MainWindow::allowModeChange, serialParser, &SerialParser::allowModeChange);
   QObject::connect(&mainWindow, &MainWindow::setMode, serialParser, &SerialParser::setMode);
   QObject::connect(&mainWindow, &MainWindow::setBinParameters, serialParser, &SerialParser::setBinParameters);
@@ -58,13 +58,7 @@ int main(int argc, char *argv[]) {
   QObject::connect(&mainWindow, &MainWindow::requestMath, plotMath, &PlotMath::doMath);
   QObject::connect(&mainWindow, &MainWindow::sendManaulInput, serialParser, &SerialParser::parseLine);
   QObject::connect(&mainWindow, &MainWindow::sendManaulInput, outputWorker, &OutputWorker::input);
-
-  QObject::connect(plotData, &PlotData::updatePlot, &mainWindow, &MainWindow::addDataToPlot);
-
-  QObject::connect(plotMath, &PlotMath::sendResult, &mainWindow, &MainWindow::addDataToPlot);
-
-  QObject::connect(outputWorker, &OutputWorker::output, &mainWindow, &MainWindow::showProcessedCommand);
-
+  QObject::connect(&mainWindow, &MainWindow::parseError, outputWorker, &OutputWorker::input);
   QObject::connect(serialParser, &SerialParser::changedDataMode, &mainWindow, &MainWindow::changedDataMode);
   QObject::connect(serialParser, &SerialParser::printMessage, &mainWindow, &MainWindow::printMessage);
   QObject::connect(serialParser, &SerialParser::newProcessedLine, &mainWindow, &MainWindow::showProcessedCommand);
@@ -72,13 +66,15 @@ int main(int argc, char *argv[]) {
   QObject::connect(serialParser, &SerialParser::printToTerminal, &mainWindow, &MainWindow::printToTerminal);
   QObject::connect(serialParser, &SerialParser::newDataString, plotData, &PlotData::newDataString);
   QObject::connect(serialParser, &SerialParser::newDataBin, plotData, &PlotData::newDataBin);
-
+  QObject::connect(serialParser, &SerialParser::parseError, outputWorker, &OutputWorker::input);
+  QObject::connect(serialParser, &SerialParser::changeGUISettings, &mainWindow, &MainWindow::useSettings);
+  QObject::connect(plotData, &PlotData::updatePlot, &mainWindow, &MainWindow::addDataToPlot);
+  QObject::connect(plotMath, &PlotMath::sendResult, &mainWindow, &MainWindow::addDataToPlot);
   QObject::connect(serialWorker, &SerialWorker::finishedWriting, &mainWindow, &MainWindow::serialFinishedWriting);
   QObject::connect(serialWorker, &SerialWorker::connectionResult, &mainWindow, &MainWindow::serialConnectResult);
   QObject::connect(serialWorker, &SerialWorker::bufferDebug, &mainWindow, &MainWindow::bufferDebug);
   QObject::connect(serialWorker, &SerialWorker::newLine, serialParser, &SerialParser::parseLine);
   QObject::connect(serialWorker, &SerialWorker::newLine, outputWorker, &OutputWorker::input);
-
   QObject::connect(&serialWorkerThread, &QThread::started, serialWorker, &SerialWorker::init);
   QObject::connect(&serialParserThread, &QThread::started, serialParser, &SerialParser::init);
   QObject::connect(&plotDataThread, &QThread::started, plotData, &PlotData::init);

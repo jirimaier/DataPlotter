@@ -5,7 +5,7 @@
 #include <QTableWidgetItem>
 
 #include "colorCodes256.h"
-#include "settings.h"
+#include "enums_defines_constants.h"
 
 class MyTerminal : public QTableWidget {
   Q_OBJECT

@@ -10,6 +10,7 @@ MyPlot::MyPlot(QWidget *parent) : QCustomPlot(parent) {
   }
   for (int i = 0; i < 8; i++)
     channelSettings.at(i)->color = defaultColors[i];
+  channelSettings.at(CHANNEL_COUNT - 1)->style = GraphStyle::point;
   initCursors();
   initZeroLines();
   resetChannels();
@@ -165,7 +166,7 @@ void MyPlot::update() {
   maxT = maxTime();
   if (plottingRangeType != PlotRange::freeMove) {
     this->yAxis->setRange((plotSettings.verticalCenter * 0.01 - 1) * 0.5 * plotSettings.verticalRange, (plotSettings.verticalCenter * 0.01 + 1) * 0.5 * plotSettings.verticalRange);
-    if (plottingRangeType == PlotRange::fixed) {
+    if (plottingRangeType == PlotRange::fixedRange) {
       double dataLenght = maxT - minT;
       this->xAxis->setRange(minT + dataLenght * 0.001 * (plotSettings.horizontalPos - plotSettings.zoom / 2), minT + dataLenght * 0.001 * (plotSettings.horizontalPos + plotSettings.zoom / 2));
     } else if (plottingRangeType == PlotRange::rolling) {

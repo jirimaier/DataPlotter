@@ -1,13 +1,14 @@
 #ifndef PLOTTING_H
 #define PLOTTING_H
 
+#include <QDebug>
 #include <QObject>
+#include <QThread>
 #include <QVector>
 #include <QWidget>
+#include <QtMath>
 
-#include "channel.h"
-#include "serialparser.h"
-#include "settings.h"
+#include "enums_defines_constants.h"
 
 class PlotData : public QObject {
   Q_OBJECT

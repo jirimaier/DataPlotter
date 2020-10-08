@@ -6,7 +6,7 @@
 
 #include "myterminal.h"
 #include "plotdata.h"
-#include "settings.h"
+#include "enums_defines_constants.h"
 
 class SerialParser : public QObject {
   Q_OBJECT
@@ -24,7 +24,7 @@ private:
 
 public slots:
   /// Přijme řádek ke zpracování
-  void parseLine(QByteArray line);
+  void parseLine(QByteArray line, int type);
   /// Nastaví parametry pro zpracování binárních dat
   void setBinParameters(BinDataSettings_t settings);
   /// Nastaví režim zpracování
@@ -48,7 +48,9 @@ signals:
   /// Pošle aktuální režim
   void changedDataMode(int mode);
   /// Pošle zprávu o chybě v nastavení
-  void parseError(QString);
+  void parseError(QByteArray, int type = DataLineType::debugMessage);
+  /// Pošle příkaz k změně nastavení
+  void changeGUISettings(QByteArray);
 };
 
 #endif // SERIALHANDLER_H
