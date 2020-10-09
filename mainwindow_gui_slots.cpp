@@ -3,7 +3,7 @@
 void MainWindow::on_pushButtonConnect_clicked() {
   if (ui->comboBoxCom->currentIndex() >= 0) {
     emit connectSerial(portList.at(ui->comboBoxCom->currentIndex()).portName(), ui->comboBoxBaud->currentText().toInt());
-    if (ui->checkBoxModeManual->isChecked())
+    if (!ui->checkBoxModeManual->isChecked())
       emit setMode(DataMode::unknown);
   }
 }
@@ -122,8 +122,6 @@ void MainWindow::on_checkBoxModeManual_toggled(bool checked) {
     ui->spinBoxBinaryDataFirstCh->setValue(binSettings.firstCh);
     ui->checkBoxBinContinuous->setChecked(binSettings.continuous);
   }
-  if (checked)
-    ui->labelBinSettings->setVisible(true);
 }
 
 void MainWindow::on_horizontalSliderLineTimeout_valueChanged(int value) {

@@ -5,6 +5,7 @@
         <file>icons/single.png</file>
         <file>icons/logoKatedry.png</file>
         <file>icons/arrow.png</file>
+        <file>icons/blank.png</file>
     </qresource>
     <qresource prefix="/translations">
         <file>translation_cz.qm</file>
@@ -12,5 +13,8 @@
     </qresource>
     <qresource prefix="/documents">
         <file>settings/defaultSettings.txt</file>
+    </qresource>
+    <qresource prefix="/styles">
+        <file>settings/styleSheet.txt</file>
     </qresource>
 </RCC>

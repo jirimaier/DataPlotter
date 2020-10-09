@@ -16,9 +16,19 @@ QByteArray MainWindow::getSettings() {
   settings.append('\n');
   settings.append(ui->radioButtonEn->isChecked() ? "lang:en" : "lang:cz");
   settings.append('\n');
+  settings.append(ui->radioButtonCSVDot->isChecked() ? "csvsep:dc" : "csvsep:cs");
+  settings.append('\n');
   settings.append("chsou:" + QString::number(ui->checkBoxSelectOnlyUsed->isChecked() ? 1 : 0).toUtf8());
   settings.append('\n');
   settings.append("clrgor:" + QString::number(ui->checkBoxClearOnReconnect->isChecked() ? 1 : 0).toUtf8());
+  settings.append('\n');
+  settings.append("baud:" + QString(ui->comboBoxBaud->currentText()).toUtf8());
+  settings.append('\n');
+  settings.append("output:" + QString::number(ui->comboBoxOutputLevel->currentIndex()).toUtf8());
+  settings.append('\n');
+  settings.append("lineend:" + QString::number(ui->comboBoxLineEnding->currentIndex()).toUtf8());
+  settings.append('\n');
+  settings.append("plotrange:" + QString::number(ui->comboBoxPlotRangeType->currentIndex()).toUtf8());
   settings.append('\n');
   for (int i = 1; i <= CHANNEL_COUNT; i++) {
     settings.append("ch:" + QString::number(i).toUtf8());
@@ -36,6 +46,47 @@ QByteArray MainWindow::getSettings() {
     settings.append('\n');
   }
   settings.append("ch:" + QString::number(ui->spinBoxChannelSelect->value()).toUtf8());
+  settings.append('\n');
+  settings.append("math1en:" + QString::number(ui->checkBoxMath1->isChecked() ? 1 : 0).toUtf8());
+  settings.append('\n');
+  settings.append("math2en:" + QString::number(ui->checkBoxMath2->isChecked() ? 1 : 0).toUtf8());
+  settings.append('\n');
+  settings.append("math3en:" + QString::number(ui->checkBoxMath3->isChecked() ? 1 : 0).toUtf8());
+  settings.append('\n');
+  settings.append("math4en:" + QString::number(ui->checkBoxMath4->isChecked() ? 1 : 0).toUtf8());
+  settings.append('\n');
+  settings.append("math1in1:" + QString::number(ui->spinBoxMath1First->value()).toUtf8());
+  settings.append('\n');
+  settings.append("math2in1:" + QString::number(ui->spinBoxMath2First->value()).toUtf8());
+  settings.append('\n');
+  settings.append("math3in1:" + QString::number(ui->spinBoxMath3First->value()).toUtf8());
+  settings.append('\n');
+  settings.append("math4in1:" + QString::number(ui->spinBoxMath4First->value()).toUtf8());
+  settings.append('\n');
+  settings.append("math1in2:" + QString::number(ui->spinBoxMath1Second->value()).toUtf8());
+  settings.append('\n');
+  settings.append("math2in2:" + QString::number(ui->spinBoxMath2Second->value()).toUtf8());
+  settings.append('\n');
+  settings.append("math3in2:" + QString::number(ui->spinBoxMath3Second->value()).toUtf8());
+  settings.append('\n');
+  settings.append("math4in2:" + QString::number(ui->spinBoxMath4Second->value()).toUtf8());
+  settings.append('\n');
+  settings.append("math1out:" + QString::number(ui->spinBoxMath1Result->value()).toUtf8());
+  settings.append('\n');
+  settings.append("math2out:" + QString::number(ui->spinBoxMath2Result->value()).toUtf8());
+  settings.append('\n');
+  settings.append("math3out:" + QString::number(ui->spinBoxMath3Result->value()).toUtf8());
+  settings.append('\n');
+  settings.append("math4out:" + QString::number(ui->spinBoxMath4Result->value()).toUtf8());
+  settings.append('\n');
+  settings.append("math1op:" + QString::number(ui->comboBoxMath1Op->currentIndex()).toUtf8());
+  settings.append('\n');
+  settings.append("math2op:" + QString::number(ui->comboBoxMath2Op->currentIndex()).toUtf8());
+  settings.append('\n');
+  settings.append("math3op:" + QString::number(ui->comboBoxMath3Op->currentIndex()).toUtf8());
+  settings.append('\n');
+  settings.append("math4op:" + QString::number(ui->comboBoxMath4Op->currentIndex()).toUtf8());
+  settings.append('\n');
   return settings;
 }
 
@@ -83,6 +134,14 @@ void MainWindow::useSettings(QByteArray settings) {
       ui->checkBoxClearOnReconnect->setChecked((bool)value.toInt());
     else if (type == "chsty")
       ui->comboBoxGraphStyle->setCurrentIndex(value.toInt());
+    else if (type == "output")
+      ui->comboBoxOutputLevel->setCurrentIndex(value.toInt());
+    else if (type == "lineend")
+      ui->comboBoxLineEnding->setCurrentIndex(value.toInt());
+    else if (type == "plotrange")
+      ui->comboBoxPlotRangeType->setCurrentIndex(value.toInt());
+    else if (type == "baud")
+      ui->comboBoxBaud->setCurrentIndex(ui->comboBoxBaud->findText(value));
     else if (type == "chcol") {
       QByteArrayList rgb = value.split(',');
       if (rgb.length() != 3) {
@@ -99,12 +158,57 @@ void MainWindow::useSettings(QByteArray settings) {
         ui->radioButtonEn->setChecked(true);
       if (value == "cz")
         ui->radioButtonCz->setChecked(true);
+    } else if (type == "csvsep") {
+      if (value == "dc")
+        ui->radioButtonCSVDot->setChecked(true);
+      if (value == "cs")
+        ui->radioButtonCSVComma->setChecked(true);
     } else if (type == "ch") {
       bool b = ui->checkBoxSelectOnlyUsed->isChecked();
       ui->checkBoxSelectOnlyUsed->setChecked(false);
       ui->spinBoxChannelSelect->setValue(value.toInt());
       ui->checkBoxSelectOnlyUsed->setChecked(b);
-    } else
+    } else if (type == "math1en")
+      ui->checkBoxMath1->setChecked((bool)value.toInt());
+    else if (type == "math2en")
+      ui->checkBoxMath2->setChecked((bool)value.toInt());
+    else if (type == "math3en")
+      ui->checkBoxMath3->setChecked((bool)value.toInt());
+    else if (type == "math4en")
+      ui->checkBoxMath4->setChecked((bool)value.toInt());
+    else if (type == "math1in1")
+      ui->spinBoxMath1First->setValue(value.toInt());
+    else if (type == "math2in1")
+      ui->spinBoxMath2First->setValue(value.toInt());
+    else if (type == "math3in1")
+      ui->spinBoxMath3First->setValue(value.toInt());
+    else if (type == "math4in1")
+      ui->spinBoxMath4First->setValue(value.toInt());
+    else if (type == "math1in2")
+      ui->spinBoxMath1Second->setValue(value.toInt());
+    else if (type == "math2in2")
+      ui->spinBoxMath2Second->setValue(value.toInt());
+    else if (type == "math3in2")
+      ui->spinBoxMath3Second->setValue(value.toInt());
+    else if (type == "math4in2")
+      ui->spinBoxMath4Second->setValue(value.toInt());
+    else if (type == "math1out")
+      ui->spinBoxMath1Result->setValue(value.toInt());
+    else if (type == "math2out")
+      ui->spinBoxMath2Result->setValue(value.toInt());
+    else if (type == "math3out")
+      ui->spinBoxMath3Result->setValue(value.toInt());
+    else if (type == "math4out")
+      ui->spinBoxMath4Result->setValue(value.toInt());
+    else if (type == "math1op")
+      ui->comboBoxMath1Op->setCurrentIndex(value.toInt());
+    else if (type == "math2op")
+      ui->comboBoxMath2Op->setCurrentIndex(value.toInt());
+    else if (type == "math3op")
+      ui->comboBoxMath3Op->setCurrentIndex(value.toInt());
+    else if (type == "math4op")
+      ui->comboBoxMath4Op->setCurrentIndex(value.toInt());
+    else
       emit parseError(QString(tr("Unknown setting: ")).toUtf8() + type);
   }
 }
@@ -171,4 +275,8 @@ void MainWindow::setUp() {
     if (defaults.open(QFile::ReadOnly | QFile::Text))
       useSettings(defaults.readAll());
   }
+
+  QFile styleSheet(":/styles/settings/styleSheet.txt");
+  if (styleSheet.open(QFile::ReadOnly | QFile::Text))
+    qApp->setStyleSheet(styleSheet.readAll());
 }

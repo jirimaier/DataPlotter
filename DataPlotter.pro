@@ -6,6 +6,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     mainwindow_csv.cpp \
+    mainwindow_cursors.cpp \
     mainwindow_gui_preset.cpp \
     mainwindow_gui_slots.cpp \
     mainwindow_save_load.cpp \

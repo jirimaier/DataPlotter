@@ -48,16 +48,10 @@ void MainWindow::setGuiDefaults() {
   ui->tabs_right->setCurrentIndex(0);
   ui->tabs_Plot->setCurrentIndex(0);
   ui->checkBoxModeManual->setChecked(false);
-  ui->comboBoxPlotRangeType->setCurrentIndex(PlotRange::fixedRange);
-  ui->comboBoxOutputLevel->setCurrentIndex(OutputLevel::low);
-  ui->labelDataMode->setText(tr("Data mode: ") + ui->comboBoxDataMode->itemText(0));
+  ui->labelBinSettings->setHidden(true);
 
-  ui->comboBoxMath4Op->setCurrentIndex(MathOperations::xy);
   ui->labelBuildDate->setText("Build: " + QString(__DATE__) + " " + QString(__TIME__));
-
-  QPixmap pixmap(30, 30);
-  pixmap.fill(defaultColors[0]);
-  ui->pushButtonChannelColor->setIcon(pixmap);
+  ui->labelDataMode->setText(tr("Data mode: ") + ui->comboBoxDataMode->itemText(0));
 
   ui->labelPauseResume->setPixmap(QPixmap(":/images/icons/run.png"));
 }

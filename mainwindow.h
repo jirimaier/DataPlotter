@@ -10,7 +10,6 @@
 #include <QTimer>
 #include <QTranslator>
 #include <QtCore>
-#include <QtGlobal>
 
 #include "enums_defines_constants.h"
 #include "plotdata.h"
@@ -51,6 +50,7 @@ private:
   void setUp();
   void startTimers();
   void setGuiDefaults();
+  double plotTop = 10, plotBottom = -10, plotRight = 10, plotLeft = 0;
 
 private slots:
   void setAdaptiveSpinBoxes();
@@ -92,6 +92,7 @@ private slots:
   void on_checkBoxChInvert_toggled(bool checked) { ui->plot->changeChScale(ui->spinBoxChannelSelect->value(), ui->doubleSpinBoxChScale->value() * (checked ? -1 : 1)); }
   void on_pushButtonSaveSettings_clicked();
   void on_pushButtonReset_clicked();
+  void on_pushButtonCursorToView_clicked();
 
 public slots:
   void setCursorBounds(double xmin, double xmax, double ymin, double ymax, double xminfull, double xmaxfull, double yminfull, double ymaxfull);

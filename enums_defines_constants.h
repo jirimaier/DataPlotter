@@ -39,8 +39,6 @@ const float refreshRates[8] = {10.0f, 20.0f, 30.0f, 40.0f, 50.0f, 60.0f, 100.0f,
 #define LOG_SET_SIZE 31 //                       0       1       2       3      4      5      6     7     8     9    10   11  12 13 14  15  16  17  18   19   20   21    22    23    24     25     26     27      28      29      30
 const double logaritmicSettings[LOG_SET_SIZE] = {0.0001, 0.0002, 0.0005, 0.001, 0.002, 0.005, 0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000, 200000, 500000, 1000000};
 
-const QColor defaultColors[8] = {Qt::darkRed, Qt::darkBlue, Qt::darkGreen, Qt::darkYellow, Qt::darkMagenta, Qt::darkCyan, Qt::darkGray, Qt::black};
-
 struct BinDataSettings_t {
   int bits = 8;
   double valueMin = 0;

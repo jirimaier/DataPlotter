@@ -67,11 +67,11 @@ void MainWindow::comRefresh() {
 }
 
 void MainWindow::updateInfo() {
-  if (receivedListBuffer.isEmpty())
-    return;
-  foreach (QString line, receivedListBuffer)
-    ui->textEditSerialDebug->append(line);
-  receivedListBuffer.clear();
+  if (!receivedListBuffer.isEmpty()) {
+    foreach (QString line, receivedListBuffer)
+      ui->textEditSerialDebug->append(line);
+    receivedListBuffer.clear();
+  }
 
   QString text = tr("Binary mode settings:");
   text.append(QString::number(binSettings.bits) + tr(" bits") + "\n");

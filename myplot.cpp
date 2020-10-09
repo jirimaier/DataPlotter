@@ -8,9 +8,6 @@ MyPlot::MyPlot(QWidget *parent) : QCustomPlot(parent) {
     scales.append(1);
     offsets.append(0);
   }
-  for (int i = 0; i < 8; i++)
-    channelSettings.at(i)->color = defaultColors[i];
-  channelSettings.at(CHANNEL_COUNT - 1)->style = GraphStyle::point;
   initCursors();
   initZeroLines();
   resetChannels();
