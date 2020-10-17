@@ -4,11 +4,12 @@
 // Qt 5.15
 
 // Pro Window XP nutno použít Qt 5.7
-// V Qt 5.7 nefungují adaptivní spinboxy,
+// V Qt 5.7 nefungují adaptivní spinboxy
 
 #include <QApplication>
 #include <QSerialPort>
 #include <QTimer>
+#include <QTranslator>
 
 #include "enums_defines_constants.h"
 #include "mainwindow.h"
@@ -32,6 +33,7 @@ int main(int argc, char *argv[]) {
   qRegisterMetaType<QPair<QVector<double>, QVector<double>>>();
 
   MainWindow mainWindow;
+  QTranslator translator;
   PlotData *plotData = new PlotData;
   SerialParser *serialParser = new SerialParser;
   SerialWorker *serialWorker = new SerialWorker;
@@ -91,7 +93,7 @@ int main(int argc, char *argv[]) {
   outputWorkerThread.start();
   plotMathThread.start();
 
-  mainWindow.init();
+  mainWindow.init(&translator);
   mainWindow.show();
 
   int returnValue = application.exec();

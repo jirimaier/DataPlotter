@@ -91,7 +91,7 @@ void SerialWorker::begin(QString portName, int baudRate) {
   if (serial->open(QIODevice::ReadWrite))
     emit connectionResult(true, tr("Connected to ") + serial->portName() + tr(" at ") + QString::number(serial->baudRate()) + tr(" bps"));
   else if (serial->open(QIODevice::ReadOnly))
-    emit connectionResult(true, tr("Read-only  ") + serial->portName() + tr(" at ") + QString::number(serial->baudRate()) + tr(" bps"));
+    emit connectionResult(true, tr("Read-only ") + serial->portName() + tr(" at ") + QString::number(serial->baudRate()) + tr(" bps"));
   else
     emit connectionResult(false, tr("Error: ") + serial->errorString());
   if (serial->isOpen()) {

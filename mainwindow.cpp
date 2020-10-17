@@ -4,7 +4,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 MainWindow::~MainWindow() { delete ui; }
 
-void MainWindow::init() {
+void MainWindow::init(QTranslator *translator) {
+  this->translator = translator;
   connectSignals();
   changeLanguage();
   setGuiDefaults();
@@ -24,12 +25,11 @@ void MainWindow::printMessage(QByteArray data, bool urgent) {
 }
 
 void MainWindow::changeLanguage(QString code) {
-  QTranslator translator;
-  if (!translator.load(QString(":/translations/translation_%1.qm").arg(code))) {
+  if (!translator->load(QString(":/translations/translation_%1.qm").arg(code))) {
     qDebug() << "Can not load " << QString(":/translations/translation_%1.qm").arg(code);
     return;
   }
-  qApp->installTranslator(&translator);
+  qApp->installTranslator(translator);
   ui->retranslateUi(this);
 }
 

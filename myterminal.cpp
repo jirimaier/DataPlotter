@@ -4,7 +4,6 @@ MyTerminal::MyTerminal(QWidget *parent) : QTableWidget(parent) {
   QPalette p = this->palette();
   p.setColor(QPalette::Base, Qt::black);
   p.setColor(QPalette::Text, Qt::white);
-  // p.setColor(QPalette::Window, Qt::cyan);
   this->setPalette(p);
 }
 

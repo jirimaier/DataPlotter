@@ -74,7 +74,7 @@
               <enum>QTabWidget::Rounded</enum>
              </property>
              <property name="currentIndex">
-              <number>0</number>
+              <number>3</number>
              </property>
              <property name="tabBarAutoHide">
               <bool>true</bool>
@@ -1752,6 +1752,9 @@
                  <layout class="QVBoxLayout" name="verticalLayout_4">
                   <item>
                    <layout class="QHBoxLayout" name="horizontalLayout_25">
+                    <property name="spacing">
+                     <number>2</number>
+                    </property>
                     <item>
                      <widget class="QPushButton" name="pushButtonSelectedCSV">
                       <property name="text">
@@ -2017,7 +2020,7 @@ Horizontal</string>
                  <item>
                   <widget class="QPushButton" name="pushButtonPause">
                    <property name="sizePolicy">
-                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                      <horstretch>0</horstretch>
                      <verstretch>0</verstretch>
                     </sizepolicy>
@@ -2903,6 +2906,9 @@ Horizontal</string>
                 </item>
                 <item>
                  <layout class="QHBoxLayout" name="horizontalLayout_20">
+                  <property name="spacing">
+                   <number>2</number>
+                  </property>
                   <item>
                    <widget class="QSpinBox" name="spinBoxDataBinaryBits">
                     <property name="enabled">
@@ -2942,6 +2948,9 @@ Horizontal</string>
                 </item>
                 <item>
                  <layout class="QHBoxLayout" name="horizontalLayout_31">
+                  <property name="spacing">
+                   <number>2</number>
+                  </property>
                   <item>
                    <widget class="QDoubleSpinBox" name="doubleSpinBoxBinaryDataMin">
                     <property name="enabled">
@@ -3031,6 +3040,9 @@ Horizontal</string>
                 </item>
                 <item>
                  <layout class="QHBoxLayout" name="horizontalLayout_32">
+                  <property name="spacing">
+                   <number>2</number>
+                  </property>
                   <item>
                    <widget class="QSpinBox" name="spinBoxBinaryDataNumCh">
                     <property name="enabled">

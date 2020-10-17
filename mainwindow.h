@@ -27,11 +27,12 @@ class MainWindow : public QMainWindow {
 
 public:
   MainWindow(QWidget *parent = nullptr);
-  void init();
+  void init(QTranslator *translator);
   ~MainWindow();
 
 private:
   Ui::MainWindow *ui;
+  QTranslator *translator;
   QTimer plotUpdateTimer;
   QTimer listUpdateTimer;
   QTimer portsRefreshTimer;
