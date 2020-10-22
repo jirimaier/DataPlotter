@@ -108,6 +108,16 @@ QPair<QVector<double>, QVector<double>> MyPlot::getDataVector(int ch, bool inclu
   return QPair<QVector<double>, QVector<double>>(keys, values);
 }
 
+double MyPlot::getChMinValue(int ch) {
+  QVector<double> values = getDataVector(ch - 1, false).second;
+  return *std::min_element(values.begin(), values.end());
+}
+
+double MyPlot::getChMaxValue(int ch) {
+  QVector<double> values = getDataVector(ch - 1, false).second;
+  return *std::max_element(values.begin(), values.end());
+}
+
 void MyPlot::updateCursors(double x1, double x2, double y1, double y2) {
   curX1 = x1;
   curX2 = x2;
@@ -245,7 +255,8 @@ void MyPlot::updateVisuals() {
   for (int i = 0; i < CHANNEL_COUNT; i++) {
     this->graph(i)->setPen(QPen(channelSettings.at(i)->color));
     this->graph(i)->setVisible((channelSettings.at(i)->style != GraphStyle::hidden));
-    zeroLines.at(i)->setVisible((offsets.at(i) != 0) && (channelSettings.at(i)->style != GraphStyle::hidden));
+    zeroLines.at(i)->setVisible((offsets.at(i) != 0) && (channelSettings.at(i)->style != GraphStyle::hidden) && isChUsed(i + 1));
+    zeroLines.at(i)->setPen(QPen(channelSettings.at(i)->color, 1, Qt::DashLine));
     if (channelSettings.at(i)->style == GraphStyle::linePoint) {
       this->graph(i)->setScatterStyle(POINT_STYLE);
       this->graph(i)->setLineStyle(QCPGraph::lsLine);

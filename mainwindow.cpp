@@ -80,6 +80,7 @@ void MainWindow::setCursorBounds(double xmin, double xmax, double ymin, double y
 }
 
 void MainWindow::changedDataMode(int mode) {
+  dataMode = mode;
   ui->labelBinSettings->setVisible(mode == DataMode::binData);
   ui->labelDataMode->setText(tr("Data mode: ") + ui->comboBoxDataMode->itemText(mode));
   ui->comboBoxDataMode->setCurrentIndex(mode);

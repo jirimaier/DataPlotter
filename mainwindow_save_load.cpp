@@ -20,6 +20,10 @@ QByteArray MainWindow::getSettings() {
   settings.append('\n');
   settings.append("chsou:" + QString::number(ui->checkBoxSelectOnlyUsed->isChecked() ? 1 : 0).toUtf8());
   settings.append('\n');
+  settings.append("plotvval:" + QString::number(ui->checkBoxVerticalValues->isChecked() ? 1 : 0).toUtf8());
+  settings.append('\n');
+  settings.append("plothval:" + QString::number(ui->checkBoxHorizontalValues->isChecked() ? 1 : 0).toUtf8());
+  settings.append('\n');
   settings.append("clrgor:" + QString::number(ui->checkBoxClearOnReconnect->isChecked() ? 1 : 0).toUtf8());
   settings.append('\n');
   settings.append("baud:" + QString(ui->comboBoxBaud->currentText()).toUtf8());
@@ -130,6 +134,10 @@ void MainWindow::useSettings(QByteArray settings) {
       ui->checkBoxChInvert->setChecked((bool)value.toInt());
     else if (type == "chsou")
       ui->checkBoxSelectOnlyUsed->setChecked((bool)value.toInt());
+    else if (type == "plotvval")
+      ui->checkBoxVerticalValues->setChecked((bool)value.toInt());
+    else if (type == "plothval")
+      ui->checkBoxHorizontalValues->setChecked((bool)value.toInt());
     else if (type == "clrgor")
       ui->checkBoxClearOnReconnect->setChecked((bool)value.toInt());
     else if (type == "chsty")

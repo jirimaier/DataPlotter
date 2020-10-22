@@ -36,6 +36,7 @@ private:
   QTimer plotUpdateTimer;
   QTimer listUpdateTimer;
   QTimer portsRefreshTimer;
+  QTimer graphResetTimer;
   QList<QSerialPortInfo> portList;
   QStringList receivedListBuffer;
   void dataParser(QByteArray message);
@@ -52,6 +53,7 @@ private:
   void startTimers();
   void setGuiDefaults();
   double plotTop = 10, plotBottom = -10, plotRight = 10, plotLeft = 0;
+  int dataMode = DataMode::unknown;
 
 private slots:
   void setAdaptiveSpinBoxes();
@@ -60,6 +62,7 @@ private slots:
   void updatePlot();
   void updateDivs(double vertical, double horizontal);
   void comRefresh();
+  void autoResetChannels();
 
   void on_tabs_right_currentChanged(int index);
   void on_dialRollingRange_realValueChanged(double value) { ui->doubleSpinBoxRangeHorizontal->setValue(value); }
@@ -94,6 +97,7 @@ private slots:
   void on_pushButtonSaveSettings_clicked();
   void on_pushButtonReset_clicked();
   void on_pushButtonCursorToView_clicked();
+  void on_pushButtonAutoset_clicked();
 
 public slots:
   void setCursorBounds(double xmin, double xmax, double ymin, double ymax, double xminfull, double xmaxfull, double yminfull, double ymaxfull);

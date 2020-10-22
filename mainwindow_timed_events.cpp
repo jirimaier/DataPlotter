@@ -89,3 +89,9 @@ void MainWindow::updateInfo() {
     text.append(tr("continous") + "\n");
   ui->labelBinSettings->setText(text.trimmed());
 }
+
+void MainWindow::autoResetChannels() {
+  ui->plot->resetChannels();
+
+  emit resetChannels();
+}

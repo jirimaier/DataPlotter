@@ -32,6 +32,8 @@ public:
   QByteArray exportChannelCSV(char separator, char decimal, int channel, int precision, bool offseted);
   QByteArray exportAllCSV(char separator, char decimal, int precision, bool offseted);
   QPair<QVector<double>, QVector<double>> getDataVector(int ch, bool includeOffsets);
+  double getChMinValue(int ch);
+  double getChMaxValue(int ch);
 
 private:
   void resume();

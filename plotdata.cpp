@@ -69,5 +69,5 @@ void PlotData::newDataBin(QByteArray data, BinDataSettings_t settings) {
 
 void PlotData::reset() {
   for (int i = 0; i < CHANNEL_COUNT; i++)
-    lastTimes[i] = 0;
+    lastTimes[i] = INFINITY;
 }

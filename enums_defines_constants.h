@@ -31,6 +31,8 @@ enum DataLineType { command, dataEnded, dataTimeouted, dataImplicitEnded, debugM
 
 #define OUTPUT_SHORT_LINE_MAX_LENGTH 15
 
+#define RESET_ON_CONNECT_DELAY 5
+
 const QString lineEndings[4] = {"", "\n", "\r", "\r\n"};
 
 //                            0      1      2      3      4      5      6       7

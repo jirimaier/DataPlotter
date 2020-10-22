@@ -5,6 +5,7 @@ CONFIG += c++11
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
+    mainwindow_autoset.cpp \
     mainwindow_csv.cpp \
     mainwindow_cursors.cpp \
     mainwindow_gui_preset.cpp \

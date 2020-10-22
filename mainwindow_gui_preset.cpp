@@ -18,6 +18,11 @@ void MainWindow::connectSignals() {
   connect(ui->verticalScrollBarVerticalCenter, &QScrollBar::valueChanged, ui->plot, &MyPlot::setVerticalCenter);
   connect(ui->horizontalScrollBarHorizontal, &QScrollBar::valueChanged, ui->plot, &MyPlot::setHorizontalPos);
   connect(ui->pushButtonPrintBuffer, &QPushButton::clicked, this, &MainWindow::requestBufferDebug);
+
+  connect(&plotUpdateTimer, &QTimer::timeout, this, &MainWindow::updatePlot);
+  connect(&listUpdateTimer, &QTimer::timeout, this, &MainWindow::updateInfo);
+  connect(&portsRefreshTimer, &QTimer::timeout, this, &MainWindow::comRefresh);
+  connect(&graphResetTimer, &QTimer::timeout, this, &MainWindow::autoResetChannels);
 }
 
 void MainWindow::setAdaptiveSpinBoxes() {
@@ -36,9 +41,6 @@ void MainWindow::startTimers() {
   portsRefreshTimer.setInterval(500);
   plotUpdateTimer.setInterval(10);
   listUpdateTimer.setInterval(200);
-  connect(&plotUpdateTimer, &QTimer::timeout, this, &MainWindow::updatePlot);
-  connect(&listUpdateTimer, &QTimer::timeout, this, &MainWindow::updateInfo);
-  connect(&portsRefreshTimer, &QTimer::timeout, this, &MainWindow::comRefresh);
   plotUpdateTimer.start();
   listUpdateTimer.start();
   portsRefreshTimer.start();
