@@ -59,8 +59,10 @@ private:
   double maxTime();
   double graphLastTime(quint8 i);
   double minT = 0.0, maxT = 1.0;
+  bool iHaveCursors = false;
 
 public slots:
+  void setCursorsAccess(bool allowed);
   void update();
   void setRangeType(int type);
   void pauseClicked();
@@ -69,8 +71,6 @@ public slots:
   void setHorizontalDiv(double value);
   void setShowVerticalValues(bool enabled);
   void setShowHorizontalValues(bool enabled);
-  void setCurXen(bool en);
-  void setCurYen(bool en);
   void updateVisuals();
   void resetChannels();
   void rescale(int ch, double relativeScale);

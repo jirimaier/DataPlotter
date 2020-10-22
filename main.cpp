@@ -59,6 +59,7 @@ int main(int argc, char *argv[]) {
   QObject::connect(&mainWindow, &MainWindow::writeToSerial, serialWorker, &SerialWorker::write);
   QObject::connect(&mainWindow, &MainWindow::setOutputLevel, outputWorker, &OutputWorker::setLevel);
   QObject::connect(&mainWindow, &MainWindow::requestMath, plotMath, &PlotMath::doMath);
+  QObject::connect(&mainWindow, &MainWindow::requestXY, plotMath, &PlotMath::doXY);
   QObject::connect(&mainWindow, &MainWindow::sendManaulInput, serialParser, &SerialParser::parseLine);
   QObject::connect(&mainWindow, &MainWindow::sendManaulInput, outputWorker, &OutputWorker::input);
   QObject::connect(&mainWindow, &MainWindow::parseError, outputWorker, &OutputWorker::input);
@@ -73,6 +74,7 @@ int main(int argc, char *argv[]) {
   QObject::connect(serialParser, &SerialParser::changeGUISettings, &mainWindow, &MainWindow::useSettings);
   QObject::connect(plotData, &PlotData::updatePlot, &mainWindow, &MainWindow::addDataToPlot);
   QObject::connect(plotMath, &PlotMath::sendResult, &mainWindow, &MainWindow::addDataToPlot);
+  QObject::connect(plotMath, &PlotMath::sendResultXY, &mainWindow, &MainWindow::addDataToXY);
   QObject::connect(serialWorker, &SerialWorker::finishedWriting, &mainWindow, &MainWindow::serialFinishedWriting);
   QObject::connect(serialWorker, &SerialWorker::connectionResult, &mainWindow, &MainWindow::serialConnectResult);
   QObject::connect(serialWorker, &SerialWorker::bufferDebug, &mainWindow, &MainWindow::bufferDebug);

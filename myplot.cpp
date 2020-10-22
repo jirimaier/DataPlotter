@@ -1,6 +1,8 @@
 #include "myplot.h"
 
 MyPlot::MyPlot(QWidget *parent) : QCustomPlot(parent) {
+  xAxis->setSubTicks(false);
+  yAxis->setSubTicks(false);
   for (int i = 0; i < CHANNEL_COUNT + MATH_COUNT; i++) {
     pauseBufferTime.append(new QVector<double>);
     pauseBufferValue.append(new QVector<double>);
@@ -71,7 +73,7 @@ double MyPlot::maxTime() {
       times.append(graphLastTime(i));
     }
   if (times.isEmpty())
-    return 1;
+    return 100;
   else
     return *std::max_element(times.begin(), times.end());
 }
@@ -105,6 +107,12 @@ double MyPlot::getChMinValue(int ch) {
 double MyPlot::getChMaxValue(int ch) {
   QVector<double> values = getDataVector(ch - 1, false).second;
   return *std::max_element(values.begin(), values.end());
+}
+
+void MyPlot::setCursorsAccess(bool allowed) {
+  for (int i = 0; i < 4; i++)
+    cursors.at(i)->setVisible(allowed);
+  iHaveCursors = allowed;
 }
 
 void MyPlot::updateCursors(double *cursorPositions) {
@@ -172,15 +180,18 @@ void MyPlot::update() {
     }
   }
   PlotFrame_t frame;
-  frame.xMinTotal = minT;
-  frame.xMaxTotal = maxT;
-  frame.yMinTotal = plotSettings.verticalCenter - plotSettings.verticalRange / 2;
-  frame.yMaxTotal = plotSettings.verticalCenter + plotSettings.verticalRange / 2;
+
   frame.xMinView = this->xAxis->range().lower;
   frame.xMaxView = this->xAxis->range().upper;
   frame.yMinView = this->yAxis->range().lower;
   frame.yMaxView = this->yAxis->range().upper;
-  emit setCursorBounds(frame);
+  if (iHaveCursors) {
+    frame.xMinTotal = minT;
+    frame.xMaxTotal = maxT;
+    frame.yMinTotal = plotSettings.verticalCenter - plotSettings.verticalRange / 2;
+    frame.yMaxTotal = plotSettings.verticalCenter + plotSettings.verticalRange / 2;
+    emit setCursorBounds(frame);
+  }
   emit updateDivs(frame.yMaxView - frame.yMinView, frame.xMaxView - frame.yMinView);
   this->replot();
 }
@@ -239,16 +250,6 @@ void MyPlot::setShowVerticalValues(bool enabled) {
 void MyPlot::setShowHorizontalValues(bool enabled) {
   this->xAxis->setTicks(enabled);
   this->xAxis->setBasePen(enabled ? Qt::SolidLine : Qt::NoPen);
-}
-
-void MyPlot::setCurXen(bool en) {
-  cursors.at(0)->setVisible(en);
-  cursors.at(1)->setVisible(en);
-}
-
-void MyPlot::setCurYen(bool en) {
-  cursors.at(2)->setVisible(en);
-  cursors.at(3)->setVisible(en);
 }
 
 void MyPlot::updateVisuals() {

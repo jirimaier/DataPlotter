@@ -7,10 +7,12 @@ void MainWindow::updatePlot() {
       int firstch = mathFirst[i]->value();
       int secondch = mathSecond[i]->value();
       int operation = mathOp[i]->currentIndex();
-      emit requestMath(CHANNEL_COUNT + 1 + i, operation, ui->plot->getDataVector(firstch - 1, false, true), ui->plot->getDataVector(secondch - 1, false, true));
+      emit requestMath(CHANNEL_COUNT + 1 + i, operation, ui->plot->getDataVector(firstch - 1, ui->checkBoxMathIOS->isChecked(), ui->checkBoxMathVRO->isChecked()), ui->plot->getDataVector(secondch - 1, ui->checkBoxMathIOS->isChecked(), ui->checkBoxMathVRO->isChecked()));
     } else
       ui->plot->clearCh(CHANNEL_COUNT + 1 + i);
   }
+  if (ui->checkBoxXY->isChecked())
+    requestXY(ui->plot->getDataVector(ui->spinBoxXYFirst->value() - 1, ui->checkBoxXYIOS->isChecked(), ui->checkBoxXYVRO->isChecked()), ui->plot->getDataVector(ui->spinBoxXYSecond->value() - 1, ui->checkBoxXYIOS->isChecked(), ui->checkBoxXYVRO->isChecked()));
 }
 
 void MainWindow::comRefresh() {
@@ -75,4 +77,9 @@ void MainWindow::autoResetChannels() {
   ui->plot->resetChannels();
 
   emit resetChannels();
+}
+
+void MainWindow::setPlotLayout() {
+  ui->plotxy->setVisible(ui->checkBoxXY->isChecked());
+  ui->plotfft->setVisible(ui->checkBoxXY->isChecked());
 }

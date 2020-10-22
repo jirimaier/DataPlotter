@@ -26,5 +26,16 @@ void PlotMath::doMath(int resultCh, int operation, QPair<QVector<double>, QVecto
       resultTime->append(data1.second.at(i));
     }
   }
-  emit sendResult(resultCh, resultTime, result, false, operation != MathOperations::xy, true);
+  emit sendResult(resultCh, resultTime, result, false, true, true);
+}
+
+void PlotMath::doXY(QPair<QVector<double>, QVector<double>> data1, QPair<QVector<double>, QVector<double>> data2) {
+  QVector<double> *resultY = new QVector<double>;
+  QVector<double> *resultX = new QVector<double>;
+  int length = MIN(data1.first.length(), data2.first.length());
+  for (int i = 0; i < length; i++) {
+    resultY->append(data2.second.at(i));
+    resultX->append(data1.second.at(i));
+  }
+  emit sendResultXY(resultX, resultY);
 }

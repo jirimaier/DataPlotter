@@ -15,6 +15,7 @@ SOURCES += \
     mydial.cpp \
     myplot.cpp \
     myterminal.cpp \
+    myxyplot.cpp \
     outputworker.cpp \
     plotdata.cpp \
     plotmath.cpp \
@@ -29,6 +30,7 @@ HEADERS += \
     mydial.h \
     myplot.h \
     myterminal.h \
+    myxyplot.h \
     outputworker.h \
     plotdata.h \
     plotmath.h \

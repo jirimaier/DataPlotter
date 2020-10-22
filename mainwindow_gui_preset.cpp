@@ -3,13 +3,14 @@
 void MainWindow::connectSignals() {
   connect(ui->pushButtonPause, &QPushButton::clicked, ui->plot, &MyPlot::pauseClicked);
   connect(ui->pushButtonSingleTriger, &QPushButton::clicked, ui->plot, &MyPlot::singleTrigerClicked);
-  connect(ui->checkBoxCurXEn, &QCheckBox::toggled, ui->plot, &MyPlot::setCurXen);
-  connect(ui->checkBoxCurYEn, &QCheckBox::toggled, ui->plot, &MyPlot::setCurYen);
+  connect(ui->radioButtonCurMain, &QRadioButton::toggled, ui->plot, &MyPlot::setCursorsAccess);
+  connect(ui->radioButtonCurXY, &QRadioButton::toggled, ui->plotxy, &MyXYPlot::setCursorsAccess);
   connect(ui->checkBoxVerticalValues, &QCheckBox::toggled, ui->plot, &MyPlot::setShowVerticalValues);
   connect(ui->checkBoxHorizontalValues, &QCheckBox::toggled, ui->plot, &MyPlot::setShowHorizontalValues);
   connect(ui->plot, &MyPlot::showPlotStatus, this, &MainWindow::showPlotStatus);
   connect(ui->plot, &MyPlot::updateDivs, this, &MainWindow::updateDivs);
   connect(ui->plot, &MyPlot::setCursorBounds, this, &MainWindow::setCursorBounds);
+  connect(ui->plotxy, &MyXYPlot::setCursorBounds, this, &MainWindow::setCursorBounds);
   connect(ui->doubleSpinBoxRangeHorizontal, SIGNAL(valueChanged(double)), ui->plot, SLOT(setRollingRange(double)));
   connect(ui->doubleSpinBoxRangeVerticalRange, SIGNAL(valueChanged(double)), ui->plot, SLOT(setVerticalRange(double)));
   connect(ui->doubleSpinBoxRangeHorizontal, SIGNAL(valueChanged(double)), ui->dialRollingRange, SLOT(updatePosition(double)));
@@ -51,7 +52,8 @@ void MainWindow::setGuiDefaults() {
   ui->tabs_Plot->setCurrentIndex(0);
   ui->checkBoxModeManual->setChecked(false);
   ui->labelBinSettings->setHidden(true);
-
+  ui->plotxy->setHidden(true);
+  ui->plotfft->setHidden(true);
   ui->labelBuildDate->setText("Build: " + QString(__DATE__) + " " + QString(__TIME__));
   ui->labelDataMode->setText(tr("Data mode: ") + ui->comboBoxDataMode->itemText(0));
 

@@ -13,8 +13,10 @@ public:
   ~PlotMath();
 public slots:
   void doMath(int resultCh, int operation, QPair<QVector<double>, QVector<double>> data, QPair<QVector<double>, QVector<double>> data2);
+  void doXY(QPair<QVector<double>, QVector<double>> data1, QPair<QVector<double>, QVector<double>> data2);
 signals:
   void sendResult(int ch, QVector<double> *time, QVector<double> *value, bool continous, bool sorted, bool ignorePause = true);
+  void sendResultXY(QVector<double> *time, QVector<double> *value);
 };
 
 #endif // PLOTMATH_H

@@ -70,6 +70,8 @@ private slots:
   void updateDivs(double vertical, double horizontal);
   void comRefresh();
   void autoResetChannels();
+  void setPlotLayout();
+  void cursorsSwitched() { on_pushButtonCursorsZero_clicked(); }
 
   void on_tabs_right_currentChanged(int index);
   void on_dialRollingRange_realValueChanged(double value) { ui->doubleSpinBoxRangeHorizontal->setValue(value); }
@@ -106,6 +108,7 @@ private slots:
   void on_pushButtonCursorToView_clicked();
   void on_pushButtonAutoset_clicked();
   void on_lineEditChName_textEdited(const QString &arg1) { ui->plot->setChName(ui->spinBoxChannelSelect->value(), arg1); }
+  void on_pushButtonCursorsZero_clicked();
 
 public slots:
   void setCursorBounds(PlotFrame_t frame);
@@ -115,6 +118,7 @@ public slots:
   void printMessage(QByteArray data, bool urgent);
   void showPlotStatus(int type);
   void addDataToPlot(int ch, QVector<double> *time, QVector<double> *value, bool continous, bool sorted, bool ignorePause) { ui->plot->newData(ch, time, value, continous, sorted, ignorePause); }
+  void addDataToXY(QVector<double> *x, QVector<double> *y) { ui->plotxy->newData(x, y); }
   void serialConnectResult(bool connected, QString message);
   void printToTerminal(QByteArray data) { ui->myTerminal->printToTerminal(data); }
   void serialFinishedWriting() { ui->lineEditCommand->clear(); }
@@ -134,6 +138,7 @@ signals:
   void resetChannels();
   void setOutputLevel(int);
   void requestMath(int resultCh, int operation, QPair<QVector<double>, QVector<double>>, QPair<QVector<double>, QVector<double>>);
+  void requestXY(QPair<QVector<double>, QVector<double>>, QPair<QVector<double>, QVector<double>>);
   void sendManaulInput(QByteArray data, int type);
   void parseError(QByteArray, int type = DataLineType::debugMessage);
 };
