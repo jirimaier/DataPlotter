@@ -26,5 +26,5 @@ void PlotMath::doMath(int resultCh, int operation, QPair<QVector<double>, QVecto
       resultTime->append(data1.second.at(i));
     }
   }
-  emit sendResult(resultCh, resultTime, result, false, operation != MathOperations::xy);
+  emit sendResult(resultCh, resultTime, result, false, operation != MathOperations::xy, true);
 }

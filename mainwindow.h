@@ -52,8 +52,15 @@ private:
   void setUp();
   void startTimers();
   void setGuiDefaults();
-  double plotTop = 10, plotBottom = -10, plotRight = 10, plotLeft = 0;
+  double cursorPos[4];
+  PlotFrame_t plotFrame;
   int dataMode = DataMode::unknown;
+  void setGuiArrays();
+  QScrollBar *cursors[4];
+  QCheckBox *mathEn[4];
+  QSpinBox *mathFirst[4];
+  QSpinBox *mathSecond[4];
+  QComboBox *mathOp[4];
 
 private slots:
   void setAdaptiveSpinBoxes();
@@ -98,15 +105,16 @@ private slots:
   void on_pushButtonReset_clicked();
   void on_pushButtonCursorToView_clicked();
   void on_pushButtonAutoset_clicked();
+  void on_lineEditChName_textEdited(const QString &arg1) { ui->plot->setChName(ui->spinBoxChannelSelect->value(), arg1); }
 
 public slots:
-  void setCursorBounds(double xmin, double xmax, double ymin, double ymax, double xminfull, double xmaxfull, double yminfull, double ymaxfull);
+  void setCursorBounds(PlotFrame_t frame);
   void changedDataMode(int mode);
   void changedBinSettings(BinDataSettings_t in_settings) { binSettings = in_settings; }
   void showProcessedCommand(QString message) { receivedListBuffer.append(message); }
   void printMessage(QByteArray data, bool urgent);
   void showPlotStatus(int type);
-  void addDataToPlot(int ch, QVector<double> *time, QVector<double> *value, bool continous, bool sorted) { ui->plot->newData(ch, time, value, continous, sorted); }
+  void addDataToPlot(int ch, QVector<double> *time, QVector<double> *value, bool continous, bool sorted, bool ignorePause) { ui->plot->newData(ch, time, value, continous, sorted, ignorePause); }
   void serialConnectResult(bool connected, QString message);
   void printToTerminal(QByteArray data) { ui->myTerminal->printToTerminal(data); }
   void serialFinishedWriting() { ui->lineEditCommand->clear(); }

@@ -25,7 +25,7 @@ public slots:
   void reset();
 
 signals:
-  void updatePlot(int ch, QVector<double> *time, QVector<double> *value, bool continous, bool sorted);
+  void updatePlot(int ch, QVector<double> *time, QVector<double> *value, bool continous, bool sorted, bool ignorePause = false);
 };
 
 #endif // PLOTTING_H

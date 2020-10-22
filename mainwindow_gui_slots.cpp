@@ -31,7 +31,7 @@ void MainWindow::on_pushButtonChannelColor_clicked() {
 void MainWindow::on_spinBoxChannelSelect_valueChanged(int arg1) {
   if (ui->checkBoxSelectOnlyUsed->isChecked()) {
     if (!ui->plot->isChUsed(arg1)) {
-      if (arg1 == CHANNEL_COUNT) {
+      if (arg1 == CHANNEL_COUNT + MATH_COUNT) {
         lastSelectedChannel = arg1;
         ui->spinBoxChannelSelect->setValue(arg1 - 1);
         return;
@@ -59,6 +59,7 @@ void MainWindow::on_spinBoxChannelSelect_valueChanged(int arg1) {
   ui->doubleSpinBoxChScale->setValue(scale);
   ui->dialChScale->updatePosition(scale);
   ui->checkBoxChInvert->setChecked(ui->plot->isInverted(arg1));
+  ui->lineEditChName->setText(ui->plot->getChName(arg1));
   updateChScale();
 }
 

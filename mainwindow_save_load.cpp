@@ -75,14 +75,6 @@ QByteArray MainWindow::getSettings() {
   settings.append('\n');
   settings.append("math4in2:" + QString::number(ui->spinBoxMath4Second->value()).toUtf8());
   settings.append('\n');
-  settings.append("math1out:" + QString::number(ui->spinBoxMath1Result->value()).toUtf8());
-  settings.append('\n');
-  settings.append("math2out:" + QString::number(ui->spinBoxMath2Result->value()).toUtf8());
-  settings.append('\n');
-  settings.append("math3out:" + QString::number(ui->spinBoxMath3Result->value()).toUtf8());
-  settings.append('\n');
-  settings.append("math4out:" + QString::number(ui->spinBoxMath4Result->value()).toUtf8());
-  settings.append('\n');
   settings.append("math1op:" + QString::number(ui->comboBoxMath1Op->currentIndex()).toUtf8());
   settings.append('\n');
   settings.append("math2op:" + QString::number(ui->comboBoxMath2Op->currentIndex()).toUtf8());
@@ -200,14 +192,6 @@ void MainWindow::useSettings(QByteArray settings) {
       ui->spinBoxMath3Second->setValue(value.toInt());
     else if (type == "math4in2")
       ui->spinBoxMath4Second->setValue(value.toInt());
-    else if (type == "math1out")
-      ui->spinBoxMath1Result->setValue(value.toInt());
-    else if (type == "math2out")
-      ui->spinBoxMath2Result->setValue(value.toInt());
-    else if (type == "math3out")
-      ui->spinBoxMath3Result->setValue(value.toInt());
-    else if (type == "math4out")
-      ui->spinBoxMath4Result->setValue(value.toInt());
     else if (type == "math1op")
       ui->comboBoxMath1Op->setCurrentIndex(value.toInt());
     else if (type == "math2op")

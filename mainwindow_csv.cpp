@@ -10,9 +10,9 @@ void MainWindow::exportCSV(bool all, int ch) {
     char decimal = ui->radioButtonCSVDot->isChecked() ? '.' : ',';
     char separator = ui->radioButtonCSVDot->isChecked() ? ',' : ';';
     if (all)
-      file.write(ui->plot->exportAllCSV(separator, decimal, ui->spinBoxCSVPrecision->value(), ui->checkBoxCSVoffsets->isChecked()));
+      file.write(ui->plot->exportAllCSV(separator, decimal, ui->spinBoxCSVPrecision->value(), ui->checkBoxCSVoffsets->isChecked(), ui->checkBoxCSVOnlyInView->isChecked(), ui->checkBoxCSVIncludeHidden->isChecked()));
     else
-      file.write(ui->plot->exportChannelCSV(separator, decimal, ch, ui->spinBoxCSVPrecision->value(), ui->checkBoxCSVoffsets->isChecked()));
+      file.write(ui->plot->exportChannelCSV(separator, decimal, ch, ui->spinBoxCSVPrecision->value(), ui->checkBoxCSVoffsets->isChecked(), ui->checkBoxCSVOnlyInView->isChecked()));
     file.close();
   } else {
     QMessageBox msgBox;

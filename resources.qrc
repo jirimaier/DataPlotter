@@ -14,7 +14,4 @@
     <qresource prefix="/documents">
         <file>settings/defaultSettings.txt</file>
     </qresource>
-    <qresource prefix="/styles">
-        <file>settings/styleSheet.txt</file>
-    </qresource>
 </RCC>

@@ -2,33 +2,14 @@
 
 void MainWindow::updatePlot() {
   ui->plot->update();
-  if (ui->checkBoxMath1->isChecked()) {
-    int firstch = ui->spinBoxMath1First->value();
-    int secondch = ui->spinBoxMath1Second->value();
-    int resultch = ui->spinBoxMath1Result->value();
-    int operation = ui->comboBoxMath1Op->currentIndex();
-    emit requestMath(resultch, operation, ui->plot->getDataVector(firstch - 1, false), ui->plot->getDataVector(secondch - 1, false));
-  }
-  if (ui->checkBoxMath2->isChecked()) {
-    int firstch = ui->spinBoxMath2First->value();
-    int secondch = ui->spinBoxMath2Second->value();
-    int resultch = ui->spinBoxMath2Result->value();
-    int operation = ui->comboBoxMath2Op->currentIndex();
-    emit requestMath(resultch, operation, ui->plot->getDataVector(firstch - 1, false), ui->plot->getDataVector(secondch - 1, false));
-  }
-  if (ui->checkBoxMath3->isChecked()) {
-    int firstch = ui->spinBoxMath3First->value();
-    int secondch = ui->spinBoxMath3Second->value();
-    int resultch = ui->spinBoxMath3Result->value();
-    int operation = ui->comboBoxMath3Op->currentIndex();
-    emit requestMath(resultch, operation, ui->plot->getDataVector(firstch - 1, false), ui->plot->getDataVector(secondch - 1, false));
-  }
-  if (ui->checkBoxMath4->isChecked()) {
-    int firstch = ui->spinBoxMath4First->value();
-    int secondch = ui->spinBoxMath4Second->value();
-    int resultch = ui->spinBoxMath4Result->value();
-    int operation = ui->comboBoxMath4Op->currentIndex();
-    emit requestMath(resultch, operation, ui->plot->getDataVector(firstch - 1, false), ui->plot->getDataVector(secondch - 1, false));
+  for (int i = 0; i < 4; i++) {
+    if (mathEn[i]->isChecked()) {
+      int firstch = mathFirst[i]->value();
+      int secondch = mathSecond[i]->value();
+      int operation = mathOp[i]->currentIndex();
+      emit requestMath(CHANNEL_COUNT + 1 + i, operation, ui->plot->getDataVector(firstch - 1, false, true), ui->plot->getDataVector(secondch - 1, false, true));
+    } else
+      ui->plot->clearCh(CHANNEL_COUNT + 1 + i);
   }
 }
 

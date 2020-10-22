@@ -30,6 +30,7 @@ int main(int argc, char *argv[]) {
   qRegisterMetaType<BinDataSettings_t>();
   qRegisterMetaType<ChannelSettings_t>();
   qRegisterMetaType<PlotSettings_t>();
+  qRegisterMetaType<PlotFrame_t>();
   qRegisterMetaType<QPair<QVector<double>, QVector<double>>>();
 
   MainWindow mainWindow;

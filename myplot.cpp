@@ -1,12 +1,13 @@
 #include "myplot.h"
 
 MyPlot::MyPlot(QWidget *parent) : QCustomPlot(parent) {
-  for (int i = 0; i < CHANNEL_COUNT; i++) {
+  for (int i = 0; i < CHANNEL_COUNT + MATH_COUNT; i++) {
     pauseBufferTime.append(new QVector<double>);
     pauseBufferValue.append(new QVector<double>);
     channelSettings.append(new ChannelSettings_t);
     scales.append(1);
     offsets.append(0);
+    zeroLines.append(new QCPItemLine(this));
   }
   initCursors();
   initZeroLines();
@@ -14,55 +15,41 @@ MyPlot::MyPlot(QWidget *parent) : QCustomPlot(parent) {
 }
 
 void MyPlot::initCursors() {
-  cursorX1 = new QCPItemLine(this);
-  cursorX2 = new QCPItemLine(this);
-  cursorY1 = new QCPItemLine(this);
-  cursorY2 = new QCPItemLine(this);
   QPen cursorpen;
   cursorpen.setColor(Qt::black);
-  cursorX1->setPen(cursorpen);
-  cursorX2->setPen(cursorpen);
-  cursorY1->setPen(cursorpen);
-  cursorY2->setPen(cursorpen);
-  cursorX1->end->setTypeX(QCPItemPosition::ptPlotCoords);
-  cursorX2->end->setTypeX(QCPItemPosition::ptPlotCoords);
-  cursorY1->end->setTypeX(QCPItemPosition::ptViewportRatio);
-  cursorY2->end->setTypeX(QCPItemPosition::ptViewportRatio);
-  cursorX1->start->setTypeX(QCPItemPosition::ptPlotCoords);
-  cursorX2->start->setTypeX(QCPItemPosition::ptPlotCoords);
-  cursorY1->start->setTypeX(QCPItemPosition::ptViewportRatio);
-  cursorY2->start->setTypeX(QCPItemPosition::ptViewportRatio);
-  cursorX1->end->setTypeY(QCPItemPosition::ptViewportRatio);
-  cursorX2->end->setTypeY(QCPItemPosition::ptViewportRatio);
-  cursorY1->end->setTypeY(QCPItemPosition::ptPlotCoords);
-  cursorY2->end->setTypeY(QCPItemPosition::ptPlotCoords);
-  cursorX1->start->setTypeY(QCPItemPosition::ptViewportRatio);
-  cursorX2->start->setTypeY(QCPItemPosition::ptViewportRatio);
-  cursorY1->start->setTypeY(QCPItemPosition::ptPlotCoords);
-  cursorY2->start->setTypeY(QCPItemPosition::ptPlotCoords);
-  cursorX1->setVisible(false);
-  cursorX2->setVisible(false);
-  cursorY1->setVisible(false);
-  cursorY2->setVisible(false);
-  updateCursors(curX1, curX2, curY1, curY2);
+  for (int i = 0; i < 4; i++) {
+    cursors.append(new QCPItemLine(this));
+    if (i < 2) {
+      cursors.at(i)->start->setTypeX(QCPItemPosition::ptPlotCoords);
+      cursors.at(i)->start->setTypeY(QCPItemPosition::ptViewportRatio);
+      cursors.at(i)->end->setTypeX(QCPItemPosition::ptPlotCoords);
+      cursors.at(i)->end->setTypeY(QCPItemPosition::ptViewportRatio);
+    } else {
+      cursors.at(i)->start->setTypeX(QCPItemPosition::ptViewportRatio);
+      cursors.at(i)->start->setTypeY(QCPItemPosition::ptPlotCoords);
+      cursors.at(i)->end->setTypeX(QCPItemPosition::ptViewportRatio);
+      cursors.at(i)->end->setTypeY(QCPItemPosition::ptPlotCoords);
+    }
+    cursors.at(i)->setPen(cursorpen);
+    cursors.at(i)->setVisible(false);
+  }
 }
 
 void MyPlot::initZeroLines() {
   QPen zeroPen;
   zeroPen.setWidth(1);
   zeroPen.setStyle(Qt::DotLine);
-  for (int i = 0; i < CHANNEL_COUNT; i++) {
+  for (int i = 0; i < CHANNEL_COUNT + MATH_COUNT; i++) {
     zeroPen.setColor(channelSettings.at(i)->color);
-    QCPItemLine *zeroLine = new QCPItemLine(this);
-    zeroLine->setPen(zeroPen);
-    zeroLine->start->setTypeY(QCPItemPosition::ptPlotCoords);
-    zeroLine->start->setTypeX(QCPItemPosition::ptViewportRatio);
-    zeroLine->end->setTypeY(QCPItemPosition::ptPlotCoords);
-    zeroLine->end->setTypeX(QCPItemPosition::ptViewportRatio);
-    zeroLine->start->setCoords(0, offsets.at(i));
-    zeroLine->end->setCoords(1, offsets.at(i));
-    zeroLine->setVisible(offsets.at(i) != 0);
-    zeroLines.append(zeroLine);
+    QCPItemLine &zeroLine = *zeroLines.at(i);
+    zeroLine.setPen(zeroPen);
+    zeroLine.start->setTypeY(QCPItemPosition::ptPlotCoords);
+    zeroLine.start->setTypeX(QCPItemPosition::ptViewportRatio);
+    zeroLine.end->setTypeY(QCPItemPosition::ptPlotCoords);
+    zeroLine.end->setTypeX(QCPItemPosition::ptViewportRatio);
+    zeroLine.start->setCoords(0, offsets.at(i));
+    zeroLine.end->setCoords(1, offsets.at(i));
+    zeroLine.setVisible(offsets.at(i) != 0);
   }
 }
 
@@ -94,15 +81,17 @@ double MyPlot::graphLastTime(quint8 i) {
   return (--it)->key;
 }
 
-QPair<QVector<double>, QVector<double>> MyPlot::getDataVector(int ch, bool includeOffsets) {
+QPair<QVector<double>, QVector<double>> MyPlot::getDataVector(int ch, bool includeOffsets, bool onlyInView) {
   QVector<double> keys, values;
   for (QCPGraphDataContainer::iterator it = graph(ch)->data()->begin(); it != graph(ch)->data()->end(); it++) {
-    if (includeOffsets) {
-      keys.append(it->key);
-      values.append(it->value);
-    } else {
-      keys.append(it->key);
-      values.append((it->value - offsets.at(ch)) / scales.at(ch));
+    if (!onlyInView || (it->key >= this->xAxis->range().lower && it->key <= this->xAxis->range().upper)) {
+      if (includeOffsets) {
+        keys.append(it->key);
+        values.append(it->value);
+      } else {
+        keys.append(it->key);
+        values.append((it->value - offsets.at(ch)) / scales.at(ch));
+      }
     }
   }
   return QPair<QVector<double>, QVector<double>>(keys, values);
@@ -118,19 +107,16 @@ double MyPlot::getChMaxValue(int ch) {
   return *std::max_element(values.begin(), values.end());
 }
 
-void MyPlot::updateCursors(double x1, double x2, double y1, double y2) {
-  curX1 = x1;
-  curX2 = x2;
-  curY1 = y1;
-  curY2 = y2;
-  cursorX1->start->setCoords(curX1, 0);
-  cursorX1->end->setCoords(curX1, 1);
-  cursorX2->start->setCoords(curX2, 0);
-  cursorX2->end->setCoords(curX2, 1);
-  cursorY1->start->setCoords(0, curY1);
-  cursorY1->end->setCoords(1, curY1);
-  cursorY2->start->setCoords(0, curY2);
-  cursorY2->end->setCoords(1, curY2);
+void MyPlot::updateCursors(double *cursorPositions) {
+  for (int i = 0; i < 4; i++) {
+    if (i < 2) {
+      cursors.at(i)->start->setCoords(cursorPositions[i], 0);
+      cursors.at(i)->end->setCoords(cursorPositions[i], 1);
+    } else {
+      cursors.at(i)->start->setCoords(0, cursorPositions[i]);
+      cursors.at(i)->end->setCoords(1, cursorPositions[i]);
+    }
+  }
 }
 
 void MyPlot::setChStyle(int ch, int style) {
@@ -140,6 +126,11 @@ void MyPlot::setChStyle(int ch, int style) {
 
 void MyPlot::setChColor(int ch, QColor color) {
   channelSettings.at(ch - 1)->color = color;
+  updateVisuals();
+}
+
+void MyPlot::setChName(int ch, QString name) {
+  channelSettings.at(ch - 1)->name = name;
   updateVisuals();
 }
 
@@ -180,8 +171,17 @@ void MyPlot::update() {
       this->xAxis->setRange(maxT - plotSettings.rollingRange, maxT);
     }
   }
-  emit setCursorBounds(this->xAxis->range().lower, this->xAxis->range().upper, this->yAxis->range().lower, this->yAxis->range().upper, minT, maxT, plotSettings.verticalCenter - plotSettings.verticalRange / 2, plotSettings.verticalCenter + plotSettings.verticalRange / 2);
-  emit updateDivs(this->yAxis->range().upper - this->yAxis->range().lower, this->xAxis->range().upper - this->xAxis->range().lower);
+  PlotFrame_t frame;
+  frame.xMinTotal = minT;
+  frame.xMaxTotal = maxT;
+  frame.yMinTotal = plotSettings.verticalCenter - plotSettings.verticalRange / 2;
+  frame.yMaxTotal = plotSettings.verticalCenter + plotSettings.verticalRange / 2;
+  frame.xMinView = this->xAxis->range().lower;
+  frame.xMaxView = this->xAxis->range().upper;
+  frame.yMinView = this->yAxis->range().lower;
+  frame.yMaxView = this->yAxis->range().upper;
+  emit setCursorBounds(frame);
+  emit updateDivs(frame.yMaxView - frame.yMinView, frame.xMaxView - frame.yMinView);
   this->replot();
 }
 
@@ -242,17 +242,17 @@ void MyPlot::setShowHorizontalValues(bool enabled) {
 }
 
 void MyPlot::setCurXen(bool en) {
-  cursorX1->setVisible(en);
-  cursorX2->setVisible(en);
+  cursors.at(0)->setVisible(en);
+  cursors.at(1)->setVisible(en);
 }
 
 void MyPlot::setCurYen(bool en) {
-  cursorY1->setVisible(en);
-  cursorY2->setVisible(en);
+  cursors.at(2)->setVisible(en);
+  cursors.at(3)->setVisible(en);
 }
 
 void MyPlot::updateVisuals() {
-  for (int i = 0; i < CHANNEL_COUNT; i++) {
+  for (int i = 0; i < CHANNEL_COUNT + MATH_COUNT; i++) {
     this->graph(i)->setPen(QPen(channelSettings.at(i)->color));
     this->graph(i)->setVisible((channelSettings.at(i)->style != GraphStyle::hidden));
     zeroLines.at(i)->setVisible((offsets.at(i) != 0) && (channelSettings.at(i)->style != GraphStyle::hidden) && isChUsed(i + 1));
@@ -274,7 +274,7 @@ void MyPlot::updateVisuals() {
 
 void MyPlot::resetChannels() {
   this->clearGraphs();
-  for (int i = 0; i < CHANNEL_COUNT; i++) {
+  for (int i = 0; i < CHANNEL_COUNT + MATH_COUNT; i++) {
     pauseBufferTime.at(i)->clear();
     pauseBufferValue.at(i)->clear();
     this->addGraph();
@@ -298,8 +298,8 @@ void MyPlot::reoffset(int ch, double relativeOffset) {
     (*it).value += relativeOffset;
 }
 
-void MyPlot::newData(int ch, QVector<double> *time, QVector<double> *value, bool continous, bool sorted) {
-  if (plottingStatus != PlotStatus::pause) {
+void MyPlot::newData(int ch, QVector<double> *time, QVector<double> *value, bool continous, bool sorted, bool ignorePause) {
+  if (plottingStatus != PlotStatus::pause || ignorePause) {
     for (QVector<double>::iterator it = value->begin(); it != value->end(); it++)
       *it = *it * scales.at(ch - 1) + offsets.at(ch - 1);
     if (continous)
@@ -328,28 +328,30 @@ void MyPlot::newData(int ch, QVector<double> *time, QVector<double> *value, bool
   delete value;
 }
 
-QByteArray MyPlot::exportChannelCSV(char separator, char decimal, int channel, int precision, bool offseted) {
+QByteArray MyPlot::exportChannelCSV(char separator, char decimal, int channel, int precision, bool offseted, bool onlyInView) {
   QByteArray output = (QString("time%1ch%2\n").arg(separator).arg(channel + 1)).toUtf8();
   for (QCPGraphDataContainer::iterator it = graph(channel)->data()->begin(); it != graph(channel)->data()->end(); it++) {
-    output.append(QString::number(it->key, 'f', precision).replace('.', decimal).toUtf8());
-    output.append(separator);
-    output.append(QString::number(offseted ? it->value : (it->value - offsets.at(channel)) / scales.at(channel), 'f', precision).replace('.', decimal).toUtf8());
-    output.append('\n');
+    if (!onlyInView || (it->key >= this->xAxis->range().lower && it->key <= this->xAxis->range().upper)) {
+      output.append(QString::number(it->key, 'f', precision).replace('.', decimal).toUtf8());
+      output.append(separator);
+      output.append(QString::number(offseted ? it->value : (it->value - offsets.at(channel)) / scales.at(channel), 'f', precision).replace('.', decimal).toUtf8());
+      output.append('\n');
+    }
   }
   return output;
 }
 
-QByteArray MyPlot::exportAllCSV(char separator, char decimal, int precision, bool offseted) {
+QByteArray MyPlot::exportAllCSV(char separator, char decimal, int precision, bool offseted, bool onlyInView, bool includeHidden) {
   QByteArray output = "";
   QVector<QPair<QVector<double>, QVector<double>>> channels;
   bool firstNonEmpty = true;
-  for (int i = 0; i < CHANNEL_COUNT; i++) {
-    if (!graph(i)->data()->isEmpty()) {
+  for (int i = 0; i < CHANNEL_COUNT + MATH_COUNT; i++) {
+    if (!graph(i)->data()->isEmpty() && (getChStyle(i + 1) != GraphStyle::hidden || includeHidden)) {
       if (firstNonEmpty) {
         firstNonEmpty = false;
         output.append("time");
       }
-      channels.append(getDataVector(i, offseted));
+      channels.append(getDataVector(i, offseted, onlyInView));
       output.append(separator);
       output.append(QString("ch%1").arg(i + 1).toUtf8());
     }

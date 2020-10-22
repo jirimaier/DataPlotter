@@ -20,6 +20,7 @@ enum MathOperations { add, subtract, multiply, divide, xy };
 enum DataLineType { command, dataEnded, dataTimeouted, dataImplicitEnded, debugMessage };
 
 #define CHANNEL_COUNT 64
+#define MATH_COUNT 4
 
 #define CMD_BEGIN "<cmd>"
 #define TIMEOUT_SYMBOL "<timeout>"
@@ -54,6 +55,7 @@ struct BinDataSettings_t {
 struct ChannelSettings_t {
   QColor color = QColor(Qt::black);
   int style = GraphStyle::line;
+  QString name = "";
 };
 
 struct PlotSettings_t {
@@ -64,9 +66,14 @@ struct PlotSettings_t {
   int verticalCenter = 0;
 };
 
+struct PlotFrame_t {
+  double xMinTotal = 0, xMaxTotal = 10, yMinTotal = 0, yMaxTotal = 10, xMinView = 0, xMaxView = 10, yMinView = 0, yMaxView = 10;
+};
+
 Q_DECLARE_METATYPE(BinDataSettings_t)
 Q_DECLARE_METATYPE(ChannelSettings_t)
 Q_DECLARE_METATYPE(PlotSettings_t)
+Q_DECLARE_METATYPE(PlotFrame_t)
 
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))

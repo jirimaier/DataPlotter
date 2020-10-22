@@ -57,3 +57,26 @@ void MainWindow::setGuiDefaults() {
 
   ui->labelPauseResume->setPixmap(QPixmap(":/images/icons/run.png"));
 }
+
+void MainWindow::setGuiArrays() {
+  cursors[0] = ui->horizontalScrollBarCursorX1;
+  cursors[1] = ui->horizontalScrollBarCursorX2;
+  cursors[2] = ui->verticalScrollBarCursorY1;
+  cursors[3] = ui->verticalScrollBarCursorY2;
+  mathEn[0] = ui->checkBoxMath1;
+  mathEn[1] = ui->checkBoxMath2;
+  mathEn[2] = ui->checkBoxMath3;
+  mathEn[3] = ui->checkBoxMath4;
+  mathFirst[0] = ui->spinBoxMath1First;
+  mathFirst[1] = ui->spinBoxMath2First;
+  mathFirst[2] = ui->spinBoxMath3First;
+  mathFirst[3] = ui->spinBoxMath4First;
+  mathSecond[0] = ui->spinBoxMath1Second;
+  mathSecond[1] = ui->spinBoxMath2Second;
+  mathSecond[2] = ui->spinBoxMath3Second;
+  mathSecond[3] = ui->spinBoxMath4Second;
+  mathOp[0] = ui->comboBoxMath1Op;
+  mathOp[1] = ui->comboBoxMath2Op;
+  mathOp[2] = ui->comboBoxMath3Op;
+  mathOp[3] = ui->comboBoxMath4Op;
+}

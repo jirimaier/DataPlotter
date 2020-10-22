@@ -2,7 +2,7 @@
 
 void MainWindow::on_pushButtonAutoset_clicked() {
   QVector<int> activeChanntels;
-  for (int i = 1; i <= CHANNEL_COUNT; i++) {
+  for (int i = 1; i <= CHANNEL_COUNT + MATH_COUNT; i++) {
     if (ui->plot->isChUsed(i) && ui->plot->getChStyle(i) != GraphStyle::hidden)
       activeChanntels.append(i);
   }

@@ -11,7 +11,7 @@ class MyPlot : public QCustomPlot {
   Q_OBJECT
 public:
   explicit MyPlot(QWidget *parent = nullptr);
-  void updateCursors(double x1, double x2, double y1, double y2);
+  void updateCursors(double *cursorPositions);
   void init();
   bool isChUsed(int ch) { return !graph(ch - 1)->data()->isEmpty(); }
   double getVDiv() { return vdiv; }
@@ -24,16 +24,19 @@ public:
   QColor getChColor(int ch) { return channelSettings.at(ch - 1)->color; }
   void setChStyle(int ch, int style);
   void setChColor(int ch, QColor color);
+  void setChName(int ch, QString name);
+  QString getChName(int ch) { return channelSettings.at(ch - 1)->name; }
   void changeChOffset(int ch, double offset);
   void changeChScale(int ch, double scale);
   bool isPaused() { return plottingStatus == PlotStatus::run || plottingStatus == PlotStatus::single; }
   QVector<double> getOffsets() { return offsets; }
   QVector<double> getScales() { return scales; }
-  QByteArray exportChannelCSV(char separator, char decimal, int channel, int precision, bool offseted);
-  QByteArray exportAllCSV(char separator, char decimal, int precision, bool offseted);
-  QPair<QVector<double>, QVector<double>> getDataVector(int ch, bool includeOffsets);
+  QByteArray exportChannelCSV(char separator, char decimal, int channel, int precision, bool offseted, bool onlyInView);
+  QByteArray exportAllCSV(char separator, char decimal, int precision, bool offseted, bool onlyInView, bool includeHidden);
+  QPair<QVector<double>, QVector<double>> getDataVector(int ch, bool includeOffsets, bool onlyInView = false);
   double getChMinValue(int ch);
   double getChMaxValue(int ch);
+  void clearCh(int ch) { this->graph(ch - 1)->data().data()->clear(); }
 
 private:
   void resume();
@@ -47,8 +50,7 @@ private:
   QVector<ChannelSettings_t *> channelSettings;
   int plotRangeType = PlotRange::fixedRange;
   QVector<QCPItemLine *> zeroLines;
-  double curX1 = 0, curX2 = 0, curY1 = 0, curY2 = 0;
-  QCPItemLine *cursorX1, *cursorX2, *cursorY1, *cursorY2;
+  QVector<QCPItemLine *> cursors;
   void initCursors();
   void initZeroLines();
   int plottingStatus = PlotStatus::run;
@@ -73,7 +75,7 @@ public slots:
   void resetChannels();
   void rescale(int ch, double relativeScale);
   void reoffset(int ch, double relativeOffset);
-  void newData(int ch, QVector<double> *time, QVector<double> *value, bool continous, bool sorted);
+  void newData(int ch, QVector<double> *time, QVector<double> *value, bool continous, bool sorted, bool ignorePause);
   void setRollingRange(double value) { plotSettings.rollingRange = value; }
   void setHorizontalPos(double value) { plotSettings.horizontalPos = value; }
   void setVerticalRange(double value) { plotSettings.verticalRange = value; }
@@ -84,7 +86,7 @@ signals:
   void updateHPosSlider(double min, double max, int step);
   void showPlotStatus(int code);
   void updateDivs(double vertical, double horizontal);
-  void setCursorBounds(double xmin, double xmax, double ymin, double ymax, double xminull, double xmaxfull, double yminfull, double ymaxfull);
+  void setCursorBounds(PlotFrame_t frame);
 };
 
 #endif // MYPLOT_H

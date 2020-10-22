@@ -6,6 +6,7 @@ MainWindow::~MainWindow() { delete ui; }
 
 void MainWindow::init(QTranslator *translator) {
   this->translator = translator;
+  setGuiArrays();
   connectSignals();
   changeLanguage();
   setGuiDefaults();
@@ -45,38 +46,6 @@ void MainWindow::showPlotStatus(int type) {
     ui->labelPauseResume->setPixmap(QPixmap(":/images/icons/single.png"));
   }
   ui->pushButtonSingleTriger->setEnabled(type != PlotStatus::single);
-}
-
-void MainWindow::setCursorBounds(double xmin, double xmax, double ymin, double ymax, double xminfull, double xmaxfull, double yminfull, double ymaxfull) {
-  if (xmaxfull < xmax)
-    xmaxfull = xmax;
-  if (xminfull > xmin)
-    xminfull = xmin;
-  if (ymaxfull < ymax)
-    ymaxfull = ymax;
-  if (yminfull > ymin)
-    yminfull = ymin;
-  ui->verticalScrollBarCursorY1->setMinimum(yminfull * 1000);
-  ui->verticalScrollBarCursorY1->setMaximum(ymaxfull * 1000);
-  ui->verticalScrollBarCursorY2->setMinimum(yminfull * 1000);
-  ui->verticalScrollBarCursorY2->setMaximum(ymaxfull * 1000);
-  ui->horizontalScrollBarCursorX1->setMinimum(xminfull * 1000);
-  ui->horizontalScrollBarCursorX1->setMaximum(xmaxfull * 1000);
-  ui->horizontalScrollBarCursorX2->setMinimum(xminfull * 1000);
-  ui->horizontalScrollBarCursorX2->setMaximum(xmaxfull * 1000);
-  ui->verticalScrollBarCursorY1->setSingleStep((ymax - ymin) * 2);
-  ui->verticalScrollBarCursorY2->setSingleStep((ymax - ymin) * 2);
-  ui->verticalScrollBarCursorY1->setPageStep((ymax - ymin) * 2);
-  ui->verticalScrollBarCursorY2->setPageStep((ymax - ymin) * 2);
-  int stepsize = (xmax - xmin) * 2;
-  ui->horizontalScrollBarCursorX1->setSingleStep(stepsize);
-  ui->horizontalScrollBarCursorX2->setSingleStep(stepsize);
-  ui->horizontalScrollBarCursorX1->setPageStep(stepsize);
-  ui->horizontalScrollBarCursorX2->setPageStep(stepsize);
-  plotTop = ymax;
-  plotBottom = ymin;
-  plotRight = xmax;
-  plotLeft = xmin;
 }
 
 void MainWindow::changedDataMode(int mode) {
