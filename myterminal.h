@@ -24,8 +24,6 @@ private:
   void setBold(bool bold);
   void printText(QByteArray text);
   void parseEscapeCode(QByteArray data);
-
-private:
   uint16_t cursorX = 0;
   uint16_t cursorY = 0;
   QColor fontColor = Qt::white;

@@ -13,6 +13,7 @@ SOURCES += \
     mainwindow_save_load.cpp \
     mainwindow_timed_events.cpp \
     mydial.cpp \
+    mymainplot.cpp \
     myplot.cpp \
     myterminal.cpp \
     myxyplot.cpp \
@@ -28,6 +29,7 @@ HEADERS += \
     enums_defines_constants.h \
     mainwindow.h \
     mydial.h \
+    mymainplot.h \
     myplot.h \
     myterminal.h \
     myxyplot.h \

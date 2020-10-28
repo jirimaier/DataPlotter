@@ -49,6 +49,10 @@ void MainWindow::on_spinBoxChannelSelect_valueChanged(int arg1) {
     }
   }
   lastSelectedChannel = arg1;
+  updateSelectedChannel(arg1);
+}
+
+void MainWindow::updateSelectedChannel(int arg1) {
   ui->comboBoxGraphStyle->setCurrentIndex(ui->plot->getChStyle(arg1));
   QPixmap pixmap(30, 30);
   pixmap.fill(ui->plot->getChColor(arg1));
@@ -144,3 +148,5 @@ void MainWindow::on_pushButtonSendCommand_clicked() {
   QString text = ui->lineEditCommand->text() + lineEndings[ui->comboBoxLineEnding->currentIndex()];
   emit writeToSerial(text.toUtf8());
 }
+
+void MainWindow::on_pushButtonCSVXY_clicked() { exportCSV(false, XY_CHANNEL); }

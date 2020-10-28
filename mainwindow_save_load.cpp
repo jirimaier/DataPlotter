@@ -1,88 +1,87 @@
 #include "mainwindow.h"
 
+void MainWindow::initSetables() {
+  setables["vrange"] = ui->doubleSpinBoxRangeVerticalRange;
+  setables["hrange"] = ui->doubleSpinBoxRangeHorizontal;
+  setables["hdiv"] = ui->dialhorizontalDiv;
+  setables["vdiv"] = ui->dialVerticalDiv;
+  setables["plottype"] = ui->comboBoxPlotRangeType;
+  setables["mathvro"] = ui->checkBoxMathVRO;
+  setables["mathios"] = ui->checkBoxMathIOS;
+  setables["xyen"] = ui->checkBoxXY;
+  setables["xyvro"] = ui->checkBoxXYVRO;
+  setables["xyios"] = ui->checkBoxXYIOS;
+  setables["xyxch"] = ui->spinBoxXYFirst;
+  setables["xyych"] = ui->spinBoxXYSecond;
+  setables["xyautosize"] = ui->checkBoxXYAutoSize;
+
+  for (int i = 0; i < MATH_COUNT; i++) {
+    setables[QString("math") + QString::number(i + 1) + QString("en")] = mathEn[i];
+    setables[QString("math") + QString::number(i + 1) + QString("first")] = mathFirst[i];
+    setables[QString("math") + QString::number(i + 1) + QString("second")] = mathSecond[i];
+    setables[QString("math") + QString::number(i + 1) + QString("op")] = mathOp[i];
+  }
+}
+
+void MainWindow::applyGuiElementSettings(QWidget *target, QString value) {
+  if (QDoubleSpinBox *newTarget = dynamic_cast<QDoubleSpinBox *>(target))
+    newTarget->setValue(value.toDouble());
+  else if (QSpinBox *newTarget = dynamic_cast<QSpinBox *>(target))
+    newTarget->setValue(value.toInt());
+  else if (QCheckBox *newTarget = dynamic_cast<QCheckBox *>(target))
+    newTarget->setChecked((bool)value.toUInt());
+  else if (QComboBox *newTarget = dynamic_cast<QComboBox *>(target))
+    newTarget->setCurrentIndex(value.toUInt());
+  else if (QDial *newTarget = dynamic_cast<QDial *>(target))
+    newTarget->setValue(value.toInt());
+}
+
+QByteArray MainWindow::readGuiElementSettings(QWidget *target) {
+  if (QDoubleSpinBox *newTarget = dynamic_cast<QDoubleSpinBox *>(target))
+    return (QString::number(newTarget->value()).toUtf8());
+  if (QSpinBox *newTarget = dynamic_cast<QSpinBox *>(target))
+    return (QString::number(newTarget->value()).toUtf8());
+  if (QCheckBox *newTarget = dynamic_cast<QCheckBox *>(target))
+    return (newTarget->isChecked() ? "1" : "0");
+  if (QComboBox *newTarget = dynamic_cast<QComboBox *>(target))
+    return (QString::number(newTarget->currentIndex()).toUtf8());
+  if (QDial *newTarget = dynamic_cast<QDial *>(target))
+    return (QString::number(newTarget->value()).toUtf8());
+  return "error";
+}
+
 QByteArray MainWindow::getSettings() {
   QByteArray settings;
-  settings.append("vrange:" + QString::number(ui->doubleSpinBoxRangeVerticalRange->value()).toUtf8());
-  settings.append('\n');
-  settings.append("hrange:" + QString::number(ui->doubleSpinBoxRangeHorizontal->value()).toUtf8());
-  settings.append('\n');
-  settings.append("vdiv:" + QString::number(ui->dialVerticalDiv->value() - ui->dialVerticalDiv->minimum() + 1).toUtf8());
-  settings.append('\n');
-  settings.append("linetimeout:" + QString::number(ui->horizontalSliderLineTimeout->value()).toUtf8());
-  settings.append('\n');
-  settings.append("vpos:" + QString::number(ui->verticalScrollBarVerticalCenter->value()).toUtf8());
-  settings.append('\n');
-  settings.append("hdiv:" + QString::number(ui->dialhorizontalDiv->value() - ui->dialhorizontalDiv->minimum() + 1).toUtf8());
-  settings.append('\n');
+
+  for (QMap<QString, QWidget *>::iterator it = setables.begin(); it != setables.end(); it++)
+    settings.append(QString(it.key() + ':' + readGuiElementSettings(it.value()) + '\n').toUtf8());
+
   settings.append(ui->radioButtonEn->isChecked() ? "lang:en" : "lang:cz");
   settings.append('\n');
-  settings.append(ui->radioButtonCSVDot->isChecked() ? "csvsep:dc" : "csvsep:cs");
+  settings.append(ui->radioButtonCSVDot->isChecked() ? "csvdel:dc" : "csvdel:cs");
   settings.append('\n');
-  settings.append("chsou:" + QString::number(ui->checkBoxSelectOnlyUsed->isChecked() ? 1 : 0).toUtf8());
-  settings.append('\n');
-  settings.append("plotvval:" + QString::number(ui->checkBoxVerticalValues->isChecked() ? 1 : 0).toUtf8());
-  settings.append('\n');
-  settings.append("plothval:" + QString::number(ui->checkBoxHorizontalValues->isChecked() ? 1 : 0).toUtf8());
-  settings.append('\n');
-  settings.append("clrgor:" + QString::number(ui->checkBoxClearOnReconnect->isChecked() ? 1 : 0).toUtf8());
-  settings.append('\n');
-  settings.append("baud:" + QString(ui->comboBoxBaud->currentText()).toUtf8());
-  settings.append('\n');
-  settings.append("output:" + QString::number(ui->comboBoxOutputLevel->currentIndex()).toUtf8());
-  settings.append('\n');
-  settings.append("lineend:" + QString::number(ui->comboBoxLineEnding->currentIndex()).toUtf8());
-  settings.append('\n');
-  settings.append("plotrange:" + QString::number(ui->comboBoxPlotRangeType->currentIndex()).toUtf8());
-  settings.append('\n');
-  for (int i = 1; i <= CHANNEL_COUNT; i++) {
+
+  for (int i = 1; i <= CHANNEL_COUNT + MATH_COUNT; i++) {
     settings.append("ch:" + QString::number(i).toUtf8());
+    settings.append(":off:" + QString::number(ui->plot->getChOffset(i)).toUtf8());
     settings.append('\n');
-    settings.append("choff:" + QString::number(ui->plot->getChOffset(i)).toUtf8());
+    settings.append("ch:" + QString::number(i).toUtf8());
+    settings.append(":sca:" + QString::number(ui->plot->getChScale(i)).toUtf8());
     settings.append('\n');
-    settings.append("chsca:" + QString::number(ui->plot->getChScale(i)).toUtf8());
+    settings.append("ch:" + QString::number(i).toUtf8());
+    settings.append(":inv:" + QString::number(ui->plot->isInverted(i) ? 1 : 0).toUtf8());
     settings.append('\n');
-    settings.append("chinv:" + QString::number(ui->plot->isInverted(i) ? 1 : 0).toUtf8());
+    settings.append("ch:" + QString::number(i).toUtf8());
+    settings.append(":sty:" + QString::number(ui->plot->getChStyle(i)).toUtf8());
     settings.append('\n');
-    settings.append("chsty:" + QString::number(ui->plot->getChStyle(i)).toUtf8());
+    settings.append("ch:" + QString::number(i).toUtf8());
+    settings.append(":name:" + ui->plot->getChName(i).toUtf8());
     settings.append('\n');
+    settings.append("ch:" + QString::number(i).toUtf8());
     QColor clr = ui->plot->getChColor(i);
-    settings.append(QString("chcol:%1,%2,%3").arg(clr.red()).arg(clr.green()).arg(clr.blue()).toUtf8());
+    settings.append(QString(":col:%1,%2,%3").arg(clr.red()).arg(clr.green()).arg(clr.blue()).toUtf8());
     settings.append('\n');
   }
-  settings.append("ch:" + QString::number(ui->spinBoxChannelSelect->value()).toUtf8());
-  settings.append('\n');
-  settings.append("math1en:" + QString::number(ui->checkBoxMath1->isChecked() ? 1 : 0).toUtf8());
-  settings.append('\n');
-  settings.append("math2en:" + QString::number(ui->checkBoxMath2->isChecked() ? 1 : 0).toUtf8());
-  settings.append('\n');
-  settings.append("math3en:" + QString::number(ui->checkBoxMath3->isChecked() ? 1 : 0).toUtf8());
-  settings.append('\n');
-  settings.append("math4en:" + QString::number(ui->checkBoxMath4->isChecked() ? 1 : 0).toUtf8());
-  settings.append('\n');
-  settings.append("math1in1:" + QString::number(ui->spinBoxMath1First->value()).toUtf8());
-  settings.append('\n');
-  settings.append("math2in1:" + QString::number(ui->spinBoxMath2First->value()).toUtf8());
-  settings.append('\n');
-  settings.append("math3in1:" + QString::number(ui->spinBoxMath3First->value()).toUtf8());
-  settings.append('\n');
-  settings.append("math4in1:" + QString::number(ui->spinBoxMath4First->value()).toUtf8());
-  settings.append('\n');
-  settings.append("math1in2:" + QString::number(ui->spinBoxMath1Second->value()).toUtf8());
-  settings.append('\n');
-  settings.append("math2in2:" + QString::number(ui->spinBoxMath2Second->value()).toUtf8());
-  settings.append('\n');
-  settings.append("math3in2:" + QString::number(ui->spinBoxMath3Second->value()).toUtf8());
-  settings.append('\n');
-  settings.append("math4in2:" + QString::number(ui->spinBoxMath4Second->value()).toUtf8());
-  settings.append('\n');
-  settings.append("math1op:" + QString::number(ui->comboBoxMath1Op->currentIndex()).toUtf8());
-  settings.append('\n');
-  settings.append("math2op:" + QString::number(ui->comboBoxMath2Op->currentIndex()).toUtf8());
-  settings.append('\n');
-  settings.append("math3op:" + QString::number(ui->comboBoxMath3Op->currentIndex()).toUtf8());
-  settings.append('\n');
-  settings.append("math4op:" + QString::number(ui->comboBoxMath4Op->currentIndex()).toUtf8());
-  settings.append('\n');
   return settings;
 }
 
@@ -92,114 +91,72 @@ void MainWindow::useSettings(QByteArray settings) {
     line = line.simplified().trimmed();
     if (line.isEmpty())
       continue;
-    QByteArrayList parts = line.split(':');
-    if (parts.length() != 2) {
+    if (!line.contains(':')) {
       emit parseError(QString(tr("Invalid settings: ")).toUtf8() + line);
       continue;
     }
-    QByteArray type = parts.at(0);
-    type = type.simplified();
-    QByteArray value = parts.at(1);
-    type = type.toLower();
+    QByteArray type = line.left(line.indexOf(':', 0));
+    QByteArray value = line.mid(line.indexOf(':', 0) + 1);
+    type = type.simplified().toLower();
 
-    if (type == "vrange")
-      ui->doubleSpinBoxRangeVerticalRange->setValue(value.toDouble());
-    else if (type == "hrange")
-      ui->doubleSpinBoxRangeHorizontal->setValue(value.toDouble());
-    else if (type == "linetimeout")
-      ui->horizontalSliderLineTimeout->setValue(value.toDouble());
-    else if (type == "vpos")
-      ui->verticalScrollBarVerticalCenter->setValue(value.toDouble());
-    else if (type == "vdiv")
-      ui->dialVerticalDiv->setValue(ui->dialVerticalDiv->minimum() + value.toInt() - 1);
-    else if (type == "hdiv")
-      ui->dialVerticalDiv->setValue(ui->dialhorizontalDiv->minimum() + value.toInt() - 1);
-    else if (type == "cmd")
-      emit sendManaulInput(value, DataLineType::command);
-    else if (type == "data")
-      emit sendManaulInput(value, DataLineType::dataEnded);
-    else if (type == "choff")
-      ui->doubleSpinBoxChOffset->setValue(value.toDouble());
-    else if (type == "chsca")
-      ui->doubleSpinBoxChScale->setValue(value.toDouble());
-    else if (type == "chinv")
-      ui->checkBoxChInvert->setChecked((bool)value.toInt());
-    else if (type == "chsou")
-      ui->checkBoxSelectOnlyUsed->setChecked((bool)value.toInt());
-    else if (type == "plotvval")
-      ui->checkBoxVerticalValues->setChecked((bool)value.toInt());
-    else if (type == "plothval")
-      ui->checkBoxHorizontalValues->setChecked((bool)value.toInt());
-    else if (type == "clrgor")
-      ui->checkBoxClearOnReconnect->setChecked((bool)value.toInt());
-    else if (type == "chsty")
-      ui->comboBoxGraphStyle->setCurrentIndex(value.toInt());
-    else if (type == "output")
-      ui->comboBoxOutputLevel->setCurrentIndex(value.toInt());
-    else if (type == "lineend")
-      ui->comboBoxLineEnding->setCurrentIndex(value.toInt());
-    else if (type == "plotrange")
-      ui->comboBoxPlotRangeType->setCurrentIndex(value.toInt());
-    else if (type == "baud")
-      ui->comboBoxBaud->setCurrentIndex(ui->comboBoxBaud->findText(value));
-    else if (type == "chcol") {
-      QByteArrayList rgb = value.split(',');
-      if (rgb.length() != 3) {
-        emit parseError(QString(tr("Invalid color: ")).toUtf8() + line);
-        continue;
-      }
-      QColor clr = QColor(rgb.at(0).toInt(), rgb.at(1).toInt(), rgb.at(2).toInt());
-      ui->plot->setChColor(ui->spinBoxChannelSelect->value(), clr);
-      QPixmap pixmap(30, 30);
-      pixmap.fill(clr);
-      ui->pushButtonChannelColor->setIcon(pixmap);
-    } else if (type == "lang") {
+    if (setables.contains(type))
+      applyGuiElementSettings(setables[type], value);
+
+    else if (type == "lang") {
       if (value == "en")
         ui->radioButtonEn->setChecked(true);
       if (value == "cz")
         ui->radioButtonCz->setChecked(true);
-    } else if (type == "csvsep") {
-      if (value == "dc")
-        ui->radioButtonCSVDot->setChecked(true);
+    }
+
+    else if (type == "csvdel") {
       if (value == "cs")
         ui->radioButtonCSVComma->setChecked(true);
-    } else if (type == "ch") {
-      bool b = ui->checkBoxSelectOnlyUsed->isChecked();
-      ui->checkBoxSelectOnlyUsed->setChecked(false);
-      ui->spinBoxChannelSelect->setValue(value.toInt());
-      ui->checkBoxSelectOnlyUsed->setChecked(b);
-    } else if (type == "math1en")
-      ui->checkBoxMath1->setChecked((bool)value.toInt());
-    else if (type == "math2en")
-      ui->checkBoxMath2->setChecked((bool)value.toInt());
-    else if (type == "math3en")
-      ui->checkBoxMath3->setChecked((bool)value.toInt());
-    else if (type == "math4en")
-      ui->checkBoxMath4->setChecked((bool)value.toInt());
-    else if (type == "math1in1")
-      ui->spinBoxMath1First->setValue(value.toInt());
-    else if (type == "math2in1")
-      ui->spinBoxMath2First->setValue(value.toInt());
-    else if (type == "math3in1")
-      ui->spinBoxMath3First->setValue(value.toInt());
-    else if (type == "math4in1")
-      ui->spinBoxMath4First->setValue(value.toInt());
-    else if (type == "math1in2")
-      ui->spinBoxMath1Second->setValue(value.toInt());
-    else if (type == "math2in2")
-      ui->spinBoxMath2Second->setValue(value.toInt());
-    else if (type == "math3in2")
-      ui->spinBoxMath3Second->setValue(value.toInt());
-    else if (type == "math4in2")
-      ui->spinBoxMath4Second->setValue(value.toInt());
-    else if (type == "math1op")
-      ui->comboBoxMath1Op->setCurrentIndex(value.toInt());
-    else if (type == "math2op")
-      ui->comboBoxMath2Op->setCurrentIndex(value.toInt());
-    else if (type == "math3op")
-      ui->comboBoxMath3Op->setCurrentIndex(value.toInt());
-    else if (type == "math4op")
-      ui->comboBoxMath4Op->setCurrentIndex(value.toInt());
+      if (value == "dc")
+        ui->radioButtonCSVDot->setChecked(true);
+    }
+
+    else if (type == "ch") {
+      int ch = value.left(value.indexOf(':', 0)).toUInt();
+      if (ch > CHANNEL_COUNT + MATH_COUNT) {
+        emit parseError((QString(tr("Invalid channel in settings: ")) + QString::number(ch)).toUtf8());
+        continue;
+      }
+      QByteArray subtype = value.mid(value.indexOf(':', 0) + 1);
+      subtype = subtype.left(subtype.indexOf(':'));
+      QByteArray subvalue = value.mid(value.lastIndexOf(':') + 1);
+
+      if (subtype == "off")
+        ui->plot->changeChOffset(ch, subvalue.toDouble());
+      else if (subtype == "sca")
+        ui->plot->changeChScale(ch, subvalue.toDouble());
+      else if (subtype == "inv") {
+        if (ui->plot->isInverted(ch) ^ (bool)subvalue.toUInt())
+          ui->plot->changeChScale(ch, ui->plot->getChScale(ch) * (-1));
+      } else if (subtype == "sty")
+        ui->plot->setChStyle(ch, subvalue.toUInt());
+      else if (subtype == "name")
+        ui->plot->setChName(ch, subvalue);
+
+      else if (subtype == "col") {
+        QByteArrayList rgb = subvalue.mid(subvalue.indexOf(':')).split(',');
+        if (rgb.length() != 3) {
+          emit parseError(QString(tr("Invalid color: ")).toUtf8() + line);
+          continue;
+        }
+        QColor clr = QColor(rgb.at(0).toInt(), rgb.at(1).toInt(), rgb.at(2).toInt());
+        ui->plot->setChColor(ch, clr);
+      }
+      updateSelectedChannel(ui->spinBoxChannelSelect->value());
+    }
+
+    // Speciální
+    else if (type == "cmd")
+      emit sendManaulInput(value, DataLineType::command);
+    else if (type == "data")
+      emit sendManaulInput(value, DataLineType::dataEnded);
+
+    // Error
     else
       emit parseError(QString(tr("Unknown setting: ")).toUtf8() + type);
   }

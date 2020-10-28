@@ -7,6 +7,7 @@ MainWindow::~MainWindow() { delete ui; }
 void MainWindow::init(QTranslator *translator) {
   this->translator = translator;
   setGuiArrays();
+  initSetables();
   connectSignals();
   changeLanguage();
   setGuiDefaults();
@@ -76,6 +77,7 @@ void MainWindow::serialConnectResult(bool connected, QString message) {
   ui->pushButtonSendCommand->setEnabled(connected);
   if (connected && ui->checkBoxClearOnReconnect->isChecked()) {
     ui->plot->resetChannels();
+    ui->myTerminal->clearTerminal();
     emit resetChannels();
   }
 }

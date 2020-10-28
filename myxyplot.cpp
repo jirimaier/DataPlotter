@@ -1,12 +1,11 @@
 #include "myxyplot.h"
 
-MyXYPlot::MyXYPlot(QWidget *parent) : QCustomPlot(parent) {
+MyXYPlot::MyXYPlot(QWidget *parent) : MyPlot(parent) {
   xAxis->setSubTicks(false);
   yAxis->setSubTicks(false);
   graphXY = new QCPCurve(this->xAxis, this->yAxis);
   this->xAxis->setRange(-100, 100);
   this->yAxis->setRange(-100, 100);
-  initcursors();
 }
 
 void MyXYPlot::newData(QVector<double> *x, QVector<double> *y) {
@@ -20,8 +19,10 @@ void MyXYPlot::newData(QVector<double> *x, QVector<double> *y) {
   up = ceil(up / 20.0) * 20;
   down = floor(down / 20.0) * 20;
 
-  this->xAxis->setRange(left, right);
-  this->yAxis->setRange(down, up);
+  if (autoSize) {
+    this->xAxis->setRange(left, right);
+    this->yAxis->setRange(down, up);
+  }
 
   if (iHaveCursors) {
     PlotFrame_t frame;
@@ -42,41 +43,18 @@ void MyXYPlot::newData(QVector<double> *x, QVector<double> *y) {
   this->replot();
 }
 
-void MyXYPlot::updateCursors(double *cursorPositions) {
-  for (int i = 0; i < 4; i++) {
-    if (i < 2) {
-      cursors.at(i)->start->setCoords(cursorPositions[i], 0);
-      cursors.at(i)->end->setCoords(cursorPositions[i], 1);
-    } else {
-      cursors.at(i)->start->setCoords(0, cursorPositions[i]);
-      cursors.at(i)->end->setCoords(1, cursorPositions[i]);
-    }
-  }
+void MyXYPlot::setAutoSize(bool en) {
+  autoSize = en;
+  setMouseControlls(!en);
 }
 
-void MyXYPlot::initcursors() {
-  QPen cursorpen;
-  cursorpen.setColor(Qt::black);
-  for (int i = 0; i < 4; i++) {
-    cursors.append(new QCPItemLine(this));
-    if (i < 2) {
-      cursors.at(i)->start->setTypeX(QCPItemPosition::ptPlotCoords);
-      cursors.at(i)->start->setTypeY(QCPItemPosition::ptViewportRatio);
-      cursors.at(i)->end->setTypeX(QCPItemPosition::ptPlotCoords);
-      cursors.at(i)->end->setTypeY(QCPItemPosition::ptViewportRatio);
-    } else {
-      cursors.at(i)->start->setTypeX(QCPItemPosition::ptViewportRatio);
-      cursors.at(i)->start->setTypeY(QCPItemPosition::ptPlotCoords);
-      cursors.at(i)->end->setTypeX(QCPItemPosition::ptViewportRatio);
-      cursors.at(i)->end->setTypeY(QCPItemPosition::ptPlotCoords);
-    }
-    cursors.at(i)->setPen(cursorpen);
-    cursors.at(i)->setVisible(false);
+QByteArray MyXYPlot::exportCSV(char separator, char decimal, int precision) {
+  QByteArray output = (QString("X%1Y\n").arg(separator)).toUtf8();
+  for (QCPCurveDataContainer::iterator it = graphXY->data()->begin(); it != graphXY->data()->end(); it++) {
+    output.append(QString::number(it->key, 'f', precision).replace('.', decimal).toUtf8());
+    output.append(separator);
+    output.append(QString::number(it->value, 'f', precision).replace('.', decimal).toUtf8());
+    output.append('\n');
   }
-}
-
-void MyXYPlot::setCursorsAccess(bool allowed) {
-  for (int i = 0; i < 4; i++)
-    cursors.at(i)->setVisible(allowed);
-  iHaveCursors = allowed;
+  return output;
 }

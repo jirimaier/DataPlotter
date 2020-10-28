@@ -1,30 +1,21 @@
 #ifndef MYXYPLOT_H
 #define MYXYPLOT_H
 
-#include "enums_defines_constants.h"
-#include "plotdata.h"
-#include "qcustomplot.h"
-#include <QTimer>
-#include <QWidget>
+#include "myplot.h"
 
-class MyXYPlot : public QCustomPlot {
+class MyXYPlot : public MyPlot {
   Q_OBJECT
 public:
   MyXYPlot(QWidget *parent = nullptr);
   void newData(QVector<double> *x, QVector<double> *y);
-  void updateCursors(double *cursorPositions);
+  QByteArray exportCSV(char separator, char decimal, int precision);
 
 private:
+  bool autoSize = true;
   QCPCurve *graphXY;
-  bool iHaveCursors = false;
-  QVector<QCPItemLine *> cursors;
-  void initcursors();
 
 public slots:
-  void setCursorsAccess(bool allowed);
-
-signals:
-  void setCursorBounds(PlotFrame_t frame);
+  void setAutoSize(bool en);
 };
 
 #endif // MYXYPLOT_H

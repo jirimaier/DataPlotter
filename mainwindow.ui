@@ -34,7 +34,7 @@ padding-left: 2px;
 }</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QHBoxLayout" name="horizontalLayout_17">
+   <layout class="QVBoxLayout" name="verticalLayout_35">
     <item>
      <widget class="QSplitter" name="splitter">
       <property name="orientation">
@@ -84,7 +84,7 @@ padding-left: 2px;
             </widget>
            </item>
            <item row="1" column="0" colspan="2">
-            <widget class="MyPlot" name="plot" native="true">
+            <widget class="MyMainPlot" name="plot" native="true">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                <horstretch>0</horstretch>
@@ -127,7 +127,7 @@ padding-left: 2px;
               <enum>QTabWidget::Rounded</enum>
              </property>
              <property name="currentIndex">
-              <number>3</number>
+              <number>0</number>
              </property>
              <property name="tabBarAutoHide">
               <bool>true</bool>
@@ -1266,7 +1266,7 @@ padding-left: 2px;
               <attribute name="title">
                <string>Math</string>
               </attribute>
-              <layout class="QHBoxLayout" name="horizontalLayout_26">
+              <layout class="QHBoxLayout" name="horizontalLayout_26" stretch="0,1">
                <item>
                 <layout class="QVBoxLayout" name="verticalLayout_26">
                  <item>
@@ -1681,107 +1681,117 @@ padding-left: 2px;
               <attribute name="title">
                <string>X-Y</string>
               </attribute>
-              <layout class="QHBoxLayout" name="horizontalLayout_39">
+              <layout class="QHBoxLayout" name="horizontalLayout_39" stretch="0,1,0">
                <item>
-                <layout class="QVBoxLayout" name="verticalLayout_35">
-                 <item>
-                  <widget class="QCheckBox" name="checkBoxXY">
-                   <property name="text">
-                    <string>Enable</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_38">
-                   <item>
-                    <widget class="QLabel" name="label_13">
-                     <property name="text">
-                      <string>Hozizontal</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QSpinBox" name="spinBoxXYFirst">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                       <horstretch>1</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="prefix">
-                      <string>CH </string>
-                     </property>
-                     <property name="minimum">
-                      <number>1</number>
-                     </property>
-                     <property name="maximum">
-                      <number>64</number>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </item>
-                 <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_25">
-                   <item>
-                    <widget class="QLabel" name="label_15">
-                     <property name="text">
-                      <string>Vertical</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QSpinBox" name="spinBoxXYSecond">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                       <horstretch>1</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="prefix">
-                      <string>CH </string>
-                     </property>
-                     <property name="minimum">
-                      <number>1</number>
-                     </property>
-                     <property name="maximum">
-                      <number>64</number>
-                     </property>
-                     <property name="value">
-                      <number>2</number>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </item>
-                 <item>
-                  <spacer name="verticalSpacer_13">
-                   <property name="orientation">
-                    <enum>Qt::Vertical</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>20</width>
-                     <height>18</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                 <item>
-                  <widget class="QCheckBox" name="checkBoxXYVRO">
-                   <property name="text">
-                    <string>Viewed range only</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QCheckBox" name="checkBoxXYIOS">
-                   <property name="text">
-                    <string>Include offset and scales</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
+                <widget class="QGroupBox" name="groupBox_15">
+                 <property name="title">
+                  <string>XY Mode</string>
+                 </property>
+                 <layout class="QVBoxLayout" name="verticalLayout_38">
+                  <item>
+                   <widget class="QCheckBox" name="checkBoxXY">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="text">
+                     <string>Enable</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <layout class="QGridLayout" name="gridLayout_3">
+                    <property name="spacing">
+                     <number>3</number>
+                    </property>
+                    <item row="1" column="0">
+                     <widget class="QLabel" name="label_15">
+                      <property name="text">
+                       <string>Vertical</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="0">
+                     <widget class="QLabel" name="label_13">
+                      <property name="text">
+                       <string>Hozizontal</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="1">
+                     <widget class="QSpinBox" name="spinBoxXYFirst">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                        <horstretch>1</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="prefix">
+                       <string>CH </string>
+                      </property>
+                      <property name="minimum">
+                       <number>1</number>
+                      </property>
+                      <property name="maximum">
+                       <number>64</number>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="1">
+                     <widget class="QSpinBox" name="spinBoxXYSecond">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                        <horstretch>1</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="prefix">
+                       <string>CH </string>
+                      </property>
+                      <property name="minimum">
+                       <number>1</number>
+                      </property>
+                      <property name="maximum">
+                       <number>64</number>
+                      </property>
+                      <property name="value">
+                       <number>2</number>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <spacer name="verticalSpacer_13">
+                    <property name="orientation">
+                     <enum>Qt::Vertical</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>98</width>
+                      <height>22</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <widget class="QCheckBox" name="checkBoxXYVRO">
+                    <property name="text">
+                     <string>Viewed range only</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QCheckBox" name="checkBoxXYIOS">
+                    <property name="text">
+                     <string>Include offset and scales</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
                </item>
                <item>
                 <spacer name="horizontalSpacer_7">
@@ -1795,6 +1805,38 @@ padding-left: 2px;
                   </size>
                  </property>
                 </spacer>
+               </item>
+               <item>
+                <widget class="QGroupBox" name="groupBox_14">
+                 <property name="title">
+                  <string>XY Plot</string>
+                 </property>
+                 <layout class="QVBoxLayout" name="verticalLayout_39">
+                  <item>
+                   <widget class="QCheckBox" name="checkBoxXYAutoSize">
+                    <property name="text">
+                     <string>Auto size</string>
+                    </property>
+                    <property name="checked">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="verticalSpacer_15">
+                    <property name="orientation">
+                     <enum>Qt::Vertical</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>20</width>
+                      <height>40</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
+                </widget>
                </item>
               </layout>
              </widget>
@@ -1849,10 +1891,10 @@ padding-left: 2px;
                     <item row="1" column="0">
                      <widget class="QPushButton" name="pushButtonCSVXY">
                       <property name="enabled">
-                       <bool>false</bool>
+                       <bool>true</bool>
                       </property>
                       <property name="text">
-                       <string>PushButton</string>
+                       <string>Export XY</string>
                       </property>
                      </widget>
                     </item>
@@ -1967,6 +2009,9 @@ Comma</string>
                  <layout class="QVBoxLayout" name="verticalLayout_25">
                   <item>
                    <widget class="QCheckBox" name="checkBox">
+                    <property name="enabled">
+                     <bool>false</bool>
+                    </property>
                     <property name="text">
                      <string>Channel labels</string>
                     </property>
@@ -2741,7 +2786,7 @@ used channels</string>
             </size>
            </property>
            <property name="currentIndex">
-            <number>1</number>
+            <number>0</number>
            </property>
            <property name="usesScrollButtons">
             <bool>false</bool>
@@ -3798,9 +3843,9 @@ used channels</string>
    </slots>
   </customwidget>
   <customwidget>
-   <class>MyPlot</class>
+   <class>MyMainPlot</class>
    <extends>QWidget</extends>
-   <header>myplot.h</header>
+   <header>mymainplot.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>

@@ -34,6 +34,8 @@ enum DataLineType { command, dataEnded, dataTimeouted, dataImplicitEnded, debugM
 
 #define RESET_ON_CONNECT_DELAY 5
 
+#define MAX_PLOT_ZOOMOUT 1000000
+
 const QString lineEndings[4] = {"", "\n", "\r", "\r\n"};
 
 //                            0      1      2      3      4      5      6       7
@@ -81,5 +83,8 @@ Q_DECLARE_METATYPE(PlotFrame_t)
 #define CMD_END_LENGTH (sizeof(CMD_END) - 1)
 #define TIMEOUT_SYMBOL_LENGTH (sizeof(TIMEOUT_SYMBOL) - 1)
 #define CMD_BEGIN_LENGTH (sizeof(CMD_BEGIN) - 1)
+
+#define XY_CHANNEL -1
+#define FFT_CHANNEL -1
 
 #endif // SETTINGS_H

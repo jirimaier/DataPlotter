@@ -13,11 +13,9 @@
 
 #include "enums_defines_constants.h"
 #include "mainwindow.h"
-#include "myterminal.h"
 #include "outputworker.h"
 #include "plotdata.h"
 #include "plotmath.h"
-#include "qcustomplot.h"
 #include "serialparser.h"
 #include "serialworker.h"
 

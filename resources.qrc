@@ -5,8 +5,6 @@
         <file>icons/single.png</file>
         <file>icons/logoKatedry.png</file>
         <file>icons/blank.png</file>
-        <file>icons/singlePlot.png</file>
-        <file>icons/splitPlot.png</file>
     </qresource>
     <qresource prefix="/translations">
         <file>translation_cz.qm</file>

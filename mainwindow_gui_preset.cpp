@@ -1,24 +1,25 @@
 #include "mainwindow.h"
 
 void MainWindow::connectSignals() {
-  connect(ui->pushButtonPause, &QPushButton::clicked, ui->plot, &MyPlot::pauseClicked);
-  connect(ui->pushButtonSingleTriger, &QPushButton::clicked, ui->plot, &MyPlot::singleTrigerClicked);
-  connect(ui->radioButtonCurMain, &QRadioButton::toggled, ui->plot, &MyPlot::setCursorsAccess);
+  connect(ui->pushButtonPause, &QPushButton::clicked, ui->plot, &MyMainPlot::pauseClicked);
+  connect(ui->pushButtonSingleTriger, &QPushButton::clicked, ui->plot, &MyMainPlot::singleTrigerClicked);
+  connect(ui->radioButtonCurMain, &QRadioButton::toggled, ui->plot, &MyMainPlot::setCursorsAccess);
   connect(ui->radioButtonCurXY, &QRadioButton::toggled, ui->plotxy, &MyXYPlot::setCursorsAccess);
-  connect(ui->checkBoxVerticalValues, &QCheckBox::toggled, ui->plot, &MyPlot::setShowVerticalValues);
-  connect(ui->checkBoxHorizontalValues, &QCheckBox::toggled, ui->plot, &MyPlot::setShowHorizontalValues);
-  connect(ui->plot, &MyPlot::showPlotStatus, this, &MainWindow::showPlotStatus);
-  connect(ui->plot, &MyPlot::updateDivs, this, &MainWindow::updateDivs);
-  connect(ui->plot, &MyPlot::setCursorBounds, this, &MainWindow::setCursorBounds);
+  connect(ui->checkBoxVerticalValues, &QCheckBox::toggled, ui->plot, &MyMainPlot::setShowVerticalValues);
+  connect(ui->checkBoxHorizontalValues, &QCheckBox::toggled, ui->plot, &MyMainPlot::setShowHorizontalValues);
+  connect(ui->plot, &MyMainPlot::showPlotStatus, this, &MainWindow::showPlotStatus);
+  connect(ui->plot, &MyMainPlot::updateDivs, this, &MainWindow::updateDivs);
+  connect(ui->plot, &MyMainPlot::setCursorBounds, this, &MainWindow::setCursorBounds);
   connect(ui->plotxy, &MyXYPlot::setCursorBounds, this, &MainWindow::setCursorBounds);
   connect(ui->doubleSpinBoxRangeHorizontal, SIGNAL(valueChanged(double)), ui->plot, SLOT(setRollingRange(double)));
   connect(ui->doubleSpinBoxRangeVerticalRange, SIGNAL(valueChanged(double)), ui->plot, SLOT(setVerticalRange(double)));
   connect(ui->doubleSpinBoxRangeHorizontal, SIGNAL(valueChanged(double)), ui->dialRollingRange, SLOT(updatePosition(double)));
   connect(ui->doubleSpinBoxRangeVerticalRange, SIGNAL(valueChanged(double)), ui->dialVerticalRange, SLOT(updatePosition(double)));
   connect(ui->doubleSpinBoxChScale, SIGNAL(valueChanged(double)), ui->dialChScale, SLOT(updatePosition(double)));
-  connect(ui->verticalScrollBarVerticalCenter, &QScrollBar::valueChanged, ui->plot, &MyPlot::setVerticalCenter);
-  connect(ui->horizontalScrollBarHorizontal, &QScrollBar::valueChanged, ui->plot, &MyPlot::setHorizontalPos);
+  connect(ui->verticalScrollBarVerticalCenter, &QScrollBar::valueChanged, ui->plot, &MyMainPlot::setVerticalCenter);
+  connect(ui->horizontalScrollBarHorizontal, &QScrollBar::valueChanged, ui->plot, &MyMainPlot::setHorizontalPos);
   connect(ui->pushButtonPrintBuffer, &QPushButton::clicked, this, &MainWindow::requestBufferDebug);
+  connect(ui->checkBoxXYAutoSize, &QCheckBox::toggled, ui->plotxy, &MyXYPlot::setAutoSize);
 
   connect(&plotUpdateTimer, &QTimer::timeout, this, &MainWindow::updatePlot);
   connect(&listUpdateTimer, &QTimer::timeout, this, &MainWindow::updateInfo);

@@ -48,6 +48,7 @@ private:
   int lastSelectedChannel = 1;
   int roundToStandardValue(double value);
   void printOutput(QString line);
+  void initSetables();
   QByteArray getSettings();
   void setUp();
   void startTimers();
@@ -61,7 +62,11 @@ private:
   QSpinBox *mathFirst[4];
   QSpinBox *mathSecond[4];
   QComboBox *mathOp[4];
+  QMap<QString, QWidget *> setables;
 
+  void applyGuiElementSettings(QWidget *, QString value);
+  QByteArray readGuiElementSettings(QWidget *target);
+  void updateSelectedChannel(int arg1);
 private slots:
   void setAdaptiveSpinBoxes();
   void scrollBarCursorValueChanged();
@@ -107,8 +112,9 @@ private slots:
   void on_pushButtonReset_clicked();
   void on_pushButtonCursorToView_clicked();
   void on_pushButtonAutoset_clicked();
-  void on_lineEditChName_textEdited(const QString &arg1) { ui->plot->setChName(ui->spinBoxChannelSelect->value(), arg1); }
   void on_pushButtonCursorsZero_clicked();
+  void on_pushButtonCSVXY_clicked();
+  void on_lineEditChName_textChanged(const QString &arg1) { ui->plot->setChName(ui->spinBoxChannelSelect->value(), arg1); }
 
 public slots:
   void setCursorBounds(PlotFrame_t frame);

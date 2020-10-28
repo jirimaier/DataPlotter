@@ -1,8 +1,20 @@
 #include "mainwindow.h"
 
 void MainWindow::exportCSV(bool all, int ch) {
-  QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/export/%1.csv").arg(all ? "all" : QString("ch%1").arg(ch + 1));
-  QString fileName = QFileDialog::getSaveFileName(this, all ? tr("Export Channel %1").arg(ch + 1) : tr("Export all channels"), defaultName, tr("Comma separated values (*.csv)"));
+  QString name = "";
+  if (all)
+    name = "all";
+  else {
+    if (ch == XY_CHANNEL)
+      name = "xy";
+    else {
+      name = ui->plot->getChName(ch + 1);
+      if (name.isEmpty())
+        name = QString("ch%1").arg(ch + 1);
+    }
+  }
+  QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/export/%1.csv").arg(name);
+  QString fileName = QFileDialog::getSaveFileName(this, tr("Export %1").arg(name), defaultName, tr("Comma separated values (*.csv)"));
   if (fileName.isEmpty())
     return;
   QFile file(fileName);
@@ -11,8 +23,12 @@ void MainWindow::exportCSV(bool all, int ch) {
     char separator = ui->radioButtonCSVDot->isChecked() ? ',' : ';';
     if (all)
       file.write(ui->plot->exportAllCSV(separator, decimal, ui->spinBoxCSVPrecision->value(), ui->checkBoxCSVoffsets->isChecked(), ui->checkBoxCSVOnlyInView->isChecked(), ui->checkBoxCSVIncludeHidden->isChecked()));
-    else
-      file.write(ui->plot->exportChannelCSV(separator, decimal, ch, ui->spinBoxCSVPrecision->value(), ui->checkBoxCSVoffsets->isChecked(), ui->checkBoxCSVOnlyInView->isChecked()));
+    else {
+      if (ch > 0)
+        file.write(ui->plot->exportChannelCSV(separator, decimal, ch, ui->spinBoxCSVPrecision->value(), ui->checkBoxCSVoffsets->isChecked(), ui->checkBoxCSVOnlyInView->isChecked()));
+      else if (ch == XY_CHANNEL)
+        file.write(ui->plotxy->exportCSV(separator, decimal, ui->spinBoxCSVPrecision->value()));
+    }
     file.close();
   } else {
     QMessageBox msgBox;
