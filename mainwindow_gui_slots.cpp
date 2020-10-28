@@ -130,8 +130,8 @@ void MainWindow::on_checkBoxModeManual_toggled(bool checked) {
 }
 
 void MainWindow::on_horizontalSliderLineTimeout_valueChanged(int value) {
-  ui->labelLineTimeout->setText(QString::number(logaritmicSettings[value]) + " ms");
-  emit changeLineTimeout(logaritmicSettings[value]);
+  ui->labelLineTimeout->setText(QString::number(Global::logaritmicSettings[value]) + " ms");
+  emit changeLineTimeout(Global::logaritmicSettings[value]);
 }
 
 void MainWindow::on_lineEditManualInput_returnPressed() {
@@ -145,7 +145,7 @@ void MainWindow::on_pushButtonDisconnect_clicked() {
 }
 
 void MainWindow::on_pushButtonSendCommand_clicked() {
-  QString text = ui->lineEditCommand->text() + lineEndings[ui->comboBoxLineEnding->currentIndex()];
+  QString text = ui->lineEditCommand->text() + Global::lineEndings[ui->comboBoxLineEnding->currentIndex()];
   emit writeToSerial(text.toUtf8());
 }
 

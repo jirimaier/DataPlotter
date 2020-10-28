@@ -1,13 +1,15 @@
 #include "mainwindow.h"
 
 void MainWindow::initSetables() {
+  // Range
   setables["vrange"] = ui->doubleSpinBoxRangeVerticalRange;
   setables["hrange"] = ui->doubleSpinBoxRangeHorizontal;
+  setables["vpos"] = ui->verticalScrollBarVerticalCenter;
   setables["hdiv"] = ui->dialhorizontalDiv;
   setables["vdiv"] = ui->dialVerticalDiv;
   setables["plottype"] = ui->comboBoxPlotRangeType;
-  setables["mathvro"] = ui->checkBoxMathVRO;
-  setables["mathios"] = ui->checkBoxMathIOS;
+
+  // XY
   setables["xyen"] = ui->checkBoxXY;
   setables["xyvro"] = ui->checkBoxXYVRO;
   setables["xyios"] = ui->checkBoxXYIOS;
@@ -15,10 +17,38 @@ void MainWindow::initSetables() {
   setables["xyych"] = ui->spinBoxXYSecond;
   setables["xyautosize"] = ui->checkBoxXYAutoSize;
 
+  // Export
+  setables["csvprecisoin"] = ui->spinBoxCSVPrecision;
+  setables["csvinchid"] = ui->checkBoxCSVIncludeHidden;
+  setables["csvvro"] = ui->checkBoxCSVVRO;
+  setables["csvios"] = ui->checkBoxCSVIOS;
+
+  // Plot settings
+  setables["chlabel"] = ui->checkBoxChLabel;
+  setables["vaxis"] = ui->checkBoxVerticalValues;
+  setables["haxis"] = ui->comboBoxHAxisType;
+  setables["selused"] = ui->checkBoxSelectOnlyUsed;
+  setables["hlabel"] = ui->lineEditHtitle;
+  setables["vlabel"] = ui->lineEditVtitle;
+
+  // Connection
+  setables["baud"] = ui->comboBoxBaud;
+  setables["output"] = ui->comboBoxOutputLevel;
+
+  // Settings
+  setables["clearonrec"] = ui->checkBoxClearOnReconnect;
+  setables["linetimeout"] = ui->horizontalSliderLineTimeout;
+
+  // Send
+  setables["lineending"] = ui->comboBoxLineEnding;
+
+  // Math
+  setables["mathvro"] = ui->checkBoxMathVRO;
+  setables["mathios"] = ui->checkBoxMathIOS;
   for (int i = 0; i < MATH_COUNT; i++) {
     setables[QString("math") + QString::number(i + 1) + QString("en")] = mathEn[i];
     setables[QString("math") + QString::number(i + 1) + QString("first")] = mathFirst[i];
-    setables[QString("math") + QString::number(i + 1) + QString("second")] = mathSecond[i];
+    setables[QString("math") + QString::number(i + 1) + QString("sec")] = mathSecond[i];
     setables[QString("math") + QString::number(i + 1) + QString("op")] = mathOp[i];
   }
 }
@@ -28,12 +58,18 @@ void MainWindow::applyGuiElementSettings(QWidget *target, QString value) {
     newTarget->setValue(value.toDouble());
   else if (QSpinBox *newTarget = dynamic_cast<QSpinBox *>(target))
     newTarget->setValue(value.toInt());
+  else if (QScrollBar *newTarget = dynamic_cast<QScrollBar *>(target))
+    newTarget->setValue(value.toInt());
+  else if (QSlider *newTarget = dynamic_cast<QSlider *>(target))
+    newTarget->setValue(value.toInt());
   else if (QCheckBox *newTarget = dynamic_cast<QCheckBox *>(target))
     newTarget->setChecked((bool)value.toUInt());
   else if (QComboBox *newTarget = dynamic_cast<QComboBox *>(target))
     newTarget->setCurrentIndex(value.toUInt());
   else if (QDial *newTarget = dynamic_cast<QDial *>(target))
     newTarget->setValue(value.toInt());
+  else if (QLineEdit *newTarget = dynamic_cast<QLineEdit *>(target))
+    newTarget->setText(value);
 }
 
 QByteArray MainWindow::readGuiElementSettings(QWidget *target) {
@@ -41,13 +77,21 @@ QByteArray MainWindow::readGuiElementSettings(QWidget *target) {
     return (QString::number(newTarget->value()).toUtf8());
   if (QSpinBox *newTarget = dynamic_cast<QSpinBox *>(target))
     return (QString::number(newTarget->value()).toUtf8());
+  if (QScrollBar *newTarget = dynamic_cast<QScrollBar *>(target))
+    return (QString::number(newTarget->value()).toUtf8());
+  if (QSlider *newTarget = dynamic_cast<QSlider *>(target))
+    return (QString::number(newTarget->value()).toUtf8());
   if (QCheckBox *newTarget = dynamic_cast<QCheckBox *>(target))
     return (newTarget->isChecked() ? "1" : "0");
   if (QComboBox *newTarget = dynamic_cast<QComboBox *>(target))
     return (QString::number(newTarget->currentIndex()).toUtf8());
   if (QDial *newTarget = dynamic_cast<QDial *>(target))
     return (QString::number(newTarget->value()).toUtf8());
-  return "error";
+  else if (QLineEdit *newTarget = dynamic_cast<QLineEdit *>(target))
+    return (newTarget->text().toUtf8());
+
+  qDebug() << "Save error: unhandled gui element type!";
+  return "";
 }
 
 QByteArray MainWindow::getSettings() {
@@ -88,6 +132,8 @@ QByteArray MainWindow::getSettings() {
 void MainWindow::useSettings(QByteArray settings) {
   QByteArrayList settingsList = settings.split('\n');
   foreach (QByteArray line, settingsList) {
+    if (line.contains("//"))
+      line = line.left(line.indexOf("//"));
     line = line.simplified().trimmed();
     if (line.isEmpty())
       continue;
@@ -122,7 +168,7 @@ void MainWindow::useSettings(QByteArray settings) {
         emit parseError((QString(tr("Invalid channel in settings: ")) + QString::number(ch)).toUtf8());
         continue;
       }
-      QByteArray subtype = value.mid(value.indexOf(':', 0) + 1);
+      QByteArray subtype = value.mid(value.indexOf(':', 0) + 1).toLower();
       subtype = subtype.left(subtype.indexOf(':'));
       QByteArray subvalue = value.mid(value.lastIndexOf(':') + 1);
 

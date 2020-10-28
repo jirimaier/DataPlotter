@@ -10,7 +10,7 @@ void SerialParser::parseBinaryDataHeader(QByteArray data) {
   if (modeChangeAllowed) {
     QByteArrayList list = data.split(',');
     BinDataSettings_t newSettings = binDataSettings;
-    // bin,bits,chNum,maxVal,minVal,time,firstch
+    // bin,bits,chNum,maxVal,minVal,time,firstch,continous
     if (list.length() >= 2)
       if (list.at(1).length() > 0)
         newSettings.bits = list.at(1).toInt();
@@ -29,6 +29,9 @@ void SerialParser::parseBinaryDataHeader(QByteArray data) {
     if (list.length() >= 7)
       if (list.at(6).length() > 0)
         newSettings.firstCh = list.at(6).toInt();
+    if (list.length() >= 8)
+      if (list.at(6).length() > 0)
+        newSettings.continuous = (bool)list.at(7).toUInt();
 
     if (newSettings.bits <= 0) {
       emit parseError((tr("Invalid settings: ") + QString("bits = %1").arg(newSettings.bits)).toUtf8());

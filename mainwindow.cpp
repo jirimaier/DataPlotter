@@ -61,13 +61,6 @@ void MainWindow::updateChScale() {
   ui->labelChScale->setText(QString::number(perDiv) + tr(" / Div"));
 }
 
-int MainWindow::roundToStandardValue(double value) {
-  for (int i = 0; i < LOG_SET_SIZE; i++)
-    if (value <= logaritmicSettings[i])
-      return i;
-  return 28;
-}
-
 void MainWindow::serialConnectResult(bool connected, QString message) {
   ui->pushButtonDisconnect->setEnabled(connected);
   ui->pushButtonConnect->setEnabled(!connected);
@@ -103,9 +96,14 @@ void MainWindow::bufferDebug(QByteArray data) {
 }
 
 void MainWindow::updateDivs(double vertical, double horizontal) {
-  ui->plot->setVerticalDiv(logaritmicSettings[MAX(roundToStandardValue(vertical) + ui->dialVerticalDiv->value(), 0)]);
-  ui->plot->setHorizontalDiv(logaritmicSettings[MAX(roundToStandardValue(horizontal) + ui->dialhorizontalDiv->value(), 0)]);
+  ui->plot->setVerticalDiv(Global::logaritmicSettings[MAX(GlobalFunctions::roundToStandardValue(vertical) + ui->dialVerticalDiv->value(), 0)]);
+  ui->plot->setHorizontalDiv(Global::logaritmicSettings[MAX(GlobalFunctions::roundToStandardValue(horizontal) + ui->dialhorizontalDiv->value(), 0)]);
   updateChScale();
   ui->labelHDiv->setText(QString::number(ui->plot->getHDiv()) + tr(" / Div"));
   ui->labelVDiv->setText(QString::number(ui->plot->getVDiv()) + tr(" / Div"));
+}
+
+void MainWindow::on_comboBoxHAxisType_currentIndexChanged(int index) {
+  ui->labelHDiv->setVisible(index <= 1);
+  ui->plot->setShowHorizontalValues(index);
 }

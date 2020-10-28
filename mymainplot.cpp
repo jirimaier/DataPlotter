@@ -193,32 +193,6 @@ void MyMainPlot::singleTrigerClicked() {
   emit showPlotStatus(plottingStatus);
 }
 
-void MyMainPlot::setVerticalDiv(double value) {
-  QSharedPointer<QCPAxisTickerFixed> fixedTicker(new QCPAxisTickerFixed);
-  this->yAxis->setTicker(fixedTicker);
-  fixedTicker->setTickStep(value);
-  fixedTicker->setScaleStrategy(QCPAxisTickerFixed::ssNone);
-  vdiv = value;
-}
-
-void MyMainPlot::setHorizontalDiv(double value) {
-  QSharedPointer<QCPAxisTickerFixed> fixedTicker(new QCPAxisTickerFixed);
-  this->xAxis->setTicker(fixedTicker);
-  fixedTicker->setTickStep(value);
-  fixedTicker->setScaleStrategy(QCPAxisTickerFixed::ssNone);
-  hdiv = value;
-}
-
-void MyMainPlot::setShowVerticalValues(bool enabled) {
-  this->yAxis->setTicks(enabled);
-  this->yAxis->setBasePen(enabled ? Qt::SolidLine : Qt::NoPen);
-}
-
-void MyMainPlot::setShowHorizontalValues(bool enabled) {
-  this->xAxis->setTicks(enabled);
-  this->xAxis->setBasePen(enabled ? Qt::SolidLine : Qt::NoPen);
-}
-
 void MyMainPlot::updateVisuals() {
   for (int i = 0; i < CHANNEL_COUNT + MATH_COUNT; i++) {
     this->graph(i)->setPen(QPen(channelSettings.at(i)->color));

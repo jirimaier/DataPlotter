@@ -16,7 +16,7 @@ void myDial::positionChanged(int position) {
       position = this->maximum() - 1;
     lastPosition = position;
     this->setValue(position);
-    emit realValueChanged(logaritmicSettings[position]);
+    emit realValueChanged(Global::logaritmicSettings[position]);
   }
 }
 
@@ -27,13 +27,13 @@ void myDial::updatePosition(double value) {
   this->setValue(newPos);
   var = true;
   for (int i = 0; i < LOG_SET_SIZE; i++)
-    if (value == logaritmicSettings[i])
+    if (value == Global::logaritmicSettings[i])
       var = false;
 }
 
 int myDial::roundToStandardValue(double value) {
   for (int i = 0; i < LOG_SET_SIZE; i++)
-    if (value <= logaritmicSettings[i])
+    if (value <= Global::logaritmicSettings[i])
       return i;
   return 30;
 }

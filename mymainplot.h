@@ -12,9 +12,7 @@ public:
   ~MyMainPlot();
   void init();
   bool isChUsed(int ch) { return !graph(ch - 1)->data()->isEmpty(); }
-  double getVDiv() { return vdiv; }
-  double getHDiv() { return hdiv; }
-  double getCHDiv(int ch) { return vdiv / abs(scales.at(ch - 1)); }
+  double getCHDiv(int ch) { return (this->getVDiv() / abs(scales.at(ch - 1))); }
   double getChScale(int ch) { return abs(scales.at(ch - 1)); }
   bool isInverted(int ch) { return scales.at(ch - 1) < 0; }
   double getChOffset(int ch) { return offsets.at(ch - 1); }
@@ -43,7 +41,6 @@ private:
   QVector<QVector<double> *> pauseBufferValue;
   QVector<double> offsets;
   QVector<double> scales;
-  double vdiv, hdiv;
   PlotSettings_t plotSettings;
   QVector<ChannelSettings_t *> channelSettings;
   int plotRangeType = PlotRange::fixedRange;
@@ -61,10 +58,6 @@ public slots:
   void setRangeType(int type);
   void pauseClicked();
   void singleTrigerClicked();
-  void setVerticalDiv(double value);
-  void setHorizontalDiv(double value);
-  void setShowVerticalValues(bool enabled);
-  void setShowHorizontalValues(bool enabled);
   void updateVisuals();
   void resetChannels();
   void rescale(int ch, double relativeScale);

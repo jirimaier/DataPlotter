@@ -16,6 +16,7 @@ void MainWindow::scrollBarCursorValueChanged() {
       ui->labelCursordY->setText(tr("dY: ") + QString::number(fabs(cursorPos[3] - cursorPos[2])));
     }
     ui->labelCursordX->setText(tr("dX: ") + QString::number(fabs(cursorPos[1] - cursorPos[0])));
+    ui->labelCursorFX->setText(tr("1/dX: ") + QString::number(1.0 / (fabs(cursorPos[1] - cursorPos[0])), 'f', 3));
 
     if (ui->radioButtonCurMain->isChecked())
       ui->plot->updateCursors(cursorPos);

@@ -5,19 +5,37 @@
 #include <QObject>
 #include <QVector>
 
-enum PlotStatus { run, pause, single };
+namespace PlotStatus {
+enum en { run, pause, single };
+}
 
-enum PlotRange { freeMove, fixedRange, rolling };
+namespace PlotRange {
+enum en { freeMove, fixedRange, rolling };
+}
 
-enum GraphStyle { line, point, linePoint, hidden };
+namespace GraphStyle {
+enum en { line, point, linePoint, hidden };
+}
 
-enum DataMode { unknown, string, binData, terminal, info, warning, settings };
+namespace DataMode {
+enum en { unknown, string, binData, terminal, info, warning, settings };
+}
 
-enum OutputLevel { none, low, high };
+namespace OutputLevel {
+enum en { none, low, high };
+}
 
-enum MathOperations { add, subtract, multiply, divide, xy };
+namespace MathOperations {
+enum en { add, subtract, multiply, divide, xy };
+}
 
-enum DataLineType { command, dataEnded, dataTimeouted, dataImplicitEnded, debugMessage };
+namespace DataLineType {
+enum en { command, dataEnded, dataTimeouted, dataImplicitEnded, debugMessage };
+}
+
+namespace HAxisType {
+enum en { none, fixed, MS, HMS };
+}
 
 #define CHANNEL_COUNT 64
 #define MATH_COUNT 4
@@ -36,13 +54,21 @@ enum DataLineType { command, dataEnded, dataTimeouted, dataImplicitEnded, debugM
 
 #define MAX_PLOT_ZOOMOUT 1000000
 
-const QString lineEndings[4] = {"", "\n", "\r", "\r\n"};
+namespace Global {
+const static QString lineEndings[4] = {"", "\n", "\r", "\r\n"};
 
-//                            0      1      2      3      4      5      6       7
-const float refreshRates[8] = {10.0f, 20.0f, 30.0f, 40.0f, 50.0f, 60.0f, 100.0f, 144.0f};
+#define LOG_SET_SIZE 31 //                              0       1       2       3      4      5      6     7     8     9    10   11  12 13 14  15  16  17  18   19   20   21    22    23    24     25     26     27      28      29      30
+const static double logaritmicSettings[LOG_SET_SIZE] = {0.0001, 0.0002, 0.0005, 0.001, 0.002, 0.005, 0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000, 200000, 500000, 1000000};
+} // namespace Global
 
-#define LOG_SET_SIZE 31 //                       0       1       2       3      4      5      6     7     8     9    10   11  12 13 14  15  16  17  18   19   20   21    22    23    24     25     26     27      28      29      30
-const double logaritmicSettings[LOG_SET_SIZE] = {0.0001, 0.0002, 0.0005, 0.001, 0.002, 0.005, 0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000, 200000, 500000, 1000000};
+struct GlobalFunctions {
+  static int roundToStandardValue(double value) {
+    for (int i = 0; i < LOG_SET_SIZE; i++)
+      if (value <= Global::logaritmicSettings[i])
+        return i;
+    return 28;
+  }
+};
 
 struct BinDataSettings_t {
   int bits = 8;

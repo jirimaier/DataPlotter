@@ -14,10 +14,18 @@ void MyXYPlot::newData(QVector<double> *x, QVector<double> *y) {
   double down = *std::min_element(y->begin(), y->end());
   double up = *std::max_element(y->begin(), y->end());
 
-  left = floor(left / 20.0) * 20;
-  right = ceil(right / 20.0) * 20;
-  up = ceil(up / 20.0) * 20;
-  down = floor(down / 20.0) * 20;
+  left *= 1.1;
+  right *= 1.1;
+  up *= 1.1;
+  down *= 1.1;
+
+  left = Global::logaritmicSettings[GlobalFunctions::roundToStandardValue(abs(left))] * (left < 0 ? (-1) : 1);
+  right = Global::logaritmicSettings[GlobalFunctions::roundToStandardValue(abs(right))] * (right < 0 ? (-1) : 1);
+  up = Global::logaritmicSettings[GlobalFunctions::roundToStandardValue(abs(up))] * (up < 0 ? (-1) : 1);
+  down = Global::logaritmicSettings[GlobalFunctions::roundToStandardValue(abs(down))] * (down < 0 ? (-1) : 1);
+
+  this->setVerticalDiv((this->yAxis->range().upper - this->yAxis->range().lower) / 5);
+  this->setHorizontalDiv((this->xAxis->range().upper - this->xAxis->range().lower) / 5);
 
   if (autoSize) {
     this->xAxis->setRange(left, right);

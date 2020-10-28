@@ -3,10 +3,9 @@
 void MainWindow::connectSignals() {
   connect(ui->pushButtonPause, &QPushButton::clicked, ui->plot, &MyMainPlot::pauseClicked);
   connect(ui->pushButtonSingleTriger, &QPushButton::clicked, ui->plot, &MyMainPlot::singleTrigerClicked);
-  connect(ui->radioButtonCurMain, &QRadioButton::toggled, ui->plot, &MyMainPlot::setCursorsAccess);
+  connect(ui->radioButtonCurMain, &QRadioButton::toggled, ui->plot, &MyPlot::setCursorsAccess);
   connect(ui->radioButtonCurXY, &QRadioButton::toggled, ui->plotxy, &MyXYPlot::setCursorsAccess);
-  connect(ui->checkBoxVerticalValues, &QCheckBox::toggled, ui->plot, &MyMainPlot::setShowVerticalValues);
-  connect(ui->checkBoxHorizontalValues, &QCheckBox::toggled, ui->plot, &MyMainPlot::setShowHorizontalValues);
+  connect(ui->checkBoxVerticalValues, &QCheckBox::toggled, ui->plot, &MyPlot::setShowVerticalValues);
   connect(ui->plot, &MyMainPlot::showPlotStatus, this, &MainWindow::showPlotStatus);
   connect(ui->plot, &MyMainPlot::updateDivs, this, &MainWindow::updateDivs);
   connect(ui->plot, &MyMainPlot::setCursorBounds, this, &MainWindow::setCursorBounds);
@@ -20,6 +19,10 @@ void MainWindow::connectSignals() {
   connect(ui->horizontalScrollBarHorizontal, &QScrollBar::valueChanged, ui->plot, &MyMainPlot::setHorizontalPos);
   connect(ui->pushButtonPrintBuffer, &QPushButton::clicked, this, &MainWindow::requestBufferDebug);
   connect(ui->checkBoxXYAutoSize, &QCheckBox::toggled, ui->plotxy, &MyXYPlot::setAutoSize);
+  connect(ui->lineEditHtitle, &QLineEdit::textChanged, ui->plot, &MyPlot::setXTitle);
+  connect(ui->lineEditVtitle, &QLineEdit::textChanged, ui->plot, &MyPlot::setYTitle);
+  connect(ui->lineEditVtitle, &QLineEdit::textChanged, ui->plotxy, &MyPlot::setXTitle);
+  connect(ui->lineEditVtitle, &QLineEdit::textChanged, ui->plotxy, &MyPlot::setYTitle);
 
   connect(&plotUpdateTimer, &QTimer::timeout, this, &MainWindow::updatePlot);
   connect(&listUpdateTimer, &QTimer::timeout, this, &MainWindow::updateInfo);

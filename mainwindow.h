@@ -46,7 +46,6 @@ private:
   void changeLanguage(QString code = "en");
   void exportCSV(bool all = false, int ch = 1);
   int lastSelectedChannel = 1;
-  int roundToStandardValue(double value);
   void printOutput(QString line);
   void initSetables();
   QByteArray getSettings();
@@ -115,6 +114,8 @@ private slots:
   void on_pushButtonCursorsZero_clicked();
   void on_pushButtonCSVXY_clicked();
   void on_lineEditChName_textChanged(const QString &arg1) { ui->plot->setChName(ui->spinBoxChannelSelect->value(), arg1); }
+
+  void on_comboBoxHAxisType_currentIndexChanged(int index);
 
 public slots:
   void setCursorBounds(PlotFrame_t frame);
