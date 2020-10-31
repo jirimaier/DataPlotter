@@ -6,35 +6,18 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1090</width>
-    <height>782</height>
+    <width>1031</width>
+    <height>737</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QPushButton
-{
-padding-left: 6px;
-padding-right: 6px;
-padding-top: 4px;
-padding-bottom: 4px;
-margin:-1px;
-}
-
-QComboBox
-{
-padding-left: 4px;
-}
-
-QLineEdit
-{
-padding-left: 2px;
-}</string>
+   <string notr="true"/>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_35">
+   <layout class="QHBoxLayout" name="horizontalLayout_9">
     <item>
      <widget class="QSplitter" name="splitter">
       <property name="orientation">
@@ -50,13 +33,13 @@ padding-left: 2px;
        <property name="tabBarAutoHide">
         <bool>true</bool>
        </property>
-       <widget class="QWidget" name="tab_4">
+       <widget class="QWidget" name="Left">
         <attribute name="title">
          <string/>
         </attribute>
-        <layout class="QVBoxLayout" name="verticalLayout_10">
+        <layout class="QVBoxLayout" name="verticalLayout_10" stretch="1,0">
          <item>
-          <layout class="QGridLayout" name="gridLayout_7">
+          <layout class="QGridLayout" name="plots">
            <item row="0" column="1">
             <widget class="QWidget" name="plotfft" native="true">
              <property name="sizePolicy">
@@ -99,9 +82,12 @@ padding-left: 2px;
           </layout>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <layout class="QHBoxLayout" name="bottom" stretch="1000,1">
+           <property name="sizeConstraint">
+            <enum>QLayout::SetFixedSize</enum>
+           </property>
            <item>
-            <widget class="QTabWidget" name="tabs_Plot">
+            <widget class="QTabWidget" name="tabsControll">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -127,130 +113,324 @@ padding-left: 2px;
               <enum>QTabWidget::Rounded</enum>
              </property>
              <property name="currentIndex">
-              <number>0</number>
+              <number>5</number>
              </property>
              <property name="tabBarAutoHide">
               <bool>true</bool>
              </property>
-             <widget class="QWidget" name="tab_6">
+             <widget class="QWidget" name="range">
               <attribute name="title">
                <string>Range</string>
               </attribute>
-              <layout class="QHBoxLayout" name="horizontalLayout_14">
+              <layout class="QHBoxLayout" name="horizontalLayout_15" stretch="1,1000">
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_13">
-                 <item>
-                  <widget class="QGroupBox" name="groupBox_8">
-                   <property name="minimumSize">
-                    <size>
-                     <width>0</width>
-                     <height>0</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>16777215</width>
-                     <height>16777215</height>
-                    </size>
-                   </property>
-                   <property name="title">
-                    <string>vertical axis</string>
-                   </property>
+                <widget class="QFrame" name="frame_2">
+                 <property name="frameShape">
+                  <enum>QFrame::StyledPanel</enum>
+                 </property>
+                 <property name="frameShadow">
+                  <enum>QFrame::Sunken</enum>
+                 </property>
+                 <layout class="QVBoxLayout" name="verticalLayout">
+                  <item>
                    <layout class="QHBoxLayout" name="horizontalLayout_7">
                     <item>
-                     <layout class="QVBoxLayout" name="verticalLayout">
-                      <item>
+                     <widget class="QLabel" name="label_6">
+                      <property name="text">
+                       <string>Vertical range</string>
+                      </property>
+                      <property name="alignment">
+                       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                      </property>
+                      <property name="wordWrap">
+                       <bool>true</bool>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="myDial" name="dialVerticalRange">
+                      <property name="enabled">
+                       <bool>true</bool>
+                      </property>
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="minimumSize">
+                       <size>
+                        <width>0</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>40</height>
+                       </size>
+                      </property>
+                      <property name="autoFillBackground">
+                       <bool>false</bool>
+                      </property>
+                      <property name="minimum">
+                       <number>3</number>
+                      </property>
+                      <property name="maximum">
+                       <number>31</number>
+                      </property>
+                      <property name="pageStep">
+                       <number>1</number>
+                      </property>
+                      <property name="value">
+                       <number>15</number>
+                      </property>
+                      <property name="invertedControls">
+                       <bool>false</bool>
+                      </property>
+                      <property name="notchTarget">
+                       <double>2.000000000000000</double>
+                      </property>
+                      <property name="notchesVisible">
+                       <bool>true</bool>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <widget class="QDoubleSpinBox" name="doubleSpinBoxRangeVerticalRange">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>0</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>16777215</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="font">
+                     <font>
+                      <pointsize>10</pointsize>
+                     </font>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                    </property>
+                    <property name="decimals">
+                     <number>3</number>
+                    </property>
+                    <property name="minimum">
+                     <double>0.000000000000000</double>
+                    </property>
+                    <property name="maximum">
+                     <double>1000000.000000000000000</double>
+                    </property>
+                    <property name="value">
+                     <double>10.000000000000000</double>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="verticalSpacer_5">
+                    <property name="orientation">
+                     <enum>Qt::Vertical</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>20</width>
+                      <height>1</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_14">
+                    <item>
+                     <widget class="QLabel" name="label_17">
+                      <property name="text">
+                       <string>Vertical center</string>
+                      </property>
+                      <property name="wordWrap">
+                       <bool>true</bool>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QDial" name="dialVerticalCenter">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>16777215</width>
+                        <height>40</height>
+                       </size>
+                      </property>
+                      <property name="minimum">
+                       <number>-100</number>
+                      </property>
+                      <property name="maximum">
+                       <number>100</number>
+                      </property>
+                      <property name="pageStep">
+                       <number>20</number>
+                      </property>
+                      <property name="orientation">
+                       <enum>Qt::Horizontal</enum>
+                      </property>
+                      <property name="notchTarget">
+                       <double>20.000000000000000</double>
+                      </property>
+                      <property name="notchesVisible">
+                       <bool>true</bool>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_40">
+                    <item>
+                     <widget class="QPushButton" name="pushButtonCenter">
+                      <property name="text">
+                       <string/>
+                      </property>
+                      <property name="icon">
+                       <iconset resource="resources.qrc">
+                        <normaloff>:/images/icons/verticalCenter.png</normaloff>:/images/icons/verticalCenter.png</iconset>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QPushButton" name="pushButtonPositive">
+                      <property name="text">
+                       <string/>
+                      </property>
+                      <property name="icon">
+                       <iconset resource="resources.qrc">
+                        <normaloff>:/images/icons/verticalPositive.png</normaloff>:/images/icons/verticalPositive.png</iconset>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+               <item>
+                <layout class="QVBoxLayout" name="verticalLayout_8" stretch="1,2">
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_12">
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,100,1,1">
+                     <item>
+                      <widget class="QFrame" name="frame_7">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="frameShape">
+                        <enum>QFrame::StyledPanel</enum>
+                       </property>
+                       <property name="frameShadow">
+                        <enum>QFrame::Sunken</enum>
+                       </property>
                        <layout class="QVBoxLayout" name="verticalLayout_33">
-                        <property name="spacing">
-                         <number>2</number>
-                        </property>
                         <item>
-                         <layout class="QHBoxLayout" name="horizontalLayout_35">
-                          <property name="spacing">
-                           <number>2</number>
+                         <widget class="QRadioButton" name="radioButtonFreeRange">
+                          <property name="text">
+                           <string>Free</string>
                           </property>
-                          <item>
-                           <widget class="QLabel" name="label_3">
-                            <property name="font">
-                             <font>
-                              <pointsize>8</pointsize>
-                             </font>
-                            </property>
-                            <property name="frameShape">
-                             <enum>QFrame::NoFrame</enum>
-                            </property>
-                            <property name="frameShadow">
-                             <enum>QFrame::Plain</enum>
-                            </property>
-                            <property name="text">
-                             <string>Range</string>
-                            </property>
-                            <property name="alignment">
-                             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-                            </property>
-                            <property name="wordWrap">
-                             <bool>true</bool>
-                            </property>
-                            <property name="buddy">
-                             <cstring>doubleSpinBoxRangeVerticalRange</cstring>
-                            </property>
-                           </widget>
-                          </item>
-                          <item>
-                           <widget class="myDial" name="dialVerticalRange">
-                            <property name="enabled">
-                             <bool>true</bool>
-                            </property>
-                            <property name="sizePolicy">
-                             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                              <horstretch>0</horstretch>
-                              <verstretch>0</verstretch>
-                             </sizepolicy>
-                            </property>
-                            <property name="minimumSize">
-                             <size>
-                              <width>40</width>
-                              <height>40</height>
-                             </size>
-                            </property>
-                            <property name="maximumSize">
-                             <size>
-                              <width>40</width>
-                              <height>40</height>
-                             </size>
-                            </property>
-                            <property name="autoFillBackground">
-                             <bool>false</bool>
-                            </property>
-                            <property name="minimum">
-                             <number>3</number>
-                            </property>
-                            <property name="maximum">
-                             <number>31</number>
-                            </property>
-                            <property name="pageStep">
-                             <number>1</number>
-                            </property>
-                            <property name="value">
-                             <number>15</number>
-                            </property>
-                            <property name="invertedControls">
-                             <bool>false</bool>
-                            </property>
-                            <property name="notchTarget">
-                             <double>2.000000000000000</double>
-                            </property>
-                            <property name="notchesVisible">
-                             <bool>true</bool>
-                            </property>
-                           </widget>
-                          </item>
-                         </layout>
+                         </widget>
                         </item>
                         <item>
-                         <widget class="QDoubleSpinBox" name="doubleSpinBoxRangeVerticalRange">
+                         <widget class="QRadioButton" name="radioButtonFixedRange">
+                          <property name="text">
+                           <string>Fixed</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QRadioButton" name="radioButtonRollingRange">
+                          <property name="text">
+                           <string>Rolling</string>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer name="horizontalSpacer_8">
+                       <property name="orientation">
+                        <enum>Qt::Horizontal</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>1</width>
+                         <height>20</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                     <item>
+                      <widget class="QFrame" name="frame_3">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="frameShape">
+                        <enum>QFrame::StyledPanel</enum>
+                       </property>
+                       <property name="frameShadow">
+                        <enum>QFrame::Sunken</enum>
+                       </property>
+                       <layout class="QVBoxLayout" name="verticalLayout_3">
+                        <item>
+                         <widget class="QLabel" name="vgridlabel">
+                          <property name="font">
+                           <font>
+                            <pointsize>8</pointsize>
+                           </font>
+                          </property>
+                          <property name="frameShape">
+                           <enum>QFrame::NoFrame</enum>
+                          </property>
+                          <property name="text">
+                           <string>Vertical </string>
+                          </property>
+                          <property name="scaledContents">
+                           <bool>false</bool>
+                          </property>
+                          <property name="alignment">
+                           <set>Qt::AlignHCenter|Qt::AlignTop</set>
+                          </property>
+                          <property name="wordWrap">
+                           <bool>true</bool>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QDial" name="dialVerticalDiv">
                           <property name="sizePolicy">
-                           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                             <horstretch>0</horstretch>
                             <verstretch>0</verstretch>
                            </sizepolicy>
@@ -264,100 +444,6 @@ padding-left: 2px;
                           <property name="maximumSize">
                            <size>
                             <width>16777215</width>
-                            <height>16777215</height>
-                           </size>
-                          </property>
-                          <property name="font">
-                           <font>
-                            <pointsize>10</pointsize>
-                           </font>
-                          </property>
-                          <property name="alignment">
-                           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                          </property>
-                          <property name="decimals">
-                           <number>3</number>
-                          </property>
-                          <property name="minimum">
-                           <double>0.000000000000000</double>
-                          </property>
-                          <property name="maximum">
-                           <double>1000000.000000000000000</double>
-                          </property>
-                          <property name="value">
-                           <double>10.000000000000000</double>
-                          </property>
-                         </widget>
-                        </item>
-                       </layout>
-                      </item>
-                      <item>
-                       <spacer name="verticalSpacer_5">
-                        <property name="orientation">
-                         <enum>Qt::Vertical</enum>
-                        </property>
-                        <property name="sizeHint" stdset="0">
-                         <size>
-                          <width>20</width>
-                          <height>5</height>
-                         </size>
-                        </property>
-                       </spacer>
-                      </item>
-                      <item>
-                       <layout class="QHBoxLayout" name="horizontalLayout_15">
-                        <item>
-                         <layout class="QVBoxLayout" name="verticalLayout_3">
-                          <item>
-                           <widget class="QLabel" name="label_4">
-                            <property name="font">
-                             <font>
-                              <pointsize>8</pointsize>
-                             </font>
-                            </property>
-                            <property name="frameShape">
-                             <enum>QFrame::NoFrame</enum>
-                            </property>
-                            <property name="text">
-                             <string>Grid</string>
-                            </property>
-                            <property name="scaledContents">
-                             <bool>false</bool>
-                            </property>
-                            <property name="alignment">
-                             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-                            </property>
-                            <property name="wordWrap">
-                             <bool>true</bool>
-                            </property>
-                           </widget>
-                          </item>
-                          <item>
-                           <widget class="QLabel" name="labelVDiv">
-                            <property name="text">
-                             <string notr="true">???</string>
-                            </property>
-                           </widget>
-                          </item>
-                         </layout>
-                        </item>
-                        <item>
-                         <widget class="QDial" name="dialVerticalDiv">
-                          <property name="sizePolicy">
-                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                            <horstretch>0</horstretch>
-                            <verstretch>0</verstretch>
-                           </sizepolicy>
-                          </property>
-                          <property name="minimumSize">
-                           <size>
-                            <width>40</width>
-                            <height>40</height>
-                           </size>
-                          </property>
-                          <property name="maximumSize">
-                           <size>
-                            <width>40</width>
                             <height>40</height>
                            </size>
                           </property>
@@ -390,103 +476,51 @@ padding-left: 2px;
                           </property>
                          </widget>
                         </item>
+                        <item>
+                         <widget class="QLabel" name="labelVDiv">
+                          <property name="text">
+                           <string notr="true">???</string>
+                          </property>
+                          <property name="alignment">
+                           <set>Qt::AlignCenter</set>
+                          </property>
+                         </widget>
+                        </item>
                        </layout>
-                      </item>
-                     </layout>
-                    </item>
-                    <item>
-                     <widget class="QScrollBar" name="verticalScrollBarVerticalCenter">
-                      <property name="sizePolicy">
-                       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                        <horstretch>0</horstretch>
-                        <verstretch>0</verstretch>
-                       </sizepolicy>
-                      </property>
-                      <property name="minimumSize">
-                       <size>
-                        <width>20</width>
-                        <height>0</height>
-                       </size>
-                      </property>
-                      <property name="maximumSize">
-                       <size>
-                        <width>16777215</width>
-                        <height>16777215</height>
-                       </size>
-                      </property>
-                      <property name="minimum">
-                       <number>-100</number>
-                      </property>
-                      <property name="maximum">
-                       <number>100</number>
-                      </property>
-                      <property name="singleStep">
-                       <number>10</number>
-                      </property>
-                      <property name="pageStep">
-                       <number>10</number>
-                      </property>
-                      <property name="orientation">
-                       <enum>Qt::Vertical</enum>
-                      </property>
-                      <property name="invertedAppearance">
-                       <bool>true</bool>
-                      </property>
-                      <property name="invertedControls">
-                       <bool>false</bool>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
-                  </widget>
-                 </item>
-                 <item>
-                  <layout class="QVBoxLayout" name="verticalLayout_8">
-                   <item>
-                    <layout class="QHBoxLayout" name="horizontalLayout_12">
+                      </widget>
+                     </item>
                      <item>
-                      <widget class="QGroupBox" name="groupBox_3">
+                      <widget class="QFrame" name="frame_4">
                        <property name="sizePolicy">
                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                          <horstretch>0</horstretch>
-                         <verstretch>1</verstretch>
+                         <verstretch>0</verstretch>
                         </sizepolicy>
                        </property>
-                       <property name="minimumSize">
-                        <size>
-                         <width>0</width>
-                         <height>0</height>
-                        </size>
+                       <property name="frameShape">
+                        <enum>QFrame::StyledPanel</enum>
                        </property>
-                       <property name="maximumSize">
-                        <size>
-                         <width>16777215</width>
-                         <height>16777215</height>
-                        </size>
+                       <property name="frameShadow">
+                        <enum>QFrame::Sunken</enum>
                        </property>
-                       <property name="title">
-                        <string>range</string>
-                       </property>
-                       <layout class="QHBoxLayout" name="horizontalLayout">
-                        <property name="spacing">
-                         <number>2</number>
-                        </property>
-                        <property name="leftMargin">
-                         <number>4</number>
-                        </property>
-                        <property name="topMargin">
-                         <number>2</number>
-                        </property>
-                        <property name="rightMargin">
-                         <number>4</number>
-                        </property>
-                        <property name="bottomMargin">
-                         <number>4</number>
-                        </property>
+                       <layout class="QVBoxLayout" name="verticalLayout_5">
                         <item>
-                         <widget class="QComboBox" name="comboBoxPlotRangeType">
+                         <widget class="QLabel" name="hgridlabel">
+                          <property name="text">
+                           <string>Horizontal</string>
+                          </property>
+                          <property name="alignment">
+                           <set>Qt::AlignHCenter|Qt::AlignTop</set>
+                          </property>
+                          <property name="wordWrap">
+                           <bool>true</bool>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QDial" name="dialhorizontalDiv">
                           <property name="sizePolicy">
-                           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                             <horstretch>0</horstretch>
                             <verstretch>0</verstretch>
                            </sizepolicy>
@@ -500,99 +534,154 @@ padding-left: 2px;
                           <property name="maximumSize">
                            <size>
                             <width>16777215</width>
-                            <height>16777215</height>
+                            <height>40</height>
                            </size>
                           </property>
-                          <property name="font">
-                           <font>
-                            <pointsize>10</pointsize>
-                           </font>
+                          <property name="autoFillBackground">
+                           <bool>false</bool>
                           </property>
-                          <property name="currentIndex">
+                          <property name="minimum">
+                           <number>-6</number>
+                          </property>
+                          <property name="maximum">
+                           <number>-2</number>
+                          </property>
+                          <property name="pageStep">
                            <number>1</number>
                           </property>
-                          <item>
-                           <property name="text">
-                            <string>Free</string>
-                           </property>
-                          </item>
-                          <item>
-                           <property name="text">
-                            <string>Fixed</string>
-                           </property>
-                          </item>
-                          <item>
-                           <property name="text">
-                            <string>Rolling</string>
-                           </property>
-                          </item>
+                          <property name="value">
+                           <number>-4</number>
+                          </property>
+                          <property name="invertedControls">
+                           <bool>false</bool>
+                          </property>
+                          <property name="notchTarget">
+                           <double>1.000000000000000</double>
+                          </property>
+                          <property name="notchesVisible">
+                           <bool>true</bool>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QLabel" name="labelHDiv">
+                          <property name="text">
+                           <string notr="true">???</string>
+                          </property>
+                          <property name="alignment">
+                           <set>Qt::AlignCenter</set>
+                          </property>
                          </widget>
                         </item>
                        </layout>
                       </widget>
                      </item>
-                     <item>
-                      <spacer name="horizontalSpacer">
-                       <property name="orientation">
-                        <enum>Qt::Horizontal</enum>
-                       </property>
-                       <property name="sizeHint" stdset="0">
-                        <size>
-                         <width>40</width>
-                         <height>1</height>
-                        </size>
-                       </property>
-                      </spacer>
-                     </item>
-                     <item>
-                      <widget class="QGroupBox" name="groupBox_4">
-                       <property name="enabled">
-                        <bool>true</bool>
-                       </property>
-                       <property name="sizePolicy">
-                        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                         <horstretch>0</horstretch>
-                         <verstretch>1</verstretch>
-                        </sizepolicy>
-                       </property>
-                       <property name="minimumSize">
-                        <size>
-                         <width>0</width>
-                         <height>0</height>
-                        </size>
-                       </property>
-                       <property name="maximumSize">
-                        <size>
-                         <width>16777215</width>
-                         <height>16777215</height>
-                        </size>
-                       </property>
-                       <property name="title">
-                        <string>rolling length</string>
-                       </property>
-                       <layout class="QHBoxLayout" name="horizontalLayout_6">
+                    </layout>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,1">
+                   <item>
+                    <widget class="QFrame" name="frameRollingRange">
+                     <property name="frameShape">
+                      <enum>QFrame::StyledPanel</enum>
+                     </property>
+                     <property name="frameShadow">
+                      <enum>QFrame::Sunken</enum>
+                     </property>
+                     <layout class="QHBoxLayout" name="horizontalLayout_35" stretch="1,1000">
+                      <item>
+                       <layout class="QVBoxLayout" name="verticalLayout_14">
                         <property name="spacing">
                          <number>2</number>
                         </property>
-                        <property name="leftMargin">
-                         <number>4</number>
-                        </property>
-                        <property name="topMargin">
-                         <number>2</number>
-                        </property>
-                        <property name="rightMargin">
-                         <number>4</number>
-                        </property>
-                        <property name="bottomMargin">
-                         <number>4</number>
-                        </property>
+                        <item>
+                         <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="1,1000,1">
+                          <item>
+                           <widget class="QLabel" name="label_3">
+                            <property name="text">
+                             <string>Horizontal range</string>
+                            </property>
+                            <property name="alignment">
+                             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                            </property>
+                            <property name="wordWrap">
+                             <bool>true</bool>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <spacer name="horizontalSpacer_9">
+                            <property name="orientation">
+                             <enum>Qt::Horizontal</enum>
+                            </property>
+                            <property name="sizeHint" stdset="0">
+                             <size>
+                              <width>40</width>
+                              <height>20</height>
+                             </size>
+                            </property>
+                           </spacer>
+                          </item>
+                          <item>
+                           <widget class="myDial" name="dialRollingRange">
+                            <property name="enabled">
+                             <bool>true</bool>
+                            </property>
+                            <property name="sizePolicy">
+                             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                              <horstretch>0</horstretch>
+                              <verstretch>0</verstretch>
+                             </sizepolicy>
+                            </property>
+                            <property name="minimumSize">
+                             <size>
+                              <width>0</width>
+                              <height>0</height>
+                             </size>
+                            </property>
+                            <property name="maximumSize">
+                             <size>
+                              <width>16777215</width>
+                              <height>40</height>
+                             </size>
+                            </property>
+                            <property name="minimum">
+                             <number>9</number>
+                            </property>
+                            <property name="maximum">
+                             <number>31</number>
+                            </property>
+                            <property name="pageStep">
+                             <number>1</number>
+                            </property>
+                            <property name="value">
+                             <number>15</number>
+                            </property>
+                            <property name="invertedControls">
+                             <bool>false</bool>
+                            </property>
+                            <property name="wrapping">
+                             <bool>false</bool>
+                            </property>
+                            <property name="notchTarget">
+                             <double>2.000000000000000</double>
+                            </property>
+                            <property name="notchesVisible">
+                             <bool>true</bool>
+                            </property>
+                           </widget>
+                          </item>
+                         </layout>
+                        </item>
                         <item>
                          <widget class="QDoubleSpinBox" name="doubleSpinBoxRangeHorizontal">
                           <property name="enabled">
                            <bool>true</bool>
                           </property>
                           <property name="sizePolicy">
-                           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                             <horstretch>0</horstretch>
                             <verstretch>0</verstretch>
                            </sizepolicy>
@@ -631,77 +720,38 @@ padding-left: 2px;
                           </property>
                          </widget>
                         </item>
-                        <item>
-                         <widget class="myDial" name="dialRollingRange">
-                          <property name="enabled">
-                           <bool>true</bool>
-                          </property>
-                          <property name="sizePolicy">
-                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                            <horstretch>0</horstretch>
-                            <verstretch>0</verstretch>
-                           </sizepolicy>
-                          </property>
-                          <property name="minimumSize">
-                           <size>
-                            <width>25</width>
-                            <height>25</height>
-                           </size>
-                          </property>
-                          <property name="maximumSize">
-                           <size>
-                            <width>25</width>
-                            <height>25</height>
-                           </size>
-                          </property>
-                          <property name="minimum">
-                           <number>9</number>
-                          </property>
-                          <property name="maximum">
-                           <number>31</number>
-                          </property>
-                          <property name="pageStep">
-                           <number>1</number>
-                          </property>
-                          <property name="value">
-                           <number>15</number>
-                          </property>
-                          <property name="invertedControls">
-                           <bool>false</bool>
-                          </property>
-                          <property name="wrapping">
-                           <bool>false</bool>
-                          </property>
-                          <property name="notchTarget">
-                           <double>2.000000000000000</double>
-                          </property>
-                          <property name="notchesVisible">
-                           <bool>true</bool>
-                          </property>
-                         </widget>
-                        </item>
                        </layout>
-                      </widget>
-                     </item>
-                    </layout>
+                      </item>
+                      <item>
+                       <spacer name="horizontalSpacer_2">
+                        <property name="orientation">
+                         <enum>Qt::Horizontal</enum>
+                        </property>
+                        <property name="sizeHint" stdset="0">
+                         <size>
+                          <width>1</width>
+                          <height>58</height>
+                         </size>
+                        </property>
+                       </spacer>
+                      </item>
+                     </layout>
+                    </widget>
                    </item>
                    <item>
-                    <widget class="QGroupBox" name="groupBox_7">
-                     <property name="enabled">
-                      <bool>true</bool>
+                    <widget class="QFrame" name="frameZoom">
+                     <property name="frameShape">
+                      <enum>QFrame::StyledPanel</enum>
                      </property>
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                       <horstretch>0</horstretch>
-                       <verstretch>3</verstretch>
-                      </sizepolicy>
+                     <property name="frameShadow">
+                      <enum>QFrame::Sunken</enum>
                      </property>
-                     <property name="title">
-                      <string>horizontal axis</string>
-                     </property>
-                     <layout class="QVBoxLayout" name="verticalLayout_5">
+                     <layout class="QVBoxLayout" name="verticalLayout_31" stretch="1,1">
+                      <property name="spacing">
+                       <number>2</number>
+                      </property>
                       <item>
-                       <layout class="QHBoxLayout" name="horizontalLayout_9">
+                       <layout class="QHBoxLayout" name="horizontalLayout_13" stretch="1,1,100">
                         <item>
                          <widget class="QLabel" name="label_5">
                           <property name="text">
@@ -721,20 +771,20 @@ padding-left: 2px;
                            <bool>true</bool>
                           </property>
                           <property name="sizePolicy">
-                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                             <horstretch>0</horstretch>
                             <verstretch>0</verstretch>
                            </sizepolicy>
                           </property>
                           <property name="minimumSize">
                            <size>
-                            <width>40</width>
-                            <height>40</height>
+                            <width>0</width>
+                            <height>0</height>
                            </size>
                           </property>
                           <property name="maximumSize">
                            <size>
-                            <width>40</width>
+                            <width>16777215</width>
                             <height>40</height>
                            </size>
                           </property>
@@ -774,7 +824,7 @@ padding-left: 2px;
                          </widget>
                         </item>
                         <item>
-                         <spacer name="horizontalSpacer_2">
+                         <spacer name="horizontalSpacer">
                           <property name="orientation">
                            <enum>Qt::Horizontal</enum>
                           </property>
@@ -786,82 +836,12 @@ padding-left: 2px;
                           </property>
                          </spacer>
                         </item>
-                        <item>
-                         <layout class="QVBoxLayout" name="verticalLayout_14">
-                          <item>
-                           <widget class="QLabel" name="label_6">
-                            <property name="text">
-                             <string>Grid</string>
-                            </property>
-                            <property name="alignment">
-                             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-                            </property>
-                            <property name="wordWrap">
-                             <bool>true</bool>
-                            </property>
-                           </widget>
-                          </item>
-                          <item>
-                           <widget class="QLabel" name="labelHDiv">
-                            <property name="text">
-                             <string notr="true">???</string>
-                            </property>
-                           </widget>
-                          </item>
-                         </layout>
-                        </item>
-                        <item>
-                         <widget class="QDial" name="dialhorizontalDiv">
-                          <property name="sizePolicy">
-                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                            <horstretch>0</horstretch>
-                            <verstretch>0</verstretch>
-                           </sizepolicy>
-                          </property>
-                          <property name="minimumSize">
-                           <size>
-                            <width>40</width>
-                            <height>40</height>
-                           </size>
-                          </property>
-                          <property name="maximumSize">
-                           <size>
-                            <width>40</width>
-                            <height>40</height>
-                           </size>
-                          </property>
-                          <property name="autoFillBackground">
-                           <bool>false</bool>
-                          </property>
-                          <property name="minimum">
-                           <number>-6</number>
-                          </property>
-                          <property name="maximum">
-                           <number>-2</number>
-                          </property>
-                          <property name="pageStep">
-                           <number>1</number>
-                          </property>
-                          <property name="value">
-                           <number>-4</number>
-                          </property>
-                          <property name="invertedControls">
-                           <bool>false</bool>
-                          </property>
-                          <property name="notchTarget">
-                           <double>1.000000000000000</double>
-                          </property>
-                          <property name="notchesVisible">
-                           <bool>true</bool>
-                          </property>
-                         </widget>
-                        </item>
                        </layout>
                       </item>
                       <item>
                        <widget class="QScrollBar" name="horizontalScrollBarHorizontal">
                         <property name="sizePolicy">
-                         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                           <horstretch>0</horstretch>
                           <verstretch>0</verstretch>
                          </sizepolicy>
@@ -1222,81 +1202,83 @@ padding-left: 2px;
                     </spacer>
                    </item>
                    <item>
-                    <widget class="QGroupBox" name="groupBox_12">
-                     <property name="title">
-                      <string>Cursor area</string>
-                     </property>
-                     <layout class="QVBoxLayout" name="verticalLayout_37">
-                      <item>
-                       <widget class="QRadioButton" name="radioButtonCurOff">
-                        <property name="text">
-                         <string>Off</string>
-                        </property>
-                        <property name="checked">
-                         <bool>true</bool>
-                        </property>
-                       </widget>
-                      </item>
-                      <item>
-                       <widget class="QRadioButton" name="radioButtonCurMain">
-                        <property name="text">
-                         <string>Main</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item>
-                       <widget class="QRadioButton" name="radioButtonCurXY">
-                        <property name="text">
-                         <string>XY</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item>
-                       <spacer name="verticalSpacer_14">
-                        <property name="orientation">
-                         <enum>Qt::Vertical</enum>
-                        </property>
-                        <property name="sizeHint" stdset="0">
-                         <size>
-                          <width>20</width>
-                          <height>1</height>
-                         </size>
-                        </property>
-                       </spacer>
-                      </item>
-                     </layout>
-                    </widget>
-                   </item>
-                   <item>
-                    <layout class="QVBoxLayout" name="verticalLayout_24">
+                    <layout class="QVBoxLayout" name="verticalLayout_42">
                      <item>
-                      <spacer name="verticalSpacer_11">
+                      <widget class="QGroupBox" name="groupBox_12">
+                       <property name="title">
+                        <string>Cursor area</string>
+                       </property>
+                       <layout class="QVBoxLayout" name="verticalLayout_37">
+                        <item>
+                         <widget class="QRadioButton" name="radioButtonCurOff">
+                          <property name="text">
+                           <string>Off</string>
+                          </property>
+                          <property name="checked">
+                           <bool>true</bool>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QRadioButton" name="radioButtonCurMain">
+                          <property name="text">
+                           <string>Main</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QRadioButton" name="radioButtonCurXY">
+                          <property name="text">
+                           <string>XY</string>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
+                      </widget>
+                     </item>
+                     <item>
+                      <spacer name="verticalSpacer_18">
                        <property name="orientation">
                         <enum>Qt::Vertical</enum>
                        </property>
                        <property name="sizeHint" stdset="0">
                         <size>
                          <width>20</width>
-                         <height>40</height>
+                         <height>1</height>
                         </size>
                        </property>
                       </spacer>
                      </item>
                      <item>
-                      <widget class="QPushButton" name="pushButtonCursorsZero">
-                       <property name="text">
-                        <string>Set all zero</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QPushButton" name="pushButtonCursorToView">
-                       <property name="text">
-                        <string>Bring in view</string>
-                       </property>
-                      </widget>
+                      <layout class="QHBoxLayout" name="horizontalLayout_41">
+                       <item>
+                        <widget class="QPushButton" name="pushButtonCursorsZero">
+                         <property name="text">
+                          <string/>
+                         </property>
+                         <property name="icon">
+                          <iconset resource="resources.qrc">
+                           <normaloff>:/images/icons/verticalCenter.png</normaloff>:/images/icons/verticalCenter.png</iconset>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QPushButton" name="pushButtonCursorToView">
+                         <property name="text">
+                          <string/>
+                         </property>
+                         <property name="icon">
+                          <iconset resource="resources.qrc">
+                           <normaloff>:/images/icons/cursorGrid.png</normaloff>:/images/icons/cursorGrid.png</iconset>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
                      </item>
                     </layout>
+                   </item>
+                   <item>
+                    <layout class="QVBoxLayout" name="verticalLayout_24"/>
                    </item>
                   </layout>
                  </item>
@@ -1308,372 +1290,384 @@ padding-left: 2px;
               <attribute name="title">
                <string>Math</string>
               </attribute>
-              <layout class="QHBoxLayout" name="horizontalLayout_26" stretch="0,1">
+              <layout class="QHBoxLayout" name="horizontalLayout_26" stretch="1,1000">
                <item>
-                <layout class="QVBoxLayout" name="verticalLayout_26">
+                <layout class="QVBoxLayout" name="verticalLayout_41">
                  <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_27">
-                   <item>
-                    <widget class="QCheckBox" name="checkBoxMath1">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="text">
-                      <string notr="true">Math 1</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QSpinBox" name="spinBoxMath1First">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                       <horstretch>1</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="prefix">
-                      <string>CH </string>
-                     </property>
-                     <property name="minimum">
-                      <number>1</number>
-                     </property>
-                     <property name="maximum">
-                      <number>68</number>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QComboBox" name="comboBoxMath1Op">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="currentText">
-                      <string notr="true">Add</string>
-                     </property>
-                     <item>
-                      <property name="text">
-                       <string>Add</string>
-                      </property>
-                     </item>
-                     <item>
-                      <property name="text">
-                       <string>Subtract</string>
-                      </property>
-                     </item>
-                     <item>
-                      <property name="text">
-                       <string>Multiply</string>
-                      </property>
-                     </item>
-                     <item>
-                      <property name="text">
-                       <string>Divide</string>
-                      </property>
-                     </item>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QSpinBox" name="spinBoxMath1Second">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                       <horstretch>1</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="prefix">
-                      <string>CH </string>
-                     </property>
-                     <property name="minimum">
-                      <number>1</number>
-                     </property>
-                     <property name="maximum">
-                      <number>68</number>
-                     </property>
-                     <property name="value">
-                      <number>2</number>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </item>
-                 <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_28">
-                   <item>
-                    <widget class="QCheckBox" name="checkBoxMath2">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="text">
-                      <string notr="true">Math 2</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QSpinBox" name="spinBoxMath2First">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                       <horstretch>1</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="prefix">
-                      <string>CH </string>
-                     </property>
-                     <property name="minimum">
-                      <number>1</number>
-                     </property>
-                     <property name="maximum">
-                      <number>68</number>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QComboBox" name="comboBoxMath2Op">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="currentText">
-                      <string notr="true">Add</string>
-                     </property>
-                     <item>
-                      <property name="text">
-                       <string>Add</string>
-                      </property>
-                     </item>
-                     <item>
-                      <property name="text">
-                       <string>Subtract</string>
-                      </property>
-                     </item>
-                     <item>
-                      <property name="text">
-                       <string>Multiply</string>
-                      </property>
-                     </item>
-                     <item>
-                      <property name="text">
-                       <string>Divide</string>
-                      </property>
-                     </item>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QSpinBox" name="spinBoxMath2Second">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                       <horstretch>1</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="prefix">
-                      <string>CH </string>
-                     </property>
-                     <property name="minimum">
-                      <number>1</number>
-                     </property>
-                     <property name="maximum">
-                      <number>68</number>
-                     </property>
-                     <property name="value">
-                      <number>2</number>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </item>
-                 <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_29">
-                   <item>
-                    <widget class="QCheckBox" name="checkBoxMath3">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="text">
-                      <string notr="true">Math 3</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QSpinBox" name="spinBoxMath3First">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                       <horstretch>1</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="prefix">
-                      <string>CH </string>
-                     </property>
-                     <property name="minimum">
-                      <number>1</number>
-                     </property>
-                     <property name="maximum">
-                      <number>68</number>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QComboBox" name="comboBoxMath3Op">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="currentText">
-                      <string notr="true">Add</string>
-                     </property>
-                     <item>
-                      <property name="text">
-                       <string>Add</string>
-                      </property>
-                     </item>
-                     <item>
-                      <property name="text">
-                       <string>Subtract</string>
-                      </property>
-                     </item>
-                     <item>
-                      <property name="text">
-                       <string>Multiply</string>
-                      </property>
-                     </item>
-                     <item>
-                      <property name="text">
-                       <string>Divide</string>
-                      </property>
-                     </item>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QSpinBox" name="spinBoxMath3Second">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                       <horstretch>1</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="prefix">
-                      <string>CH </string>
-                     </property>
-                     <property name="minimum">
-                      <number>1</number>
-                     </property>
-                     <property name="maximum">
-                      <number>68</number>
-                     </property>
-                     <property name="value">
-                      <number>2</number>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </item>
-                 <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_30">
-                   <item>
-                    <widget class="QCheckBox" name="checkBoxMath4">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="text">
-                      <string notr="true">Math 4</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QSpinBox" name="spinBoxMath4First">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                       <horstretch>1</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="prefix">
-                      <string>CH </string>
-                     </property>
-                     <property name="minimum">
-                      <number>1</number>
-                     </property>
-                     <property name="maximum">
-                      <number>68</number>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QComboBox" name="comboBoxMath4Op">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="currentText">
-                      <string notr="true">Add</string>
-                     </property>
-                     <item>
-                      <property name="text">
-                       <string>Add</string>
-                      </property>
-                     </item>
-                     <item>
-                      <property name="text">
-                       <string>Subtract</string>
-                      </property>
-                     </item>
-                     <item>
-                      <property name="text">
-                       <string>Multiply</string>
-                      </property>
-                     </item>
-                     <item>
-                      <property name="text">
-                       <string>Divide</string>
-                      </property>
-                     </item>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QSpinBox" name="spinBoxMath4Second">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                       <horstretch>1</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="prefix">
-                      <string>CH </string>
-                     </property>
-                     <property name="minimum">
-                      <number>1</number>
-                     </property>
-                     <property name="maximum">
-                      <number>68</number>
-                     </property>
-                     <property name="value">
-                      <number>2</number>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
+                  <widget class="QFrame" name="frame_5">
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Sunken</enum>
+                   </property>
+                   <layout class="QVBoxLayout" name="verticalLayout_19">
+                    <item>
+                     <layout class="QHBoxLayout" name="horizontalLayout_27">
+                      <item>
+                       <widget class="QCheckBox" name="checkBoxMath1">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="text">
+                         <string notr="true">Math 1</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QSpinBox" name="spinBoxMath1First">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                          <horstretch>1</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="prefix">
+                         <string>CH </string>
+                        </property>
+                        <property name="minimum">
+                         <number>1</number>
+                        </property>
+                        <property name="maximum">
+                         <number>68</number>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QComboBox" name="comboBoxMath1Op">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="currentText">
+                         <string notr="true">Add</string>
+                        </property>
+                        <item>
+                         <property name="text">
+                          <string>Add</string>
+                         </property>
+                        </item>
+                        <item>
+                         <property name="text">
+                          <string>Subtract</string>
+                         </property>
+                        </item>
+                        <item>
+                         <property name="text">
+                          <string>Multiply</string>
+                         </property>
+                        </item>
+                        <item>
+                         <property name="text">
+                          <string>Divide</string>
+                         </property>
+                        </item>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QSpinBox" name="spinBoxMath1Second">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                          <horstretch>1</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="prefix">
+                         <string>CH </string>
+                        </property>
+                        <property name="minimum">
+                         <number>1</number>
+                        </property>
+                        <property name="maximum">
+                         <number>68</number>
+                        </property>
+                        <property name="value">
+                         <number>2</number>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                    <item>
+                     <layout class="QHBoxLayout" name="horizontalLayout_28">
+                      <item>
+                       <widget class="QCheckBox" name="checkBoxMath2">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="text">
+                         <string notr="true">Math 2</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QSpinBox" name="spinBoxMath2First">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                          <horstretch>1</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="prefix">
+                         <string>CH </string>
+                        </property>
+                        <property name="minimum">
+                         <number>1</number>
+                        </property>
+                        <property name="maximum">
+                         <number>68</number>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QComboBox" name="comboBoxMath2Op">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="currentText">
+                         <string notr="true">Add</string>
+                        </property>
+                        <item>
+                         <property name="text">
+                          <string>Add</string>
+                         </property>
+                        </item>
+                        <item>
+                         <property name="text">
+                          <string>Subtract</string>
+                         </property>
+                        </item>
+                        <item>
+                         <property name="text">
+                          <string>Multiply</string>
+                         </property>
+                        </item>
+                        <item>
+                         <property name="text">
+                          <string>Divide</string>
+                         </property>
+                        </item>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QSpinBox" name="spinBoxMath2Second">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                          <horstretch>1</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="prefix">
+                         <string>CH </string>
+                        </property>
+                        <property name="minimum">
+                         <number>1</number>
+                        </property>
+                        <property name="maximum">
+                         <number>68</number>
+                        </property>
+                        <property name="value">
+                         <number>2</number>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                    <item>
+                     <layout class="QHBoxLayout" name="horizontalLayout_29">
+                      <item>
+                       <widget class="QCheckBox" name="checkBoxMath3">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="text">
+                         <string notr="true">Math 3</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QSpinBox" name="spinBoxMath3First">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                          <horstretch>1</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="prefix">
+                         <string>CH </string>
+                        </property>
+                        <property name="minimum">
+                         <number>1</number>
+                        </property>
+                        <property name="maximum">
+                         <number>68</number>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QComboBox" name="comboBoxMath3Op">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="currentText">
+                         <string notr="true">Add</string>
+                        </property>
+                        <item>
+                         <property name="text">
+                          <string>Add</string>
+                         </property>
+                        </item>
+                        <item>
+                         <property name="text">
+                          <string>Subtract</string>
+                         </property>
+                        </item>
+                        <item>
+                         <property name="text">
+                          <string>Multiply</string>
+                         </property>
+                        </item>
+                        <item>
+                         <property name="text">
+                          <string>Divide</string>
+                         </property>
+                        </item>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QSpinBox" name="spinBoxMath3Second">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                          <horstretch>1</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="prefix">
+                         <string>CH </string>
+                        </property>
+                        <property name="minimum">
+                         <number>1</number>
+                        </property>
+                        <property name="maximum">
+                         <number>68</number>
+                        </property>
+                        <property name="value">
+                         <number>2</number>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                    <item>
+                     <layout class="QHBoxLayout" name="horizontalLayout_30">
+                      <item>
+                       <widget class="QCheckBox" name="checkBoxMath4">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="text">
+                         <string notr="true">Math 4</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QSpinBox" name="spinBoxMath4First">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                          <horstretch>1</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="prefix">
+                         <string>CH </string>
+                        </property>
+                        <property name="minimum">
+                         <number>1</number>
+                        </property>
+                        <property name="maximum">
+                         <number>68</number>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QComboBox" name="comboBoxMath4Op">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="currentText">
+                         <string notr="true">Add</string>
+                        </property>
+                        <item>
+                         <property name="text">
+                          <string>Add</string>
+                         </property>
+                        </item>
+                        <item>
+                         <property name="text">
+                          <string>Subtract</string>
+                         </property>
+                        </item>
+                        <item>
+                         <property name="text">
+                          <string>Multiply</string>
+                         </property>
+                        </item>
+                        <item>
+                         <property name="text">
+                          <string>Divide</string>
+                         </property>
+                        </item>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QSpinBox" name="spinBoxMath4Second">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                          <horstretch>1</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="prefix">
+                         <string>CH </string>
+                        </property>
+                        <property name="minimum">
+                         <number>1</number>
+                        </property>
+                        <property name="maximum">
+                         <number>68</number>
+                        </property>
+                        <property name="value">
+                         <number>2</number>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                   </layout>
+                  </widget>
                  </item>
                  <item>
                   <spacer name="verticalSpacer_9">
@@ -1689,17 +1683,29 @@ padding-left: 2px;
                   </spacer>
                  </item>
                  <item>
-                  <widget class="QCheckBox" name="checkBoxMathVRO">
-                   <property name="text">
-                    <string>Viewed range only</string>
+                  <widget class="QFrame" name="frame_6">
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
                    </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QCheckBox" name="checkBoxMathIOS">
-                   <property name="text">
-                    <string>Include offset and scales</string>
+                   <property name="frameShadow">
+                    <enum>QFrame::Sunken</enum>
                    </property>
+                   <layout class="QVBoxLayout" name="verticalLayout_26">
+                    <item>
+                     <widget class="QCheckBox" name="checkBoxMathVRO">
+                      <property name="text">
+                       <string>Viewed range only</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QCheckBox" name="checkBoxMathIOS">
+                      <property name="text">
+                       <string>Include offset and scales</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
                   </widget>
                  </item>
                 </layout>
@@ -1711,7 +1717,7 @@ padding-left: 2px;
                  </property>
                  <property name="sizeHint" stdset="0">
                   <size>
-                   <width>203</width>
+                   <width>115</width>
                    <height>20</height>
                   </size>
                  </property>
@@ -2213,7 +2219,7 @@ used channels</string>
             </widget>
            </item>
            <item>
-            <widget class="QTabWidget" name="tabWidgetControll">
+            <widget class="QTabWidget" name="channel">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -2256,16 +2262,16 @@ used channels</string>
              <property name="tabBarAutoHide">
               <bool>true</bool>
              </property>
-             <widget class="QWidget" name="tab_10">
+             <widget class="QWidget" name="channel_2">
               <attribute name="title">
                <string>Channel</string>
               </attribute>
-              <layout class="QVBoxLayout" name="verticalLayout_7">
+              <layout class="QVBoxLayout" name="verticalLayout_7" stretch="0,0,0,0,0">
                <property name="spacing">
-                <number>2</number>
+                <number>5</number>
                </property>
                <property name="bottomMargin">
-                <number>2</number>
+                <number>9</number>
                </property>
                <item>
                 <layout class="QHBoxLayout" name="horizontalLayout_33">
@@ -2881,7 +2887,7 @@ used channels</string>
             </size>
            </property>
            <property name="currentIndex">
-            <number>2</number>
+            <number>0</number>
            </property>
            <property name="usesScrollButtons">
             <bool>false</bool>
@@ -3195,13 +3201,25 @@ used channels</string>
               </layout>
              </item>
              <item>
-              <widget class="QGroupBox" name="groupBox_6">
-               <property name="title">
-                <string>Manual settings</string>
+              <widget class="QFrame" name="frame">
+               <property name="frameShape">
+                <enum>QFrame::NoFrame</enum>
                </property>
-               <layout class="QVBoxLayout" name="verticalLayout_19">
-                <property name="spacing">
-                 <number>3</number>
+               <property name="frameShadow">
+                <enum>QFrame::Raised</enum>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayout_35">
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
                 </property>
                 <item>
                  <widget class="QComboBox" name="comboBoxDataMode">
@@ -3500,6 +3518,12 @@ used channels</string>
                <property name="contextMenuPolicy">
                 <enum>Qt::NoContextMenu</enum>
                </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(0, 0, 0);
+gridline-color: rgb(255, 255, 255);
+selection-color: rgb(255, 255, 255);
+selection-background-color: rgb(85, 0, 0);</string>
+               </property>
                <property name="autoScroll">
                 <bool>false</bool>
                </property>
@@ -3514,6 +3538,12 @@ used channels</string>
                </property>
                <property name="gridStyle">
                 <enum>Qt::DotLine</enum>
+               </property>
+               <property name="wordWrap">
+                <bool>false</bool>
+               </property>
+               <property name="cornerButtonEnabled">
+                <bool>false</bool>
                </property>
                <property name="rowCount">
                 <number>1</number>
@@ -3544,11 +3574,22 @@ used channels</string>
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="pushButton">
-               <property name="text">
-                <string>clear</string>
-               </property>
-              </widget>
+              <layout class="QHBoxLayout" name="horizontalLayout_34">
+               <item>
+                <widget class="QCheckBox" name="checkBoxTerminalDebug">
+                 <property name="text">
+                  <string>Terminal debug mode</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="pushButton">
+                 <property name="text">
+                  <string>clear</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </item>
              <item>
               <widget class="QTextEdit" name="textEditMessages">
@@ -3740,6 +3781,13 @@ used channels</string>
              <string>about</string>
             </attribute>
             <layout class="QVBoxLayout" name="verticalLayout_13">
+             <item>
+              <widget class="QPushButton" name="pushButtonOpenHelp">
+               <property name="text">
+                <string>Open help file</string>
+               </property>
+              </widget>
+             </item>
              <item>
               <spacer name="verticalSpacer_2">
                <property name="orientation">
@@ -3947,7 +3995,7 @@ used channels</string>
    <hints>
     <hint type="sourcelabel">
      <x>66</x>
-     <y>703</y>
+     <y>646</y>
     </hint>
     <hint type="destinationlabel">
      <x>1004</x>
@@ -3963,7 +4011,7 @@ used channels</string>
    <hints>
     <hint type="sourcelabel">
      <x>243</x>
-     <y>567</y>
+     <y>495</y>
     </hint>
     <hint type="destinationlabel">
      <x>1004</x>
@@ -3979,7 +4027,7 @@ used channels</string>
    <hints>
     <hint type="sourcelabel">
      <x>46</x>
-     <y>703</y>
+     <y>646</y>
     </hint>
     <hint type="destinationlabel">
      <x>1004</x>
@@ -3995,7 +4043,7 @@ used channels</string>
    <hints>
     <hint type="sourcelabel">
      <x>243</x>
-     <y>547</y>
+     <y>475</y>
     </hint>
     <hint type="destinationlabel">
      <x>1004</x>
@@ -4010,12 +4058,12 @@ used channels</string>
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1058</x>
-     <y>523</y>
+     <x>921</x>
+     <y>493</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1058</x>
-     <y>677</y>
+     <x>922</x>
+     <y>637</y>
     </hint>
    </hints>
   </connection>
@@ -4026,28 +4074,12 @@ used channels</string>
    <slot>clearTerminal()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1058</x>
-     <y>523</y>
+     <x>921</x>
+     <y>493</y>
     </hint>
     <hint type="destinationlabel">
      <x>897</x>
      <y>54</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkBoxModeManual</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>groupBox_6</receiver>
-   <slot>setVisible(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1057</x>
-     <y>440</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1058</x>
-     <y>636</y>
     </hint>
    </hints>
   </connection>
@@ -4058,76 +4090,12 @@ used channels</string>
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1056</x>
-     <y>401</y>
+     <x>920</x>
+     <y>379</y>
     </hint>
     <hint type="destinationlabel">
      <x>916</x>
      <y>199</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkBoxMath1</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>mathEnChanged(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>89</x>
-     <y>553</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>335</x>
-     <y>754</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkBoxMath2</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>mathEnChanged(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>91</x>
-     <y>583</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>307</x>
-     <y>759</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkBoxMath3</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>mathEnChanged(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>91</x>
-     <y>613</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>486</x>
-     <y>758</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkBoxMath4</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>mathEnChanged(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>91</x>
-     <y>643</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>613</x>
-     <y>757</y>
     </hint>
    </hints>
   </connection>
@@ -4139,11 +4107,11 @@ used channels</string>
    <hints>
     <hint type="sourcelabel">
      <x>65</x>
-     <y>576</y>
+     <y>502</y>
     </hint>
     <hint type="destinationlabel">
      <x>123</x>
-     <y>775</y>
+     <y>736</y>
     </hint>
    </hints>
   </connection>
@@ -4154,12 +4122,12 @@ used channels</string>
    <slot>cursorsSwitched()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>405</x>
-     <y>623</y>
+     <x>414</x>
+     <y>554</y>
     </hint>
     <hint type="destinationlabel">
      <x>382</x>
-     <y>775</y>
+     <y>736</y>
     </hint>
    </hints>
   </connection>
@@ -4170,12 +4138,12 @@ used channels</string>
    <slot>cursorsSwitched()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>405</x>
-     <y>648</y>
+     <x>414</x>
+     <y>579</y>
     </hint>
     <hint type="destinationlabel">
      <x>499</x>
-     <y>778</y>
+     <y>736</y>
     </hint>
    </hints>
   </connection>
@@ -4186,12 +4154,140 @@ used channels</string>
    <slot>cursorsSwitched()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>405</x>
-     <y>673</y>
+     <x>414</x>
+     <y>604</y>
     </hint>
     <hint type="destinationlabel">
      <x>346</x>
-     <y>780</y>
+     <y>736</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBoxTerminalDebug</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>myTerminal</receiver>
+   <slot>setShowGrid(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>800</x>
+     <y>488</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>928</x>
+     <y>398</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radioButtonFreeRange</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>rangeTypeChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>190</x>
+     <y>497</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>445</x>
+     <y>736</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radioButtonFixedRange</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>rangeTypeChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>211</x>
+     <y>518</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>616</x>
+     <y>736</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radioButtonRollingRange</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>rangeTypeChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>221</x>
+     <y>550</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>751</x>
+     <y>736</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBoxModeManual</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>frame</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>961</x>
+     <y>415</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>740</x>
+     <y>458</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radioButtonFreeRange</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>frame_2</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>185</x>
+     <y>493</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>122</x>
+     <y>567</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radioButtonFreeRange</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>frameRollingRange</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>176</x>
+     <y>492</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>588</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radioButtonFreeRange</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>frameZoom</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>199</x>
+     <y>486</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>414</x>
+     <y>608</y>
     </hint>
    </hints>
   </connection>
@@ -4203,5 +4299,6 @@ used channels</string>
   <slot>scrollBarCursorValueChanged()</slot>
   <slot>setPlotLayout()</slot>
   <slot>cursorsSwitched()</slot>
+  <slot>rangeTypeChanged()</slot>
  </slots>
 </ui>

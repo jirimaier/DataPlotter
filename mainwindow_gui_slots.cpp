@@ -52,6 +52,20 @@ void MainWindow::on_spinBoxChannelSelect_valueChanged(int arg1) {
   updateSelectedChannel(arg1);
 }
 
+void MainWindow::rangeTypeChanged() {
+  if (ui->radioButtonFixedRange->isChecked()) {
+    ui->plot->setRangeType(PlotRange::fixedRange);
+    ui->frameRollingRange->setHidden(true);
+    ui->frameZoom->setVisible(true);
+  } else if (ui->radioButtonFreeRange->isChecked())
+    ui->plot->setRangeType(PlotRange::freeMove);
+  else if (ui->radioButtonRollingRange->isChecked()) {
+    ui->plot->setRangeType(PlotRange::rolling);
+    ui->frameZoom->setHidden(true);
+    ui->frameRollingRange->setVisible(true);
+  }
+}
+
 void MainWindow::updateSelectedChannel(int arg1) {
   ui->comboBoxGraphStyle->setCurrentIndex(ui->plot->getChStyle(arg1));
   QPixmap pixmap(30, 30);
@@ -150,3 +164,5 @@ void MainWindow::on_pushButtonSendCommand_clicked() {
 }
 
 void MainWindow::on_pushButtonCSVXY_clicked() { exportCSV(false, XY_CHANNEL); }
+
+void MainWindow::on_pushButtonPositive_clicked() { ui->dialVerticalCenter->setValue(ui->dialVerticalCenter->maximum()); }

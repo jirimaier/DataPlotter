@@ -5,12 +5,18 @@
         <file>icons/single.png</file>
         <file>icons/logoKatedry.png</file>
         <file>icons/blank.png</file>
+        <file>icons/verticalCenter.png</file>
+        <file>icons/verticalPositive.png</file>
+        <file>icons/cursorGrid.png</file>
     </qresource>
     <qresource prefix="/translations">
         <file>translation_cz.qm</file>
         <file>translation_en.qm</file>
     </qresource>
-    <qresource prefix="/documents">
-        <file>settings/defaultSettings.txt</file>
+    <qresource prefix="/text">
+        <file>settings/default.txt</file>
+        <file>styleSheetWindows.txt</file>
+        <file>styleSheetWindowsXP.txt</file>
+        <file>styleSheetLinux.txt</file>
     </qresource>
 </RCC>

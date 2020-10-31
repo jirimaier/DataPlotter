@@ -13,7 +13,7 @@
 class PlotData : public QObject {
   Q_OBJECT
 public:
-  PlotData();
+  explicit PlotData(QObject *parent = nullptr);
   ~PlotData();
   void init();
 

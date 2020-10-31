@@ -4,10 +4,9 @@ void MainWindow::initSetables() {
   // Range
   setables["vrange"] = ui->doubleSpinBoxRangeVerticalRange;
   setables["hrange"] = ui->doubleSpinBoxRangeHorizontal;
-  setables["vpos"] = ui->verticalScrollBarVerticalCenter;
+  setables["vpos"] = ui->dialVerticalCenter;
   setables["hdiv"] = ui->dialhorizontalDiv;
   setables["vdiv"] = ui->dialVerticalDiv;
-  setables["plottype"] = ui->comboBoxPlotRangeType;
 
   // XY
   setables["xyen"] = ui->checkBoxXY;
@@ -100,6 +99,13 @@ QByteArray MainWindow::getSettings() {
   for (QMap<QString, QWidget *>::iterator it = setables.begin(); it != setables.end(); it++)
     settings.append(QString(it.key() + ':' + readGuiElementSettings(it.value()) + '\n').toUtf8());
 
+  if (ui->radioButtonFixedRange->isChecked())
+    settings.append("plottype:fix\n");
+  else if (ui->radioButtonFreeRange->isChecked())
+    settings.append("plottype:free\n");
+  else if (ui->radioButtonRollingRange->isChecked())
+    settings.append("plottype:roll\n");
+
   settings.append(ui->radioButtonEn->isChecked() ? "lang:en" : "lang:cz");
   settings.append('\n');
   settings.append(ui->radioButtonCSVDot->isChecked() ? "csvdel:dc" : "csvdel:cs");
@@ -160,6 +166,15 @@ void MainWindow::useSettings(QByteArray settings) {
         ui->radioButtonCSVComma->setChecked(true);
       if (value == "dc")
         ui->radioButtonCSVDot->setChecked(true);
+    }
+
+    else if (type == "plottype") {
+      if (value == "fix")
+        ui->radioButtonFixedRange->setChecked(true);
+      if (value == "free")
+        ui->radioButtonFreeRange->setChecked(true);
+      if (value == "roll")
+        ui->radioButtonRollingRange->setChecked(true);
     }
 
     else if (type == "ch") {
@@ -255,7 +270,7 @@ void MainWindow::on_pushButtonSaveSettings_clicked() {
 }
 
 void MainWindow::on_pushButtonReset_clicked() {
-  QFile defaults(":/documents/settings/defaultSettings.txt");
+  QFile defaults(":/text/settings/default.txt");
   if (defaults.open(QFile::ReadOnly | QFile::Text))
     useSettings(defaults.readAll());
 }
@@ -266,12 +281,22 @@ void MainWindow::setUp() {
   if (userDefaultsFile.open(QFile::ReadOnly | QFile::Text))
     useSettings(userDefaultsFile.readAll());
   else {
-    QFile defaults(":/documents/settings/defaultSettings.txt");
+    QFile defaults(":/text/settings/default.txt");
     if (defaults.open(QFile::ReadOnly | QFile::Text))
       useSettings(defaults.readAll());
   }
 
-  QFile styleSheet(":/styles/settings/styleSheet.txt");
+#ifdef _WIN32 // Windows (32 or 64)
+#if QT_VERSION < 0x050A00
+  QString style = ":/text/styleSheetWindowsXP.txt";
+#else
+  QString style = ":/text/styleSheetWindows.txt";
+#endif
+#endif           // Windows
+#ifdef __linux__ // Linux
+  QString style = ":/text/styleSheetLinux.txt";
+#endif // Linux
+  QFile styleSheet(style);
   if (styleSheet.open(QFile::ReadOnly | QFile::Text))
     qApp->setStyleSheet(styleSheet.readAll());
 }

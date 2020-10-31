@@ -8,12 +8,12 @@
 class MyMainPlot : public MyPlot {
   Q_OBJECT
 public:
-  MyMainPlot(QWidget *parent = nullptr);
+  explicit MyMainPlot(QWidget *parent = nullptr);
   ~MyMainPlot();
   void init();
   bool isChUsed(int ch) { return !graph(ch - 1)->data()->isEmpty(); }
-  double getCHDiv(int ch) { return (this->getVDiv() / abs(scales.at(ch - 1))); }
-  double getChScale(int ch) { return abs(scales.at(ch - 1)); }
+  double getCHDiv(int ch) { return (this->getVDiv() / std::abs(scales.at(ch - 1))); }
+  double getChScale(int ch) { return std::abs(scales.at(ch - 1)); }
   bool isInverted(int ch) { return scales.at(ch - 1) < 0; }
   double getChOffset(int ch) { return offsets.at(ch - 1); }
   int getChStyle(int ch) { return channelSettings.at(ch - 1)->style; }

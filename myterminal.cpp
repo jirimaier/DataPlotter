@@ -1,10 +1,12 @@
 #include "myterminal.h"
 
-MyTerminal::MyTerminal(QWidget *parent) : QTableWidget(parent) {
-  QPalette p = this->palette();
-  p.setColor(QPalette::Base, Qt::black);
-  p.setColor(QPalette::Text, Qt::white);
-  this->setPalette(p);
+MyTerminal::MyTerminal(QWidget *parent) : QTableWidget(parent) { colorCodes = ColorCodes::colorCodes(); }
+
+MyTerminal::~MyTerminal() {
+  for (uint16_t r = 0; r < this->rowCount(); r++)
+    for (uint16_t c = 0; c < this->columnCount(); c++)
+      if (this->item(r, c) != NULL)
+        delete this->item(r, c);
 }
 
 void MyTerminal::printText(QByteArray text) {
@@ -12,14 +14,14 @@ void MyTerminal::printText(QByteArray text) {
     printChar(text.at(i));
 }
 
-void MyTerminal::printChar(char text) {
-  if (this->item(cursorY, cursorX))
-    this->item(cursorY, cursorX)->setText(QString(text));
-  else
-    this->setItem(cursorY, cursorX, new QTableWidgetItem(QString(text)));
+void MyTerminal::printChar(char letter) {
+  if (this->item(cursorY, cursorX) != NULL)
+    delete this->item(cursorY, cursorX);
+  this->setItem(cursorY, cursorX, new QTableWidgetItem(QChar(letter)));
   this->item(cursorY, cursorX)->setBackground(backColor);
   this->item(cursorY, cursorX)->setForeground(fontColor);
   this->item(cursorY, cursorX)->setFont(font);
+  this->item(cursorY, cursorX)->setTextAlignment(Qt::AlignLeft);
   moveCursorRelative(1, 0);
 }
 
@@ -34,12 +36,10 @@ void MyTerminal::moveCursorAbsolute(int16_t x, int16_t y) {
   this->setCurrentCell(cursorY, cursorX);
 }
 
-void MyTerminal::moveCursorRelative(int16_t x, int16_t y) { moveCursorAbsolute(cursorX + x, cursorY + y); }
-
 void MyTerminal::clearTerminal() {
   for (uint16_t r = 0; r < this->rowCount(); r++)
     for (uint16_t c = 0; c < this->columnCount(); c++)
-      if (this->item(r, c))
+      if (this->item(r, c) != NULL)
         delete this->item(r, c);
   this->setRowCount(1);
   this->setColumnCount(1);
@@ -56,45 +56,16 @@ void MyTerminal::parseEscapeCode(QByteArray data) {
   if (data == "0")
     resetFont();
 
-  // 8 Color Text
-  if (data == "30")
-    fontColor = Qt::black;
-  if (data == "31")
-    fontColor = Qt::darkRed;
-  if (data == "32")
-    fontColor = Qt::darkGreen;
-  if (data == "33")
-    fontColor = Qt::darkYellow;
-  if (data == "34")
-    fontColor = Qt::darkBlue;
-  if (data == "35")
-    fontColor = Qt::darkMagenta;
-  if (data == "36")
-    fontColor = Qt::darkCyan;
-  if (data == "37")
-    fontColor = Qt::lightGray;
-
-  // 16 Color Text
-  if (data == "30;1")
-    fontColor = Qt::darkGray;
-  if (data == "31;1")
-    fontColor = Qt::red;
-  if (data == "32;1")
-    fontColor = Qt::green;
-  if (data == "33;1")
-    fontColor = Qt::yellow;
-  if (data == "34;1")
-    fontColor = Qt::blue;
-  if (data == "35;1")
-    fontColor = Qt::magenta;
-  if (data == "36;1")
-    fontColor = Qt::cyan;
-  if (data == "37;1")
-    fontColor = Qt::white;
+  // Font color
+  else if (*data.begin() == '3') {
+    QString code = data.mid(1);
+    if (colorCodes.contains(code))
+      fontColor = colorCodes[code];
+  }
 
   // 256 Colors Text
-  if (data.contains("38;5;"))
-    fontColor = QColor::fromRgb(colorCodes256[data.right(data.length() - 5).toUInt()]);
+  if (data.left(5) == "38;5;")
+    fontColor = QColor::fromRgb(ColorCodes::colorCodes256[data.mid(6).toUInt()]);
 
   // 8 Color Background
   if (data == "40")
@@ -134,7 +105,7 @@ void MyTerminal::parseEscapeCode(QByteArray data) {
 
   // 256 Colors Background
   if (data.contains("48;5;"))
-    backColor = QColor::fromRgb(colorCodes256[data.right(data.length() - 5).toUInt()]);
+    backColor = QColor::fromRgb(ColorCodes::colorCodes256[data.right(data.length() - 5).toUInt()]);
 
   // Decorations
   if (data == "1")

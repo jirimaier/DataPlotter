@@ -8,7 +8,7 @@
 class MyPlot : public QCustomPlot {
   Q_OBJECT
 public:
-  MyPlot(QWidget *parent = nullptr);
+  explicit MyPlot(QWidget *parent = nullptr);
   void updateCursors(double *cursorPositions);
   double getVDiv() { return fixedTickerY->tickStep(); }
   double getHDiv() { return fixedTickerX->tickStep(); }

@@ -15,7 +15,7 @@ void MainWindow::connectSignals() {
   connect(ui->doubleSpinBoxRangeHorizontal, SIGNAL(valueChanged(double)), ui->dialRollingRange, SLOT(updatePosition(double)));
   connect(ui->doubleSpinBoxRangeVerticalRange, SIGNAL(valueChanged(double)), ui->dialVerticalRange, SLOT(updatePosition(double)));
   connect(ui->doubleSpinBoxChScale, SIGNAL(valueChanged(double)), ui->dialChScale, SLOT(updatePosition(double)));
-  connect(ui->verticalScrollBarVerticalCenter, &QScrollBar::valueChanged, ui->plot, &MyMainPlot::setVerticalCenter);
+  connect(ui->dialVerticalCenter, &QDial::valueChanged, ui->plot, &MyMainPlot::setVerticalCenter);
   connect(ui->horizontalScrollBarHorizontal, &QScrollBar::valueChanged, ui->plot, &MyMainPlot::setHorizontalPos);
   connect(ui->pushButtonPrintBuffer, &QPushButton::clicked, this, &MainWindow::requestBufferDebug);
   connect(ui->checkBoxXYAutoSize, &QCheckBox::toggled, ui->plotxy, &MyXYPlot::setAutoSize);
@@ -53,14 +53,13 @@ void MainWindow::startTimers() {
 
 void MainWindow::setGuiDefaults() {
   ui->tabs_right->setCurrentIndex(0);
-  ui->tabs_Plot->setCurrentIndex(0);
+  ui->tabsControll->setCurrentIndex(0);
   ui->checkBoxModeManual->setChecked(false);
   ui->labelBinSettings->setHidden(true);
   ui->plotxy->setHidden(true);
   ui->plotfft->setHidden(true);
   ui->labelBuildDate->setText("Build: " + QString(__DATE__) + " " + QString(__TIME__));
   ui->labelDataMode->setText(tr("Data mode: ") + ui->comboBoxDataMode->itemText(0));
-
   ui->labelPauseResume->setPixmap(QPixmap(":/images/icons/run.png"));
 }
 

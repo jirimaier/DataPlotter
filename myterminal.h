@@ -4,18 +4,20 @@
 #include <QTableWidget>
 #include <QTableWidgetItem>
 
-#include "colorCodes256.h"
+#include "colorCodes.h"
 #include "enums_defines_constants.h"
 
 class MyTerminal : public QTableWidget {
   Q_OBJECT
 public:
   explicit MyTerminal(QWidget *parent = nullptr);
+  ~MyTerminal();
 
 private:
+  QMap<QString, QColor> colorCodes;
   void printChar(char text);
   void moveCursorAbsolute(int16_t x, int16_t y);
-  void moveCursorRelative(int16_t x, int16_t y);
+  void moveCursorRelative(int16_t x, int16_t y) { moveCursorAbsolute(cursorX + x, cursorY + y); }
   void clearLine();
   void clearLine(uint16_t line);
   void clearLineLeft();

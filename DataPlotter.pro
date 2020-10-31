@@ -25,7 +25,7 @@ SOURCES += \
     serialworker.cpp
 
 HEADERS += \
-    colorCodes256.h \
+    colorCodes.h \
     enums_defines_constants.h \
     mainwindow.h \
     mydial.h \

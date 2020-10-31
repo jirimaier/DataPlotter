@@ -99,11 +99,27 @@ void MainWindow::updateDivs(double vertical, double horizontal) {
   ui->plot->setVerticalDiv(Global::logaritmicSettings[MAX(GlobalFunctions::roundToStandardValue(vertical) + ui->dialVerticalDiv->value(), 0)]);
   ui->plot->setHorizontalDiv(Global::logaritmicSettings[MAX(GlobalFunctions::roundToStandardValue(horizontal) + ui->dialhorizontalDiv->value(), 0)]);
   updateChScale();
-  ui->labelHDiv->setText(QString::number(ui->plot->getHDiv()) + tr(" / Div"));
+  if (ui->labelHDiv->isEnabled())
+    ui->labelHDiv->setText(QString::number(ui->plot->getHDiv()) + tr(" / Div"));
+  else
+    ui->labelHDiv->setText("---");
   ui->labelVDiv->setText(QString::number(ui->plot->getVDiv()) + tr(" / Div"));
 }
 
 void MainWindow::on_comboBoxHAxisType_currentIndexChanged(int index) {
-  ui->labelHDiv->setVisible(index <= 1);
+  ui->labelHDiv->setEnabled(index <= 1);
   ui->plot->setShowHorizontalValues(index);
 }
+
+void MainWindow::on_pushButtonOpenHelp_clicked() {
+  QString helpFile = QCoreApplication::applicationDirPath() + "/help.pdf";
+  if (!QDesktopServices::openUrl(QUrl::fromLocalFile(helpFile))) {
+    QMessageBox msgBox;
+    msgBox.setText(tr("Cant open file."));
+    msgBox.setInformativeText(helpFile);
+    msgBox.setIcon(QMessageBox::Critical);
+    msgBox.exec();
+  }
+}
+
+void MainWindow::on_pushButtonCenter_clicked() { ui->dialVerticalCenter->setValue(0); }

@@ -4,14 +4,14 @@
 #include <QObject>
 #include <QSerialPort>
 
+#include "enums_defines_constants.h"
 #include "myterminal.h"
 #include "plotdata.h"
-#include "enums_defines_constants.h"
 
 class SerialParser : public QObject {
   Q_OBJECT
 public:
-  SerialParser();
+  explicit SerialParser(QObject *parent = nullptr);
   ~SerialParser();
   void init();
 

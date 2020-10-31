@@ -7,6 +7,9 @@ void MainWindow::on_pushButtonAutoset_clicked() {
       activeChanntels.append(i);
   }
 
+  if (activeChanntels.isEmpty())
+    return;
+
   if (activeChanntels.length() == 1) {
     double valueRange;
     double verticalCenter;

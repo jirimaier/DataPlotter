@@ -8,16 +8,15 @@
 
 class OutputWorker : public QObject {
   Q_OBJECT
+public:
+  explicit OutputWorker(QObject *parent = nullptr);
+  ~OutputWorker();
 
 private:
   int outputLevel = OutputLevel::low;
   QString beginMark;
   QString endMark;
   QString timeoutMark;
-
-public:
-  explicit OutputWorker(QObject *parent = nullptr);
-  ~OutputWorker();
 
 signals:
   void output(QString data);

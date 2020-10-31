@@ -1,6 +1,6 @@
 #include "plotdata.h"
 
-PlotData::PlotData() { qDebug() << "PlotData created from " << QThread::currentThreadId(); }
+PlotData::PlotData(QObject *parent) { qDebug() << "PlotData created from " << QThread::currentThreadId(); }
 
 PlotData::~PlotData() { qDebug() << "PlotData deleted from " << QThread::currentThreadId(); }
 

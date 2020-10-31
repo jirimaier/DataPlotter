@@ -26,7 +26,7 @@ class MainWindow : public QMainWindow {
   Q_OBJECT
 
 public:
-  MainWindow(QWidget *parent = nullptr);
+  explicit MainWindow(QWidget *parent = nullptr);
   void init(QTranslator *translator);
   ~MainWindow();
 
@@ -76,6 +76,7 @@ private slots:
   void autoResetChannels();
   void setPlotLayout();
   void cursorsSwitched() { on_pushButtonCursorsZero_clicked(); }
+  void rangeTypeChanged();
 
   void on_tabs_right_currentChanged(int index);
   void on_dialRollingRange_realValueChanged(double value) { ui->doubleSpinBoxRangeHorizontal->setValue(value); }
@@ -114,8 +115,11 @@ private slots:
   void on_pushButtonCursorsZero_clicked();
   void on_pushButtonCSVXY_clicked();
   void on_lineEditChName_textChanged(const QString &arg1) { ui->plot->setChName(ui->spinBoxChannelSelect->value(), arg1); }
-
   void on_comboBoxHAxisType_currentIndexChanged(int index);
+  void on_pushButtonOpenHelp_clicked();
+  void on_pushButtonPositive_clicked();
+
+  void on_pushButtonCenter_clicked();
 
 public slots:
   void setCursorBounds(PlotFrame_t frame);

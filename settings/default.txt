@@ -29,7 +29,7 @@ math4sec:2
 mathios:0
 mathvro:1
 output:1
-plottype:1
+plottype:fix
 selused:1
 vaxis:1
 vdiv:-3

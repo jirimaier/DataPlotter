@@ -1,6 +1,6 @@
 #include "serialparser.h"
 
-SerialParser::SerialParser() { qDebug() << "SerialParser created from " << QThread::currentThreadId(); }
+SerialParser::SerialParser(QObject *parent) { qDebug() << "SerialParser created from " << QThread::currentThreadId(); }
 
 SerialParser::~SerialParser() { qDebug() << "SerialParser deleted from " << QThread::currentThreadId(); }
 
