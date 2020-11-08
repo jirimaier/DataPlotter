@@ -1,8 +1,7 @@
 #include "mainwindow.h"
 
 void MainWindow::connectSignals() {
-  connect(ui->pushButtonPause, &QPushButton::clicked, ui->plot, &MyMainPlot::pauseClicked);
-  connect(ui->pushButtonSingleTriger, &QPushButton::clicked, ui->plot, &MyMainPlot::singleTrigerClicked);
+  connect(ui->pushButtonPause, &QPushButton::clicked, ui->plot, &MyMainPlot::togglePause);
   connect(ui->radioButtonCurMain, &QRadioButton::toggled, ui->plot, &MyPlot::setCursorsAccess);
   connect(ui->radioButtonCurXY, &QRadioButton::toggled, ui->plotxy, &MyXYPlot::setCursorsAccess);
   connect(ui->checkBoxVerticalValues, &QCheckBox::toggled, ui->plot, &MyPlot::setShowVerticalValues);
@@ -17,7 +16,6 @@ void MainWindow::connectSignals() {
   connect(ui->doubleSpinBoxChScale, SIGNAL(valueChanged(double)), ui->dialChScale, SLOT(updatePosition(double)));
   connect(ui->dialVerticalCenter, &QDial::valueChanged, ui->plot, &MyMainPlot::setVerticalCenter);
   connect(ui->horizontalScrollBarHorizontal, &QScrollBar::valueChanged, ui->plot, &MyMainPlot::setHorizontalPos);
-  connect(ui->pushButtonPrintBuffer, &QPushButton::clicked, this, &MainWindow::requestBufferDebug);
   connect(ui->checkBoxXYAutoSize, &QCheckBox::toggled, ui->plotxy, &MyXYPlot::setAutoSize);
   connect(ui->lineEditHtitle, &QLineEdit::textChanged, ui->plot, &MyPlot::setXTitle);
   connect(ui->lineEditVtitle, &QLineEdit::textChanged, ui->plot, &MyPlot::setYTitle);
@@ -25,17 +23,12 @@ void MainWindow::connectSignals() {
   connect(ui->lineEditVtitle, &QLineEdit::textChanged, ui->plotxy, &MyPlot::setYTitle);
 
   connect(&plotUpdateTimer, &QTimer::timeout, this, &MainWindow::updatePlot);
-  connect(&listUpdateTimer, &QTimer::timeout, this, &MainWindow::updateInfo);
   connect(&portsRefreshTimer, &QTimer::timeout, this, &MainWindow::comRefresh);
-  connect(&graphResetTimer, &QTimer::timeout, this, &MainWindow::autoResetChannels);
 }
 
 void MainWindow::setAdaptiveSpinBoxes() {
 // Adaptivní krok není v starším Qt (Win XP)
 #if QT_VERSION >= 0x050C00
-  ui->doubleSpinBoxBinaryDataMin->setStepType(QAbstractSpinBox::AdaptiveDecimalStepType);
-  ui->doubleSpinBoxBinaryTimestep->setStepType(QAbstractSpinBox::AdaptiveDecimalStepType);
-  ui->doubleSpinBoxBinarydataMax->setStepType(QAbstractSpinBox::AdaptiveDecimalStepType);
   ui->doubleSpinBoxChScale->setStepType(QAbstractSpinBox::AdaptiveDecimalStepType);
   ui->doubleSpinBoxRangeHorizontal->setStepType(QAbstractSpinBox::AdaptiveDecimalStepType);
   ui->doubleSpinBoxRangeVerticalRange->setStepType(QAbstractSpinBox::AdaptiveDecimalStepType);
@@ -45,22 +38,21 @@ void MainWindow::setAdaptiveSpinBoxes() {
 void MainWindow::startTimers() {
   portsRefreshTimer.setInterval(500);
   plotUpdateTimer.setInterval(10);
-  listUpdateTimer.setInterval(200);
+  // listUpdateTimer.setInterval(200);
   plotUpdateTimer.start();
-  listUpdateTimer.start();
+  // listUpdateTimer.start();
   portsRefreshTimer.start();
 }
 
 void MainWindow::setGuiDefaults() {
   ui->tabs_right->setCurrentIndex(0);
   ui->tabsControll->setCurrentIndex(0);
-  ui->checkBoxModeManual->setChecked(false);
-  ui->labelBinSettings->setHidden(true);
+  ui->comboBoxOutputLevel->setCurrentIndex((int)OutputLevel::info);
+  ui->radioButtonFixedRange->setChecked(true);
   ui->plotxy->setHidden(true);
   ui->plotfft->setHidden(true);
   ui->labelBuildDate->setText("Build: " + QString(__DATE__) + " " + QString(__TIME__));
-  ui->labelDataMode->setText(tr("Data mode: ") + ui->comboBoxDataMode->itemText(0));
-  ui->labelPauseResume->setPixmap(QPixmap(":/images/icons/run.png"));
+  ui->pushButtonPause->setIcon(QPixmap(":/images/icons/run.png"));
 }
 
 void MainWindow::setGuiArrays() {

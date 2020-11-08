@@ -70,6 +70,13 @@ double MyMainPlot::graphLastTime(quint8 i) {
   return (--it)->key;
 }
 
+void MyMainPlot::togglePause() {
+  if (plottingStatus == PlotStatus::run)
+    pause();
+  else
+    resume();
+}
+
 QPair<QVector<double>, QVector<double>> MyMainPlot::getDataVector(int ch, bool includeOffsets, bool onlyInView) {
   QVector<double> keys, values;
   for (QCPGraphDataContainer::iterator it = graph(ch)->data()->begin(); it != graph(ch)->data()->end(); it++) {
@@ -127,11 +134,12 @@ void MyMainPlot::changeChScale(int ch, double scale) {
 }
 
 void MyMainPlot::resume() {
-  for (int i = 0; i < CHANNEL_COUNT; i++) {
+  plottingStatus = PlotStatus::run;
+  for (int i = 0; i < CHANNEL_COUNT + MATH_COUNT; i++) {
     if (!pauseBufferTime.at(i)->isEmpty()) {
       for (QVector<double>::iterator it = pauseBufferValue.at(i)->begin(); it != pauseBufferValue.at(i)->end(); it++)
         *it = *it * scales.at(i) + offsets.at(i);
-      if (lastWasContinous)
+      if (lastWasContinous[i])
         graph(i)->addData(*pauseBufferTime.at(i), *pauseBufferValue.at(i), true);
       else
         graph(i)->setData(*pauseBufferTime.at(i), *pauseBufferValue.at(i), true);
@@ -139,6 +147,7 @@ void MyMainPlot::resume() {
       pauseBufferValue.at(i)->clear();
     }
   }
+  emit showPlotStatus(plottingStatus);
 }
 
 void MyMainPlot::update() {
@@ -153,6 +162,10 @@ void MyMainPlot::update() {
       this->xAxis->setRange(maxT - plotSettings.rollingRange, maxT);
     }
   }
+  if (this->xAxis->range().upper > MAX_PLOT_ZOOMOUT)
+    if (this->xAxis->range().upper - this->xAxis->range().lower > MAX_PLOT_ZOOMOUT)
+      this->xAxis->setRange(this->xAxis->range().lower, this->xAxis->range().upper - MAX_PLOT_ZOOMOUT);
+  this->replot();
   PlotFrame_t frame;
   frame.xMinView = this->xAxis->range().lower;
   frame.xMaxView = this->xAxis->range().upper;
@@ -166,7 +179,6 @@ void MyMainPlot::update() {
     emit setCursorBounds(frame);
   }
   emit updateDivs(frame.yMaxView - frame.yMinView, frame.xMaxView - frame.xMinView);
-  this->replot();
 }
 
 void MyMainPlot::setRangeType(int type) {
@@ -174,22 +186,8 @@ void MyMainPlot::setRangeType(int type) {
   setMouseControlls(type == PlotRange::freeMove);
 }
 
-void MyMainPlot::pauseClicked() {
-  if (plottingStatus == PlotStatus::run)
-    plottingStatus = PlotStatus::pause;
-  else if (plottingStatus == PlotStatus::single) {
-    plottingStatus = PlotStatus::run;
-    resume();
-  } else if (plottingStatus == PlotStatus::pause) {
-    plottingStatus = PlotStatus::run;
-    resume();
-  }
-  emit showPlotStatus(plottingStatus);
-}
-
-void MyMainPlot::singleTrigerClicked() {
-  plottingStatus = PlotStatus::single;
-  resume();
+void MyMainPlot::pause() {
+  plottingStatus = PlotStatus::pause;
   emit showPlotStatus(plottingStatus);
 }
 
@@ -220,6 +218,7 @@ void MyMainPlot::resetChannels() {
     pauseBufferTime.at(i)->clear();
     pauseBufferValue.at(i)->clear();
     this->addGraph();
+    lastWasContinous[i] = false;
   }
   updateVisuals();
 }
@@ -240,34 +239,49 @@ void MyMainPlot::reoffset(int ch, double relativeOffset) {
     (*it).value += relativeOffset;
 }
 
-void MyMainPlot::newData(int ch, QVector<double> *time, QVector<double> *value, bool continous, bool sorted, bool ignorePause) {
+void MyMainPlot::newDataVector(int ch, QVector<double> *time, QVector<double> *value, bool append, bool ignorePause) {
   if (plottingStatus != PlotStatus::pause || ignorePause) {
     for (QVector<double>::iterator it = value->begin(); it != value->end(); it++)
       *it = *it * scales.at(ch - 1) + offsets.at(ch - 1);
-    if (continous)
-      this->graph(ch - 1)->addData(*time, *value, sorted);
+    if (append)
+      this->graph(ch - 1)->addData(*time, *value, true);
     else
-      this->graph(ch - 1)->setData(*time, *value, sorted);
-
-    if (plottingStatus == PlotStatus::single) {
-      plottingStatus = PlotStatus::pause;
-      emit showPlotStatus(plottingStatus);
-    }
+      this->graph(ch - 1)->setData(*time, *value, true);
   } else {
-    if (!continous) {
+    if (!append) {
       pauseBufferTime.at(ch - 1)->clear();
       pauseBufferValue.at(ch - 1)->clear();
     }
     pauseBufferTime.at(ch - 1)->append(*time);
     pauseBufferValue.at(ch - 1)->append(*value);
-    if (plottingStatus == PlotStatus::single) {
-      plottingStatus = PlotStatus::pause;
-      emit showPlotStatus(plottingStatus);
-    }
   }
-  lastWasContinous = continous;
+  lastWasContinous[ch - 1] = append;
   delete time;
   delete value;
+}
+
+void MyMainPlot::newDataPoint(int ch, double time, double value, bool append, bool ignorePause) {
+  qDebug() << "addingtoPlot";
+  if (plottingStatus != PlotStatus::pause || ignorePause) {
+    value = value * scales.at(ch - 1) + offsets.at(ch - 1);
+    if (append)
+      this->graph(ch - 1)->addData(time, value);
+    else {
+      QVector<double> singlepointTime, singlepointValue;
+      singlepointTime.append(time);
+      singlepointValue.append(value);
+      this->graph(ch - 1)->setData(singlepointTime, singlepointValue);
+    }
+  } else {
+    if (!append) {
+      pauseBufferTime.at(ch - 1)->clear();
+      pauseBufferValue.at(ch - 1)->clear();
+    }
+    pauseBufferTime.at(ch - 1)->append(time);
+    pauseBufferValue.at(ch - 1)->append(value);
+  }
+  lastWasContinous[ch - 1] = append;
+  qDebug() << "addedtoPlot";
 }
 
 QByteArray MyMainPlot::exportChannelCSV(char separator, char decimal, int channel, int precision, bool offseted, bool onlyInView) {

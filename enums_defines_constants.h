@@ -6,55 +6,53 @@
 #include <QVector>
 
 namespace PlotStatus {
-enum en { run, pause, single };
+enum enumerator { run, pause };
 }
 
 namespace PlotRange {
-enum en { freeMove, fixedRange, rolling };
+enum enumerator { freeMove, fixedRange, rolling };
 }
 
 namespace GraphStyle {
-enum en { line, point, linePoint, hidden };
+enum enumerator { line, point, linePoint, hidden };
 }
 
 namespace DataMode {
-enum en { unknown, string, binData, terminal, info, warning, settings };
+enum enumerator { unknown, terminal, info, warning, settings, point, channel };
 }
 
 namespace OutputLevel {
-enum en { none, low, high };
+enum enumerator { device = 0, error = 1, warning = 2, info = 3 };
 }
 
 namespace MathOperations {
-enum en { add, subtract, multiply, divide, xy };
+enum enumetrator { add, subtract, multiply, divide, xy };
 }
 
 namespace DataLineType {
-enum en { command, dataEnded, dataTimeouted, dataImplicitEnded, debugMessage };
+enum enumerator { command, dataEnded, dataTimeouted, dataImplicitEnded, debugMessage };
 }
 
 namespace HAxisType {
-enum en { none, fixed, MS, HMS };
+enum enumerator { none, fixed, MS, HMS };
+}
+
+namespace MessageLevel {
+enum enumerator { deviceInfo = -1, deviceWarning = 0, error = 1, warning = 2, info = 3 };
 }
 
 #define CHANNEL_COUNT 64
 #define MATH_COUNT 4
 
-#define CMD_BEGIN "<cmd>"
-#define TIMEOUT_SYMBOL "<timeout>"
-#define CMD_END "<end>"
-
 #define PORT_NUCLEO_DESCRIPTION_IDENTIFIER "ST"
 
 #define POINT_STYLE QCPScatterStyle::ssDisc
 
-#define OUTPUT_SHORT_LINE_MAX_LENGTH 15
-
-#define RESET_ON_CONNECT_DELAY 5
-
 #define MAX_PLOT_ZOOMOUT 1000000
 
 namespace Global {
+static bool platformIsBigEndian = false;
+
 const static QString lineEndings[4] = {"", "\n", "\r", "\r\n"};
 
 #define LOG_SET_SIZE 31 //                              0       1       2       3      4      5      6     7     8     9    10   11  12 13 14  15  16  17  18   19   20   21    22    23    24     25     26     27      28      29      30
@@ -68,16 +66,6 @@ struct GlobalFunctions {
         return i;
     return 28;
   }
-};
-
-struct BinDataSettings_t {
-  int bits = 8;
-  double valueMin = 0;
-  double valueMax = 255;
-  double timeStep = 1;
-  int numCh = 1;
-  int firstCh = 1;
-  bool continuous = false;
 };
 
 struct ChannelSettings_t {
@@ -98,10 +86,13 @@ struct PlotFrame_t {
   double xMinTotal = 0, xMaxTotal = 10, yMinTotal = 0, yMaxTotal = 10, xMinView = 0, xMaxView = 10, yMinView = 0, yMaxView = 10;
 };
 
-Q_DECLARE_METATYPE(BinDataSettings_t)
 Q_DECLARE_METATYPE(ChannelSettings_t)
 Q_DECLARE_METATYPE(PlotSettings_t)
 Q_DECLARE_METATYPE(PlotFrame_t)
+Q_DECLARE_METATYPE(DataMode::enumerator)
+Q_DECLARE_METATYPE(OutputLevel::enumerator)
+Q_DECLARE_METATYPE(MessageLevel::enumerator)
+Q_DECLARE_METATYPE(PlotStatus::enumerator)
 
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))

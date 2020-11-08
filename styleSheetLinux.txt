@@ -1,18 +1,4 @@
-QPushButton
+QWidget
 {
-padding-left: 6px;
-padding-right: 6px;
-padding-top: 4px;
-padding-bottom: 4px;
-margin:-1px;
-}
-
-QComboBox
-{
-padding-left: 4px;
-}
-
-QLineEdit
-{
-padding-left: 2px;
+  font: 9pt "Ubuntu";
 }

@@ -26,6 +26,8 @@ void MainWindow::scrollBarCursorValueChanged() {
 }
 
 void MainWindow::on_pushButtonCursorToView_clicked() {
+  if (ui->radioButtonCurOff->isChecked())
+    ui->radioButtonCurMain->setChecked(true);
   cursors[0]->setValue((plotFrame.xMinView + (plotFrame.xMaxView - plotFrame.xMinView) * (1.0 / 4.0)) * 1000);
   cursors[1]->setValue((plotFrame.xMinView + (plotFrame.xMaxView - plotFrame.xMinView) * (3.0 / 4.0)) * 1000);
   cursors[2]->setValue((plotFrame.yMinView + (plotFrame.yMaxView - plotFrame.yMinView) * (1.0 / 4.0)) * 1000);
@@ -52,6 +54,8 @@ void MainWindow::setCursorBounds(PlotFrame_t frame) {
 }
 
 void MainWindow::on_pushButtonCursorsZero_clicked() {
+  if (ui->radioButtonCurOff->isChecked())
+    ui->radioButtonCurMain->setChecked(true);
   cursors[0]->setValue(0);
   cursors[1]->setValue(0);
   cursors[2]->setValue(0);

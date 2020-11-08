@@ -48,38 +48,3 @@ void MainWindow::comRefresh() {
     ui->comboBoxCom->setCurrentIndex(ui->comboBoxCom->findText(current) == -1 ? MAX(portWithStName, 0) : ui->comboBoxCom->findText(current));
   }
 }
-
-void MainWindow::updateInfo() {
-  if (!receivedListBuffer.isEmpty()) {
-    foreach (QString line, receivedListBuffer)
-      ui->textEditSerialDebug->append(line);
-    receivedListBuffer.clear();
-  }
-
-  QString text = tr("Binary mode settings:");
-  text.append(QString::number(binSettings.bits) + tr(" bits") + "\n");
-  if (binSettings.bits != 64)
-    text.append("Max (0x" + QString::number(((quint64)1 << binSettings.bits) - 1, 16).toUpper() + "): " + QString::number(binSettings.valueMax) + "\n");
-  else
-    text.append("Max (0xFFFFFFFFFFFFFFFF): " + QString::number(binSettings.valueMax) + "\n");
-  text.append("Min (0x00): " + QString::number(binSettings.valueMin) + "\n");
-  text.append(tr("Time step: ") + QString::number(binSettings.timeStep) + tr(" / sample") + "\n");
-  if (binSettings.numCh == 1)
-    text.append(tr("Channel ") + QString::number(binSettings.firstCh) + "\n");
-  else
-    text.append(tr("Channels ") + QString::number(binSettings.firstCh) + tr(" - ") + QString::number(binSettings.firstCh + binSettings.numCh - 1) + "\n");
-  if (binSettings.continuous)
-    text.append(tr("continous") + "\n");
-  ui->labelBinSettings->setText(text.trimmed());
-}
-
-void MainWindow::autoResetChannels() {
-  ui->plot->resetChannels();
-
-  emit resetChannels();
-}
-
-void MainWindow::setPlotLayout() {
-  ui->plotxy->setVisible(ui->checkBoxXY->isChecked());
-  ui->plotfft->setVisible(ui->checkBoxXY->isChecked());
-}

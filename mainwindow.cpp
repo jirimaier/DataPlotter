@@ -17,15 +17,6 @@ void MainWindow::init(QTranslator *translator) {
   setUp();
 }
 
-void MainWindow::printMessage(QByteArray data, bool urgent) {
-  QString message = QString("<font color=grey>%1: </font>").arg(QString(QTime::currentTime().toString("hh:mm:ss")));
-  if (urgent)
-    message.append(QString("<font color=red>%1</font>").arg(QString(data + "\n")));
-  else
-    message.append(QString("<font color=black>%1</font>").arg(QString(data + "\n")));
-  ui->textEditMessages->append(message);
-}
-
 void MainWindow::changeLanguage(QString code) {
   if (!translator->load(QString(":/translations/translation_%1.qm").arg(code))) {
     qDebug() << "Can not load " << QString(":/translations/translation_%1.qm").arg(code);
@@ -35,26 +26,22 @@ void MainWindow::changeLanguage(QString code) {
   ui->retranslateUi(this);
 }
 
-void MainWindow::showPlotStatus(int type) {
+void MainWindow::showPlotStatus(PlotStatus::enumerator type) {
   if (type == PlotStatus::pause) {
-    ui->pushButtonPause->setText(tr("Resume"));
-    ui->labelPauseResume->setPixmap(QPixmap(":/images/icons/pause.png"));
+    ui->pushButtonPause->setIcon(QPixmap(":/images/icons/pause.png"));
+    ui->pushButtonPause->setToolTip(tr("Paused (click to resume)"));
   } else if (type == PlotStatus::run) {
-    ui->pushButtonPause->setText(tr("Pause"));
-    ui->labelPauseResume->setPixmap(QPixmap(":/images/icons/run.png"));
-  } else if (type == PlotStatus::single) {
-    ui->pushButtonPause->setText(tr("Normal"));
-    ui->labelPauseResume->setPixmap(QPixmap(":/images/icons/single.png"));
+    ui->pushButtonPause->setIcon(QPixmap(":/images/icons/run.png"));
+    ui->pushButtonPause->setToolTip(tr("Running (click to pause)"));
   }
-  ui->pushButtonSingleTriger->setEnabled(type != PlotStatus::single);
 }
 
-void MainWindow::changedDataMode(int mode) {
+/*void MainWindow::changedDataMode(int mode) {
   dataMode = mode;
   ui->labelBinSettings->setVisible(mode == DataMode::binData);
   ui->labelDataMode->setText(tr("Data mode: ") + ui->comboBoxDataMode->itemText(mode));
   ui->comboBoxDataMode->setCurrentIndex(mode);
-}
+}*/
 
 void MainWindow::updateChScale() {
   double perDiv = ui->plot->getCHDiv(ui->spinBoxChannelSelect->value());
@@ -62,10 +49,7 @@ void MainWindow::updateChScale() {
 }
 
 void MainWindow::serialConnectResult(bool connected, QString message) {
-  ui->pushButtonDisconnect->setEnabled(connected);
-  ui->pushButtonConnect->setEnabled(!connected);
-  ui->comboBoxCom->setEnabled(!connected);
-  ui->comboBoxBaud->setEnabled(!connected);
+  ui->pushButtonConnect->setIcon(connected ? QPixmap(":/images/icons/connected.png") : QPixmap(":/images/icons/disconnected.png"));
   ui->labelPortInfo->setText(message);
   ui->pushButtonSendCommand->setEnabled(connected);
   if (connected && ui->checkBoxClearOnReconnect->isChecked()) {
@@ -75,7 +59,7 @@ void MainWindow::serialConnectResult(bool connected, QString message) {
   }
 }
 
-void MainWindow::bufferDebug(QByteArray data) {
+/*void MainWindow::bufferDebug(QByteArray data) {
   QString stringData = QString(data).simplified();
   if (stringData.length() > 0) {
     ui->textEditSerialDebug->append(QString("<font color=red>%1</font color>").arg(tr("Buffer content (Text): ")));
@@ -93,7 +77,7 @@ void MainWindow::bufferDebug(QByteArray data) {
   ui->textEditSerialDebug->append(QString("<font color=red>%1</font color>").arg(data2.trimmed()));
 #endif
   ui->textEditSerialDebug->append("");
-}
+}*/
 
 void MainWindow::updateDivs(double vertical, double horizontal) {
   ui->plot->setVerticalDiv(Global::logaritmicSettings[MAX(GlobalFunctions::roundToStandardValue(vertical) + ui->dialVerticalDiv->value(), 0)]);
@@ -123,3 +107,88 @@ void MainWindow::on_pushButtonOpenHelp_clicked() {
 }
 
 void MainWindow::on_pushButtonCenter_clicked() { ui->dialVerticalCenter->setValue(0); }
+
+void MainWindow::printMessage(QByteArray messageHeader, QByteArray messageBody, int type) {
+  QString color = "<font color=black>";
+  switch (type) {
+  case MessageLevel::warning:
+    color = "<font color=orange>";
+    break;
+  case MessageLevel::error:
+    color = "<font color=red>";
+    break;
+  case MessageLevel::info:
+    color = "<font color=green>";
+    break;
+  default:
+    color = "<font color=black>";
+  }
+
+  bool printAsHex = false;
+  for (QByteArray::iterator it = messageBody.begin(); it != messageBody.end(); it++) {
+    if (*it <= 31) {
+      printAsHex = true;
+      break;
+    }
+  }
+  QString stringMessage;
+  if (printAsHex) {
+
+// Oddělení bajtů mezerami nefunguje v starším Qt (Win XP)
+#if QT_VERSION >= 0x050900
+    stringMessage = messageBody.toHex(' ');
+#else
+    stringMessage.clear();
+    for (QByteArray::iterator it = messageBody.begin(); it != messageBody.end(); it++)
+      stringMessage.append(QString::number((uint8_t)*it, 16).rightJustified(2, '0') + " ");
+    stringMessage = stringMessage.trimmed();
+#endif
+    stringMessage = QString("<font color=navy>%1</font>").arg(stringMessage);
+  } else {
+    stringMessage = messageBody;
+  }
+  ui->plainTextEditConsole->appendHtml(color + QString(messageHeader) + "</font color>: " + stringMessage);
+}
+
+void MainWindow::printDeviceMessage(QByteArray messageBody, bool warning, bool ended) {
+  if (!pendingDeviceMessage) {
+    if (warning)
+      ui->plainTextEditConsole->appendHtml("<font color=darkred>Device warning:</font color> ");
+    else
+      ui->plainTextEditConsole->appendHtml("<font color=darkgreen>Device message:</font color> ");
+  }
+  ui->plainTextEditConsole->moveCursor(QTextCursor::End);
+  ui->plainTextEditConsole->insertPlainText(messageBody);
+  ui->plainTextEditConsole->moveCursor(QTextCursor::End);
+  pendingDeviceMessage = !ended;
+}
+
+void MainWindow::on_pushButtonScrollDown_clicked() {
+  QScrollBar *scroll = ui->plainTextEditConsole->verticalScrollBar();
+  scroll->setValue(scroll->maximum());
+  scroll = ui->plainTextEditConsole->horizontalScrollBar();
+  scroll->setValue(scroll->minimum());
+};
+
+void MainWindow::on_checkBoxPlotOpenGL_toggled(bool checked) {
+  ui->plot->setOpenGl(checked);
+  ui->plotxy->setOpenGl(checked);
+}
+
+void MainWindow::on_pushButtonSendCommand_2_clicked() { on_lineEditManualInput_returnPressed(); }
+
+void MainWindow::on_lineEditCommand_returnPressed() {
+  QString text = ui->lineEditCommand->text() + Global::lineEndings[ui->comboBoxLineEnding->currentIndex()];
+  emit writeToSerial(text.toUtf8());
+}
+
+void MainWindow::on_pushButtonClearBuffer_clicked() { emit requestSerialBufferClear(); }
+
+void MainWindow::on_pushButtonViewBuffer_clicked() { emit requestSerialBufferShow(); }
+
+void MainWindow::on_comboBoxOutputLevel_currentIndexChanged(int index) {
+  if (index >= 0)
+    emit setSerialMessageLevel((OutputLevel::enumerator)index);
+}
+
+void MainWindow::on_toolButton_triggered(QAction *arg1) { qDebug() << arg1; }

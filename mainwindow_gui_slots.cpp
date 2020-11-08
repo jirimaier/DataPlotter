@@ -2,9 +2,7 @@
 
 void MainWindow::on_pushButtonConnect_clicked() {
   if (ui->comboBoxCom->currentIndex() >= 0) {
-    emit connectSerial(portList.at(ui->comboBoxCom->currentIndex()).portName(), ui->comboBoxBaud->currentText().toInt());
-    if (!ui->checkBoxModeManual->isChecked())
-      emit setMode(DataMode::unknown);
+    emit toggleSerialConnection(portList.at(ui->comboBoxCom->currentIndex()).portName(), ui->comboBoxBaud->currentText().toInt());
   }
 }
 
@@ -115,9 +113,7 @@ void MainWindow::on_radioButtonCz_toggled(bool checked) {
     changeLanguage("cz");
 }
 
-void MainWindow::on_pushButtonPrintBuffer_clicked() {}
-
-void MainWindow::on_pushButtonDataModeApply_clicked() {
+/*void MainWindow::on_pushButtonDataModeApply_clicked() {
   emit setMode(ui->comboBoxDataMode->currentIndex());
   BinDataSettings_t settings;
   settings.bits = ui->spinBoxDataBinaryBits->value();
@@ -128,9 +124,9 @@ void MainWindow::on_pushButtonDataModeApply_clicked() {
   settings.valueMax = ui->doubleSpinBoxBinarydataMax->value();
   settings.valueMin = ui->doubleSpinBoxBinaryDataMin->value();
   emit setBinParameters(settings);
-}
+}*/
 
-void MainWindow::on_checkBoxModeManual_toggled(bool checked) {
+/*void MainWindow::on_checkBoxModeManual_toggled(bool checked) {
   emit allowModeChange(!checked);
   if (checked) {
     ui->spinBoxDataBinaryBits->setValue(binSettings.bits);
@@ -141,27 +137,24 @@ void MainWindow::on_checkBoxModeManual_toggled(bool checked) {
     ui->spinBoxBinaryDataFirstCh->setValue(binSettings.firstCh);
     ui->checkBoxBinContinuous->setChecked(binSettings.continuous);
   }
-}
+}*/
 
-void MainWindow::on_horizontalSliderLineTimeout_valueChanged(int value) {
+/*void MainWindow::on_horizontalSliderLineTimeout_valueChanged(int value) {
   ui->labelLineTimeout->setText(QString::number(Global::logaritmicSettings[value]) + " ms");
   emit changeLineTimeout(Global::logaritmicSettings[value]);
-}
+}*/
 
 void MainWindow::on_lineEditManualInput_returnPressed() {
-  emit sendManaulInput(ui->lineEditManualInput->text().toUtf8(), ui->comboBoxManualInput->currentIndex());
+  QByteArray bytes;
+  bytes.append(ui->lineEditManualInput->text().toLocal8Bit());
+
+  qDebug() << "Manual input: " << bytes;
+  emit sendManualInput(bytes);
   ui->lineEditManualInput->clear();
+  on_pushButtonScrollDown_clicked();
 }
 
-void MainWindow::on_pushButtonDisconnect_clicked() {
-  emit disconnectSerial();
-  ui->labelPortInfo->setText(tr("Disconnecting..."));
-}
-
-void MainWindow::on_pushButtonSendCommand_clicked() {
-  QString text = ui->lineEditCommand->text() + Global::lineEndings[ui->comboBoxLineEnding->currentIndex()];
-  emit writeToSerial(text.toUtf8());
-}
+void MainWindow::on_pushButtonSendCommand_clicked() { on_lineEditCommand_returnPressed(); }
 
 void MainWindow::on_pushButtonCSVXY_clicked() { exportCSV(false, XY_CHANNEL); }
 

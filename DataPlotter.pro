@@ -1,4 +1,11 @@
-QT += core gui serialport widgets printsupport
+QT += core gui serialport widgets printsupport opengl
+
+win32:RC_ICONS += icon.ico
+
+DEFINES += QT_DEPRECATED_WARNINGS
+DEFINES += QCUSTOMPLOT_USE_OPENGL
+
+LIBS += -lOpengl32
 
 CONFIG += c++11
 
@@ -17,12 +24,11 @@ SOURCES += \
     myplot.cpp \
     myterminal.cpp \
     myxyplot.cpp \
-    outputworker.cpp \
+    newserialparser.cpp \
     plotdata.cpp \
     plotmath.cpp \
     qcustomplot.cpp \
-    serialparser.cpp \
-    serialworker.cpp
+    serialreader.cpp
 
 HEADERS += \
     colorCodes.h \
@@ -33,12 +39,11 @@ HEADERS += \
     myplot.h \
     myterminal.h \
     myxyplot.h \
-    outputworker.h \
+    newserialparser.h \
     plotdata.h \
     plotmath.h \
     qcustomplot.h \
-    serialparser.h \
-    serialworker.h
+    serialreader.h
 
 FORMS += mainwindow.ui
 
