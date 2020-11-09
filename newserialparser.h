@@ -9,7 +9,7 @@
 class NewSerialParser : public QObject {
   Q_OBJECT
 public:
-  explicit NewSerialParser(QObject *parent = nullptr);
+  explicit NewSerialParser(MessageTarget::enumerator target, QObject *parent = nullptr);
   ~NewSerialParser();
   void init();
 
@@ -17,13 +17,13 @@ signals:
   /// Pošle zprávu do záznamu
   void sendDeviceMessage(QByteArray header, bool warning, bool ended);
   /// Předá zprávu od zařízení
-  void sendMessage(QByteArray header, QByteArray message, MessageLevel::enumerator type);
+  void sendMessage(QByteArray header, QByteArray message, MessageLevel::enumerator type, MessageTarget::enumerator target);
   /// Pošle obsah bufferu
   void sendBuffer(QByteArray buffer);
   /// Pošle data do terminálu
   void sendTerminal(QByteArray message);
   /// Pošle nastavení (jedno, ne celý úsek)
-  void sendSettings(QByteArray message);
+  void sendSettings(QByteArray message, MessageTarget::enumerator source);
   /// Pošle bod ke zpracování
   void sendPoint(QByteArrayList data);
   /// Pošle kanál ke zpracování
@@ -32,6 +32,7 @@ signals:
   void ready();
 
 private:
+  MessageTarget::enumerator target;
   void resetChHeader();
   bool channelHeaderOK = false;
   QByteArray channelTime;
@@ -51,7 +52,6 @@ private:
   readResult bufferPullFull(QByteArray &result);
   void changeMode(DataMode::enumerator mode, DataMode::enumerator previousMode, QByteArray modeName);
   readResult bufferPullBeforeSemicolumn(QByteArray &result, bool removeNewline = false);
-  QByteArray bufferDebug;
   readResult bufferPullPoint(QByteArrayList &result);
   uint32_t arrayToUint(QByteArray array, bool &isok);
   readResult bufferPullChannel(QByteArray &result);
@@ -59,8 +59,6 @@ private:
 public slots:
   /// Zpracuje data
   void parse(QByteArray newData);
-  /// Nastavý úroveň výpisu
-  void setDebugLevel(OutputLevel::enumerator debugLevel) { this->debugLevel = debugLevel; }
   /// Clear buffers
   void clearBuffer();
   /// Show content of buffers

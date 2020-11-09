@@ -15,8 +15,8 @@ public:
   void init();
 
 private:
-  bool parserReadyFlag = false;
   QSerialPort *serial;
+  bool serialMonitor;
 
 private slots:
   void read();
@@ -30,6 +30,8 @@ signals:
   void sendData(QByteArray data);
   /// Oznámí připojení (očekává odpověď že parser je připravený)
   void started();
+  /// Přeposílá data
+  void monitor(QByteArray data);
 public slots:
   /// Připojí nebo odpojí port
   void toggle(QString portName, int baudRate);
@@ -41,6 +43,8 @@ public slots:
   void write(QByteArray data);
   /// Zahájí přeposílání dat
   void parserReady();
+  /// Zapne předávání dat
+  void enableMonitoring(bool en) { serialMonitor = en; }
 };
 
 #endif // SERIALREADER_H

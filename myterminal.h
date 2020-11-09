@@ -1,6 +1,7 @@
 #ifndef MYTERMINAL_H
 #define MYTERMINAL_H
 
+#include <QDebug>
 #include <QTableWidget>
 #include <QTableWidgetItem>
 
@@ -14,6 +15,8 @@ public:
   ~MyTerminal();
 
 private:
+  bool debug = false;
+  QByteArray buffer;
   QMap<QString, QColor> colorCodes;
   void printChar(char text);
   void moveCursorAbsolute(int16_t x, int16_t y);
@@ -25,9 +28,12 @@ private:
   void setUnderline(bool underlined);
   void setBold(bool bold);
   void printText(QByteArray text);
+  void parseFontEscapeCode(QByteArray data);
   void parseEscapeCode(QByteArray data);
   uint16_t cursorX = 0;
   uint16_t cursorY = 0;
+  uint16_t cursorX_saved = 0;
+  uint16_t cursorY_saved = 0;
   QColor fontColor = Qt::white;
   QColor backColor = Qt::black;
   QFont font = QFont("Courier New", 18, QFont::Normal);
@@ -37,6 +43,11 @@ private:
 public slots:
   void clearTerminal();
   void printToTerminal(QByteArray data);
+  void setDebug(bool en);
+
+signals:
+  /// Pošle zprávu do výpisu
+  void sendMessage(QByteArray header, QByteArray message, MessageLevel::enumerator type, MessageTarget::enumerator target = MessageTarget::serial1);
 };
 
 #endif // MYTERMINAL_H

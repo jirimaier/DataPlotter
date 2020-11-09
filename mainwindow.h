@@ -111,16 +111,25 @@ private slots:
 
   void on_pushButtonViewBuffer_clicked();
 
+  void on_pushButtonClearBuffer_2_clicked();
+
+  void on_pushButtonViewBuffer_2_clicked();
+
   void on_comboBoxOutputLevel_currentIndexChanged(int index);
 
-  void on_comboBoxCom_currentIndexChanged(int index) { emit disconnectSerial(); }
+  void on_comboBoxCom_currentIndexChanged(int) { emit disconnectSerial(); }
 
-  void on_comboBoxCom_currentIndexChanged(const QString &arg1) { emit disconnectSerial(); }
+  void on_comboBoxBaud_currentIndexChanged(int) { emit disconnectSerial(); }
 
   void on_toolButton_triggered(QAction *arg1);
 
+  void on_pushButtonScrollDown_2_clicked();
+  void on_pushButtonScrollDown_3_clicked();
+
+  void on_checkBoxSerialMonitor_toggled(bool checked);
+
 public slots:
-  void printMessage(QByteArray messageHeader, QByteArray messageBody, int type);
+  void printMessage(QByteArray messageHeader, QByteArray messageBody, int type, MessageTarget::enumerator target);
   void setCursorBounds(PlotFrame_t frame);
   void showPlotStatus(PlotStatus::enumerator type);
   void addVectorToPlot(int ch, QVector<double> *time, QVector<double> *value, bool append, bool ignorePause) { ui->plot->newDataVector(ch, time, value, append, ignorePause); }
@@ -129,12 +138,15 @@ public slots:
   void serialConnectResult(bool connected, QString message);
   void printToTerminal(QByteArray data) { ui->myTerminal->printToTerminal(data); }
   void serialFinishedWriting() { ui->lineEditCommand->clear(); }
-  void useSettings(QByteArray settings);
+  void useSettings(QByteArray settings, MessageTarget::enumerator source);
   void printDeviceMessage(QByteArray messageBody, bool warning, bool ended);
+  void printSerialMonitor(QByteArray data);
 
 signals:
   void requestSerialBufferClear();
   void requestSerialBufferShow();
+  void requestManualBufferClear();
+  void requestManualBufferShow();
   void toggleSerialConnection(QString port, int baud);
   void writeToSerial(QByteArray data);
   void resetChannels();
@@ -144,5 +156,7 @@ signals:
   void sendManualInput(QByteArray data);
   void parseError(QByteArray, int type = DataLineType::debugMessage);
   void setSerialMessageLevel(OutputLevel::enumerator level);
+  void setManualMessageLevel(OutputLevel::enumerator level);
+  void enableSerialMonitor(bool enabled);
 };
 #endif // MAINWINDOW_H

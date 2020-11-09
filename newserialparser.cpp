@@ -1,6 +1,7 @@
 #include "newserialparser.h"
 
-NewSerialParser::NewSerialParser(QObject *parent) : QObject(parent) {
+NewSerialParser::NewSerialParser(MessageTarget::enumerator target, QObject *parent) : QObject(parent) {
+  this->target = target;
   qDebug() << "SerialParser created from " << QThread::currentThreadId();
   resetChHeader();
 }
@@ -17,8 +18,8 @@ void NewSerialParser::resetChHeader() {
 }
 
 void NewSerialParser::fatalError(const char *header, QByteArray &message) {
-  sendMessageIfAllowed((tr("Fatal Error") + ", " + QString(header)).toUtf8(), message, MessageLevel::error);
-  sendMessageIfAllowed(tr("In part").toUtf8(), bufferDebug, MessageLevel::warning);
+  sendMessageIfAllowed((tr("Error") + ", " + QString(header)).toUtf8(), message, MessageLevel::error);
+  qDebug() << "Parser error:" << header << message;
   if (!buffer.isEmpty()) {
     if (buffer.contains("$$"))
       buffer.remove(0, buffer.indexOf("$$"));
@@ -35,22 +36,22 @@ void NewSerialParser::fatalError(const char *header, QByteArray &message) {
 
 void NewSerialParser::sendMessageIfAllowed(const char *header, QByteArray &message, MessageLevel::enumerator type) {
   if ((int)debugLevel >= (int)type)
-    emit sendMessage(header, message, type);
+    emit sendMessage(header, message, type, target);
 }
 
 void NewSerialParser::sendMessageIfAllowed(const char *header, QString &message, MessageLevel::enumerator type) {
   if ((int)debugLevel >= (int)type)
-    emit sendMessage(header, message.toUtf8(), type);
+    emit sendMessage(header, message.toUtf8(), type, target);
 }
 
 void NewSerialParser::showBuffer() {
   QByteArray pointBuffer;
   foreach (QByteArray line, pendingPointBuffer)
     pointBuffer.append(" " + line);
-  emit sendMessage("Buffer content", "", MessageLevel::error);
-  emit sendMessage("-> Main buffer", buffer, MessageLevel::info);
-  emit sendMessage("-> Point buffer", pointBuffer, MessageLevel::info);
-  emit sendMessage("-> Segment buffer", pendingDataBuffer, MessageLevel::info);
+  emit sendMessage("Buffer content", "", MessageLevel::error, target);
+  emit sendMessage("-> Main buffer", buffer, MessageLevel::info, target);
+  emit sendMessage("-> Point buffer", pointBuffer, MessageLevel::info, target);
+  emit sendMessage("-> Segment buffer", pendingDataBuffer, MessageLevel::info, target);
 }
 
 void NewSerialParser::getReady() {
@@ -70,9 +71,9 @@ void NewSerialParser::clearBuffer() {
 }
 
 void NewSerialParser::parse(QByteArray newData) {
-  buffer.append(newData);
+  buffer.push_back(newData);
   while (!buffer.isEmpty()) {
-    bufferDebug = buffer;
+    volatile QByteArray debug = buffer;
     if (buffer.right(1) == "$")
       break;
     if (buffer.length() >= 3)
@@ -115,7 +116,7 @@ void NewSerialParser::parse(QByteArray newData) {
     if (currentMode == DataMode::channel) {
       if (!channelHeaderOK) {
         readResult result = bufferPullPoint(pendingPointBuffer);
-        if (result == complete)
+        if (result == complete) {
           if (pendingPointBuffer.length() == 3) {
             channelHeaderOK = true;
             QByteArray chnum = pendingPointBuffer.at(0);
@@ -123,8 +124,8 @@ void NewSerialParser::parse(QByteArray newData) {
             QByteArray lengthBytes = pendingPointBuffer.at(2);
             pendingPointBuffer.clear();
             bool isok;
-            unsigned int ch = arrayToUint(chnum, isok);
-            if (ch > CHANNEL_COUNT || ch == 0)
+            channelNumber = arrayToUint(chnum, isok);
+            if (channelNumber > CHANNEL_COUNT || channelNumber == 0)
               isok = false;
             if (!isok) {
               fatalError("invalid channel number", chnum);
@@ -138,7 +139,12 @@ void NewSerialParser::parse(QByteArray newData) {
               continue;
             }
             continue;
+          } else {
+            fatalError("Invalid channel header", buffer);
+            if (!pendingPointBuffer.isEmpty())
+              pendingPointBuffer.clear();
           }
+        }
         if (result == incomplete)
           break;
         if (result == notProperlyEnded) {
@@ -154,8 +160,20 @@ void NewSerialParser::parse(QByteArray newData) {
         readResult result = bufferPullChannel(channel);
         if (result == incomplete)
           break;
+        if (result == notProperlyEnded) {
+          QByteArray semicolumPositionMessage = tr("No semicolum found").toUtf8();
+          if (buffer.contains(';') && channel.contains(';'))
+            semicolumPositionMessage = tr("There are semicolums %1 byte before and %2 after end.").arg(buffer.indexOf(';')).arg(channel.length() - channel.lastIndexOf(';')).toUtf8();
+          else {
+            if (channel.contains(';'))
+              semicolumPositionMessage = tr("There is semicolum %1 bytes before end.").arg(channel.length() - channel.lastIndexOf(';')).toUtf8();
+            if (buffer.contains(';'))
+              semicolumPositionMessage = tr("There is semicolum %1 bytes after end.").arg(buffer.indexOf(';')).toUtf8();
+          }
+          sendMessageIfAllowed(tr("Channel not ended with ';'").toUtf8(), semicolumPositionMessage, MessageLevel::warning);
+        }
         emit sendChannel(channel, channelNumber, channelTime);
-        pendingPointBuffer.clear();
+        resetChHeader();
         continue;
       }
     }
@@ -182,14 +200,14 @@ void NewSerialParser::parse(QByteArray newData) {
       readResult result = bufferPullBeforeSemicolumn(pendingDataBuffer, true);
       if (result == complete) {
         if (!pendingDataBuffer.isEmpty()) {
-          emit sendSettings(pendingDataBuffer);
+          emit sendSettings(pendingDataBuffer, target);
           pendingDataBuffer.clear();
           continue;
         }
       }
       if (result == notProperlyEnded) {
         if (!pendingDataBuffer.isEmpty()) {
-          emit sendSettings(pendingDataBuffer);
+          emit sendSettings(pendingDataBuffer, target);
           sendMessageIfAllowed(tr("Missing semicolumn ?").toUtf8(), pendingDataBuffer, MessageLevel::warning);
           pendingDataBuffer.clear();
           continue;
@@ -369,10 +387,22 @@ NewSerialParser::readResult NewSerialParser::bufferPullBeforeSemicolumn(QByteArr
 }
 
 NewSerialParser::readResult NewSerialParser::bufferPullChannel(QByteArray &result) {
-  if ((unsigned long)buffer.length() < channelLength + 2)
+  if (buffer.length() < 2)
     return incomplete;
-  result = buffer.left(channelLength + 2);
-  buffer.remove(0, channelLength + 2);
+  bool isok;
+  QByteArray type = buffer.left(2);
+  uint8_t bytesPerValue = type.right(1).toUInt(&isok, 16);
+  if (!isok) {
+    fatalError("invalid type", type);
+    return incomplete;
+  }
+  if ((uint32_t)buffer.length() < channelLength * bytesPerValue + 3)
+    return incomplete;
+  result = buffer.left(channelLength * bytesPerValue + 2);
+  buffer.remove(0, channelLength * bytesPerValue + 2);
+  if (buffer.at(0) != ';')
+    return notProperlyEnded;
+  buffer.remove(0, 1);
   return complete;
 }
 

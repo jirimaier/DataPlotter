@@ -41,6 +41,14 @@ namespace MessageLevel {
 enum enumerator { deviceInfo = -1, deviceWarning = 0, error = 1, warning = 2, info = 3 };
 }
 
+namespace MessageTarget {
+enum enumerator { manual, serial1 };
+}
+
+namespace ValueType {
+enum enumerator { unrecognised, u1, u2, u3, u4, U1, U2, U3, U4, i1, i2, i3, i4, I1, I2, I3, I4, f4, F4, d8, D8 };
+}
+
 #define CHANNEL_COUNT 64
 #define MATH_COUNT 4
 
@@ -93,6 +101,7 @@ Q_DECLARE_METATYPE(DataMode::enumerator)
 Q_DECLARE_METATYPE(OutputLevel::enumerator)
 Q_DECLARE_METATYPE(MessageLevel::enumerator)
 Q_DECLARE_METATYPE(PlotStatus::enumerator)
+Q_DECLARE_METATYPE(MessageTarget::enumerator)
 
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))

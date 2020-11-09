@@ -36,13 +36,6 @@ void MainWindow::showPlotStatus(PlotStatus::enumerator type) {
   }
 }
 
-/*void MainWindow::changedDataMode(int mode) {
-  dataMode = mode;
-  ui->labelBinSettings->setVisible(mode == DataMode::binData);
-  ui->labelDataMode->setText(tr("Data mode: ") + ui->comboBoxDataMode->itemText(mode));
-  ui->comboBoxDataMode->setCurrentIndex(mode);
-}*/
-
 void MainWindow::updateChScale() {
   double perDiv = ui->plot->getCHDiv(ui->spinBoxChannelSelect->value());
   ui->labelChScale->setText(QString::number(perDiv) + tr(" / Div"));
@@ -58,26 +51,6 @@ void MainWindow::serialConnectResult(bool connected, QString message) {
     emit resetChannels();
   }
 }
-
-/*void MainWindow::bufferDebug(QByteArray data) {
-  QString stringData = QString(data).simplified();
-  if (stringData.length() > 0) {
-    ui->textEditSerialDebug->append(QString("<font color=red>%1</font color>").arg(tr("Buffer content (Text): ")));
-    ui->textEditSerialDebug->append(stringData.simplified());
-  }
-  ui->textEditSerialDebug->append(QString("<font color=red>%1</font color> %2 %3").arg(tr("Buffer content (Hex):")).arg(data.length()).arg(tr("bytes")));
-  // Oddělení bajtů mezerami nefunguje v starším Qt (Win XP)
-#if QT_VERSION >= 0x050900
-  ui->textEditSerialDebug->append(QString("<font color=navy>%1</font color>").arg(QString(data.toHex(' '))));
-#else
-  QString data2;
-  foreach (byte b, data)
-    data2.append(QString::number(b, 16) + " ");
-  data2 = data2.trimmed();
-  ui->textEditSerialDebug->append(QString("<font color=red>%1</font color>").arg(data2.trimmed()));
-#endif
-  ui->textEditSerialDebug->append("");
-}*/
 
 void MainWindow::updateDivs(double vertical, double horizontal) {
   ui->plot->setVerticalDiv(Global::logaritmicSettings[MAX(GlobalFunctions::roundToStandardValue(vertical) + ui->dialVerticalDiv->value(), 0)]);
@@ -108,7 +81,7 @@ void MainWindow::on_pushButtonOpenHelp_clicked() {
 
 void MainWindow::on_pushButtonCenter_clicked() { ui->dialVerticalCenter->setValue(0); }
 
-void MainWindow::printMessage(QByteArray messageHeader, QByteArray messageBody, int type) {
+void MainWindow::printMessage(QByteArray messageHeader, QByteArray messageBody, int type, MessageTarget::enumerator target) {
   QString color = "<font color=black>";
   switch (type) {
   case MessageLevel::warning:
@@ -147,7 +120,10 @@ void MainWindow::printMessage(QByteArray messageHeader, QByteArray messageBody, 
   } else {
     stringMessage = messageBody;
   }
-  ui->plainTextEditConsole->appendHtml(color + QString(messageHeader) + "</font color>: " + stringMessage);
+  if (target == MessageTarget::serial1)
+    ui->plainTextEditConsole->appendHtml(color + QString(messageHeader) + "</font color>: " + stringMessage);
+  else
+    ui->plainTextEditConsole_2->appendHtml(color + QString(messageHeader) + "</font color>: " + stringMessage);
 }
 
 void MainWindow::printDeviceMessage(QByteArray messageBody, bool warning, bool ended) {
@@ -162,6 +138,8 @@ void MainWindow::printDeviceMessage(QByteArray messageBody, bool warning, bool e
   ui->plainTextEditConsole->moveCursor(QTextCursor::End);
   pendingDeviceMessage = !ended;
 }
+
+void MainWindow::printSerialMonitor(QByteArray data) { ui->plainTextEditConsole_3->appendPlainText(data); }
 
 void MainWindow::on_pushButtonScrollDown_clicked() {
   QScrollBar *scroll = ui->plainTextEditConsole->verticalScrollBar();
@@ -186,9 +164,32 @@ void MainWindow::on_pushButtonClearBuffer_clicked() { emit requestSerialBufferCl
 
 void MainWindow::on_pushButtonViewBuffer_clicked() { emit requestSerialBufferShow(); }
 
+void MainWindow::on_pushButtonClearBuffer_2_clicked() { emit requestManualBufferClear(); }
+
+void MainWindow::on_pushButtonViewBuffer_2_clicked() { emit requestManualBufferShow(); }
+
 void MainWindow::on_comboBoxOutputLevel_currentIndexChanged(int index) {
   if (index >= 0)
     emit setSerialMessageLevel((OutputLevel::enumerator)index);
 }
 
 void MainWindow::on_toolButton_triggered(QAction *arg1) { qDebug() << arg1; }
+
+void MainWindow::on_pushButtonScrollDown_2_clicked() {
+  QScrollBar *scroll = ui->plainTextEditConsole_2->verticalScrollBar();
+  scroll->setValue(scroll->maximum());
+  scroll = ui->plainTextEditConsole_2->horizontalScrollBar();
+  scroll->setValue(scroll->minimum());
+}
+
+void MainWindow::on_pushButtonScrollDown_3_clicked() {
+  QScrollBar *scroll = ui->plainTextEditConsole_3->verticalScrollBar();
+  scroll->setValue(scroll->maximum());
+  scroll = ui->plainTextEditConsole_3->horizontalScrollBar();
+  scroll->setValue(scroll->minimum());
+}
+
+void MainWindow::on_checkBoxSerialMonitor_toggled(bool checked) {
+  ui->frameSerialMonitor->setVisible(checked);
+  emit enableSerialMonitor(checked);
+}

@@ -32,6 +32,8 @@ mathvro:1;
 opengl:0;
 output:3;
 selused:1;
+sermon:0;
+showmanin:0;
 vaxis:1;
 vdiv:-3;
 vlabel:;

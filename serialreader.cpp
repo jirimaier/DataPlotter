@@ -10,7 +10,6 @@ SerialReader::~SerialReader() {
 
 void SerialReader::init() {
   serial = new QSerialPort;
-  connect(serial, &QSerialPort::readyRead, this, &SerialReader::read);
   connect(serial, &QSerialPort::bytesWritten, this, &SerialReader::finishedWriting);
   // V starším Qt (Win XP) není signál pro error
 #if QT_VERSION >= 0x050800
@@ -20,7 +19,6 @@ void SerialReader::init() {
 }
 
 void SerialReader::begin(QString portName, int baudRate) {
-  parserReadyFlag = false;
   if (serial->isOpen())
     end();
   serial->setPortName(portName);
@@ -35,7 +33,10 @@ void SerialReader::begin(QString portName, int baudRate) {
     emit connectionResult(true, tr("Connected (") + serial->portName() + tr(", ") + QString::number(serial->baudRate()) + ")");
   } else
     emit connectionResult(false, tr("Error: ") + serial->errorString());
-  emit started();
+  if (serial->isOpen()) {
+    serial->clear();
+    emit started();
+  }
 }
 
 void SerialReader::write(QByteArray data) {
@@ -43,28 +44,27 @@ void SerialReader::write(QByteArray data) {
     serial->write(data);
 }
 
-void SerialReader::parserReady() {
-  if (serial->isOpen()) {
-    if (serial->bytesAvailable() > 0)
-      serial->readAll();
-  }
-  parserReadyFlag = true;
-}
+void SerialReader::parserReady() { connect(serial, &QSerialPort::readyRead, this, &SerialReader::read); }
 
 void SerialReader::end() {
+  disconnect(serial, &QSerialPort::readyRead, this, &SerialReader::read);
+  emit connectionResult(false, tr("Not connected"));
   if (!serial->isOpen())
     return;
-  serial->clear();
   serial->close();
-  emit connectionResult(false, tr("Not connected"));
 }
 
 void SerialReader::errorOccurred() {
+  if (serial->error() == QSerialPort::NoError)
+    return;
+  QString error = serial->errorString();
+  if (serial->error() == QSerialPort::PermissionError)
+    error = tr("Access denied.");
+  disconnect(serial, &QSerialPort::readyRead, this, &SerialReader::read);
   if (serial->isOpen()) {
     serial->close();
-    serial->clear();
   }
-  emit connectionResult(false, tr("Error: ") + serial->errorString());
+  emit connectionResult(false, tr("Error: ") + error);
 }
 
 void SerialReader::toggle(QString portName, int baudRate) {
@@ -75,6 +75,10 @@ void SerialReader::toggle(QString portName, int baudRate) {
 }
 
 void SerialReader::read() {
-  if (parserReadyFlag)
+  if (serialMonitor) {
+    QByteArray newdata = serial->readAll();
+    emit sendData(newdata);
+    emit monitor(newdata);
+  } else
     emit sendData(serial->readAll());
 }

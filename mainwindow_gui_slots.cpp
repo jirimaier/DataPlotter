@@ -113,37 +113,6 @@ void MainWindow::on_radioButtonCz_toggled(bool checked) {
     changeLanguage("cz");
 }
 
-/*void MainWindow::on_pushButtonDataModeApply_clicked() {
-  emit setMode(ui->comboBoxDataMode->currentIndex());
-  BinDataSettings_t settings;
-  settings.bits = ui->spinBoxDataBinaryBits->value();
-  settings.continuous = ui->checkBoxBinContinuous->isChecked();
-  settings.firstCh = ui->spinBoxBinaryDataFirstCh->value();
-  settings.numCh = ui->spinBoxBinaryDataNumCh->value();
-  settings.timeStep = ui->doubleSpinBoxBinaryTimestep->value();
-  settings.valueMax = ui->doubleSpinBoxBinarydataMax->value();
-  settings.valueMin = ui->doubleSpinBoxBinaryDataMin->value();
-  emit setBinParameters(settings);
-}*/
-
-/*void MainWindow::on_checkBoxModeManual_toggled(bool checked) {
-  emit allowModeChange(!checked);
-  if (checked) {
-    ui->spinBoxDataBinaryBits->setValue(binSettings.bits);
-    ui->doubleSpinBoxBinaryDataMin->setValue(binSettings.valueMin);
-    ui->doubleSpinBoxBinarydataMax->setValue(binSettings.valueMax);
-    ui->doubleSpinBoxBinaryTimestep->setValue(binSettings.timeStep);
-    ui->spinBoxBinaryDataNumCh->setValue(binSettings.numCh);
-    ui->spinBoxBinaryDataFirstCh->setValue(binSettings.firstCh);
-    ui->checkBoxBinContinuous->setChecked(binSettings.continuous);
-  }
-}*/
-
-/*void MainWindow::on_horizontalSliderLineTimeout_valueChanged(int value) {
-  ui->labelLineTimeout->setText(QString::number(Global::logaritmicSettings[value]) + " ms");
-  emit changeLineTimeout(Global::logaritmicSettings[value]);
-}*/
-
 void MainWindow::on_lineEditManualInput_returnPressed() {
   QByteArray bytes;
   bytes.append(ui->lineEditManualInput->text().toLocal8Bit());

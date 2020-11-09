@@ -261,7 +261,6 @@ void MyMainPlot::newDataVector(int ch, QVector<double> *time, QVector<double> *v
 }
 
 void MyMainPlot::newDataPoint(int ch, double time, double value, bool append, bool ignorePause) {
-  qDebug() << "addingtoPlot";
   if (plottingStatus != PlotStatus::pause || ignorePause) {
     value = value * scales.at(ch - 1) + offsets.at(ch - 1);
     if (append)
@@ -281,7 +280,6 @@ void MyMainPlot::newDataPoint(int ch, double time, double value, bool append, bo
     pauseBufferValue.at(ch - 1)->append(value);
   }
   lastWasContinous[ch - 1] = append;
-  qDebug() << "addedtoPlot";
 }
 
 QByteArray MyMainPlot::exportChannelCSV(char separator, char decimal, int channel, int precision, bool offseted, bool onlyInView) {

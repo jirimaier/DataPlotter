@@ -37,6 +37,8 @@ void MainWindow::initSetables() {
   // Settings
   setables["clearonrec"] = ui->checkBoxClearOnReconnect;
   setables["opengl"] = ui->checkBoxPlotOpenGL;
+  setables["showmanin"] = ui->checkBoxShowManualInput;
+  setables["sermon"] = ui->checkBoxSerialMonitor;
 
   // Send
   setables["lineending"] = ui->comboBoxLineEnding;
@@ -135,11 +137,11 @@ QByteArray MainWindow::getSettings() {
   return settings;
 }
 
-void MainWindow::useSettings(QByteArray settings) {
+void MainWindow::useSettings(QByteArray settings, MessageTarget::enumerator source = MessageTarget::manual) {
   settings.replace('\n', "");
   settings.replace('\r', "");
   if (!settings.contains(':')) {
-    printMessage(tr("Invalid settings").toUtf8(), settings, MessageLevel::error);
+    printMessage(tr("Invalid settings").toUtf8(), settings, MessageLevel::error, source);
     return;
   }
   QByteArray type = settings.left(settings.indexOf(':', 0));
@@ -175,7 +177,7 @@ void MainWindow::useSettings(QByteArray settings) {
   else if (type == "ch") {
     int ch = value.left(value.indexOf(':', 0)).toUInt();
     if (ch > CHANNEL_COUNT + MATH_COUNT) {
-      printMessage(tr("Invalid channel in settings").toUtf8(), QString::number(ch).toUtf8(), MessageLevel::error);
+      printMessage(tr("Invalid channel in settings").toUtf8(), QString::number(ch).toUtf8(), MessageLevel::error, source);
       return;
     }
     QByteArray subtype = value.mid(value.indexOf(':', 0) + 1).toLower();
@@ -197,7 +199,7 @@ void MainWindow::useSettings(QByteArray settings) {
     else if (subtype == "col") {
       QByteArrayList rgb = subvalue.mid(subvalue.indexOf(':')).split(',');
       if (rgb.length() != 3) {
-        printMessage(tr("Invalid color: ").toUtf8(), settings, MessageLevel::error);
+        printMessage(tr("Invalid color: ").toUtf8(), settings, MessageLevel::error, source);
         return;
       }
       QColor clr = QColor(rgb.at(0).toInt(), rgb.at(1).toInt(), rgb.at(2).toInt());
@@ -208,10 +210,10 @@ void MainWindow::useSettings(QByteArray settings) {
 
   // Error
   else {
-    printMessage(tr("Unknown setting").toUtf8(), type, MessageLevel::error);
+    printMessage(tr("Unknown setting").toUtf8(), type, MessageLevel::error, source);
     return;
   }
-  printMessage(tr("Applied settings").toUtf8(), settings, MessageLevel::info);
+  printMessage(tr("Applied settings").toUtf8(), settings, MessageLevel::info, source);
 }
 
 void MainWindow::on_pushButtonLoadFile_clicked() {

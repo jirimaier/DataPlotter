@@ -21,6 +21,7 @@ void MainWindow::connectSignals() {
   connect(ui->lineEditVtitle, &QLineEdit::textChanged, ui->plot, &MyPlot::setYTitle);
   connect(ui->lineEditVtitle, &QLineEdit::textChanged, ui->plotxy, &MyPlot::setXTitle);
   connect(ui->lineEditVtitle, &QLineEdit::textChanged, ui->plotxy, &MyPlot::setYTitle);
+  connect(ui->myTerminal, &MyTerminal::sendMessage, this, &MainWindow::printMessage);
 
   connect(&plotUpdateTimer, &QTimer::timeout, this, &MainWindow::updatePlot);
   connect(&portsRefreshTimer, &QTimer::timeout, this, &MainWindow::comRefresh);
@@ -38,9 +39,8 @@ void MainWindow::setAdaptiveSpinBoxes() {
 void MainWindow::startTimers() {
   portsRefreshTimer.setInterval(500);
   plotUpdateTimer.setInterval(10);
-  // listUpdateTimer.setInterval(200);
+
   plotUpdateTimer.start();
-  // listUpdateTimer.start();
   portsRefreshTimer.start();
 }
 
