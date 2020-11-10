@@ -17,9 +17,8 @@ void NewSerialParser::resetChHeader() {
   channelTime = "";
 }
 
-void NewSerialParser::fatalError(const char *header, QByteArray &message) {
-  sendMessageIfAllowed((tr("Error") + ", " + QString(header)).toUtf8(), message, MessageLevel::error);
-  qDebug() << "Parser error:" << header << message;
+void NewSerialParser::fatalError(QString header, QByteArray &message) {
+  sendMessageIfAllowed((tr("Error, ") + header), message, MessageLevel::error);
   if (!buffer.isEmpty()) {
     if (buffer.contains("$$"))
       buffer.remove(0, buffer.indexOf("$$"));
@@ -34,12 +33,12 @@ void NewSerialParser::fatalError(const char *header, QByteArray &message) {
   changeMode(DataMode::unknown, currentMode, "Unknown");
 }
 
-void NewSerialParser::sendMessageIfAllowed(const char *header, QByteArray &message, MessageLevel::enumerator type) {
+void NewSerialParser::sendMessageIfAllowed(QString header, QByteArray &message, MessageLevel::enumerator type) {
   if ((int)debugLevel >= (int)type)
     emit sendMessage(header, message, type, target);
 }
 
-void NewSerialParser::sendMessageIfAllowed(const char *header, QString &message, MessageLevel::enumerator type) {
+void NewSerialParser::sendMessageIfAllowed(QString header, QString &message, MessageLevel::enumerator type) {
   if ((int)debugLevel >= (int)type)
     emit sendMessage(header, message.toUtf8(), type, target);
 }
@@ -73,7 +72,6 @@ void NewSerialParser::clearBuffer() {
 void NewSerialParser::parse(QByteArray newData) {
   buffer.push_back(newData);
   while (!buffer.isEmpty()) {
-    volatile QByteArray debug = buffer;
     if (buffer.right(1) == "$")
       break;
     if (buffer.length() >= 3)
@@ -94,7 +92,7 @@ void NewSerialParser::parse(QByteArray newData) {
       }
       if (result == notProperlyEnded) {
         if (!pendingPointBuffer.isEmpty()) {
-          sendMessageIfAllowed(tr("Missing semicolumn ?").toUtf8(), pendingPointBuffer.last(), MessageLevel::warning);
+          sendMessageIfAllowed(tr("Missing semicolumn ?"), pendingPointBuffer.last(), MessageLevel::warning);
           emit sendPoint(pendingPointBuffer);
           pendingPointBuffer.clear();
           continue;
@@ -107,7 +105,7 @@ void NewSerialParser::parse(QByteArray newData) {
       QByteArray dropped;
       readResult result = bufferPullFull(dropped);
       if (!dropped.isEmpty())
-        sendMessageIfAllowed("Unknown", dropped, MessageLevel::info);
+        sendMessageIfAllowed(tr("Unknown"), dropped, MessageLevel::info);
       if (result == complete)
         continue;
       break;
@@ -128,19 +126,19 @@ void NewSerialParser::parse(QByteArray newData) {
             if (channelNumber > CHANNEL_COUNT || channelNumber == 0)
               isok = false;
             if (!isok) {
-              fatalError("invalid channel number", chnum);
+              fatalError(tr("invalid channel number"), chnum);
               resetChHeader();
               continue;
             }
             channelLength = arrayToUint(lengthBytes, isok);
             if (!isok) {
-              fatalError("invalid channel length", lengthBytes);
+              fatalError(tr("invalid channel length"), lengthBytes);
               resetChHeader();
               continue;
             }
             continue;
           } else {
-            fatalError("Invalid channel header", buffer);
+            fatalError(tr("Invalid channel header"), buffer);
             if (!pendingPointBuffer.isEmpty())
               pendingPointBuffer.clear();
           }
@@ -148,7 +146,7 @@ void NewSerialParser::parse(QByteArray newData) {
         if (result == incomplete)
           break;
         if (result == notProperlyEnded) {
-          fatalError("Invalid channel header", buffer);
+          fatalError(tr("Invalid channel header"), buffer);
           if (!pendingPointBuffer.isEmpty())
             pendingPointBuffer.clear();
           resetChHeader();
@@ -170,7 +168,7 @@ void NewSerialParser::parse(QByteArray newData) {
             if (buffer.contains(';'))
               semicolumPositionMessage = tr("There is semicolum %1 bytes after end.").arg(buffer.indexOf(';')).toUtf8();
           }
-          sendMessageIfAllowed(tr("Channel not ended with ';'").toUtf8(), semicolumPositionMessage, MessageLevel::warning);
+          sendMessageIfAllowed(tr("Channel not ended with ';'"), semicolumPositionMessage, MessageLevel::warning);
         }
         emit sendChannel(channel, channelNumber, channelTime);
         resetChHeader();
@@ -208,7 +206,7 @@ void NewSerialParser::parse(QByteArray newData) {
       if (result == notProperlyEnded) {
         if (!pendingDataBuffer.isEmpty()) {
           emit sendSettings(pendingDataBuffer, target);
-          sendMessageIfAllowed(tr("Missing semicolumn ?").toUtf8(), pendingDataBuffer, MessageLevel::warning);
+          sendMessageIfAllowed(tr("Missing semicolumn ?"), pendingDataBuffer, MessageLevel::warning);
           pendingDataBuffer.clear();
           continue;
         }
@@ -336,8 +334,8 @@ void NewSerialParser::parseMode(QChar modeChar) {
     changeMode(DataMode::unknown, previousMode, "Unknown");
   else {
     currentMode = DataMode::unknown;
-    QByteArray character = QString(modeChar).toUtf8();
-    sendMessageIfAllowed("Unknown mode", character, MessageLevel::error);
+    QByteArray character = QString(modeChar).toLocal8Bit();
+    sendMessageIfAllowed(tr("Unknown mode"), character, MessageLevel::error);
   }
   if (!pendingDataBuffer.isEmpty())
     pendingDataBuffer.clear();
@@ -393,7 +391,7 @@ NewSerialParser::readResult NewSerialParser::bufferPullChannel(QByteArray &resul
   QByteArray type = buffer.left(2);
   uint8_t bytesPerValue = type.right(1).toUInt(&isok, 16);
   if (!isok) {
-    fatalError("invalid type", type);
+    fatalError(tr("invalid type"), type);
     return incomplete;
   }
   if ((uint32_t)buffer.length() < channelLength * bytesPerValue + 3)
@@ -410,5 +408,5 @@ void NewSerialParser::changeMode(DataMode::enumerator mode, DataMode::enumerator
   if (mode == previousMode)
     return;
   currentMode = mode;
-  sendMessageIfAllowed("Mode changed", modeName, MessageLevel::info);
+  sendMessageIfAllowed(tr("Mode changed"), modeName, MessageLevel::info);
 }

@@ -8,6 +8,8 @@ MyXYPlot::MyXYPlot(QWidget *parent) : MyPlot(parent) {
   this->yAxis->setRange(-100, 100);
 }
 
+MyXYPlot::~MyXYPlot() {}
+
 void MyXYPlot::newData(QVector<double> *x, QVector<double> *y) {
   double left = *std::min_element(x->begin(), x->end());
   double right = *std::max_element(x->begin(), x->end());

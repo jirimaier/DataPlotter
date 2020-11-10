@@ -24,7 +24,7 @@ private:
   OutputLevel::enumerator debugLevel = OutputLevel::info;
   double lastTimes[CHANNEL_COUNT];
   double defaultTimestep = 1;
-  void sendMessageIfAllowed(const char *header, QByteArray &message, MessageLevel::enumerator type);
+  void sendMessageIfAllowed(QString header, QByteArray &message, MessageLevel::enumerator type);
   double arrayToDouble(QByteArray &array, bool &isok);
 public slots:
   void addPoint(QByteArrayList data);
@@ -35,7 +35,7 @@ public slots:
 
 signals:
   /// Pošle zprávu do výpisu
-  void sendMessage(QByteArray header, QByteArray message, MessageLevel::enumerator type, MessageTarget::enumerator target = MessageTarget::serial1);
+  void sendMessage(QString header, QByteArray message, MessageLevel::enumerator type, MessageTarget::enumerator target = MessageTarget::serial1);
 
   /// Předá data do grafu
   void addVectorToPlot(int ch, QVector<double> *time, QVector<double> *value, bool append, bool ignorePause = false);

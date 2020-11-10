@@ -106,30 +106,19 @@ private slots:
   void on_checkBoxPlotOpenGL_toggled(bool checked);
   void on_pushButtonSendCommand_2_clicked();
   void on_lineEditCommand_returnPressed();
-
   void on_pushButtonClearBuffer_clicked();
-
   void on_pushButtonViewBuffer_clicked();
-
   void on_pushButtonClearBuffer_2_clicked();
-
   void on_pushButtonViewBuffer_2_clicked();
-
   void on_comboBoxOutputLevel_currentIndexChanged(int index);
-
   void on_comboBoxCom_currentIndexChanged(int) { emit disconnectSerial(); }
-
   void on_comboBoxBaud_currentIndexChanged(int) { emit disconnectSerial(); }
-
-  void on_toolButton_triggered(QAction *arg1);
-
   void on_pushButtonScrollDown_2_clicked();
   void on_pushButtonScrollDown_3_clicked();
-
   void on_checkBoxSerialMonitor_toggled(bool checked);
 
 public slots:
-  void printMessage(QByteArray messageHeader, QByteArray messageBody, int type, MessageTarget::enumerator target);
+  void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumerator target);
   void setCursorBounds(PlotFrame_t frame);
   void showPlotStatus(PlotStatus::enumerator type);
   void addVectorToPlot(int ch, QVector<double> *time, QVector<double> *value, bool append, bool ignorePause) { ui->plot->newDataVector(ch, time, value, append, ignorePause); }

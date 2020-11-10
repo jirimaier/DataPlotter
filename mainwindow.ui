@@ -2886,7 +2886,7 @@ used channels</string>
             </size>
            </property>
            <property name="currentIndex">
-            <number>1</number>
+            <number>0</number>
            </property>
            <property name="usesScrollButtons">
             <bool>false</bool>
@@ -3477,6 +3477,11 @@ used channels</string>
                         <horstretch>0</horstretch>
                         <verstretch>0</verstretch>
                        </sizepolicy>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <family>MS Shell Dlg 2</family>
+                       </font>
                       </property>
                       <property name="frame">
                        <bool>true</bool>
@@ -4205,7 +4210,7 @@ selection-background-color: rgb(85, 0, 0);</string>
    <extends>QTableWidget</extends>
    <header>myterminal.h</header>
    <slots>
-    <slot>clearTerminal()</slot>
+    <slot>resetTerminal()</slot>
     <slot>setDebug(bool)</slot>
    </slots>
   </customwidget>
@@ -4299,7 +4304,7 @@ selection-background-color: rgb(85, 0, 0);</string>
    <sender>pushButton</sender>
    <signal>clicked()</signal>
    <receiver>myTerminal</receiver>
-   <slot>clearTerminal()</slot>
+   <slot>resetTerminal()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>986</x>
@@ -4366,8 +4371,8 @@ selection-background-color: rgb(85, 0, 0);</string>
    <slot>rangeTypeChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>228</x>
-     <y>525</y>
+     <x>175</x>
+     <y>521</y>
     </hint>
     <hint type="destinationlabel">
      <x>445</x>
@@ -4382,8 +4387,8 @@ selection-background-color: rgb(85, 0, 0);</string>
    <slot>rangeTypeChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>228</x>
-     <y>552</y>
+     <x>175</x>
+     <y>521</y>
     </hint>
     <hint type="destinationlabel">
      <x>616</x>
@@ -4398,8 +4403,8 @@ selection-background-color: rgb(85, 0, 0);</string>
    <slot>rangeTypeChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>228</x>
-     <y>579</y>
+     <x>175</x>
+     <y>521</y>
     </hint>
     <hint type="destinationlabel">
      <x>751</x>
@@ -4414,12 +4419,12 @@ selection-background-color: rgb(85, 0, 0);</string>
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>228</x>
-     <y>525</y>
+     <x>175</x>
+     <y>521</y>
     </hint>
     <hint type="destinationlabel">
-     <x>122</x>
-     <y>567</y>
+     <x>69</x>
+     <y>503</y>
     </hint>
    </hints>
   </connection>
@@ -4430,12 +4435,12 @@ selection-background-color: rgb(85, 0, 0);</string>
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>228</x>
-     <y>525</y>
+     <x>175</x>
+     <y>521</y>
     </hint>
     <hint type="destinationlabel">
-     <x>301</x>
-     <y>708</y>
+     <x>175</x>
+     <y>521</y>
     </hint>
    </hints>
   </connection>
@@ -4446,12 +4451,12 @@ selection-background-color: rgb(85, 0, 0);</string>
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>228</x>
-     <y>525</y>
+     <x>175</x>
+     <y>521</y>
     </hint>
     <hint type="destinationlabel">
-     <x>414</x>
-     <y>608</y>
+     <x>175</x>
+     <y>521</y>
     </hint>
    </hints>
   </connection>
@@ -4462,12 +4467,12 @@ selection-background-color: rgb(85, 0, 0);</string>
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>941</x>
-     <y>524</y>
+     <x>841</x>
+     <y>92</y>
     </hint>
     <hint type="destinationlabel">
-     <x>987</x>
-     <y>484</y>
+     <x>841</x>
+     <y>92</y>
     </hint>
    </hints>
   </connection>
@@ -4478,8 +4483,8 @@ selection-background-color: rgb(85, 0, 0);</string>
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>84</x>
-     <y>525</y>
+     <x>98</x>
+     <y>521</y>
     </hint>
     <hint type="destinationlabel">
      <x>85</x>
@@ -4494,8 +4499,8 @@ selection-background-color: rgb(85, 0, 0);</string>
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>102</x>
-     <y>530</y>
+     <x>116</x>
+     <y>521</y>
     </hint>
     <hint type="destinationlabel">
      <x>414</x>
@@ -4510,12 +4515,12 @@ selection-background-color: rgb(85, 0, 0);</string>
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>891</x>
-     <y>651</y>
+     <x>841</x>
+     <y>92</y>
     </hint>
     <hint type="destinationlabel">
-     <x>987</x>
-     <y>606</y>
+     <x>841</x>
+     <y>92</y>
     </hint>
    </hints>
   </connection>
@@ -4526,12 +4531,12 @@ selection-background-color: rgb(85, 0, 0);</string>
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>864</x>
-     <y>183</y>
+     <x>841</x>
+     <y>87</y>
     </hint>
     <hint type="destinationlabel">
-     <x>987</x>
-     <y>674</y>
+     <x>841</x>
+     <y>92</y>
     </hint>
    </hints>
   </connection>
@@ -4542,12 +4547,12 @@ selection-background-color: rgb(85, 0, 0);</string>
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>826</x>
-     <y>265</y>
+     <x>841</x>
+     <y>92</y>
     </hint>
     <hint type="destinationlabel">
-     <x>852</x>
-     <y>205</y>
+     <x>841</x>
+     <y>92</y>
     </hint>
    </hints>
   </connection>
@@ -4558,8 +4563,8 @@ selection-background-color: rgb(85, 0, 0);</string>
    <slot>setShowGrid(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>790</x>
-     <y>651</y>
+     <x>784</x>
+     <y>673</y>
     </hint>
     <hint type="destinationlabel">
      <x>799</x>

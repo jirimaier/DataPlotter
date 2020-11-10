@@ -17,7 +17,7 @@ signals:
   /// Pošle zprávu do záznamu
   void sendDeviceMessage(QByteArray header, bool warning, bool ended);
   /// Předá zprávu od zařízení
-  void sendMessage(QByteArray header, QByteArray message, MessageLevel::enumerator type, MessageTarget::enumerator target);
+  void sendMessage(QString header, QByteArray message, MessageLevel::enumerator type, MessageTarget::enumerator target);
   /// Pošle obsah bufferu
   void sendBuffer(QByteArray buffer);
   /// Pošle data do terminálu
@@ -38,11 +38,11 @@ private:
   QByteArray channelTime;
   uint32_t channelLength;
   int channelNumber;
-  void fatalError(const char *header, QByteArray &message);
+  void fatalError(QString header, QByteArray &message);
   enum readResult { incomplete = 0, complete = 1, notProperlyEnded = 2 };
   enum delimiter { comma, semicolon, dollar, none };
-  void sendMessageIfAllowed(const char *header, QByteArray &message, MessageLevel::enumerator type);
-  void sendMessageIfAllowed(const char *header, QString &message, MessageLevel::enumerator type);
+  void sendMessageIfAllowed(QString header, QByteArray &message, MessageLevel::enumerator type);
+  void sendMessageIfAllowed(QString header, QString &message, MessageLevel::enumerator type);
   DataMode::enumerator currentMode = DataMode::unknown;
   OutputLevel::enumerator debugLevel = OutputLevel::info;
   QByteArray buffer;

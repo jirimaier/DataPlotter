@@ -7,6 +7,7 @@ class MyXYPlot : public MyPlot {
   Q_OBJECT
 public:
   explicit MyXYPlot(QWidget *parent = nullptr);
+  ~MyXYPlot();
   void newData(QVector<double> *x, QVector<double> *y);
   QByteArray exportCSV(char separator, char decimal, int precision);
 

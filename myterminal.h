@@ -25,8 +25,10 @@ private:
   void clearLine(uint16_t line);
   void clearLineLeft();
   void clearLineRight();
-  void setUnderline(bool underlined);
-  void setBold(bool bold);
+  void clearUp();
+  void clearDown();
+  void setUnderline(bool underlined) { font.setUnderline(underlined); }
+  void setBold(bool bold) { font.setBold(bold); }
   void printText(QByteArray text);
   void parseFontEscapeCode(QByteArray data);
   void parseEscapeCode(QByteArray data);
@@ -39,11 +41,13 @@ private:
   QFont font = QFont("Courier New", 18, QFont::Normal);
   void resetFont();
   bool isSmallest(uint8_t number, QVector<uint8_t> list);
-
-public slots:
   void clearTerminal();
+
+  void clearCell(int x, int y);
+public slots:
   void printToTerminal(QByteArray data);
   void setDebug(bool en);
+  void resetTerminal();
 
 signals:
   /// Pošle zprávu do výpisu

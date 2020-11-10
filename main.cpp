@@ -45,11 +45,11 @@ int main(int argc, char *argv[]) {
   // Vytvoří instance hlavních objektů
   MainWindow mainWindow;
   QTranslator translator; // Musí bít zde aby dokázal přeložit i texty v objektech jiných než MainWindow
-  PlotData *plotData = new PlotData;
+  PlotData *plotData = new PlotData();
   NewSerialParser *serialParser1 = new NewSerialParser(MessageTarget::serial1);
   NewSerialParser *serialParserM = new NewSerialParser(MessageTarget::manual);
-  SerialReader *serial1 = new SerialReader;
-  PlotMath *plotMath = new PlotMath;
+  SerialReader *serial1 = new SerialReader();
+  PlotMath *plotMath = new PlotMath();
 
   // Vytvoří vlákna
   QThread plotDataThread;
@@ -133,6 +133,7 @@ int main(int argc, char *argv[]) {
 
   // Smazat objekty až budou dokončeny procesy v nich
   serialParser1->deleteLater();
+  serialParserM->deleteLater();
   plotData->deleteLater();
   plotMath->deleteLater();
   serial1->deleteLater();

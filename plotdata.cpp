@@ -184,7 +184,7 @@ void PlotData::reset() {
     lastTimes[i] = INFINITY;
 }
 
-void PlotData::sendMessageIfAllowed(const char *header, QByteArray &message, MessageLevel::enumerator type) {
+void PlotData::sendMessageIfAllowed(QString header, QByteArray &message, MessageLevel::enumerator type) {
   if ((int)debugLevel >= (int)type)
     emit sendMessage(header, message, type);
 }

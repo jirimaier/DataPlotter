@@ -30,13 +30,11 @@ void MyTerminal::printText(QByteArray text) {
 }
 
 void MyTerminal::printChar(char letter) {
-  if (this->item(cursorY, cursorX) != NULL)
-    delete this->item(cursorY, cursorX);
+  clearCell(cursorX, cursorY);
   this->setItem(cursorY, cursorX, new QTableWidgetItem(QChar(letter)));
   this->item(cursorY, cursorX)->setBackground(backColor);
   this->item(cursorY, cursorX)->setForeground(fontColor);
   this->item(cursorY, cursorX)->setFont(font);
-  this->item(cursorY, cursorX)->setTextAlignment(Qt::AlignLeft);
   moveCursorRelative(1, 0);
 }
 
@@ -64,13 +62,7 @@ void MyTerminal::clearTerminal() {
   this->setColumnCount(1);
   resetFont();
   moveCursorAbsolute(0, 0);
-  if (!buffer.isEmpty())
-    buffer.clear();
 }
-
-void MyTerminal::setUnderline(bool underlined) { font.setUnderline(underlined); }
-
-void MyTerminal::setBold(bool bold) { font.setBold(bold); }
 
 void MyTerminal::parseFontEscapeCode(QByteArray data) {
   // Reset
@@ -88,41 +80,12 @@ void MyTerminal::parseFontEscapeCode(QByteArray data) {
   else if (data.left(5) == "38;5;")
     fontColor = QColor::fromRgb(ColorCodes::colorCodes256[data.mid(6).toUInt()]);
 
-  // 8 Color Background
-  else if (data == "40")
-    backColor = Qt::black;
-  else if (data == "41")
-    backColor = Qt::darkRed;
-  else if (data == "42")
-    backColor = Qt::darkGreen;
-  else if (data == "43")
-    backColor = Qt::darkYellow;
-  else if (data == "44")
-    backColor = Qt::darkBlue;
-  else if (data == "45")
-    backColor = Qt::darkMagenta;
-  else if (data == "46")
-    backColor = Qt::darkCyan;
-  else if (data == "47")
-    backColor = Qt::lightGray;
-
-  // 16 Color Background
-  else if (data == "40;1")
-    backColor = Qt::darkGray;
-  else if (data == "41;1")
-    backColor = Qt::red;
-  else if (data == "42;1")
-    backColor = Qt::green;
-  else if (data == "43;1")
-    backColor = Qt::yellow;
-  else if (data == "44;1")
-    backColor = Qt::blue;
-  else if (data == "45;1")
-    backColor = Qt::magenta;
-  else if (data == "46;1")
-    backColor = Qt::cyan;
-  else if (data == "47;1")
-    backColor = Qt::white;
+  // Bacground color
+  else if (*data.begin() == '4') {
+    QString code = data.mid(1);
+    if (colorCodes.contains(code))
+      backColor = colorCodes[code];
+  }
 
   // 256 Colors Background
   else if (data.contains("48;5;"))
@@ -142,41 +105,99 @@ void MyTerminal::parseFontEscapeCode(QByteArray data) {
 }
 
 void MyTerminal::parseEscapeCode(QByteArray data) {
+  // Uložit pozici kursoru
   if (data == "s") {
     cursorX_saved = cursorX;
     cursorY_saved = cursorY;
-    return;
   }
-  if (data == "u") {
+  // Vrátit kursor na uloženou posici
+  else if (data == "u") {
     moveCursorAbsolute(cursorX_saved, cursorY_saved);
-    return;
   }
-  if (data.right(1) == "m") {
+  // Nastavení barev a stylů
+  else if (data.right(1) == "m") {
     parseFontEscapeCode(data.left(data.length() - 1));
-    return;
   }
-  if (data.right(1) == "A" || data.right(1) == "B" || data.right(1) == "C" || data.right(1) == "D") {
-    bool isok;
-    int value = data.left(data.length() - 1).toUInt(&isok, 10);
-    if (isok) {
-      if (data.right(1) == "A")
-        moveCursorRelative(0, -value);
-      else if (data.right(1) == "B")
-        moveCursorRelative(0, value);
-      else if (data.right(1) == "C")
-        moveCursorRelative(value, 0);
-      else if (data.right(1) == "D")
-        moveCursorRelative(-value, 0);
-    } else
-      emit sendMessage(tr("Invalid escape sequence").toUtf8(), data, MessageLevel::error);
-    return;
-  }
-  if (data == "2J") {
-    clearTerminal();
-    return;
+  // Pohyb kursoru
+  else if (data.right(1) == "A" || data.right(1) == "B" || data.right(1) == "C" || data.right(1) == "D" || data.right(1) == "E" || data.right(1) == "F") {
+    int value = 1;
+    if (data.length() > 1) {
+      bool isok;
+      value = data.left(data.length() - 1).toUInt(&isok, 10);
+      if (!isok) {
+        emit sendMessage(tr("Invalid escape sequence").toUtf8(), data, MessageLevel::error);
+        return;
+      }
+    }
+    if (data.right(1) == "A") // Nahoru
+      moveCursorRelative(0, -value);
+    else if (data.right(1) == "B") // Dolů
+      moveCursorRelative(0, value);
+    else if (data.right(1) == "C") // Vpravo
+      moveCursorRelative(value, 0);
+    else if (data.right(1) == "D") // Vlevo
+      moveCursorRelative(-value, 0);
+    else if (data.right(1) == "E") // Řádek dolů
+      moveCursorAbsolute(0, cursorY + value);
+    else if (data.right(1) == "F") // Řádek nahoru
+      moveCursorAbsolute(0, cursorY - value);
   }
 
-  emit sendMessage(tr("Invalid escape sequence").toUtf8(), data, MessageLevel::error);
+  // Posunout kursor na pozici (v příkazu se čísluje od 1)
+  else if (data.right(1) == "H" || data.right(1) == "f") {
+    int n = 1;
+    int m = 1;
+    if (data.length() == 1) {
+      moveCursorAbsolute(0, 0);
+      return;
+    }
+    if (data.contains(';')) {
+      bool isok = true;
+      QByteArrayList coord = data.left(data.length() - 1).split(';');
+      if (coord.length() == 2) {
+        if (!coord.at(0).trimmed().isEmpty())
+          n = coord.at(0).toUInt(&isok);
+        if (!coord.at(1).trimmed().isEmpty())
+          m = coord.at(1).toUInt(&isok);
+      } else
+        isok = false;
+      if (isok) {
+        moveCursorAbsolute(m - 1, n - 1);
+        return;
+      }
+    } else {
+      bool isok;
+      n = data.left(data.length() - 1).toUInt(&isok);
+      if (isok) {
+        moveCursorAbsolute(0, n - 1);
+        return;
+      }
+    }
+    emit sendMessage(tr("Invalid escape sequence").toUtf8(), data, MessageLevel::error);
+  }
+
+  // Vymazat od kursoru na konec všeho
+  else if (data == "0J" || data == "J")
+    clearUp();
+  // Vymazet od kursoru po začátek všeho
+  else if (data == "1J")
+    clearDown();
+  // Vymazat všechno
+  else if (data == "2J")
+    clearTerminal();
+
+  // Vymazat od kursoru na konec řádku
+  else if (data == "0K" || data == "K")
+    clearUp();
+  // Vymazet od kursoru po začátek řádku
+  else if (data == "1K")
+    clearDown();
+  // Vymazat řádek
+  else if (data == "2K")
+    clearTerminal();
+
+  else
+    emit sendMessage(tr("Invalid escape sequence").toUtf8(), data, MessageLevel::error);
 }
 
 void MyTerminal::printToTerminal(QByteArray data) {
@@ -220,6 +241,12 @@ void MyTerminal::setDebug(bool en) {
     this->setCurrentCell(cursorY, cursorX, QItemSelectionModel::Deselect);
 }
 
+void MyTerminal::resetTerminal() {
+  clearTerminal();
+  if (!buffer.isEmpty())
+    buffer.clear();
+}
+
 void MyTerminal::resetFont() {
   backColor = Qt::black;
   fontColor = Qt::white;
@@ -235,34 +262,38 @@ bool MyTerminal::isSmallest(uint8_t number, QVector<uint8_t> list) {
 }
 
 void MyTerminal::clearLine() {
-  uint16_t originalCursorX = cursorX;
-  cursorX = 0;
   for (uint16_t i = 0; i < this->columnCount(); i++)
-    printChar(' ');
-  cursorX = originalCursorX;
+    clearCell(i, cursorY);
 }
 
 void MyTerminal::clearLine(uint16_t line) {
-  uint16_t originalCursorX = cursorX;
-  uint16_t originalCursorY = cursorY;
-  moveCursorAbsolute(0, line);
   for (uint16_t i = 0; i < this->columnCount(); i++)
-    printChar(' ');
-  cursorX = originalCursorX;
-  cursorY = originalCursorY;
+    clearCell(i, line);
 }
 
 void MyTerminal::clearLineLeft() {
-  uint16_t originalCursorX = cursorX;
-  cursorX = 0;
   for (uint16_t i = 0; i < cursorX; i++)
-    printChar(' ');
-  cursorX = originalCursorX;
+    clearCell(i, cursorY);
 }
 
 void MyTerminal::clearLineRight() {
-  uint16_t originalCursorX = cursorX;
-  for (uint16_t i = cursorX + 1; i < this->columnCount() - cursorX - 1; i++)
-    printChar(' ');
-  cursorX = originalCursorX;
+  for (uint16_t i = cursorX + 1; i < this->columnCount(); i++)
+    clearCell(i, cursorY);
+}
+
+void MyTerminal::clearDown() {
+  clearLineRight();
+  for (uint16_t i = cursorY + 1; i < this->rowCount(); i++)
+    clearLine(i);
+}
+
+void MyTerminal::clearUp() {
+  clearLineLeft();
+  for (uint16_t i = 0; i < cursorX; i++)
+    clearLine(i);
+}
+
+void MyTerminal::clearCell(int x, int y) {
+  if (this->item(y, x) != NULL)
+    delete this->item(y, x);
 }

@@ -47,7 +47,7 @@ void MainWindow::serialConnectResult(bool connected, QString message) {
   ui->pushButtonSendCommand->setEnabled(connected);
   if (connected && ui->checkBoxClearOnReconnect->isChecked()) {
     ui->plot->resetChannels();
-    ui->myTerminal->clearTerminal();
+    ui->myTerminal->resetTerminal();
     emit resetChannels();
   }
 }
@@ -81,7 +81,7 @@ void MainWindow::on_pushButtonOpenHelp_clicked() {
 
 void MainWindow::on_pushButtonCenter_clicked() { ui->dialVerticalCenter->setValue(0); }
 
-void MainWindow::printMessage(QByteArray messageHeader, QByteArray messageBody, int type, MessageTarget::enumerator target) {
+void MainWindow::printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumerator target) {
   QString color = "<font color=black>";
   switch (type) {
   case MessageLevel::warning:
@@ -136,6 +136,8 @@ void MainWindow::printDeviceMessage(QByteArray messageBody, bool warning, bool e
   ui->plainTextEditConsole->moveCursor(QTextCursor::End);
   ui->plainTextEditConsole->insertPlainText(messageBody);
   ui->plainTextEditConsole->moveCursor(QTextCursor::End);
+  QScrollBar *scroll = ui->plainTextEditConsole->horizontalScrollBar();
+  scroll->setValue(scroll->minimum());
   pendingDeviceMessage = !ended;
 }
 
@@ -172,8 +174,6 @@ void MainWindow::on_comboBoxOutputLevel_currentIndexChanged(int index) {
   if (index >= 0)
     emit setSerialMessageLevel((OutputLevel::enumerator)index);
 }
-
-void MainWindow::on_toolButton_triggered(QAction *arg1) { qDebug() << arg1; }
 
 void MainWindow::on_pushButtonScrollDown_2_clicked() {
   QScrollBar *scroll = ui->plainTextEditConsole_2->verticalScrollBar();
