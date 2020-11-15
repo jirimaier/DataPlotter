@@ -11,43 +11,14 @@ void MainWindow::on_tabs_right_currentChanged(int index) {
     ui->lineEditCommand->setFocus();
 }
 
-void MainWindow::on_pushButtonClearChannels_clicked() {
-  ui->plot->resetChannels();
-  emit resetChannels();
-}
-
 void MainWindow::on_pushButtonChannelColor_clicked() {
-  QColor color = QColorDialog::getColor(ui->plot->getChColor(ui->spinBoxChannelSelect->value()));
+  QColor color = QColorDialog::getColor(ui->plot->getChColor(ui->comboBoxSelectedChannel->currentIndex()));
   if (!color.isValid())
     return;
-  ui->plot->setChColor(ui->spinBoxChannelSelect->value(), color);
+  ui->plot->setChColor(ui->comboBoxSelectedChannel->currentIndex(), color);
   QPixmap pixmap(30, 30);
   pixmap.fill(color);
   ui->pushButtonChannelColor->setIcon(pixmap);
-}
-
-void MainWindow::on_spinBoxChannelSelect_valueChanged(int arg1) {
-  if (ui->checkBoxSelectOnlyUsed->isChecked()) {
-    if (!ui->plot->isChUsed(arg1)) {
-      if (arg1 == CHANNEL_COUNT + MATH_COUNT) {
-        lastSelectedChannel = arg1;
-        ui->spinBoxChannelSelect->setValue(arg1 - 1);
-        return;
-      }
-      if (arg1 != 1) {
-        if (lastSelectedChannel < arg1) {
-          ui->spinBoxChannelSelect->setValue(arg1 + 1);
-          return;
-        }
-        if (lastSelectedChannel > arg1) {
-          ui->spinBoxChannelSelect->setValue(arg1 - 1);
-          return;
-        }
-      }
-    }
-  }
-  lastSelectedChannel = arg1;
-  updateSelectedChannel(arg1);
 }
 
 void MainWindow::rangeTypeChanged() {
@@ -64,37 +35,22 @@ void MainWindow::rangeTypeChanged() {
   }
 }
 
-void MainWindow::updateSelectedChannel(int arg1) {
-  ui->comboBoxGraphStyle->setCurrentIndex(ui->plot->getChStyle(arg1));
-  QPixmap pixmap(30, 30);
-  pixmap.fill(ui->plot->getChColor(arg1));
-  ui->pushButtonChannelColor->setIcon(pixmap);
-  double offset = ui->plot->getChOffset(arg1);
-  double scale = ui->plot->getChScale(arg1);
-  ui->doubleSpinBoxChOffset->setValue(offset);
-  ui->doubleSpinBoxChScale->setValue(scale);
-  ui->dialChScale->updatePosition(scale);
-  ui->checkBoxChInvert->setChecked(ui->plot->isInverted(arg1));
-  ui->lineEditChName->setText(ui->plot->getChName(arg1));
-  updateChScale();
-}
-
 void MainWindow::on_doubleSpinBoxChOffset_valueChanged(double arg1) {
-  ui->plot->changeChOffset(ui->spinBoxChannelSelect->value(), arg1);
+  ui->plot->changeChOffset(ui->comboBoxSelectedChannel->currentIndex(), arg1);
   scrollBarCursorValueChanged();
 }
 
 void MainWindow::on_comboBoxGraphStyle_currentIndexChanged(int index) {
-  ui->plot->setChStyle(ui->spinBoxChannelSelect->value(), index);
+  ui->plot->setChStyle(ui->comboBoxSelectedChannel->currentIndex(), index);
   ui->plot->updateVisuals();
 }
 void MainWindow::on_doubleSpinBoxChScale_valueChanged(double arg1) {
-  ui->plot->changeChScale(ui->spinBoxChannelSelect->value(), arg1 * (ui->checkBoxChInvert->isChecked() ? -1 : 1));
+  ui->plot->changeChScale(ui->comboBoxSelectedChannel->currentIndex(), arg1 * (ui->checkBoxChInvert->isChecked() ? -1 : 1));
   scrollBarCursorValueChanged();
   updateChScale();
 }
 
-void MainWindow::on_pushButtonSelectedCSV_clicked() { exportCSV(false, ui->spinBoxChannelSelect->value() - 1); }
+void MainWindow::on_pushButtonSelectedCSV_clicked() { exportCSV(false, ui->comboBoxSelectedChannel->currentIndex() - 1); }
 
 void MainWindow::on_dialZoom_valueChanged(int value) {
   ui->plot->setZoomRange(value);

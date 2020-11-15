@@ -21,16 +21,6 @@
 int main(int argc, char *argv[]) {
   QApplication application(argc, argv);
 
-  qDebug() << "Main thread is " << QThread::currentThreadId();
-
-  // Zkontroluje jestli je systém little-endian
-  uint16_t endianCheck = 0x0102;
-  if ((uint8_t) * (&endianCheck) == 1)
-    Global::platformIsBigEndian = true;
-  else
-    Global::platformIsBigEndian = false;
-  qDebug() << "This platform is " << (Global::platformIsBigEndian ? "Big-endian" : "Little-endian");
-
   // Zaregistruje typy aby je šlo posílat signály mezi vlákny
   qRegisterMetaType<ChannelSettings_t>();
   qRegisterMetaType<PlotSettings_t>();
@@ -41,6 +31,7 @@ int main(int argc, char *argv[]) {
   qRegisterMetaType<MessageLevel::enumerator>();
   qRegisterMetaType<PlotStatus::enumerator>();
   qRegisterMetaType<MessageTarget::enumerator>();
+  qRegisterMetaType<std::shared_ptr<QVector<double>>>();
 
   // Vytvoří instance hlavních objektů
   MainWindow mainWindow;
@@ -98,12 +89,7 @@ int main(int argc, char *argv[]) {
   QObject::connect(&mainWindow, &MainWindow::requestXY, plotMath, &PlotMath::doXY);
   QObject::connect(&mainWindow, &MainWindow::sendManualInput, serialParserM, &NewSerialParser::parse);
 
-  QObject::connect(plotData, &PlotData::addVectorToPlot, &mainWindow, &MainWindow::addVectorToPlot);
-  QObject::connect(plotData, &PlotData::addPointToPlot, &mainWindow, &MainWindow::addPointToPlot);
   QObject::connect(plotData, &PlotData::sendMessage, &mainWindow, &MainWindow::printMessage);
-
-  QObject::connect(plotMath, &PlotMath::sendResult, &mainWindow, &MainWindow::addVectorToPlot);
-  QObject::connect(plotMath, &PlotMath::sendResultXY, &mainWindow, &MainWindow::addDataToXY);
 
   // Funkce init jsou zavolány až z nového vlákna
   QObject::connect(&serialParser1Thread, &QThread::started, serialParser1, &NewSerialParser::init);
@@ -127,7 +113,7 @@ int main(int argc, char *argv[]) {
   plotMathThread.start();
 
   // Zobrazí okno a čeká na ukončení
-  mainWindow.init(&translator);
+  mainWindow.init(&translator, plotData, plotMath);
   mainWindow.show();
   int returnValue = application.exec();
 

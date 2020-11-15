@@ -16,6 +16,10 @@ void MyXYPlot::newData(QVector<double> *x, QVector<double> *y) {
   double down = *std::min_element(y->begin(), y->end());
   double up = *std::max_element(y->begin(), y->end());
 
+  graphXY->setData(*x, *y);
+  delete x;
+  delete y;
+
   left *= 1.1;
   right *= 1.1;
   up *= 1.1;
@@ -47,9 +51,6 @@ void MyXYPlot::newData(QVector<double> *x, QVector<double> *y) {
     emit setCursorBounds(frame);
   }
 
-  graphXY->setData(*x, *y);
-  delete x;
-  delete y;
   this->replot();
 }
 

@@ -7,9 +7,9 @@ void MainWindow::scrollBarCursorValueChanged() {
     ui->labelCursorX1->setText("X1: " + QString::number(cursorPos[0], 'f', 3));
     ui->labelCursorX2->setText("X2: " + QString::number(cursorPos[1], 'f', 3));
     if (ui->radioButtonCurMain->isChecked()) {
-      ui->labelCursorY1->setText("Y1: " + QString::number(cursorPos[2] - ui->plot->getChOffset(ui->spinBoxChannelSelect->value()) / ui->plot->getChScale(ui->spinBoxChannelSelect->value()), 'f', 3));
-      ui->labelCursorY2->setText("Y2: " + QString::number(cursorPos[3] - ui->plot->getChOffset(ui->spinBoxChannelSelect->value()) / ui->plot->getChScale(ui->spinBoxChannelSelect->value()), 'f', 3));
-      ui->labelCursordY->setText(tr("dY: ") + QString::number(fabs(cursorPos[3] - cursorPos[2]) / ui->plot->getChScale(ui->spinBoxChannelSelect->value())));
+      ui->labelCursorY1->setText("Y1: " + QString::number(cursorPos[2] - ui->plot->getChOffset(ui->comboBoxSelectedChannel->currentIndex()) / ui->plot->getChScale(ui->comboBoxSelectedChannel->currentIndex()), 'f', 3));
+      ui->labelCursorY2->setText("Y2: " + QString::number(cursorPos[3] - ui->plot->getChOffset(ui->comboBoxSelectedChannel->currentIndex()) / ui->plot->getChScale(ui->comboBoxSelectedChannel->currentIndex()), 'f', 3));
+      ui->labelCursordY->setText(tr("dY: ") + QString::number(fabs(cursorPos[3] - cursorPos[2]) / ui->plot->getChScale(ui->comboBoxSelectedChannel->currentIndex())));
     } else {
       ui->labelCursorY1->setText("Y1: " + QString::number(cursorPos[2], 'f', 3));
       ui->labelCursorY2->setText("Y2: " + QString::number(cursorPos[3], 'f', 3));

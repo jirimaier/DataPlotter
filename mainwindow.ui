@@ -54,7 +54,7 @@
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QWidget" name="plotfft" native="true">
+            <widget class="QWidget" name="plotempty" native="true">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                <horstretch>2</horstretch>
@@ -113,7 +113,7 @@
               <enum>QTabWidget::Rounded</enum>
              </property>
              <property name="currentIndex">
-              <number>1</number>
+              <number>3</number>
              </property>
              <property name="tabBarAutoHide">
               <bool>true</bool>
@@ -186,7 +186,7 @@
                        <number>15</number>
                       </property>
                       <property name="invertedControls">
-                       <bool>false</bool>
+                       <bool>true</bool>
                       </property>
                       <property name="notchTarget">
                        <double>2.000000000000000</double>
@@ -678,7 +678,7 @@
                              <number>15</number>
                             </property>
                             <property name="invertedControls">
-                             <bool>false</bool>
+                             <bool>true</bool>
                             </property>
                             <property name="wrapping">
                              <bool>false</bool>
@@ -2097,7 +2097,7 @@ Comma</string>
               <attribute name="title">
                <string>Settings</string>
               </attribute>
-              <layout class="QHBoxLayout" name="horizontalLayout_23" stretch="0,1,0">
+              <layout class="QHBoxLayout" name="horizontalLayout_23" stretch="0,1">
                <item>
                 <widget class="QGroupBox" name="groupBox_5">
                  <property name="title">
@@ -2217,39 +2217,6 @@ Comma</string>
                  </property>
                 </spacer>
                </item>
-               <item>
-                <widget class="QGroupBox" name="groupBox_13">
-                 <property name="title">
-                  <string>Miscelanous</string>
-                 </property>
-                 <layout class="QVBoxLayout" name="verticalLayout_36">
-                  <item>
-                   <widget class="QCheckBox" name="checkBoxSelectOnlyUsed">
-                    <property name="text">
-                     <string>Select only
-used channels</string>
-                    </property>
-                    <property name="checked">
-                     <bool>true</bool>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <spacer name="verticalSpacer_12">
-                    <property name="orientation">
-                     <enum>Qt::Vertical</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0">
-                     <size>
-                      <width>20</width>
-                      <height>1</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
-                 </layout>
-                </widget>
-               </item>
               </layout>
              </widget>
             </widget>
@@ -2302,7 +2269,7 @@ used channels</string>
               <attribute name="title">
                <string>Channel</string>
               </attribute>
-              <layout class="QVBoxLayout" name="verticalLayout_7" stretch="0,0,0,0,0">
+              <layout class="QVBoxLayout" name="verticalLayout_7" stretch="1,5,1,1,2">
                <property name="spacing">
                 <number>5</number>
                </property>
@@ -2358,7 +2325,7 @@ used channels</string>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QPushButton" name="pushButtonClearChannels">
+                  <widget class="QPushButton" name="pushButtonResetChannels">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                      <horstretch>0</horstretch>
@@ -2378,7 +2345,7 @@ used channels</string>
                     </size>
                    </property>
                    <property name="toolTip">
-                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clear all channels&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Reset channels&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                    </property>
                    <property name="text">
                     <string/>
@@ -2440,114 +2407,60 @@ used channels</string>
                 </spacer>
                </item>
                <item>
-                <layout class="QGridLayout" name="gridLayout_4">
+                <layout class="QHBoxLayout" name="horizontalLayout_37" stretch="100,1,1">
                  <property name="spacing">
                   <number>2</number>
                  </property>
-                 <item row="0" column="0">
-                  <widget class="QLabel" name="label_11">
-                   <property name="text">
-                    <string>Channel settings</string>
-                   </property>
-                   <property name="buddy">
-                    <cstring>spinBoxChannelSelect</cstring>
+                 <item>
+                  <widget class="QComboBox" name="comboBoxSelectedChannel">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
                    </property>
                   </widget>
                  </item>
-                 <item row="0" column="1">
-                  <layout class="QHBoxLayout" name="horizontalLayout_37">
-                   <property name="spacing">
-                    <number>2</number>
+                 <item>
+                  <widget class="QPushButton" name="pushButtonChannelColor">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
                    </property>
-                   <item>
-                    <widget class="QComboBox" name="comboBoxGraphStyle">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>0</width>
-                       <height>0</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>16777215</width>
-                       <height>16777215</height>
-                      </size>
-                     </property>
-                     <property name="font">
-                      <font>
-                       <pointsize>8</pointsize>
-                      </font>
-                     </property>
-                     <item>
-                      <property name="text">
-                       <string>Line</string>
-                      </property>
-                     </item>
-                     <item>
-                      <property name="text">
-                       <string>Points</string>
-                      </property>
-                     </item>
-                     <item>
-                      <property name="text">
-                       <string>Line and points</string>
-                      </property>
-                     </item>
-                     <item>
-                      <property name="text">
-                       <string>Hidden</string>
-                      </property>
-                     </item>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QPushButton" name="pushButtonChannelColor">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>25</width>
-                       <height>25</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>25</width>
-                       <height>25</height>
-                      </size>
-                     </property>
-                     <property name="text">
-                      <string notr="true"/>
-                     </property>
-                     <property name="icon">
-                      <iconset resource="resources.qrc">
-                       <normaloff>:/images/icons/blank.png</normaloff>:/images/icons/blank.png</iconset>
-                     </property>
-                     <property name="iconSize">
-                      <size>
-                       <width>30</width>
-                       <height>30</height>
-                      </size>
-                     </property>
-                     <property name="flat">
-                      <bool>true</bool>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
+                   <property name="minimumSize">
+                    <size>
+                     <width>25</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>25</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string notr="true"/>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="resources.qrc">
+                     <normaloff>:/images/icons/blank.png</normaloff>:/images/icons/blank.png</iconset>
+                   </property>
+                   <property name="iconSize">
+                    <size>
+                     <width>30</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="flat">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
                  </item>
-                 <item row="1" column="0">
-                  <widget class="QSpinBox" name="spinBoxChannelSelect">
+                 <item>
+                  <widget class="QComboBox" name="comboBoxGraphStyle">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                      <horstretch>0</horstretch>
@@ -2568,49 +2481,29 @@ used channels</string>
                    </property>
                    <property name="font">
                     <font>
-                     <pointsize>10</pointsize>
+                     <pointsize>8</pointsize>
                     </font>
                    </property>
-                   <property name="focusPolicy">
-                    <enum>Qt::WheelFocus</enum>
-                   </property>
-                   <property name="alignment">
-                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                   </property>
-                   <property name="buttonSymbols">
-                    <enum>QAbstractSpinBox::UpDownArrows</enum>
-                   </property>
-                   <property name="specialValueText">
-                    <string notr="true"/>
-                   </property>
-                   <property name="correctionMode">
-                    <enum>QAbstractSpinBox::CorrectToNearestValue</enum>
-                   </property>
-                   <property name="suffix">
-                    <string/>
-                   </property>
-                   <property name="prefix">
-                    <string>CH </string>
-                   </property>
-                   <property name="minimum">
-                    <number>1</number>
-                   </property>
-                   <property name="maximum">
-                    <number>68</number>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="1">
-                  <widget class="QLineEdit" name="lineEditChName">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="placeholderText">
-                    <string>no description</string>
-                   </property>
+                   <item>
+                    <property name="text">
+                     <string>Line</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Points</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Line and points</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Hidden</string>
+                    </property>
+                   </item>
                   </widget>
                  </item>
                 </layout>
@@ -4495,7 +4388,7 @@ selection-background-color: rgb(85, 0, 0);</string>
   <connection>
    <sender>checkBoxXY</sender>
    <signal>toggled(bool)</signal>
-   <receiver>plotfft</receiver>
+   <receiver>plotempty</receiver>
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">

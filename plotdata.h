@@ -22,7 +22,7 @@ private:
   double getValue(QByteArray number, ValueType::enumerator type);
   ValueType::enumerator getType(QByteArray array);
   OutputLevel::enumerator debugLevel = OutputLevel::info;
-  double lastTimes[CHANNEL_COUNT];
+  double lastTimes[ANALOG_COUNT];
   double defaultTimestep = 1;
   void sendMessageIfAllowed(QString header, QByteArray &message, MessageLevel::enumerator type);
   double arrayToDouble(QByteArray &array, bool &isok);
@@ -38,10 +38,10 @@ signals:
   void sendMessage(QString header, QByteArray message, MessageLevel::enumerator type, MessageTarget::enumerator target = MessageTarget::serial1);
 
   /// Předá data do grafu
-  void addVectorToPlot(int ch, QVector<double> *time, QVector<double> *value, bool append, bool ignorePause = false);
+  void addVectorToPlot(int ch, QVector<double> *time, QVector<double> *value, bool isMath = false);
 
   /// Předá data do grafu
-  void addPointToPlot(int ch, double time, double value, bool append, bool ignorePause = false);
+  void addPointToPlot(int ch, double time, double value, bool append);
 };
 
 #endif // PLOTTING_H

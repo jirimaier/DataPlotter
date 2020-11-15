@@ -114,7 +114,7 @@ double PlotData::arrayToDouble(QByteArray &array, bool &isok) {
 }
 
 void PlotData::addPoint(QByteArrayList data) {
-  if (data.length() > CHANNEL_COUNT) {
+  if (data.length() > ANALOG_COUNT) {
     QByteArray message = QString::number(data.length() - 1).toUtf8();
     emit sendMessageIfAllowed(tr("Too many channels in point (missing ';' ?)").toUtf8(), message, MessageLevel::error);
     return;
@@ -168,19 +168,19 @@ void PlotData::addChannel(QByteArray data, unsigned int ch, QByteArray timeRaw) 
   }
   uint8_t bytesPerValue = data.mid(1, 1).toUInt(nullptr, 16);
   data.remove(0, 2);
-  QVector<double> *times = new QVector<double>;
-  QVector<double> *values = new QVector<double>;
+  auto times = new QVector<double>;
+  auto values = new QVector<double>;
   for (uint32_t i = 0; i < (uint32_t)data.length(); i += bytesPerValue) {
     times->append((i / bytesPerValue) * time);
     values->append(getValue(data.mid(i, bytesPerValue), type));
   }
   if (debugLevel == OutputLevel::info)
     sendMessage(tr("Received channel %1").arg(ch).toUtf8(), tr("%1 bytes, time step %2").arg(data.length() / bytesPerValue).arg(time).toUtf8(), MessageLevel::info);
-  emit addVectorToPlot(ch, times, values, false, false);
+  emit addVectorToPlot(ch, times, values);
 }
 
 void PlotData::reset() {
-  for (int i = 0; i < CHANNEL_COUNT; i++)
+  for (int i = 0; i < ANALOG_COUNT; i++)
     lastTimes[i] = INFINITY;
 }
 

@@ -1,15 +1,14 @@
 #include "mainwindow.h"
 
-void MainWindow::updatePlot() {
-  ui->plot->update();
+void MainWindow::updateMath() {
   for (int i = 0; i < 4; i++) {
     if (mathEn[i]->isChecked()) {
       int firstch = mathFirst[i]->value();
       int secondch = mathSecond[i]->value();
       int operation = mathOp[i]->currentIndex();
-      emit requestMath(CHANNEL_COUNT + 1 + i, operation, ui->plot->getDataVector(firstch - 1, ui->checkBoxMathIOS->isChecked(), ui->checkBoxMathVRO->isChecked()), ui->plot->getDataVector(secondch - 1, ui->checkBoxMathIOS->isChecked(), ui->checkBoxMathVRO->isChecked()));
+      emit requestMath(ANALOG_COUNT + 1 + i, operation, ui->plot->getDataVector(firstch - 1, ui->checkBoxMathIOS->isChecked(), ui->checkBoxMathVRO->isChecked()), ui->plot->getDataVector(secondch - 1, ui->checkBoxMathIOS->isChecked(), ui->checkBoxMathVRO->isChecked()));
     } else
-      ui->plot->clearCh(CHANNEL_COUNT + 1 + i);
+      ui->plot->clearCh(ANALOG_COUNT + 1 + i);
   }
   if (ui->checkBoxXY->isChecked())
     requestXY(ui->plot->getDataVector(ui->spinBoxXYFirst->value() - 1, ui->checkBoxXYIOS->isChecked(), ui->checkBoxXYVRO->isChecked()), ui->plot->getDataVector(ui->spinBoxXYSecond->value() - 1, ui->checkBoxXYIOS->isChecked(), ui->checkBoxXYVRO->isChecked()));
@@ -46,5 +45,11 @@ void MainWindow::comRefresh() {
 
     // Znovu vypere původní port; pokud neexistuje, vybere port který je asi Nucleo, pokud žádný popisem neodpovídá, vybere ten první.
     ui->comboBoxCom->setCurrentIndex(ui->comboBoxCom->findText(current) == -1 ? MAX(portWithStName, 0) : ui->comboBoxCom->findText(current));
+  }
+}
+
+void MainWindow::updateUsedChannels() {
+  for (int i = 0; i < ALL_COUNT; i++) {
+    channelList->setRowHidden(i, !ui->plot->isChUsed(i));
   }
 }

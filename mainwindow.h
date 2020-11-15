@@ -13,6 +13,7 @@
 
 #include "enums_defines_constants.h"
 #include "plotdata.h"
+#include "plotmath.h"
 #include "ui_mainwindow.h"
 
 QT_BEGIN_NAMESPACE
@@ -26,15 +27,15 @@ class MainWindow : public QMainWindow {
 
 public:
   explicit MainWindow(QWidget *parent = nullptr);
-  void init(QTranslator *translator);
+  void init(QTranslator *translator, const PlotData *plotData, const PlotMath *plotMath);
   ~MainWindow();
 
 private:
   Ui::MainWindow *ui;
   QTranslator *translator;
-  QTimer plotUpdateTimer;
-  QTimer portsRefreshTimer;
+  QTimer plotUpdateTimer, portsRefreshTimer, activeChRefreshTimer, mathUpdateTimer;
   QList<QSerialPortInfo> portList;
+  QListView *channelList;
   void connectSignals();
   void updateChScale();
   void changeLanguage(QString code = "en");
@@ -50,8 +51,7 @@ private:
   void setGuiArrays();
   QScrollBar *cursors[4];
   QCheckBox *mathEn[4];
-  QSpinBox *mathFirst[4];
-  QSpinBox *mathSecond[4];
+  QSpinBox *mathFirst[4], *mathSecond[4];
   QComboBox *mathOp[4];
   QMap<QString, QWidget *> setables;
   bool pendingDeviceMessage = false;
@@ -59,11 +59,13 @@ private:
   QByteArray readGuiElementSettings(QWidget *target);
   void updateSelectedChannel(int arg1);
   void sendFileToParser(QFile &file, bool removeLastNewline = false, bool addSemicolums = false);
+  void fillChannelSelect();
+  void updateUsedChannels();
 
 private slots:
   void setAdaptiveSpinBoxes();
   void scrollBarCursorValueChanged();
-  void updatePlot();
+  void updateMath();
   void updateDivs(double vertical, double horizontal);
   void comRefresh();
   void cursorsSwitched() { on_pushButtonCursorsZero_clicked(); }
@@ -72,9 +74,7 @@ private slots:
   void on_tabs_right_currentChanged(int index);
   void on_dialRollingRange_realValueChanged(double value) { ui->doubleSpinBoxRangeHorizontal->setValue(value); }
   void on_dialVerticalRange_realValueChanged(double value) { ui->doubleSpinBoxRangeVerticalRange->setValue(value); }
-  void on_pushButtonClearChannels_clicked();
   void on_pushButtonChannelColor_clicked();
-  void on_spinBoxChannelSelect_valueChanged(int arg1);
   void on_doubleSpinBoxChOffset_valueChanged(double arg1);
   void on_comboBoxGraphStyle_currentIndexChanged(int index);
   void on_pushButtonConnect_clicked();
@@ -90,14 +90,13 @@ private slots:
   void on_lineEditManualInput_returnPressed();
   void on_pushButtonLoadFile_clicked();
   void on_pushButtonDefaults_clicked();
-  void on_checkBoxChInvert_toggled(bool checked) { ui->plot->changeChScale(ui->spinBoxChannelSelect->value(), ui->doubleSpinBoxChScale->value() * (checked ? -1 : 1)); }
+  void on_checkBoxChInvert_toggled(bool checked) { ui->plot->changeChScale(ui->comboBoxSelectedChannel->currentIndex(), ui->doubleSpinBoxChScale->value() * (checked ? -1 : 1)); }
   void on_pushButtonSaveSettings_clicked();
   void on_pushButtonReset_clicked();
   void on_pushButtonCursorToView_clicked();
   void on_pushButtonAutoset_clicked();
   void on_pushButtonCursorsZero_clicked();
   void on_pushButtonCSVXY_clicked();
-  void on_lineEditChName_textChanged(const QString &arg1) { ui->plot->setChName(ui->spinBoxChannelSelect->value(), arg1); }
   void on_comboBoxHAxisType_currentIndexChanged(int index);
   void on_pushButtonOpenHelp_clicked();
   void on_pushButtonPositive_clicked();
@@ -116,14 +115,13 @@ private slots:
   void on_pushButtonScrollDown_2_clicked();
   void on_pushButtonScrollDown_3_clicked();
   void on_checkBoxSerialMonitor_toggled(bool checked);
+  void on_comboBoxSelectedChannel_currentIndexChanged(int index);
+  void on_pushButtonResetChannels_clicked();
 
 public slots:
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumerator target);
   void setCursorBounds(PlotFrame_t frame);
   void showPlotStatus(PlotStatus::enumerator type);
-  void addVectorToPlot(int ch, QVector<double> *time, QVector<double> *value, bool append, bool ignorePause) { ui->plot->newDataVector(ch, time, value, append, ignorePause); }
-  void addPointToPlot(int ch, double time, double value, bool append, bool ignorePause) { ui->plot->newDataPoint(ch, time, value, append, ignorePause); }
-  void addDataToXY(QVector<double> *x, QVector<double> *y) { ui->plotxy->newData(x, y); }
   void serialConnectResult(bool connected, QString message);
   void printToTerminal(QByteArray data) { ui->myTerminal->printToTerminal(data); }
   void serialFinishedWriting() { ui->lineEditCommand->clear(); }

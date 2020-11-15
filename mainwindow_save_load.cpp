@@ -26,7 +26,6 @@ void MainWindow::initSetables() {
   setables["chlabel"] = ui->checkBoxChLabel;
   setables["vaxis"] = ui->checkBoxVerticalValues;
   setables["haxis"] = ui->comboBoxHAxisType;
-  setables["selused"] = ui->checkBoxSelectOnlyUsed;
   setables["hlabel"] = ui->lineEditHtitle;
   setables["vlabel"] = ui->lineEditVtitle;
 
@@ -113,7 +112,7 @@ QByteArray MainWindow::getSettings() {
   settings.append(ui->radioButtonCSVDot->isChecked() ? "csvdel:dc" : "csvdel:cs");
   settings.append(";\n");
 
-  for (int i = 1; i <= CHANNEL_COUNT + MATH_COUNT; i++) {
+  for (int i = 0; i < ALL_COUNT; i++) {
     settings.append("ch:" + QString::number(i).toUtf8());
     settings.append(":off:" + QString::number(ui->plot->getChOffset(i)).toUtf8());
     settings.append(";\n");
@@ -125,9 +124,6 @@ QByteArray MainWindow::getSettings() {
     settings.append(";\n");
     settings.append("ch:" + QString::number(i).toUtf8());
     settings.append(":sty:" + QString::number(ui->plot->getChStyle(i)).toUtf8());
-    settings.append(";\n");
-    settings.append("ch:" + QString::number(i).toUtf8());
-    settings.append(":name:" + ui->plot->getChName(i).toUtf8());
     settings.append(";\n");
     settings.append("ch:" + QString::number(i).toUtf8());
     QColor clr = ui->plot->getChColor(i);
@@ -176,7 +172,7 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumerator sour
 
   else if (type == "ch") {
     int ch = value.left(value.indexOf(':', 0)).toUInt();
-    if (ch > CHANNEL_COUNT + MATH_COUNT) {
+    if (ch >= ALL_COUNT) {
       printMessage(tr("Invalid channel in settings").toUtf8(), QString::number(ch).toUtf8(), MessageLevel::error, source);
       return;
     }
@@ -193,8 +189,6 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumerator sour
         ui->plot->changeChScale(ch, ui->plot->getChScale(ch) * (-1));
     } else if (subtype == "sty")
       ui->plot->setChStyle(ch, subvalue.toUInt());
-    else if (subtype == "name")
-      ui->plot->setChName(ch, subvalue);
 
     else if (subtype == "col") {
       QByteArrayList rgb = subvalue.mid(subvalue.indexOf(':')).split(',');
@@ -205,7 +199,7 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumerator sour
       QColor clr = QColor(rgb.at(0).toInt(), rgb.at(1).toInt(), rgb.at(2).toInt());
       ui->plot->setChColor(ch, clr);
     }
-    updateSelectedChannel(ui->spinBoxChannelSelect->value());
+    on_comboBoxSelectedChannel_currentIndexChanged(ui->comboBoxSelectedChannel->currentIndex());
   }
 
   // Error
@@ -304,4 +298,11 @@ void MainWindow::sendFileToParser(QFile &file, bool removeLastNewline, bool addS
   if (addSemicolums)
     text.replace("\n", ";");
   emit sendManualInput(text);
+}
+
+void MainWindow::fillChannelSelect() {
+  channelList = new QListView;
+  ui->comboBoxSelectedChannel->setView(channelList);
+  for (int i = 0; i < ALL_COUNT; i++)
+    ui->comboBoxSelectedChannel->addItem(GlobalFunctions::getChName(i));
 }

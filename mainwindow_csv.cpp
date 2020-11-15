@@ -8,9 +8,7 @@ void MainWindow::exportCSV(bool all, int ch) {
     if (ch == XY_CHANNEL)
       name = "xy";
     else {
-      name = ui->plot->getChName(ch + 1);
-      if (name.isEmpty())
-        name = QString("ch%1").arg(ch + 1);
+      name = GlobalFunctions::getChName(ch);
     }
   }
   QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/export/%1.csv").arg(name);

@@ -9,6 +9,11 @@ namespace PlotStatus {
 enum enumerator { run, pause };
 }
 
+namespace ChannelType {
+enum enumerator { analog, math, logic };
+
+}
+
 namespace PlotRange {
 enum enumerator { freeMove, fixedRange, rolling };
 }
@@ -49,8 +54,10 @@ namespace ValueType {
 enum enumerator { unrecognised, u1, u2, u3, u4, U1, U2, U3, U4, i1, i2, i3, i4, I1, I2, I3, I4, f4, F4, d8, D8 };
 }
 
-#define CHANNEL_COUNT 64
+#define ANALOG_COUNT 8
 #define MATH_COUNT 4
+#define LOGIC_COUNT 32
+#define ALL_COUNT (ANALOG_COUNT + MATH_COUNT + LOGIC_COUNT)
 
 #define PORT_NUCLEO_DESCRIPTION_IDENTIFIER "ST"
 
@@ -59,7 +66,6 @@ enum enumerator { unrecognised, u1, u2, u3, u4, U1, U2, U3, U4, i1, i2, i3, i4, 
 #define MAX_PLOT_ZOOMOUT 1000000
 
 namespace Global {
-static bool platformIsBigEndian = false;
 
 const static QString lineEndings[4] = {"", "\n", "\r", "\r\n"};
 
@@ -74,12 +80,31 @@ struct GlobalFunctions {
         return i;
     return 28;
   }
+
+  static int getChId(int number, ChannelType::enumerator type) {
+    if (type == ChannelType::analog)
+      return (number - 1);
+    if (type == ChannelType::math)
+      return (number + ANALOG_COUNT - 1);
+    if (type == ChannelType::logic)
+      return (number + ANALOG_COUNT + MATH_COUNT - 1);
+    return 0;
+  }
+
+  static QString getChName(int chid) {
+    if (chid >= ANALOG_COUNT + MATH_COUNT)
+      return ((QObject::tr("Logic %1").arg(chid - ANALOG_COUNT - MATH_COUNT + 1)));
+    if (chid >= ANALOG_COUNT)
+      return ((QObject::tr("Math %1").arg(chid - ANALOG_COUNT + 1)));
+    return ((QObject::tr("Ch %1").arg(chid + 1)));
+  }
 };
 
 struct ChannelSettings_t {
   QColor color = QColor(Qt::black);
   int style = GraphStyle::line;
-  QString name = "";
+  double offset = 0;
+  double scale = 1;
 };
 
 struct PlotSettings_t {
@@ -102,6 +127,7 @@ Q_DECLARE_METATYPE(OutputLevel::enumerator)
 Q_DECLARE_METATYPE(MessageLevel::enumerator)
 Q_DECLARE_METATYPE(PlotStatus::enumerator)
 Q_DECLARE_METATYPE(MessageTarget::enumerator)
+Q_DECLARE_METATYPE(std::shared_ptr<QVector<double>>)
 
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))

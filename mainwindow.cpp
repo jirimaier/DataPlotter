@@ -2,9 +2,17 @@
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) { ui->setupUi(this); }
 
-MainWindow::~MainWindow() { delete ui; }
+MainWindow::~MainWindow() {
+  delete channelList;
+  delete ui;
+}
 
-void MainWindow::init(QTranslator *translator) {
+void MainWindow::init(QTranslator *translator, const PlotData *plotData, const PlotMath *plotMath) {
+  fillChannelSelect();
+  QObject::connect(plotMath, &PlotMath::sendResult, ui->plot, &MyMainPlot::newDataVector);
+  QObject::connect(plotMath, &PlotMath::sendResultXY, ui->plotxy, &MyXYPlot::newData);
+  QObject::connect(plotData, &PlotData::addVectorToPlot, ui->plot, &MyMainPlot::newDataVector);
+  QObject::connect(plotData, &PlotData::addPointToPlot, ui->plot, &MyMainPlot::newDataPoint);
   this->translator = translator;
   setGuiArrays();
   initSetables();
@@ -37,7 +45,7 @@ void MainWindow::showPlotStatus(PlotStatus::enumerator type) {
 }
 
 void MainWindow::updateChScale() {
-  double perDiv = ui->plot->getCHDiv(ui->spinBoxChannelSelect->value());
+  double perDiv = ui->plot->getCHDiv(ui->comboBoxSelectedChannel->currentIndex());
   ui->labelChScale->setText(QString::number(perDiv) + tr(" / Div"));
 }
 
@@ -192,4 +200,27 @@ void MainWindow::on_pushButtonScrollDown_3_clicked() {
 void MainWindow::on_checkBoxSerialMonitor_toggled(bool checked) {
   ui->frameSerialMonitor->setVisible(checked);
   emit enableSerialMonitor(checked);
+}
+
+void MainWindow::on_comboBoxSelectedChannel_currentIndexChanged(int index) {
+  ui->comboBoxGraphStyle->setCurrentIndex(ui->plot->getChStyle(index));
+  QPixmap pixmap(30, 30);
+  pixmap.fill(ui->plot->getChColor(index));
+  ui->pushButtonChannelColor->setIcon(pixmap);
+  double offset = ui->plot->getChOffset(index);
+  double scale = ui->plot->getChScale(index);
+  ui->doubleSpinBoxChOffset->setValue(offset);
+  ui->doubleSpinBoxChScale->setValue(scale);
+  ui->dialChScale->updatePosition(scale);
+  ui->checkBoxChInvert->setChecked(ui->plot->isInverted(index));
+  updateChScale();
+}
+
+void MainWindow::on_pushButtonResetChannels_clicked() {
+  for (int i = 0; i < ALL_COUNT; i++) {
+    ui->plot->changeChOffset(i, 0);
+    ui->plot->changeChScale(i, 1);
+    ui->plot->setChStyle(i, GraphStyle::line);
+  }
+  on_comboBoxSelectedChannel_currentIndexChanged(ui->comboBoxSelectedChannel->currentIndex());
 }

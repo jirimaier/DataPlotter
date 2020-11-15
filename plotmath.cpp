@@ -5,8 +5,8 @@ PlotMath::PlotMath(QObject *parent) : QObject(parent) { qDebug() << "PlotMath cr
 PlotMath::~PlotMath() { qDebug() << "PlotMath deleted from " << QThread::currentThreadId(); }
 
 void PlotMath::doMath(int resultCh, int operation, QPair<QVector<double>, QVector<double>> data1, QPair<QVector<double>, QVector<double>> data2) {
-  QVector<double> *result = new QVector<double>;
-  QVector<double> *resultTime = new QVector<double>;
+  auto result = new QVector<double>;
+  auto resultTime = new QVector<double>;
   int length = MIN(data1.first.length(), data2.first.length());
   for (int i = 0; i < length; i++) {
     if (operation == MathOperations::add) {
@@ -26,12 +26,12 @@ void PlotMath::doMath(int resultCh, int operation, QPair<QVector<double>, QVecto
       resultTime->append(data1.second.at(i));
     }
   }
-  emit sendResult(resultCh, resultTime, result, false, true, true);
+  emit sendResult(resultCh, resultTime, result, true);
 }
 
 void PlotMath::doXY(QPair<QVector<double>, QVector<double>> data1, QPair<QVector<double>, QVector<double>> data2) {
-  QVector<double> *resultY = new QVector<double>;
-  QVector<double> *resultX = new QVector<double>;
+  auto resultX = new QVector<double>;
+  auto resultY = new QVector<double>;
   int length = MIN(data1.first.length(), data2.first.length());
   for (int i = 0; i < length; i++) {
     resultY->append(data2.second.at(i));

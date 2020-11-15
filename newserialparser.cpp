@@ -123,7 +123,7 @@ void NewSerialParser::parse(QByteArray newData) {
             pendingPointBuffer.clear();
             bool isok;
             channelNumber = arrayToUint(chnum, isok);
-            if (channelNumber > CHANNEL_COUNT || channelNumber == 0)
+            if (channelNumber > ANALOG_COUNT || channelNumber == 0)
               isok = false;
             if (!isok) {
               fatalError(tr("invalid channel number"), chnum);

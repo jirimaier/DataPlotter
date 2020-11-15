@@ -7,7 +7,7 @@ DEFINES += QCUSTOMPLOT_USE_OPENGL
 
 LIBS += -lOpengl32
 
-CONFIG += c++11
+CONFIG += c++17
 
 SOURCES += \
     main.cpp \

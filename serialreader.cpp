@@ -3,7 +3,8 @@
 SerialReader::SerialReader(QObject *parent) : QObject(parent) { qDebug() << "SerialReader created from " << QThread::currentThreadId(); }
 
 SerialReader::~SerialReader() {
-  end();
+  if (serial->isOpen())
+    serial->close();
   delete serial;
   qDebug() << "SerialParser deleted from " << QThread::currentThreadId();
 }
