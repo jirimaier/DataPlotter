@@ -49,7 +49,7 @@ void MainWindow::comRefresh() {
 }
 
 void MainWindow::updateUsedChannels() {
-  for (int i = 0; i < ALL_COUNT; i++) {
+  for (int i = 0; i < ANALOG_COUNT + MATH_COUNT; i++) {
     channelList->setRowHidden(i, !ui->plot->isChUsed(i));
   }
 }

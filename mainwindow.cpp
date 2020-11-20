@@ -45,8 +45,11 @@ void MainWindow::showPlotStatus(PlotStatus::enumerator type) {
 }
 
 void MainWindow::updateChScale() {
-  double perDiv = ui->plot->getCHDiv(ui->comboBoxSelectedChannel->currentIndex());
-  ui->labelChScale->setText(QString::number(perDiv) + tr(" / Div"));
+  if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT) {
+    double perDiv = ui->plot->getCHDiv(ui->comboBoxSelectedChannel->currentIndex());
+    ui->labelChScale->setText(QString::number(perDiv) + tr(" / Div"));
+  } else
+    ui->labelChScale->setText(tr("---"));
 }
 
 void MainWindow::serialConnectResult(bool connected, QString message) {
@@ -203,6 +206,11 @@ void MainWindow::on_checkBoxSerialMonitor_toggled(bool checked) {
 }
 
 void MainWindow::on_comboBoxSelectedChannel_currentIndexChanged(int index) {
+  if (index >= ANALOG_COUNT + MATH_COUNT) {
+    ui->checkBoxChInvert->setVisible(false);
+    index = GlobalFunctions::getLogicChannelId(index - ANALOG_COUNT - MATH_COUNT + 1, 1);
+  } else
+    ui->checkBoxChInvert->setVisible(true);
   ui->comboBoxGraphStyle->setCurrentIndex(ui->plot->getChStyle(index));
   QPixmap pixmap(30, 30);
   pixmap.fill(ui->plot->getChColor(index));
@@ -217,10 +225,14 @@ void MainWindow::on_comboBoxSelectedChannel_currentIndexChanged(int index) {
 }
 
 void MainWindow::on_pushButtonResetChannels_clicked() {
-  for (int i = 0; i < ALL_COUNT; i++) {
+  for (int i = 0; i < ANALOG_COUNT + MATH_COUNT; i++) {
     ui->plot->changeChOffset(i, 0);
     ui->plot->changeChScale(i, 1);
     ui->plot->setChStyle(i, GraphStyle::line);
+  }
+  for (int i = 1; i <= LOGIC_GROUPS; i++) {
+    ui->plot->changeLogicOffset(i, 0);
+    ui->plot->changeLogicScale(i, 1);
   }
   on_comboBoxSelectedChannel_currentIndexChanged(ui->comboBoxSelectedChannel->currentIndex());
 }

@@ -31,7 +31,6 @@ int main(int argc, char *argv[]) {
   qRegisterMetaType<MessageLevel::enumerator>();
   qRegisterMetaType<PlotStatus::enumerator>();
   qRegisterMetaType<MessageTarget::enumerator>();
-  qRegisterMetaType<std::shared_ptr<QVector<double>>>();
 
   // Vytvoří instance hlavních objektů
   MainWindow mainWindow;

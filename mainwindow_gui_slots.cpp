@@ -15,7 +15,10 @@ void MainWindow::on_pushButtonChannelColor_clicked() {
   QColor color = QColorDialog::getColor(ui->plot->getChColor(ui->comboBoxSelectedChannel->currentIndex()));
   if (!color.isValid())
     return;
-  ui->plot->setChColor(ui->comboBoxSelectedChannel->currentIndex(), color);
+  if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT)
+    ui->plot->setChColor(ui->comboBoxSelectedChannel->currentIndex(), color);
+  else
+    ui->plot->setLogicColor(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT + 1, color);
   QPixmap pixmap(30, 30);
   pixmap.fill(color);
   ui->pushButtonChannelColor->setIcon(pixmap);
@@ -36,16 +39,26 @@ void MainWindow::rangeTypeChanged() {
 }
 
 void MainWindow::on_doubleSpinBoxChOffset_valueChanged(double arg1) {
-  ui->plot->changeChOffset(ui->comboBoxSelectedChannel->currentIndex(), arg1);
+  if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT)
+    ui->plot->changeChOffset(ui->comboBoxSelectedChannel->currentIndex(), arg1);
+  else
+    ui->plot->changeLogicOffset(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT + 1, arg1);
+  ui->plot->updateVisuals();
   scrollBarCursorValueChanged();
 }
 
 void MainWindow::on_comboBoxGraphStyle_currentIndexChanged(int index) {
-  ui->plot->setChStyle(ui->comboBoxSelectedChannel->currentIndex(), index);
+  if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT)
+    ui->plot->setChStyle(ui->comboBoxSelectedChannel->currentIndex(), index);
+  else
+    ui->plot->setLogicStyle(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT + 1, index);
   ui->plot->updateVisuals();
 }
 void MainWindow::on_doubleSpinBoxChScale_valueChanged(double arg1) {
-  ui->plot->changeChScale(ui->comboBoxSelectedChannel->currentIndex(), arg1 * (ui->checkBoxChInvert->isChecked() ? -1 : 1));
+  if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT)
+    ui->plot->changeChScale(ui->comboBoxSelectedChannel->currentIndex(), arg1 * (ui->checkBoxChInvert->isChecked() ? -1 : 1));
+  else
+    ui->plot->changeLogicScale(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT + 1, arg1);
   scrollBarCursorValueChanged();
   updateChScale();
 }

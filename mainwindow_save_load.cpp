@@ -303,6 +303,8 @@ void MainWindow::sendFileToParser(QFile &file, bool removeLastNewline, bool addS
 void MainWindow::fillChannelSelect() {
   channelList = new QListView;
   ui->comboBoxSelectedChannel->setView(channelList);
-  for (int i = 0; i < ALL_COUNT; i++)
+  for (int i = 0; i < ANALOG_COUNT + MATH_COUNT; i++)
     ui->comboBoxSelectedChannel->addItem(GlobalFunctions::getChName(i));
+  for (int i = 1; i <= LOGIC_GROUPS; i++)
+    ui->comboBoxSelectedChannel->addItem(tr("Logic %1").arg(i));
 }

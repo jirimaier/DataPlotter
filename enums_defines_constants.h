@@ -56,7 +56,9 @@ enum enumerator { unrecognised, u1, u2, u3, u4, U1, U2, U3, U4, i1, i2, i3, i4, 
 
 #define ANALOG_COUNT 8
 #define MATH_COUNT 4
-#define LOGIC_COUNT 32
+#define LOGIC_BITS 8
+#define LOGIC_GROUPS 2
+#define LOGIC_COUNT LOGIC_BITS *LOGIC_GROUPS
 #define ALL_COUNT (ANALOG_COUNT + MATH_COUNT + LOGIC_COUNT)
 
 #define PORT_NUCLEO_DESCRIPTION_IDENTIFIER "ST"
@@ -81,19 +83,19 @@ struct GlobalFunctions {
     return 28;
   }
 
-  static int getChId(int number, ChannelType::enumerator type) {
+  static int getAnalogChId(int number, ChannelType::enumerator type) {
     if (type == ChannelType::analog)
       return (number - 1);
     if (type == ChannelType::math)
       return (number + ANALOG_COUNT - 1);
-    if (type == ChannelType::logic)
-      return (number + ANALOG_COUNT + MATH_COUNT - 1);
     return 0;
   }
 
+  static int getLogicChannelId(int group, int bit) { return (ANALOG_COUNT + MATH_COUNT + (group - 1) * LOGIC_BITS + bit - 1); }
+
   static QString getChName(int chid) {
     if (chid >= ANALOG_COUNT + MATH_COUNT)
-      return ((QObject::tr("Logic %1").arg(chid - ANALOG_COUNT - MATH_COUNT + 1)));
+      return ((QObject::tr("Logic %1 bit %2").arg((chid - ANALOG_COUNT - MATH_COUNT) / LOGIC_BITS + 1).arg((chid - ANALOG_COUNT - MATH_COUNT) % LOGIC_BITS + 1)));
     if (chid >= ANALOG_COUNT)
       return ((QObject::tr("Math %1").arg(chid - ANALOG_COUNT + 1)));
     return ((QObject::tr("Ch %1").arg(chid + 1)));
@@ -127,7 +129,6 @@ Q_DECLARE_METATYPE(OutputLevel::enumerator)
 Q_DECLARE_METATYPE(MessageLevel::enumerator)
 Q_DECLARE_METATYPE(PlotStatus::enumerator)
 Q_DECLARE_METATYPE(MessageTarget::enumerator)
-Q_DECLARE_METATYPE(std::shared_ptr<QVector<double>>)
 
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))

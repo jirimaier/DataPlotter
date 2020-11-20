@@ -24,12 +24,17 @@ public:
   void changeChScale(int ch, double scale);
   QByteArray exportChannelCSV(char separator, char decimal, int channel, int precision, bool offseted, bool onlyInView);
   QByteArray exportAllCSV(char separator, char decimal, int precision, bool offseted, bool onlyInView, bool includeHidden);
-  inline QPair<QVector<double>, QVector<double>> getDataVector(int ch, bool includeOffsets, bool onlyInView = false);
+  QPair<QVector<double>, QVector<double>> getDataVector(int ch, bool includeOffsets, bool onlyInView = false);
   void clearCh(int chid);
   double getChMax(int chid);
   double getChMin(int chid);
+  void changeLogicOffset(int group, double offset);
+  void changeLogicScale(int group, double scale);
+  void setLogicStyle(int group, int style);
+  void setLogicColor(int group, QColor color);
 
 private:
+  void setUpLogic();
   QVector<QVector<double>> pauseBufferTime;
   QVector<QVector<double>> pauseBufferValue;
   PlotSettings_t plotSettings;

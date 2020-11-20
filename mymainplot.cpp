@@ -11,6 +11,7 @@ MyMainPlot::MyMainPlot(QWidget *parent) : MyPlot(parent) {
   }
   initZeroLines();
   resetChannels();
+  setUpLogic();
 }
 
 MyMainPlot::~MyMainPlot() {}
@@ -77,6 +78,37 @@ QPair<QVector<double>, QVector<double>> MyMainPlot::getDataVector(int chid, bool
 double MyMainPlot::getChMin(int chid) {
   QVector<double> values = getDataVector(chid, false).second;
   return *std::min_element(values.begin(), values.end());
+}
+
+void MyMainPlot::changeLogicOffset(int group, double offset) {
+  double step = 2 * getChScale(GlobalFunctions::getLogicChannelId(group, 1));
+  for (int bit = 1; bit <= LOGIC_BITS; bit++) {
+    changeChOffset(GlobalFunctions::getLogicChannelId(group, bit), offset);
+    offset += step;
+  }
+}
+
+void MyMainPlot::changeLogicScale(int group, double scale) {
+  for (int bit = 1; bit <= LOGIC_BITS; bit++)
+    changeChScale(GlobalFunctions::getLogicChannelId(group, bit), scale);
+  changeLogicOffset(group, getChOffset(GlobalFunctions::getLogicChannelId(group, 1)));
+}
+
+void MyMainPlot::setLogicStyle(int group, int style) {
+  for (int bit = 1; bit <= LOGIC_BITS; bit++)
+    setChStyle(GlobalFunctions::getLogicChannelId(group, bit), style);
+}
+
+void MyMainPlot::setLogicColor(int group, QColor color) {
+  for (int bit = 1; bit <= LOGIC_BITS; bit++)
+    setChColor(GlobalFunctions::getLogicChannelId(group, bit), color);
+}
+
+void MyMainPlot::setUpLogic() {
+  for (int i = 1; i <= LOGIC_GROUPS; i++) {
+    changeLogicOffset(i, 0);
+    changeLogicScale(i, 1);
+  }
 }
 
 double MyMainPlot::getChMax(int chid) {
@@ -168,7 +200,7 @@ void MyMainPlot::updateVisuals() {
   for (int i = 0; i < ALL_COUNT; i++) {
     this->graph(i)->setPen(QPen(channelSettings.at(i).color));
     this->graph(i)->setVisible((channelSettings.at(i).style != GraphStyle::hidden));
-    zeroLines.at(i)->setVisible((channelSettings.at(i).offset != 0) && (channelSettings.at(i).style != GraphStyle::hidden) && isChUsed(i));
+    zeroLines.at(i)->setVisible(((channelSettings.at(i).offset != 0) || (i > ANALOG_COUNT + MATH_COUNT)) && (channelSettings.at(i).style != GraphStyle::hidden) /*&& isChUsed(i)*/);
     zeroLines.at(i)->setPen(QPen(channelSettings.at(i).color, 1, Qt::DashLine));
     if (channelSettings.at(i).style == GraphStyle::linePoint) {
       this->graph(i)->setScatterStyle(POINT_STYLE);
@@ -212,7 +244,7 @@ void MyMainPlot::reoffset(int chid, double relativeOffset) {
 }
 
 void MyMainPlot::newDataVector(int ch, QVector<double> *time, QVector<double> *value, bool isMath) {
-  int chid = GlobalFunctions::getChId(ch, ChannelType::analog);
+  int chid = GlobalFunctions::getAnalogChId(ch, ChannelType::analog);
   if (plottingStatus != PlotStatus::pause || isMath) {
     for (QVector<double>::iterator it = value->begin(); it != value->end(); it++)
       *it = *it * channelSettings.at(chid).scale + channelSettings.at(chid).offset;
@@ -223,7 +255,7 @@ void MyMainPlot::newDataVector(int ch, QVector<double> *time, QVector<double> *v
 }
 
 void MyMainPlot::newDataPoint(int ch, double time, double value, bool append) {
-  int chid = GlobalFunctions::getChId(ch, ChannelType::analog);
+  int chid = GlobalFunctions::getAnalogChId(ch, ChannelType::analog);
   if (plottingStatus != PlotStatus::pause) {
     value = value * channelSettings.at(chid).scale + channelSettings.at(chid).offset;
     if (append)
@@ -261,7 +293,7 @@ QByteArray MyMainPlot::exportAllCSV(char separator, char decimal, int precision,
   QByteArray output = "";
   QVector<QPair<QVector<double>, QVector<double>>> channels;
   bool firstNonEmpty = true;
-  for (int i = 0; i < ANALOG_COUNT + MATH_COUNT; i++) {
+  for (int i = 0; i < ALL_COUNT; i++) {
     if (!graph(i)->data()->isEmpty() && (getChStyle(i + 1) != GraphStyle::hidden || includeHidden)) {
       if (firstNonEmpty) {
         firstNonEmpty = false;

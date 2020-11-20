@@ -113,7 +113,7 @@
               <enum>QTabWidget::Rounded</enum>
              </property>
              <property name="currentIndex">
-              <number>3</number>
+              <number>0</number>
              </property>
              <property name="tabBarAutoHide">
               <bool>true</bool>
@@ -170,6 +170,9 @@
                         <height>40</height>
                        </size>
                       </property>
+                      <property name="toolTip">
+                       <string>Vertical axis range</string>
+                      </property>
                       <property name="autoFillBackground">
                        <bool>false</bool>
                       </property>
@@ -222,6 +225,9 @@
                      <font>
                       <pointsize>10</pointsize>
                      </font>
+                    </property>
+                    <property name="toolTip">
+                     <string>Vertical axis range</string>
                     </property>
                     <property name="alignment">
                      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -371,6 +377,9 @@
                        <layout class="QVBoxLayout" name="verticalLayout_33">
                         <item>
                          <widget class="QRadioButton" name="radioButtonFreeRange">
+                          <property name="toolTip">
+                           <string>Move and zoom plot by mouse</string>
+                          </property>
                           <property name="text">
                            <string>Free</string>
                           </property>
@@ -378,6 +387,9 @@
                         </item>
                         <item>
                          <widget class="QRadioButton" name="radioButtonFixedRange">
+                          <property name="toolTip">
+                           <string>Plot shows whole data</string>
+                          </property>
                           <property name="text">
                            <string>Fixed</string>
                           </property>
@@ -385,6 +397,9 @@
                         </item>
                         <item>
                          <widget class="QRadioButton" name="radioButtonRollingRange">
+                          <property name="toolTip">
+                           <string>Plot shows newest data, old data shifts left</string>
+                          </property>
                           <property name="text">
                            <string>Rolling</string>
                           </property>
@@ -464,6 +479,9 @@
                             <width>16777215</width>
                             <height>40</height>
                            </size>
+                          </property>
+                          <property name="toolTip">
+                           <string>Vertical grid</string>
                           </property>
                           <property name="autoFillBackground">
                            <bool>false</bool>
@@ -764,7 +782,7 @@
                      <property name="frameShadow">
                       <enum>QFrame::Sunken</enum>
                      </property>
-                     <layout class="QVBoxLayout" name="verticalLayout_31" stretch="1,1">
+                     <layout class="QVBoxLayout" name="verticalLayout_31" stretch="2,1">
                       <property name="spacing">
                        <number>2</number>
                       </property>
@@ -875,6 +893,9 @@
                           <width>16777215</width>
                           <height>16777215</height>
                          </size>
+                        </property>
+                        <property name="toolTip">
+                         <string>Move zoomed plot</string>
                         </property>
                         <property name="minimum">
                          <number>500</number>
@@ -2269,7 +2290,7 @@ Comma</string>
               <attribute name="title">
                <string>Channel</string>
               </attribute>
-              <layout class="QVBoxLayout" name="verticalLayout_7" stretch="1,5,1,1,2">
+              <layout class="QVBoxLayout" name="verticalLayout_7" stretch="1,100,1,1,1">
                <property name="spacing">
                 <number>5</number>
                </property>
@@ -2418,6 +2439,15 @@ Comma</string>
                      <horstretch>0</horstretch>
                      <verstretch>0</verstretch>
                     </sizepolicy>
+                   </property>
+                   <property name="maxVisibleItems">
+                    <number>1000</number>
+                   </property>
+                   <property name="sizeAdjustPolicy">
+                    <enum>QComboBox::AdjustToContents</enum>
+                   </property>
+                   <property name="placeholderText">
+                    <string/>
                    </property>
                   </widget>
                  </item>
