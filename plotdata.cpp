@@ -183,7 +183,7 @@ void PlotData::addPoint(QByteArrayList data) {
     emit sendMessage(tr("Received point").toUtf8(), tr("%1 channels").arg(data.length() - 1).toUtf8(), MessageLevel::info);
 }
 
-void PlotData::addChannel(QByteArray data, unsigned int ch, QByteArray timeRaw) {
+void PlotData::addChannel(QByteArray data, unsigned int ch, QByteArray timeRaw, int bits, QByteArray min, QByteArray max) {
   // Zjistí datový typ vstupu
   ValueType::enumerator type = getType(data.left(2));
   if (type == unrecognised) {
@@ -194,9 +194,33 @@ void PlotData::addChannel(QByteArray data, unsigned int ch, QByteArray timeRaw) 
   bool isok;
   double time = arrayToDouble(timeRaw, isok);
   if (!isok) {
-    // Časový interval je neplatný !
     sendMessageIfAllowed(tr("Can not parse channel time step").toUtf8(), timeRaw, MessageLevel::error);
     return;
+  }
+
+  // Přemapování provede poud je vyplněno max
+  bool remap = !max.isEmpty();
+
+  // Převede minimální hodnotu na číslo na číslo
+  double minimum = 0;
+  if (!min.isEmpty()) {
+    if (!remap)
+      sendMessageIfAllowed(tr("Minumum value is stated, but maximum is not").toUtf8(), "Value will not be remaped!", MessageLevel::warning);
+    minimum = arrayToDouble(min, isok);
+    if (!isok) {
+      sendMessageIfAllowed(tr("Can not parse minimum value").toUtf8(), min, MessageLevel::error);
+      return;
+    }
+  }
+
+  // Převede minimální hodnotu na číslo na číslo
+  double maximum = 0;
+  if (remap || !min.isEmpty()) {
+    maximum = arrayToDouble(max, isok);
+    if (!isok) {
+      sendMessageIfAllowed(tr("Can not parse maximum value").toUtf8(), max, MessageLevel::error);
+      return;
+    }
   }
 
   // Zjistí počet bajtů na hodnotu a z dat odebere identifikátor typu
@@ -204,14 +228,22 @@ void PlotData::addChannel(QByteArray data, unsigned int ch, QByteArray timeRaw) 
   data.remove(0, 2);
 
   // Informace o přijatém kanálu
-  if (debugLevel == OutputLevel::info)
-    emit sendMessage(tr("Received channel %1").arg(ch).toUtf8(), tr("%1 samples, time step %2").arg(data.length() / bytesPerValue).arg(time).toUtf8(), MessageLevel::info);
+  if (debugLevel == OutputLevel::info) {
+    QByteArray message = tr("%1 samples, time step %2, %3 bits").arg(data.length() / bytesPerValue).arg(time).arg(bits).toUtf8();
+    if (remap)
+      message.append(tr(", from %1 to %2").arg(minimum).arg(maximum).toUtf8());
+    emit sendMessage(tr("Received channel %1").arg(ch).toUtf8(), message, MessageLevel::info);
+  }
 
   bool showAsLogic = digitalChannel[ch - 1] > 0;
   if (showAsLogic && type != u1 && type != u2 && type != u3 && type != u4 && type != U1 && type != U2 && type != U3 && type != U4) {
     showAsLogic = false;
     sendMessageIfAllowed(tr("Can not show channel %1 as logic").arg(ch), tr("digital mode is only available for unsigned integer data type").toUtf8(), MessageLevel::warning);
   }
+
+  double remapMultiple = 1;
+  if (remap)
+    remapMultiple = (maximum - minimum) / (1 << bits);
 
   // Vektory se pošlou jako pointer, graf je po zpracování smaže.
   auto times = QSharedPointer<QVector<double>>(new QVector<double>);
@@ -220,7 +252,10 @@ void PlotData::addChannel(QByteArray data, unsigned int ch, QByteArray timeRaw) 
 
   for (uint32_t i = 0; i < (uint32_t)data.length(); i += bytesPerValue) {
     times->append((i / bytesPerValue) * time);
-    valuesAnalog->append(getValue(data.mid(i, bytesPerValue), type));
+    if (remap)
+      valuesAnalog->append(minimum + getValue(data.mid(i, bytesPerValue), type) * remapMultiple);
+    else
+      valuesAnalog->append(getValue(data.mid(i, bytesPerValue), type));
     if (showAsLogic)
       getBits(valuesDigital, data.mid(i, bytesPerValue), type);
   }
@@ -231,7 +266,7 @@ void PlotData::addChannel(QByteArray data, unsigned int ch, QByteArray timeRaw) 
   if (showAsLogic) {
     // Pošle do grafu logický kanál
     int logicGroup = digitalChannel[ch - 1];
-    emit addLogicVectorToPlot(logicGroup, times, valuesDigital, logicBits[logicGroup - 1] > 0 ? logicBits[logicGroup - 1] : 8 * bytesPerValue);
+    emit addLogicVectorToPlot(logicGroup, times, valuesDigital, logicBits[logicGroup - 1] > 0 ? logicBits[logicGroup - 1] : bits);
   }
 }
 

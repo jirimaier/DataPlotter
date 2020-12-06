@@ -28,6 +28,10 @@
         <file>icons/terminalDebug.png</file>
         <file>icons/singleChannel.png</file>
         <file>icons/xyChannel.png</file>
+        <file>icons/deltaX.png</file>
+        <file>icons/deltaY.png</file>
+        <file>icons/freq.png</file>
+        <file>icons/slope.png</file>
     </qresource>
     <qresource prefix="/translations">
         <file>translation_cz.qm</file>

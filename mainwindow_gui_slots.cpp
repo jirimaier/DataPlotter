@@ -11,19 +11,6 @@ void MainWindow::on_tabs_right_currentChanged(int index) {
     ui->lineEditCommand->setFocus();
 }
 
-void MainWindow::on_pushButtonChannelColor_clicked() {
-  QColor color = QColorDialog::getColor(ui->plot->getChColor(ui->comboBoxSelectedChannel->currentIndex()));
-  if (!color.isValid())
-    return;
-  if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT)
-    ui->plot->setChColor(ui->comboBoxSelectedChannel->currentIndex(), color);
-  else
-    ui->plot->setLogicColor(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT + 1, color);
-  QPixmap pixmap(30, 30);
-  pixmap.fill(color);
-  ui->pushButtonChannelColor->setIcon(pixmap);
-}
-
 void MainWindow::rangeTypeChanged() {
   if (ui->radioButtonFixedRange->isChecked()) {
     ui->plot->setRangeType(PlotRange::fixedRange);
@@ -149,9 +136,6 @@ void MainWindow::on_comboBoxSelectedChannel_currentIndexChanged(int index) {
   } else
     ui->checkBoxChInvert->setVisible(true);
   ui->comboBoxGraphStyle->setCurrentIndex(ui->plot->getChStyle(index));
-  QPixmap pixmap(30, 30);
-  pixmap.fill(ui->plot->getChColor(index));
-  ui->pushButtonChannelColor->setIcon(pixmap);
   double offset = ui->plot->getChOffset(index);
   double scale = ui->plot->getChScale(index);
   ui->doubleSpinBoxChOffset->setValue(offset);
@@ -188,4 +172,21 @@ void MainWindow::on_pushButtonOpenHelp_clicked() {
     msgBox.setIcon(QMessageBox::Critical);
     msgBox.exec();
   }
+}
+
+void MainWindow::on_pushButtonChangeChColor_clicked() {
+  QColor oldColor;
+  if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT)
+    oldColor = ui->plot->getChColor(ui->comboBoxSelectedChannel->currentIndex());
+  else
+    oldColor = ui->plot->getChColor(GlobalFunctions::getLogicChannelId(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT + 1, 1));
+  QColor color = QColorDialog::getColor(oldColor);
+  if (!color.isValid())
+    return;
+  if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT)
+    ui->plot->setChColor(ui->comboBoxSelectedChannel->currentIndex(), color);
+  else
+    ui->plot->setLogicColor(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT + 1, color);
+  colorUpdateNeeded = true;
+  updateUsedChannels();
 }

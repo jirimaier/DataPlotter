@@ -15,6 +15,9 @@ void NewSerialParser::resetChHeader() {
   channelLength = 0;
   channelNumber = 0;
   channelTime = "";
+  channelMin = "";
+  channelMax = "";
+  channelBits = -1;
 }
 
 void NewSerialParser::fatalError(QString header, QByteArray &message) {
@@ -117,11 +120,17 @@ void NewSerialParser::parse(QByteArray newData) {
       if (!channelHeaderOK) {
         readResult result = bufferPullPoint(pendingPointBuffer);
         if (result == complete) {
-          if (pendingPointBuffer.length() == 3) {
+          if (pendingPointBuffer.length() == 3 || pendingPointBuffer.length() == 6) {
             channelHeaderOK = true;
             QByteArray chnum = pendingPointBuffer.at(0);
             channelTime = pendingPointBuffer.at(1);
             QByteArray lengthBytes = pendingPointBuffer.at(2);
+            QByteArray bits = "";
+            if (pendingPointBuffer.length() == 6) {
+              bits = pendingPointBuffer.at(3);
+              channelMin = pendingPointBuffer.at(4);
+              channelMax = pendingPointBuffer.at(5);
+            }
             pendingPointBuffer.clear();
             bool isok;
             channelNumber = arrayToUint(chnum, isok);
@@ -138,6 +147,16 @@ void NewSerialParser::parse(QByteArray newData) {
               resetChHeader();
               continue;
             }
+
+            if (!bits.isEmpty()) {
+              channelBits = arrayToUint(bits, isok);
+              if (!isok) {
+                fatalError(tr("invalid channel bits"), lengthBytes);
+                resetChHeader();
+                continue;
+              }
+            }
+
             continue;
           } else {
             fatalError(tr("Invalid channel header"), buffer);
@@ -172,7 +191,7 @@ void NewSerialParser::parse(QByteArray newData) {
           }
           sendMessageIfAllowed(tr("Channel not ended with ';'"), semicolumPositionMessage, MessageLevel::warning);
         }
-        emit sendChannel(channel, channelNumber, channelTime);
+        emit sendChannel(channel, channelNumber, channelTime, channelBits, channelMin, channelMax);
         resetChHeader();
         continue;
       }
@@ -392,6 +411,8 @@ NewSerialParser::readResult NewSerialParser::bufferPullChannel(QByteArray &resul
   bool isok;
   QByteArray type = buffer.left(2);
   uint8_t bytesPerValue = type.right(1).toUInt(&isok, 16);
+  if (channelBits == -1)
+    channelBits = 8 * bytesPerValue;
   if (!isok) {
     fatalError(tr("invalid type"), type);
     return incomplete;

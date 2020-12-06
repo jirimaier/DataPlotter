@@ -53,6 +53,7 @@ void MainWindow::updateUsedChannels() {
   updateChannelComboBox(*ui->comboBoxCursor1Channel);
   updateChannelComboBox(*ui->comboBoxCursor2Channel);
   updateChannelComboBox(*ui->comboBoxSelectedChannel);
+  colorUpdateNeeded = false;
 }
 
 void MainWindow::updateChannelComboBox(QComboBox &combobox) {
@@ -63,6 +64,11 @@ void MainWindow::updateChannelComboBox(QComboBox &combobox) {
     item->setEnabled(ui->checkBoxSelUnused->isChecked() || ui->plot->isChUsed(i));
     QListView *view = qobject_cast<QListView *>(combobox.view());
     view->setRowHidden(i, !ui->checkBoxSelUnused->isChecked() && !ui->plot->isChUsed(i));
+    if (colorUpdateNeeded) {
+      QPixmap color(12, 12);
+      color.fill(ui->plot->getChColor(i));
+      item->setIcon(QIcon(color));
+    }
   }
   for (int i = 1; i <= LOGIC_GROUPS; i++) {
     auto *model = qobject_cast<QStandardItemModel *>(combobox.model());
@@ -70,5 +76,10 @@ void MainWindow::updateChannelComboBox(QComboBox &combobox) {
     item->setEnabled(ui->checkBoxSelUnused->isChecked() || ui->plot->isChUsed(GlobalFunctions::getLogicChannelId(i, 1)));
     QListView *view = qobject_cast<QListView *>(combobox.view());
     view->setRowHidden(i + ANALOG_COUNT + MATH_COUNT - 1, !ui->checkBoxSelUnused->isChecked() && !ui->plot->isChUsed(GlobalFunctions::getLogicChannelId(i, 1)));
+    if (colorUpdateNeeded) {
+      QPixmap color(12, 12);
+      color.fill(ui->plot->getChColor(GlobalFunctions::getLogicChannelId(i, 1)));
+      item->setIcon(QIcon(color));
+    }
   }
 }

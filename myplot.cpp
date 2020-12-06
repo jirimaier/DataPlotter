@@ -1,6 +1,11 @@
 #include "myplot.h"
 
 MyPlot::MyPlot(QWidget *parent) : QCustomPlot(parent) {
+  // setNoAntialiasingOnDrag(true);
+  // setInteraction(QCP::iSelectPlottables, true);
+  this->addLayer("cursorLayer", 0, limAbove);
+  cursorLayer = this->layer("cursorLayer");
+  cursorLayer->setMode(QCPLayer::lmBuffered);
   fixedTickerX = QSharedPointer<QCPAxisTickerFixed>(new QCPAxisTickerFixed);
   fixedTickerY = QSharedPointer<QCPAxisTickerFixed>(new QCPAxisTickerFixed);
   timeTickerX = QSharedPointer<QCPAxisTickerTime>(new QCPAxisTickerTime);
@@ -56,26 +61,36 @@ void MyPlot::updateCursor(int cursor, double cursorPosition) {
     cursors.at(cursor)->start->setCoords(0, cursorPosition);
     cursors.at(cursor)->end->setCoords(1, cursorPosition);
   }
-  replot();
+  cursorLayer->replot();
 }
 
 void MyPlot::updateGridX() {
-  setHorizontalDiv(Global::logaritmicSettings[MAX(GlobalFunctions::roundToStandardValue(xAxis->range().upper - xAxis->range().lower) + xGridHint, 0)]);
-  replot();
-  emit gridChanged();
+  double newGrid = Global::logaritmicSettings[MAX(GlobalFunctions::roundToStandardValue(xAxis->range().upper - xAxis->range().lower) + xGridHint, 0)];
+  if (newGrid != lastGridX) {
+    lastGridX = newGrid;
+    setHorizontalDiv(newGrid);
+    replot();
+    emit gridChanged();
+  }
 }
 
 void MyPlot::updateGridY() {
-  setVerticalDiv(Global::logaritmicSettings[MAX(GlobalFunctions::roundToStandardValue(yAxis->range().upper - yAxis->range().lower) + yGridHint, 0)]);
-  replot();
-  emit gridChanged();
+  double newGrid = Global::logaritmicSettings[MAX(GlobalFunctions::roundToStandardValue(yAxis->range().upper - yAxis->range().lower) + yGridHint, 0)];
+  if (newGrid != lastGridY) {
+    lastGridY = newGrid;
+    setVerticalDiv(newGrid);
+    replot();
+    emit gridChanged();
+  }
 }
 
 void MyPlot::initcursors() {
   QPen cursorpen;
   cursorpen.setColor(Qt::black);
   for (int i = 0; i < 4; i++) {
-    cursors.append(new QCPItemLine(this));
+    auto line = new QCPItemLine(this);
+    line->setLayer(cursorLayer);
+    cursors.append(line);
     if (i < 2) {
       cursors.at(i)->start->setTypeX(QCPItemPosition::ptPlotCoords);
       cursors.at(i)->start->setTypeY(QCPItemPosition::ptViewportRatio);

@@ -20,9 +20,9 @@ void MainWindow::init(QTranslator *translator, const PlotData *plotData, const P
   changeLanguage();
   setGuiDefaults();
   updateChScale();
-  startTimers();
   setAdaptiveSpinBoxes();
   setUp();
+  startTimers();
 }
 
 void MainWindow::changeLanguage(QString code) {

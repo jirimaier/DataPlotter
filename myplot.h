@@ -12,6 +12,7 @@ private:
   void updateGridY();
   int xGridHint = -4;
   int yGridHint = -4;
+  double lastGridX = 0, lastGridY = 0;
   QSharedPointer<QCPAxisTickerTime> timeTickerX, longTimeTickerX;
   QSharedPointer<QCPAxisTickerFixed> fixedTickerX, fixedTickerY;
 
@@ -27,6 +28,7 @@ public:
   QImage toPNG() { return (this->toPixmap().toImage()); };
 
 protected:
+  QCPLayer *cursorLayer;
   QVector<QCPItemLine *> cursors;
   void initcursors();
   void setMouseControlls(bool enabled);

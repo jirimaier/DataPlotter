@@ -99,13 +99,11 @@ void MyMainPlot::changeLogicScale(int group, double scale) {
 void MyMainPlot::setLogicStyle(int group, int style) {
   for (int bit = 1; bit <= LOGIC_BITS; bit++)
     setChStyle(GlobalFunctions::getLogicChannelId(group, bit), style);
-  replot();
 }
 
 void MyMainPlot::setLogicColor(int group, QColor color) {
   for (int bit = 1; bit <= LOGIC_BITS; bit++)
     setChColor(GlobalFunctions::getLogicChannelId(group, bit), color);
-  replot();
 }
 
 int MyMainPlot::getLogicBitsUsed(int group) {
@@ -163,26 +161,32 @@ void MyMainPlot::setChStyle(int chid, int style) {
     this->graph(chid)->setScatterStyle(POINT_STYLE);
     this->graph(chid)->setLineStyle(QCPGraph::lsNone);
   }
-  replot();
+  repaintNeeded = true;
 }
 
 void MyMainPlot::setChColor(int chid, QColor color) {
   channelSettings[chid].color = color;
   zeroLines.at(chid)->setPen(QPen(color, 1, Qt::DashLine));
   this->graph(chid)->setPen(QPen(color));
-  replot();
+  repaintNeeded = true;
 }
 
 void MyMainPlot::changeChOffset(int chid, double offset) {
-  reoffset(chid, offset - channelSettings.at(chid).offset);
-  channelSettings[chid].offset = offset;
-  newData = true;
+  double diff = offset - channelSettings.at(chid).offset;
+  if (diff != 0) {
+    reoffset(chid, diff);
+    channelSettings[chid].offset = offset;
+    newData = true;
+  }
 }
 
 void MyMainPlot::changeChScale(int chid, double scale) {
-  rescale(chid, scale / channelSettings.at(chid).scale);
-  channelSettings[chid].scale = scale;
-  newData = true;
+  double diff = scale / channelSettings.at(chid).scale;
+  if (diff != 1) {
+    rescale(chid, scale / channelSettings.at(chid).scale);
+    channelSettings[chid].scale = scale;
+    newData = true;
+  }
 }
 
 void MyMainPlot::resume() {
@@ -206,6 +210,9 @@ void MyMainPlot::update() {
     minT = minTime();
     maxT = maxTime();
     redraw();
+  } else if (repaintNeeded) {
+    repaintNeeded = false;
+    this->replot();
   }
 }
 

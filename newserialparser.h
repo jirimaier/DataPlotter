@@ -27,7 +27,7 @@ signals:
   /// Pošle bod ke zpracování
   void sendPoint(QByteArrayList data);
   /// Pošle kanál ke zpracování
-  void sendChannel(QByteArray data, unsigned int ch, QByteArray timeRaw);
+  void sendChannel(QByteArray data, unsigned int ch, QByteArray timeRaw, int bits, QByteArray min, QByteArray max);
   /// Potvrdí připravenost
   void ready();
 
@@ -35,7 +35,8 @@ private:
   MessageTarget::enumerator target;
   void resetChHeader();
   bool channelHeaderOK = false;
-  QByteArray channelTime;
+  QByteArray channelTime, channelMin, channelMax;
+  int channelBits = -1;
   uint32_t channelLength;
   int channelNumber;
   void fatalError(QString header, QByteArray &message);

@@ -39,7 +39,7 @@ public:
 
 private:
   void redraw();
-  bool newData = true;
+  bool newData = true, repaintNeeded = true;
   void setUpLogic();
   QVector<QVector<double>> pauseBufferTime;
   QVector<QVector<double>> pauseBufferValue;

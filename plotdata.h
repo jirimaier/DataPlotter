@@ -31,7 +31,7 @@ private:
   void getBits(QVector<uint32_t> *values, QByteArray data, ValueType::enumerator type);
 public slots:
   void addPoint(QByteArrayList data);
-  void addChannel(QByteArray data, unsigned int ch, QByteArray timeRaw);
+  void addChannel(QByteArray data, unsigned int ch, QByteArray timeRaw, int bits, QByteArray min, QByteArray max);
   void reset();
   /// Nastavý úroveň výpisu
   void setDebugLevel(OutputLevel::enumerator debugLevel) { this->debugLevel = debugLevel; }

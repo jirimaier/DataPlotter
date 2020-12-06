@@ -59,6 +59,7 @@ private:
   void fillChannelSelect();
   void updateUsedChannels();
   void updateChannelComboBox(QComboBox &combobox);
+  bool colorUpdateNeeded = true;
 
 private slots:
   void updateCursors();
@@ -71,7 +72,6 @@ private slots:
   void on_tabs_right_currentChanged(int index);
   void on_dialRollingRange_realValueChanged(double value) { ui->doubleSpinBoxRangeHorizontal->setValue(value); }
   void on_dialVerticalRange_realValueChanged(double value) { ui->doubleSpinBoxRangeVerticalRange->setValue(value); }
-  void on_pushButtonChannelColor_clicked();
   void on_doubleSpinBoxChOffset_valueChanged(double arg1);
   void on_comboBoxGraphStyle_currentIndexChanged(int index);
   void on_pushButtonConnect_clicked();
@@ -141,6 +141,8 @@ private slots:
   void on_checkBoxCur1Visible_toggled(bool checked);
 
   void on_checkBoxCur2Visible_toggled(bool checked);
+
+  void on_pushButtonChangeChColor_clicked();
 
 public slots:
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumerator target);
