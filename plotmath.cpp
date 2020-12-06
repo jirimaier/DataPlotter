@@ -6,7 +6,7 @@ PlotMath::~PlotMath() { qDebug() << "PlotMath deleted from " << QThread::current
 
 void PlotMath::doMath(int resultCh, int operation, QPair<QVector<double>, QVector<double>> data1, QPair<QVector<double>, QVector<double>> data2) {
   auto result = new QVector<double>;
-  auto resultTime = new QVector<double>;
+  auto resultTime = QSharedPointer<QVector<double>>(new QVector<double>);
   int length = MIN(data1.first.length(), data2.first.length());
   for (int i = 0; i < length; i++) {
     if (operation == MathOperations::add) {

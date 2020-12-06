@@ -2,13 +2,9 @@
 
 void MainWindow::connectSignals() {
   connect(ui->pushButtonPause, &QPushButton::clicked, ui->plot, &MyMainPlot::togglePause);
-  connect(ui->radioButtonCurMain, &QRadioButton::toggled, ui->plot, &MyPlot::setCursorsAccess);
-  connect(ui->radioButtonCurXY, &QRadioButton::toggled, ui->plotxy, &MyXYPlot::setCursorsAccess);
   connect(ui->checkBoxVerticalValues, &QCheckBox::toggled, ui->plot, &MyPlot::setShowVerticalValues);
   connect(ui->plot, &MyMainPlot::showPlotStatus, this, &MainWindow::showPlotStatus);
-  connect(ui->plot, &MyMainPlot::updateDivs, this, &MainWindow::updateDivs);
-  connect(ui->plot, &MyMainPlot::setCursorBounds, this, &MainWindow::setCursorBounds);
-  connect(ui->plotxy, &MyXYPlot::setCursorBounds, this, &MainWindow::setCursorBounds);
+  connect(ui->plot, &MyPlot::gridChanged, this, &MainWindow::updateDivs);
   connect(ui->doubleSpinBoxRangeHorizontal, SIGNAL(valueChanged(double)), ui->plot, SLOT(setRollingRange(double)));
   connect(ui->doubleSpinBoxRangeVerticalRange, SIGNAL(valueChanged(double)), ui->plot, SLOT(setVerticalRange(double)));
   connect(ui->doubleSpinBoxRangeHorizontal, SIGNAL(valueChanged(double)), ui->dialRollingRange, SLOT(updatePosition(double)));
@@ -22,6 +18,10 @@ void MainWindow::connectSignals() {
   connect(ui->lineEditVtitle, &QLineEdit::textChanged, ui->plotxy, &MyPlot::setXTitle);
   connect(ui->lineEditVtitle, &QLineEdit::textChanged, ui->plotxy, &MyPlot::setYTitle);
   connect(ui->myTerminal, &MyTerminal::sendMessage, this, &MainWindow::printMessage);
+  connect(ui->dialVerticalDiv, &QDial::valueChanged, ui->plot, &MyPlot::setGridHintY);
+  connect(ui->dialhorizontalDiv, &QDial::valueChanged, ui->plot, &MyPlot::setGridHintX);
+  connect(ui->horizontalSliderShiftStep, &QSlider::valueChanged, ui->plot, &MyMainPlot::setShiftStep);
+  connect(ui->plot, &MyMainPlot::requestCursorUpdate, this, &MainWindow::updateCursors);
 
   connect(&plotUpdateTimer, &QTimer::timeout, ui->plot, &MyMainPlot::update);
   connect(&portsRefreshTimer, &QTimer::timeout, this, &MainWindow::comRefresh);
@@ -56,16 +56,12 @@ void MainWindow::setGuiDefaults() {
   ui->comboBoxOutputLevel->setCurrentIndex((int)OutputLevel::info);
   ui->radioButtonFixedRange->setChecked(true);
   ui->plotxy->setHidden(true);
-  ui->plotempty->setHidden(true);
   ui->labelBuildDate->setText("Build: " + QString(__DATE__) + " " + QString(__TIME__));
   ui->pushButtonPause->setIcon(QPixmap(":/images/icons/run.png"));
+  ui->pushButtonMultiplInputs->setChecked(false);
 }
 
 void MainWindow::setGuiArrays() {
-  cursors[0] = ui->horizontalScrollBarCursorX1;
-  cursors[1] = ui->horizontalScrollBarCursorX2;
-  cursors[2] = ui->verticalScrollBarCursorY1;
-  cursors[3] = ui->verticalScrollBarCursorY2;
   mathEn[0] = ui->checkBoxMath1;
   mathEn[1] = ui->checkBoxMath2;
   mathEn[2] = ui->checkBoxMath3;
@@ -82,4 +78,17 @@ void MainWindow::setGuiArrays() {
   mathOp[1] = ui->comboBoxMath2Op;
   mathOp[2] = ui->comboBoxMath3Op;
   mathOp[3] = ui->comboBoxMath4Op;
+}
+
+void MainWindow::fillChannelSelect() {
+  for (int i = 0; i < ANALOG_COUNT + MATH_COUNT; i++) {
+    ui->comboBoxSelectedChannel->addItem(GlobalFunctions::getChName(i));
+    ui->comboBoxCursor1Channel->addItem(GlobalFunctions::getChName(i));
+    ui->comboBoxCursor2Channel->addItem(GlobalFunctions::getChName(i));
+  }
+  for (int i = 1; i <= LOGIC_GROUPS; i++) {
+    ui->comboBoxSelectedChannel->addItem(tr("Logic %1").arg(i));
+    ui->comboBoxCursor1Channel->addItem(tr("Logic %1").arg(i));
+    ui->comboBoxCursor2Channel->addItem(tr("Logic %1").arg(i));
+  }
 }

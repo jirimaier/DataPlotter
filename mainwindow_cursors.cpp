@@ -1,64 +1,58 @@
 #include "mainwindow.h"
 
-void MainWindow::scrollBarCursorValueChanged() {
-  if (!ui->radioButtonCurOff->isChecked()) {
-    for (int i = 0; i < 4; i++)
-      cursorPos[i] = cursors[i]->value() / 1000.0;
-    ui->labelCursorX1->setText("X1: " + QString::number(cursorPos[0], 'f', 3));
-    ui->labelCursorX2->setText("X2: " + QString::number(cursorPos[1], 'f', 3));
-    if (ui->radioButtonCurMain->isChecked()) {
-      ui->labelCursorY1->setText("Y1: " + QString::number(cursorPos[2] - ui->plot->getChOffset(ui->comboBoxSelectedChannel->currentIndex()) / ui->plot->getChScale(ui->comboBoxSelectedChannel->currentIndex()), 'f', 3));
-      ui->labelCursorY2->setText("Y2: " + QString::number(cursorPos[3] - ui->plot->getChOffset(ui->comboBoxSelectedChannel->currentIndex()) / ui->plot->getChScale(ui->comboBoxSelectedChannel->currentIndex()), 'f', 3));
-      ui->labelCursordY->setText(tr("dY: ") + QString::number(fabs(cursorPos[3] - cursorPos[2]) / ui->plot->getChScale(ui->comboBoxSelectedChannel->currentIndex())));
-    } else {
-      ui->labelCursorY1->setText("Y1: " + QString::number(cursorPos[2], 'f', 3));
-      ui->labelCursorY2->setText("Y2: " + QString::number(cursorPos[3], 'f', 3));
-      ui->labelCursordY->setText(tr("dY: ") + QString::number(fabs(cursorPos[3] - cursorPos[2])));
-    }
-    ui->labelCursordX->setText(tr("dX: ") + QString::number(fabs(cursorPos[1] - cursorPos[0])));
-    ui->labelCursorFX->setText(tr("1/dX: ") + QString::number(1.0 / (fabs(cursorPos[1] - cursorPos[0])), 'f', 3));
+void MainWindow::updateCursors() {
+  int chid = ui->comboBoxCursor1Channel->currentIndex();
+  if (chid < 0)
+    return;
+  QPair<long, long> range = ui->plot->getChVisibleSamples(chid);
+  ui->horizontalSliderTimeCur1->updateRange(range.first, range.second);
+  chid = ui->comboBoxCursor2Channel->currentIndex();
+  if (chid < 0)
+    return;
+  range = ui->plot->getChVisibleSamples(chid);
+  ui->horizontalSliderTimeCur2->updateRange(range.first, range.second);
 
-    if (ui->radioButtonCurMain->isChecked())
-      ui->plot->updateCursors(cursorPos);
-    else if (ui->radioButtonCurXY->isChecked())
-      ui->plotxy->updateCursors(cursorPos);
+  auto result1 = QPair<double, double>(0, 0);
+  auto result2 = QPair<double, double>(0, 0);
+
+  int chid1 = ui->comboBoxCursor1Channel->currentIndex();
+  if (ui->plot->isChUsed(chid1)) {
+    result1 = ui->plot->setTimeCursor(Cursors::X1, chid1, ui->horizontalSliderTimeCur1->realValue);
+    ui->labelCur1Sample->setText(QString::number(ui->horizontalSliderTimeCur1->realValue));
+    ui->labelCur1Time->setText(QString::number(result1.first, 'f', 3));
+    ui->labelCur1Val->setText(QString::number(result1.second, 'f', 3));
   }
-}
 
-void MainWindow::on_pushButtonCursorToView_clicked() {
-  if (ui->radioButtonCurOff->isChecked())
-    ui->radioButtonCurMain->setChecked(true);
-  cursors[0]->setValue((plotFrame.xMinView + (plotFrame.xMaxView - plotFrame.xMinView) * (1.0 / 4.0)) * 1000);
-  cursors[1]->setValue((plotFrame.xMinView + (plotFrame.xMaxView - plotFrame.xMinView) * (3.0 / 4.0)) * 1000);
-  cursors[2]->setValue((plotFrame.yMinView + (plotFrame.yMaxView - plotFrame.yMinView) * (1.0 / 4.0)) * 1000);
-  cursors[3]->setValue((plotFrame.yMinView + (plotFrame.yMaxView - plotFrame.yMinView) * (3.0 / 4.0)) * 1000);
-}
-
-void MainWindow::setCursorBounds(PlotFrame_t frame) {
-  for (int i = 0; i < 4; i++) {
-    int stepsize;
-    if (i < 2) {
-      cursors[i]->setMinimum(MIN(frame.xMinTotal, frame.xMinView) * 1000);
-      cursors[i]->setMaximum(MAX(frame.xMaxTotal, frame.xMaxView) * 1000);
-      stepsize = (frame.xMaxView - frame.xMinView) * 2;
-
-    } else {
-      cursors[i]->setMinimum(MIN(frame.yMinTotal, frame.yMinView) * 1000);
-      cursors[i]->setMaximum(MAX(frame.yMaxTotal, frame.yMaxView) * 1000);
-      stepsize = (frame.yMaxView - frame.yMinView) * 2;
-    }
-    cursors[i]->setSingleStep(stepsize);
-    cursors[i]->setPageStep(stepsize);
+  int chid2 = ui->comboBoxCursor2Channel->currentIndex();
+  if (ui->plot->isChUsed(chid1)) {
+    result2 = ui->plot->setTimeCursor(Cursors::X2, chid2, ui->horizontalSliderTimeCur2->realValue);
+    ui->labelCur2Sample->setText(QString::number(ui->horizontalSliderTimeCur2->realValue));
+    ui->labelCur2Time->setText(QString::number(result2.first, 'f', 3));
+    ui->labelCur2Val->setText(QString::number(result2.second, 'f', 3));
   }
-  this->plotFrame = frame;
+
+  ui->labelCurDeltaTime->setText(QString::number(abs(result2.first - result1.first), 'f', 3));
+  ui->labelCurDeltaValue->setText(QString::number(abs(result2.second - result1.second), 'f', 3));
+  ui->labelCurFreq->setText(QString::number(1.0 / abs(result2.first - result1.first), 'f', 3));
+  ui->labelCurSlope->setText(QString::number((result2.second - result1.second) / (result2.first - result1.first), 'f', 3));
 }
 
-void MainWindow::on_pushButtonCursorsZero_clicked() {
-  if (ui->radioButtonCurOff->isChecked())
-    ui->radioButtonCurMain->setChecked(true);
-  cursors[0]->setValue(0);
-  cursors[1]->setValue(0);
-  cursors[2]->setValue(0);
-  cursors[3]->setValue(0);
-  scrollBarCursorValueChanged();
+void MainWindow::on_checkBoxCur1Visible_toggled(bool checked) {
+  ui->plot->setCursorVisible(Cursors::X1, checked);
+  ui->plot->setCursorVisible(Cursors::Y1, checked);
+}
+
+void MainWindow::on_checkBoxCur2Visible_toggled(bool checked) {
+  ui->plot->setCursorVisible(Cursors::X2, checked);
+  ui->plot->setCursorVisible(Cursors::Y2, checked);
+}
+
+void MainWindow::on_horizontalSliderTimeCur1_realValueChanged(int value) {
+  ui->checkBoxCur1Visible->setChecked(true);
+  updateCursors();
+}
+
+void MainWindow::on_horizontalSliderTimeCur2_realValueChanged(int value) {
+  ui->checkBoxCur2Visible->setChecked(true);
+  updateCursors();
 }

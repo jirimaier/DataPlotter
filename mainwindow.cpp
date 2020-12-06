@@ -2,10 +2,7 @@
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) { ui->setupUi(this); }
 
-MainWindow::~MainWindow() {
-  delete channelList;
-  delete ui;
-}
+MainWindow::~MainWindow() { delete ui; }
 
 void MainWindow::init(QTranslator *translator, const PlotData *plotData, const PlotMath *plotMath) {
   fillChannelSelect();
@@ -13,6 +10,9 @@ void MainWindow::init(QTranslator *translator, const PlotData *plotData, const P
   QObject::connect(plotMath, &PlotMath::sendResultXY, ui->plotxy, &MyXYPlot::newData);
   QObject::connect(plotData, &PlotData::addVectorToPlot, ui->plot, &MyMainPlot::newDataVector);
   QObject::connect(plotData, &PlotData::addPointToPlot, ui->plot, &MyMainPlot::newDataPoint);
+  QObject::connect(plotData, &PlotData::addLogicVectorToPlot, ui->plot, &MyMainPlot::newLogicDataVector);
+  QObject::connect(plotData, &PlotData::clearLogic, ui->plot, &MyMainPlot::clearLogicGroup);
+
   this->translator = translator;
   setGuiArrays();
   initSetables();
@@ -55,7 +55,6 @@ void MainWindow::updateChScale() {
 void MainWindow::serialConnectResult(bool connected, QString message) {
   ui->pushButtonConnect->setIcon(connected ? QPixmap(":/images/icons/connected.png") : QPixmap(":/images/icons/disconnected.png"));
   ui->labelPortInfo->setText(message);
-  ui->pushButtonSendCommand->setEnabled(connected);
   if (connected && ui->checkBoxClearOnReconnect->isChecked()) {
     ui->plot->resetChannels();
     ui->myTerminal->resetTerminal();
@@ -63,31 +62,18 @@ void MainWindow::serialConnectResult(bool connected, QString message) {
   }
 }
 
-void MainWindow::updateDivs(double vertical, double horizontal) {
-  ui->plot->setVerticalDiv(Global::logaritmicSettings[MAX(GlobalFunctions::roundToStandardValue(vertical) + ui->dialVerticalDiv->value(), 0)]);
-  ui->plot->setHorizontalDiv(Global::logaritmicSettings[MAX(GlobalFunctions::roundToStandardValue(horizontal) + ui->dialhorizontalDiv->value(), 0)]);
+void MainWindow::serialFinishedWriting() {
+  if (!ui->pushButtonMultiplInputs->isChecked())
+    ui->lineEditCommand->clear();
+}
+
+void MainWindow::updateDivs() {
   updateChScale();
   if (ui->labelHDiv->isEnabled())
     ui->labelHDiv->setText(QString::number(ui->plot->getHDiv()) + tr(" / Div"));
   else
     ui->labelHDiv->setText("---");
   ui->labelVDiv->setText(QString::number(ui->plot->getVDiv()) + tr(" / Div"));
-}
-
-void MainWindow::on_comboBoxHAxisType_currentIndexChanged(int index) {
-  ui->labelHDiv->setEnabled(index <= 1);
-  ui->plot->setShowHorizontalValues(index);
-}
-
-void MainWindow::on_pushButtonOpenHelp_clicked() {
-  QString helpFile = QCoreApplication::applicationDirPath() + "/help.pdf";
-  if (!QDesktopServices::openUrl(QUrl::fromLocalFile(helpFile))) {
-    QMessageBox msgBox;
-    msgBox.setText(tr("Cant open file."));
-    msgBox.setInformativeText(helpFile);
-    msgBox.setIcon(QMessageBox::Critical);
-    msgBox.exec();
-  }
 }
 
 void MainWindow::on_pushButtonCenter_clicked() { ui->dialVerticalCenter->setValue(0); }
@@ -150,89 +136,4 @@ void MainWindow::printDeviceMessage(QByteArray messageBody, bool warning, bool e
   QScrollBar *scroll = ui->plainTextEditConsole->horizontalScrollBar();
   scroll->setValue(scroll->minimum());
   pendingDeviceMessage = !ended;
-}
-
-void MainWindow::printSerialMonitor(QByteArray data) { ui->plainTextEditConsole_3->appendPlainText(data); }
-
-void MainWindow::on_pushButtonScrollDown_clicked() {
-  QScrollBar *scroll = ui->plainTextEditConsole->verticalScrollBar();
-  scroll->setValue(scroll->maximum());
-  scroll = ui->plainTextEditConsole->horizontalScrollBar();
-  scroll->setValue(scroll->minimum());
-};
-
-void MainWindow::on_checkBoxPlotOpenGL_toggled(bool checked) {
-  ui->plot->setOpenGl(checked);
-  ui->plotxy->setOpenGl(checked);
-}
-
-void MainWindow::on_pushButtonSendCommand_2_clicked() { on_lineEditManualInput_returnPressed(); }
-
-void MainWindow::on_lineEditCommand_returnPressed() {
-  QString text = ui->lineEditCommand->text() + Global::lineEndings[ui->comboBoxLineEnding->currentIndex()];
-  emit writeToSerial(text.toUtf8());
-}
-
-void MainWindow::on_pushButtonClearBuffer_clicked() { emit requestSerialBufferClear(); }
-
-void MainWindow::on_pushButtonViewBuffer_clicked() { emit requestSerialBufferShow(); }
-
-void MainWindow::on_pushButtonClearBuffer_2_clicked() { emit requestManualBufferClear(); }
-
-void MainWindow::on_pushButtonViewBuffer_2_clicked() { emit requestManualBufferShow(); }
-
-void MainWindow::on_comboBoxOutputLevel_currentIndexChanged(int index) {
-  if (index >= 0)
-    emit setSerialMessageLevel((OutputLevel::enumerator)index);
-}
-
-void MainWindow::on_pushButtonScrollDown_2_clicked() {
-  QScrollBar *scroll = ui->plainTextEditConsole_2->verticalScrollBar();
-  scroll->setValue(scroll->maximum());
-  scroll = ui->plainTextEditConsole_2->horizontalScrollBar();
-  scroll->setValue(scroll->minimum());
-}
-
-void MainWindow::on_pushButtonScrollDown_3_clicked() {
-  QScrollBar *scroll = ui->plainTextEditConsole_3->verticalScrollBar();
-  scroll->setValue(scroll->maximum());
-  scroll = ui->plainTextEditConsole_3->horizontalScrollBar();
-  scroll->setValue(scroll->minimum());
-}
-
-void MainWindow::on_checkBoxSerialMonitor_toggled(bool checked) {
-  ui->frameSerialMonitor->setVisible(checked);
-  emit enableSerialMonitor(checked);
-}
-
-void MainWindow::on_comboBoxSelectedChannel_currentIndexChanged(int index) {
-  if (index >= ANALOG_COUNT + MATH_COUNT) {
-    ui->checkBoxChInvert->setVisible(false);
-    index = GlobalFunctions::getLogicChannelId(index - ANALOG_COUNT - MATH_COUNT + 1, 1);
-  } else
-    ui->checkBoxChInvert->setVisible(true);
-  ui->comboBoxGraphStyle->setCurrentIndex(ui->plot->getChStyle(index));
-  QPixmap pixmap(30, 30);
-  pixmap.fill(ui->plot->getChColor(index));
-  ui->pushButtonChannelColor->setIcon(pixmap);
-  double offset = ui->plot->getChOffset(index);
-  double scale = ui->plot->getChScale(index);
-  ui->doubleSpinBoxChOffset->setValue(offset);
-  ui->doubleSpinBoxChScale->setValue(scale);
-  ui->dialChScale->updatePosition(scale);
-  ui->checkBoxChInvert->setChecked(ui->plot->isInverted(index));
-  updateChScale();
-}
-
-void MainWindow::on_pushButtonResetChannels_clicked() {
-  for (int i = 0; i < ANALOG_COUNT + MATH_COUNT; i++) {
-    ui->plot->changeChOffset(i, 0);
-    ui->plot->changeChScale(i, 1);
-    ui->plot->setChStyle(i, GraphStyle::line);
-  }
-  for (int i = 1; i <= LOGIC_GROUPS; i++) {
-    ui->plot->changeLogicOffset(i, 0);
-    ui->plot->changeLogicScale(i, 1);
-  }
-  on_comboBoxSelectedChannel_currentIndexChanged(ui->comboBoxSelectedChannel->currentIndex());
 }

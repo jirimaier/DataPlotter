@@ -76,6 +76,8 @@ void NewSerialParser::parse(QByteArray newData) {
       break;
     if (buffer.length() >= 3)
       if (buffer.left(2) == "$$") {
+        if (currentMode == DataMode::info || currentMode == DataMode::warning)
+          emit sendDeviceMessage("", false, true); // Pokud byl předchozí režim výpis zprávy, ohlásí její konec
         parseMode(buffer.at(2));
         buffer.remove(0, 3);
         continue;

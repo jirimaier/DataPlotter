@@ -38,19 +38,6 @@ void MyXYPlot::newData(QVector<double> *x, QVector<double> *y) {
     this->yAxis->setRange(down, up);
   }
 
-  if (iHaveCursors) {
-    PlotFrame_t frame;
-    frame.xMinTotal = left;
-    frame.xMaxTotal = right;
-    frame.yMinTotal = down;
-    frame.yMaxTotal = up;
-    frame.xMinView = this->xAxis->range().lower;
-    frame.xMaxView = this->xAxis->range().upper;
-    frame.yMinView = this->yAxis->range().lower;
-    frame.yMaxView = this->yAxis->range().upper;
-    emit setCursorBounds(frame);
-  }
-
   this->replot();
 }
 

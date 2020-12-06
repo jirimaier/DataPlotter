@@ -46,6 +46,10 @@ namespace MessageLevel {
 enum enumerator { deviceInfo = -1, deviceWarning = 0, error = 1, warning = 2, info = 3 };
 }
 
+namespace Cursors {
+enum enumerator { X1 = 0, X2 = 1, Y1 = 2, Y2 = 3 };
+}
+
 namespace MessageTarget {
 enum enumerator { manual, serial1 };
 }
@@ -54,10 +58,10 @@ namespace ValueType {
 enum enumerator { unrecognised, u1, u2, u3, u4, U1, U2, U3, U4, i1, i2, i3, i4, I1, I2, I3, I4, f4, F4, d8, D8 };
 }
 
-#define ANALOG_COUNT 8
+#define ANALOG_COUNT 16
 #define MATH_COUNT 4
-#define LOGIC_BITS 8
-#define LOGIC_GROUPS 2
+#define LOGIC_BITS 32
+#define LOGIC_GROUPS 4
 #define LOGIC_COUNT LOGIC_BITS *LOGIC_GROUPS
 #define ALL_COUNT (ANALOG_COUNT + MATH_COUNT + LOGIC_COUNT)
 
@@ -103,7 +107,7 @@ struct GlobalFunctions {
 };
 
 struct ChannelSettings_t {
-  QColor color = QColor(Qt::black);
+  QColor color = QColor(Qt::blue);
   int style = GraphStyle::line;
   double offset = 0;
   double scale = 1;
@@ -120,15 +124,6 @@ struct PlotSettings_t {
 struct PlotFrame_t {
   double xMinTotal = 0, xMaxTotal = 10, yMinTotal = 0, yMaxTotal = 10, xMinView = 0, xMaxView = 10, yMinView = 0, yMaxView = 10;
 };
-
-Q_DECLARE_METATYPE(ChannelSettings_t)
-Q_DECLARE_METATYPE(PlotSettings_t)
-Q_DECLARE_METATYPE(PlotFrame_t)
-Q_DECLARE_METATYPE(DataMode::enumerator)
-Q_DECLARE_METATYPE(OutputLevel::enumerator)
-Q_DECLARE_METATYPE(MessageLevel::enumerator)
-Q_DECLARE_METATYPE(PlotStatus::enumerator)
-Q_DECLARE_METATYPE(MessageTarget::enumerator)
 
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))

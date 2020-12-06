@@ -15,7 +15,7 @@ public slots:
   void doMath(int resultChNumber, int operation, QPair<QVector<double>, QVector<double>> data, QPair<QVector<double>, QVector<double>> data2);
   void doXY(QPair<QVector<double>, QVector<double>> data1, QPair<QVector<double>, QVector<double>> data2);
 signals:
-  void sendResult(int chNumber, QVector<double> *time, QVector<double> *value, bool isMath = true);
+  void sendResult(int chNumber, QSharedPointer<QVector<double>> time, QVector<double> *value, bool isMath = true);
   void sendResultXY(QVector<double> *time, QVector<double> *value);
 };
 

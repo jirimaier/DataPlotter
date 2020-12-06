@@ -18,6 +18,16 @@
 #include "plotmath.h"
 #include "serialreader.h"
 
+Q_DECLARE_METATYPE(ChannelSettings_t)
+Q_DECLARE_METATYPE(PlotSettings_t)
+Q_DECLARE_METATYPE(PlotFrame_t)
+Q_DECLARE_METATYPE(DataMode::enumerator)
+Q_DECLARE_METATYPE(OutputLevel::enumerator)
+Q_DECLARE_METATYPE(MessageLevel::enumerator)
+Q_DECLARE_METATYPE(PlotStatus::enumerator)
+Q_DECLARE_METATYPE(MessageTarget::enumerator)
+Q_DECLARE_METATYPE(QSharedPointer<QVector<double>>);
+
 int main(int argc, char *argv[]) {
   QApplication application(argc, argv);
 
@@ -31,6 +41,7 @@ int main(int argc, char *argv[]) {
   qRegisterMetaType<MessageLevel::enumerator>();
   qRegisterMetaType<PlotStatus::enumerator>();
   qRegisterMetaType<MessageTarget::enumerator>();
+  qRegisterMetaType<QSharedPointer<QVector<double>>>();
 
   // Vytvoří instance hlavních objektů
   MainWindow mainWindow;
@@ -89,6 +100,8 @@ int main(int argc, char *argv[]) {
   QObject::connect(&mainWindow, &MainWindow::sendManualInput, serialParserM, &NewSerialParser::parse);
 
   QObject::connect(plotData, &PlotData::sendMessage, &mainWindow, &MainWindow::printMessage);
+  QObject::connect(&mainWindow, &MainWindow::setChDigital, plotData, &PlotData::setDigitalChannel);
+  QObject::connect(&mainWindow, &MainWindow::setLogicBits, plotData, &PlotData::setLogicBits);
 
   // Funkce init jsou zavolány až z nového vlákna
   QObject::connect(&serialParser1Thread, &QThread::started, serialParser1, &NewSerialParser::init);

@@ -14,6 +14,8 @@ MyPlot::MyPlot(QWidget *parent) : QCustomPlot(parent) {
   this->xAxis->setTicker(fixedTickerX);
   this->yAxis->setTicker(fixedTickerY);
   initcursors();
+  connect(this->xAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(onXRangeChanged(QCPRange)));
+  connect(this->yAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(onYRangeChanged(QCPRange)));
 }
 
 void MyPlot::onXRangeChanged(QCPRange range) {
@@ -28,6 +30,7 @@ void MyPlot::onXRangeChanged(QCPRange range) {
   }
   if (changed)
     this->xAxis->setRange(range);
+  updateGridX();
 }
 
 void MyPlot::onYRangeChanged(QCPRange range) {
@@ -42,18 +45,30 @@ void MyPlot::onYRangeChanged(QCPRange range) {
   }
   if (changed)
     this->yAxis->setRange(range);
+  updateGridY();
 }
 
-void MyPlot::updateCursors(double *cursorPositions) {
-  for (int i = 0; i < 4; i++) {
-    if (i < 2) {
-      cursors.at(i)->start->setCoords(cursorPositions[i], 0);
-      cursors.at(i)->end->setCoords(cursorPositions[i], 1);
-    } else {
-      cursors.at(i)->start->setCoords(0, cursorPositions[i]);
-      cursors.at(i)->end->setCoords(1, cursorPositions[i]);
-    }
+void MyPlot::updateCursor(int cursor, double cursorPosition) {
+  if (cursor < 2) {
+    cursors.at(cursor)->start->setCoords(cursorPosition, 0);
+    cursors.at(cursor)->end->setCoords(cursorPosition, 1);
+  } else {
+    cursors.at(cursor)->start->setCoords(0, cursorPosition);
+    cursors.at(cursor)->end->setCoords(1, cursorPosition);
   }
+  replot();
+}
+
+void MyPlot::updateGridX() {
+  setHorizontalDiv(Global::logaritmicSettings[MAX(GlobalFunctions::roundToStandardValue(xAxis->range().upper - xAxis->range().lower) + xGridHint, 0)]);
+  replot();
+  emit gridChanged();
+}
+
+void MyPlot::updateGridY() {
+  setVerticalDiv(Global::logaritmicSettings[MAX(GlobalFunctions::roundToStandardValue(yAxis->range().upper - yAxis->range().lower) + yGridHint, 0)]);
+  replot();
+  emit gridChanged();
 }
 
 void MyPlot::initcursors() {
@@ -81,20 +96,21 @@ void MyPlot::setMouseControlls(bool enabled) {
   if (enabled) {
     this->setInteraction(QCP::iRangeDrag, true);
     this->setInteraction(QCP::iRangeZoom, true);
-    connect(this->xAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(onXRangeChanged(QCPRange)));
-    connect(this->yAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(onYRangeChanged(QCPRange)));
+
   } else {
     this->setInteraction(QCP::iRangeDrag, false);
     this->setInteraction(QCP::iRangeZoom, false);
-    disconnect(this->xAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(onXRangeChanged(QCPRange)));
-    disconnect(this->yAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(onYRangeChanged(QCPRange)));
   }
 }
 
-void MyPlot::setCursorsAccess(bool allowed) {
-  for (int i = 0; i < 4; i++)
-    cursors.at(i)->setVisible(allowed);
-  iHaveCursors = allowed;
+void MyPlot::setGridHintX(int hint) {
+  xGridHint = hint;
+  updateGridX();
+}
+
+void MyPlot::setGridHintY(int hint) {
+  yGridHint = hint;
+  updateGridY();
 }
 
 void MyPlot::setVerticalDiv(double value) { fixedTickerY->setTickStep(value); }

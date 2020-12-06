@@ -43,8 +43,6 @@ void MainWindow::on_doubleSpinBoxChOffset_valueChanged(double arg1) {
     ui->plot->changeChOffset(ui->comboBoxSelectedChannel->currentIndex(), arg1);
   else
     ui->plot->changeLogicOffset(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT + 1, arg1);
-  ui->plot->updateVisuals();
-  scrollBarCursorValueChanged();
 }
 
 void MainWindow::on_comboBoxGraphStyle_currentIndexChanged(int index) {
@@ -52,18 +50,14 @@ void MainWindow::on_comboBoxGraphStyle_currentIndexChanged(int index) {
     ui->plot->setChStyle(ui->comboBoxSelectedChannel->currentIndex(), index);
   else
     ui->plot->setLogicStyle(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT + 1, index);
-  ui->plot->updateVisuals();
 }
 void MainWindow::on_doubleSpinBoxChScale_valueChanged(double arg1) {
   if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT)
     ui->plot->changeChScale(ui->comboBoxSelectedChannel->currentIndex(), arg1 * (ui->checkBoxChInvert->isChecked() ? -1 : 1));
   else
     ui->plot->changeLogicScale(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT + 1, arg1);
-  scrollBarCursorValueChanged();
   updateChScale();
 }
-
-void MainWindow::on_pushButtonSelectedCSV_clicked() { exportCSV(false, ui->comboBoxSelectedChannel->currentIndex() - 1); }
 
 void MainWindow::on_dialZoom_valueChanged(int value) {
   ui->plot->setZoomRange(value);
@@ -92,8 +86,106 @@ void MainWindow::on_lineEditManualInput_returnPressed() {
   on_pushButtonScrollDown_clicked();
 }
 
-void MainWindow::on_pushButtonSendCommand_clicked() { on_lineEditCommand_returnPressed(); }
+void MainWindow::on_pushButtonScrollDown_clicked() {
+  QScrollBar *scroll = ui->plainTextEditConsole->verticalScrollBar();
+  scroll->setValue(scroll->maximum());
+  scroll = ui->plainTextEditConsole->horizontalScrollBar();
+  scroll->setValue(scroll->minimum());
+};
 
-void MainWindow::on_pushButtonCSVXY_clicked() { exportCSV(false, XY_CHANNEL); }
+void MainWindow::on_checkBoxPlotOpenGL_toggled(bool checked) {
+  ui->plot->setOpenGl(checked);
+  ui->plotxy->setOpenGl(checked);
+}
 
-void MainWindow::on_pushButtonPositive_clicked() { ui->dialVerticalCenter->setValue(ui->dialVerticalCenter->maximum()); }
+void MainWindow::on_lineEditCommand_returnPressed() {
+  QString text = ui->lineEditCommand->text() + Global::lineEndings[ui->comboBoxLineEnding->currentIndex()];
+  emit writeToSerial(text.toLocal8Bit());
+}
+
+void MainWindow::on_lineEditCommand_2_returnPressed() {
+  QString text = ui->lineEditCommand_2->text() + Global::lineEndings[ui->comboBoxLineEnding->currentIndex()];
+  emit writeToSerial(text.toLocal8Bit());
+}
+
+void MainWindow::on_lineEditCommand_3_returnPressed() {
+  QString text = ui->lineEditCommand_3->text() + Global::lineEndings[ui->comboBoxLineEnding->currentIndex()];
+  emit writeToSerial(text.toLocal8Bit());
+}
+
+void MainWindow::on_lineEditCommand_4_returnPressed() {
+  QString text = ui->lineEditCommand_4->text() + Global::lineEndings[ui->comboBoxLineEnding->currentIndex()];
+  emit writeToSerial(text.toLocal8Bit());
+}
+
+void MainWindow::on_comboBoxOutputLevel_currentIndexChanged(int index) {
+  if (index >= 0)
+    emit setSerialMessageLevel((OutputLevel::enumerator)index);
+}
+
+void MainWindow::on_pushButtonScrollDown_2_clicked() {
+  QScrollBar *scroll = ui->plainTextEditConsole_2->verticalScrollBar();
+  scroll->setValue(scroll->maximum());
+  scroll = ui->plainTextEditConsole_2->horizontalScrollBar();
+  scroll->setValue(scroll->minimum());
+}
+
+void MainWindow::on_pushButtonScrollDown_3_clicked() {
+  QScrollBar *scroll = ui->plainTextEditConsole_3->verticalScrollBar();
+  scroll->setValue(scroll->maximum());
+  scroll = ui->plainTextEditConsole_3->horizontalScrollBar();
+  scroll->setValue(scroll->minimum());
+}
+
+void MainWindow::on_checkBoxSerialMonitor_toggled(bool checked) {
+  ui->frameSerialMonitor->setVisible(checked);
+  emit enableSerialMonitor(checked);
+}
+
+void MainWindow::on_comboBoxSelectedChannel_currentIndexChanged(int index) {
+  if (index >= ANALOG_COUNT + MATH_COUNT) {
+    ui->checkBoxChInvert->setVisible(false);
+    index = GlobalFunctions::getLogicChannelId(index - ANALOG_COUNT - MATH_COUNT + 1, 1);
+  } else
+    ui->checkBoxChInvert->setVisible(true);
+  ui->comboBoxGraphStyle->setCurrentIndex(ui->plot->getChStyle(index));
+  QPixmap pixmap(30, 30);
+  pixmap.fill(ui->plot->getChColor(index));
+  ui->pushButtonChannelColor->setIcon(pixmap);
+  double offset = ui->plot->getChOffset(index);
+  double scale = ui->plot->getChScale(index);
+  ui->doubleSpinBoxChOffset->setValue(offset);
+  ui->doubleSpinBoxChScale->setValue(scale);
+  ui->dialChScale->updatePosition(scale);
+  ui->checkBoxChInvert->setChecked(ui->plot->isInverted(index));
+  updateChScale();
+}
+
+void MainWindow::on_pushButtonResetChannels_clicked() {
+  for (int i = 0; i < ANALOG_COUNT + MATH_COUNT; i++) {
+    ui->plot->changeChOffset(i, 0);
+    ui->plot->changeChScale(i, 1);
+    ui->plot->setChStyle(i, GraphStyle::line);
+  }
+  for (int i = 1; i <= LOGIC_GROUPS; i++) {
+    ui->plot->changeLogicOffset(i, 0);
+    ui->plot->changeLogicScale(i, 1);
+  }
+  on_comboBoxSelectedChannel_currentIndexChanged(ui->comboBoxSelectedChannel->currentIndex());
+}
+
+void MainWindow::on_comboBoxHAxisType_currentIndexChanged(int index) {
+  ui->labelHDiv->setEnabled(index <= 1);
+  ui->plot->setShowHorizontalValues(index);
+}
+
+void MainWindow::on_pushButtonOpenHelp_clicked() {
+  QString helpFile = QCoreApplication::applicationDirPath() + "/help.pdf";
+  if (!QDesktopServices::openUrl(QUrl::fromLocalFile(helpFile))) {
+    QMessageBox msgBox;
+    msgBox.setText(tr("Cant open file."));
+    msgBox.setInformativeText(helpFile);
+    msgBox.setIcon(QMessageBox::Critical);
+    msgBox.exec();
+  }
+}

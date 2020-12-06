@@ -13,12 +13,13 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     mainwindow_autoset.cpp \
-    mainwindow_csv.cpp \
     mainwindow_cursors.cpp \
+    mainwindow_export.cpp \
     mainwindow_gui_preset.cpp \
     mainwindow_gui_slots.cpp \
     mainwindow_save_load.cpp \
     mainwindow_timed_events.cpp \
+    mycursorslider.cpp \
     mydial.cpp \
     mymainplot.cpp \
     myplot.cpp \
@@ -34,6 +35,7 @@ HEADERS += \
     colorCodes.h \
     enums_defines_constants.h \
     mainwindow.h \
+    mycursorslider.h \
     mydial.h \
     mymainplot.h \
     myplot.h \
