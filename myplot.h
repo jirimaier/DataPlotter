@@ -20,8 +20,10 @@ public:
   explicit MyPlot(QWidget *parent = nullptr);
   void updateCursor(int cursor, double cursorPosition);
   void setCursorVisible(int cursor, bool visible) {
-    cursors.at(cursor)->setVisible(visible);
-    replot();
+    if (cursors.at(cursor)->visible() != visible) {
+      cursors.at(cursor)->setVisible(visible);
+      replot();
+    }
   }
   double getVDiv() { return fixedTickerY->tickStep(); }
   double getHDiv() { return fixedTickerX->tickStep(); }
@@ -38,8 +40,8 @@ public slots:
   void setHorizontalDiv(double value);
   void setShowVerticalValues(bool enabled);
   void setShowHorizontalValues(int type);
-  void setXTitle(QString title) { this->xAxis->setLabel(title); }
-  void setYTitle(QString title) { this->yAxis->setLabel(title); }
+  void setXTitle(QString title);
+  void setYTitle(QString title);
   void setGridHintX(int hint);
   void setGridHintY(int hint);
 

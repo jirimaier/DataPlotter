@@ -139,6 +139,7 @@ void MyPlot::setHorizontalDiv(double value) {
 void MyPlot::setShowVerticalValues(bool enabled) {
   this->yAxis->setTicks(enabled);
   this->yAxis->setBasePen(enabled ? Qt::SolidLine : Qt::NoPen);
+  replot();
 }
 
 void MyPlot::setShowHorizontalValues(int type) {
@@ -154,4 +155,15 @@ void MyPlot::setShowHorizontalValues(int type) {
     if (type == HAxisType::HMS)
       this->xAxis->setTicker(longTimeTickerX);
   }
+  replot();
+}
+
+void MyPlot::setXTitle(QString title) {
+  this->xAxis->setLabel(title);
+  replot();
+}
+
+void MyPlot::setYTitle(QString title) {
+  this->yAxis->setLabel(title);
+  replot();
 }

@@ -8,7 +8,7 @@ MyMainPlot::MyMainPlot(QWidget *parent) : MyPlot(parent) {
     pauseBufferValue.resize(pauseBufferValue.size() + 1);
     channelSettings.resize(channelSettings.size() + 1);
     zeroLines.append(new QCPItemLine(this));
-    addGraph();
+    addGraph(xAxis, yAxis);
   }
   initZeroLines();
   setUpLogic();
@@ -124,14 +124,6 @@ QPair<long, long> MyMainPlot::getChVisibleSamples(int chid) {
     max++;
   }
   return (QPair<long, long>(min, MAX(0, max)));
-}
-
-QPair<double, double> MyMainPlot::setTimeCursor(int cursor, int chid, unsigned int sample) {
-  double time = graph(chid)->data()->at(sample)->key;
-  double value = graph(chid)->data()->at(sample)->value;
-  updateCursor(cursor, time);
-  updateCursor(cursor + 2, value);
-  return (QPair<double, double>(time, (value - channelSettings.at(chid).offset) / channelSettings.at(chid).scale));
 }
 
 void MyMainPlot::setUpLogic() {
@@ -256,7 +248,7 @@ void MyMainPlot::clearLogicGroup(int number) {
 
 void MyMainPlot::resetChannels() {
   for (int i = 0; i < ALL_COUNT; i++) {
-    graph(i)->data().clear();
+    clearCh(i);
   }
   redraw();
 }

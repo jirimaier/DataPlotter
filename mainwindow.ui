@@ -1194,7 +1194,10 @@
                        <widget class="QLabel" name="labelCur1Val">
                         <property name="font">
                          <font>
-                          <pointsize>12</pointsize>
+                          <family>Courier New</family>
+                          <pointsize>11</pointsize>
+                          <weight>75</weight>
+                          <bold>true</bold>
                          </font>
                         </property>
                         <property name="text">
@@ -1209,7 +1212,10 @@
                        <widget class="QLabel" name="labelCur1Sample">
                         <property name="font">
                          <font>
-                          <pointsize>12</pointsize>
+                          <family>Courier New</family>
+                          <pointsize>11</pointsize>
+                          <weight>75</weight>
+                          <bold>true</bold>
                          </font>
                         </property>
                         <property name="text">
@@ -1223,7 +1229,7 @@
                       <item row="0" column="1">
                        <widget class="QLabel" name="label_21">
                         <property name="text">
-                         <string>Sample number</string>
+                         <string>Sample</string>
                         </property>
                         <property name="alignment">
                          <set>Qt::AlignBottom|Qt::AlignHCenter</set>
@@ -1234,7 +1240,10 @@
                        <widget class="QLabel" name="labelCur1Time">
                         <property name="font">
                          <font>
-                          <pointsize>12</pointsize>
+                          <family>Courier New</family>
+                          <pointsize>11</pointsize>
+                          <weight>75</weight>
+                          <bold>true</bold>
                          </font>
                         </property>
                         <property name="text">
@@ -1272,7 +1281,7 @@
                         </property>
                         <property name="sizeHint" stdset="0">
                          <size>
-                          <width>40</width>
+                          <width>0</width>
                           <height>20</height>
                          </size>
                         </property>
@@ -1359,7 +1368,10 @@
                        <widget class="QLabel" name="labelCur2Sample">
                         <property name="font">
                          <font>
-                          <pointsize>12</pointsize>
+                          <family>Courier New</family>
+                          <pointsize>11</pointsize>
+                          <weight>75</weight>
+                          <bold>true</bold>
                          </font>
                         </property>
                         <property name="text">
@@ -1374,7 +1386,10 @@
                        <widget class="QLabel" name="labelCur2Time">
                         <property name="font">
                          <font>
-                          <pointsize>12</pointsize>
+                          <family>Courier New</family>
+                          <pointsize>11</pointsize>
+                          <weight>75</weight>
+                          <bold>true</bold>
                          </font>
                         </property>
                         <property name="text">
@@ -1389,7 +1404,10 @@
                        <widget class="QLabel" name="labelCur2Val">
                         <property name="font">
                          <font>
-                          <pointsize>12</pointsize>
+                          <family>Courier New</family>
+                          <pointsize>11</pointsize>
+                          <weight>75</weight>
+                          <bold>true</bold>
                          </font>
                         </property>
                         <property name="text">
@@ -1403,7 +1421,7 @@
                       <item row="0" column="1">
                        <widget class="QLabel" name="label_22">
                         <property name="text">
-                         <string>Sample number</string>
+                         <string>Sample</string>
                         </property>
                         <property name="alignment">
                          <set>Qt::AlignBottom|Qt::AlignHCenter</set>
@@ -1427,7 +1445,7 @@
                         </property>
                         <property name="sizeHint" stdset="0">
                          <size>
-                          <width>40</width>
+                          <width>0</width>
                           <height>20</height>
                          </size>
                         </property>
@@ -1442,6 +1460,12 @@
                </item>
                <item>
                 <widget class="QFrame" name="frame">
+                 <property name="minimumSize">
+                  <size>
+                   <width>100</width>
+                   <height>0</height>
+                  </size>
+                 </property>
                  <property name="frameShape">
                   <enum>QFrame::Box</enum>
                  </property>
@@ -1449,6 +1473,18 @@
                   <enum>QFrame::Sunken</enum>
                  </property>
                  <layout class="QVBoxLayout" name="verticalLayout_23">
+                  <property name="leftMargin">
+                   <number>6</number>
+                  </property>
+                  <property name="topMargin">
+                   <number>6</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>6</number>
+                  </property>
+                  <property name="bottomMargin">
+                   <number>6</number>
+                  </property>
                   <item>
                    <layout class="QHBoxLayout" name="horizontalLayout_11">
                     <item>
@@ -1474,7 +1510,8 @@
                       </property>
                       <property name="font">
                        <font>
-                        <pointsize>12</pointsize>
+                        <family>Courier New</family>
+                        <pointsize>11</pointsize>
                        </font>
                       </property>
                       <property name="text">
@@ -1509,7 +1546,8 @@
                       </property>
                       <property name="font">
                        <font>
-                        <pointsize>12</pointsize>
+                        <family>Courier New</family>
+                        <pointsize>11</pointsize>
                        </font>
                       </property>
                       <property name="text">
@@ -1544,7 +1582,8 @@
                       </property>
                       <property name="font">
                        <font>
-                        <pointsize>12</pointsize>
+                        <family>Courier New</family>
+                        <pointsize>11</pointsize>
                        </font>
                       </property>
                       <property name="text">
@@ -1579,7 +1618,8 @@
                       </property>
                       <property name="font">
                        <font>
-                        <pointsize>12</pointsize>
+                        <family>Courier New</family>
+                        <pointsize>11</pointsize>
                        </font>
                       </property>
                       <property name="text">
@@ -2728,7 +2768,7 @@
               <attribute name="title">
                <string>Settings</string>
               </attribute>
-              <layout class="QHBoxLayout" name="horizontalLayout_35" stretch="1,100">
+              <layout class="QHBoxLayout" name="horizontalLayout_35" stretch="1,100,0">
                <property name="leftMargin">
                 <number>6</number>
                </property>
@@ -2859,6 +2899,22 @@
                   </size>
                  </property>
                 </spacer>
+               </item>
+               <item>
+                <widget class="QGroupBox" name="groupBox_7">
+                 <property name="title">
+                  <string>GroupBox</string>
+                 </property>
+                 <layout class="QVBoxLayout" name="verticalLayout_29">
+                  <item>
+                   <widget class="QPushButton" name="pushButtonClearAll">
+                    <property name="text">
+                     <string>Clear all</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
                </item>
               </layout>
              </widget>
@@ -5255,8 +5311,8 @@ selection-background-color: rgb(85, 0, 0);</string>
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>128</x>
-     <y>445</y>
+     <x>154</x>
+     <y>465</y>
     </hint>
     <hint type="destinationlabel">
      <x>97</x>
@@ -5355,8 +5411,8 @@ selection-background-color: rgb(85, 0, 0);</string>
      <y>468</y>
     </hint>
     <hint type="destinationlabel">
-     <x>131</x>
-     <y>448</y>
+     <x>163</x>
+     <y>473</y>
     </hint>
    </hints>
   </connection>

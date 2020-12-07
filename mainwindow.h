@@ -68,6 +68,7 @@ private slots:
   void updateDivs();
   void comRefresh();
   void rangeTypeChanged();
+  void updateCursor(Cursors::enumerator cursor, int selectedChannel, unsigned int sample, double &time, double &value, QByteArray &timeStr, QByteArray &valueStr);
 
   void on_tabs_right_currentChanged(int index);
   void on_dialRollingRange_realValueChanged(double value) { ui->doubleSpinBoxRangeHorizontal->setValue(value); }
@@ -118,31 +119,23 @@ private slots:
   void on_checkBoxSerialMonitor_toggled(bool checked);
   void on_comboBoxSelectedChannel_currentIndexChanged(int index);
   void on_pushButtonResetChannels_clicked();
-
   void on_checkBoxLog1_toggled(bool checked) { emit setChDigital(GlobalFunctions::getAnalogChId(ui->spinBoxLog1source->value(), ChannelType::analog), checked ? 1 : 0); }
   void on_checkBoxLog2_toggled(bool checked) { emit setChDigital(GlobalFunctions::getAnalogChId(ui->spinBoxLog2source->value(), ChannelType::analog), checked ? 2 : 0); }
   void on_checkBoxLog3_toggled(bool checked) { emit setChDigital(GlobalFunctions::getAnalogChId(ui->spinBoxLog3source->value(), ChannelType::analog), checked ? 3 : 0); }
   void on_checkBoxLog4_toggled(bool checked) { emit setChDigital(GlobalFunctions::getAnalogChId(ui->spinBoxLog4source->value(), ChannelType::analog), checked ? 4 : 0); }
-
   void on_spinBoxLog1bits_valueChanged(int arg1) { emit setLogicBits(1, arg1); }
   void on_spinBoxLog2bits_valueChanged(int arg1) { emit setLogicBits(2, arg1); }
   void on_spinBoxLog3bits_valueChanged(int arg1) { emit setLogicBits(3, arg1); }
   void on_spinBoxLog4bits_valueChanged(int arg1) { emit setLogicBits(4, arg1); }
-
   void on_pushButtonPlotImage_clicked();
-
   void on_pushButtonXYImage_clicked();
-
   void on_horizontalSliderRedrawRate_valueChanged(int value) { plotUpdateTimer.setInterval(100 / value); }
-
-  void on_horizontalSliderTimeCur1_realValueChanged(int value);
-  void on_horizontalSliderTimeCur2_realValueChanged(int value);
-
+  void on_horizontalSliderTimeCur1_realValueChanged();
+  void on_horizontalSliderTimeCur2_realValueChanged();
   void on_checkBoxCur1Visible_toggled(bool checked);
-
   void on_checkBoxCur2Visible_toggled(bool checked);
-
   void on_pushButtonChangeChColor_clicked();
+  void on_pushButtonClearAll_clicked() { ui->plot->resetChannels(); }
 
 public slots:
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumerator target);
