@@ -47,7 +47,7 @@ void MainWindow::showPlotStatus(PlotStatus::enumerator type) {
 void MainWindow::updateChScale() {
   if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT) {
     double perDiv = ui->plot->getCHDiv(ui->comboBoxSelectedChannel->currentIndex());
-    ui->labelChScale->setText(QString::number(perDiv) + tr(" / Div"));
+    ui->labelChScale->setText(QString::number(perDiv, 'f', 3) + tr(" / Div"));
   } else
     ui->labelChScale->setText(tr("---"));
 }

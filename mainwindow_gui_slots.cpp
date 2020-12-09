@@ -27,22 +27,22 @@ void MainWindow::rangeTypeChanged() {
 
 void MainWindow::on_doubleSpinBoxChOffset_valueChanged(double arg1) {
   if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT)
-    ui->plot->changeChOffset(ui->comboBoxSelectedChannel->currentIndex(), arg1);
+    ui->plot->setChOffset(ui->comboBoxSelectedChannel->currentIndex(), arg1);
   else
-    ui->plot->changeLogicOffset(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT + 1, arg1);
+    ui->plot->setLogicOffset(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT, arg1);
 }
 
 void MainWindow::on_comboBoxGraphStyle_currentIndexChanged(int index) {
   if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT)
     ui->plot->setChStyle(ui->comboBoxSelectedChannel->currentIndex(), index);
   else
-    ui->plot->setLogicStyle(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT + 1, index);
+    ui->plot->setLogicStyle(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT, index);
 }
 void MainWindow::on_doubleSpinBoxChScale_valueChanged(double arg1) {
   if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT)
-    ui->plot->changeChScale(ui->comboBoxSelectedChannel->currentIndex(), arg1 * (ui->checkBoxChInvert->isChecked() ? -1 : 1));
+    ui->plot->setChScale(ui->comboBoxSelectedChannel->currentIndex(), arg1);
   else
-    ui->plot->changeLogicScale(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT + 1, arg1);
+    ui->plot->setLogicScale(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT, arg1);
   updateChScale();
 }
 
@@ -131,29 +131,43 @@ void MainWindow::on_checkBoxSerialMonitor_toggled(bool checked) {
 
 void MainWindow::on_comboBoxSelectedChannel_currentIndexChanged(int index) {
   if (index >= ANALOG_COUNT + MATH_COUNT) {
-    ui->checkBoxChInvert->setVisible(false);
-    index = GlobalFunctions::getLogicChannelId(index - ANALOG_COUNT - MATH_COUNT + 1, 1);
-  } else
-    ui->checkBoxChInvert->setVisible(true);
-  ui->comboBoxGraphStyle->setCurrentIndex(ui->plot->getChStyle(index));
-  double offset = ui->plot->getChOffset(index);
-  double scale = ui->plot->getChScale(index);
-  ui->doubleSpinBoxChOffset->setValue(offset);
-  ui->doubleSpinBoxChScale->setValue(scale);
-  ui->dialChScale->updatePosition(scale);
-  ui->checkBoxChInvert->setChecked(ui->plot->isInverted(index));
+    ui->checkBoxChInverted->setEnabled(false);
+    int group = index - ANALOG_COUNT - MATH_COUNT;
+    ui->comboBoxGraphStyle->setCurrentIndex(ui->plot->getLogicStyle(group));
+    double offset = ui->plot->getLogicOffset(group);
+    double scale = ui->plot->getLogicScale(group);
+    ui->doubleSpinBoxChOffset->setValue(offset);
+    ui->doubleSpinBoxChScale->setValue(scale);
+    ui->dialChScale->updatePosition(scale);
+  } else {
+    ui->checkBoxChInverted->setEnabled(true);
+    ui->comboBoxGraphStyle->setCurrentIndex(ui->plot->getChStyle(index));
+    double offset = ui->plot->getChOffset(index);
+    double scale = ui->plot->getChScale(index);
+    ui->doubleSpinBoxChOffset->setValue(offset);
+    ui->doubleSpinBoxChScale->setValue(scale);
+    ui->dialChScale->updatePosition(scale);
+    ui->checkBoxChInverted->setChecked(ui->plot->isChInverted(index));
+  }
   updateChScale();
+}
+
+void MainWindow::on_checkBoxChInverted_toggled(bool checked) {
+  if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT)
+    ui->plot->setChInvert(ui->comboBoxSelectedChannel->currentIndex(), checked);
+  else
+    ui->plot->setLogicInvert(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT, checked);
 }
 
 void MainWindow::on_pushButtonResetChannels_clicked() {
   for (int i = 0; i < ANALOG_COUNT + MATH_COUNT; i++) {
-    ui->plot->changeChOffset(i, 0);
-    ui->plot->changeChScale(i, 1);
+    ui->plot->setChOffset(i, 0);
+    ui->plot->setChScale(i, 1);
     ui->plot->setChStyle(i, GraphStyle::line);
   }
-  for (int i = 1; i <= LOGIC_GROUPS; i++) {
-    ui->plot->changeLogicOffset(i, 0);
-    ui->plot->changeLogicScale(i, 1);
+  for (int i = 0; i < LOGIC_GROUPS; i++) {
+    ui->plot->setLogicOffset(i, 0);
+    ui->plot->setLogicScale(i, 1);
   }
   on_comboBoxSelectedChannel_currentIndexChanged(ui->comboBoxSelectedChannel->currentIndex());
 }
@@ -179,14 +193,14 @@ void MainWindow::on_pushButtonChangeChColor_clicked() {
   if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT)
     oldColor = ui->plot->getChColor(ui->comboBoxSelectedChannel->currentIndex());
   else
-    oldColor = ui->plot->getChColor(GlobalFunctions::getLogicChannelId(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT + 1, 1));
+    oldColor = ui->plot->getLogicColor(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT);
   QColor color = QColorDialog::getColor(oldColor);
   if (!color.isValid())
     return;
   if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT)
     ui->plot->setChColor(ui->comboBoxSelectedChannel->currentIndex(), color);
   else
-    ui->plot->setLogicColor(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT + 1, color);
+    ui->plot->setLogicColor(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT, color);
   colorUpdateNeeded = true;
   updateUsedChannels();
 }

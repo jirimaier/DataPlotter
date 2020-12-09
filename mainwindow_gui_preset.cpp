@@ -20,10 +20,9 @@ void MainWindow::connectSignals() {
   connect(ui->myTerminal, &MyTerminal::sendMessage, this, &MainWindow::printMessage);
   connect(ui->dialVerticalDiv, &QDial::valueChanged, ui->plot, &MyPlot::setGridHintY);
   connect(ui->dialhorizontalDiv, &QDial::valueChanged, ui->plot, &MyPlot::setGridHintX);
-  connect(ui->horizontalSliderShiftStep, &QSlider::valueChanged, ui->plot, &MyMainPlot::setShiftStep);
+  connect(ui->spinBoxShiftStep, SIGNAL(valueChanged(int)), ui->plot, SLOT(setShiftStep(int)));
   connect(ui->plot, &MyMainPlot::requestCursorUpdate, this, &MainWindow::updateCursors);
 
-  connect(&plotUpdateTimer, &QTimer::timeout, ui->plot, &MyMainPlot::update);
   connect(&portsRefreshTimer, &QTimer::timeout, this, &MainWindow::comRefresh);
   connect(&activeChRefreshTimer, &QTimer::timeout, this, &MainWindow::updateUsedChannels);
   connect(&mathUpdateTimer, &QTimer::timeout, this, &MainWindow::updateMath);
@@ -40,11 +39,11 @@ void MainWindow::setAdaptiveSpinBoxes() {
 
 void MainWindow::startTimers() {
   portsRefreshTimer.setInterval(500);
-  plotUpdateTimer.setInterval(10);
+  // plotUpdateTimer.setInterval(10);
   activeChRefreshTimer.setInterval(500);
   mathUpdateTimer.setInterval(100);
 
-  plotUpdateTimer.start();
+  // plotUpdateTimer.start();
   portsRefreshTimer.start();
   activeChRefreshTimer.start();
   mathUpdateTimer.start();

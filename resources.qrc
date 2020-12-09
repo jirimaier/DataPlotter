@@ -32,6 +32,17 @@
         <file>icons/deltaY.png</file>
         <file>icons/freq.png</file>
         <file>icons/slope.png</file>
+        <file>icons/color.png</file>
+        <file>icons/hidden.png</file>
+        <file>icons/line.png</file>
+        <file>icons/linePoint.png</file>
+        <file>icons/points.png</file>
+        <file>icons/connection.png</file>
+        <file>icons/settings.png</file>
+        <file>icons/terminal.png</file>
+        <file>icons/about.png</file>
+        <file>icons/logic.png</file>
+        <file>icons/math.png</file>
     </qresource>
     <qresource prefix="/translations">
         <file>translation_cz.qm</file>

@@ -22,14 +22,14 @@ void MainWindow::exportCSV(bool all, int ch) {
     char decimal = ui->radioButtonCSVDot->isChecked() ? '.' : ',';
     char separator = ui->radioButtonCSVDot->isChecked() ? ',' : ';';
     if (all)
-      file.write(ui->plot->exportAllCSV(separator, decimal, ui->spinBoxCSVPrecision->value(), ui->checkBoxCSVIOS->isChecked(), ui->checkBoxCSVVRO->isChecked(), ui->checkBoxCSVIncludeHidden->isChecked()));
+      file.write(ui->plot->exportAllCSV(separator, decimal, ui->spinBoxCSVPrecision->value(), ui->checkBoxCSVVRO->isChecked(), ui->checkBoxCSVIncludeHidden->isChecked()));
     else {
       if (ch >= ANALOG_COUNT + MATH_COUNT)
-        file.write(ui->plot->exportLogicCSV(separator, decimal, ch - ANALOG_COUNT - MATH_COUNT + 1, ui->spinBoxCSVPrecision->value(), ui->checkBoxCSVIOS->isChecked(), ui->checkBoxCSVVRO->isChecked()));
+        file.write(ui->plot->exportLogicCSV(separator, decimal, ch - ANALOG_COUNT - MATH_COUNT, ui->spinBoxCSVPrecision->value(), ui->checkBoxCSVVRO->isChecked()));
       else if (ch == XY_CHANNEL)
         file.write(ui->plotxy->exportCSV(separator, decimal, ui->spinBoxCSVPrecision->value()));
       else
-        file.write(ui->plot->exportChannelCSV(separator, decimal, ch, ui->spinBoxCSVPrecision->value(), ui->checkBoxCSVIOS->isChecked(), ui->checkBoxCSVVRO->isChecked()));
+        file.write(ui->plot->exportChannelCSV(separator, decimal, ch, ui->spinBoxCSVPrecision->value(), ui->checkBoxCSVVRO->isChecked()));
     }
     file.close();
   } else {

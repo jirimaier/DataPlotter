@@ -11,7 +11,7 @@ void MainWindow::initSetables() {
   // XY
   setables["xyen"] = ui->checkBoxXY;
   setables["xyvro"] = ui->checkBoxXYVRO;
-  setables["xyios"] = ui->checkBoxXYIOS;
+  // setables["xyios"] = ui->checkBoxXYIOS;
   setables["xyxch"] = ui->spinBoxXYFirst;
   setables["xyych"] = ui->spinBoxXYSecond;
   setables["xyautosize"] = ui->checkBoxXYAutoSize;
@@ -20,7 +20,7 @@ void MainWindow::initSetables() {
   setables["csvprecisoin"] = ui->spinBoxCSVPrecision;
   setables["csvinchid"] = ui->checkBoxCSVIncludeHidden;
   setables["csvvro"] = ui->checkBoxCSVVRO;
-  setables["csvios"] = ui->checkBoxCSVIOS;
+  // setables["csvios"] = ui->checkBoxCSVIOS;
 
   // Plot settings
   // setables["chlabel"] = ui->checkBoxChLabel;
@@ -36,18 +36,15 @@ void MainWindow::initSetables() {
 
   // Settings
   setables["clearonrec"] = ui->checkBoxClearOnReconnect;
-  setables["opengl"] = ui->checkBoxPlotOpenGL;
   setables["showmanin"] = ui->checkBoxShowManualInput;
   setables["sermon"] = ui->checkBoxSerialMonitor;
-  setables["shiftstep"] = ui->horizontalSliderShiftStep;
-  setables["redrawrate"] = ui->horizontalSliderRedrawRate;
 
   // Send
   setables["lineending"] = ui->comboBoxLineEnding;
 
   // Math
   setables["mathvro"] = ui->checkBoxMathVRO;
-  setables["mathios"] = ui->checkBoxMathIOS;
+  // setables["mathios"] = ui->checkBoxMathIOS;
   for (int i = 0; i < MATH_COUNT; i++) {
     setables[QString("math") + QString::number(i + 1) + QString("en")] = mathEn[i];
     setables[QString("math") + QString::number(i + 1) + QString("first")] = mathFirst[i];
@@ -123,7 +120,7 @@ QByteArray MainWindow::getSettings() {
     settings.append(":sca:" + QString::number(ui->plot->getChScale(i)).toUtf8());
     settings.append(";\n");
     settings.append("ch:" + QString::number(i + 1).toUtf8());
-    settings.append(":inv:" + QString::number(ui->plot->isInverted(i) ? 1 : 0).toUtf8());
+    settings.append(":inv:" + QString::number(ui->plot->isChInverted(i) ? 1 : 0).toUtf8());
     settings.append(";\n");
     settings.append("ch:" + QString::number(i + 1).toUtf8());
     settings.append(":sty:" + QString::number(ui->plot->getChStyle(i)).toUtf8());
@@ -134,18 +131,18 @@ QByteArray MainWindow::getSettings() {
     settings.append(";\n");
   }
 
-  for (int i = 1; i <= LOGIC_GROUPS; i++) {
+  for (int i = 0; i < LOGIC_GROUPS; i++) {
     settings.append("log:" + QString::number(i).toUtf8());
-    settings.append(":off:" + QString::number(ui->plot->getChOffset(GlobalFunctions::getLogicChannelId(i, 1))).toUtf8());
+    settings.append(":off:" + QString::number(ui->plot->getChOffset(GlobalFunctions::getLogicChannelID(i, 1))).toUtf8());
     settings.append(";\n");
     settings.append("log:" + QString::number(i).toUtf8());
-    settings.append(":sca:" + QString::number(ui->plot->getChScale(GlobalFunctions::getLogicChannelId(i, 1))).toUtf8());
+    settings.append(":sca:" + QString::number(ui->plot->getChScale(GlobalFunctions::getLogicChannelID(i, 1))).toUtf8());
     settings.append(";\n");
     settings.append("log:" + QString::number(i).toUtf8());
-    settings.append(":sty:" + QString::number(ui->plot->getChStyle(GlobalFunctions::getLogicChannelId(i, 1))).toUtf8());
+    settings.append(":sty:" + QString::number(ui->plot->getChStyle(GlobalFunctions::getLogicChannelID(i, 1))).toUtf8());
     settings.append(";\n");
     settings.append("log:" + QString::number(i).toUtf8());
-    QColor clr = ui->plot->getChColor(GlobalFunctions::getLogicChannelId(i, 1));
+    QColor clr = ui->plot->getChColor(GlobalFunctions::getLogicChannelID(i, 1));
     settings.append(QString(":col:%1,%2,%3").arg(clr.red()).arg(clr.green()).arg(clr.blue()).toUtf8());
     settings.append(";\n");
   }
@@ -202,12 +199,12 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumerator sour
     QByteArray subvalue = value.mid(value.lastIndexOf(':') + 1);
 
     if (subtype == "off")
-      ui->plot->changeChOffset(ch, subvalue.toDouble());
+      ui->plot->setChOffset(ch, subvalue.toDouble());
     else if (subtype == "sca")
-      ui->plot->changeChScale(ch, subvalue.toDouble());
+      ui->plot->setChScale(ch, subvalue.toDouble());
     else if (subtype == "inv") {
-      if (ui->plot->isInverted(ch) ^ (bool)subvalue.toUInt())
-        ui->plot->changeChScale(ch, ui->plot->getChScale(ch) * (-1));
+      if (ui->plot->isChInverted(ch) ^ (bool)subvalue.toUInt())
+        ui->plot->setChScale(ch, ui->plot->getChScale(ch) * (-1));
     } else if (subtype == "sty")
       ui->plot->setChStyle(ch, subvalue.toUInt());
 
@@ -226,9 +223,9 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumerator sour
   }
 
   else if (type == "log") {
-    int ch = value.left(value.indexOf(':', 0)).toUInt();
-    if (ch > LOGIC_GROUPS || ch == 0) {
-      printMessage(tr("Invalid logic in settings").toUtf8(), QString::number(ch).toUtf8(), MessageLevel::error, source);
+    int group = value.left(value.indexOf(':', 0)).toUInt();
+    if (group >= LOGIC_GROUPS) {
+      printMessage(tr("Invalid logic in settings").toUtf8(), QString::number(group).toUtf8(), MessageLevel::error, source);
       return;
     }
     QByteArray subtype = value.mid(value.indexOf(':', 0) + 1).toLower();
@@ -236,11 +233,11 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumerator sour
     QByteArray subvalue = value.mid(value.lastIndexOf(':') + 1);
 
     if (subtype == "off")
-      ui->plot->changeLogicOffset(ch, subvalue.toDouble());
+      ui->plot->setLogicOffset(group, subvalue.toDouble());
     else if (subtype == "sca")
-      ui->plot->changeLogicScale(ch, subvalue.toDouble());
+      ui->plot->setLogicScale(group, subvalue.toDouble());
     else if (subtype == "sty")
-      ui->plot->setLogicStyle(ch, subvalue.toUInt());
+      ui->plot->setLogicStyle(group, subvalue.toUInt());
 
     else if (subtype == "col") {
       QByteArrayList rgb = subvalue.mid(subvalue.indexOf(':')).split(',');
@@ -249,10 +246,10 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumerator sour
         return;
       }
       QColor clr = QColor(rgb.at(0).toInt(), rgb.at(1).toInt(), rgb.at(2).toInt());
-      ui->plot->setLogicColor(ch, clr);
+      ui->plot->setLogicColor(group, clr);
       colorUpdateNeeded = true;
     }
-    if (ui->comboBoxSelectedChannel->currentIndex() == ch + ANALOG_COUNT + MATH_COUNT - 1)
+    if (ui->comboBoxSelectedChannel->currentIndex() == group + ANALOG_COUNT + MATH_COUNT)
       on_comboBoxSelectedChannel_currentIndexChanged(ui->comboBoxSelectedChannel->currentIndex());
   }
 
@@ -261,7 +258,8 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumerator sour
     printMessage(tr("Unknown setting").toUtf8(), type, MessageLevel::error, source);
     return;
   }
-  printMessage(tr("Applied settings").toUtf8(), settings, MessageLevel::info, source);
+  if (ui->comboBoxOutputLevel->currentIndex() == OutputLevel::info)
+    printMessage(tr("Applied settings").toUtf8(), settings, MessageLevel::info, source);
 }
 
 void MainWindow::on_pushButtonLoadFile_clicked() {

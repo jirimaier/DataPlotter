@@ -15,7 +15,7 @@ enum enumerator { analog, math, logic };
 }
 
 namespace PlotRange {
-enum enumerator { freeMove, fixedRange, rolling };
+enum enumerator { freeMove = 0, fixedRange = 1, rolling = 2 };
 }
 
 namespace GraphStyle {
@@ -95,8 +95,10 @@ struct GlobalFunctions {
     return 0;
   }
 
-  static int getLogicChannelId(int group, int bit) { return (ANALOG_COUNT + MATH_COUNT + (group - 1) * LOGIC_BITS + bit - 1); }
+  /// Skupina od 0, bit od 0, Vrátí chID
+  static int getLogicChannelID(int group, int bit) { return (ANALOG_COUNT + MATH_COUNT + (group)*LOGIC_BITS + bit); }
 
+  /// Chid od 0
   static QString getChName(int chid) {
     if (chid >= ANALOG_COUNT + MATH_COUNT)
       return ((QObject::tr("Logic %1 bit %2").arg((chid - ANALOG_COUNT - MATH_COUNT) / LOGIC_BITS + 1).arg((chid - ANALOG_COUNT - MATH_COUNT) % LOGIC_BITS + 1)));
@@ -111,14 +113,15 @@ struct ChannelSettings_t {
   int style = GraphStyle::line;
   double offset = 0;
   double scale = 1;
+  bool inverted = false;
 };
 
 struct PlotSettings_t {
   double rollingRange = 100;
   int zoom = 1000;
   double horizontalPos = 500;
-  double verticalRange = 10;
-  int verticalCenter = 0;
+  // double verticalRange = 10;
+  // int verticalCenter = 0;
 };
 
 struct PlotFrame_t {

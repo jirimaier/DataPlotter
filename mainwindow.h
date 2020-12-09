@@ -33,7 +33,7 @@ public:
 private:
   Ui::MainWindow *ui;
   QTranslator *translator;
-  QTimer plotUpdateTimer, portsRefreshTimer, activeChRefreshTimer, mathUpdateTimer;
+  QTimer portsRefreshTimer, activeChRefreshTimer, mathUpdateTimer;
   QList<QSerialPortInfo> portList;
   void connectSignals();
   void updateChScale();
@@ -91,7 +91,7 @@ private slots:
   void on_lineEditManualInput_returnPressed();
   void on_pushButtonLoadFile_clicked();
   void on_pushButtonDefaults_clicked();
-  void on_checkBoxChInvert_toggled(bool checked) { ui->plot->changeChScale(ui->comboBoxSelectedChannel->currentIndex(), ui->doubleSpinBoxChScale->value() * (checked ? -1 : 1)); }
+  void on_checkBoxChInvert_toggled(bool checked) { ui->plot->setChScale(ui->comboBoxSelectedChannel->currentIndex(), ui->doubleSpinBoxChScale->value() * (checked ? -1 : 1)); }
   void on_pushButtonSaveSettings_clicked();
   void on_pushButtonReset_clicked();
   void on_pushButtonAutoset_clicked();
@@ -129,13 +129,14 @@ private slots:
   void on_spinBoxLog4bits_valueChanged(int arg1) { emit setLogicBits(4, arg1); }
   void on_pushButtonPlotImage_clicked();
   void on_pushButtonXYImage_clicked();
-  void on_horizontalSliderRedrawRate_valueChanged(int value) { plotUpdateTimer.setInterval(100 / value); }
   void on_horizontalSliderTimeCur1_realValueChanged();
   void on_horizontalSliderTimeCur2_realValueChanged();
   void on_checkBoxCur1Visible_toggled(bool checked);
   void on_checkBoxCur2Visible_toggled(bool checked);
   void on_pushButtonChangeChColor_clicked();
   void on_pushButtonClearAll_clicked() { ui->plot->resetChannels(); }
+
+  void on_checkBoxChInverted_toggled(bool checked);
 
 public slots:
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumerator target);

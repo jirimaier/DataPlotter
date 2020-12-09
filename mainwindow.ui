@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>988</width>
-    <height>675</height>
+    <height>682</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -37,7 +37,7 @@
         <attribute name="title">
          <string/>
         </attribute>
-        <layout class="QVBoxLayout" name="verticalLayout_43" stretch="1000,1">
+        <layout class="QVBoxLayout" name="verticalLayout_10" stretch="1000,1">
          <item>
           <layout class="QVBoxLayout" name="Plots" stretch="1,1">
            <item>
@@ -97,7 +97,13 @@
               <enum>QTabWidget::Rounded</enum>
              </property>
              <property name="currentIndex">
-              <number>6</number>
+              <number>4</number>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>20</width>
+               <height>20</height>
+              </size>
              </property>
              <property name="elideMode">
               <enum>Qt::ElideRight</enum>
@@ -115,8 +121,12 @@
               <bool>true</bool>
              </property>
              <widget class="QWidget" name="range">
+              <attribute name="icon">
+               <iconset resource="resources.qrc">
+                <normaloff>:/images/icons/spread.png</normaloff>:/images/icons/spread.png</iconset>
+              </attribute>
               <attribute name="title">
-               <string>Range</string>
+               <string/>
               </attribute>
               <layout class="QHBoxLayout" name="horizontalLayout_12" stretch="1,1000">
                <property name="leftMargin">
@@ -1116,8 +1126,12 @@
               </layout>
              </widget>
              <widget class="QWidget" name="Cursors">
+              <attribute name="icon">
+               <iconset resource="resources.qrc">
+                <normaloff>:/images/icons/deltaX.png</normaloff>:/images/icons/deltaX.png</iconset>
+              </attribute>
               <attribute name="title">
-               <string>Cursors</string>
+               <string/>
               </attribute>
               <layout class="QHBoxLayout" name="horizontalLayout_21">
                <property name="leftMargin">
@@ -1462,7 +1476,7 @@
                 <widget class="QFrame" name="frame">
                  <property name="minimumSize">
                   <size>
-                   <width>100</width>
+                   <width>120</width>
                    <height>0</height>
                   </size>
                  </property>
@@ -1512,6 +1526,8 @@
                        <font>
                         <family>Courier New</family>
                         <pointsize>11</pointsize>
+                        <weight>75</weight>
+                        <bold>true</bold>
                        </font>
                       </property>
                       <property name="text">
@@ -1548,6 +1564,8 @@
                        <font>
                         <family>Courier New</family>
                         <pointsize>11</pointsize>
+                        <weight>75</weight>
+                        <bold>true</bold>
                        </font>
                       </property>
                       <property name="text">
@@ -1584,6 +1602,8 @@
                        <font>
                         <family>Courier New</family>
                         <pointsize>11</pointsize>
+                        <weight>75</weight>
+                        <bold>true</bold>
                        </font>
                       </property>
                       <property name="text">
@@ -1620,6 +1640,8 @@
                        <font>
                         <family>Courier New</family>
                         <pointsize>11</pointsize>
+                        <weight>75</weight>
+                        <bold>true</bold>
                        </font>
                       </property>
                       <property name="text">
@@ -1638,8 +1660,12 @@
               </layout>
              </widget>
              <widget class="QWidget" name="Math">
+              <attribute name="icon">
+               <iconset resource="resources.qrc">
+                <normaloff>:/images/icons/math.png</normaloff>:/images/icons/math.png</iconset>
+              </attribute>
               <attribute name="title">
-               <string>Math</string>
+               <string/>
               </attribute>
               <layout class="QHBoxLayout" name="horizontalLayout_24" stretch="1,1000">
                <property name="leftMargin">
@@ -2040,13 +2066,6 @@
                    </property>
                   </widget>
                  </item>
-                 <item>
-                  <widget class="QCheckBox" name="checkBoxMathIOS">
-                   <property name="text">
-                    <string>Include offset and scales</string>
-                   </property>
-                  </widget>
-                 </item>
                 </layout>
                </item>
                <item>
@@ -2065,8 +2084,12 @@
               </layout>
              </widget>
              <widget class="QWidget" name="xy">
+              <attribute name="icon">
+               <iconset resource="resources.qrc">
+                <normaloff>:/images/icons/xyChannel.png</normaloff>:/images/icons/xyChannel.png</iconset>
+              </attribute>
               <attribute name="title">
-               <string>X-Y</string>
+               <string/>
               </attribute>
               <layout class="QHBoxLayout" name="horizontalLayout_26" stretch="1,1,1000">
                <property name="leftMargin">
@@ -2188,13 +2211,6 @@
                     </property>
                    </widget>
                   </item>
-                  <item>
-                   <widget class="QCheckBox" name="checkBoxXYIOS">
-                    <property name="text">
-                     <string>Include offset and scales</string>
-                    </property>
-                   </widget>
-                  </item>
                  </layout>
                 </widget>
                </item>
@@ -2246,8 +2262,12 @@
               </layout>
              </widget>
              <widget class="QWidget" name="logic">
+              <attribute name="icon">
+               <iconset resource="resources.qrc">
+                <normaloff>:/images/icons/logic.png</normaloff>:/images/icons/logic.png</iconset>
+              </attribute>
               <attribute name="title">
-               <string>Logic</string>
+               <string/>
               </attribute>
               <layout class="QHBoxLayout" name="horizontalLayout_47">
                <item>
@@ -2445,8 +2465,12 @@
               </layout>
              </widget>
              <widget class="QWidget" name="export_2">
+              <attribute name="icon">
+               <iconset resource="resources.qrc">
+                <normaloff>:/images/icons/save.png</normaloff>:/images/icons/save.png</iconset>
+              </attribute>
               <attribute name="title">
-               <string>Export</string>
+               <string/>
               </attribute>
               <layout class="QHBoxLayout" name="horizontalLayout_33" stretch="1,1,1000">
                <property name="leftMargin">
@@ -2699,7 +2723,7 @@
                       <property name="sizeHint" stdset="0">
                        <size>
                         <width>20</width>
-                        <height>10</height>
+                        <height>13</height>
                        </size>
                       </property>
                      </spacer>
@@ -2734,16 +2758,6 @@
                       </property>
                      </widget>
                     </item>
-                    <item>
-                     <widget class="QCheckBox" name="checkBoxCSVIOS">
-                      <property name="text">
-                       <string>Include offsets and scales</string>
-                      </property>
-                      <property name="checked">
-                       <bool>false</bool>
-                      </property>
-                     </widget>
-                    </item>
                    </layout>
                   </item>
                  </layout>
@@ -2765,8 +2779,12 @@
               </layout>
              </widget>
              <widget class="QWidget" name="set">
+              <attribute name="icon">
+               <iconset resource="resources.qrc">
+                <normaloff>:/images/icons/settings.png</normaloff>:/images/icons/settings.png</iconset>
+              </attribute>
               <attribute name="title">
-               <string>Settings</string>
+               <string/>
               </attribute>
               <layout class="QHBoxLayout" name="horizontalLayout_35" stretch="1,100,0">
                <property name="leftMargin">
@@ -2921,17 +2939,20 @@
             </widget>
            </item>
            <item>
-            <layout class="QVBoxLayout" name="verticalLayout_10" stretch="1,100">
+            <layout class="QVBoxLayout" name="verticalLayout_27">
              <item>
               <widget class="QTabWidget" name="tabWidget_3">
+               <property name="currentIndex">
+                <number>0</number>
+               </property>
                <property name="tabBarAutoHide">
                 <bool>true</bool>
                </property>
-               <widget class="QWidget" name="tab_10">
+               <widget class="QWidget" name="tab">
                 <attribute name="title">
-                 <string>Tab 2</string>
+                 <string>Tab 1</string>
                 </attribute>
-                <layout class="QHBoxLayout" name="horizontalLayout_45" stretch="1,1,1">
+                <layout class="QHBoxLayout" name="horizontalLayout_45">
                  <property name="leftMargin">
                   <number>6</number>
                  </property>
@@ -2988,6 +3009,32 @@
                   </widget>
                  </item>
                  <item>
+                  <widget class="QPushButton" name="pushButtonAutoset">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Autoset&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="resources.qrc">
+                     <normaloff>:/images/icons/spread.png</normaloff>:/images/icons/spread.png</iconset>
+                   </property>
+                   <property name="iconSize">
+                    <size>
+                     <width>30</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
                   <widget class="QPushButton" name="pushButtonResetChannels">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -3016,32 +3063,6 @@
                    <property name="icon">
                     <iconset resource="resources.qrc">
                      <normaloff>:/images/icons/clearch.png</normaloff>:/images/icons/clearch.png</iconset>
-                   </property>
-                   <property name="iconSize">
-                    <size>
-                     <width>30</width>
-                     <height>30</height>
-                    </size>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="pushButtonAutoset">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="toolTip">
-                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Autoset&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                   </property>
-                   <property name="text">
-                    <string/>
-                   </property>
-                   <property name="icon">
-                    <iconset resource="resources.qrc">
-                     <normaloff>:/images/icons/spread.png</normaloff>:/images/icons/spread.png</iconset>
                    </property>
                    <property name="iconSize">
                     <size>
@@ -3103,139 +3124,45 @@
                 <attribute name="title">
                  <string>Channel</string>
                 </attribute>
-                <layout class="QVBoxLayout" name="verticalLayout_7">
+                <layout class="QVBoxLayout" name="verticalLayout_6">
+                 <property name="leftMargin">
+                  <number>6</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>6</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>6</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>6</number>
+                 </property>
+                 <item>
+                  <widget class="QComboBox" name="comboBoxSelectedChannel">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>11</pointsize>
+                    </font>
+                   </property>
+                   <property name="maxVisibleItems">
+                    <number>1000</number>
+                   </property>
+                   <property name="sizeAdjustPolicy">
+                    <enum>QComboBox::AdjustToContents</enum>
+                   </property>
+                  </widget>
+                 </item>
                  <item>
                   <layout class="QGridLayout" name="gridLayout_6">
-                   <item row="2" column="1">
-                    <widget class="QComboBox" name="comboBoxGraphStyle">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>0</width>
-                       <height>0</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>16777215</width>
-                       <height>16777215</height>
-                      </size>
-                     </property>
-                     <property name="font">
-                      <font>
-                       <pointsize>8</pointsize>
-                      </font>
-                     </property>
-                     <item>
-                      <property name="text">
-                       <string>Line</string>
-                      </property>
-                     </item>
-                     <item>
-                      <property name="text">
-                       <string>Points</string>
-                      </property>
-                     </item>
-                     <item>
-                      <property name="text">
-                       <string>Line and points</string>
-                      </property>
-                     </item>
-                     <item>
-                      <property name="text">
-                       <string>Hidden</string>
-                      </property>
-                     </item>
-                    </widget>
-                   </item>
-                   <item row="3" column="1">
-                    <layout class="QVBoxLayout" name="verticalLayout_34">
-                     <property name="spacing">
-                      <number>2</number>
-                     </property>
-                     <item>
-                      <layout class="QHBoxLayout" name="horizontalLayout_36">
-                       <item>
-                        <layout class="QVBoxLayout" name="verticalLayout_27">
-                         <item>
-                          <widget class="QLabel" name="label_9">
-                           <property name="text">
-                            <string>Scale</string>
-                           </property>
-                           <property name="alignment">
-                            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-                           </property>
-                           <property name="buddy">
-                            <cstring>doubleSpinBoxChScale</cstring>
-                           </property>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QCheckBox" name="checkBoxChInvert">
-                           <property name="text">
-                            <string>Invert</string>
-                           </property>
-                          </widget>
-                         </item>
-                        </layout>
-                       </item>
-                       <item>
-                        <widget class="myDial" name="dialChScale">
-                         <property name="enabled">
-                          <bool>true</bool>
-                         </property>
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                           <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="minimumSize">
-                          <size>
-                           <width>40</width>
-                           <height>40</height>
-                          </size>
-                         </property>
-                         <property name="maximumSize">
-                          <size>
-                           <width>40</width>
-                           <height>40</height>
-                          </size>
-                         </property>
-                         <property name="autoFillBackground">
-                          <bool>false</bool>
-                         </property>
-                         <property name="minimum">
-                          <number>3</number>
-                         </property>
-                         <property name="maximum">
-                          <number>22</number>
-                         </property>
-                         <property name="pageStep">
-                          <number>1</number>
-                         </property>
-                         <property name="value">
-                          <number>12</number>
-                         </property>
-                         <property name="invertedControls">
-                          <bool>false</bool>
-                         </property>
-                         <property name="notchTarget">
-                          <double>2.000000000000000</double>
-                         </property>
-                         <property name="notchesVisible">
-                          <bool>true</bool>
-                         </property>
-                        </widget>
-                       </item>
-                      </layout>
-                     </item>
-                     <item>
+                   <item row="1" column="1">
+                    <layout class="QGridLayout" name="gridLayout_7">
+                     <item row="1" column="0" colspan="2">
                       <widget class="QDoubleSpinBox" name="doubleSpinBoxChScale">
                        <property name="sizePolicy">
                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -3277,27 +3204,87 @@
                        </property>
                       </widget>
                      </item>
-                    </layout>
-                   </item>
-                   <item row="3" column="0">
-                    <layout class="QVBoxLayout" name="verticalLayout_6">
-                     <item>
-                      <widget class="QLabel" name="label_8">
-                       <property name="text">
-                        <string>Offset</string>
+                     <item row="0" column="0">
+                      <layout class="QVBoxLayout" name="verticalLayout_7">
+                       <item>
+                        <widget class="QLabel" name="label_9">
+                         <property name="text">
+                          <string>Scale</string>
+                         </property>
+                         <property name="alignment">
+                          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                         </property>
+                         <property name="buddy">
+                          <cstring>doubleSpinBoxChScale</cstring>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QCheckBox" name="checkBoxChInverted">
+                         <property name="text">
+                          <string>Invert</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </item>
+                     <item row="0" column="1">
+                      <widget class="myDial" name="dialChScale">
+                       <property name="enabled">
+                        <bool>true</bool>
                        </property>
-                       <property name="alignment">
-                        <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
                        </property>
-                       <property name="buddy">
-                        <cstring>doubleSpinBoxChOffset</cstring>
+                       <property name="minimumSize">
+                        <size>
+                         <width>40</width>
+                         <height>40</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>40</width>
+                         <height>40</height>
+                        </size>
+                       </property>
+                       <property name="autoFillBackground">
+                        <bool>false</bool>
+                       </property>
+                       <property name="minimum">
+                        <number>3</number>
+                       </property>
+                       <property name="maximum">
+                        <number>22</number>
+                       </property>
+                       <property name="pageStep">
+                        <number>1</number>
+                       </property>
+                       <property name="value">
+                        <number>12</number>
+                       </property>
+                       <property name="invertedControls">
+                        <bool>false</bool>
+                       </property>
+                       <property name="notchTarget">
+                        <double>2.000000000000000</double>
+                       </property>
+                       <property name="notchesVisible">
+                        <bool>true</bool>
                        </property>
                       </widget>
                      </item>
+                    </layout>
+                   </item>
+                   <item row="1" column="0">
+                    <layout class="QVBoxLayout" name="verticalLayout_34">
                      <item>
-                      <widget class="QDoubleSpinBox" name="doubleSpinBoxChOffset">
+                      <widget class="QComboBox" name="comboBoxGraphStyle">
                        <property name="sizePolicy">
-                        <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+                        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                          <horstretch>0</horstretch>
                          <verstretch>0</verstretch>
                         </sizepolicy>
@@ -3310,78 +3297,134 @@
                        </property>
                        <property name="maximumSize">
                         <size>
-                         <width>16777215</width>
+                         <width>60</width>
                          <height>16777215</height>
                         </size>
                        </property>
                        <property name="font">
                         <font>
-                         <pointsize>10</pointsize>
+                         <pointsize>8</pointsize>
                         </font>
                        </property>
-                       <property name="alignment">
-                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       <property name="iconSize">
+                        <size>
+                         <width>20</width>
+                         <height>20</height>
+                        </size>
                        </property>
-                       <property name="decimals">
-                        <number>3</number>
+                       <item>
+                        <property name="text">
+                         <string/>
+                        </property>
+                        <property name="icon">
+                         <iconset resource="resources.qrc">
+                          <normaloff>:/images/icons/line.png</normaloff>:/images/icons/line.png</iconset>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string/>
+                        </property>
+                        <property name="icon">
+                         <iconset resource="resources.qrc">
+                          <normaloff>:/images/icons/points.png</normaloff>:/images/icons/points.png</iconset>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string/>
+                        </property>
+                        <property name="icon">
+                         <iconset resource="resources.qrc">
+                          <normaloff>:/images/icons/linePoint.png</normaloff>:/images/icons/linePoint.png</iconset>
+                        </property>
+                       </item>
+                       <item>
+                        <property name="text">
+                         <string/>
+                        </property>
+                        <property name="icon">
+                         <iconset resource="resources.qrc">
+                          <normaloff>:/images/icons/hidden.png</normaloff>:/images/icons/hidden.png</iconset>
+                        </property>
+                       </item>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="pushButtonChangeChColor">
+                       <property name="text">
+                        <string/>
                        </property>
-                       <property name="minimum">
-                        <double>-1000000.000000000000000</double>
+                       <property name="icon">
+                        <iconset resource="resources.qrc">
+                         <normaloff>:/images/icons/color.png</normaloff>:/images/icons/color.png</iconset>
                        </property>
-                       <property name="maximum">
-                        <double>1000000.000000000000000</double>
-                       </property>
-                       <property name="singleStep">
-                        <double>0.100000000000000</double>
+                       <property name="iconSize">
+                        <size>
+                         <width>30</width>
+                         <height>30</height>
+                        </size>
                        </property>
                       </widget>
                      </item>
                     </layout>
                    </item>
                    <item row="2" column="0">
-                    <widget class="QPushButton" name="pushButtonChangeChColor">
+                    <widget class="QLabel" name="label_8">
                      <property name="text">
-                      <string>Change color</string>
+                      <string>Offset</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+                     </property>
+                     <property name="buddy">
+                      <cstring>doubleSpinBoxChOffset</cstring>
                      </property>
                     </widget>
                    </item>
-                   <item row="1" column="1">
-                    <widget class="QComboBox" name="comboBoxSelectedChannel">
+                   <item row="2" column="1">
+                    <widget class="QDoubleSpinBox" name="doubleSpinBoxChOffset">
                      <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
                        <horstretch>0</horstretch>
                        <verstretch>0</verstretch>
                       </sizepolicy>
                      </property>
-                     <property name="maxVisibleItems">
-                      <number>1000</number>
+                     <property name="minimumSize">
+                      <size>
+                       <width>0</width>
+                       <height>0</height>
+                      </size>
                      </property>
-                     <property name="sizeAdjustPolicy">
-                      <enum>QComboBox::AdjustToContents</enum>
+                     <property name="maximumSize">
+                      <size>
+                       <width>16777215</width>
+                       <height>16777215</height>
+                      </size>
                      </property>
-                    </widget>
-                   </item>
-                   <item row="1" column="0">
-                    <widget class="QLabel" name="label_24">
-                     <property name="text">
-                      <string>Selected channel</string>
+                     <property name="font">
+                      <font>
+                       <pointsize>10</pointsize>
+                      </font>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                     </property>
+                     <property name="decimals">
+                      <number>3</number>
+                     </property>
+                     <property name="minimum">
+                      <double>-1000000.000000000000000</double>
+                     </property>
+                     <property name="maximum">
+                      <double>1000000.000000000000000</double>
+                     </property>
+                     <property name="singleStep">
+                      <double>0.100000000000000</double>
                      </property>
                     </widget>
                    </item>
                   </layout>
-                 </item>
-                 <item>
-                  <spacer name="verticalSpacer_3">
-                   <property name="orientation">
-                    <enum>Qt::Vertical</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>20</width>
-                     <height>5</height>
-                    </size>
-                   </property>
-                  </spacer>
                  </item>
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_8">
@@ -3389,11 +3432,11 @@
                     <widget class="QLabel" name="label_7">
                      <property name="font">
                       <font>
-                       <pointsize>8</pointsize>
+                       <pointsize>11</pointsize>
                       </font>
                      </property>
                      <property name="text">
-                      <string>Channel value scale:</string>
+                      <string>Scale:</string>
                      </property>
                     </widget>
                    </item>
@@ -3401,7 +3444,7 @@
                     <widget class="QLabel" name="labelChScale">
                      <property name="font">
                       <font>
-                       <pointsize>8</pointsize>
+                       <pointsize>11</pointsize>
                       </font>
                      </property>
                      <property name="text">
@@ -3466,6 +3509,12 @@
            <property name="currentIndex">
             <number>2</number>
            </property>
+           <property name="iconSize">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
            <property name="elideMode">
             <enum>Qt::ElideRight</enum>
            </property>
@@ -3473,8 +3522,12 @@
             <bool>false</bool>
            </property>
            <widget class="QWidget" name="tab_7">
+            <attribute name="icon">
+             <iconset resource="resources.qrc">
+              <normaloff>:/images/icons/connection.png</normaloff>:/images/icons/connection.png</iconset>
+            </attribute>
             <attribute name="title">
-             <string>connection</string>
+             <string/>
             </attribute>
             <layout class="QVBoxLayout" name="verticalLayout_30">
              <item>
@@ -4061,7 +4114,7 @@
                       </property>
                       <property name="font">
                        <font>
-                        <family>MS Shell Dlg 2</family>
+                        <family>Courier New</family>
                        </font>
                       </property>
                       <property name="frame">
@@ -4207,8 +4260,12 @@
             </layout>
            </widget>
            <widget class="QWidget" name="tab_9">
+            <attribute name="icon">
+             <iconset resource="resources.qrc">
+              <normaloff>:/images/icons/terminal.png</normaloff>:/images/icons/terminal.png</iconset>
+            </attribute>
             <attribute name="title">
-             <string>terminal</string>
+             <string/>
             </attribute>
             <layout class="QVBoxLayout" name="verticalLayout_20">
              <item>
@@ -4365,8 +4422,12 @@ selection-background-color: rgb(85, 0, 0);</string>
             </layout>
            </widget>
            <widget class="QWidget" name="tab_8">
+            <attribute name="icon">
+             <iconset resource="resources.qrc">
+              <normaloff>:/images/icons/settings.png</normaloff>:/images/icons/settings.png</iconset>
+            </attribute>
             <attribute name="title">
-             <string>settings</string>
+             <string/>
             </attribute>
             <layout class="QVBoxLayout" name="verticalLayout_11">
              <item>
@@ -4451,87 +4512,29 @@ selection-background-color: rgb(85, 0, 0);</string>
                <property name="title">
                 <string>Plot</string>
                </property>
-               <layout class="QVBoxLayout" name="verticalLayout_16">
+               <layout class="QHBoxLayout" name="horizontalLayout_36">
                 <item>
-                 <widget class="QCheckBox" name="checkBoxPlotOpenGL">
+                 <widget class="QLabel" name="label_2">
                   <property name="text">
-                   <string>Open GL</string>
+                   <string>Shift mode prestep</string>
                   </property>
                  </widget>
                 </item>
                 <item>
-                 <layout class="QGridLayout" name="gridLayout">
-                  <item row="0" column="0">
-                   <widget class="QLabel" name="label_2">
-                    <property name="text">
-                     <string>Shifting mode step</string>
-                    </property>
-                    <property name="buddy">
-                     <cstring>horizontalSliderShiftStep</cstring>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="1" column="0">
-                   <widget class="QLabel" name="label_4">
-                    <property name="text">
-                     <string>Redraw rate</string>
-                    </property>
-                    <property name="buddy">
-                     <cstring>horizontalSliderRedrawRate</cstring>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="0" column="1">
-                   <widget class="QSlider" name="horizontalSliderShiftStep">
-                    <property name="maximum">
-                     <number>10</number>
-                    </property>
-                    <property name="singleStep">
-                     <number>10</number>
-                    </property>
-                    <property name="tracking">
-                     <bool>false</bool>
-                    </property>
-                    <property name="orientation">
-                     <enum>Qt::Horizontal</enum>
-                    </property>
-                    <property name="tickPosition">
-                     <enum>QSlider::NoTicks</enum>
-                    </property>
-                   </widget>
-                  </item>
-                  <item row="1" column="1">
-                   <widget class="QSlider" name="horizontalSliderRedrawRate">
-                    <property name="minimum">
-                     <number>1</number>
-                    </property>
-                    <property name="maximum">
-                     <number>10</number>
-                    </property>
-                    <property name="singleStep">
-                     <number>1</number>
-                    </property>
-                    <property name="pageStep">
-                     <number>5</number>
-                    </property>
-                    <property name="value">
-                     <number>6</number>
-                    </property>
-                    <property name="tracking">
-                     <bool>false</bool>
-                    </property>
-                    <property name="orientation">
-                     <enum>Qt::Horizontal</enum>
-                    </property>
-                    <property name="tickPosition">
-                     <enum>QSlider::NoTicks</enum>
-                    </property>
-                    <property name="tickInterval">
-                     <number>10</number>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
+                 <widget class="QSpinBox" name="spinBoxShiftStep">
+                  <property name="specialValueText">
+                   <string>Smooth</string>
+                  </property>
+                  <property name="suffix">
+                   <string> %</string>
+                  </property>
+                  <property name="maximum">
+                   <number>100</number>
+                  </property>
+                  <property name="singleStep">
+                   <number>10</number>
+                  </property>
+                 </widget>
                 </item>
                </layout>
               </widget>
@@ -4649,8 +4652,12 @@ selection-background-color: rgb(85, 0, 0);</string>
             </layout>
            </widget>
            <widget class="QWidget" name="tab_3">
+            <attribute name="icon">
+             <iconset resource="resources.qrc">
+              <normaloff>:/images/icons/about.png</normaloff>:/images/icons/about.png</iconset>
+            </attribute>
             <attribute name="title">
-             <string>about</string>
+             <string/>
             </attribute>
             <layout class="QVBoxLayout" name="verticalLayout_13">
              <item>
@@ -4763,6 +4770,11 @@ selection-background-color: rgb(85, 0, 0);</string>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <property name="font">
+                <font>
+                 <family>Courier New</family>
+                </font>
+               </property>
                <property name="placeholderText">
                 <string>send data to device</string>
                </property>
@@ -4814,6 +4826,11 @@ selection-background-color: rgb(85, 0, 0);</string>
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Courier New</family>
+                </font>
                </property>
                <property name="placeholderText">
                 <string>send data to device</string>
@@ -4867,6 +4884,11 @@ selection-background-color: rgb(85, 0, 0);</string>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <property name="font">
+                <font>
+                 <family>Courier New</family>
+                </font>
+               </property>
                <property name="placeholderText">
                 <string>send data to device</string>
                </property>
@@ -4918,6 +4940,11 @@ selection-background-color: rgb(85, 0, 0);</string>
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
+               </property>
+               <property name="font">
+                <font>
+                 <family>Courier New</family>
+                </font>
                </property>
                <property name="placeholderText">
                 <string>send data to device</string>
@@ -5086,12 +5113,10 @@ selection-background-color: rgb(85, 0, 0);</string>
   <tabstop>comboBoxMath4Op</tabstop>
   <tabstop>spinBoxMath4Second</tabstop>
   <tabstop>checkBoxMathVRO</tabstop>
-  <tabstop>checkBoxMathIOS</tabstop>
   <tabstop>checkBoxXY</tabstop>
   <tabstop>spinBoxXYFirst</tabstop>
   <tabstop>spinBoxXYSecond</tabstop>
   <tabstop>checkBoxXYVRO</tabstop>
-  <tabstop>checkBoxXYIOS</tabstop>
   <tabstop>checkBoxXYAutoSize</tabstop>
   <tabstop>checkBoxLog1</tabstop>
   <tabstop>spinBoxLog1source</tabstop>
@@ -5113,22 +5138,13 @@ selection-background-color: rgb(85, 0, 0);</string>
   <tabstop>spinBoxCSVPrecision</tabstop>
   <tabstop>checkBoxCSVIncludeHidden</tabstop>
   <tabstop>checkBoxCSVVRO</tabstop>
-  <tabstop>checkBoxCSVIOS</tabstop>
   <tabstop>pushButtonPlotImage</tabstop>
   <tabstop>pushButtonXYImage</tabstop>
   <tabstop>lineEditVtitle</tabstop>
   <tabstop>lineEditHtitle</tabstop>
   <tabstop>checkBoxVerticalValues</tabstop>
   <tabstop>comboBoxHAxisType</tabstop>
-  <tabstop>tabWidget_3</tabstop>
-  <tabstop>pushButtonPause</tabstop>
-  <tabstop>pushButtonResetChannels</tabstop>
-  <tabstop>pushButtonAutoset</tabstop>
   <tabstop>channel</tabstop>
-  <tabstop>doubleSpinBoxChOffset</tabstop>
-  <tabstop>checkBoxChInvert</tabstop>
-  <tabstop>dialChScale</tabstop>
-  <tabstop>doubleSpinBoxChScale</tabstop>
   <tabstop>spinBoxMath3First</tabstop>
   <tabstop>comboBoxMath3Op</tabstop>
   <tabstop>dialVerticalRange</tabstop>
@@ -5153,7 +5169,6 @@ selection-background-color: rgb(85, 0, 0);</string>
   <tabstop>checkBoxClearOnReconnect</tabstop>
   <tabstop>checkBoxShowManualInput</tabstop>
   <tabstop>checkBoxSerialMonitor</tabstop>
-  <tabstop>checkBoxPlotOpenGL</tabstop>
   <tabstop>checkBoxAddSemicolum</tabstop>
   <tabstop>pushButtonDefaults</tabstop>
   <tabstop>pushButtonReset</tabstop>
@@ -5169,8 +5184,6 @@ selection-background-color: rgb(85, 0, 0);</string>
   <tabstop>spinBoxMath1First</tabstop>
   <tabstop>comboBoxMath2Op</tabstop>
   <tabstop>checkBoxMath3</tabstop>
-  <tabstop>horizontalSliderShiftStep</tabstop>
-  <tabstop>horizontalSliderRedrawRate</tabstop>
  </tabstops>
  <resources>
   <include location="resources.qrc"/>

@@ -2,7 +2,7 @@
 
 void MainWindow::updateCursors() {
   int ch = ui->comboBoxCursor1Channel->currentIndex();
-  QPair<long, long> range = ui->plot->getChVisibleSamples(ch);
+  QPair<long, long> range = ui->plot->getChVisibleSamplesRange(ch);
   ui->horizontalSliderTimeCur1->updateRange(range.first, range.second);
   double time1, value1, time2, value2;
   QByteArray timeStr, valueStr;
@@ -19,7 +19,7 @@ void MainWindow::updateCursors() {
   }
 
   ch = ui->comboBoxCursor2Channel->currentIndex();
-  range = ui->plot->getChVisibleSamples(ch);
+  range = ui->plot->getChVisibleSamplesRange(ch);
   ui->horizontalSliderTimeCur2->updateRange(range.first, range.second);
   timeStr = "";
   valueStr = "";
@@ -36,10 +36,12 @@ void MainWindow::updateCursors() {
   }
 
   if (ui->checkBoxCur1Visible->isChecked() && ui->checkBoxCur2Visible->isChecked()) {
-    ui->labelCurDeltaTime->setText(QString::number(time2 - time1, 'f', 3));
-    ui->labelCurDeltaValue->setText(QString::number(value2 - value1, 'f', 3));
-    ui->labelCurSlope->setText(QString::number((value2 - value1) / (time2 - time1), 'f', 3));
-    ui->labelCurFreq->setText(QString::number(1 / (time2 - time1), 'f', 3));
+    double dt = time2 - time1;
+    double dy = value2 - value1;
+    ui->labelCurDeltaTime->setText(QString::number(dt, 'f', abs(dt) < 1000 ? 3 : 0));
+    ui->labelCurDeltaValue->setText(QString::number(dy, 'f', abs(dy) < 1000 ? 3 : 0));
+    ui->labelCurSlope->setText(QString::number(dy / dt, 'f', abs(dy / dt) < 1000 ? 3 : 0));
+    ui->labelCurFreq->setText(QString::number(1 / dt, 'f', abs(1 / dt) < 1000 ? 3 : 0));
   } else {
     ui->labelCurDeltaTime->setText("---");
     ui->labelCurDeltaValue->setText("---");
@@ -54,8 +56,10 @@ void MainWindow::updateCursor(Cursors::enumerator cursor, int selectedChannel, u
   if (selectedChannel < ANALOG_COUNT + MATH_COUNT) {
     // Analogový kanál
     time = ui->plot->graph(selectedChannel)->data()->at(sample)->key;
-    double valueOffseted = ui->plot->graph(selectedChannel)->data()->at(sample)->value;
-    value = valueOffseted / ui->plot->getChScale(selectedChannel) - ui->plot->getChOffset(selectedChannel);
+    value = ui->plot->graph(selectedChannel)->data()->at(sample)->value;
+    if (ui->plot->isChInverted(selectedChannel))
+      value *= (-1);
+    double valueOffseted = value * ui->plot->getChScale(selectedChannel) + ui->plot->getChOffset(selectedChannel);
     timeStr = QString::number(time, 'f', 3).toLocal8Bit();
     valueStr = QString::number(value, 'f', 3).toLocal8Bit();
     ui->plot->setCursorVisible(cursor, true);
@@ -65,19 +69,20 @@ void MainWindow::updateCursor(Cursors::enumerator cursor, int selectedChannel, u
   } else {
     QByteArray bits;
     value = 0.0;
-    int group = selectedChannel - ANALOG_COUNT - MATH_COUNT + 1;
-    time = ui->plot->graph(GlobalFunctions::getLogicChannelId(group, 1))->data()->at(sample)->key;
+    int group = selectedChannel - ANALOG_COUNT - MATH_COUNT;
+    time = ui->plot->graph(GlobalFunctions::getLogicChannelID(group, 0))->data()->at(sample)->key;
     int bitsUsed = ui->plot->getLogicBitsUsed(group);
     for (int bit = 0; bit < bitsUsed; bit++) {
-      int chid = GlobalFunctions::getLogicChannelId(group, bit + 1);
-      // Potřebuji zjistit, zda je 0 nebo 1. To nejde jen tak (hodnota obsahuje offset a scale)
-      // Že je nula zjistím tak, že se hodnota rovná offsetu (scale nemá na nulu vliv).
+      int chid = GlobalFunctions::getLogicChannelID(group, bit);
+      // Potřebuji zjistit, zda je 0 nebo 1. To nejde jen tak (hodnota obsahuje offset vůči prvnímu bitu)
+      // Že je nula zjistím tak, že hodnota je dělitelná třemi (nulová úroveň každého jena násobku 3).
       // Za každou jedničku přičtu 2^bit
-      if (ui->plot->graph(chid)->data()->at(sample)->value != ui->plot->getChOffset(chid)) {
+      if ((int)ui->plot->graph(chid)->data()->at(sample)->value % 3) {
         value += (uint32_t)1 << (bit);
         bits.push_front('1');
-      } else
+      } else {
         bits.push_front('0');
+      }
       if (!((bit + 1) % 4))
         bits.push_front(' ');
     }

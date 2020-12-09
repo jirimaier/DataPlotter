@@ -6,13 +6,12 @@ void MainWindow::updateMath() {
       int firstch = mathFirst[i]->value();
       int secondch = mathSecond[i]->value();
       int operation = mathOp[i]->currentIndex();
-      emit requestMath(GlobalFunctions::getAnalogChId(i + 1, ChannelType::math), operation, ui->plot->getDataVector(firstch - 1, ui->checkBoxMathIOS->isChecked(), ui->checkBoxMathVRO->isChecked()),
-                       ui->plot->getDataVector(secondch - 1, ui->checkBoxMathIOS->isChecked(), ui->checkBoxMathVRO->isChecked()));
+      emit requestMath(GlobalFunctions::getAnalogChId(i + 1, ChannelType::math), operation, ui->plot->getDataVector(firstch - 1, ui->checkBoxMathVRO->isChecked()), ui->plot->getDataVector(secondch - 1, ui->checkBoxMathVRO->isChecked()));
     } else
       ui->plot->clearCh(GlobalFunctions::getAnalogChId(i + 1, ChannelType::math));
   }
   if (ui->checkBoxXY->isChecked())
-    requestXY(ui->plot->getDataVector(ui->spinBoxXYFirst->value() - 1, ui->checkBoxXYIOS->isChecked(), ui->checkBoxXYVRO->isChecked()), ui->plot->getDataVector(ui->spinBoxXYSecond->value() - 1, ui->checkBoxXYIOS->isChecked(), ui->checkBoxXYVRO->isChecked()));
+    requestXY(ui->plot->getDataVector(ui->spinBoxXYFirst->value() - 1, ui->checkBoxXYVRO->isChecked()), ui->plot->getDataVector(ui->spinBoxXYSecond->value() - 1, ui->checkBoxXYVRO->isChecked()));
 }
 
 void MainWindow::comRefresh() {
@@ -70,15 +69,15 @@ void MainWindow::updateChannelComboBox(QComboBox &combobox) {
       item->setIcon(QIcon(color));
     }
   }
-  for (int i = 1; i <= LOGIC_GROUPS; i++) {
+  for (int i = 0; i < LOGIC_GROUPS; i++) {
     auto *model = qobject_cast<QStandardItemModel *>(combobox.model());
-    auto *item = model->item(i + ANALOG_COUNT + MATH_COUNT - 1);
-    item->setEnabled(ui->checkBoxSelUnused->isChecked() || ui->plot->isChUsed(GlobalFunctions::getLogicChannelId(i, 1)));
+    auto *item = model->item(i + ANALOG_COUNT + MATH_COUNT);
+    item->setEnabled(ui->checkBoxSelUnused->isChecked() || ui->plot->isChUsed(GlobalFunctions::getLogicChannelID(i, 1)));
     QListView *view = qobject_cast<QListView *>(combobox.view());
-    view->setRowHidden(i + ANALOG_COUNT + MATH_COUNT - 1, !ui->checkBoxSelUnused->isChecked() && !ui->plot->isChUsed(GlobalFunctions::getLogicChannelId(i, 1)));
+    view->setRowHidden(i + ANALOG_COUNT + MATH_COUNT, !ui->checkBoxSelUnused->isChecked() && !ui->plot->isChUsed(GlobalFunctions::getLogicChannelID(i, 1)));
     if (colorUpdateNeeded) {
       QPixmap color(12, 12);
-      color.fill(ui->plot->getChColor(GlobalFunctions::getLogicChannelId(i, 1)));
+      color.fill(ui->plot->getLogicColor(i));
       item->setIcon(QIcon(color));
     }
   }
