@@ -6,11 +6,10 @@ MainWindow::~MainWindow() { delete ui; }
 
 void MainWindow::init(QTranslator *translator, const PlotData *plotData, const PlotMath *plotMath) {
   fillChannelSelect();
-  QObject::connect(plotMath, &PlotMath::sendResult, ui->plot, &MyMainPlot::newDataVector);
+  // QObject::connect(plotMath, &PlotMath::sendResult, ui->plot, &MyMainPlot::newDataVector);
   QObject::connect(plotMath, &PlotMath::sendResultXY, ui->plotxy, &MyXYPlot::newData);
   QObject::connect(plotData, &PlotData::addVectorToPlot, ui->plot, &MyMainPlot::newDataVector);
   QObject::connect(plotData, &PlotData::addPointToPlot, ui->plot, &MyMainPlot::newDataPoint);
-  QObject::connect(plotData, &PlotData::addLogicVectorToPlot, ui->plot, &MyMainPlot::newLogicDataVector);
   QObject::connect(plotData, &PlotData::clearLogic, ui->plot, &MyMainPlot::clearLogicGroup);
 
   this->translator = translator;
@@ -136,4 +135,31 @@ void MainWindow::printDeviceMessage(QByteArray messageBody, bool warning, bool e
   QScrollBar *scroll = ui->plainTextEditConsole->horizontalScrollBar();
   scroll->setValue(scroll->minimum());
   pendingDeviceMessage = !ended;
+}
+
+void MainWindow::on_labelLicense_linkActivated() {
+  QString licenseFile;
+  if (ui->radioButtonEn->isChecked())
+    licenseFile = QCoreApplication::applicationDirPath() + "/license_en.txt";
+  else
+    licenseFile = QCoreApplication::applicationDirPath() + "/license_cz.txt";
+  if (!QDesktopServices::openUrl(QUrl::fromLocalFile(licenseFile))) {
+    QMessageBox msgBox;
+    msgBox.setText(tr("Cant open file."));
+    msgBox.setInformativeText(licenseFile);
+    msgBox.setIcon(QMessageBox::Critical);
+    msgBox.exec();
+  }
+}
+
+void MainWindow::on_pushButtonHideCh_toggled(bool checked) {
+  if (checked)
+    ui->pushButtonHideCh->setIcon(QPixmap(":/images/icons/hidden.png"));
+  else
+    ui->pushButtonHideCh->setIcon(QPixmap(":/images/icons/visible.png"));
+
+  if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT)
+    ui->plot->setChVisible(ui->comboBoxSelectedChannel->currentIndex(), !checked);
+  else
+    ui->plot->setLogicVisibility(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT, !checked);
 }

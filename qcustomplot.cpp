@@ -20366,8 +20366,8 @@ QPointF QCPGraph::getFillBasePoint(QPointF matchingDataPoint) const {
   if (valueAxis->scaleType() == QCPAxis::stLinear) {
     if (keyAxis->orientation() == Qt::Horizontal) {
       result.setX(matchingDataPoint.x());
-      result.setY(valueAxis->coordToPixel(0));
-    } else // keyAxis->orientation() == Qt::Vertical
+      result.setY(valueAxis->coordToPixel(this->fillBaseLine)); // Upraveno
+    } else                                                      // keyAxis->orientation() == Qt::Vertical
     {
       result.setX(valueAxis->coordToPixel(0));
       result.setY(matchingDataPoint.y());

@@ -304,17 +304,32 @@
         <translation>Clear graphs on reconect</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="4620"/>
+        <location filename="mainwindow.ui" line="4519"/>
+        <source>Shift mode prestep</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="4526"/>
+        <source>Smooth</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="4529"/>
+        <source> %</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="4562"/>
         <source>Settings file</source>
         <translation>Settings file</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="4724"/>
+        <location filename="mainwindow.ui" line="4666"/>
         <source>Open help file</source>
         <translation>Open help file (in external browser)</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="4787"/>
+        <location filename="mainwindow.ui" line="4729"/>
         <source>Translation: none</source>
         <translation>Translations: EN_01112020</translation>
     </message>
@@ -496,10 +511,10 @@
     </message>
     <message>
         <location filename="mainwindow.ui" line="4149"/>
-        <location filename="mainwindow.ui" line="4859"/>
-        <location filename="mainwindow.ui" line="4916"/>
-        <location filename="mainwindow.ui" line="4973"/>
-        <location filename="mainwindow.ui" line="5030"/>
+        <location filename="mainwindow.ui" line="4801"/>
+        <location filename="mainwindow.ui" line="4858"/>
+        <location filename="mainwindow.ui" line="4915"/>
+        <location filename="mainwindow.ui" line="4972"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Send&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Send</translation>
     </message>
@@ -544,55 +559,40 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="4519"/>
-        <source>Open GL</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="mainwindow.ui" line="4528"/>
-        <source>Shifting mode step</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="mainwindow.ui" line="4538"/>
-        <source>Redraw rate</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="mainwindow.ui" line="4630"/>
+        <location filename="mainwindow.ui" line="4572"/>
         <source>Add semicolum to line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="4837"/>
-        <location filename="mainwindow.ui" line="4894"/>
-        <location filename="mainwindow.ui" line="4951"/>
-        <location filename="mainwindow.ui" line="5008"/>
+        <location filename="mainwindow.ui" line="4779"/>
+        <location filename="mainwindow.ui" line="4836"/>
+        <location filename="mainwindow.ui" line="4893"/>
+        <location filename="mainwindow.ui" line="4950"/>
         <source>send data to device</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="5058"/>
+        <location filename="mainwindow.ui" line="5000"/>
         <source>No line ending</source>
         <translation>No line ending</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="5063"/>
+        <location filename="mainwindow.ui" line="5005"/>
         <source>New line</source>
         <translation>New line</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="5068"/>
+        <location filename="mainwindow.ui" line="5010"/>
         <source>Carriage return</source>
         <translation>Carriage return</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="5073"/>
+        <location filename="mainwindow.ui" line="5015"/>
         <source>CR LF</source>
         <translation>CR LF</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="5081"/>
+        <location filename="mainwindow.ui" line="5023"/>
         <source>Multiple inputs</source>
         <translation type="unfinished"></translation>
     </message>
@@ -626,9 +626,9 @@
     </message>
     <message>
         <location filename="mainwindow_export.cpp" line="11"/>
+        <location filename="mainwindow_gui_preset.cpp" line="89"/>
         <location filename="mainwindow_gui_preset.cpp" line="90"/>
         <location filename="mainwindow_gui_preset.cpp" line="91"/>
-        <location filename="mainwindow_gui_preset.cpp" line="92"/>
         <source>Logic %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -669,61 +669,61 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow_save_load.cpp" line="217"/>
-        <location filename="mainwindow_save_load.cpp" line="248"/>
+        <location filename="mainwindow_save_load.cpp" line="214"/>
+        <location filename="mainwindow_save_load.cpp" line="245"/>
         <source>Invalid color: </source>
         <translation>Invalid color: </translation>
     </message>
     <message>
-        <location filename="mainwindow_save_load.cpp" line="159"/>
+        <location filename="mainwindow_save_load.cpp" line="156"/>
         <source>Invalid settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow_save_load.cpp" line="195"/>
+        <location filename="mainwindow_save_load.cpp" line="192"/>
         <source>Invalid channel in settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow_save_load.cpp" line="231"/>
+        <location filename="mainwindow_save_load.cpp" line="228"/>
         <source>Invalid logic in settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow_save_load.cpp" line="261"/>
+        <location filename="mainwindow_save_load.cpp" line="258"/>
         <source>Unknown setting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow_save_load.cpp" line="264"/>
+        <location filename="mainwindow_save_load.cpp" line="262"/>
         <source>Applied settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow_save_load.cpp" line="269"/>
+        <location filename="mainwindow_save_load.cpp" line="267"/>
         <source>Load file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow_save_load.cpp" line="269"/>
+        <location filename="mainwindow_save_load.cpp" line="267"/>
         <source>Text file (*.txt);;Any file (*.*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow_save_load.cpp" line="299"/>
+        <location filename="mainwindow_save_load.cpp" line="297"/>
         <source>Load settings</source>
         <translation>Load settings</translation>
     </message>
     <message>
-        <location filename="mainwindow_save_load.cpp" line="299"/>
+        <location filename="mainwindow_save_load.cpp" line="297"/>
         <source>Text file (*.txt)</source>
         <translation>Text file (*.txt)</translation>
     </message>
     <message>
         <location filename="mainwindow_gui_slots.cpp" line="184"/>
-        <location filename="mainwindow_save_load.cpp" line="277"/>
-        <location filename="mainwindow_save_load.cpp" line="290"/>
-        <location filename="mainwindow_save_load.cpp" line="307"/>
+        <location filename="mainwindow_save_load.cpp" line="275"/>
+        <location filename="mainwindow_save_load.cpp" line="288"/>
+        <location filename="mainwindow_save_load.cpp" line="305"/>
         <source>Cant open file.</source>
         <translation>Can not open file.</translation>
     </message>
@@ -731,13 +731,13 @@
 <context>
     <name>MyMainPlot</name>
     <message>
-        <location filename="mymainplot.cpp" line="420"/>
-        <location filename="mymainplot.cpp" line="451"/>
+        <location filename="mymainplot.cpp" line="433"/>
+        <location filename="mymainplot.cpp" line="464"/>
         <source>time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mymainplot.cpp" line="425"/>
+        <location filename="mymainplot.cpp" line="438"/>
         <source>bit %1</source>
         <translation type="unfinished"></translation>
     </message>

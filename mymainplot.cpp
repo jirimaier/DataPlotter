@@ -4,8 +4,6 @@ MyMainPlot::MyMainPlot(QWidget *parent) : MyPlot(parent) {
   xAxis->setSubTicks(false);
   yAxis->setSubTicks(false);
   yAxis->setRange(0, 10, Qt::AlignCenter);
-  pauseBufferTime.resize(ANALOG_COUNT + MATH_COUNT);
-  pauseBufferValue.resize(ANALOG_COUNT + MATH_COUNT);
   channelSettings.resize(ANALOG_COUNT + MATH_COUNT);
   logicSettings.resize(LOGIC_GROUPS);
 
@@ -25,8 +23,10 @@ MyMainPlot::MyMainPlot(QWidget *parent) : MyPlot(parent) {
   for (int i = 0; i < LOGIC_GROUPS; i++) {
     logicGroupAxis.append(this->axisRect()->addAxis(QCPAxis::atRight, 0));
     logicGroupAxis.last()->setRange(yAxis->range());
-    for (int j = 0; j < LOGIC_BITS; j++)
+    for (int j = 0; j < LOGIC_BITS; j++) {
       addGraph(xAxis, logicGroupAxis.last());
+      graph(graphCount() - 1)->setFillBase(j * 3);
+    }
     logicGroupAxis.last()->setTicks(false);
     logicGroupAxis.last()->setBasePen(Qt::NoPen);
     logicGroupAxis.last()->setOffset(0);
@@ -35,9 +35,10 @@ MyMainPlot::MyMainPlot(QWidget *parent) : MyPlot(parent) {
     logicGroupAxis.last()->setTickLabelPadding(0);
     logicGroupAxis.last()->setTickLength(0, 0);
   }
+
   initZeroLines();
 
-  // Propojení musí být aý po skončení inicializace!
+  // Propojení musí být až po skončení inicializace!
   connect(this->yAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(verticalAxisRangeChanged(void)));
   connect(&plotUpdateTimer, &QTimer::timeout, this, &MyMainPlot::update);
   plotUpdateTimer.start(50);
@@ -67,12 +68,12 @@ void MyMainPlot::initZeroLines() {
 void MyMainPlot::updateMinMaxTimes() {
   QVector<double> firsts, lasts;
   for (int i = 0; i < ANALOG_COUNT + MATH_COUNT; i++)
-    if (!this->graph(i)->data()->isEmpty() && channelSettings.at(i).style != GraphStyle::hidden) {
+    if (!this->graph(i)->data()->isEmpty() && channelSettings.at(i).visible) {
       firsts.append(graph(i)->data()->begin()->key);
       lasts.append((graph(i)->data()->end() - 1)->key);
     }
   for (int i = 0; i < LOGIC_GROUPS; i++)
-    if (!this->graph(GlobalFunctions::getLogicChannelID(i, 0))->data()->isEmpty() && logicSettings.at(i).style != GraphStyle::hidden) {
+    if (!this->graph(GlobalFunctions::getLogicChannelID(i, 0))->data()->isEmpty() && logicSettings.at(i).visible) {
       int chid = GlobalFunctions::getLogicChannelID(i, 0);
       firsts.append(graph(chid)->data()->begin()->key);
       lasts.append((graph(chid)->data()->end() - 1)->key);
@@ -150,18 +151,30 @@ void MyMainPlot::setLogicStyle(int group, int style) {
   logicSettings[group].style = style;
   for (int bit = 0; bit < LOGIC_BITS; bit++) {
     int chid = GlobalFunctions::getLogicChannelID(group, bit);
-    this->graph(chid)->setVisible((style != GraphStyle::hidden));
     if (style == GraphStyle::linePoint) {
       this->graph(chid)->setScatterStyle(POINT_STYLE);
       this->graph(chid)->setLineStyle(QCPGraph::lsLine);
-    }
-    if (style == GraphStyle::line) {
+      this->graph(chid)->setBrush(Qt::NoBrush);
+    } else if (style == GraphStyle::line) {
       this->graph(chid)->setScatterStyle(QCPScatterStyle::ssNone);
       this->graph(chid)->setLineStyle(QCPGraph::lsLine);
-    }
-    if (style == GraphStyle::point) {
+      this->graph(chid)->setBrush(Qt::NoBrush);
+    } else if (style == GraphStyle::point) {
       this->graph(chid)->setScatterStyle(POINT_STYLE);
       this->graph(chid)->setLineStyle(QCPGraph::lsNone);
+      this->graph(chid)->setBrush(Qt::NoBrush);
+    } else if (style == GraphStyle::filled) {
+      this->graph(chid)->setScatterStyle(QCPScatterStyle::ssNone);
+      this->graph(chid)->setLineStyle(QCPGraph::lsLine);
+      this->graph(chid)->setBrush(logicSettings.at(group).color);
+    } else if (style == GraphStyle::square) {
+      this->graph(chid)->setScatterStyle(QCPScatterStyle::ssNone);
+      this->graph(chid)->setLineStyle(QCPGraph::lsStepCenter);
+      this->graph(chid)->setBrush(Qt::NoBrush);
+    } else if (style == GraphStyle::squareFilled) {
+      this->graph(chid)->setScatterStyle(QCPScatterStyle::ssNone);
+      this->graph(chid)->setLineStyle(QCPGraph::lsStepCenter);
+      this->graph(chid)->setBrush(logicSettings.at(group).color);
     }
   }
   this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
@@ -169,14 +182,18 @@ void MyMainPlot::setLogicStyle(int group, int style) {
 
 void MyMainPlot::setLogicColor(int group, QColor color) {
   logicSettings[group].color = color;
-  for (int bit = 0; bit < LOGIC_BITS; bit++)
+  for (int bit = 0; bit < LOGIC_BITS; bit++) {
     this->graph(GlobalFunctions::getLogicChannelID(group, bit))->setPen(QPen(color));
+    if (logicSettings.at(group).style == GraphStyle::filled || logicSettings.at(group).style == GraphStyle::squareFilled)
+      this->graph(GlobalFunctions::getLogicChannelID(group, bit))->setBrush(color);
+  }
+  this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
 }
 
-void MyMainPlot::setLogicInvert(int group, bool inverted) {
-  logicSettings[group].inverted = inverted;
-  logicGroupAxis.at(group)->setRangeReversed(inverted);
-  reOffsetAndRescaleLogic(group);
+void MyMainPlot::setLogicVisibility(int group, bool visible) {
+  logicSettings[group].visible = visible;
+  for (int bit = 0; bit < LOGIC_BITS; bit++)
+    this->graph(GlobalFunctions::getLogicChannelID(group, bit))->setVisible(visible);
   this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
 }
 
@@ -207,18 +224,30 @@ double MyMainPlot::getChMax(int chid) {
 
 void MyMainPlot::setChStyle(int chid, int style) {
   channelSettings[chid].style = style;
-  this->graph(chid)->setVisible((style != GraphStyle::hidden));
   if (style == GraphStyle::linePoint) {
     this->graph(chid)->setScatterStyle(POINT_STYLE);
     this->graph(chid)->setLineStyle(QCPGraph::lsLine);
-  }
-  if (style == GraphStyle::line) {
+    this->graph(chid)->setBrush(Qt::NoBrush);
+  } else if (style == GraphStyle::line) {
     this->graph(chid)->setScatterStyle(QCPScatterStyle::ssNone);
     this->graph(chid)->setLineStyle(QCPGraph::lsLine);
-  }
-  if (style == GraphStyle::point) {
+    this->graph(chid)->setBrush(Qt::NoBrush);
+  } else if (style == GraphStyle::point) {
     this->graph(chid)->setScatterStyle(POINT_STYLE);
     this->graph(chid)->setLineStyle(QCPGraph::lsNone);
+    this->graph(chid)->setBrush(Qt::NoBrush);
+  } else if (style == GraphStyle::filled) {
+    this->graph(chid)->setScatterStyle(QCPScatterStyle::ssNone);
+    this->graph(chid)->setLineStyle(QCPGraph::lsLine);
+    this->graph(chid)->setBrush(channelSettings.at(chid).color);
+  } else if (style == GraphStyle::square) {
+    this->graph(chid)->setScatterStyle(QCPScatterStyle::ssNone);
+    this->graph(chid)->setLineStyle(QCPGraph::lsStepCenter);
+    this->graph(chid)->setBrush(Qt::NoBrush);
+  } else if (style == GraphStyle::squareFilled) {
+    this->graph(chid)->setScatterStyle(QCPScatterStyle::ssNone);
+    this->graph(chid)->setLineStyle(QCPGraph::lsStepCenter);
+    this->graph(chid)->setBrush(channelSettings.at(chid).color);
   }
   this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
 }
@@ -227,6 +256,8 @@ void MyMainPlot::setChColor(int chid, QColor color) {
   channelSettings[chid].color = color;
   zeroLines.at(chid)->setPen(QPen(color, 1, Qt::DashLine));
   this->graph(chid)->setPen(QPen(color));
+  if (channelSettings.at(chid).style == GraphStyle::filled || channelSettings.at(chid).style == GraphStyle::squareFilled)
+    this->graph(chid)->setBrush(color);
   this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
 }
 
@@ -254,17 +285,22 @@ void MyMainPlot::setChInvert(int ch, bool inverted) {
   this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
 }
 
+void MyMainPlot::setChVisible(int ch, bool visible) {
+  channelSettings[ch].visible = visible;
+  zeroLines.at(ch)->setVisible(visible && channelSettings.at(ch).offset != 0);
+  this->graph(ch)->setVisible(visible);
+  this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
+}
+
 void MyMainPlot::resume() {
   plottingStatus = PlotStatus::run;
   emit showPlotStatus(plottingStatus);
   for (int i = 0; i < ALL_COUNT; i++) {
-    if (!pauseBufferTime.at(i).isEmpty()) {
-      graph(i)->addData(pauseBufferTime.at(i), pauseBufferValue.at(i), true);
-      pauseBufferTime[i].clear();
-      pauseBufferValue[i].clear();
-    }
+    if (!pauseBuffer.at(i).data()->isEmpty())
+      graph(i)->setData(pauseBuffer.at(i));
   }
-  redraw();
+  pauseBuffer.clear();
+  newData = true;
 }
 
 void MyMainPlot::update() {
@@ -306,15 +342,18 @@ void MyMainPlot::setRangeType(PlotRange::enumerator type) {
 }
 
 void MyMainPlot::pause() {
+  for (int i = 0; i < ALL_COUNT; i++)
+    pauseBuffer.append(QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer(*graph(i)->data())));
   plottingStatus = PlotStatus::pause;
   emit showPlotStatus(plottingStatus);
 }
 
-void MyMainPlot::clearLogicGroup(int number) {
-  for (int i = 0; i < LOGIC_BITS; i++)
-    clearCh(GlobalFunctions::getLogicChannelID(number, i));
-  updateMinMaxTimes();
-  redraw();
+void MyMainPlot::clearLogicGroup(int number, int fromBit) {
+  if (isChUsed(GlobalFunctions::getLogicChannelID(number, fromBit))) {
+    for (int i = fromBit; i < LOGIC_BITS; i++)
+      clearCh(GlobalFunctions::getLogicChannelID(number, i));
+    newData = true;
+  }
 }
 
 void MyMainPlot::resetChannels() {
@@ -325,36 +364,11 @@ void MyMainPlot::resetChannels() {
   redraw();
 }
 
-void MyMainPlot::newDataVector(int ch, QSharedPointer<QVector<double>> time, QVector<double> *value, bool isMath) {
-  int chid = GlobalFunctions::getAnalogChId(ch, ChannelType::analog);
-  if (plottingStatus != PlotStatus::pause || isMath) {
-    // for (QVector<double>::iterator it = value->begin(); it != value->end(); it++)
-    //*it = *it * channelSettings.at(chid).scale + channelSettings.at(chid).offset;
-    this->graph(chid)->setData(*time, *value, true);
+void MyMainPlot::newDataVector(int chID, QSharedPointer<QCPGraphDataContainer> data, bool ignorePause) {
+  if (plottingStatus != PlotStatus::pause || ignorePause) {
+    this->graph(chID)->setData(data);
     newData = true;
   }
-  delete value;
-}
-
-void MyMainPlot::newLogicDataVector(int group, QSharedPointer<QVector<double>> time, QVector<uint32_t> *value, int bits) {
-  group--;
-  if (plottingStatus != PlotStatus::pause) {
-    if (isChUsed(GlobalFunctions::getLogicChannelID(group, bits)))
-      clearLogicGroup(group);
-
-    QVector<QVector<double>> subChannels;
-    subChannels.resize(bits);
-
-    for (QVector<uint32_t>::iterator it = value->begin(); it != value->end(); it++)
-      for (uint8_t bit = 0; bit < bits; bit++)
-        subChannels[bit].push_back(((bool)((*it) & ((uint32_t)1 << (bit)))) + bit * 3);
-
-    for (uint8_t bit = 0; bit < bits; bit++)
-      this->graph(GlobalFunctions::getLogicChannelID(group, bit))->setData(*time, subChannels.at(bit), true);
-
-    newData = true;
-  }
-  delete value;
 }
 
 void MyMainPlot::setRollingRange(double value) {
@@ -394,25 +408,16 @@ void MyMainPlot::setShiftStep(int step) {
   }
 }
 
-void MyMainPlot::newDataPoint(int ch, double time, double value, bool append) {
-  int chid = GlobalFunctions::getAnalogChId(ch, ChannelType::analog);
+void MyMainPlot::newDataPoint(int chID, double time, double value, bool append) {
   if (plottingStatus != PlotStatus::pause) {
-    if (append)
-      this->graph(chid)->addData(time, value);
-    else {
-      QVector<double> singlepointTime, singlepointValue;
-      singlepointTime.append(time);
-      singlepointValue.append(value);
-      this->graph(chid)->setData(singlepointTime, singlepointValue);
-    }
+    if (!append)
+      this->graph(chID)->data()->clear();
+    this->graph(chID)->addData(time, value);
     newData = true;
   } else {
-    if (!append) {
-      pauseBufferTime[chid].clear();
-      pauseBufferValue[chid].clear();
-    }
-    pauseBufferTime[chid].append(time);
-    pauseBufferValue[chid].append(value);
+    if (!append)
+      pauseBuffer.at(chID)->clear();
+    pauseBuffer.at(chID)->add(QCPGraphData(time, value));
   }
 }
 
@@ -458,7 +463,12 @@ QByteArray MyMainPlot::exportAllCSV(char separator, char decimal, int precision,
   QVector<QPair<QVector<double>, QVector<double>>> channels;
   bool firstNonEmpty = true;
   for (int i = 0; i < ALL_COUNT; i++) {
-    if (!graph(i)->data()->isEmpty() && (getChStyle(i + 1) != GraphStyle::hidden || includeHidden)) {
+    bool isVisible;
+    if (i < ANALOG_COUNT + MATH_COUNT)
+      isVisible = channelSettings.at(i).visible;
+    else
+      isVisible = logicSettings.at(i - ANALOG_COUNT - MATH_COUNT).visible;
+    if (!graph(i)->data()->isEmpty() && (isVisible || includeHidden)) {
       if (firstNonEmpty) {
         firstNonEmpty = false;
         output.append(tr("time").toUtf8());

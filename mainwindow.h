@@ -138,6 +138,10 @@ private slots:
 
   void on_checkBoxChInverted_toggled(bool checked);
 
+  void on_labelLicense_linkActivated();
+
+  void on_pushButtonHideCh_toggled(bool checked);
+
 public slots:
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumerator target);
   void showPlotStatus(PlotStatus::enumerator type);

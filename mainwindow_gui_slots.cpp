@@ -139,6 +139,7 @@ void MainWindow::on_comboBoxSelectedChannel_currentIndexChanged(int index) {
     ui->doubleSpinBoxChOffset->setValue(offset);
     ui->doubleSpinBoxChScale->setValue(scale);
     ui->dialChScale->updatePosition(scale);
+    ui->pushButtonHideCh->setChecked(!ui->plot->isLogicVisible(group));
   } else {
     ui->checkBoxChInverted->setEnabled(true);
     ui->comboBoxGraphStyle->setCurrentIndex(ui->plot->getChStyle(index));
@@ -148,6 +149,7 @@ void MainWindow::on_comboBoxSelectedChannel_currentIndexChanged(int index) {
     ui->doubleSpinBoxChScale->setValue(scale);
     ui->dialChScale->updatePosition(scale);
     ui->checkBoxChInverted->setChecked(ui->plot->isChInverted(index));
+    ui->pushButtonHideCh->setChecked(!ui->plot->isChVisible(index));
   }
   updateChScale();
 }
@@ -155,8 +157,6 @@ void MainWindow::on_comboBoxSelectedChannel_currentIndexChanged(int index) {
 void MainWindow::on_checkBoxChInverted_toggled(bool checked) {
   if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT)
     ui->plot->setChInvert(ui->comboBoxSelectedChannel->currentIndex(), checked);
-  else
-    ui->plot->setLogicInvert(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT, checked);
 }
 
 void MainWindow::on_pushButtonResetChannels_clicked() {

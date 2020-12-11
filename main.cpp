@@ -1,10 +1,45 @@
-// Autor: Jiří Maier
-// vytvořeno: 07/2020
+//  Copyright (C) 2020  Jiří Maier
 
-// Qt 5.15
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
 
-// Pro Window XP nutno použít Qt 5.7
-// V Qt 5.7 nefungují adaptivní spinboxy
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+
+//  You should have received a copy of the GNU General Public License
+//  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+//  Tento program je svobodný software: můžete jej šířit a upravovat
+//  podle ustanovení Obecné veřejné licence GNU (GNU General Public Licence),
+//  vydávané Free Software Foundation a to buď podle 3. verze této Licence,
+//  nebo (podle vašeho uvážení) kterékoli pozdější verze.
+
+//  Tento program je rozšiřován v naději, že bude užitečný,
+//  avšak BEZ JAKÉKOLIV ZÁRUKY. Neposkytují se ani odvozené záruky PRODEJNOSTI
+//  anebo VHODNOSTI PRO URČITÝ ÚČEL. Další podrobnosti hledejte v Obecné veřejné licenci GNU.
+
+//  Kopii Obecné veřejné licence GNU jste měli obdržet spolu s tímto programem.
+//  Pokud se tak nestalo, najdete ji zde: <http://www.gnu.org/licenses/>.
+
+//  Contact
+//  Jiri Maier
+//  Faculty of electrical engineering
+//  Czech technical university
+//  Prague
+//  maierjir@fel.cvut.cz
+//  jiri.maier.x@gmail.com
+
+//  Kontakt
+//  Jiří Maier
+//  Fakulta elektrotechnická
+//  České vysoké učení technické
+//  Praha
+//  maierjir@fel.cvut.cz
+//  jiri.maier.x@gmail.com
 
 #include <QApplication>
 #include <QSerialPort>
@@ -27,6 +62,7 @@ Q_DECLARE_METATYPE(MessageLevel::enumerator)
 Q_DECLARE_METATYPE(PlotStatus::enumerator)
 Q_DECLARE_METATYPE(MessageTarget::enumerator)
 Q_DECLARE_METATYPE(QSharedPointer<QVector<double>>);
+Q_DECLARE_METATYPE(QSharedPointer<QCPGraphDataContainer>);
 
 int main(int argc, char *argv[]) {
   QApplication application(argc, argv);
@@ -42,6 +78,7 @@ int main(int argc, char *argv[]) {
   qRegisterMetaType<PlotStatus::enumerator>();
   qRegisterMetaType<MessageTarget::enumerator>();
   qRegisterMetaType<QSharedPointer<QVector<double>>>();
+  qRegisterMetaType<QSharedPointer<QCPGraphDataContainer>>();
 
   // Vytvoří instance hlavních objektů
   MainWindow mainWindow;

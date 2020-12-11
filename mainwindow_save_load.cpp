@@ -123,6 +123,9 @@ QByteArray MainWindow::getSettings() {
     settings.append(":inv:" + QString::number(ui->plot->isChInverted(i) ? 1 : 0).toUtf8());
     settings.append(";\n");
     settings.append("ch:" + QString::number(i + 1).toUtf8());
+    settings.append(":vis:" + QString::number(ui->plot->isChVisible(i) ? 1 : 0).toUtf8());
+    settings.append(";\n");
+    settings.append("ch:" + QString::number(i + 1).toUtf8());
     settings.append(":sty:" + QString::number(ui->plot->getChStyle(i)).toUtf8());
     settings.append(";\n");
     settings.append("ch:" + QString::number(i + 1).toUtf8());
@@ -132,16 +135,19 @@ QByteArray MainWindow::getSettings() {
   }
 
   for (int i = 0; i < LOGIC_GROUPS; i++) {
-    settings.append("log:" + QString::number(i).toUtf8());
+    settings.append("log:" + QString::number(i + 1).toUtf8());
     settings.append(":off:" + QString::number(ui->plot->getChOffset(GlobalFunctions::getLogicChannelID(i, 1))).toUtf8());
     settings.append(";\n");
-    settings.append("log:" + QString::number(i).toUtf8());
+    settings.append("log:" + QString::number(i + 1).toUtf8());
     settings.append(":sca:" + QString::number(ui->plot->getChScale(GlobalFunctions::getLogicChannelID(i, 1))).toUtf8());
     settings.append(";\n");
-    settings.append("log:" + QString::number(i).toUtf8());
+    settings.append("log:" + QString::number(i + 1).toUtf8());
+    settings.append(":inv:" + QString::number(ui->plot->isLogicVisible(i) ? 1 : 0).toUtf8());
+    settings.append(";\n");
+    settings.append("log:" + QString::number(i + 1).toUtf8());
     settings.append(":sty:" + QString::number(ui->plot->getChStyle(GlobalFunctions::getLogicChannelID(i, 1))).toUtf8());
     settings.append(";\n");
-    settings.append("log:" + QString::number(i).toUtf8());
+    settings.append("log:" + QString::number(i + 1).toUtf8());
     QColor clr = ui->plot->getChColor(GlobalFunctions::getLogicChannelID(i, 1));
     settings.append(QString(":col:%1,%2,%3").arg(clr.red()).arg(clr.green()).arg(clr.blue()).toUtf8());
     settings.append(";\n");
@@ -202,10 +208,11 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumerator sour
       ui->plot->setChOffset(ch, subvalue.toDouble());
     else if (subtype == "sca")
       ui->plot->setChScale(ch, subvalue.toDouble());
-    else if (subtype == "inv") {
-      if (ui->plot->isChInverted(ch) ^ (bool)subvalue.toUInt())
-        ui->plot->setChScale(ch, ui->plot->getChScale(ch) * (-1));
-    } else if (subtype == "sty")
+    else if (subtype == "inv")
+      ui->plot->setChInvert(ch, (bool)subvalue.toUInt());
+    else if (subtype == "vis")
+      ui->plot->setChVisible(ch, (bool)subvalue.toUInt());
+    else if (subtype == "sty")
       ui->plot->setChStyle(ch, subvalue.toUInt());
 
     else if (subtype == "col") {
@@ -223,7 +230,7 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumerator sour
   }
 
   else if (type == "log") {
-    int group = value.left(value.indexOf(':', 0)).toUInt();
+    int group = value.left(value.indexOf(':', 0)).toUInt() - 1;
     if (group >= LOGIC_GROUPS) {
       printMessage(tr("Invalid logic in settings").toUtf8(), QString::number(group).toUtf8(), MessageLevel::error, source);
       return;
@@ -238,7 +245,8 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumerator sour
       ui->plot->setLogicScale(group, subvalue.toDouble());
     else if (subtype == "sty")
       ui->plot->setLogicStyle(group, subvalue.toUInt());
-
+    else if (subtype == "vis")
+      ui->plot->setLogicVisibility(group, (bool)subvalue.toUInt());
     else if (subtype == "col") {
       QByteArrayList rgb = subvalue.mid(subvalue.indexOf(':')).split(',');
       if (rgb.length() != 3) {

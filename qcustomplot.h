@@ -5092,6 +5092,14 @@ public:
   explicit QCPGraph(QCPAxis *keyAxis, QCPAxis *valueAxis);
   virtual ~QCPGraph();
 
+  // Moje úprava !!!
+private:
+  double fillBaseLine = 0.0;
+
+public:
+  void setFillBase(double fillBase) { fillBaseLine = fillBase; }
+  double getFillBase() { return fillBaseLine; }
+
   // getters:
   QSharedPointer<QCPGraphDataContainer> data() const { return mDataContainer; }
   LineStyle lineStyle() const { return mLineStyle; }

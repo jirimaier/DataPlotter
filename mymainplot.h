@@ -22,23 +22,26 @@ public:
   double getChOffset(int ch) { return channelSettings.at(ch).offset; }
   int getChStyle(int ch) { return channelSettings.at(ch).style; }
   QColor getChColor(int ch) { return channelSettings.at(ch).color; }
+  bool isChVisible(int ch) { return channelSettings.at(ch).visible; }
 
   void setChStyle(int ch, int style);
   void setChColor(int ch, QColor color);
   void setChOffset(int ch, double offset);
   void setChScale(int ch, double scale);
   void setChInvert(int ch, bool inverted);
+  void setChVisible(int ch, bool visible);
 
   void setLogicOffset(int group, double offset);
   void setLogicScale(int group, double scale);
   void setLogicStyle(int group, int style);
   void setLogicColor(int group, QColor color);
-  void setLogicInvert(int group, bool inverted);
+  void setLogicVisibility(int group, bool visible);
 
   double getLogicScale(int group) { return logicSettings.at(group).scale; }
   double getLogicOffset(int group) { return logicSettings.at(group).offset; }
   int getLogicStyle(int group) { return logicSettings.at(group).style; }
   QColor getLogicColor(int group) { return logicSettings.at(group).color; }
+  bool isLogicVisible(int group) { return logicSettings.at(group).visible; }
 
   QPair<QVector<double>, QVector<double>> getDataVector(int ch, bool onlyInView = false);
   double getChMax(int chid);
@@ -62,8 +65,7 @@ private:
   bool newData = true;
 
   QList<QCPAxis *> analogAxis, logicGroupAxis;
-  QVector<QVector<double>> pauseBufferTime;
-  QVector<QVector<double>> pauseBufferValue;
+  QVector<QSharedPointer<QCPGraphDataContainer>> pauseBuffer;
   QVector<ChannelSettings_t> channelSettings;
   QVector<ChannelSettings_t> logicSettings;
   PlotSettings_t plotSettings;
@@ -93,11 +95,10 @@ public slots:
   void setVerticalCenter(int value);
   void setShiftStep(int step);
 
-  void clearLogicGroup(int number);
+  void clearLogicGroup(int number, int fromBit);
 
-  void newDataPoint(int ch, double time, double value, bool append);
-  void newDataVector(int ch, QSharedPointer<QVector<double>> time, QVector<double> *value, bool isMath = false);
-  void newLogicDataVector(int group, QSharedPointer<QVector<double>> time, QVector<uint32_t> *value, int bits);
+  void newDataPoint(int chID, double time, double value, bool append);
+  void newDataVector(int ch, QSharedPointer<QCPGraphDataContainer> data, bool ignorePause = false);
 
 signals:
   void updateHPosSlider(double min, double max, int step);

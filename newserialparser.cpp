@@ -279,8 +279,13 @@ NewSerialParser::readResult NewSerialParser::bufferPullPoint(QByteArrayList &res
     }
     // Binární data
     else {
-      if (buffer.length() < 2)
-        return incomplete;
+      if (buffer.length() == 1) {
+        if (buffer.at(0) == ';') {
+          buffer.remove(0, 1);
+          return complete;
+        } else
+          return incomplete;
+      }
       bool isok;
       QByteArray numOfBytes = buffer.mid(1, 1);
       int bytes = numOfBytes.toUInt(&isok, 16);

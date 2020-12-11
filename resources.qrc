@@ -43,6 +43,10 @@
         <file>icons/about.png</file>
         <file>icons/logic.png</file>
         <file>icons/math.png</file>
+        <file>icons/lineFilled.png</file>
+        <file>icons/square.png</file>
+        <file>icons/squareFilled.png</file>
+        <file>icons/visible.png</file>
     </qresource>
     <qresource prefix="/translations">
         <file>translation_cz.qm</file>

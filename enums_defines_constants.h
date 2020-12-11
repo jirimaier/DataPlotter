@@ -19,7 +19,7 @@ enum enumerator { freeMove = 0, fixedRange = 1, rolling = 2 };
 }
 
 namespace GraphStyle {
-enum enumerator { line, point, linePoint, hidden };
+enum enumerator { line = 0, point = 1, linePoint = 2, filled = 3, square = 4, squareFilled = 5 };
 }
 
 namespace DataMode {
@@ -114,6 +114,7 @@ struct ChannelSettings_t {
   double offset = 0;
   double scale = 1;
   bool inverted = false;
+  bool visible = true;
 };
 
 struct PlotSettings_t {

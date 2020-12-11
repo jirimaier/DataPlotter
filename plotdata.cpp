@@ -117,67 +117,84 @@ double PlotData::arrayToDouble(QByteArray &array, bool &isok) {
   return getValue(array.mid(2), type);
 }
 
-void PlotData::getBits(QVector<uint32_t> *values, QByteArray data, enumerator type) {
+uint32_t PlotData::getBits(QByteArray data, enumerator type) {
   // Little endian
   if (type == u1) {
-    values->append((uint32_t)((uint8_t)data.at(0)));
+    return ((uint32_t)((uint8_t)data.at(0)));
   } else if (type == u2) { // unsigned int 16
     char bytes[2] = {data.at(0), data.at(1)};
-    values->append((uint32_t) * ((uint16_t *)bytes));
+    return ((uint32_t) * ((uint16_t *)bytes));
   } else if (type == u4) { // unsigned int 32
     char bytes[4] = {data.at(0), data.at(1), data.at(2), data.at(3)};
-    values->append(*((uint32_t *)bytes));
+    return (*((uint32_t *)bytes));
 
     // Big endian
   } else if (type == U1) { // unsigned int 8
-    values->append((uint32_t)((uint8_t)data.at(0)));
+    return ((uint32_t)((uint8_t)data.at(0)));
   } else if (type == U2) { // unsigned int 16
     char bytes[2] = {data.at(1), data.at(0)};
-    values->append((uint32_t) * ((uint16_t *)bytes));
+    return ((uint32_t) * ((uint16_t *)bytes));
   } else if (type == U4) { // unsigned int 32
     char bytes[4] = {data.at(3), data.at(2), data.at(1), data.at(0)};
-    values->append(*((uint32_t *)bytes));
+    return (*((uint32_t *)bytes));
   }
+  return 0;
 }
 
 void PlotData::addPoint(QByteArrayList data) {
+  Q_ASSERT(!data.isEmpty());
   if (data.length() > ANALOG_COUNT) {
     QByteArray message = QString::number(data.length() - 1).toUtf8();
     sendMessageIfAllowed(tr("Too many channels in point (missing ';' ?)").toUtf8(), message, MessageLevel::error);
     return;
   }
-  int ch = 0;
+  bool isok;
   double time;
-  for (QByteArrayList::iterator it = data.begin(); it != data.end(); it++) {
-    bool isok;
-    if (ch == 0) {
-      if (it->isEmpty()) {
-        if (qIsInf(lastTimes[0]))
-          time = 0;
-        else
-          time = lastTimes[0] + defaultTimestep;
-      } else {
-        time = arrayToDouble(*it, isok);
+  if (data.at(0).isEmpty()) {
+    if (qIsInf(lastTimes[0]))
+      time = 0;
+    else
+      time = lastTimes[0] + defaultTimestep;
+  } else {
+    time = arrayToDouble(data[0], isok);
 
-        if (!isok) {
-          sendMessageIfAllowed(tr("Can not parse points time").toUtf8(), *it, MessageLevel::error);
-          return;
-        }
-        ch++;
-        continue;
-      }
+    if (!isok) {
+      sendMessageIfAllowed(tr("Can not parse points time").toUtf8(), data[0], MessageLevel::error);
+      return;
     }
-    if (it->at(0) != 'b') {
-      double value = arrayToDouble(*it, isok);
+  }
+  for (int ch = 1; ch < data.length(); ch++) {
+    if (data.at(ch).at(0) != 'b' && data.at(ch).at(0) != 'B') {
+      // Analog
+      double value = arrayToDouble(data[ch], isok);
       if (!isok) {
-        sendMessageIfAllowed(tr("Can not parse points value").toUtf8(), *it, MessageLevel::error);
+        sendMessageIfAllowed(tr("Can not parse points value").toUtf8(), data[ch], MessageLevel::error);
         return;
       }
 
-      emit addPointToPlot(ch, time, value, time >= lastTimes[ch - 1]);
-      lastTimes[ch - 1] = time;
-      ch++;
+      emit addPointToPlot(ch - 1, time, value, time >= lastTimes[ch - 1]);
+
+    } else {
+      // Logika
+      int bits = (data.at(ch).mid(1, 1).toUInt(&isok, 16)) * 8;
+      if (!isok) {
+        sendMessageIfAllowed(tr("Invalid logic bytes").toUtf8(), data[ch], MessageLevel::error);
+        return;
+      }
+
+      if (data.at(ch).at(0) == 'b')
+        data[ch].replace(0, 1, "u");
+      else if (data.at(ch).at(0) == 'B')
+        data[ch].replace(0, 1, "U");
+
+      if (logicBits[ch - 1] > 0)
+        bits = logicBits[ch - 1];
+
+      uint32_t digitalValue = getBits(data.at(ch).mid(2), getType(data.at(ch).left(2)));
+      for (uint8_t bit = 0; bit < bits; bit++)
+        emit addPointToPlot(GlobalFunctions::getLogicChannelID(ch - 1, bit), time, (double)((bool)((digitalValue) & ((uint32_t)1 << (bit)))) + bit * 3, time >= lastTimes[ch - 1]);
     }
+    lastTimes[ch - 1] = time;
   }
   if (debugLevel == OutputLevel::info)
     emit sendMessage(tr("Received point").toUtf8(), tr("%1 channels").arg(data.length() - 1).toUtf8(), MessageLevel::info);
@@ -192,7 +209,7 @@ void PlotData::addChannel(QByteArray data, unsigned int ch, QByteArray timeRaw, 
 
   // Převede časový interval na číslo
   bool isok;
-  double time = arrayToDouble(timeRaw, isok);
+  double timeStep = arrayToDouble(timeRaw, isok);
   if (!isok) {
     sendMessageIfAllowed(tr("Can not parse channel time step").toUtf8(), timeRaw, MessageLevel::error);
     return;
@@ -229,7 +246,7 @@ void PlotData::addChannel(QByteArray data, unsigned int ch, QByteArray timeRaw, 
 
   // Informace o přijatém kanálu
   if (debugLevel == OutputLevel::info) {
-    QByteArray message = tr("%1 samples, time step %2, %3 bits").arg(data.length() / bytesPerValue).arg(time).arg(bits).toUtf8();
+    QByteArray message = tr("%1 samples, time step %2, %3 bits").arg(data.length() / bytesPerValue).arg(timeStep).arg(bits).toUtf8();
     if (remap)
       message.append(tr(", from %1 to %2").arg(minimum).arg(maximum).toUtf8());
     emit sendMessage(tr("Received channel %1").arg(ch).toUtf8(), message, MessageLevel::info);
@@ -246,27 +263,42 @@ void PlotData::addChannel(QByteArray data, unsigned int ch, QByteArray timeRaw, 
     remapMultiple = (maximum - minimum) / (1 << bits);
 
   // Vektory se pošlou jako pointer, graf je po zpracování smaže.
-  auto times = QSharedPointer<QVector<double>>(new QVector<double>);
-  auto valuesAnalog = new QVector<double>;
-  auto valuesDigital = new QVector<uint32_t>;
-
+  auto analogData = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer);
+  QVector<double> times;
+  QVector<uint32_t> valuesDigital;
+  QCPGraphData point;
   for (uint32_t i = 0; i < (uint32_t)data.length(); i += bytesPerValue) {
-    times->append((i / bytesPerValue) * time);
+    times.append((i / bytesPerValue) * timeStep);
+    point.key = times.last();
     if (remap)
-      valuesAnalog->append(minimum + getValue(data.mid(i, bytesPerValue), type) * remapMultiple);
+      point.value = minimum + getValue(data.mid(i, bytesPerValue), type) * remapMultiple;
     else
-      valuesAnalog->append(getValue(data.mid(i, bytesPerValue), type));
+      point.value = getValue(data.mid(i, bytesPerValue), type);
     if (showAsLogic)
-      getBits(valuesDigital, data.mid(i, bytesPerValue), type);
+      valuesDigital.append(getBits(data.mid(i, bytesPerValue), type));
+    analogData->add(point);
   }
 
   // Pošle kanál do grafu
-  emit addVectorToPlot(ch, times, valuesAnalog);
+
+  emit addVectorToPlot(ch - 1, analogData);
 
   if (showAsLogic) {
+    if (logicBits[ch - 1] > 0)
+      bits = logicBits[ch - 1];
     // Pošle do grafu logický kanál
     int logicGroup = digitalChannel[ch - 1];
-    emit addLogicVectorToPlot(logicGroup, times, valuesDigital, logicBits[logicGroup - 1] > 0 ? logicBits[logicGroup - 1] : bits);
+    QVector<QSharedPointer<QCPGraphDataContainer>> digitalChannels;
+    for (uint8_t bit = 0; bit < bits; bit++)
+      digitalChannels.append(QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer));
+    for (int i = 0; i < valuesDigital.length(); i++)
+      for (uint8_t bit = 0; bit < bits; bit++)
+        digitalChannels.at(bit)->add(QCPGraphData(times.at(i), ((bool)((valuesDigital.at(i)) & ((uint32_t)1 << (bit)))) + bit * 3));
+
+    for (uint8_t bit = 0; bit < bits; bit++) {
+      emit addVectorToPlot(GlobalFunctions::getLogicChannelID(logicGroup - 1, bit), digitalChannels.at(bit));
+    }
+    emit clearLogic(logicGroup - 1, bits);
   }
 }
 
@@ -277,11 +309,9 @@ void PlotData::reset() {
 
 void PlotData::setDigitalChannel(int chid, int target) {
   if (target == 0)
-    emit clearLogic(digitalChannel[chid]);
+    emit clearLogic(digitalChannel[chid] - 1, 0);
   digitalChannel[chid] = target;
 }
-
-void PlotData::setLogicBits(int target, int bits) { logicBits[target - 1] = bits > 0 ? bits : 0; }
 
 void PlotData::sendMessageIfAllowed(QString header, QByteArray message, MessageLevel::enumerator type) {
   if ((int)debugLevel >= (int)type)

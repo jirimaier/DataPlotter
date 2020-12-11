@@ -7,6 +7,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+    axistag.cpp \
     main.cpp \
     mainwindow.cpp \
     mainwindow_autoset.cpp \
@@ -29,6 +30,7 @@ SOURCES += \
     serialreader.cpp
 
 HEADERS += \
+    axistag.h \
     colorCodes.h \
     enums_defines_constants.h \
     mainwindow.h \

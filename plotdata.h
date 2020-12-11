@@ -9,6 +9,7 @@
 #include <QtMath>
 
 #include "enums_defines_constants.h"
+#include "qcustomplot.h"
 
 using namespace ValueType;
 class PlotData : public QObject {
@@ -28,7 +29,7 @@ private:
   double defaultTimestep = 1;
   void sendMessageIfAllowed(QString header, QByteArray message, MessageLevel::enumerator type);
   double arrayToDouble(QByteArray &array, bool &isok);
-  void getBits(QVector<uint32_t> *values, QByteArray data, ValueType::enumerator type);
+  uint32_t getBits(QByteArray data, ValueType::enumerator type);
 public slots:
   void addPoint(QByteArrayList data);
   void addChannel(QByteArray data, unsigned int ch, QByteArray timeRaw, int bits, QByteArray min, QByteArray max);
@@ -38,21 +39,19 @@ public slots:
 
   void setDigitalChannel(int chid, int target);
 
-  void setLogicBits(int target, int bits);
+  void setLogicBits(int target, int bits) { logicBits[target - 1] = bits; }
 
 signals:
   /// Pošle zprávu do výpisu
   void sendMessage(QString header, QByteArray message, MessageLevel::enumerator type, MessageTarget::enumerator target = MessageTarget::serial1);
 
   /// Předá data do grafu
-  void addVectorToPlot(int ch, QSharedPointer<QVector<double>> time, QVector<double> *value, bool isMath = false);
+  void addVectorToPlot(int ch, QSharedPointer<QCPGraphDataContainer>, bool isMath = false);
 
   /// Předá data do grafu
   void addPointToPlot(int ch, double time, double value, bool append);
 
-  void addLogicVectorToPlot(int ch, QSharedPointer<QVector<double>> time, QVector<uint32_t> *value, int bits);
-
-  void clearLogic(int group);
+  void clearLogic(int group, int fromBit);
 };
 
 #endif // PLOTTING_H
