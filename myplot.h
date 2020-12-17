@@ -15,6 +15,8 @@ private:
   double lastGridX = 0, lastGridY = 0;
   QSharedPointer<QCPAxisTickerTime> timeTickerX, longTimeTickerX;
   QSharedPointer<QCPAxisTickerFixed> fixedTickerX, fixedTickerY;
+  void setVerticalDiv(double value);
+  void setHorizontalDiv(double value);
 
 public:
   explicit MyPlot(QWidget *parent = nullptr);
@@ -36,8 +38,7 @@ protected:
   void setMouseControlls(bool enabled);
 
 public slots:
-  void setVerticalDiv(double value);
-  void setHorizontalDiv(double value);
+
   void setShowVerticalValues(bool enabled);
   void setShowHorizontalValues(int type);
   void setXTitle(QString title);

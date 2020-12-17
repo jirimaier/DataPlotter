@@ -97,6 +97,7 @@ void MyPlot::initcursors() {
       cursors.at(i)->end->setTypeX(QCPItemPosition::ptPlotCoords);
       cursors.at(i)->end->setTypeY(QCPItemPosition::ptViewportRatio);
     } else {
+      cursorpen.setStyle(Qt::DashLine);
       cursors.at(i)->start->setTypeX(QCPItemPosition::ptViewportRatio);
       cursors.at(i)->start->setTypeY(QCPItemPosition::ptPlotCoords);
       cursors.at(i)->end->setTypeX(QCPItemPosition::ptViewportRatio);

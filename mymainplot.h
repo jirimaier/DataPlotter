@@ -47,8 +47,6 @@ public:
   double getChMax(int chid);
   double getChMin(int chid);
 
-  void clearCh(int chid) { this->graph(chid)->data().data()->clear(); }
-
   QByteArray exportChannelCSV(char separator, char decimal, int channel, int precision, bool onlyInView);
   QByteArray exportLogicCSV(char separator, char decimal, int channel, int precision, bool onlyInView);
   QByteArray exportAllCSV(char separator, char decimal, int precision, bool onlyInView, bool includeHidden);
@@ -96,6 +94,7 @@ public slots:
   void setShiftStep(int step);
 
   void clearLogicGroup(int number, int fromBit);
+  void clearCh(int chid) { this->graph(chid)->data().data()->clear(); }
 
   void newDataPoint(int chID, double time, double value, bool append);
   void newDataVector(int ch, QSharedPointer<QCPGraphDataContainer> data, bool ignorePause = false);

@@ -33,7 +33,7 @@ public:
 private:
   Ui::MainWindow *ui;
   QTranslator *translator;
-  QTimer portsRefreshTimer, activeChRefreshTimer, mathUpdateTimer;
+  QTimer portsRefreshTimer, activeChRefreshTimer;
   QList<QSerialPortInfo> portList;
   void connectSignals();
   void updateChScale();
@@ -64,7 +64,6 @@ private:
 private slots:
   void updateCursors();
   void setAdaptiveSpinBoxes();
-  void updateMath();
   void updateDivs();
   void comRefresh();
   void rangeTypeChanged();
@@ -119,14 +118,18 @@ private slots:
   void on_checkBoxSerialMonitor_toggled(bool checked);
   void on_comboBoxSelectedChannel_currentIndexChanged(int index);
   void on_pushButtonResetChannels_clicked();
-  void on_checkBoxLog1_toggled(bool checked) { emit setChDigital(GlobalFunctions::getAnalogChId(ui->spinBoxLog1source->value(), ChannelType::analog), checked ? 1 : 0); }
-  void on_checkBoxLog2_toggled(bool checked) { emit setChDigital(GlobalFunctions::getAnalogChId(ui->spinBoxLog2source->value(), ChannelType::analog), checked ? 2 : 0); }
-  void on_checkBoxLog3_toggled(bool checked) { emit setChDigital(GlobalFunctions::getAnalogChId(ui->spinBoxLog3source->value(), ChannelType::analog), checked ? 3 : 0); }
-  void on_checkBoxLog4_toggled(bool checked) { emit setChDigital(GlobalFunctions::getAnalogChId(ui->spinBoxLog4source->value(), ChannelType::analog), checked ? 4 : 0); }
+  void on_checkBoxLog1_toggled(bool checked) { emit setChDigital(1, checked ? ui->spinBoxLog1source->value() : 0); }
+  void on_checkBoxLog2_toggled(bool checked) { emit setChDigital(2, checked ? ui->spinBoxLog2source->value() : 0); }
+  void on_checkBoxLog3_toggled(bool checked) { emit setChDigital(3, checked ? ui->spinBoxLog3source->value() : 0); }
+  void on_checkBoxLog4_toggled(bool checked) { emit setChDigital(4, checked ? ui->spinBoxLog4source->value() : 0); }
   void on_spinBoxLog1bits_valueChanged(int arg1) { emit setLogicBits(1, arg1); }
   void on_spinBoxLog2bits_valueChanged(int arg1) { emit setLogicBits(2, arg1); }
   void on_spinBoxLog3bits_valueChanged(int arg1) { emit setLogicBits(3, arg1); }
   void on_spinBoxLog4bits_valueChanged(int arg1) { emit setLogicBits(4, arg1); }
+  void on_spinBoxLog1source_valueChanged(int arg1) { emit setChDigital(1, ui->checkBoxLog1->isChecked() ? arg1 : 0); }
+  void on_spinBoxLog2source_valueChanged(int arg1) { emit setChDigital(2, ui->checkBoxLog2->isChecked() ? arg1 : 0); }
+  void on_spinBoxLog3source_valueChanged(int arg1) { emit setChDigital(3, ui->checkBoxLog3->isChecked() ? arg1 : 0); }
+  void on_spinBoxLog4source_valueChanged(int arg1) { emit setChDigital(4, ui->checkBoxLog4->isChecked() ? arg1 : 0); }
   void on_pushButtonPlotImage_clicked();
   void on_pushButtonXYImage_clicked();
   void on_horizontalSliderTimeCur1_realValueChanged();
@@ -141,6 +144,33 @@ private slots:
   void on_labelLicense_linkActivated();
 
   void on_pushButtonHideCh_toggled(bool checked);
+
+  void on_checkBoxMath1_toggled(bool checked);
+  void on_checkBoxMath2_toggled(bool checked);
+  void on_checkBoxMath3_toggled(bool checked);
+  void on_checkBoxMath4_toggled(bool checked);
+
+  void on_checkBoxXY_toggled(bool checked);
+
+  void on_comboBoxMath1Op_currentIndexChanged(int index) { emit setMathMode(1, (MathOperations::enumetrator)index); }
+  void on_comboBoxMath2Op_currentIndexChanged(int index) { emit setMathMode(2, (MathOperations::enumetrator)index); }
+  void on_comboBoxMath3Op_currentIndexChanged(int index) { emit setMathMode(3, (MathOperations::enumetrator)index); }
+  void on_comboBoxMath4Op_currentIndexChanged(int index) { emit setMathMode(4, (MathOperations::enumetrator)index); }
+
+  void on_spinBoxMath1First_valueChanged(int arg1) { emit setMathFirst(1, ui->checkBoxMath1->isChecked() ? arg1 : 0); };
+  void on_spinBoxMath2First_valueChanged(int arg1) { emit setMathFirst(2, ui->checkBoxMath2->isChecked() ? arg1 : 0); };
+  void on_spinBoxMath3First_valueChanged(int arg1) { emit setMathFirst(3, ui->checkBoxMath3->isChecked() ? arg1 : 0); };
+  void on_spinBoxMath4First_valueChanged(int arg1) { emit setMathFirst(4, ui->checkBoxMath4->isChecked() ? arg1 : 0); };
+
+  void on_spinBoxMath1Second_valueChanged(int arg1) { emit setMathSecond(1, ui->checkBoxMath1->isChecked() ? arg1 : 0); };
+  void on_spinBoxMath2Second_valueChanged(int arg1) { emit setMathSecond(2, ui->checkBoxMath2->isChecked() ? arg1 : 0); };
+  void on_spinBoxMath3Second_valueChanged(int arg1) { emit setMathSecond(3, ui->checkBoxMath3->isChecked() ? arg1 : 0); };
+  void on_spinBoxMath4Second_valueChanged(int arg1) { emit setMathSecond(4, ui->checkBoxMath4->isChecked() ? arg1 : 0); };
+
+  void on_spinBoxXYFirst_valueChanged(int arg1) { emit setXYFirst(ui->checkBoxXY->isChecked() ? arg1 : 0); }
+  void on_spinBoxXYSecond_valueChanged(int arg1) { emit setXYSecond(ui->checkBoxXY->isChecked() ? arg1 : 0); }
+
+  void on_dial_valueChanged(int value);
 
 public slots:
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumerator target);
@@ -163,12 +193,17 @@ signals:
   void writeToSerial(QByteArray data);
   void resetChannels();
   void disconnectSerial();
-  void requestMath(int resultCh, int operation, QPair<QVector<double>, QVector<double>>, QPair<QVector<double>, QVector<double>>);
-  void requestXY(QPair<QVector<double>, QVector<double>>, QPair<QVector<double>, QVector<double>>);
+  void requestMath(int mathNumber, bool isFirst, QSharedPointer<QCPGraphDataContainer> in);
+  void requestXY(bool isFirst, QSharedPointer<QCPGraphDataContainer> in);
   void sendManualInput(QByteArray data);
   void parseError(QByteArray, int type = DataLineType::debugMessage);
   void setSerialMessageLevel(OutputLevel::enumerator level);
   void setManualMessageLevel(OutputLevel::enumerator level);
   void enableSerialMonitor(bool enabled);
+  void setMathFirst(int math, int ch);
+  void setMathSecond(int math, int ch);
+  void setXYFirst(int ch);
+  void setXYSecond(int ch);
+  void setMathMode(int math, MathOperations::enumetrator mode);
 };
 #endif // MAINWINDOW_H

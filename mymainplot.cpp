@@ -365,6 +365,10 @@ void MyMainPlot::resetChannels() {
 }
 
 void MyMainPlot::newDataVector(int chID, QSharedPointer<QCPGraphDataContainer> data, bool ignorePause) {
+  if (data->size() == 1) {
+    newDataPoint(chID, data->at(0)->key, data->at(0)->value, data->at(0)->key > graph(chID)->data()->at(graph(chID)->data()->size() - 1)->key);
+    return;
+  }
   if (plottingStatus != PlotStatus::pause || ignorePause) {
     this->graph(chID)->setData(data);
     newData = true;

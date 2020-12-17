@@ -1,19 +1,5 @@
 #include "mainwindow.h"
 
-void MainWindow::updateMath() {
-  for (int i = 0; i < 4; i++) {
-    if (mathEn[i]->isChecked()) {
-      int firstch = mathFirst[i]->value();
-      int secondch = mathSecond[i]->value();
-      int operation = mathOp[i]->currentIndex();
-      emit requestMath(GlobalFunctions::getAnalogChId(i + 1, ChannelType::math), operation, ui->plot->getDataVector(firstch - 1, ui->checkBoxMathVRO->isChecked()), ui->plot->getDataVector(secondch - 1, ui->checkBoxMathVRO->isChecked()));
-    } else
-      ui->plot->clearCh(GlobalFunctions::getAnalogChId(i + 1, ChannelType::math));
-  }
-  if (ui->checkBoxXY->isChecked())
-    requestXY(ui->plot->getDataVector(ui->spinBoxXYFirst->value() - 1, ui->checkBoxXYVRO->isChecked()), ui->plot->getDataVector(ui->spinBoxXYSecond->value() - 1, ui->checkBoxXYVRO->isChecked()));
-}
-
 void MainWindow::comRefresh() {
   // Zjistí, jestli nastala změna v portech.
   QList<QSerialPortInfo> newPorts = QSerialPortInfo::availablePorts();

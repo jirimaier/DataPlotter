@@ -6,10 +6,14 @@ PlotData::~PlotData() { qDebug() << "PlotData deleted from " << QThread::current
 
 void PlotData::init() {
   qDebug() << "PlotData initialised from " << QThread::currentThreadId();
-  for (int i = 0; i < ANALOG_COUNT; i++)
-    digitalChannel[i] = 0;
-  for (int i = 0; i < LOGIC_COUNT; i++)
+  for (int i = 0; i < LOGIC_GROUPS; i++) {
+    logicTargets[i] = -1;
     logicBits[i] = 0;
+  }
+  for (int i = 0; i < MATH_COUNT; i++) {
+    mathFirsts[i] = 0;
+    mathSeconds[i] = 0;
+  }
   reset();
 }
 
@@ -163,7 +167,7 @@ void PlotData::addPoint(QByteArrayList data) {
       return;
     }
   }
-  for (int ch = 1; ch < data.length(); ch++) {
+  for (unsigned int ch = 1; (int)ch < data.length(); ch++) {
     if (data.at(ch).at(0) != 'b' && data.at(ch).at(0) != 'B') {
       // Analog
       double value = arrayToDouble(data[ch], isok);
@@ -173,7 +177,28 @@ void PlotData::addPoint(QByteArrayList data) {
       }
 
       emit addPointToPlot(ch - 1, time, value, time >= lastTimes[ch - 1]);
-
+      for (int math = 0; math < MATH_COUNT; math++) {
+        if (mathFirsts[math] == ch) {
+          auto point = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer());
+          point->add(QCPGraphData(time, value));
+          emit addMathData(math, true, point);
+        }
+        if (mathSeconds[math] == ch) {
+          auto point = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer());
+          point->add(QCPGraphData(time, value));
+          emit addMathData(math, false, point);
+        }
+      }
+      if (xyFirst == ch) {
+        auto point = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer());
+        point->add(QCPGraphData(time, value));
+        emit addXYData(true, point);
+      }
+      if (xySecond == ch) {
+        auto point = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer());
+        point->add(QCPGraphData(time, value));
+        emit addXYData(false, point);
+      }
     } else {
       // Logika
       int bits = (data.at(ch).mid(1, 1).toUInt(&isok, 16)) * 8;
@@ -252,9 +277,12 @@ void PlotData::addChannel(QByteArray data, unsigned int ch, QByteArray timeRaw, 
     emit sendMessage(tr("Received channel %1").arg(ch).toUtf8(), message, MessageLevel::info);
   }
 
-  bool showAsLogic = digitalChannel[ch - 1] > 0;
-  if (showAsLogic && type != u1 && type != u2 && type != u3 && type != u4 && type != U1 && type != U2 && type != U3 && type != U4) {
-    showAsLogic = false;
+  bool isLogic = false;
+  for (int i = 0; i < LOGIC_GROUPS; i++)
+    if (logicTargets[i] == ch)
+      isLogic = true;
+  if (isLogic && type != u1 && type != u2 && type != u3 && type != u4 && type != U1 && type != U2 && type != U3 && type != U4) {
+    isLogic = false;
     sendMessageIfAllowed(tr("Can not show channel %1 as logic").arg(ch), tr("digital mode is only available for unsigned integer data type").toUtf8(), MessageLevel::warning);
   }
 
@@ -274,20 +302,27 @@ void PlotData::addChannel(QByteArray data, unsigned int ch, QByteArray timeRaw, 
       point.value = minimum + getValue(data.mid(i, bytesPerValue), type) * remapMultiple;
     else
       point.value = getValue(data.mid(i, bytesPerValue), type);
-    if (showAsLogic)
+    if (isLogic)
       valuesDigital.append(getBits(data.mid(i, bytesPerValue), type));
     analogData->add(point);
   }
 
-  // Pošle kanál do grafu
+  // Pošle kanál do grafu a případně do výpočtů
+  for (int math = 0; math < MATH_COUNT; math++) {
+    if (mathFirsts[math] == ch)
+      emit addMathData(math, true, analogData);
+    if (mathSeconds[math] == ch)
+      emit addMathData(math, false, analogData);
+  }
+  if (xyFirst == ch)
+    emit addXYData(true, analogData);
+  if (xySecond == ch)
+    emit addXYData(false, analogData);
 
   emit addVectorToPlot(ch - 1, analogData);
 
-  if (showAsLogic) {
-    if (logicBits[ch - 1] > 0)
-      bits = logicBits[ch - 1];
+  if (isLogic) {
     // Pošle do grafu logický kanál
-    int logicGroup = digitalChannel[ch - 1];
     QVector<QSharedPointer<QCPGraphDataContainer>> digitalChannels;
     for (uint8_t bit = 0; bit < bits; bit++)
       digitalChannels.append(QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer));
@@ -295,10 +330,15 @@ void PlotData::addChannel(QByteArray data, unsigned int ch, QByteArray timeRaw, 
       for (uint8_t bit = 0; bit < bits; bit++)
         digitalChannels.at(bit)->add(QCPGraphData(times.at(i), ((bool)((valuesDigital.at(i)) & ((uint32_t)1 << (bit)))) + bit * 3));
 
-    for (uint8_t bit = 0; bit < bits; bit++) {
-      emit addVectorToPlot(GlobalFunctions::getLogicChannelID(logicGroup - 1, bit), digitalChannels.at(bit));
+    for (int logicGroup = 0; logicGroup < LOGIC_GROUPS; logicGroup++) {
+      if (logicTargets[logicGroup] != ch)
+        continue;
+      if (logicBits[ch - 1] > 0)
+        bits = logicBits[ch - 1];
+      for (uint8_t bit = 0; bit < bits; bit++) {
+        emit addVectorToPlot(GlobalFunctions::getLogicChannelID(logicGroup, bit), digitalChannels.at(bit));
+      }
     }
-    emit clearLogic(logicGroup - 1, bits);
   }
 }
 
@@ -307,10 +347,38 @@ void PlotData::reset() {
     lastTimes[i] = INFINITY;
 }
 
-void PlotData::setDigitalChannel(int chid, int target) {
-  if (target == 0)
-    emit clearLogic(digitalChannel[chid] - 1, 0);
-  digitalChannel[chid] = target;
+void PlotData::setDigitalChannel(int logicGroup, int ch) {
+  logicTargets[logicGroup - 1] = ch;
+  emit clearLogic(logicGroup - 1, 0);
+}
+
+void PlotData::setLogicBits(int target, int bits) {
+  logicBits[target - 1] = bits;
+  emit clearLogic(target - 1, bits);
+}
+
+void PlotData::setMathFirst(int math, int ch) {
+  mathFirsts[math - 1] = ch;
+  emit clearMathFirst(math);
+  emit clearAnalog(GlobalFunctions::getAnalogChId(math, ChannelType::math));
+}
+
+void PlotData::setMathSecond(int math, int ch) {
+  mathSeconds[math - 1] = ch;
+  emit clearMathSecond(math);
+  emit clearAnalog(GlobalFunctions::getAnalogChId(math, ChannelType::math));
+}
+
+void PlotData::setXYFirst(int ch) {
+  xyFirst = ch;
+  emit clearXYFirst();
+  emit clearXY();
+}
+
+void PlotData::setXYSecond(int ch) {
+  xySecond = ch;
+  emit clearXYSecond();
+  emit clearXY();
 }
 
 void PlotData::sendMessageIfAllowed(QString header, QByteArray message, MessageLevel::enumerator type) {

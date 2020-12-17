@@ -2,7 +2,7 @@
 
 void MainWindow::updateCursors() {
   int ch = ui->comboBoxCursor1Channel->currentIndex();
-  QPair<long, long> range = ui->plot->getChVisibleSamplesRange(ch);
+  QPair<long, long> range = ui->plot->getChVisibleSamplesRange(ch < ANALOG_COUNT + MATH_COUNT ? ch : GlobalFunctions::getLogicChannelID(ch - ANALOG_COUNT - MATH_COUNT, 0));
   ui->horizontalSliderTimeCur1->updateRange(range.first, range.second);
   double time1, value1, time2, value2;
   QByteArray timeStr, valueStr;

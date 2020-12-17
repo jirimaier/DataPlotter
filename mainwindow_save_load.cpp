@@ -10,7 +10,7 @@ void MainWindow::initSetables() {
 
   // XY
   setables["xyen"] = ui->checkBoxXY;
-  setables["xyvro"] = ui->checkBoxXYVRO;
+  // setables["xyvro"] = ui->checkBoxXYVRO;
   // setables["xyios"] = ui->checkBoxXYIOS;
   setables["xyxch"] = ui->spinBoxXYFirst;
   setables["xyych"] = ui->spinBoxXYSecond;
@@ -43,7 +43,7 @@ void MainWindow::initSetables() {
   setables["lineending"] = ui->comboBoxLineEnding;
 
   // Math
-  setables["mathvro"] = ui->checkBoxMathVRO;
+  // setables["mathvro"] = ui->checkBoxMathVRO;
   // setables["mathios"] = ui->checkBoxMathIOS;
   for (int i = 0; i < MATH_COUNT; i++) {
     setables[QString("math") + QString::number(i + 1) + QString("en")] = mathEn[i];

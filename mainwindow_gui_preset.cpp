@@ -25,7 +25,6 @@ void MainWindow::connectSignals() {
 
   connect(&portsRefreshTimer, &QTimer::timeout, this, &MainWindow::comRefresh);
   connect(&activeChRefreshTimer, &QTimer::timeout, this, &MainWindow::updateUsedChannels);
-  connect(&mathUpdateTimer, &QTimer::timeout, this, &MainWindow::updateMath);
 }
 
 void MainWindow::setAdaptiveSpinBoxes() {
@@ -38,15 +37,8 @@ void MainWindow::setAdaptiveSpinBoxes() {
 }
 
 void MainWindow::startTimers() {
-  portsRefreshTimer.setInterval(500);
-  // plotUpdateTimer.setInterval(10);
-  activeChRefreshTimer.setInterval(500);
-  mathUpdateTimer.setInterval(100);
-
-  // plotUpdateTimer.start();
-  portsRefreshTimer.start();
-  activeChRefreshTimer.start();
-  mathUpdateTimer.start();
+  portsRefreshTimer.start(500);
+  activeChRefreshTimer.start(500);
 }
 
 void MainWindow::setGuiDefaults() {
@@ -55,6 +47,7 @@ void MainWindow::setGuiDefaults() {
   ui->comboBoxOutputLevel->setCurrentIndex((int)OutputLevel::info);
   ui->radioButtonFixedRange->setChecked(true);
   ui->plotxy->setHidden(true);
+  ui->plotEmpty->setHidden(true);
   ui->labelBuildDate->setText("Build: " + QString(__DATE__) + " " + QString(__TIME__));
   ui->pushButtonPause->setIcon(QPixmap(":/images/icons/run.png"));
   ui->pushButtonMultiplInputs->setChecked(false);

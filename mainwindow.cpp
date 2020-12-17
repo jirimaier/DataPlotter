@@ -6,11 +6,13 @@ MainWindow::~MainWindow() { delete ui; }
 
 void MainWindow::init(QTranslator *translator, const PlotData *plotData, const PlotMath *plotMath) {
   fillChannelSelect();
-  // QObject::connect(plotMath, &PlotMath::sendResult, ui->plot, &MyMainPlot::newDataVector);
+  QObject::connect(plotMath, &PlotMath::sendResult, ui->plot, &MyMainPlot::newDataVector);
   QObject::connect(plotMath, &PlotMath::sendResultXY, ui->plotxy, &MyXYPlot::newData);
+  QObject::connect(plotData, &PlotData::clearXY, ui->plotxy, &MyXYPlot::clear);
   QObject::connect(plotData, &PlotData::addVectorToPlot, ui->plot, &MyMainPlot::newDataVector);
   QObject::connect(plotData, &PlotData::addPointToPlot, ui->plot, &MyMainPlot::newDataPoint);
   QObject::connect(plotData, &PlotData::clearLogic, ui->plot, &MyMainPlot::clearLogicGroup);
+  QObject::connect(plotData, &PlotData::clearAnalog, ui->plot, &MyMainPlot::clearCh);
 
   this->translator = translator;
   setGuiArrays();
@@ -162,4 +164,42 @@ void MainWindow::on_pushButtonHideCh_toggled(bool checked) {
     ui->plot->setChVisible(ui->comboBoxSelectedChannel->currentIndex(), !checked);
   else
     ui->plot->setLogicVisibility(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT, !checked);
+}
+
+void MainWindow::on_checkBoxMath1_toggled(bool checked) {
+  emit setMathFirst(1, checked ? ui->spinBoxMath1First->value() : 0);
+  emit setMathSecond(1, checked ? ui->spinBoxMath1Second->value() : 0);
+  MathOperations::enumetrator operation = (MathOperations::enumetrator)ui->comboBoxMath1Op->currentIndex();
+  emit setMathMode(1, operation);
+}
+
+void MainWindow::on_checkBoxMath2_toggled(bool checked) {
+  emit setMathFirst(2, checked ? ui->spinBoxMath2First->value() : 0);
+  emit setMathSecond(2, checked ? ui->spinBoxMath2Second->value() : 0);
+  MathOperations::enumetrator operation = (MathOperations::enumetrator)ui->comboBoxMath2Op->currentIndex();
+  emit setMathMode(2, operation);
+}
+
+void MainWindow::on_checkBoxMath3_toggled(bool checked) {
+  emit setMathFirst(3, checked ? ui->spinBoxMath3First->value() : 0);
+  emit setMathSecond(3, checked ? ui->spinBoxMath3Second->value() : 0);
+  MathOperations::enumetrator operation = (MathOperations::enumetrator)ui->comboBoxMath3Op->currentIndex();
+  emit setMathMode(3, operation);
+}
+
+void MainWindow::on_checkBoxMath4_toggled(bool checked) {
+  emit setMathFirst(4, checked ? ui->spinBoxMath4First->value() : 0);
+  emit setMathSecond(4, checked ? ui->spinBoxMath4Second->value() : 0);
+  MathOperations::enumetrator operation = (MathOperations::enumetrator)ui->comboBoxMath4Op->currentIndex();
+  emit setMathMode(4, operation);
+}
+
+void MainWindow::on_checkBoxXY_toggled(bool checked) {
+  emit setXYFirst(checked ? ui->spinBoxXYFirst->value() : 0);
+  emit setXYSecond(checked ? ui->spinBoxXYSecond->value() : 0);
+}
+
+void MainWindow::on_dial_valueChanged(int value) {
+  ui->plotxy->setGridHintX(value);
+  ui->plotxy->setGridHintY(value);
 }

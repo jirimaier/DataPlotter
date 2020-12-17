@@ -63,6 +63,8 @@ Q_DECLARE_METATYPE(PlotStatus::enumerator)
 Q_DECLARE_METATYPE(MessageTarget::enumerator)
 Q_DECLARE_METATYPE(QSharedPointer<QVector<double>>);
 Q_DECLARE_METATYPE(QSharedPointer<QCPGraphDataContainer>);
+Q_DECLARE_METATYPE(QSharedPointer<QCPCurveDataContainer>);
+Q_DECLARE_METATYPE(MathOperations::enumetrator);
 
 int main(int argc, char *argv[]) {
   QApplication application(argc, argv);
@@ -79,6 +81,8 @@ int main(int argc, char *argv[]) {
   qRegisterMetaType<MessageTarget::enumerator>();
   qRegisterMetaType<QSharedPointer<QVector<double>>>();
   qRegisterMetaType<QSharedPointer<QCPGraphDataContainer>>();
+  qRegisterMetaType<QSharedPointer<QCPCurveDataContainer>>();
+  qRegisterMetaType<MathOperations::enumetrator>();
 
   // Vytvoří instance hlavních objektů
   MainWindow mainWindow;
@@ -132,13 +136,28 @@ int main(int argc, char *argv[]) {
   QObject::connect(&mainWindow, &MainWindow::disconnectSerial, serial1, &SerialReader::end);
   QObject::connect(&mainWindow, &MainWindow::resetChannels, plotData, &PlotData::reset);
   QObject::connect(&mainWindow, &MainWindow::writeToSerial, serial1, &SerialReader::write);
-  QObject::connect(&mainWindow, &MainWindow::requestMath, plotMath, &PlotMath::doMath);
-  QObject::connect(&mainWindow, &MainWindow::requestXY, plotMath, &PlotMath::doXY);
+  QObject::connect(&mainWindow, &MainWindow::requestMath, plotMath, &PlotMath::addMathData);
+  QObject::connect(&mainWindow, &MainWindow::requestXY, plotMath, &PlotMath::addXYData);
   QObject::connect(&mainWindow, &MainWindow::sendManualInput, serialParserM, &NewSerialParser::parse);
 
   QObject::connect(plotData, &PlotData::sendMessage, &mainWindow, &MainWindow::printMessage);
   QObject::connect(&mainWindow, &MainWindow::setChDigital, plotData, &PlotData::setDigitalChannel);
   QObject::connect(&mainWindow, &MainWindow::setLogicBits, plotData, &PlotData::setLogicBits);
+
+  QObject::connect(plotData, &PlotData::clearMathFirst, plotMath, &PlotMath::clearMathFirst);
+  QObject::connect(plotData, &PlotData::clearMathSecond, plotMath, &PlotMath::clearMathSecond);
+  QObject::connect(plotData, &PlotData::clearXYFirst, plotMath, &PlotMath::clearXYFirst);
+  QObject::connect(plotData, &PlotData::clearXYSecond, plotMath, &PlotMath::clearXYSecond);
+
+  QObject::connect(plotData, &PlotData::addMathData, plotMath, &PlotMath::addMathData);
+  QObject::connect(plotData, &PlotData::addXYData, plotMath, &PlotMath::addXYData);
+
+  QObject::connect(&mainWindow, &MainWindow::setMathFirst, plotData, &PlotData::setMathFirst);
+  QObject::connect(&mainWindow, &MainWindow::setMathSecond, plotData, &PlotData::setMathSecond);
+  QObject::connect(&mainWindow, &MainWindow::setXYFirst, plotData, &PlotData::setXYFirst);
+  QObject::connect(&mainWindow, &MainWindow::setXYSecond, plotData, &PlotData::setXYSecond);
+
+  QObject::connect(&mainWindow, &MainWindow::setMathMode, plotMath, &PlotMath::setMathMode);
 
   // Funkce init jsou zavolány až z nového vlákna
   QObject::connect(&serialParser1Thread, &QThread::started, serialParser1, &NewSerialParser::init);

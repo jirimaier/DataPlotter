@@ -6,44 +6,46 @@ MyXYPlot::MyXYPlot(QWidget *parent) : MyPlot(parent) {
   graphXY = new QCPCurve(this->xAxis, this->yAxis);
   this->xAxis->setRange(-100, 100);
   this->yAxis->setRange(-100, 100);
+  setGridHintX(-2);
+  setGridHintY(-2);
 }
 
 MyXYPlot::~MyXYPlot() {}
 
-void MyXYPlot::newData(QVector<double> *x, QVector<double> *y) {
-  double left = *std::min_element(x->begin(), x->end());
-  double right = *std::max_element(x->begin(), x->end());
-  double down = *std::min_element(y->begin(), y->end());
-  double up = *std::max_element(y->begin(), y->end());
-
-  graphXY->setData(*x, *y);
-  delete x;
-  delete y;
-
-  left *= 1.1;
-  right *= 1.1;
-  up *= 1.1;
-  down *= 1.1;
-
-  left = Global::logaritmicSettings[GlobalFunctions::roundToStandardValue(abs(left))] * (left < 0 ? (-1) : 1);
-  right = Global::logaritmicSettings[GlobalFunctions::roundToStandardValue(abs(right))] * (right < 0 ? (-1) : 1);
-  up = Global::logaritmicSettings[GlobalFunctions::roundToStandardValue(abs(up))] * (up < 0 ? (-1) : 1);
-  down = Global::logaritmicSettings[GlobalFunctions::roundToStandardValue(abs(down))] * (down < 0 ? (-1) : 1);
-
-  this->setVerticalDiv((this->yAxis->range().upper - this->yAxis->range().lower) / 5);
-  this->setHorizontalDiv((this->xAxis->range().upper - this->xAxis->range().lower) / 5);
-
-  if (autoSize) {
-    this->xAxis->setRange(left, right);
-    this->yAxis->setRange(down, up);
-  }
-
-  this->replot();
+void MyXYPlot::newData(QSharedPointer<QCPCurveDataContainer> data) {
+  if (data->size() == 1)
+    graphXY->addData(data->at(0)->t, data->at(0)->key, data->at(0)->value);
+  else
+    graphXY->setData(data);
+  if (autoSize)
+    autoset();
+  this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
 }
 
 void MyXYPlot::setAutoSize(bool en) {
   autoSize = en;
   setMouseControlls(!en);
+  autoset();
+  this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
+}
+
+void MyXYPlot::clear() {
+  graphXY->data().data()->clear();
+  this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
+}
+
+void MyXYPlot::setStyle(int style) {
+  if (style == GraphStyle::line) {
+    graphXY->setScatterStyle(QCPScatterStyle::ssNone);
+    graphXY->setLineStyle(QCPCurve::lsLine);
+  } else if (style == GraphStyle::point) {
+    graphXY->setScatterStyle(POINT_STYLE);
+    graphXY->setLineStyle(QCPCurve::lsNone);
+  } else if (style == GraphStyle::linePoint) {
+    graphXY->setScatterStyle(POINT_STYLE);
+    graphXY->setLineStyle(QCPCurve::lsLine);
+  }
+  this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
 }
 
 QByteArray MyXYPlot::exportCSV(char separator, char decimal, int precision) {
@@ -55,4 +57,11 @@ QByteArray MyXYPlot::exportCSV(char separator, char decimal, int precision) {
     output.append('\n');
   }
   return output;
+}
+
+void MyXYPlot::autoset() {
+  this->xAxis->rescale();
+  this->yAxis->rescale();
+  this->xAxis->setRange(xAxis->range().center(), ceil(xAxis->range().size() / 50.0) * 50.0, Qt::AlignCenter);
+  this->yAxis->setRange(yAxis->range().center(), ceil(yAxis->range().size() / 50.0) * 50.0, Qt::AlignCenter);
 }

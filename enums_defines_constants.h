@@ -31,7 +31,7 @@ enum enumerator { device = 0, error = 1, warning = 2, info = 3 };
 }
 
 namespace MathOperations {
-enum enumetrator { add, subtract, multiply, divide, xy };
+enum enumetrator { add = 0, subtract = 1, multiply = 2, divide = 3 };
 }
 
 namespace DataLineType {
