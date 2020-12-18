@@ -37,8 +37,8 @@ void PlotMath::addMathData(int mathNumber, bool isFirst, QSharedPointer<QCPGraph
       result->add(QCPGraphData(first->at(i)->key, resultSample));
     }
     emit sendResult(GlobalFunctions::getAnalogChId(mathNumber + 1, ChannelType::math), result, false);
-    first = nullptr;
-    second = nullptr;
+    first.clear();
+    second.clear();
   }
 }
 
@@ -57,7 +57,7 @@ void PlotMath::addXYData(bool isFirst, QSharedPointer<QCPGraphDataContainer> in)
       result->add(QCPCurveData(XYx->at(i)->key, XYx->at(i)->value, XYy->at(i)->value));
     }
     emit sendResultXY(result);
-    XYx = nullptr;
-    XYy = nullptr;
+    XYx.clear();
+    XYy.clear();
   }
 }

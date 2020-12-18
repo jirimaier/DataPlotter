@@ -19,10 +19,10 @@ private:
   QSharedPointer<QCPGraphDataContainer> XYx, XYy;
   MathOperations::enumetrator operations[MATH_COUNT];
 public slots:
-  void clearMathFirst(int math) { firsts[math - 1] = nullptr; }
-  void clearMathSecond(int math) { seconds[math - 1] = nullptr; }
-  void clearXYFirst() { XYx = nullptr; }
-  void clearXYSecond() { XYy = nullptr; }
+  void clearMathFirst(int math) { firsts[math - 1].clear(); }
+  void clearMathSecond(int math) { seconds[math - 1].clear(); }
+  void clearXYFirst() { XYx.clear(); }
+  void clearXYSecond() { XYy.clear(); }
   void addMathData(int mathNumber, bool isFirst, QSharedPointer<QCPGraphDataContainer> in);
   void setMathMode(int math, MathOperations::enumetrator mode) {
     operations[math - 1] = mode;

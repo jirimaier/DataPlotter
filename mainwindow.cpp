@@ -58,6 +58,7 @@ void MainWindow::serialConnectResult(bool connected, QString message) {
   ui->labelPortInfo->setText(message);
   if (connected && ui->checkBoxClearOnReconnect->isChecked()) {
     ui->plot->resetChannels();
+    ui->plotxy->clear();
     ui->myTerminal->resetTerminal();
     emit resetChannels();
   }

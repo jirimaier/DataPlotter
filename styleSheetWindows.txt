@@ -16,3 +16,7 @@ QLineEdit
 {
 padding-left: 2px;
 }
+
+QFrame{
+background-color: rgb(255, 255, 255);
+}

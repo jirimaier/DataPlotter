@@ -337,7 +337,7 @@ void MyMainPlot::setRangeType(PlotRange::enumerator type) {
   if (plotRangeType == PlotRange::rolling && shiftStep == 0)
     plotUpdateTimer.setInterval(16);
   else
-    plotUpdateTimer.setInterval(50);
+    plotUpdateTimer.setInterval(30);
   redraw();
 }
 
