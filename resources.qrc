@@ -2,7 +2,6 @@
     <qresource prefix="/images">
         <file>icons/pause.png</file>
         <file>icons/run.png</file>
-        <file>icons/single.png</file>
         <file>icons/logoKatedry.png</file>
         <file>icons/blank.png</file>
         <file>icons/verticalCenter.png</file>
@@ -47,6 +46,16 @@
         <file>icons/square.png</file>
         <file>icons/squareFilled.png</file>
         <file>icons/visible.png</file>
+        <file>icons/divide.png</file>
+        <file>icons/mathLogic.png</file>
+        <file>icons/minus.png</file>
+        <file>icons/multiply.png</file>
+        <file>icons/plus.png</file>
+        <file>icons/rangeTab.png</file>
+        <file>icons/xyTab.png</file>
+        <file>icons/export.png</file>
+        <file>icons/czech.png</file>
+        <file>icons/english.png</file>
     </qresource>
     <qresource prefix="/translations">
         <file>translation_cz.qm</file>

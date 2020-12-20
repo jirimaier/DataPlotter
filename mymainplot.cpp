@@ -1,3 +1,18 @@
+//  Copyright (C) 2020  Jiří Maier
+
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+
+//  You should have received a copy of the GNU General Public License
+//  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 #include "mymainplot.h"
 
 MyMainPlot::MyMainPlot(QWidget *parent) : MyPlot(parent) {
@@ -329,8 +344,9 @@ void MyMainPlot::redraw() {
 
 void MyMainPlot::setRangeType(PlotRange::enumerator type) {
   if (plotRangeType == PlotRange::freeMove && type != PlotRange::freeMove) {
-    setVerticalCenter(presetVRange * presetVCenterRatio / 200.0);
-    setVerticalRange(presetVRange);
+    this->yAxis->setRange(presetVRange * presetVCenterRatio / 200.0, presetVRange, Qt::AlignCenter);
+    this->yAxis->setRange(presetVRange * presetVCenterRatio / 200.0, yAxis->range().size(), Qt::AlignCenter);
+    this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
   }
   this->plotRangeType = type;
   setMouseControlls(type == PlotRange::freeMove);
@@ -356,9 +372,18 @@ void MyMainPlot::clearLogicGroup(int number, int fromBit) {
   }
 }
 
+void MyMainPlot::clearCh(int chid) {
+  this->graph(chid)->data().data()->clear(); // Odstraní kanál
+  if (plottingStatus == PlotStatus::pause)
+    pauseBuffer.at(chid)->clear(); // Vymaže i z paměti pro pauzu (jinak by se po ukončení pauzy načetl zpět)
+  newData = true;                  // Aby se překreslil graf
+}
+
 void MyMainPlot::resetChannels() {
   for (int i = 0; i < ALL_COUNT; i++) {
     clearCh(i);
+    if (plottingStatus == PlotStatus::pause)
+      pauseBuffer.at(i)->clear();
   }
   updateMinMaxTimes();
   redraw();
@@ -387,8 +412,10 @@ void MyMainPlot::setHorizontalPos(double value) {
 
 void MyMainPlot::setVerticalRange(double value) {
   presetVRange = value;
-  this->yAxis->setRange(presetVRange * presetVCenterRatio / 200.0, value, Qt::AlignCenter);
-  this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
+  if (plotRangeType != PlotRange::freeMove) {
+    this->yAxis->setRange(presetVRange * presetVCenterRatio / 200.0, value, Qt::AlignCenter);
+    this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
+  }
 }
 
 void MyMainPlot::setZoomRange(int value) {
@@ -398,8 +425,10 @@ void MyMainPlot::setZoomRange(int value) {
 
 void MyMainPlot::setVerticalCenter(int value) {
   presetVCenterRatio = value;
-  this->yAxis->setRange(presetVRange * presetVCenterRatio / 200.0, yAxis->range().size(), Qt::AlignCenter);
-  this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
+  if (plotRangeType != PlotRange::freeMove) {
+    this->yAxis->setRange(presetVRange * presetVCenterRatio / 200.0, yAxis->range().size(), Qt::AlignCenter);
+    this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
+  }
 }
 
 void MyMainPlot::setShiftStep(int step) {

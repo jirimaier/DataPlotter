@@ -1,3 +1,18 @@
+//  Copyright (C) 2020  Jiří Maier
+
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+
+//  You should have received a copy of the GNU General Public License
+//  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 #include "mainwindow.h"
 
 void MainWindow::comRefresh() {
@@ -15,7 +30,6 @@ void MainWindow::comRefresh() {
 
   // Aktualizuje seznam portů
   if (change) {
-    qDebug() << "Available ports changed";
     QString current = ui->comboBoxCom->currentText();
     ui->comboBoxCom->clear();
     portList = newPorts;
@@ -43,27 +57,37 @@ void MainWindow::updateUsedChannels() {
 
 void MainWindow::updateChannelComboBox(QComboBox &combobox) {
   // Nechá ve výběru kanálu jen ty kanály, které jsou používány
-  for (int i = 0; i < ANALOG_COUNT + MATH_COUNT; i++) {
-    auto *model = qobject_cast<QStandardItemModel *>(combobox.model());
-    auto *item = model->item(i);
-    item->setEnabled(ui->checkBoxSelUnused->isChecked() || ui->plot->isChUsed(i));
-    QListView *view = qobject_cast<QListView *>(combobox.view());
-    view->setRowHidden(i, !ui->checkBoxSelUnused->isChecked() && !ui->plot->isChUsed(i));
-    if (colorUpdateNeeded) {
-      QPixmap color(12, 12);
-      color.fill(ui->plot->getChColor(i));
-      item->setIcon(QIcon(color));
-    }
-  }
+  // Pokud není používán žádný, nechá alespoň CH1 (protože vypadá blbě když v nabídce není nic)
+  bool atLeastOneVisible = false;
   for (int i = 0; i < LOGIC_GROUPS; i++) {
     auto *model = qobject_cast<QStandardItemModel *>(combobox.model());
     auto *item = model->item(i + ANALOG_COUNT + MATH_COUNT);
-    item->setEnabled(ui->checkBoxSelUnused->isChecked() || ui->plot->isChUsed(GlobalFunctions::getLogicChannelID(i, 1)));
+    bool willBeVisible = ui->checkBoxSelUnused->isChecked() || ui->plot->isChUsed(GlobalFunctions::getLogicChannelID(i, 1));
+    if (willBeVisible)
+      atLeastOneVisible = true;
+    item->setEnabled(willBeVisible);
     QListView *view = qobject_cast<QListView *>(combobox.view());
-    view->setRowHidden(i + ANALOG_COUNT + MATH_COUNT, !ui->checkBoxSelUnused->isChecked() && !ui->plot->isChUsed(GlobalFunctions::getLogicChannelID(i, 1)));
+    view->setRowHidden(i + ANALOG_COUNT + MATH_COUNT, !willBeVisible);
     if (colorUpdateNeeded) {
       QPixmap color(12, 12);
       color.fill(ui->plot->getLogicColor(i));
+      item->setIcon(QIcon(color));
+    }
+  }
+  for (int i = ANALOG_COUNT + MATH_COUNT - 1; i >= 0; i--) {
+    auto *model = qobject_cast<QStandardItemModel *>(combobox.model());
+    auto *item = model->item(i);
+    bool willBeVisible = ui->checkBoxSelUnused->isChecked() || ui->plot->isChUsed(i);
+    if (willBeVisible)
+      atLeastOneVisible = true;
+    if (i == 0 && !atLeastOneVisible)
+      willBeVisible = true;
+    item->setEnabled(willBeVisible);
+    QListView *view = qobject_cast<QListView *>(combobox.view());
+    view->setRowHidden(i, !willBeVisible);
+    if (colorUpdateNeeded) {
+      QPixmap color(12, 12);
+      color.fill(ui->plot->getChColor(i));
       item->setIcon(QIcon(color));
     }
   }

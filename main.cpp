@@ -104,10 +104,8 @@ int main(int argc, char *argv[]) {
   QObject::connect(serial1, &SerialReader::sendData, serialParser1, &NewSerialParser::parse);
   QObject::connect(serial1, &SerialReader::started, serialParser1, &NewSerialParser::getReady);
   QObject::connect(serialParser1, &NewSerialParser::ready, serial1, &SerialReader::parserReady);
-
   QObject::connect(serial1, &SerialReader::finishedWriting, &mainWindow, &MainWindow::serialFinishedWriting);
   QObject::connect(serial1, &SerialReader::connectionResult, &mainWindow, &MainWindow::serialConnectResult);
-
   QObject::connect(serialParser1, &NewSerialParser::sendMessage, &mainWindow, &MainWindow::printMessage);
   QObject::connect(serialParser1, &NewSerialParser::sendDeviceMessage, &mainWindow, &MainWindow::printDeviceMessage);
   QObject::connect(serialParser1, &NewSerialParser::sendSettings, &mainWindow, &MainWindow::useSettings);
@@ -118,10 +116,8 @@ int main(int argc, char *argv[]) {
   QObject::connect(&mainWindow, &MainWindow::requestSerialBufferShow, serialParser1, &NewSerialParser::showBuffer);
   QObject::connect(&mainWindow, &MainWindow::setSerialMessageLevel, serialParser1, &NewSerialParser::setMsgLevel);
   QObject::connect(&mainWindow, &MainWindow::setSerialMessageLevel, plotData, &PlotData::setDebugLevel);
-
   QObject::connect(&mainWindow, &MainWindow::enableSerialMonitor, serial1, &SerialReader::enableMonitoring);
   QObject::connect(serial1, &SerialReader::monitor, &mainWindow, &MainWindow::printSerialMonitor);
-
   QObject::connect(serialParserM, &NewSerialParser::sendMessage, &mainWindow, &MainWindow::printMessage);
   QObject::connect(serialParserM, &NewSerialParser::sendDeviceMessage, &mainWindow, &MainWindow::printDeviceMessage);
   QObject::connect(serialParserM, &NewSerialParser::sendSettings, &mainWindow, &MainWindow::useSettings);
@@ -131,33 +127,25 @@ int main(int argc, char *argv[]) {
   QObject::connect(&mainWindow, &MainWindow::requestManualBufferClear, serialParserM, &NewSerialParser::clearBuffer);
   QObject::connect(&mainWindow, &MainWindow::requestManualBufferShow, serialParserM, &NewSerialParser::showBuffer);
   QObject::connect(&mainWindow, &MainWindow::setManualMessageLevel, serialParserM, &NewSerialParser::setMsgLevel);
-
   QObject::connect(&mainWindow, &MainWindow::toggleSerialConnection, serial1, &SerialReader::toggle);
   QObject::connect(&mainWindow, &MainWindow::disconnectSerial, serial1, &SerialReader::end);
   QObject::connect(&mainWindow, &MainWindow::resetChannels, plotData, &PlotData::reset);
   QObject::connect(&mainWindow, &MainWindow::writeToSerial, serial1, &SerialReader::write);
-  QObject::connect(&mainWindow, &MainWindow::requestMath, plotMath, &PlotMath::addMathData);
-  QObject::connect(&mainWindow, &MainWindow::requestXY, plotMath, &PlotMath::addXYData);
   QObject::connect(&mainWindow, &MainWindow::sendManualInput, serialParserM, &NewSerialParser::parse);
-
   QObject::connect(plotData, &PlotData::sendMessage, &mainWindow, &MainWindow::printMessage);
+  QObject::connect(plotMath, &PlotMath::sendMessage, &mainWindow, &MainWindow::printMessage);
   QObject::connect(&mainWindow, &MainWindow::setChDigital, plotData, &PlotData::setDigitalChannel);
   QObject::connect(&mainWindow, &MainWindow::setLogicBits, plotData, &PlotData::setLogicBits);
-
-  QObject::connect(plotData, &PlotData::clearMathFirst, plotMath, &PlotMath::clearMathFirst);
-  QObject::connect(plotData, &PlotData::clearMathSecond, plotMath, &PlotMath::clearMathSecond);
-  QObject::connect(plotData, &PlotData::clearXYFirst, plotMath, &PlotMath::clearXYFirst);
-  QObject::connect(plotData, &PlotData::clearXYSecond, plotMath, &PlotMath::clearXYSecond);
-
+  QObject::connect(&mainWindow, &MainWindow::resetMath, plotMath, &PlotMath::resetMath);
+  QObject::connect(&mainWindow, &MainWindow::resetXY, plotMath, &PlotMath::resetXY);
   QObject::connect(plotData, &PlotData::addMathData, plotMath, &PlotMath::addMathData);
   QObject::connect(plotData, &PlotData::addXYData, plotMath, &PlotMath::addXYData);
-
   QObject::connect(&mainWindow, &MainWindow::setMathFirst, plotData, &PlotData::setMathFirst);
   QObject::connect(&mainWindow, &MainWindow::setMathSecond, plotData, &PlotData::setMathSecond);
   QObject::connect(&mainWindow, &MainWindow::setXYFirst, plotData, &PlotData::setXYFirst);
   QObject::connect(&mainWindow, &MainWindow::setXYSecond, plotData, &PlotData::setXYSecond);
-
-  QObject::connect(&mainWindow, &MainWindow::setMathMode, plotMath, &PlotMath::setMathMode);
+  QObject::connect(&mainWindow, &MainWindow::clearMath, plotMath, &PlotMath::clearMath);
+  QObject::connect(&mainWindow, &MainWindow::clearXY, plotMath, &PlotMath::clearXY);
 
   // Funkce init jsou zavolány až z nového vlákna
   QObject::connect(&serialParser1Thread, &QThread::started, serialParser1, &NewSerialParser::init);

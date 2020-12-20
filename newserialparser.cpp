@@ -1,14 +1,28 @@
+//  Copyright (C) 2020  Jiří Maier
+
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+
+//  You should have received a copy of the GNU General Public License
+//  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 #include "newserialparser.h"
 
 NewSerialParser::NewSerialParser(MessageTarget::enumerator target, QObject *parent) : QObject(parent) {
   this->target = target;
-  qDebug() << "SerialParser created from " << QThread::currentThreadId();
   resetChHeader();
 }
 
-NewSerialParser::~NewSerialParser() { qDebug() << "SerialParser deleted from " << QThread::currentThreadId(); }
+NewSerialParser::~NewSerialParser() {}
 
-void NewSerialParser::init() { qDebug() << "SerialParser initialised from " << QThread::currentThreadId(); }
+void NewSerialParser::init() {}
 
 void NewSerialParser::resetChHeader() {
   channelHeaderOK = false;
@@ -33,7 +47,7 @@ void NewSerialParser::fatalError(QString header, QByteArray &message) {
       pendingPointBuffer.clear();
     resetChHeader();
   }
-  changeMode(DataMode::unknown, currentMode, "Unknown");
+  changeMode(DataMode::unknown, currentMode, tr("Unknown").toUtf8());
 }
 
 void NewSerialParser::sendMessageIfAllowed(QString header, QByteArray &message, MessageLevel::enumerator type) {
@@ -68,7 +82,7 @@ void NewSerialParser::clearBuffer() {
     pendingPointBuffer.clear();
   if (!buffer.isEmpty())
     buffer.clear();
-  changeMode(DataMode::unknown, currentMode, "Unknown");
+  changeMode(DataMode::unknown, currentMode, tr("Unknown").toUtf8());
   resetChHeader();
 }
 
@@ -240,7 +254,7 @@ void NewSerialParser::parse(QByteArray newData) {
 NewSerialParser::readResult NewSerialParser::bufferPullPoint(QByteArrayList &result) {
   while (!buffer.isEmpty()) {
     // Textová data
-    if (isdigit(buffer.at(0)) || buffer.at(0) == '-') {
+    if (isdigit(buffer.at(0)) || buffer.at(0) == '-' || buffer.at(0) == ',') {
       int end;
       delimiter ending = none;
       if (buffer.contains(',')) {
@@ -290,7 +304,7 @@ NewSerialParser::readResult NewSerialParser::bufferPullPoint(QByteArrayList &res
       QByteArray numOfBytes = buffer.mid(1, 1);
       int bytes = numOfBytes.toUInt(&isok, 16);
       if (!isok) {
-        fatalError("wrong value type", numOfBytes);
+        fatalError(tr("wrong value type").toUtf8(), numOfBytes);
         return incomplete;
       }
       if (buffer.length() < 2 + bytes)
@@ -345,19 +359,19 @@ void NewSerialParser::parseMode(QChar modeChar) {
   DataMode::enumerator previousMode = currentMode;
   QChar modeIdent = modeChar.toUpper();
   if (modeIdent == 'P')
-    changeMode(DataMode::point, previousMode, "Points");
+    changeMode(DataMode::point, previousMode, tr("Points").toUtf8());
   else if (modeIdent == 'T')
-    changeMode(DataMode::terminal, previousMode, "Terminal");
+    changeMode(DataMode::terminal, previousMode, tr("Terminal").toUtf8());
   else if (modeIdent == 'I')
-    changeMode(DataMode::info, previousMode, "Info");
+    changeMode(DataMode::info, previousMode, tr("Info").toUtf8());
   else if (modeIdent == 'W')
-    changeMode(DataMode::warning, previousMode, "Warning");
+    changeMode(DataMode::warning, previousMode, tr("Warning").toUtf8());
   else if (modeIdent == 'C')
-    changeMode(DataMode::channel, previousMode, "Channel");
+    changeMode(DataMode::channel, previousMode, tr("Channel").toUtf8());
   else if (modeIdent == 'S')
-    changeMode(DataMode::settings, previousMode, "Settings");
+    changeMode(DataMode::settings, previousMode, tr("Settings").toUtf8());
   else if (modeIdent == 'U')
-    changeMode(DataMode::unknown, previousMode, "Unknown");
+    changeMode(DataMode::unknown, previousMode, tr("Unknown").toUtf8());
   else {
     currentMode = DataMode::unknown;
     QByteArray character = QString(modeChar).toLocal8Bit();

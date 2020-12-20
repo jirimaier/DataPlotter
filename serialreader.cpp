@@ -1,12 +1,26 @@
+//  Copyright (C) 2020  Jiří Maier
+
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+
+//  You should have received a copy of the GNU General Public License
+//  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 #include "serialreader.h"
 
-SerialReader::SerialReader(QObject *parent) : QObject(parent) { qDebug() << "SerialReader created from " << QThread::currentThreadId(); }
+SerialReader::SerialReader(QObject *parent) : QObject(parent) {}
 
 SerialReader::~SerialReader() {
   if (serial->isOpen())
     serial->close();
   delete serial;
-  qDebug() << "SerialParser deleted from " << QThread::currentThreadId();
 }
 
 void SerialReader::init() {
@@ -16,7 +30,6 @@ void SerialReader::init() {
 #if QT_VERSION >= 0x050800
   connect(serial, &QSerialPort::errorOccurred, this, &SerialReader::errorOccurred);
 #endif
-  qDebug() << "SerialReader initialised from " << QThread::currentThreadId();
 }
 
 void SerialReader::begin(QString portName, int baudRate) {

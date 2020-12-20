@@ -1,3 +1,18 @@
+//  Copyright (C) 2020  Jiří Maier
+
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+
+//  You should have received a copy of the GNU General Public License
+//  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
@@ -33,7 +48,7 @@ public:
 private:
   Ui::MainWindow *ui;
   QTranslator *translator;
-  QTimer portsRefreshTimer, activeChRefreshTimer;
+  QTimer portsRefreshTimer, activeChRefreshTimer, cursorRangeUpdateTimer;
   QList<QSerialPortInfo> portList;
   void connectSignals();
   void updateChScale();
@@ -47,7 +62,7 @@ private:
   void setGuiDefaults();
   PlotFrame_t plotFrame;
   void setGuiArrays();
-  QCheckBox *mathEn[4];
+  QPushButton *mathEn[4];
   QSpinBox *mathFirst[4], *mathSecond[4];
   QComboBox *mathOp[4];
   QMap<QString, QWidget *> setables;
@@ -60,6 +75,9 @@ private:
   void updateUsedChannels();
   void updateChannelComboBox(QComboBox &combobox);
   bool colorUpdateNeeded = true;
+  void updateMathNow(int number);
+  void updateXYNow();
+  QIcon iconXY, iconRun, iconPause, iconHidden, iconVisible, iconConnected, iconNotConnected;
 
 private slots:
   void updateCursors();
@@ -68,7 +86,9 @@ private slots:
   void comRefresh();
   void rangeTypeChanged();
   void updateCursor(Cursors::enumerator cursor, int selectedChannel, unsigned int sample, double &time, double &value, QByteArray &timeStr, QByteArray &valueStr);
+  void updateCursorRange();
 
+private slots: // Autoconnect slots
   void on_tabs_right_currentChanged(int index);
   void on_dialRollingRange_realValueChanged(double value) { ui->doubleSpinBoxRangeHorizontal->setValue(value); }
   void on_dialVerticalRange_realValueChanged(double value) { ui->doubleSpinBoxRangeVerticalRange->setValue(value); }
@@ -90,17 +110,14 @@ private slots:
   void on_lineEditManualInput_returnPressed();
   void on_pushButtonLoadFile_clicked();
   void on_pushButtonDefaults_clicked();
-  void on_checkBoxChInvert_toggled(bool checked) { ui->plot->setChScale(ui->comboBoxSelectedChannel->currentIndex(), ui->doubleSpinBoxChScale->value() * (checked ? -1 : 1)); }
   void on_pushButtonSaveSettings_clicked();
   void on_pushButtonReset_clicked();
   void on_pushButtonAutoset_clicked();
   void on_pushButtonCSVXY_clicked() { exportCSV(false, XY_CHANNEL); }
   void on_comboBoxHAxisType_currentIndexChanged(int index);
   void on_pushButtonOpenHelp_clicked();
-  void on_pushButtonPositive_clicked() { ui->dialVerticalCenter->setValue(ui->dialVerticalCenter->maximum()); }
   void on_pushButtonCenter_clicked();
   void on_pushButtonScrollDown_clicked();
-  void on_checkBoxPlotOpenGL_toggled(bool checked);
   void on_pushButtonSendManual_clicked() { on_lineEditManualInput_returnPressed(); }
   void on_lineEditCommand_returnPressed();
   void on_lineEditCommand_2_returnPressed();
@@ -118,18 +135,15 @@ private slots:
   void on_checkBoxSerialMonitor_toggled(bool checked);
   void on_comboBoxSelectedChannel_currentIndexChanged(int index);
   void on_pushButtonResetChannels_clicked();
-  void on_checkBoxLog1_toggled(bool checked) { emit setChDigital(1, checked ? ui->spinBoxLog1source->value() : 0); }
-  void on_checkBoxLog2_toggled(bool checked) { emit setChDigital(2, checked ? ui->spinBoxLog2source->value() : 0); }
-  void on_checkBoxLog3_toggled(bool checked) { emit setChDigital(3, checked ? ui->spinBoxLog3source->value() : 0); }
-  void on_checkBoxLog4_toggled(bool checked) { emit setChDigital(4, checked ? ui->spinBoxLog4source->value() : 0); }
+  void on_pushButtonLog1_toggled(bool checked) { emit setChDigital(1, checked ? ui->spinBoxLog1source->value() : 0); }
+  void on_pushButtonLog2_toggled(bool checked) { emit setChDigital(2, checked ? ui->spinBoxLog2source->value() : 0); }
+  void on_pushButtonLog3_toggled(bool checked) { emit setChDigital(3, checked ? ui->spinBoxLog3source->value() : 0); }
   void on_spinBoxLog1bits_valueChanged(int arg1) { emit setLogicBits(1, arg1); }
   void on_spinBoxLog2bits_valueChanged(int arg1) { emit setLogicBits(2, arg1); }
   void on_spinBoxLog3bits_valueChanged(int arg1) { emit setLogicBits(3, arg1); }
-  void on_spinBoxLog4bits_valueChanged(int arg1) { emit setLogicBits(4, arg1); }
-  void on_spinBoxLog1source_valueChanged(int arg1) { emit setChDigital(1, ui->checkBoxLog1->isChecked() ? arg1 : 0); }
-  void on_spinBoxLog2source_valueChanged(int arg1) { emit setChDigital(2, ui->checkBoxLog2->isChecked() ? arg1 : 0); }
-  void on_spinBoxLog3source_valueChanged(int arg1) { emit setChDigital(3, ui->checkBoxLog3->isChecked() ? arg1 : 0); }
-  void on_spinBoxLog4source_valueChanged(int arg1) { emit setChDigital(4, ui->checkBoxLog4->isChecked() ? arg1 : 0); }
+  void on_spinBoxLog1source_valueChanged(int arg1) { emit setChDigital(1, ui->pushButtonLog1->isChecked() ? arg1 : 0); }
+  void on_spinBoxLog2source_valueChanged(int arg1) { emit setChDigital(2, ui->pushButtonLog2->isChecked() ? arg1 : 0); }
+  void on_spinBoxLog3source_valueChanged(int arg1) { emit setChDigital(3, ui->pushButtonLog3->isChecked() ? arg1 : 0); }
   void on_pushButtonPlotImage_clicked();
   void on_pushButtonXYImage_clicked();
   void on_horizontalSliderTimeCur1_realValueChanged();
@@ -138,39 +152,29 @@ private slots:
   void on_checkBoxCur2Visible_toggled(bool checked);
   void on_pushButtonChangeChColor_clicked();
   void on_pushButtonClearAll_clicked() { ui->plot->resetChannels(); }
-
   void on_checkBoxChInverted_toggled(bool checked);
-
-  void on_labelLicense_linkActivated();
-
   void on_pushButtonHideCh_toggled(bool checked);
-
-  void on_checkBoxMath1_toggled(bool checked);
-  void on_checkBoxMath2_toggled(bool checked);
-  void on_checkBoxMath3_toggled(bool checked);
-  void on_checkBoxMath4_toggled(bool checked);
-
-  void on_checkBoxXY_toggled(bool checked);
-
-  void on_comboBoxMath1Op_currentIndexChanged(int index) { emit setMathMode(1, (MathOperations::enumetrator)index); }
-  void on_comboBoxMath2Op_currentIndexChanged(int index) { emit setMathMode(2, (MathOperations::enumetrator)index); }
-  void on_comboBoxMath3Op_currentIndexChanged(int index) { emit setMathMode(3, (MathOperations::enumetrator)index); }
-  void on_comboBoxMath4Op_currentIndexChanged(int index) { emit setMathMode(4, (MathOperations::enumetrator)index); }
-
-  void on_spinBoxMath1First_valueChanged(int arg1) { emit setMathFirst(1, ui->checkBoxMath1->isChecked() ? arg1 : 0); };
-  void on_spinBoxMath2First_valueChanged(int arg1) { emit setMathFirst(2, ui->checkBoxMath2->isChecked() ? arg1 : 0); };
-  void on_spinBoxMath3First_valueChanged(int arg1) { emit setMathFirst(3, ui->checkBoxMath3->isChecked() ? arg1 : 0); };
-  void on_spinBoxMath4First_valueChanged(int arg1) { emit setMathFirst(4, ui->checkBoxMath4->isChecked() ? arg1 : 0); };
-
-  void on_spinBoxMath1Second_valueChanged(int arg1) { emit setMathSecond(1, ui->checkBoxMath1->isChecked() ? arg1 : 0); };
-  void on_spinBoxMath2Second_valueChanged(int arg1) { emit setMathSecond(2, ui->checkBoxMath2->isChecked() ? arg1 : 0); };
-  void on_spinBoxMath3Second_valueChanged(int arg1) { emit setMathSecond(3, ui->checkBoxMath3->isChecked() ? arg1 : 0); };
-  void on_spinBoxMath4Second_valueChanged(int arg1) { emit setMathSecond(4, ui->checkBoxMath4->isChecked() ? arg1 : 0); };
-
-  void on_spinBoxXYFirst_valueChanged(int arg1) { emit setXYFirst(ui->checkBoxXY->isChecked() ? arg1 : 0); }
-  void on_spinBoxXYSecond_valueChanged(int arg1) { emit setXYSecond(ui->checkBoxXY->isChecked() ? arg1 : 0); }
-
+  void on_pushButtonMath1_toggled(bool) { updateMathNow(1); }
+  void on_pushButtonMath2_toggled(bool) { updateMathNow(2); }
+  void on_pushButtonMath3_toggled(bool) { updateMathNow(3); }
+  void on_comboBoxMath1Op_currentIndexChanged(int) { updateMathNow(1); }
+  void on_comboBoxMath2Op_currentIndexChanged(int) { updateMathNow(2); }
+  void on_comboBoxMath3Op_currentIndexChanged(int) { updateMathNow(3); }
+  void on_spinBoxMath1First_valueChanged(int) { updateMathNow(1); };
+  void on_spinBoxMath2First_valueChanged(int) { updateMathNow(2); };
+  void on_spinBoxMath3First_valueChanged(int) { updateMathNow(3); };
+  void on_spinBoxMath1Second_valueChanged(int) { updateMathNow(1); };
+  void on_spinBoxMath2Second_valueChanged(int) { updateMathNow(2); };
+  void on_spinBoxMath3Second_valueChanged(int) { updateMathNow(3); };
+  void on_spinBoxXYFirst_valueChanged(int) { updateXYNow(); }
+  void on_spinBoxXYSecond_valueChanged(int) { updateXYNow(); }
   void on_dial_valueChanged(int value);
+  void on_radioButtonRollingRange_toggled(bool checked);
+  void on_pushButtonXY_toggled(bool checked);
+  void on_comboBoxCursor1Channel_currentIndexChanged(int index);
+  void on_comboBoxCursor2Channel_currentIndexChanged(int index);
+  void on_labelLicense_linkActivated(const QString &link) { QDesktopServices::openUrl(link); }
+  void on_pushButtonPositive_clicked();
 
 public slots:
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumerator target);
@@ -193,8 +197,6 @@ signals:
   void writeToSerial(QByteArray data);
   void resetChannels();
   void disconnectSerial();
-  void requestMath(int mathNumber, bool isFirst, QSharedPointer<QCPGraphDataContainer> in);
-  void requestXY(bool isFirst, QSharedPointer<QCPGraphDataContainer> in);
   void sendManualInput(QByteArray data);
   void parseError(QByteArray, int type = DataLineType::debugMessage);
   void setSerialMessageLevel(OutputLevel::enumerator level);
@@ -204,6 +206,11 @@ signals:
   void setMathSecond(int math, int ch);
   void setXYFirst(int ch);
   void setXYSecond(int ch);
-  void setMathMode(int math, MathOperations::enumetrator mode);
+
+  void clearMath(int math);
+  void clearXY();
+
+  void resetMath(int mathNumber, MathOperations::enumetrator mode, QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2, bool shouldIgnorePause = false);
+  void resetXY(QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2, bool shouldIgnorePause = false);
 };
 #endif // MAINWINDOW_H

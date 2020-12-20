@@ -1,11 +1,25 @@
+//  Copyright (C) 2020  Jiří Maier
+
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+
+//  You should have received a copy of the GNU General Public License
+//  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 #include "plotdata.h"
 
-PlotData::PlotData(QObject *parent) : QObject(parent) { qDebug() << "PlotData created from " << QThread::currentThreadId(); }
+PlotData::PlotData(QObject *parent) : QObject(parent) {}
 
-PlotData::~PlotData() { qDebug() << "PlotData deleted from " << QThread::currentThreadId(); }
+PlotData::~PlotData() {}
 
 void PlotData::init() {
-  qDebug() << "PlotData initialised from " << QThread::currentThreadId();
   for (int i = 0; i < LOGIC_GROUPS; i++) {
     logicTargets[i] = -1;
     logicBits[i] = 0;
@@ -146,7 +160,6 @@ uint32_t PlotData::getBits(QByteArray data, enumerator type) {
 }
 
 void PlotData::addPoint(QByteArrayList data) {
-  Q_ASSERT(!data.isEmpty());
   if (data.length() > ANALOG_COUNT) {
     QByteArray message = QString::number(data.length() - 1).toUtf8();
     sendMessageIfAllowed(tr("Too many channels in point (missing ';' ?)").toUtf8(), message, MessageLevel::error);
@@ -168,6 +181,8 @@ void PlotData::addPoint(QByteArrayList data) {
     }
   }
   for (unsigned int ch = 1; (int)ch < data.length(); ch++) {
+    if (data.at(ch).isEmpty())
+      continue;
     if (data.at(ch).at(0) != 'b' && data.at(ch).at(0) != 'B') {
       // Analog
       double value = arrayToDouble(data[ch], isok);
@@ -247,7 +262,7 @@ void PlotData::addChannel(QByteArray data, unsigned int ch, QByteArray timeRaw, 
   double minimum = 0;
   if (!min.isEmpty()) {
     if (!remap)
-      sendMessageIfAllowed(tr("Minumum value is stated, but maximum is not").toUtf8(), "Value will not be remaped!", MessageLevel::warning);
+      sendMessageIfAllowed(tr("Minumum value is stated, but maximum is not").toUtf8(), tr("Value will not be remaped!").toUtf8(), MessageLevel::warning);
     minimum = arrayToDouble(min, isok);
     if (!isok) {
       sendMessageIfAllowed(tr("Can not parse minimum value").toUtf8(), min, MessageLevel::error);
@@ -355,30 +370,6 @@ void PlotData::setDigitalChannel(int logicGroup, int ch) {
 void PlotData::setLogicBits(int target, int bits) {
   logicBits[target - 1] = bits;
   emit clearLogic(target - 1, bits);
-}
-
-void PlotData::setMathFirst(int math, int ch) {
-  mathFirsts[math - 1] = ch;
-  emit clearMathFirst(math);
-  emit clearAnalog(GlobalFunctions::getAnalogChId(math, ChannelType::math));
-}
-
-void PlotData::setMathSecond(int math, int ch) {
-  mathSeconds[math - 1] = ch;
-  emit clearMathSecond(math);
-  emit clearAnalog(GlobalFunctions::getAnalogChId(math, ChannelType::math));
-}
-
-void PlotData::setXYFirst(int ch) {
-  xyFirst = ch;
-  emit clearXYFirst();
-  emit clearXY();
-}
-
-void PlotData::setXYSecond(int ch) {
-  xySecond = ch;
-  emit clearXYSecond();
-  emit clearXY();
 }
 
 void PlotData::sendMessageIfAllowed(QString header, QByteArray message, MessageLevel::enumerator type) {

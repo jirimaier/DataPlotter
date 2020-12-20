@@ -1,3 +1,18 @@
+//  Copyright (C) 2020  Jiří Maier
+
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+
+//  You should have received a copy of the GNU General Public License
+//  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 #include "mainwindow.h"
 
 void MainWindow::initSetables() {
@@ -9,21 +24,16 @@ void MainWindow::initSetables() {
   setables["vdiv"] = ui->dialVerticalDiv;
 
   // XY
-  setables["xyen"] = ui->checkBoxXY;
-  // setables["xyvro"] = ui->checkBoxXYVRO;
-  // setables["xyios"] = ui->checkBoxXYIOS;
+  setables["xyen"] = ui->pushButtonXY;
   setables["xyxch"] = ui->spinBoxXYFirst;
   setables["xyych"] = ui->spinBoxXYSecond;
-  setables["xyautosize"] = ui->checkBoxXYAutoSize;
 
   // Export
   setables["csvprecisoin"] = ui->spinBoxCSVPrecision;
   setables["csvinchid"] = ui->checkBoxCSVIncludeHidden;
   setables["csvvro"] = ui->checkBoxCSVVRO;
-  // setables["csvios"] = ui->checkBoxCSVIOS;
 
   // Plot settings
-  // setables["chlabel"] = ui->checkBoxChLabel;
   setables["vaxis"] = ui->checkBoxVerticalValues;
   setables["haxis"] = ui->comboBoxHAxisType;
   setables["hlabel"] = ui->lineEditHtitle;
@@ -43,14 +53,25 @@ void MainWindow::initSetables() {
   setables["lineending"] = ui->comboBoxLineEnding;
 
   // Math
-  // setables["mathvro"] = ui->checkBoxMathVRO;
-  // setables["mathios"] = ui->checkBoxMathIOS;
   for (int i = 0; i < MATH_COUNT; i++) {
     setables[QString("math") + QString::number(i + 1) + QString("en")] = mathEn[i];
     setables[QString("math") + QString::number(i + 1) + QString("first")] = mathFirst[i];
     setables[QString("math") + QString::number(i + 1) + QString("sec")] = mathSecond[i];
     setables[QString("math") + QString::number(i + 1) + QString("op")] = mathOp[i];
   }
+
+  // Logic
+  setables["log1en"] = ui->pushButtonLog1;
+  setables["log2en"] = ui->pushButtonLog2;
+  setables["log3en"] = ui->pushButtonLog3;
+
+  setables["log1ch"] = ui->spinBoxLog1source;
+  setables["log2ch"] = ui->spinBoxLog2source;
+  setables["log3ch"] = ui->spinBoxLog3source;
+
+  setables["log1bits"] = ui->spinBoxLog1bits;
+  setables["log2bits"] = ui->spinBoxLog2bits;
+  setables["log3bits"] = ui->spinBoxLog3bits;
 }
 
 void MainWindow::applyGuiElementSettings(QWidget *target, QString value) {
@@ -63,6 +84,8 @@ void MainWindow::applyGuiElementSettings(QWidget *target, QString value) {
   else if (QSlider *newTarget = dynamic_cast<QSlider *>(target))
     newTarget->setValue(value.toInt());
   else if (QCheckBox *newTarget = dynamic_cast<QCheckBox *>(target))
+    newTarget->setChecked((bool)value.toUInt());
+  else if (QPushButton *newTarget = dynamic_cast<QPushButton *>(target))
     newTarget->setChecked((bool)value.toUInt());
   else if (QComboBox *newTarget = dynamic_cast<QComboBox *>(target))
     newTarget->setCurrentIndex(value.toUInt());
@@ -83,14 +106,14 @@ QByteArray MainWindow::readGuiElementSettings(QWidget *target) {
     return (QString::number(newTarget->value()).toUtf8());
   if (QCheckBox *newTarget = dynamic_cast<QCheckBox *>(target))
     return (newTarget->isChecked() ? "1" : "0");
+  if (QPushButton *newTarget = dynamic_cast<QPushButton *>(target))
+    return (newTarget->isChecked() ? "1" : "0");
   if (QComboBox *newTarget = dynamic_cast<QComboBox *>(target))
     return (QString::number(newTarget->currentIndex()).toUtf8());
   if (QDial *newTarget = dynamic_cast<QDial *>(target))
     return (QString::number(newTarget->value()).toUtf8());
   else if (QLineEdit *newTarget = dynamic_cast<QLineEdit *>(target))
     return (newTarget->text().toUtf8());
-
-  qDebug() << "Save error: unhandled gui element type!";
   return "";
 }
 
@@ -110,6 +133,8 @@ QByteArray MainWindow::getSettings() {
   settings.append(ui->radioButtonEn->isChecked() ? "lang:en" : "lang:cz");
   settings.append(";\n");
   settings.append(ui->radioButtonCSVDot->isChecked() ? "csvdel:dc" : "csvdel:cs");
+  settings.append(";\n");
+  settings.append(ui->radioButtonXYAutoSize->isChecked() ? "xytype:fix" : "xytype:cs");
   settings.append(";\n");
 
   for (int i = 0; i < ANALOG_COUNT + MATH_COUNT; i++) {
@@ -136,19 +161,19 @@ QByteArray MainWindow::getSettings() {
 
   for (int i = 0; i < LOGIC_GROUPS; i++) {
     settings.append("log:" + QString::number(i + 1).toUtf8());
-    settings.append(":off:" + QString::number(ui->plot->getChOffset(GlobalFunctions::getLogicChannelID(i, 1))).toUtf8());
+    settings.append(":off:" + QString::number(ui->plot->getLogicOffset(i)).toUtf8());
     settings.append(";\n");
     settings.append("log:" + QString::number(i + 1).toUtf8());
-    settings.append(":sca:" + QString::number(ui->plot->getChScale(GlobalFunctions::getLogicChannelID(i, 1))).toUtf8());
+    settings.append(":sca:" + QString::number(ui->plot->getLogicScale(i)).toUtf8());
     settings.append(";\n");
     settings.append("log:" + QString::number(i + 1).toUtf8());
-    settings.append(":inv:" + QString::number(ui->plot->isLogicVisible(i) ? 1 : 0).toUtf8());
+    settings.append(":vis:" + QString::number(ui->plot->isLogicVisible(i) ? 1 : 0).toUtf8());
     settings.append(";\n");
     settings.append("log:" + QString::number(i + 1).toUtf8());
-    settings.append(":sty:" + QString::number(ui->plot->getChStyle(GlobalFunctions::getLogicChannelID(i, 1))).toUtf8());
+    settings.append(":sty:" + QString::number(ui->plot->getLogicStyle(i)).toUtf8());
     settings.append(";\n");
     settings.append("log:" + QString::number(i + 1).toUtf8());
-    QColor clr = ui->plot->getChColor(GlobalFunctions::getLogicChannelID(i, 1));
+    QColor clr = ui->plot->getLogicColor(i);
     settings.append(QString(":col:%1,%2,%3").arg(clr.red()).arg(clr.green()).arg(clr.blue()).toUtf8());
     settings.append(";\n");
   }
@@ -190,6 +215,13 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumerator sour
       ui->radioButtonFreeRange->setChecked(true);
     if (value == "roll")
       ui->radioButtonRollingRange->setChecked(true);
+  }
+
+  else if (type == "xytype") {
+    if (value == "fix")
+      ui->radioButtonXYAutoSize->setChecked(true);
+    if (value == "free")
+      ui->radioButtonXYFree->setChecked(true);
   }
 
   else if (type == "ch") {

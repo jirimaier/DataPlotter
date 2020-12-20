@@ -1,3 +1,18 @@
+//  Copyright (C) 2020  Jiří Maier
+
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+
+//  You should have received a copy of the GNU General Public License
+//  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 #ifndef PLOTTING_H
 #define PLOTTING_H
 
@@ -45,10 +60,10 @@ public slots:
 
   void setLogicBits(int target, int bits);
 
-  void setMathFirst(int math, int ch);
-  void setMathSecond(int math, int ch);
-  void setXYFirst(int ch);
-  void setXYSecond(int ch);
+  void setMathFirst(int math, int ch) { mathFirsts[math - 1] = ch; }
+  void setMathSecond(int math, int ch) { mathSeconds[math - 1] = ch; }
+  void setXYFirst(int ch) { xyFirst = ch; }
+  void setXYSecond(int ch) { xySecond = ch; }
 
 signals:
   /// Pošle zprávu do výpisu
@@ -61,15 +76,9 @@ signals:
   void addPointToPlot(int ch, double time, double value, bool append);
 
   void clearLogic(int group, int fromBit);
-  void clearAnalog(int chid);
 
-  void clearMathFirst(int math);
-  void clearMathSecond(int math);
-  void clearXYFirst();
-  void clearXYSecond();
-
-  void addMathData(int mathNumber, bool isFirst, QSharedPointer<QCPGraphDataContainer> in);
-  void addXYData(bool isFirst, QSharedPointer<QCPGraphDataContainer> in);
+  void addMathData(int mathNumber, bool isFirst, QSharedPointer<QCPGraphDataContainer> in, bool shouldIgnorePause = false);
+  void addXYData(bool isFirst, QSharedPointer<QCPGraphDataContainer> in, bool shouldIgnorePause = false);
 
   void clearXY();
 };

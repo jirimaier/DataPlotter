@@ -1,3 +1,18 @@
+//  Copyright (C) 2020  Jiří Maier
+
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+
+//  You should have received a copy of the GNU General Public License
+//  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 #include "mainwindow.h"
 
 void MainWindow::on_pushButtonConnect_clicked() {
@@ -66,8 +81,6 @@ void MainWindow::on_radioButtonCz_toggled(bool checked) {
 void MainWindow::on_lineEditManualInput_returnPressed() {
   QByteArray bytes;
   bytes.append(ui->lineEditManualInput->text().toLocal8Bit());
-
-  qDebug() << "Manual input: " << bytes;
   emit sendManualInput(bytes);
   ui->lineEditManualInput->clear();
   on_pushButtonScrollDown_clicked();
@@ -79,11 +92,6 @@ void MainWindow::on_pushButtonScrollDown_clicked() {
   scroll = ui->plainTextEditConsole->horizontalScrollBar();
   scroll->setValue(scroll->minimum());
 };
-
-void MainWindow::on_checkBoxPlotOpenGL_toggled(bool checked) {
-  ui->plot->setOpenGl(checked);
-  ui->plotxy->setOpenGl(checked);
-}
 
 void MainWindow::on_lineEditCommand_returnPressed() {
   QString text = ui->lineEditCommand->text() + Global::lineEndings[ui->comboBoxLineEnding->currentIndex()];
@@ -130,6 +138,14 @@ void MainWindow::on_checkBoxSerialMonitor_toggled(bool checked) {
 }
 
 void MainWindow::on_comboBoxSelectedChannel_currentIndexChanged(int index) {
+  // Zablokuje signáli, aby se po nastavení sočasných rovnou neposlali současné hodnoty jako změna.
+  ui->doubleSpinBoxChOffset->blockSignals(true);
+  ui->doubleSpinBoxChScale->blockSignals(true);
+  ui->dialChScale->blockSignals(true);
+  ui->pushButtonHideCh->blockSignals(true);
+  ui->comboBoxGraphStyle->blockSignals(true);
+  ui->checkBoxChInverted->blockSignals(true);
+
   if (index >= ANALOG_COUNT + MATH_COUNT) {
     ui->checkBoxChInverted->setEnabled(false);
     int group = index - ANALOG_COUNT - MATH_COUNT;
@@ -152,6 +168,19 @@ void MainWindow::on_comboBoxSelectedChannel_currentIndexChanged(int index) {
     ui->pushButtonHideCh->setChecked(!ui->plot->isChVisible(index));
   }
   updateChScale();
+
+  // Ikona by se sama nezměnila, protože jsou zablokované signály
+  if (ui->pushButtonHideCh->isChecked())
+    ui->pushButtonHideCh->setIcon(iconHidden);
+  else
+    ui->pushButtonHideCh->setIcon(iconVisible);
+
+  ui->doubleSpinBoxChOffset->blockSignals(false);
+  ui->doubleSpinBoxChScale->blockSignals(false);
+  ui->dialChScale->blockSignals(false);
+  ui->pushButtonHideCh->blockSignals(false);
+  ui->comboBoxGraphStyle->blockSignals(false);
+  ui->checkBoxChInverted->blockSignals(false);
 }
 
 void MainWindow::on_checkBoxChInverted_toggled(bool checked) {
@@ -203,4 +232,42 @@ void MainWindow::on_pushButtonChangeChColor_clicked() {
     ui->plot->setLogicColor(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT, color);
   colorUpdateNeeded = true;
   updateUsedChannels();
+}
+
+void MainWindow::on_dial_valueChanged(int value) {
+  ui->plotxy->setGridHintX(value);
+  ui->plotxy->setGridHintY(value);
+}
+
+void MainWindow::on_radioButtonRollingRange_toggled(bool checked) {
+  ui->plotxy->setUseTimeRange(checked);
+  updateXYNow();
+}
+
+void MainWindow::on_pushButtonXY_toggled(bool checked) {
+  updateXYNow();
+
+  auto *model = qobject_cast<QStandardItemModel *>(ui->comboBoxCursor1Channel->model());
+  auto *item = model->item(XYID);
+  item->setEnabled(checked);
+  QListView *view = qobject_cast<QListView *>(ui->comboBoxCursor1Channel->view());
+  view->setRowHidden(XYID, !checked);
+
+  model = qobject_cast<QStandardItemModel *>(ui->comboBoxCursor2Channel->model());
+  item = model->item(XYID);
+  item->setEnabled(checked);
+  view = qobject_cast<QListView *>(ui->comboBoxCursor2Channel->view());
+  view->setRowHidden(XYID, !checked);
+}
+
+void MainWindow::on_pushButtonHideCh_toggled(bool checked) {
+  if (checked)
+    ui->pushButtonHideCh->setIcon(iconHidden);
+  else
+    ui->pushButtonHideCh->setIcon(iconVisible);
+
+  if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT)
+    ui->plot->setChVisible(ui->comboBoxSelectedChannel->currentIndex(), !checked);
+  else
+    ui->plot->setLogicVisibility(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT, !checked);
 }
