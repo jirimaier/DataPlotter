@@ -1,6 +1,6 @@
 QT += core gui serialport widgets printsupport opengl
 
-win32:RC_ICONS += icon.ico
+RC_ICONS = icons/icon.ico
 
 DEFINES += QT_DEPRECATED_WARNINGS
 
@@ -29,7 +29,6 @@ SOURCES += \
     serialreader.cpp
 
 HEADERS += \
-    colorCodes.h \
     enums_defines_constants.h \
     mainwindow.h \
     mycursorslider.h \

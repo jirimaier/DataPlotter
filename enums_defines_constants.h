@@ -92,15 +92,14 @@ namespace Global {
 
 const static QString lineEndings[4] = {"", "\n", "\r", "\r\n"};
 
-#define LOG_SET_SIZE 31 //                              0       1       2       3      4      5      6     7     8     9    10   11  12 13 14  15  16  17  18   19   20   21    22    23    24     25     26     27      28      29      30
+#define LOG_SET_SIZE 31  //                              0       1       2       3      4      5      6     7     8     9    10   11  12 13 14  15  16  17  18   19   20   21    22    23    24     25     26     27      28      29      30
 const static double logaritmicSettings[LOG_SET_SIZE] = {0.0001, 0.0002, 0.0005, 0.001, 0.002, 0.005, 0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000, 200000, 500000, 1000000};
-} // namespace Global
+}  // namespace Global
 
 struct GlobalFunctions {
   static int indexOfStandardValuesCeil(double value) {
     for (int i = 0; i < LOG_SET_SIZE; i++)
-      if (value <= Global::logaritmicSettings[i])
-        return i;
+      if (value <= Global::logaritmicSettings[i]) return i;
     return 28;
   }
   static int ceilToNiceValue(double value) {
@@ -113,10 +112,8 @@ struct GlobalFunctions {
   }
 
   static int getAnalogChId(int number, ChannelType::enumerator type) {
-    if (type == ChannelType::analog)
-      return (number - 1);
-    if (type == ChannelType::math)
-      return (number + ANALOG_COUNT - 1);
+    if (type == ChannelType::analog) return (number - 1);
+    if (type == ChannelType::math) return (number + ANALOG_COUNT - 1);
     return 0;
   }
 
@@ -125,10 +122,8 @@ struct GlobalFunctions {
 
   /// Chid od 0
   static QString getChName(int chid) {
-    if (chid >= ANALOG_COUNT + MATH_COUNT)
-      return ((QObject::tr("Logic %1 bit %2").arg((chid - ANALOG_COUNT - MATH_COUNT) / LOGIC_BITS + 1).arg((chid - ANALOG_COUNT - MATH_COUNT) % LOGIC_BITS + 1)));
-    if (chid >= ANALOG_COUNT)
-      return ((QObject::tr("Math %1").arg(chid - ANALOG_COUNT + 1)));
+    if (chid >= ANALOG_COUNT + MATH_COUNT) return ((QObject::tr("Logic %1 bit %2").arg((chid - ANALOG_COUNT - MATH_COUNT) / LOGIC_BITS + 1).arg((chid - ANALOG_COUNT - MATH_COUNT) % LOGIC_BITS + 1)));
+    if (chid >= ANALOG_COUNT) return ((QObject::tr("Math %1").arg(chid - ANALOG_COUNT + 1)));
     return ((QObject::tr("Ch %1").arg(chid + 1)));
   }
 };
@@ -142,18 +137,6 @@ struct ChannelSettings_t {
   bool visible = true;
 };
 
-struct PlotSettings_t {
-  double rollingRange = 100;
-  int zoom = 1000;
-  double horizontalPos = 500;
-  // double verticalRange = 10;
-  // int verticalCenter = 0;
-};
-
-struct PlotFrame_t {
-  double xMinTotal = 0, xMaxTotal = 10, yMinTotal = 0, yMaxTotal = 10, xMinView = 0, xMaxView = 10, yMinView = 0, yMaxView = 10;
-};
-
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))
 
@@ -164,4 +147,4 @@ struct PlotFrame_t {
 #define XY_CHANNEL -1
 #define FFT_CHANNEL -1
 
-#endif // SETTINGS_H
+#endif  // SETTINGS_H

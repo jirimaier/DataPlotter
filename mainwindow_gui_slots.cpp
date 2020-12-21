@@ -207,7 +207,7 @@ void MainWindow::on_comboBoxHAxisType_currentIndexChanged(int index) {
 }
 
 void MainWindow::on_pushButtonOpenHelp_clicked() {
-  QString helpFile = QCoreApplication::applicationDirPath() + "/help.pdf";
+  QString helpFile = QCoreApplication::applicationDirPath() + "/Manual.pdf";
   if (!QDesktopServices::openUrl(QUrl::fromLocalFile(helpFile))) {
     QMessageBox msgBox;
     msgBox.setText(tr("Cant open file."));
@@ -270,4 +270,11 @@ void MainWindow::on_pushButtonHideCh_toggled(bool checked) {
     ui->plot->setChVisible(ui->comboBoxSelectedChannel->currentIndex(), !checked);
   else
     ui->plot->setLogicVisibility(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT, !checked);
+}
+
+void MainWindow::on_pushButtonPositive_clicked() {
+  if (ui->dialVerticalCenter->value() != ui->dialVerticalCenter->maximum())
+    ui->dialVerticalCenter->setValue(ui->dialVerticalCenter->maximum());
+  else
+    ui->plot->setVerticalCenter(ui->dialVerticalCenter->maximum());
 }

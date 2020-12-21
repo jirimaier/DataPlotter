@@ -25,8 +25,9 @@ void MainWindow::comRefresh() {
         change = true;
         break;
       }
-  } else
+  } else {
     change = true;
+  }
 
   // Aktualizuje seznam portů
   if (change) {

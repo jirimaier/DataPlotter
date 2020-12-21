@@ -54,10 +54,9 @@ void MainWindow::updateCursors() {
   QByteArray timeStr, valueStr;
 
   if (ui->checkBoxCur1Visible->isChecked()) {
-    updateCursor(Cursors::X1, ch, ui->horizontalSliderTimeCur1->realValue, time1, value1, timeStr, valueStr);
+    updateCursor(Cursors::X1, ch, ui->spinBoxCur1Sample->value(), time1, value1, timeStr, valueStr);
     ui->labelCur1Time->setText(timeStr);
     ui->labelCur1Val->setText(valueStr);
-
   } else {
     ui->labelCur1Time->setText("---");
     ui->labelCur1Val->setText("---");
@@ -68,7 +67,7 @@ void MainWindow::updateCursors() {
   valueStr = "";
 
   if (ui->checkBoxCur2Visible->isChecked()) {
-    updateCursor(Cursors::X2, ch, ui->horizontalSliderTimeCur2->realValue, time2, value2, timeStr, valueStr);
+    updateCursor(Cursors::X2, ch, ui->spinBoxCur2Sample->value(), time2, value2, timeStr, valueStr);
     ui->labelCur2Time->setText(timeStr);
     ui->labelCur2Val->setText(valueStr);
   } else {
@@ -96,8 +95,7 @@ void MainWindow::updateCursor(Cursors::enumerator cursor, int selectedChannel, u
     // Analogový kanál
     time = ui->plot->graph(selectedChannel)->data()->at(sample)->key;
     value = ui->plot->graph(selectedChannel)->data()->at(sample)->value;
-    if (ui->plot->isChInverted(selectedChannel))
-      value *= (-1);
+    if (ui->plot->isChInverted(selectedChannel)) value *= (-1);
     double valueOffseted = value * ui->plot->getChScale(selectedChannel) + ui->plot->getChOffset(selectedChannel);
     timeStr = QString::number(time, 'f', 3).toLocal8Bit();
     valueStr = QString::number(value, 'f', 3).toLocal8Bit();
@@ -128,20 +126,19 @@ void MainWindow::updateCursor(Cursors::enumerator cursor, int selectedChannel, u
     int bitsUsed = ui->plot->getLogicBitsUsed(group);
     for (int bit = 0; bit < bitsUsed; bit++) {
       int chid = GlobalFunctions::getLogicChannelID(group, bit);
-      // Potřebuji zjistit, zda je 0 nebo 1. To nejde jen tak (hodnota obsahuje offset vůči prvnímu bitu)
-      // Že je nula zjistím tak, že hodnota je dělitelná třemi (nulová úroveň každého jena násobku 3).
-      // Za každou jedničku přičtu 2^bit
-      if ((int)ui->plot->graph(chid)->data()->at(sample)->value % 3) {
+      // Potřebuji zjistit, zda je 0 nebo 1. To nejde jen tak (hodnota obsahuje
+      // offset vůči prvnímu bitu) Že je nula zjistím tak, že hodnota je
+      // dělitelná třemi (nulová úroveň každého jena násobku 3). Za každou
+      // jedničku přičtu 2^bit
+      if ((uint32_t)ui->plot->graph(chid)->data()->at(sample)->value % 3) {
         value += (uint32_t)1 << (bit);
         bits.push_front('1');
       } else {
         bits.push_front('0');
       }
-      if (!((bit + 1) % 4))
-        bits.push_front(' ');
+      if (!((bit + 1) % 4)) bits.push_front(' ');
     }
-    if (bits.left(1) == " ")
-      bits = bits.mid(1);
+    if (bits.left(1) == " ") bits = bits.mid(1);
     timeStr = QString::number(time, 'f', 3).toLocal8Bit();
     valueStr = "0x" + QString::number((uint32_t)value, 16).toUpper().rightJustified(ceil(bitsUsed / 4.0), '0').toLocal8Bit();
     valueStr.append("\n" + bits);
@@ -210,19 +207,22 @@ void MainWindow::on_comboBoxCursor2Channel_currentIndexChanged(int index) {
   }
   updateCursors();
 }
-
-void MainWindow::on_horizontalSliderTimeCur1_realValueChanged() {
-  ui->checkBoxCur1Visible->setChecked(true);
-  ui->spinBoxCur1Sample->blockSignals(true);
-  ui->spinBoxCur1Sample->setValue(ui->horizontalSliderTimeCur1->realValue);
-  ui->spinBoxCur1Sample->blockSignals(false);
-  updateCursors();
+void MainWindow::on_spinBoxCur1Sample_valueChanged(int arg1) {
+  if (arg1 != -1) {
+    ui->checkBoxCur1Visible->setChecked(true);
+    ui->horizontalSliderTimeCur1->setRealVaule(arg1);
+    updateCursors();
+  } else {
+    ui->checkBoxCur1Visible->setChecked(false);
+  }
 }
 
-void MainWindow::on_horizontalSliderTimeCur2_realValueChanged() {
-  ui->checkBoxCur2Visible->setChecked(true);
-  ui->spinBoxCur2Sample->blockSignals(true);
-  ui->spinBoxCur2Sample->setValue(ui->horizontalSliderTimeCur2->realValue);
-  ui->spinBoxCur2Sample->blockSignals(false);
-  updateCursors();
+void MainWindow::on_spinBoxCur2Sample_valueChanged(int arg1) {
+  if (arg1 != -1) {
+    ui->checkBoxCur2Visible->setChecked(true);
+    ui->horizontalSliderTimeCur2->setRealVaule(arg1);
+    updateCursors();
+  } else {
+    ui->checkBoxCur1Visible->setChecked(false);
+  }
 }

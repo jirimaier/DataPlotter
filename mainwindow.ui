@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/images/icons/icon.ico</normaloff>:/images/icons/icon.ico</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true"/>
   </property>
@@ -115,6 +119,35 @@
             <property name="styleSheet">
              <string notr="true"/>
             </property>
+            <widget class="QTextEdit" name="textEdit">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>20</y>
+               <width>241</width>
+               <height>151</height>
+              </rect>
+             </property>
+            </widget>
+            <widget class="QPushButton" name="pushButton_4">
+             <property name="geometry">
+              <rect>
+               <x>50</x>
+               <y>40</y>
+               <width>64</width>
+               <height>64</height>
+              </rect>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>64</width>
+               <height>64</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
            </widget>
           </item>
          </layout>
@@ -122,7 +155,7 @@
         <item>
          <layout class="QGridLayout" name="gridLayout_8" rowstretch="1,100" columnstretch="1000,0">
           <item row="0" column="1">
-           <widget class="QFrame" name="frame_3">
+           <widget class="QFrame" name="frame_31">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -719,7 +752,7 @@
              <enum>QTabWidget::Rounded</enum>
             </property>
             <property name="currentIndex">
-             <number>1</number>
+             <number>3</number>
             </property>
             <property name="iconSize">
              <size>
@@ -1310,7 +1343,7 @@
                </widget>
               </item>
               <item row="1" column="1" colspan="4">
-               <widget class="QFrame" name="frame">
+               <widget class="QFrame" name="frame_96">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                   <horstretch>0</horstretch>
@@ -1733,7 +1766,7 @@
               <item>
                <layout class="QVBoxLayout" name="verticalLayout_24">
                 <item>
-                 <widget class="QFrame" name="frame">
+                 <widget class="QFrame" name="frame_99">
                   <property name="frameShape">
                    <enum>QFrame::Box</enum>
                   </property>
@@ -1901,7 +1934,7 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QFrame" name="frame">
+                 <widget class="QFrame" name="frame_98">
                   <property name="frameShape">
                    <enum>QFrame::Box</enum>
                   </property>
@@ -2273,7 +2306,7 @@
                    <number>1</number>
                   </property>
                   <property name="maximum">
-                   <number>68</number>
+                   <number>16</number>
                   </property>
                  </widget>
                 </item>
@@ -2432,7 +2465,7 @@
                    <number>1</number>
                   </property>
                   <property name="maximum">
-                   <number>68</number>
+                   <number>16</number>
                   </property>
                   <property name="value">
                    <number>2</number>
@@ -2454,7 +2487,7 @@
                    <number>1</number>
                   </property>
                   <property name="maximum">
-                   <number>68</number>
+                   <number>16</number>
                   </property>
                  </widget>
                 </item>
@@ -2644,7 +2677,7 @@
                    <number>1</number>
                   </property>
                   <property name="maximum">
-                   <number>68</number>
+                   <number>16</number>
                   </property>
                   <property name="value">
                    <number>2</number>
@@ -2719,7 +2752,7 @@
                    <number>1</number>
                   </property>
                   <property name="maximum">
-                   <number>68</number>
+                   <number>16</number>
                   </property>
                   <property name="value">
                    <number>2</number>
@@ -2741,7 +2774,7 @@
                    <number>1</number>
                   </property>
                   <property name="maximum">
-                   <number>68</number>
+                   <number>16</number>
                   </property>
                  </widget>
                 </item>
@@ -2936,7 +2969,7 @@
                       <number>1</number>
                      </property>
                      <property name="maximum">
-                      <number>64</number>
+                      <number>16</number>
                      </property>
                     </widget>
                    </item>
@@ -2955,7 +2988,7 @@
                       <number>1</number>
                      </property>
                      <property name="maximum">
-                      <number>64</number>
+                      <number>16</number>
                      </property>
                      <property name="value">
                       <number>2</number>
@@ -3508,7 +3541,7 @@
            </size>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>1</number>
           </property>
           <property name="iconSize">
            <size>
@@ -4569,7 +4602,7 @@ selection-background-color: rgb(85, 0, 0);</string>
                 <number>6</number>
                </property>
                <item row="0" column="0" colspan="2">
-                <widget class="QFrame" name="frame">
+                <widget class="QFrame" name="frame_97">
                  <property name="frameShape">
                   <enum>QFrame::StyledPanel</enum>
                  </property>
@@ -5750,34 +5783,34 @@ unused channels</string>
    </hints>
   </connection>
   <connection>
-   <sender>spinBoxCur1Sample</sender>
+   <sender>horizontalSliderTimeCur1</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>horizontalSliderTimeCur1</receiver>
-   <slot>setRealValue(int)</slot>
+   <receiver>spinBoxCur1Sample</receiver>
+   <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>90</x>
-     <y>478</y>
+     <x>69</x>
+     <y>416</y>
     </hint>
     <hint type="destinationlabel">
-     <x>98</x>
-     <y>422</y>
+     <x>49</x>
+     <y>483</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>spinBoxCur2Sample</sender>
+   <sender>horizontalSliderTimeCur2</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>horizontalSliderTimeCur2</receiver>
-   <slot>setRealValue(int)</slot>
+   <receiver>spinBoxCur2Sample</receiver>
+   <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>93</x>
-     <y>577</y>
+     <x>86</x>
+     <y>521</y>
     </hint>
     <hint type="destinationlabel">
-     <x>82</x>
-     <y>525</y>
+     <x>53</x>
+     <y>582</y>
     </hint>
    </hints>
   </connection>

@@ -40,12 +40,12 @@ QT_END_NAMESPACE
 class MainWindow : public QMainWindow {
   Q_OBJECT
 
-public:
+ public:
   explicit MainWindow(QWidget *parent = nullptr);
   void init(QTranslator *translator, const PlotData *plotData, const PlotMath *plotMath);
   ~MainWindow();
 
-private:
+ private:
   Ui::MainWindow *ui;
   QTranslator *translator;
   QTimer portsRefreshTimer, activeChRefreshTimer, cursorRangeUpdateTimer;
@@ -60,7 +60,6 @@ private:
   void setUp();
   void startTimers();
   void setGuiDefaults();
-  PlotFrame_t plotFrame;
   void setGuiArrays();
   QPushButton *mathEn[4];
   QSpinBox *mathFirst[4], *mathSecond[4];
@@ -70,7 +69,7 @@ private:
   void applyGuiElementSettings(QWidget *, QString value);
   QByteArray readGuiElementSettings(QWidget *target);
   void updateSelectedChannel(int arg1);
-  void sendFileToParser(QFile &file, bool removeLastNewline = false, bool addSemicolums = false);
+  void sendFileToParser(QByteArray text, bool removeLastNewline = false, bool addSemicolums = false);
   void fillChannelSelect();
   void updateUsedChannels();
   void updateChannelComboBox(QComboBox &combobox);
@@ -79,7 +78,7 @@ private:
   void updateXYNow();
   QIcon iconXY, iconRun, iconPause, iconHidden, iconVisible, iconConnected, iconNotConnected;
 
-private slots:
+ private slots:
   void updateCursors();
   void setAdaptiveSpinBoxes();
   void updateDivs();
@@ -88,7 +87,7 @@ private slots:
   void updateCursor(Cursors::enumerator cursor, int selectedChannel, unsigned int sample, double &time, double &value, QByteArray &timeStr, QByteArray &valueStr);
   void updateCursorRange();
 
-private slots: // Autoconnect slots
+ private slots:  // Autoconnect slots
   void on_tabs_right_currentChanged(int index);
   void on_dialRollingRange_realValueChanged(double value) { ui->doubleSpinBoxRangeHorizontal->setValue(value); }
   void on_dialVerticalRange_realValueChanged(double value) { ui->doubleSpinBoxRangeVerticalRange->setValue(value); }
@@ -146,8 +145,6 @@ private slots: // Autoconnect slots
   void on_spinBoxLog3source_valueChanged(int arg1) { emit setChDigital(3, ui->pushButtonLog3->isChecked() ? arg1 : 0); }
   void on_pushButtonPlotImage_clicked();
   void on_pushButtonXYImage_clicked();
-  void on_horizontalSliderTimeCur1_realValueChanged();
-  void on_horizontalSliderTimeCur2_realValueChanged();
   void on_checkBoxCur1Visible_toggled(bool checked);
   void on_checkBoxCur2Visible_toggled(bool checked);
   void on_pushButtonChangeChColor_clicked();
@@ -175,18 +172,20 @@ private slots: // Autoconnect slots
   void on_comboBoxCursor2Channel_currentIndexChanged(int index);
   void on_labelLicense_linkActivated(const QString &link) { QDesktopServices::openUrl(link); }
   void on_pushButtonPositive_clicked();
+  void on_spinBoxCur1Sample_valueChanged(int arg1);
+  void on_spinBoxCur2Sample_valueChanged(int arg1);
 
-public slots:
+ public slots:
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumerator target);
   void showPlotStatus(PlotStatus::enumerator type);
   void serialConnectResult(bool connected, QString message);
   void printToTerminal(QByteArray data) { ui->myTerminal->printToTerminal(data); }
   void serialFinishedWriting();
   void useSettings(QByteArray settings, MessageTarget::enumerator source);
-  void printDeviceMessage(QByteArray messageBody, bool warning, bool ended);
+  void printDeviceMessage(QByteArray message, bool warning, bool ended);
   void printSerialMonitor(QByteArray data) { ui->plainTextEditConsole_3->appendPlainText(data); }
 
-signals:
+ signals:
   void setChDigital(int chid, int target);
   void setLogicBits(int target, int bits);
   void requestSerialBufferClear();
@@ -206,11 +205,9 @@ signals:
   void setMathSecond(int math, int ch);
   void setXYFirst(int ch);
   void setXYSecond(int ch);
-
   void clearMath(int math);
   void clearXY();
-
   void resetMath(int mathNumber, MathOperations::enumetrator mode, QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2, bool shouldIgnorePause = false);
   void resetXY(QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2, bool shouldIgnorePause = false);
 };
-#endif // MAINWINDOW_H
+#endif  // MAINWINDOW_H

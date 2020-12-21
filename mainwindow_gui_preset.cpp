@@ -68,7 +68,7 @@ void MainWindow::setGuiDefaults() {
   ui->radioButtonFixedRange->setChecked(true);
   ui->plotxy->setHidden(true);
   ui->plotEmpty->setHidden(true);
-  ui->labelBuildDate->setText("Build: " + QString(__DATE__) + " " + QString(__TIME__));
+  ui->labelBuildDate->setText(tr("Build: ") + QString(__DATE__) + " " + QString(__TIME__));
   ui->pushButtonPause->setIcon(iconRun);
   ui->pushButtonMultiplInputs->setChecked(false);
 }
@@ -77,19 +77,18 @@ void MainWindow::setGuiArrays() {
   mathEn[0] = ui->pushButtonMath1;
   mathEn[1] = ui->pushButtonMath2;
   mathEn[2] = ui->pushButtonMath3;
-  // mathEn[3] = ui->checkBoxMath4;
+
   mathFirst[0] = ui->spinBoxMath1First;
   mathFirst[1] = ui->spinBoxMath2First;
   mathFirst[2] = ui->spinBoxMath3First;
-  // mathFirst[3] = ui->spinBoxMath4First;
+
   mathSecond[0] = ui->spinBoxMath1Second;
   mathSecond[1] = ui->spinBoxMath2Second;
   mathSecond[2] = ui->spinBoxMath3Second;
-  // mathSecond[3] = ui->spinBoxMath4Second;
+
   mathOp[0] = ui->comboBoxMath1Op;
   mathOp[1] = ui->comboBoxMath2Op;
   mathOp[2] = ui->comboBoxMath3Op;
-  // mathOp[3] = ui->comboBoxMath4Op;
 }
 
 void MainWindow::fillChannelSelect() {

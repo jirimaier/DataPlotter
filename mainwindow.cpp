@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 MainWindow::~MainWindow() { delete ui; }
 
 void MainWindow::init(QTranslator *translator, const PlotData *plotData, const PlotMath *plotMath) {
+  // Načte ikony které se mění za běhu
   iconXY = QIcon(":/images/icons/xyChannel.png");
   iconRun = QIcon(":/images/icons/run.png");
   iconPause = QIcon(":/images/icons/pause.png");
@@ -27,14 +28,15 @@ void MainWindow::init(QTranslator *translator, const PlotData *plotData, const P
   iconVisible = QIcon(":/images/icons/visible.png");
   iconConnected = QIcon(":/images/icons/connected.png");
   iconNotConnected = QIcon(":/images/icons/disconnected.png");
-  fillChannelSelect();
+
+  fillChannelSelect();  // Vytvoří seznam kanálů pro výběr
+
   QObject::connect(plotMath, &PlotMath::sendResult, ui->plot, &MyMainPlot::newDataVector);
   QObject::connect(plotMath, &PlotMath::sendResultXY, ui->plotxy, &MyXYPlot::newData);
   QObject::connect(plotData, &PlotData::clearXY, ui->plotxy, &MyXYPlot::clear);
   QObject::connect(plotData, &PlotData::addVectorToPlot, ui->plot, &MyMainPlot::newDataVector);
   QObject::connect(plotData, &PlotData::addPointToPlot, ui->plot, &MyMainPlot::newDataPoint);
   QObject::connect(plotData, &PlotData::clearLogic, ui->plot, &MyMainPlot::clearLogicGroup);
-  // QObject::connect(plotData, &PlotData::clearAnalog, ui->plot, &MyMainPlot::clearCh);
 
   this->translator = translator;
   setGuiArrays();
@@ -49,8 +51,8 @@ void MainWindow::init(QTranslator *translator, const PlotData *plotData, const P
 }
 
 void MainWindow::changeLanguage(QString code) {
-  if (!translator->load(QString(":/translations/translation_%1.qm").arg(code))) {
-    qDebug() << "Can not load " << QString(":/translations/translation_%1.qm").arg(code);
+  if (!translator->load(QString(":/translations/translations/translation_%1.qm").arg(code))) {
+    qDebug() << "Can not load " << QString(":/translations/translations/translation_%1.qm").arg(code);
     return;
   }
   qApp->installTranslator(translator);
@@ -87,8 +89,7 @@ void MainWindow::serialConnectResult(bool connected, QString message) {
 }
 
 void MainWindow::serialFinishedWriting() {
-  if (!ui->pushButtonMultiplInputs->isChecked())
-    ui->lineEditCommand->clear();
+  if (!ui->pushButtonMultiplInputs->isChecked()) ui->lineEditCommand->clear();
 }
 
 void MainWindow::updateDivs() {
@@ -110,17 +111,17 @@ void MainWindow::on_pushButtonCenter_clicked() {
 void MainWindow::printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumerator target) {
   QString color = "<font color=black>";
   switch (type) {
-  case MessageLevel::warning:
-    color = "<font color=orange>";
-    break;
-  case MessageLevel::error:
-    color = "<font color=red>";
-    break;
-  case MessageLevel::info:
-    color = "<font color=green>";
-    break;
-  default:
-    color = "<font color=black>";
+    case MessageLevel::warning:
+      color = "<font color=orange>";
+      break;
+    case MessageLevel::error:
+      color = "<font color=red>";
+      break;
+    case MessageLevel::info:
+      color = "<font color=green>";
+      break;
+    default:
+      color = "<font color=black>";
   }
 
   bool printAsHex = false;
@@ -132,14 +133,12 @@ void MainWindow::printMessage(QString messageHeader, QByteArray messageBody, int
   }
   QString stringMessage;
   if (printAsHex) {
-
 // Oddělení bajtů mezerami nefunguje v starším Qt (Win XP)
 #if QT_VERSION >= 0x050900
     stringMessage = messageBody.toHex(' ');
 #else
     stringMessage.clear();
-    for (QByteArray::iterator it = messageBody.begin(); it != messageBody.end(); it++)
-      stringMessage.append(QString::number((uint8_t)*it, 16).rightJustified(2, '0') + " ");
+    for (QByteArray::iterator it = messageBody.begin(); it != messageBody.end(); it++) stringMessage.append(QString::number((uint8_t)*it, 16).rightJustified(2, '0') + " ");
     stringMessage = stringMessage.trimmed();
 #endif
     stringMessage = QString("<font color=navy>%1</font>").arg(stringMessage);
@@ -152,15 +151,15 @@ void MainWindow::printMessage(QString messageHeader, QByteArray messageBody, int
     ui->plainTextEditConsole_2->appendHtml(color + QString(messageHeader) + "</font color>: " + stringMessage);
 }
 
-void MainWindow::printDeviceMessage(QByteArray messageBody, bool warning, bool ended) {
-  if (!pendingDeviceMessage) {
+void MainWindow::printDeviceMessage(QByteArray message, bool warning, bool ended) {
+  if (!pendingDeviceMessage && !message.isEmpty()) {
     if (warning)
       ui->plainTextEditConsole->appendHtml(tr("<font color=darkred>Device warning:</font color> "));
     else
       ui->plainTextEditConsole->appendHtml(tr("<font color=darkgreen>Device message:</font color> "));
   }
   ui->plainTextEditConsole->moveCursor(QTextCursor::End);
-  ui->plainTextEditConsole->insertPlainText(messageBody);
+  ui->plainTextEditConsole->insertPlainText(message);
   ui->plainTextEditConsole->moveCursor(QTextCursor::End);
   QScrollBar *scroll = ui->plainTextEditConsole->horizontalScrollBar();
   scroll->setValue(scroll->minimum());
@@ -189,11 +188,4 @@ void MainWindow::updateXYNow() {
     QSharedPointer<QCPGraphDataContainer> in2 = ui->plot->graph(GlobalFunctions::getAnalogChId(ui->spinBoxXYSecond->value(), ChannelType::analog))->data();
     emit resetXY(in1, in2);
   }
-}
-
-void MainWindow::on_pushButtonPositive_clicked() {
-  if (ui->dialVerticalCenter->value() != ui->dialVerticalCenter->maximum())
-    ui->dialVerticalCenter->setValue(ui->dialVerticalCenter->maximum());
-  else
-    ui->plot->setVerticalCenter(ui->dialVerticalCenter->maximum());
 }

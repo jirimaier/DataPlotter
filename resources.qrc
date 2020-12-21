@@ -56,15 +56,16 @@
         <file>icons/export.png</file>
         <file>icons/czech.png</file>
         <file>icons/english.png</file>
+        <file>icons/icon.ico</file>
     </qresource>
     <qresource prefix="/translations">
-        <file>translation_cz.qm</file>
-        <file>translation_en.qm</file>
+        <file>translations/translation_cz.qm</file>
+        <file>translations/translation_en.qm</file>
     </qresource>
     <qresource prefix="/text">
         <file>settings/default.txt</file>
-        <file>styleSheetWindows10.txt</file>
-        <file>styleSheetLinux.txt</file>
-        <file>styleSheetWindows.txt</file>
+        <file>stylesheets/styleSheetLinux.txt</file>
+        <file>stylesheets/styleSheetWindows.txt</file>
+        <file>stylesheets/styleSheetWindows10.txt</file>
     </qresource>
 </RCC>

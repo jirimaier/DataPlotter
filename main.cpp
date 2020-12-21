@@ -54,8 +54,6 @@
 #include "serialreader.h"
 
 Q_DECLARE_METATYPE(ChannelSettings_t)
-Q_DECLARE_METATYPE(PlotSettings_t)
-Q_DECLARE_METATYPE(PlotFrame_t)
 Q_DECLARE_METATYPE(DataMode::enumerator)
 Q_DECLARE_METATYPE(OutputLevel::enumerator)
 Q_DECLARE_METATYPE(MessageLevel::enumerator)
@@ -71,8 +69,6 @@ int main(int argc, char *argv[]) {
 
   // Zaregistruje typy aby je šlo posílat signály mezi vlákny
   qRegisterMetaType<ChannelSettings_t>();
-  qRegisterMetaType<PlotSettings_t>();
-  qRegisterMetaType<PlotFrame_t>();
   qRegisterMetaType<QPair<QVector<double>, QVector<double>>>();
   qRegisterMetaType<DataMode::enumerator>();
   qRegisterMetaType<OutputLevel::enumerator>();
@@ -86,7 +82,7 @@ int main(int argc, char *argv[]) {
 
   // Vytvoří instance hlavních objektů
   MainWindow mainWindow;
-  QTranslator translator; // Musí bít zde aby dokázal přeložit i texty v objektech jiných než MainWindow
+  QTranslator translator;  // Musí bít zde aby dokázal přeložit i texty v objektech jiných než MainWindow
   PlotData *plotData = new PlotData();
   NewSerialParser *serialParser1 = new NewSerialParser(MessageTarget::serial1);
   NewSerialParser *serialParserM = new NewSerialParser(MessageTarget::manual);

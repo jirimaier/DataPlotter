@@ -15,13 +15,30 @@
 
 #include "myterminal.h"
 
-MyTerminal::MyTerminal(QWidget *parent) : QTableWidget(parent) { colorCodes = ColorCodes::colorCodes(); }
+MyTerminal::MyTerminal(QWidget *parent) : QTableWidget(parent) {
+  colorCodes["0"] = Qt::black;
+  colorCodes["1"] = Qt::darkRed;
+  colorCodes["2"] = Qt::darkGreen;
+  colorCodes["3"] = Qt::darkYellow;
+  colorCodes["4"] = Qt::darkBlue;
+  colorCodes["5"] = Qt::darkMagenta;
+  colorCodes["6"] = Qt::darkCyan;
+  colorCodes["7"] = Qt::lightGray;
+
+  colorCodes["0;1"] = Qt::darkGray;
+  colorCodes["1;1"] = Qt::red;
+  colorCodes["2;1"] = Qt::green;
+  colorCodes["3;1"] = Qt::yellow;
+  colorCodes["4;1"] = Qt::blue;
+  colorCodes["5;1"] = Qt::magenta;
+  colorCodes["6;1"] = Qt::cyan;
+  colorCodes["7;1"] = Qt::white;
+}
 
 MyTerminal::~MyTerminal() {
   for (uint16_t r = 0; r < this->rowCount(); r++)
     for (uint16_t c = 0; c < this->columnCount(); c++)
-      if (this->item(r, c) != NULL)
-        delete this->item(r, c);
+      if (this->item(r, c) != NULL) delete this->item(r, c);
 }
 
 void MyTerminal::printText(QByteArray text) {
@@ -54,14 +71,11 @@ void MyTerminal::printChar(char letter) {
 }
 
 void MyTerminal::moveCursorAbsolute(int16_t x, int16_t y) {
-  if (debug)
-    this->setCurrentCell(cursorY, cursorX, QItemSelectionModel::Deselect);
+  if (debug) this->setCurrentCell(cursorY, cursorX, QItemSelectionModel::Deselect);
   cursorX = (x > 0) ? x : 0;
   cursorY = (y > 0) ? y : 0;
-  if (cursorY >= this->rowCount())
-    this->setRowCount(cursorY + 1);
-  if (cursorX >= this->columnCount())
-    this->setColumnCount(cursorX + 1);
+  if (cursorY >= this->rowCount()) this->setRowCount(cursorY + 1);
+  if (cursorX >= this->columnCount()) this->setColumnCount(cursorX + 1);
   if (debug)
     this->setCurrentCell(cursorY, cursorX, QItemSelectionModel::Select);
   else
@@ -71,8 +85,7 @@ void MyTerminal::moveCursorAbsolute(int16_t x, int16_t y) {
 void MyTerminal::clearTerminal() {
   for (uint16_t r = 0; r < this->rowCount(); r++)
     for (uint16_t c = 0; c < this->columnCount(); c++)
-      if (this->item(r, c) != NULL)
-        delete this->item(r, c);
+      if (this->item(r, c) != NULL) delete this->item(r, c);
   this->setRowCount(1);
   this->setColumnCount(1);
   resetFont();
@@ -81,30 +94,27 @@ void MyTerminal::clearTerminal() {
 
 void MyTerminal::parseFontEscapeCode(QByteArray data) {
   // Reset
-  if (data == "0")
-    resetFont();
+  if (data == "0") resetFont();
 
   // Font color
   else if (*data.begin() == '3') {
     QString code = data.mid(1);
-    if (colorCodes.contains(code))
-      fontColor = colorCodes[code];
+    if (colorCodes.contains(code)) fontColor = colorCodes[code];
   }
 
   // 256 Colors Text
   else if (data.left(5) == "38;5;")
-    fontColor = QColor::fromRgb(ColorCodes::colorCodes256[data.mid(6).toUInt()]);
+    fontColor = QColor::fromRgb(colorCodes256[data.mid(6).toUInt()]);
 
   // Bacground color
   else if (*data.begin() == '4') {
     QString code = data.mid(1);
-    if (colorCodes.contains(code))
-      backColor = colorCodes[code];
+    if (colorCodes.contains(code)) backColor = colorCodes[code];
   }
 
   // 256 Colors Background
   else if (data.contains("48;5;"))
-    backColor = QColor::fromRgb(ColorCodes::colorCodes256[data.right(data.length() - 5).toUInt()]);
+    backColor = QColor::fromRgb(colorCodes256[data.right(data.length() - 5).toUInt()]);
 
   // Decorations
   else if (data == "1")
@@ -144,17 +154,17 @@ void MyTerminal::parseEscapeCode(QByteArray data) {
         return;
       }
     }
-    if (data.right(1) == "A") // Nahoru
+    if (data.right(1) == "A")  // Nahoru
       moveCursorRelative(0, -value);
-    else if (data.right(1) == "B") // Dolů
+    else if (data.right(1) == "B")  // Dolů
       moveCursorRelative(0, value);
-    else if (data.right(1) == "C") // Vpravo
+    else if (data.right(1) == "C")  // Vpravo
       moveCursorRelative(value, 0);
-    else if (data.right(1) == "D") // Vlevo
+    else if (data.right(1) == "D")  // Vlevo
       moveCursorRelative(-value, 0);
-    else if (data.right(1) == "E") // Řádek dolů
+    else if (data.right(1) == "E")  // Řádek dolů
       moveCursorAbsolute(0, cursorY + value);
-    else if (data.right(1) == "F") // Řádek nahoru
+    else if (data.right(1) == "F")  // Řádek nahoru
       moveCursorAbsolute(0, cursorY - value);
   }
 
@@ -170,10 +180,8 @@ void MyTerminal::parseEscapeCode(QByteArray data) {
       bool isok = true;
       QByteArrayList coord = data.left(data.length() - 1).split(';');
       if (coord.length() == 2) {
-        if (!coord.at(0).trimmed().isEmpty())
-          n = coord.at(0).toUInt(&isok);
-        if (!coord.at(1).trimmed().isEmpty())
-          m = coord.at(1).toUInt(&isok);
+        if (!coord.at(0).trimmed().isEmpty()) n = coord.at(0).toUInt(&isok);
+        if (!coord.at(1).trimmed().isEmpty()) m = coord.at(1).toUInt(&isok);
       } else
         isok = false;
       if (isok) {
@@ -228,22 +236,19 @@ void MyTerminal::printToTerminal(QByteArray data) {
       buffer.remove(0, buffer.indexOf('\u001b'));
       continue;
     }
-    if (buffer.length() == 1)
-      break;
+    if (buffer.length() == 1) break;
     if (buffer.at(1) != '[') {
       buffer.remove(0, 2);
       continue;
     }
-    if (buffer.length() < 3)
-      break;
+    if (buffer.length() < 3) break;
     for (int i = 2; true; i++) {
       if (!isdigit(buffer.at(i)) && buffer.at(i) != ';') {
         parseEscapeCode(buffer.mid(2, i - 1));
         buffer.remove(0, i + 1);
         break;
       }
-      if (i >= buffer.length() - 1)
-        return;
+      if (i >= buffer.length() - 1) return;
     }
   }
 }
@@ -258,8 +263,7 @@ void MyTerminal::setDebug(bool en) {
 
 void MyTerminal::resetTerminal() {
   clearTerminal();
-  if (!buffer.isEmpty())
-    buffer.clear();
+  if (!buffer.isEmpty()) buffer.clear();
 }
 
 void MyTerminal::resetFont() {
@@ -271,44 +275,36 @@ void MyTerminal::resetFont() {
 
 bool MyTerminal::isSmallest(uint8_t number, QVector<uint8_t> list) {
   for (uint8_t i = 0; i < list.length(); i++)
-    if (number > list.at(i))
-      return false;
+    if (number > list.at(i)) return false;
   return true;
 }
 
 void MyTerminal::clearLine() {
-  for (uint16_t i = 0; i < this->columnCount(); i++)
-    clearCell(i, cursorY);
+  for (uint16_t i = 0; i < this->columnCount(); i++) clearCell(i, cursorY);
 }
 
 void MyTerminal::clearLine(uint16_t line) {
-  for (uint16_t i = 0; i < this->columnCount(); i++)
-    clearCell(i, line);
+  for (uint16_t i = 0; i < this->columnCount(); i++) clearCell(i, line);
 }
 
 void MyTerminal::clearLineLeft() {
-  for (uint16_t i = 0; i < cursorX; i++)
-    clearCell(i, cursorY);
+  for (uint16_t i = 0; i < cursorX; i++) clearCell(i, cursorY);
 }
 
 void MyTerminal::clearLineRight() {
-  for (uint16_t i = cursorX + 1; i < this->columnCount(); i++)
-    clearCell(i, cursorY);
+  for (uint16_t i = cursorX + 1; i < this->columnCount(); i++) clearCell(i, cursorY);
 }
 
 void MyTerminal::clearDown() {
   clearLineRight();
-  for (uint16_t i = cursorY + 1; i < this->rowCount(); i++)
-    clearLine(i);
+  for (uint16_t i = cursorY + 1; i < this->rowCount(); i++) clearLine(i);
 }
 
 void MyTerminal::clearUp() {
   clearLineLeft();
-  for (uint16_t i = 0; i < cursorX; i++)
-    clearLine(i);
+  for (uint16_t i = 0; i < cursorX; i++) clearLine(i);
 }
 
 void MyTerminal::clearCell(int x, int y) {
-  if (this->item(y, x) != NULL)
-    delete this->item(y, x);
+  if (this->item(y, x) != NULL) delete this->item(y, x);
 }

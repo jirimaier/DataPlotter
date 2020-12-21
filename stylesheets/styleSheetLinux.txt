@@ -1,0 +1,12 @@
+QWidget
+{
+  font: 9pt "Ubuntu";
+}
+
+QFrame#frame_leftHalf{
+background-color: rgb(255, 255, 255);
+}
+
+QFrame#frame_rightHalf{
+background-color: rgb(255, 255, 255);
+}

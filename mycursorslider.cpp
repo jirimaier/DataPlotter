@@ -16,40 +16,39 @@
 #include "mycursorslider.h"
 
 myCursorSlider::myCursorSlider(QWidget *parent) : QSlider(parent) {
-  realValue = value();
+  realPos = value();
   connect(this, &QAbstractSlider::valueChanged, this, &myCursorSlider::positionChanged);
+}
+
+void myCursorSlider::positionChanged(int newpos) {
+  realPos = newpos;
+  setStyleSheet("");
 }
 
 void myCursorSlider::updateRange(int min, int max) {
   blockSignals(true);
   setMinimum(min);
   setMaximum(max);
-  setValue(realValue);
-  if (realValue < min || realValue > max)
+  if (realPos < min || realPos > max || min == max)
     setStyleSheet("QSlider::handle:horizontal {background-color:gray;}");
   else
     setStyleSheet("");
+  setValue(realPos);
   setSingleStep(MAX((max - min) / 150, 1));
   setPageStep(MAX((max - min) / 150, 1));
   blockSignals(false);
 }
 
-void myCursorSlider::positionChanged(int newpos) {
-  realValue = newpos;
-  setStyleSheet("");
-  emit realValueChanged(realValue);
-}
-
-void myCursorSlider::setRealValue(int newValue) {
+void myCursorSlider::setRealVaule(int newValue) {
   if (newValue < 0)
     return;
-  realValue = newValue;
   blockSignals(true);
-  setValue(realValue);
-  if (realValue < minimum() || realValue > maximum())
+  if (newValue < minimum() || newValue > maximum())
     setStyleSheet("QSlider::handle:horizontal {background-color:gray;}");
-  else
+  else {
     setStyleSheet("");
+  }
+  setValue(newValue);
+  realPos = newValue;
   blockSignals(false);
-  emit realValueChanged(realValue);
 }
