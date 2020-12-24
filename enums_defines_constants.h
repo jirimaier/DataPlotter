@@ -38,7 +38,7 @@ enum enumerator { line = 0, point = 1, linePoint = 2, filled = 3, square = 4, sq
 }
 
 namespace DataMode {
-enum enumerator { unknown, terminal, info, warning, settings, point, channel };
+enum enumerator { unknown, terminal, info, warning, settings, point, channel, echo };
 }
 
 namespace OutputLevel {
@@ -67,6 +67,10 @@ enum enumerator { X1 = 0, X2 = 1, Y1 = 2, Y2 = 3 };
 
 namespace MessageTarget {
 enum enumerator { manual, serial1 };
+}
+
+namespace TerminalMode {
+enum enumerator { none, debug, clicksend, select };
 }
 
 namespace ValueType {

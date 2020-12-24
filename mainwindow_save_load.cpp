@@ -27,6 +27,8 @@ void MainWindow::initSetables() {
   setables["xyen"] = ui->pushButtonXY;
   setables["xyxch"] = ui->spinBoxXYFirst;
   setables["xyych"] = ui->spinBoxXYSecond;
+  setables["xygrid"] = ui->dialXYGrid;
+  setables["xystyle"] = ui->comboBoxXYStyle;
 
   // Export
   setables["csvprecisoin"] = ui->spinBoxCSVPrecision;
@@ -39,6 +41,7 @@ void MainWindow::initSetables() {
   setables["hlabel"] = ui->lineEditHtitle;
   setables["vlabel"] = ui->lineEditVtitle;
   setables["selunused"] = ui->checkBoxSelUnused;
+  setables["movestep"] = ui->spinBoxShiftStep;
 
   // Connection
   setables["baud"] = ui->comboBoxBaud;
@@ -46,11 +49,16 @@ void MainWindow::initSetables() {
 
   // Settings
   setables["clearonrec"] = ui->checkBoxClearOnReconnect;
-  setables["showmanin"] = ui->checkBoxShowManualInput;
+  setables["manin"] = ui->checkBoxShowManualInput;
   setables["sermon"] = ui->checkBoxSerialMonitor;
 
   // Send
   setables["lineending"] = ui->comboBoxLineEnding;
+  setables["send1"] = ui->lineEditCommand;
+  setables["send2"] = ui->lineEditCommand_2;
+  setables["send3"] = ui->lineEditCommand_3;
+  setables["send4"] = ui->lineEditCommand_4;
+  setables["multisend"] = ui->pushButtonMultiplInputs;
 
   // Math
   for (int i = 0; i < MATH_COUNT; i++) {
@@ -124,7 +132,7 @@ QByteArray MainWindow::getSettings() {
 
   settings.append(ui->radioButtonEn->isChecked() ? "lang:en" : "lang:cz");
   settings.append(";\n");
-  settings.append(ui->radioButtonCSVDot->isChecked() ? "csvdel:dc" : "csvdel:cs");
+  settings.append(ui->radioButtonCSVDot->isChecked() ? "csvsep:dc" : "csvsep:cs");
   settings.append(";\n");
   settings.append(ui->radioButtonXYAutoSize->isChecked() ? "xytype:fix" : "xytype:cs");
   settings.append(";\n");
@@ -191,7 +199,7 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumerator sour
     if (value == "cz") ui->radioButtonCz->setChecked(true);
   }
 
-  else if (type == "csvdel") {
+  else if (type == "csvsep") {
     if (value == "cs") ui->radioButtonCSVComma->setChecked(true);
     if (value == "dc") ui->radioButtonCSVDot->setChecked(true);
   }

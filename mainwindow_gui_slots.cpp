@@ -22,8 +22,7 @@ void MainWindow::on_pushButtonConnect_clicked() {
 }
 
 void MainWindow::on_tabs_right_currentChanged(int index) {
-  if (index == 2)
-    ui->lineEditCommand->setFocus();
+  if (index == 2) ui->lineEditCommand->setFocus();
 }
 
 void MainWindow::rangeTypeChanged() {
@@ -69,13 +68,11 @@ void MainWindow::on_dialZoom_valueChanged(int value) {
 }
 
 void MainWindow::on_radioButtonEn_toggled(bool checked) {
-  if (checked)
-    changeLanguage("en");
+  if (checked) changeLanguage("en");
 }
 
 void MainWindow::on_radioButtonCz_toggled(bool checked) {
-  if (checked)
-    changeLanguage("cz");
+  if (checked) changeLanguage("cz");
 }
 
 void MainWindow::on_lineEditManualInput_returnPressed() {
@@ -114,8 +111,7 @@ void MainWindow::on_lineEditCommand_4_returnPressed() {
 }
 
 void MainWindow::on_comboBoxOutputLevel_currentIndexChanged(int index) {
-  if (index >= 0)
-    emit setSerialMessageLevel((OutputLevel::enumerator)index);
+  if (index >= 0) emit setSerialMessageLevel((OutputLevel::enumerator)index);
 }
 
 void MainWindow::on_pushButtonScrollDown_2_clicked() {
@@ -184,8 +180,7 @@ void MainWindow::on_comboBoxSelectedChannel_currentIndexChanged(int index) {
 }
 
 void MainWindow::on_checkBoxChInverted_toggled(bool checked) {
-  if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT)
-    ui->plot->setChInvert(ui->comboBoxSelectedChannel->currentIndex(), checked);
+  if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT) ui->plot->setChInvert(ui->comboBoxSelectedChannel->currentIndex(), checked);
 }
 
 void MainWindow::on_pushButtonResetChannels_clicked() {
@@ -224,8 +219,7 @@ void MainWindow::on_pushButtonChangeChColor_clicked() {
   else
     oldColor = ui->plot->getLogicColor(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT);
   QColor color = QColorDialog::getColor(oldColor);
-  if (!color.isValid())
-    return;
+  if (!color.isValid()) return;
   if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT)
     ui->plot->setChColor(ui->comboBoxSelectedChannel->currentIndex(), color);
   else
@@ -234,7 +228,7 @@ void MainWindow::on_pushButtonChangeChColor_clicked() {
   updateUsedChannels();
 }
 
-void MainWindow::on_dial_valueChanged(int value) {
+void MainWindow::on_dialXYGrid_valueChanged(int value) {
   ui->plotxy->setGridHintX(value);
   ui->plotxy->setGridHintY(value);
 }
@@ -277,4 +271,89 @@ void MainWindow::on_pushButtonPositive_clicked() {
     ui->dialVerticalCenter->setValue(ui->dialVerticalCenter->maximum());
   else
     ui->plot->setVerticalCenter(ui->dialVerticalCenter->maximum());
+}
+
+void MainWindow::on_pushButtonTerminalDebug_toggled(bool checked) {
+  if (checked) {
+    ui->pushButtonTerminalClickToSend->blockSignals(true);
+    ui->pushButtonTerminalClickToSend->setChecked(false);
+    ui->pushButtonTerminalClickToSend->blockSignals(false);
+    ui->pushButtonTerminalSelect->blockSignals(true);
+    ui->pushButtonTerminalSelect->setChecked(false);
+    ui->pushButtonTerminalSelect->blockSignals(false);
+    ui->pushButtonTerminalCopy->setEnabled(false);
+    ui->frameTermanalDebug->setVisible(true);
+    ui->myTerminal->setMode(TerminalMode::debug);
+    ui->plainTextEditTerminalDebug->clear();
+  } else {
+    ui->myTerminal->setMode(TerminalMode::none);
+    ui->frameTermanalDebug->setVisible(false);
+  }
+}
+
+void MainWindow::on_pushButtonTerminalClickToSend_toggled(bool checked) {
+  if (checked) {
+    ui->pushButtonTerminalSelect->blockSignals(true);
+    ui->pushButtonTerminalSelect->setChecked(false);
+    ui->pushButtonTerminalSelect->blockSignals(false);
+    ui->pushButtonTerminalDebug->blockSignals(true);
+    ui->pushButtonTerminalDebug->setChecked(false);
+    ui->frameTermanalDebug->setVisible(false);
+    ui->pushButtonTerminalDebug->blockSignals(false);
+    ui->pushButtonTerminalCopy->setEnabled(false);
+    ui->myTerminal->setMode(TerminalMode::clicksend);
+  } else
+    ui->myTerminal->setMode(TerminalMode::none);
+}
+
+void MainWindow::on_pushButtonTerminalSelect_toggled(bool checked) {
+  if (checked) {
+    ui->pushButtonTerminalClickToSend->blockSignals(true);
+    ui->pushButtonTerminalClickToSend->setChecked(false);
+    ui->pushButtonTerminalClickToSend->blockSignals(false);
+    ui->pushButtonTerminalDebug->blockSignals(true);
+    ui->pushButtonTerminalDebug->setChecked(false);
+    ui->frameTermanalDebug->setVisible(false);
+    ui->pushButtonTerminalDebug->blockSignals(false);
+    ui->pushButtonTerminalCopy->setEnabled(true);
+    ui->myTerminal->setMode(TerminalMode::select);
+  } else {
+    ui->pushButtonTerminalCopy->setEnabled(false);
+    ui->myTerminal->setMode(TerminalMode::none);
+  }
+}
+
+void MainWindow::printTerminalDebug(QString text) {
+  QTextCursor prevCursor = ui->plainTextEditTerminalDebug->textCursor();
+  text.replace(" ", "&nbsp;");                    // Normální mezera se nezobrazí :-(
+  text.replace("font&nbsp;color", "font color");  // A když už tam tu mezeru změním, tek to zase zničí tu mezeru v "font color" a nefunguje to.
+  ui->plainTextEditTerminalDebug->moveCursor(QTextCursor::End);
+  ui->plainTextEditTerminalDebug->textCursor().insertHtml(text);
+  ui->plainTextEditTerminalDebug->setTextCursor(prevCursor);
+}
+
+void MainWindow::on_listWidgetTerminalCodeList_itemClicked(QListWidgetItem *item) {
+  QString code = "";
+  if (item->text().contains(" "))
+    code = item->text().left(item->text().indexOf(" "));
+  else
+    code = item->text();
+
+  if (code == "3?m") {
+    QColor color = QColorDialog::getColor(Qt::white);
+    if (!color.isValid()) return;
+    QByteArray colorCode = ui->myTerminal->nearestColorCode(color);
+    ui->myTerminal->printToTerminal(QString("\u001b[3" + colorCode + "m").toUtf8());
+    return;
+  }
+
+  if (code == "4?m") {
+    QColor color = QColorDialog::getColor(Qt::black);
+    if (!color.isValid()) return;
+    QByteArray colorCode = ui->myTerminal->nearestColorCode(color);
+    ui->myTerminal->printToTerminal(QString("\u001b[4" + colorCode + "m").toUtf8());
+    return;
+  }
+
+  ui->myTerminal->printToTerminal(QString("\u001b[" + code).toUtf8());
 }

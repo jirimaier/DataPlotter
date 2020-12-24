@@ -119,35 +119,6 @@
             <property name="styleSheet">
              <string notr="true"/>
             </property>
-            <widget class="QTextEdit" name="textEdit">
-             <property name="geometry">
-              <rect>
-               <x>10</x>
-               <y>20</y>
-               <width>241</width>
-               <height>151</height>
-              </rect>
-             </property>
-            </widget>
-            <widget class="QPushButton" name="pushButton_4">
-             <property name="geometry">
-              <rect>
-               <x>50</x>
-               <y>40</y>
-               <width>64</width>
-               <height>64</height>
-              </rect>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>64</width>
-               <height>64</height>
-              </size>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
            </widget>
           </item>
          </layout>
@@ -3056,7 +3027,7 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QComboBox" name="comboBox">
+                  <widget class="QComboBox" name="comboBoxXYStyle">
                    <property name="maximumSize">
                     <size>
                      <width>100</width>
@@ -3108,7 +3079,7 @@
                     </widget>
                    </item>
                    <item>
-                    <widget class="QDial" name="dial">
+                    <widget class="QDial" name="dialXYGrid">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -4281,7 +4252,10 @@
            <attribute name="title">
             <string/>
            </attribute>
-           <layout class="QVBoxLayout" name="verticalLayout_20">
+           <layout class="QVBoxLayout" name="verticalLayout_17" stretch="1000,1,1">
+            <property name="spacing">
+             <number>3</number>
+            </property>
             <property name="leftMargin">
              <number>6</number>
             </property>
@@ -4326,9 +4300,7 @@
               <property name="styleSheet">
                <string notr="true">background-color: rgb(0, 0, 0);
 alternate-background-color: rgb(170, 0, 0);
-gridline-color: rgb(255, 255, 255);
-selection-color: rgb(255, 255, 255);
-selection-background-color: rgb(85, 0, 0);</string>
+gridline-color: rgb(255, 255, 255);</string>
               </property>
               <property name="autoScroll">
                <bool>false</bool>
@@ -4336,8 +4308,20 @@ selection-background-color: rgb(85, 0, 0);</string>
               <property name="editTriggers">
                <set>QAbstractItemView::NoEditTriggers</set>
               </property>
+              <property name="tabKeyNavigation">
+               <bool>false</bool>
+              </property>
+              <property name="showDropIndicator" stdset="0">
+               <bool>false</bool>
+              </property>
+              <property name="dragDropOverwriteMode">
+               <bool>false</bool>
+              </property>
               <property name="selectionMode">
-               <enum>QAbstractItemView::NoSelection</enum>
+               <enum>QAbstractItemView::ContiguousSelection</enum>
+              </property>
+              <property name="textElideMode">
+               <enum>Qt::ElideNone</enum>
               </property>
               <property name="showGrid">
                <bool>false</bool>
@@ -4381,8 +4365,11 @@ selection-background-color: rgb(85, 0, 0);</string>
             </item>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_34">
+              <property name="spacing">
+               <number>3</number>
+              </property>
               <item>
-               <widget class="QPushButton" name="pushButton_2">
+               <widget class="QPushButton" name="pushButtonTerminalDebug">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                   <horstretch>0</horstretch>
@@ -4390,7 +4377,7 @@ selection-background-color: rgb(85, 0, 0);</string>
                  </sizepolicy>
                 </property>
                 <property name="toolTip">
-                 <string>Show grid and cursor</string>
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Debug mode&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="text">
                  <string/>
@@ -4411,17 +4398,76 @@ selection-background-color: rgb(85, 0, 0);</string>
                </widget>
               </item>
               <item>
-               <spacer name="horizontalSpacer_12">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
+               <widget class="QPushButton" name="pushButtonTerminalClickToSend">
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Click to send mode&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
-                <property name="sizeHint" stdset="0">
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset resource="resources.qrc">
+                  <normaloff>:/images/icons/terminalClickToSend.png</normaloff>:/images/icons/terminalClickToSend.png</iconset>
+                </property>
+                <property name="iconSize">
                  <size>
-                  <width>40</width>
-                  <height>20</height>
+                  <width>30</width>
+                  <height>30</height>
                  </size>
                 </property>
-               </spacer>
+                <property name="checkable">
+                 <bool>true</bool>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButtonTerminalSelect">
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selection mode&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset resource="resources.qrc">
+                  <normaloff>:/images/icons/terminalSelect.png</normaloff>:/images/icons/terminalSelect.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>30</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <property name="checkable">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="pushButtonTerminalCopy">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Copy selection to clipboard&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset resource="resources.qrc">
+                  <normaloff>:/images/icons/copy.png</normaloff>:/images/icons/copy.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>30</width>
+                  <height>30</height>
+                 </size>
+                </property>
+               </widget>
               </item>
               <item>
                <widget class="QPushButton" name="pushButton">
@@ -4444,6 +4490,216 @@ selection-background-color: rgb(85, 0, 0);</string>
                </widget>
               </item>
              </layout>
+            </item>
+            <item>
+             <widget class="QFrame" name="frameTermanalDebug">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>120</height>
+               </size>
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::NoFrame</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Raised</enum>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_16" rowstretch="100,1" columnstretch="1,1">
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <property name="spacing">
+                <number>3</number>
+               </property>
+               <item row="1" column="0">
+                <layout class="QHBoxLayout" name="horizontalLayout_12">
+                 <property name="spacing">
+                  <number>3</number>
+                 </property>
+                 <item>
+                  <widget class="QPushButton" name="pushButtonTerminalInputClear">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="resources.qrc">
+                     <normaloff>:/images/icons/clear.png</normaloff>:/images/icons/clear.png</iconset>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="pushButtonTerminalInputCopy">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="resources.qrc">
+                     <normaloff>:/images/icons/copy.png</normaloff>:/images/icons/copy.png</iconset>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item row="0" column="0">
+                <widget class="QPlainTextEdit" name="plainTextEditTerminalDebug">
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QListWidget" name="listWidgetTerminalCodeList">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>2J Clear all</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>3?m Font color</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>4?m Back color</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>0m Reset style</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>1m Bold</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>4m Underline</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>7m Invert colors</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>A Up</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>B Down</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>C Right</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>D Left</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>0J Clear down</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>1J Clear up</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>2K Clear line</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>0K Clear line left</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>1K Clear line right</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>E Line up</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>F Line down</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>s Save postition</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>u Load position</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QLineEdit" name="lineEditTerminalManualInput">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="placeholderText">
+                  <string>Manual input</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
             </item>
            </layout>
           </widget>
@@ -5328,6 +5584,7 @@ unused channels</string>
    <slots>
     <slot>resetTerminal()</slot>
     <slot>setDebug(bool)</slot>
+    <slot>copyToClipboard()</slot>
    </slots>
   </customwidget>
   <customwidget>
@@ -5424,7 +5681,7 @@ unused channels</string>
   <tabstop>dialhorizontalDiv</tabstop>
   <tabstop>doubleSpinBoxRangeHorizontal</tabstop>
   <tabstop>dialZoom</tabstop>
-  <tabstop>pushButton_2</tabstop>
+  <tabstop>pushButtonTerminalDebug</tabstop>
   <tabstop>pushButton</tabstop>
   <tabstop>radioButtonEn</tabstop>
   <tabstop>radioButtonCz</tabstop>
@@ -5453,12 +5710,12 @@ unused channels</string>
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>720</x>
-     <y>180</y>
+     <x>710</x>
+     <y>187</y>
     </hint>
     <hint type="destinationlabel">
-     <x>787</x>
-     <y>440</y>
+     <x>702</x>
+     <y>386</y>
     </hint>
    </hints>
   </connection>
@@ -5469,12 +5726,12 @@ unused channels</string>
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>840</x>
+     <x>828</x>
      <y>187</y>
     </hint>
     <hint type="destinationlabel">
-     <x>787</x>
-     <y>176</y>
+     <x>702</x>
+     <y>143</y>
     </hint>
    </hints>
   </connection>
@@ -5485,12 +5742,12 @@ unused channels</string>
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>724</x>
-     <y>228</y>
+     <x>703</x>
+     <y>222</y>
     </hint>
     <hint type="destinationlabel">
-     <x>765</x>
-     <y>165</y>
+     <x>702</x>
+     <y>143</y>
     </hint>
    </hints>
   </connection>
@@ -5502,11 +5759,11 @@ unused channels</string>
    <hints>
     <hint type="sourcelabel">
      <x>802</x>
-     <y>348</y>
+     <y>342</y>
     </hint>
     <hint type="destinationlabel">
-     <x>848</x>
-     <y>308</y>
+     <x>702</x>
+     <y>265</y>
     </hint>
    </hints>
   </connection>
@@ -5518,11 +5775,11 @@ unused channels</string>
    <hints>
     <hint type="sourcelabel">
      <x>785</x>
-     <y>493</y>
+     <y>487</y>
     </hint>
     <hint type="destinationlabel">
-     <x>848</x>
-     <y>426</y>
+     <x>702</x>
+     <y>386</y>
     </hint>
    </hints>
   </connection>
@@ -5623,50 +5880,18 @@ unused channels</string>
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_2</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>myTerminal</receiver>
-   <slot>setDebug(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>644</x>
-     <y>494</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>727</x>
-     <y>364</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>pushButton</sender>
    <signal>clicked()</signal>
    <receiver>myTerminal</receiver>
    <slot>resetTerminal()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>848</x>
-     <y>494</y>
+     <x>845</x>
+     <y>365</y>
     </hint>
     <hint type="destinationlabel">
-     <x>849</x>
-     <y>451</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_2</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>myTerminal</receiver>
-   <slot>setShowGrid(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>644</x>
-     <y>494</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>768</x>
-     <y>364</y>
+     <x>846</x>
+     <y>322</y>
     </hint>
    </hints>
   </connection>
@@ -5677,8 +5902,8 @@ unused channels</string>
    <slot>rangeTypeChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>175</x>
-     <y>431</y>
+     <x>214</x>
+     <y>432</y>
     </hint>
     <hint type="destinationlabel">
      <x>385</x>
@@ -5793,8 +6018,8 @@ unused channels</string>
      <y>416</y>
     </hint>
     <hint type="destinationlabel">
-     <x>49</x>
-     <y>483</y>
+     <x>67</x>
+     <y>490</y>
     </hint>
    </hints>
   </connection>
@@ -5805,12 +6030,76 @@ unused channels</string>
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>86</x>
-     <y>521</y>
+     <x>132</x>
+     <y>528</y>
     </hint>
     <hint type="destinationlabel">
-     <x>53</x>
-     <y>582</y>
+     <x>67</x>
+     <y>592</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>comboBoxXYStyle</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>plotxy</receiver>
+   <slot>setStyle(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>192</x>
+     <y>476</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>186</x>
+     <y>174</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonTerminalCopy</sender>
+   <signal>clicked()</signal>
+   <receiver>myTerminal</receiver>
+   <slot>copyToClipboard()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>796</x>
+     <y>365</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>846</x>
+     <y>322</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonTerminalDebug</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>myTerminal</receiver>
+   <slot>setShowGrid(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>632</x>
+     <y>348</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>669</x>
+     <y>271</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonTerminalInputClear</sender>
+   <signal>clicked()</signal>
+   <receiver>plainTextEditTerminalDebug</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>630</x>
+     <y>485</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>639</x>
+     <y>451</y>
     </hint>
    </hints>
   </connection>

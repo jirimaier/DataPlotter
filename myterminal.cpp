@@ -33,6 +33,8 @@ MyTerminal::MyTerminal(QWidget *parent) : QTableWidget(parent) {
   colorCodes["5;1"] = Qt::magenta;
   colorCodes["6;1"] = Qt::cyan;
   colorCodes["7;1"] = Qt::white;
+
+  connect(this, &QTableWidget::cellClicked, this, &MyTerminal::characterClicked);
 }
 
 MyTerminal::~MyTerminal() {
@@ -47,17 +49,21 @@ void MyTerminal::printText(QByteArray text) {
       moveCursorRelative(-1, 0);
       printChar(' ');
       moveCursorRelative(-1, 0);
+      if (mode == debug) sendDebug("<font color=blue>\\b</font color>");
       continue;
     }
     if (text.at(i) == '\r') {
       moveCursorAbsolute(0, cursorY);
+      if (mode == debug) sendDebug("<font color=blue>\\r</font color>");
       continue;
     }
     if (text.at(i) == '\n') {
       moveCursorRelative(0, 1);
+      if (mode == debug) sendDebug("<font color=blue>\\n</font color>");
       continue;
     }
     printChar(text.at(i));
+    if (mode == debug) sendDebug(text.mid(i, 1));
   }
 }
 
@@ -66,20 +72,18 @@ void MyTerminal::printChar(char letter) {
   this->setItem(cursorY, cursorX, new QTableWidgetItem(QChar(letter)));
   this->item(cursorY, cursorX)->setBackground(backColor);
   this->item(cursorY, cursorX)->setForeground(fontColor);
+  this->item(cursorY, cursorX)->setTextAlignment(Qt::AlignCenter);
   this->item(cursorY, cursorX)->setFont(font);
   moveCursorRelative(1, 0);
 }
 
 void MyTerminal::moveCursorAbsolute(int16_t x, int16_t y) {
-  if (debug) this->setCurrentCell(cursorY, cursorX, QItemSelectionModel::Deselect);
+  if (mode == debug) this->setCurrentCell(cursorY, cursorX, QItemSelectionModel::Deselect);
   cursorX = (x > 0) ? x : 0;
   cursorY = (y > 0) ? y : 0;
   if (cursorY >= this->rowCount()) this->setRowCount(cursorY + 1);
   if (cursorX >= this->columnCount()) this->setColumnCount(cursorX + 1);
-  if (debug)
-    this->setCurrentCell(cursorY, cursorX, QItemSelectionModel::Select);
-  else
-    this->setCurrentCell(cursorY, cursorX);
+  if (mode == debug) this->setCurrentCell(cursorY, cursorX, QItemSelectionModel::Select);
 }
 
 void MyTerminal::clearTerminal() {
@@ -92,29 +96,28 @@ void MyTerminal::clearTerminal() {
   moveCursorAbsolute(0, 0);
 }
 
+QByteArray MyTerminal::nearestColorCode(QColor color) {
+  foreach (QColor clr, colorCodes.values())
+    if (color == clr) return colorCodes.key(color).toLocal8Bit();
+
+  int nearestIndex = 0;
+  int nearestDistance = INT_MAX;
+  for (int i = 0; i < 256; i++) {
+    QColor clr = QColor::fromRgb(colorCodes256[i]);
+    int distance = (color.red() - clr.red()) * (color.red() - clr.red());
+    distance += (color.green() - clr.green()) * (color.green() - clr.green());
+    distance += (color.blue() - clr.blue()) * (color.blue() - clr.blue());
+    if (distance < nearestDistance) {
+      nearestDistance = distance;
+      nearestIndex = i;
+    }
+  }
+  return (QString("8;5;" + QString::number(nearestIndex)).toUtf8());
+}
+
 void MyTerminal::parseFontEscapeCode(QByteArray data) {
   // Reset
   if (data == "0") resetFont();
-
-  // Font color
-  else if (*data.begin() == '3') {
-    QString code = data.mid(1);
-    if (colorCodes.contains(code)) fontColor = colorCodes[code];
-  }
-
-  // 256 Colors Text
-  else if (data.left(5) == "38;5;")
-    fontColor = QColor::fromRgb(colorCodes256[data.mid(6).toUInt()]);
-
-  // Bacground color
-  else if (*data.begin() == '4') {
-    QString code = data.mid(1);
-    if (colorCodes.contains(code)) backColor = colorCodes[code];
-  }
-
-  // 256 Colors Background
-  else if (data.contains("48;5;"))
-    backColor = QColor::fromRgb(colorCodes256[data.right(data.length() - 5).toUInt()]);
 
   // Decorations
   else if (data == "1")
@@ -125,11 +128,35 @@ void MyTerminal::parseFontEscapeCode(QByteArray data) {
     QColor clr = fontColor;
     fontColor = backColor;
     backColor = clr;
-  } else
+  }
+
+  // 256 Colors Text
+  else if (data.left(5) == "38;5;")
+    fontColor = QColor::fromRgb(colorCodes256[data.right(data.length() - 5).toUInt()]);
+
+  // Font color
+  else if (*data.begin() == '3') {
+    QString code = data.mid(1);
+    if (colorCodes.contains(code)) fontColor = colorCodes[code];
+  }
+
+  // 256 Colors Background
+  else if (data.contains("48;5;"))
+    backColor = QColor::fromRgb(colorCodes256[data.right(data.length() - 5).toUInt()]);
+
+  // Bacground color
+  else if (*data.begin() == '4') {
+    QString code = data.mid(1);
+    if (colorCodes.contains(code)) backColor = colorCodes[code];
+  }
+
+  else
     emit sendMessage(tr("Invalid escape sequence").toUtf8(), data, MessageLevel::error);
 }
 
 void MyTerminal::parseEscapeCode(QByteArray data) {
+  if (mode == debug) sendDebug(QString("<font color=red>\\e[%1</font color>").arg(QString(data)));
+
   // Uložit pozici kursoru
   if (data == "s") {
     cursorX_saved = cursorX;
@@ -166,6 +193,8 @@ void MyTerminal::parseEscapeCode(QByteArray data) {
       moveCursorAbsolute(0, cursorY + value);
     else if (data.right(1) == "F")  // Řádek nahoru
       moveCursorAbsolute(0, cursorY - value);
+    else if (data.right(1) == "G")  // Sloupec
+      moveCursorAbsolute(value - 1, cursorY);
   }
 
   // Posunout kursor na pozici (v příkazu se čísluje od 1)
@@ -253,17 +282,40 @@ void MyTerminal::printToTerminal(QByteArray data) {
   }
 }
 
-void MyTerminal::setDebug(bool en) {
-  debug = en;
-  if (en)
+void MyTerminal::setMode(TerminalMode::enumerator mode) {
+  this->clearSelection();
+  this->mode = mode;
+  if (mode == debug) {
+    this->setSelectionMode(QAbstractItemView::SelectionMode::NoSelection);
     this->setCurrentCell(cursorY, cursorX, QItemSelectionModel::Select);
-  else
-    this->setCurrentCell(cursorY, cursorX, QItemSelectionModel::Deselect);
+
+  } else if (mode == select) {
+    this->setSelectionMode(QAbstractItemView::SelectionMode::ContiguousSelection);
+  } else if (mode == clicksend) {
+    this->setSelectionMode(QAbstractItemView::SelectionMode::NoSelection);
+  }
 }
 
 void MyTerminal::resetTerminal() {
   clearTerminal();
   if (!buffer.isEmpty()) buffer.clear();
+}
+
+void MyTerminal::copyToClipboard() {
+  QClipboard *clipboard = QGuiApplication::clipboard();
+  QString text = "";
+  QModelIndexList selection = this->selectionModel()->selectedIndexes();
+  if (selection.isEmpty()) return;
+  int lastRow = selection.at(0).row();
+  for (QModelIndexList::iterator it = selection.begin(); it != selection.end(); it++) {
+    if (it->row() != lastRow) {
+      text.append('\n');
+      lastRow = it->row();
+    }
+    text.append(it->data().toString());
+  }
+  clipboard->setText(text);
+  clearSelection();
 }
 
 void MyTerminal::resetFont() {
@@ -307,4 +359,28 @@ void MyTerminal::clearUp() {
 
 void MyTerminal::clearCell(int x, int y) {
   if (this->item(y, x) != NULL) delete this->item(y, x);
+}
+
+void MyTerminal::characterClicked(int r, int c) {
+  if (mode == clicksend) {
+    QTableWidgetItem *it = item(r, c);
+    if (it) {
+      emit writeToSerial(it->text().toLocal8Bit());
+      it->setBackground(inverseColor(it->background().color()));
+      it->setForeground(inverseColor(it->foreground().color()));
+      QTimer *timer = new QTimer(this);
+      connect(timer, &QTimer::timeout, [r, c, this] {
+        QTableWidgetItem *it = item(r, c);
+        if (it) {
+          it->setBackground(inverseColor(it->background().color()));
+          it->setForeground(inverseColor(it->foreground().color()));
+        }
+      });
+      timer->setSingleShot(true);
+      timer->start(100);
+    }
+  } else if (mode == debug) {
+    moveCursorAbsolute(c, r);
+    sendDebug(QString("<font color=red>\\e[%1;%2H</font color>").arg(r + 1).arg(c + 1));
+  }
 }

@@ -16,22 +16,28 @@
 #ifndef MYTERMINAL_H
 #define MYTERMINAL_H
 
+#include <QClipboard>
 #include <QColor>
 #include <QDebug>
+#include <QGuiApplication>
 #include <QMap>
 #include <QTableWidget>
 #include <QTableWidgetItem>
+#include <QTimer>
 
 #include "enums_defines_constants.h"
+
+using namespace TerminalMode;
 
 class MyTerminal : public QTableWidget {
   Q_OBJECT
  public:
   explicit MyTerminal(QWidget *parent = nullptr);
+  QByteArray nearestColorCode(QColor color);
   ~MyTerminal();
 
  private:
-  bool debug = false;
+  TerminalMode::enumerator mode = clicksend;
   QByteArray buffer;
   QMap<QString, QColor> colorCodes;
   void printChar(char text);
@@ -58,16 +64,25 @@ class MyTerminal : public QTableWidget {
   void resetFont();
   bool isSmallest(uint8_t number, QVector<uint8_t> list);
   void clearTerminal();
+  QColor inverseColor(QColor color) { return QColor(255 - color.red(), 255 - color.green(), 255 - color.blue()); }
 
   void clearCell(int x, int y);
+ private slots:
+  void characterClicked(int r, int c);
+
  public slots:
   void printToTerminal(QByteArray data);
-  void setDebug(bool en);
+  void setMode(TerminalMode::enumerator mode);
   void resetTerminal();
+  void copyToClipboard();
 
  signals:
   /// Pošle zprávu do výpisu
   void sendMessage(QByteArray header, QByteArray message, MessageLevel::enumerator type, MessageTarget::enumerator target = MessageTarget::serial1);
+  /// Pošle data pro zapsání do portu
+  void writeToSerial(QByteArray byte);
+
+  void sendDebug(QString text);
 
  private:
   uint32_t colorCodes256[256] = {0x000000, 0x800000, 0x008000, 0x808000, 0x000080, 0x800080, 0x008080, 0xc0c0c0, 0x808080, 0xff0000, 0x00ff00, 0xffff00, 0x0000ff, 0xff00ff, 0x00ffff, 0xffffff, 0x000000, 0x00005f, 0x000087, 0x0000af, 0x0000d7, 0x0000ff, 0x005f00, 0x005f5f, 0x005f87, 0x005faf,

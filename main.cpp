@@ -108,6 +108,7 @@ int main(int argc, char *argv[]) {
   QObject::connect(serialParser1, &NewSerialParser::sendTerminal, &mainWindow, &MainWindow::printToTerminal);
   QObject::connect(serialParser1, &NewSerialParser::sendPoint, plotData, &PlotData::addPoint);
   QObject::connect(serialParser1, &NewSerialParser::sendChannel, plotData, &PlotData::addChannel);
+  QObject::connect(serialParser1, &NewSerialParser::sendEcho, serial1, &SerialReader::write);
   QObject::connect(&mainWindow, &MainWindow::requestSerialBufferClear, serialParser1, &NewSerialParser::clearBuffer);
   QObject::connect(&mainWindow, &MainWindow::requestSerialBufferShow, serialParser1, &NewSerialParser::showBuffer);
   QObject::connect(&mainWindow, &MainWindow::setSerialMessageLevel, serialParser1, &NewSerialParser::setMsgLevel);
@@ -165,7 +166,7 @@ int main(int argc, char *argv[]) {
   plotMathThread.start();
 
   // Zobrazí okno a čeká na ukončení
-  mainWindow.init(&translator, plotData, plotMath);
+  mainWindow.init(&translator, plotData, plotMath, serial1);
   mainWindow.show();
   int returnValue = application.exec();
 

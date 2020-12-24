@@ -40,6 +40,7 @@ void MainWindow::connectSignals() {
   connect(ui->dialhorizontalDiv, &QDial::valueChanged, ui->plot, &MyPlot::setGridHintX);
   connect(ui->spinBoxShiftStep, SIGNAL(valueChanged(int)), ui->plot, SLOT(setShiftStep(int)));
   connect(ui->plot, &MyMainPlot::requestCursorUpdate, this, &MainWindow::updateCursors);
+  connect(ui->myTerminal, &MyTerminal::sendDebug, this, &MainWindow::printTerminalDebug);
 
   connect(&portsRefreshTimer, &QTimer::timeout, this, &MainWindow::comRefresh);
   connect(&activeChRefreshTimer, &QTimer::timeout, this, &MainWindow::updateUsedChannels);
@@ -68,6 +69,7 @@ void MainWindow::setGuiDefaults() {
   ui->radioButtonFixedRange->setChecked(true);
   ui->plotxy->setHidden(true);
   ui->plotEmpty->setHidden(true);
+  ui->frameTermanalDebug->setVisible(ui->pushButtonTerminalDebug->isChecked());
   ui->labelBuildDate->setText(tr("Build: ") + QString(__DATE__) + " " + QString(__TIME__));
   ui->pushButtonPause->setIcon(iconRun);
   ui->pushButtonMultiplInputs->setChecked(false);

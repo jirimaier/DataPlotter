@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 MainWindow::~MainWindow() { delete ui; }
 
-void MainWindow::init(QTranslator *translator, const PlotData *plotData, const PlotMath *plotMath) {
+void MainWindow::init(QTranslator *translator, const PlotData *plotData, const PlotMath *plotMath, const SerialReader *serialReader) {
   // Načte ikony které se mění za běhu
   iconXY = QIcon(":/images/icons/xyChannel.png");
   iconRun = QIcon(":/images/icons/run.png");
@@ -37,6 +37,7 @@ void MainWindow::init(QTranslator *translator, const PlotData *plotData, const P
   QObject::connect(plotData, &PlotData::addVectorToPlot, ui->plot, &MyMainPlot::newDataVector);
   QObject::connect(plotData, &PlotData::addPointToPlot, ui->plot, &MyMainPlot::newDataPoint);
   QObject::connect(plotData, &PlotData::clearLogic, ui->plot, &MyMainPlot::clearLogicGroup);
+  QObject::connect(ui->myTerminal, &MyTerminal::writeToSerial, serialReader, &SerialReader::write);
 
   this->translator = translator;
   setGuiArrays();
@@ -124,27 +125,8 @@ void MainWindow::printMessage(QString messageHeader, QByteArray messageBody, int
       color = "<font color=black>";
   }
 
-  bool printAsHex = false;
-  for (QByteArray::iterator it = messageBody.begin(); it != messageBody.end(); it++) {
-    if (*it <= 31) {
-      printAsHex = true;
-      break;
-    }
-  }
   QString stringMessage;
-  if (printAsHex) {
-// Oddělení bajtů mezerami nefunguje v starším Qt (Win XP)
-#if QT_VERSION >= 0x050900
-    stringMessage = messageBody.toHex(' ');
-#else
-    stringMessage.clear();
-    for (QByteArray::iterator it = messageBody.begin(); it != messageBody.end(); it++) stringMessage.append(QString::number((uint8_t)*it, 16).rightJustified(2, '0') + " ");
-    stringMessage = stringMessage.trimmed();
-#endif
-    stringMessage = QString("<font color=navy>%1</font>").arg(stringMessage);
-  } else {
-    stringMessage = messageBody;
-  }
+  stringMessage = messageBody;
   if (target == MessageTarget::serial1)
     ui->plainTextEditConsole->appendHtml(color + QString(messageHeader) + "</font color>: " + stringMessage);
   else
@@ -188,4 +170,15 @@ void MainWindow::updateXYNow() {
     QSharedPointer<QCPGraphDataContainer> in2 = ui->plot->graph(GlobalFunctions::getAnalogChId(ui->spinBoxXYSecond->value(), ChannelType::analog))->data();
     emit resetXY(in1, in2);
   }
+}
+
+void MainWindow::on_lineEditTerminalManualInput_returnPressed() {
+  QByteArray data = ui->lineEditTerminalManualInput->text().toUtf8();
+  data.replace("\\n", "\n");
+  data.replace("\\e", "\u001b");
+  data.replace("\\r", "\r");
+  data.replace("\\t", "\t");
+  data.replace("\\b", "\b");
+  ui->lineEditTerminalManualInput->clear();
+  ui->myTerminal->printToTerminal(data);
 }

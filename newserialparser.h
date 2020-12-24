@@ -16,19 +16,20 @@
 #ifndef NEWSERIALPARSER_H
 #define NEWSERIALPARSER_H
 
-#include "enums_defines_constants.h"
 #include <QDebug>
 #include <QObject>
 #include <QThread>
 
+#include "enums_defines_constants.h"
+
 class NewSerialParser : public QObject {
   Q_OBJECT
-public:
+ public:
   explicit NewSerialParser(MessageTarget::enumerator target, QObject *parent = nullptr);
   ~NewSerialParser();
   void init();
 
-signals:
+ signals:
   /// Pošle zprávu do záznamu
   void sendDeviceMessage(QByteArray header, bool warning, bool ended);
   /// Předá zprávu od zařízení
@@ -45,8 +46,10 @@ signals:
   void sendChannel(QByteArray data, unsigned int ch, QByteArray timeRaw, int bits, QByteArray min, QByteArray max);
   /// Potvrdí připravenost
   void ready();
+  /// Pošle data která mají být poslána zpět do portu
+  void sendEcho(QByteArray);
 
-private:
+ private:
   MessageTarget::enumerator target;
   void resetChHeader();
   bool channelHeaderOK = false;
@@ -72,7 +75,7 @@ private:
   uint32_t arrayToUint(QByteArray array, bool &isok);
   readResult bufferPullChannel(QByteArray &result);
 
-public slots:
+ public slots:
   /// Zpracuje data
   void parse(QByteArray newData);
   /// Clear buffers
@@ -85,4 +88,4 @@ public slots:
   void getReady();
 };
 
-#endif // NEWSERIALPARSER_H
+#endif  // NEWSERIALPARSER_H

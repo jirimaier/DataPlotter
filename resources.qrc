@@ -57,6 +57,9 @@
         <file>icons/czech.png</file>
         <file>icons/english.png</file>
         <file>icons/icon.ico</file>
+        <file>icons/terminalClickToSend.png</file>
+        <file>icons/terminalSelect.png</file>
+        <file>icons/copy.png</file>
     </qresource>
     <qresource prefix="/translations">
         <file>translations/translation_cz.qm</file>

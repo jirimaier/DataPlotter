@@ -29,6 +29,7 @@
 #include "enums_defines_constants.h"
 #include "plotdata.h"
 #include "plotmath.h"
+#include "serialreader.h"
 #include "ui_mainwindow.h"
 
 QT_BEGIN_NAMESPACE
@@ -42,7 +43,7 @@ class MainWindow : public QMainWindow {
 
  public:
   explicit MainWindow(QWidget *parent = nullptr);
-  void init(QTranslator *translator, const PlotData *plotData, const PlotMath *plotMath);
+  void init(QTranslator *translator, const PlotData *plotData, const PlotMath *plotMath, const SerialReader *serialReader);
   ~MainWindow();
 
  private:
@@ -165,7 +166,7 @@ class MainWindow : public QMainWindow {
   void on_spinBoxMath3Second_valueChanged(int) { updateMathNow(3); };
   void on_spinBoxXYFirst_valueChanged(int) { updateXYNow(); }
   void on_spinBoxXYSecond_valueChanged(int) { updateXYNow(); }
-  void on_dial_valueChanged(int value);
+  void on_dialXYGrid_valueChanged(int value);
   void on_radioButtonRollingRange_toggled(bool checked);
   void on_pushButtonXY_toggled(bool checked);
   void on_comboBoxCursor1Channel_currentIndexChanged(int index);
@@ -174,6 +175,12 @@ class MainWindow : public QMainWindow {
   void on_pushButtonPositive_clicked();
   void on_spinBoxCur1Sample_valueChanged(int arg1);
   void on_spinBoxCur2Sample_valueChanged(int arg1);
+  void on_pushButtonTerminalDebug_toggled(bool checked);
+  void on_pushButtonTerminalClickToSend_toggled(bool checked);
+  void on_pushButtonTerminalSelect_toggled(bool checked);
+  void on_pushButtonTerminalInputCopy_clicked() { QGuiApplication::clipboard()->setText(ui->plainTextEditTerminalDebug->toPlainText()); }
+  void on_listWidgetTerminalCodeList_itemClicked(QListWidgetItem *item);
+  void on_lineEditTerminalManualInput_returnPressed();
 
  public slots:
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumerator target);
@@ -184,6 +191,7 @@ class MainWindow : public QMainWindow {
   void useSettings(QByteArray settings, MessageTarget::enumerator source);
   void printDeviceMessage(QByteArray message, bool warning, bool ended);
   void printSerialMonitor(QByteArray data) { ui->plainTextEditConsole_3->appendPlainText(data); }
+  void printTerminalDebug(QString text);
 
  signals:
   void setChDigital(int chid, int target);
