@@ -1,4 +1,4 @@
-//  Copyright (C) 2020  Jiří Maier
+//  Copyright (C) 2020-2021  Jiří Maier
 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -18,8 +18,7 @@
 SerialReader::SerialReader(QObject *parent) : QObject(parent) {}
 
 SerialReader::~SerialReader() {
-  if (serial->isOpen())
-    serial->close();
+  if (serial->isOpen()) serial->close();
   delete serial;
 }
 
@@ -33,8 +32,7 @@ void SerialReader::init() {
 }
 
 void SerialReader::begin(QString portName, int baudRate) {
-  if (serial->isOpen())
-    end();
+  if (serial->isOpen()) end();
   serial->setPortName(portName);
   serial->setBaudRate(baudRate);
   serial->setDataBits(QSerialPort::Data8);
@@ -54,8 +52,7 @@ void SerialReader::begin(QString portName, int baudRate) {
 }
 
 void SerialReader::write(QByteArray data) {
-  if (serial->isOpen())
-    serial->write(data);
+  if (serial->isOpen()) serial->write(data);
 }
 
 void SerialReader::parserReady() { connect(serial, &QSerialPort::readyRead, this, &SerialReader::read); }
@@ -63,17 +60,14 @@ void SerialReader::parserReady() { connect(serial, &QSerialPort::readyRead, this
 void SerialReader::end() {
   disconnect(serial, &QSerialPort::readyRead, this, &SerialReader::read);
   emit connectionResult(false, tr("Not connected"));
-  if (!serial->isOpen())
-    return;
+  if (!serial->isOpen()) return;
   serial->close();
 }
 
 void SerialReader::errorOccurred() {
-  if (serial->error() == QSerialPort::NoError)
-    return;
+  if (serial->error() == QSerialPort::NoError) return;
   QString error = serial->errorString();
-  if (serial->error() == QSerialPort::PermissionError)
-    error = tr("Access denied.");
+  if (serial->error() == QSerialPort::PermissionError) error = tr("Access denied.");
   disconnect(serial, &QSerialPort::readyRead, this, &SerialReader::read);
   if (serial->isOpen()) {
     serial->close();

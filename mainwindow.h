@@ -1,4 +1,4 @@
-//  Copyright (C) 2020  Jiří Maier
+//  Copyright (C) 2020-2021  Jiří Maier
 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -30,6 +30,7 @@
 #include "plotdata.h"
 #include "plotmath.h"
 #include "serialreader.h"
+#include "signalprocessing.h"
 #include "ui_mainwindow.h"
 
 QT_BEGIN_NAMESPACE
@@ -49,7 +50,7 @@ class MainWindow : public QMainWindow {
  private:
   Ui::MainWindow *ui;
   QTranslator *translator;
-  QTimer portsRefreshTimer, activeChRefreshTimer, cursorRangeUpdateTimer;
+  QTimer portsRefreshTimer, activeChRefreshTimer, cursorRangeUpdateTimer, measureRefreshTimer, fftTimer;
   QList<QSerialPortInfo> portList;
   void connectSignals();
   void updateChScale();
@@ -73,11 +74,12 @@ class MainWindow : public QMainWindow {
   void sendFileToParser(QByteArray text, bool removeLastNewline = false, bool addSemicolums = false);
   void fillChannelSelect();
   void updateUsedChannels();
-  void updateChannelComboBox(QComboBox &combobox);
+  void updateChannelComboBox(QComboBox &combobox, bool includeLogic, bool leaveAtLeastOne);
   bool colorUpdateNeeded = true;
+  bool fftReady = true, measure1Ready = true, measure2Ready = true;
   void updateMathNow(int number);
   void updateXYNow();
-  QIcon iconXY, iconRun, iconPause, iconHidden, iconVisible, iconConnected, iconNotConnected;
+  QIcon iconXY, iconRun, iconPause, iconHidden, iconVisible, iconConnected, iconNotConnected, iconCross, iconFFT;
 
  private slots:
   void updateCursors();
@@ -87,9 +89,10 @@ class MainWindow : public QMainWindow {
   void rangeTypeChanged();
   void updateCursor(Cursors::enumerator cursor, int selectedChannel, unsigned int sample, double &time, double &value, QByteArray &timeStr, QByteArray &valueStr);
   void updateCursorRange();
+  void updateMeasurements();
+  void updateFFT();
 
  private slots:  // Autoconnect slots
-  void on_tabs_right_currentChanged(int index);
   void on_dialRollingRange_realValueChanged(double value) { ui->doubleSpinBoxRangeHorizontal->setValue(value); }
   void on_dialVerticalRange_realValueChanged(double value) { ui->doubleSpinBoxRangeVerticalRange->setValue(value); }
   void on_doubleSpinBoxChOffset_valueChanged(double arg1);
@@ -114,6 +117,7 @@ class MainWindow : public QMainWindow {
   void on_pushButtonReset_clicked();
   void on_pushButtonAutoset_clicked();
   void on_pushButtonCSVXY_clicked() { exportCSV(false, XY_CHANNEL); }
+  void on_pushButtonCSVFFT_clicked() { exportCSV(false, FFT_CHANNEL); }
   void on_comboBoxHAxisType_currentIndexChanged(int index);
   void on_pushButtonOpenHelp_clicked();
   void on_pushButtonCenter_clicked();
@@ -181,6 +185,11 @@ class MainWindow : public QMainWindow {
   void on_pushButtonTerminalInputCopy_clicked() { QGuiApplication::clipboard()->setText(ui->plainTextEditTerminalDebug->toPlainText()); }
   void on_listWidgetTerminalCodeList_itemClicked(QListWidgetItem *item);
   void on_lineEditTerminalManualInput_returnPressed();
+  void on_comboBoxMeasure1_currentIndexChanged(int) { updateMeasurements(); }
+  void on_comboBoxMeasure2_currentIndexChanged(int) { updateMeasurements(); }
+  void on_pushButtonFFT_toggled(bool checked);
+
+  void on_pushButtonFFTImage_clicked();
 
  public slots:
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumerator target);
@@ -192,6 +201,8 @@ class MainWindow : public QMainWindow {
   void printDeviceMessage(QByteArray message, bool warning, bool ended);
   void printSerialMonitor(QByteArray data) { ui->plainTextEditConsole_3->appendPlainText(data); }
   void printTerminalDebug(QString text);
+  void signalProcessingResult(int measureNumber, double period, double freq, double amp, double vpp, double min, double max, double vrms, double dc);
+  void fftResult(QSharedPointer<QCPGraphDataContainer> data);
 
  signals:
   void setChDigital(int chid, int target);
@@ -215,7 +226,9 @@ class MainWindow : public QMainWindow {
   void setXYSecond(int ch);
   void clearMath(int math);
   void clearXY();
-  void resetMath(int mathNumber, MathOperations::enumetrator mode, QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2, bool shouldIgnorePause = false);
+  void resetMath(int mathNumber, MathOperations::enumerator mode, QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2, bool shouldIgnorePause = false);
   void resetXY(QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2, bool shouldIgnorePause = false);
+  void processSignal(int pos, QSharedPointer<QCPGraphDataContainer> data);
+  void calculateFFT(QSharedPointer<QCPGraphDataContainer> data, bool dB, FFTWindow::enumerator window);
 };
 #endif  // MAINWINDOW_H

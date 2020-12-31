@@ -1,4 +1,4 @@
-//  Copyright (C) 2020  Jiří Maier
+//  Copyright (C) 2020-2021  Jiří Maier
 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -52,6 +52,7 @@
 #include "plotdata.h"
 #include "plotmath.h"
 #include "serialreader.h"
+#include "signalprocessing.h"
 
 Q_DECLARE_METATYPE(ChannelSettings_t)
 Q_DECLARE_METATYPE(DataMode::enumerator)
@@ -62,7 +63,8 @@ Q_DECLARE_METATYPE(MessageTarget::enumerator)
 Q_DECLARE_METATYPE(QSharedPointer<QVector<double>>);
 Q_DECLARE_METATYPE(QSharedPointer<QCPGraphDataContainer>);
 Q_DECLARE_METATYPE(QSharedPointer<QCPCurveDataContainer>);
-Q_DECLARE_METATYPE(MathOperations::enumetrator);
+Q_DECLARE_METATYPE(MathOperations::enumerator);
+Q_DECLARE_METATYPE(FFTWindow::enumerator);
 
 int main(int argc, char *argv[]) {
   QApplication application(argc, argv);
@@ -78,16 +80,18 @@ int main(int argc, char *argv[]) {
   qRegisterMetaType<QSharedPointer<QVector<double>>>();
   qRegisterMetaType<QSharedPointer<QCPGraphDataContainer>>();
   qRegisterMetaType<QSharedPointer<QCPCurveDataContainer>>();
-  qRegisterMetaType<MathOperations::enumetrator>();
+  qRegisterMetaType<MathOperations::enumerator>();
+  qRegisterMetaType<FFTWindow::enumerator>();
 
   // Vytvoří instance hlavních objektů
   MainWindow mainWindow;
-  QTranslator translator;  // Musí bít zde aby dokázal přeložit i texty v objektech jiných než MainWindow
+  QTranslator translator;  // Musí být zde aby dokázal přeložit i texty v objektech jiných než MainWindow
   PlotData *plotData = new PlotData();
   NewSerialParser *serialParser1 = new NewSerialParser(MessageTarget::serial1);
   NewSerialParser *serialParserM = new NewSerialParser(MessageTarget::manual);
   SerialReader *serial1 = new SerialReader();
   PlotMath *plotMath = new PlotMath();
+  SignalProcessing *signalProcessing = new SignalProcessing();
 
   // Vytvoří vlákna
   QThread plotDataThread;
@@ -95,6 +99,7 @@ int main(int argc, char *argv[]) {
   QThread serialParserMThread;
   QThread plotMathThread;
   QThread serialReader1Thread;
+  QThread signalProcessingThread;
 
   // Propojí signály
   QObject::connect(serial1, &SerialReader::sendData, serialParser1, &NewSerialParser::parse);
@@ -143,6 +148,10 @@ int main(int argc, char *argv[]) {
   QObject::connect(&mainWindow, &MainWindow::setXYSecond, plotData, &PlotData::setXYSecond);
   QObject::connect(&mainWindow, &MainWindow::clearMath, plotMath, &PlotMath::clearMath);
   QObject::connect(&mainWindow, &MainWindow::clearXY, plotMath, &PlotMath::clearXY);
+  QObject::connect(&mainWindow, &MainWindow::processSignal, signalProcessing, &SignalProcessing::process);
+  QObject::connect(&mainWindow, &MainWindow::calculateFFT, signalProcessing, &SignalProcessing::plotFFT);
+  QObject::connect(signalProcessing, &SignalProcessing::result, &mainWindow, &MainWindow::signalProcessingResult);
+  QObject::connect(signalProcessing, &SignalProcessing::fftResult, &mainWindow, &MainWindow::fftResult);
 
   // Funkce init jsou zavolány až z nového vlákna
   QObject::connect(&serialParser1Thread, &QThread::started, serialParser1, &NewSerialParser::init);
@@ -150,6 +159,7 @@ int main(int argc, char *argv[]) {
   QObject::connect(&plotDataThread, &QThread::started, plotData, &PlotData::init);
   QObject::connect(&serialReader1Thread, &QThread::started, serial1, &SerialReader::init);
   QObject::connect(&plotDataThread, &QThread::started, plotData, &PlotData::init);
+  // QObject::connect(&signalProcessingThread, &QThread::started, signalProcessing, &PlotData::init);
 
   // Přesuny do vláken
   serial1->moveToThread(&serialReader1Thread);
@@ -157,6 +167,7 @@ int main(int argc, char *argv[]) {
   serialParserM->moveToThread(&serialParserMThread);
   plotData->moveToThread(&plotDataThread);
   plotMath->moveToThread(&plotMathThread);
+  signalProcessing->moveToThread(&signalProcessingThread);
 
   // Zahájí vlákna
   serialReader1Thread.start();
@@ -164,6 +175,7 @@ int main(int argc, char *argv[]) {
   serialParserMThread.start();
   plotDataThread.start();
   plotMathThread.start();
+  signalProcessingThread.start();
 
   // Zobrazí okno a čeká na ukončení
   mainWindow.init(&translator, plotData, plotMath, serial1);
@@ -176,6 +188,7 @@ int main(int argc, char *argv[]) {
   plotData->deleteLater();
   plotMath->deleteLater();
   serial1->deleteLater();
+  signalProcessing->deleteLater();
 
   // Vyžádá ukončení event loopu
   serialParser1Thread.quit();
@@ -183,6 +196,7 @@ int main(int argc, char *argv[]) {
   plotDataThread.quit();
   plotMathThread.quit();
   serialReader1Thread.quit();
+  signalProcessingThread.quit();
 
   // Čeká na ukončení procesů
   serialParser1Thread.wait();
@@ -190,6 +204,7 @@ int main(int argc, char *argv[]) {
   plotDataThread.wait();
   plotMathThread.wait();
   serialReader1Thread.wait();
+  signalProcessingThread.wait();
 
   return returnValue;
 }

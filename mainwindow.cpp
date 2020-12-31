@@ -1,4 +1,4 @@
-//  Copyright (C) 2020  Jiří Maier
+//  Copyright (C) 2020-2021  Jiří Maier
 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -28,6 +28,8 @@ void MainWindow::init(QTranslator *translator, const PlotData *plotData, const P
   iconVisible = QIcon(":/images/icons/visible.png");
   iconConnected = QIcon(":/images/icons/connected.png");
   iconNotConnected = QIcon(":/images/icons/disconnected.png");
+  iconCross = QIcon(":/images/icons/cross.png");
+  iconFFT = QIcon(":/images/icons/fft.png");
 
   fillChannelSelect();  // Vytvoří seznam kanálů pro výběr
 
@@ -38,6 +40,7 @@ void MainWindow::init(QTranslator *translator, const PlotData *plotData, const P
   QObject::connect(plotData, &PlotData::addPointToPlot, ui->plot, &MyMainPlot::newDataPoint);
   QObject::connect(plotData, &PlotData::clearLogic, ui->plot, &MyMainPlot::clearLogicGroup);
   QObject::connect(ui->myTerminal, &MyTerminal::writeToSerial, serialReader, &SerialReader::write);
+  // QObject::connect(signalProcessing, &SignalProcessing::fftResult, ui->plotFFT, &MyFFTPlot::newData);
 
   this->translator = translator;
   setGuiArrays();
@@ -154,7 +157,7 @@ void MainWindow::updateMathNow(int number) {
   emit clearMath(number);
   ui->plot->clearCh(GlobalFunctions::getAnalogChId(number, ChannelType::math));
   if (mathEn[number - 1]->isChecked()) {
-    MathOperations::enumetrator operation = (MathOperations::enumetrator)mathOp[number - 1]->currentIndex();
+    MathOperations::enumerator operation = (MathOperations::enumerator)mathOp[number - 1]->currentIndex();
     QSharedPointer<QCPGraphDataContainer> in1 = ui->plot->graph(GlobalFunctions::getAnalogChId(mathFirst[number - 1]->value(), ChannelType::analog))->data();
     QSharedPointer<QCPGraphDataContainer> in2 = ui->plot->graph(GlobalFunctions::getAnalogChId(mathSecond[number - 1]->value(), ChannelType::analog))->data();
     emit resetMath(number, operation, in1, in2);

@@ -1,4 +1,4 @@
-//  Copyright (C) 2020  Jiří Maier
+//  Copyright (C) 2020-2021  Jiří Maier
 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -25,6 +25,9 @@ void MainWindow::updateCursorRange() {
   } else if (ch == XYID) {
     range = QPair<long, long>(0, ui->plotxy->graphXY->data()->size() - 1);
     fullRange = range.second;
+  } else if (ch == FFTID) {
+    range = QPair<long, long>(0, ui->plotFFT->graph(0)->data()->size() - 1);
+    fullRange = range.second;
   } else {
     range = ui->plot->getChVisibleSamplesRange(GlobalFunctions::getLogicChannelID(ch - ANALOG_COUNT - MATH_COUNT, 0));
     fullRange = ui->plot->graph(GlobalFunctions::getLogicChannelID(ch - ANALOG_COUNT - MATH_COUNT, 0))->data()->size() - 1;
@@ -38,6 +41,9 @@ void MainWindow::updateCursorRange() {
     fullRange = ui->plot->graph(ch)->data()->size() - 1;
   } else if (ch == XYID) {
     range = QPair<long, long>(0, ui->plotxy->graphXY->data()->size());
+    fullRange = range.second;
+  } else if (ch == FFTID) {
+    range = QPair<long, long>(0, ui->plotFFT->graph(0)->data()->size() - 1);
     fullRange = range.second;
   } else {
     range = ui->plot->getChVisibleSamplesRange(GlobalFunctions::getLogicChannelID(ch - ANALOG_COUNT - MATH_COUNT, 0));
@@ -117,6 +123,18 @@ void MainWindow::updateCursor(Cursors::enumerator cursor, int selectedChannel, u
     ui->plotxy->setCursorVisible(cursor + 2, true);
     ui->plotxy->updateCursor(cursor, valueX);
     ui->plotxy->updateCursor(cursor + 2, valueY);
+  } else if (selectedChannel == FFTID) {
+    // FFT
+    double freq = ui->plotFFT->graph(0)->data()->at(sample)->key;
+    double value = ui->plotFFT->graph(0)->data()->at(sample)->value;
+
+    timeStr = QString::number(freq, 'f', 3).toLocal8Bit() + " Hz";
+    valueStr = QString::number(value, 'f', 3).toLocal8Bit() + (ui->checkBoxFFTdB->isChecked() ? " dB" : "");
+    time = freq;
+    ui->plotFFT->setCursorVisible(cursor, true);
+    ui->plotFFT->setCursorVisible(cursor + 2, true);
+    ui->plotFFT->updateCursor(cursor, freq);
+    ui->plotFFT->updateCursor(cursor + 2, value);
   } else {
     // Logický kanál
     QByteArray bits;
@@ -152,11 +170,22 @@ void MainWindow::on_checkBoxCur1Visible_toggled(bool checked) {
   if (ui->comboBoxCursor1Channel->currentIndex() == XYID) {
     ui->plot->setCursorVisible(Cursors::X1, false);
     ui->plot->setCursorVisible(Cursors::Y1, false);
+    ui->plotFFT->setCursorVisible(Cursors::X1, false);
+    ui->plotFFT->setCursorVisible(Cursors::Y1, false);
     ui->plotxy->setCursorVisible(Cursors::X1, checked);
     ui->plotxy->setCursorVisible(Cursors::Y1, checked);
+  } else if (ui->comboBoxCursor1Channel->currentIndex() == FFTID) {
+    ui->plot->setCursorVisible(Cursors::X1, false);
+    ui->plot->setCursorVisible(Cursors::Y1, false);
+    ui->plotFFT->setCursorVisible(Cursors::X1, checked);
+    ui->plotFFT->setCursorVisible(Cursors::Y1, checked);
+    ui->plotxy->setCursorVisible(Cursors::X1, false);
+    ui->plotxy->setCursorVisible(Cursors::Y1, false);
   } else {
     ui->plotxy->setCursorVisible(Cursors::X1, false);
     ui->plotxy->setCursorVisible(Cursors::Y1, false);
+    ui->plotFFT->setCursorVisible(Cursors::X1, false);
+    ui->plotFFT->setCursorVisible(Cursors::Y1, false);
     ui->plot->setCursorVisible(Cursors::X1, checked);
     ui->plot->setCursorVisible(Cursors::Y1, checked);
   }
@@ -167,11 +196,22 @@ void MainWindow::on_checkBoxCur2Visible_toggled(bool checked) {
   if (ui->comboBoxCursor2Channel->currentIndex() == XYID) {
     ui->plot->setCursorVisible(Cursors::X2, false);
     ui->plot->setCursorVisible(Cursors::Y2, false);
+    ui->plotFFT->setCursorVisible(Cursors::X2, false);
+    ui->plotFFT->setCursorVisible(Cursors::Y2, false);
     ui->plotxy->setCursorVisible(Cursors::X2, checked);
     ui->plotxy->setCursorVisible(Cursors::Y2, checked);
+  } else if (ui->comboBoxCursor2Channel->currentIndex() == FFTID) {
+    ui->plot->setCursorVisible(Cursors::X2, false);
+    ui->plot->setCursorVisible(Cursors::Y2, false);
+    ui->plotFFT->setCursorVisible(Cursors::X2, checked);
+    ui->plotFFT->setCursorVisible(Cursors::Y2, checked);
+    ui->plotxy->setCursorVisible(Cursors::X2, false);
+    ui->plotxy->setCursorVisible(Cursors::Y2, false);
   } else {
     ui->plotxy->setCursorVisible(Cursors::X2, false);
     ui->plotxy->setCursorVisible(Cursors::Y2, false);
+    ui->plotFFT->setCursorVisible(Cursors::X2, false);
+    ui->plotFFT->setCursorVisible(Cursors::Y2, false);
     ui->plot->setCursorVisible(Cursors::X2, checked);
     ui->plot->setCursorVisible(Cursors::Y2, checked);
   }
@@ -182,11 +222,22 @@ void MainWindow::on_comboBoxCursor1Channel_currentIndexChanged(int index) {
   if (index == XYID) {
     ui->plot->setCursorVisible(Cursors::X1, false);
     ui->plot->setCursorVisible(Cursors::Y1, false);
+    ui->plotFFT->setCursorVisible(Cursors::X1, false);
+    ui->plotFFT->setCursorVisible(Cursors::Y1, false);
     ui->plotxy->setCursorVisible(Cursors::X1, ui->checkBoxCur1Visible->isChecked());
     ui->plotxy->setCursorVisible(Cursors::Y1, ui->checkBoxCur1Visible->isChecked());
+  } else if (index == FFTID) {
+    ui->plot->setCursorVisible(Cursors::X1, false);
+    ui->plot->setCursorVisible(Cursors::Y1, false);
+    ui->plotFFT->setCursorVisible(Cursors::X1, ui->checkBoxCur1Visible->isChecked());
+    ui->plotFFT->setCursorVisible(Cursors::Y1, ui->checkBoxCur1Visible->isChecked());
+    ui->plotxy->setCursorVisible(Cursors::X1, false);
+    ui->plotxy->setCursorVisible(Cursors::Y1, false);
   } else {
     ui->plotxy->setCursorVisible(Cursors::X1, false);
     ui->plotxy->setCursorVisible(Cursors::Y1, false);
+    ui->plotFFT->setCursorVisible(Cursors::X1, false);
+    ui->plotFFT->setCursorVisible(Cursors::Y1, false);
     ui->plot->setCursorVisible(Cursors::X1, ui->checkBoxCur1Visible->isChecked());
     ui->plot->setCursorVisible(Cursors::Y1, ui->checkBoxCur1Visible->isChecked());
   }
@@ -197,11 +248,22 @@ void MainWindow::on_comboBoxCursor2Channel_currentIndexChanged(int index) {
   if (index == XYID) {
     ui->plot->setCursorVisible(Cursors::X2, false);
     ui->plot->setCursorVisible(Cursors::Y2, false);
+    ui->plotFFT->setCursorVisible(Cursors::X2, false);
+    ui->plotFFT->setCursorVisible(Cursors::Y2, false);
     ui->plotxy->setCursorVisible(Cursors::X2, ui->checkBoxCur2Visible->isChecked());
     ui->plotxy->setCursorVisible(Cursors::Y2, ui->checkBoxCur2Visible->isChecked());
+  } else if (index == FFTID) {
+    ui->plot->setCursorVisible(Cursors::X2, false);
+    ui->plot->setCursorVisible(Cursors::Y2, false);
+    ui->plotFFT->setCursorVisible(Cursors::X2, ui->checkBoxCur2Visible->isChecked());
+    ui->plotFFT->setCursorVisible(Cursors::Y2, ui->checkBoxCur2Visible->isChecked());
+    ui->plotxy->setCursorVisible(Cursors::X2, false);
+    ui->plotxy->setCursorVisible(Cursors::Y2, false);
   } else {
     ui->plotxy->setCursorVisible(Cursors::X2, false);
     ui->plotxy->setCursorVisible(Cursors::Y2, false);
+    ui->plotFFT->setCursorVisible(Cursors::X2, false);
+    ui->plotFFT->setCursorVisible(Cursors::Y2, false);
     ui->plot->setCursorVisible(Cursors::X2, ui->checkBoxCur2Visible->isChecked());
     ui->plot->setCursorVisible(Cursors::Y2, ui->checkBoxCur2Visible->isChecked());
   }

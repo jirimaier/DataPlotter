@@ -1,4 +1,4 @@
-//  Copyright (C) 2020  Jiří Maier
+//  Copyright (C) 2020-2021  Jiří Maier
 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -20,14 +20,13 @@
 
 class MyXYPlot : public MyPlot {
   Q_OBJECT
-public:
+ public:
   explicit MyXYPlot(QWidget *parent = nullptr);
   ~MyXYPlot();
-  void newData(QSharedPointer<QCPCurveDataContainer> data, bool ignorePause);
   QByteArray exportCSV(char separator, char decimal, int precision);
   QCPCurve *graphXY;
 
-private:
+ private:
   PlotStatus::enumerator plottingStatus = PlotStatus::run;
   QSharedPointer<QCPCurveDataContainer> pauseBuffer;
   void resume();
@@ -37,10 +36,10 @@ private:
   double center = 10;
   bool useRange = false;
   bool autoSize = true;
-
   void autoset();
 
-public slots:
+ public slots:
+  void newData(QSharedPointer<QCPCurveDataContainer> data, bool ignorePause);
   void setAutoSize(bool en);
   void clear();
   void setStyle(int style);
@@ -51,4 +50,4 @@ public slots:
   void setRange(double value);
 };
 
-#endif // MYXYPLOT_H
+#endif  // MYXYPLOT_H

@@ -1,4 +1,4 @@
-//  Copyright (C) 2020  Jiří Maier
+//  Copyright (C) 2020-2021  Jiří Maier
 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -30,17 +30,13 @@ MyXYPlot::~MyXYPlot() {}
 void MyXYPlot::newData(QSharedPointer<QCPCurveDataContainer> data, bool ignorePause) {
   if (data->size() == 1) {
     if (plottingStatus == PlotStatus::run || ignorePause) {
-      if (data->at(0)->t <= graphXY->data()->at(graphXY->data()->size() - 1)->t)
-        graphXY->data().data()->clear();
+      if (data->at(0)->t <= graphXY->data()->at(graphXY->data()->size() - 1)->t) graphXY->data().data()->clear();
       graphXY->addData(data->at(0)->t, data->at(0)->key, data->at(0)->value);
-      if (useRange)
-        graphXY->data()->removeBefore(data->at(0)->t - timeRange);
+      if (useRange) graphXY->data()->removeBefore(data->at(0)->t - timeRange);
     } else {
-      if (data->at(0)->t <= pauseBuffer->at(pauseBuffer->size() - 1)->t)
-        pauseBuffer->clear();
+      if (data->at(0)->t <= pauseBuffer->at(pauseBuffer->size() - 1)->t) pauseBuffer->clear();
       pauseBuffer->add(QCPCurveData(data->at(0)->t, data->at(0)->key, data->at(0)->value));
-      if (useRange)
-        pauseBuffer->removeBefore(data->at(0)->t - timeRange);
+      if (useRange) pauseBuffer->removeBefore(data->at(0)->t - timeRange);
     }
   } else {
     if (plottingStatus == PlotStatus::run || ignorePause)
@@ -49,8 +45,7 @@ void MyXYPlot::newData(QSharedPointer<QCPCurveDataContainer> data, bool ignorePa
       pauseBuffer = data;
   }
   if (plottingStatus == PlotStatus::run || ignorePause) {
-    if (autoSize)
-      autoset();
+    if (autoSize) autoset();
     this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
   }
 }
@@ -95,15 +90,14 @@ QByteArray MyXYPlot::exportCSV(char separator, char decimal, int precision) {
 void MyXYPlot::resume() {
   plottingStatus = PlotStatus::run;
   graphXY->setData(pauseBuffer);
-  if (autoSize)
-    autoset();
+  if (autoSize) autoset();
   this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
   pauseBuffer.clear();
 }
 
 void MyXYPlot::pause() {
   plottingStatus = PlotStatus::pause;
-  pauseBuffer = QSharedPointer<QCPCurveDataContainer>(new QCPCurveDataContainer(*graphXY->data())); // Zkopíruje existující data do bufferu
+  pauseBuffer = QSharedPointer<QCPCurveDataContainer>(new QCPCurveDataContainer(*graphXY->data()));  // Zkopíruje existující data do bufferu
 }
 
 void MyXYPlot::autoset() {
@@ -137,7 +131,7 @@ void MyXYPlot::setTimeRange(double interval) {
 
 void MyXYPlot::setUseTimeRange(bool en) {
   useRange = en;
-  setTimeRange(timeRange); // Aby se vymazali případné přebytečné
+  setTimeRange(timeRange);  // Aby se vymazali případné přebytečné
 }
 
 void MyXYPlot::setCenter(double value) {

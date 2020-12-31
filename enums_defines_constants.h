@@ -1,4 +1,4 @@
-//  Copyright (C) 2020  Jiří Maier
+//  Copyright (C) 2020-2021  Jiří Maier
 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -26,7 +26,10 @@ enum enumerator { run, pause };
 
 namespace ChannelType {
 enum enumerator { analog, math, logic };
+}
 
+namespace FFTWindow {
+enum enumerator { rectangular = 0, hamming = 1 };
 }
 
 namespace PlotRange {
@@ -46,7 +49,7 @@ enum enumerator { device = 0, error = 1, warning = 2, info = 3 };
 }
 
 namespace MathOperations {
-enum enumetrator { add = 0, subtract = 1, multiply = 2, divide = 3 };
+enum enumerator { add = 0, subtract = 1, multiply = 2, divide = 3 };
 }
 
 namespace DataLineType {
@@ -91,6 +94,7 @@ enum enumerator { unrecognised, u1, u2, u3, u4, U1, U2, U3, U4, i1, i2, i3, i4, 
 #define MAX_PLOT_ZOOMOUT 1000000
 
 #define XYID ANALOG_COUNT + MATH_COUNT + LOGIC_GROUPS
+#define FFTID ANALOG_COUNT + MATH_COUNT + LOGIC_GROUPS + 1
 
 namespace Global {
 
@@ -149,6 +153,6 @@ struct ChannelSettings_t {
 #define CMD_BEGIN_LENGTH (sizeof(CMD_BEGIN) - 1)
 
 #define XY_CHANNEL -1
-#define FFT_CHANNEL -1
+#define FFT_CHANNEL -2
 
 #endif  // SETTINGS_H

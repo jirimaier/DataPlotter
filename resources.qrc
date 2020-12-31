@@ -60,6 +60,9 @@
         <file>icons/terminalClickToSend.png</file>
         <file>icons/terminalSelect.png</file>
         <file>icons/copy.png</file>
+        <file>icons/cross.png</file>
+        <file>icons/fft.png</file>
+        <file>icons/measure.png</file>
     </qresource>
     <qresource prefix="/translations">
         <file>translations/translation_cz.qm</file>

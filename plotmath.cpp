@@ -1,4 +1,4 @@
-//  Copyright (C) 2020  Jiří Maier
+//  Copyright (C) 2020-2021  Jiří Maier
 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -18,8 +18,7 @@
 PlotMath::PlotMath(QObject *parent) : QObject(parent) {
   firsts.resize(MATH_COUNT);
   seconds.resize(MATH_COUNT);
-  for (int i = 0; i < MATH_COUNT; i++)
-    operations[i] = MathOperations::add;
+  for (int i = 0; i < MATH_COUNT; i++) operations[i] = MathOperations::add;
 }
 
 PlotMath::~PlotMath() {}
@@ -91,15 +90,15 @@ void PlotMath::addXYData(bool isFirst, QSharedPointer<QCPGraphDataContainer> in,
   }
 }
 
-void PlotMath::resetMath(int mathNumber, MathOperations::enumetrator mode, QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2) {
+void PlotMath::resetMath(int mathNumber, MathOperations::enumerator mode, QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2) {
   operations[mathNumber - 1] = mode;
-  seconds[mathNumber - 1].clear();               // Vymaže druhá data
-  firsts[mathNumber - 1] = in1;                  // Vloží první data
-  addMathData(mathNumber - 1, false, in2, true); // Vloží druhá data, spočítá a pošle do grafu
+  seconds[mathNumber - 1].clear();                // Vymaže druhá data
+  firsts[mathNumber - 1] = in1;                   // Vloží první data
+  addMathData(mathNumber - 1, false, in2, true);  // Vloží druhá data, spočítá a pošle do grafu
 }
 
 void PlotMath::resetXY(QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2) {
-  XYy.clear();                 // Vymaže druhá data
-  XYx = in1;                   // Vloží první data
-  addXYData(false, in2, true); // Vloží druhá data, spočítá a pošle do grafu
+  XYy.clear();                  // Vymaže druhá data
+  XYx = in1;                    // Vloží první data
+  addXYData(false, in2, true);  // Vloží druhá data, spočítá a pošle do grafu
 }

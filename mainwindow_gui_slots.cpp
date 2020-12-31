@@ -1,4 +1,4 @@
-//  Copyright (C) 2020  Jiří Maier
+//  Copyright (C) 2020-2021  Jiří Maier
 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -19,10 +19,6 @@ void MainWindow::on_pushButtonConnect_clicked() {
   if (ui->comboBoxCom->currentIndex() >= 0) {
     emit toggleSerialConnection(portList.at(ui->comboBoxCom->currentIndex()).portName(), ui->comboBoxBaud->currentText().toInt());
   }
-}
-
-void MainWindow::on_tabs_right_currentChanged(int index) {
-  if (index == 2) ui->lineEditCommand->setFocus();
 }
 
 void MainWindow::rangeTypeChanged() {
@@ -241,6 +237,14 @@ void MainWindow::on_radioButtonRollingRange_toggled(bool checked) {
 void MainWindow::on_pushButtonXY_toggled(bool checked) {
   updateXYNow();
 
+  if (checked) {
+    ui->plotFFT->setVisible(true);
+    ui->plotxy->setVisible(true);
+  } else if (!ui->pushButtonFFT->isChecked()) {
+    ui->plotFFT->setVisible(false);
+    ui->plotxy->setVisible(false);
+  }
+
   auto *model = qobject_cast<QStandardItemModel *>(ui->comboBoxCursor1Channel->model());
   auto *item = model->item(XYID);
   item->setEnabled(checked);
@@ -324,12 +328,45 @@ void MainWindow::on_pushButtonTerminalSelect_toggled(bool checked) {
 }
 
 void MainWindow::printTerminalDebug(QString text) {
+  if (ui->plainTextEditTerminalDebug->toPlainText().length() > 1000) ui->plainTextEditTerminalDebug->clear();
+
   QTextCursor prevCursor = ui->plainTextEditTerminalDebug->textCursor();
   text.replace(" ", "&nbsp;");                    // Normální mezera se nezobrazí :-(
   text.replace("font&nbsp;color", "font color");  // A když už tam tu mezeru změním, tek to zase zničí tu mezeru v "font color" a nefunguje to.
   ui->plainTextEditTerminalDebug->moveCursor(QTextCursor::End);
   ui->plainTextEditTerminalDebug->textCursor().insertHtml(text);
   ui->plainTextEditTerminalDebug->setTextCursor(prevCursor);
+}
+
+void MainWindow::signalProcessingResult(int measureNumber, double period, double freq, double amp, double vpp, double min, double max, double vrms, double dc) {
+  if (measureNumber == 1) {
+    measure1Ready = true;
+    ui->labelSig1Amp->setText(QString::number(amp, 'g', 3));
+    ui->labelSig1Freq->setText(QString::number(freq, 'g', 3));
+    ui->labelSig1Period->setText(QString::number(period, 'g', 3));
+    ui->labelSig1Vpp->setText(QString::number(vpp, 'g', 3));
+    ui->labelSig1Vrms->setText(QString::number(vrms, 'g', 3));
+    ui->labelSig1Min->setText(QString::number(min, 'g', 3));
+    ui->labelSig1Max->setText(QString::number(max, 'g', 3));
+    ui->labelSig1Dc->setText(QString::number(dc, 'g', 3));
+  }
+
+  if (measureNumber == 2) {
+    measure2Ready = true;
+    ui->labelSig2Amp->setText(QString::number(amp, 'g', 3));
+    ui->labelSig2Freq->setText(QString::number(freq, 'g', 3));
+    ui->labelSig2Period->setText(QString::number(period, 'g', 3));
+    ui->labelSig2Vpp->setText(QString::number(vpp, 'g', 3));
+    ui->labelSig2Vrms->setText(QString::number(vrms, 'g', 3));
+    ui->labelSig2Min->setText(QString::number(min, 'g', 3));
+    ui->labelSig2Max->setText(QString::number(max, 'g', 3));
+    ui->labelSig2Dc->setText(QString::number(dc, 'g', 3));
+  }
+}
+
+void MainWindow::fftResult(QSharedPointer<QCPGraphDataContainer> data) {
+  ui->plotFFT->newData(data);
+  fftReady = true;
 }
 
 void MainWindow::on_listWidgetTerminalCodeList_itemClicked(QListWidgetItem *item) {
@@ -356,4 +393,30 @@ void MainWindow::on_listWidgetTerminalCodeList_itemClicked(QListWidgetItem *item
   }
 
   ui->myTerminal->printToTerminal(QString("\u001b[" + code).toUtf8());
+}
+
+void MainWindow::on_pushButtonFFT_toggled(bool checked) {
+  updateFFT();
+
+  if (checked) {
+    ui->plotFFT->setVisible(true);
+    ui->plotxy->setVisible(true);
+  } else if (!ui->pushButtonXY->isChecked()) {
+    ui->plotFFT->setVisible(false);
+    ui->plotxy->setVisible(false);
+  }
+
+  if (!checked) ui->plotFFT->clear();
+
+  auto *model = qobject_cast<QStandardItemModel *>(ui->comboBoxCursor1Channel->model());
+  auto *item = model->item(FFTID);
+  item->setEnabled(checked);
+  QListView *view = qobject_cast<QListView *>(ui->comboBoxCursor1Channel->view());
+  view->setRowHidden(FFTID, !checked);
+
+  model = qobject_cast<QStandardItemModel *>(ui->comboBoxCursor2Channel->model());
+  item = model->item(FFTID);
+  item->setEnabled(checked);
+  view = qobject_cast<QListView *>(ui->comboBoxCursor2Channel->view());
+  view->setRowHidden(FFTID, !checked);
 }

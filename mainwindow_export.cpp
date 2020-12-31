@@ -1,4 +1,4 @@
-//  Copyright (C) 2020  Jiří Maier
+//  Copyright (C) 2020-2021  Jiří Maier
 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -20,9 +20,11 @@ void MainWindow::exportCSV(bool all, int ch) {
   if (all)
     name = tr("all");
   else {
-    if (ch == XY_CHANNEL)
+    if (ch == FFT_CHANNEL)
+      name = tr("fft");
+    else if (ch == XY_CHANNEL)
       name = tr("xy");
-    if (ch >= ANALOG_COUNT + MATH_COUNT)
+    else if (ch >= ANALOG_COUNT + MATH_COUNT)
       name = tr("Logic %1").arg(ch - ANALOG_COUNT - MATH_COUNT + 1);
     else {
       name = GlobalFunctions::getChName(ch);
@@ -30,8 +32,7 @@ void MainWindow::exportCSV(bool all, int ch) {
   }
   QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/export/%1.csv").arg(name);
   QString fileName = QFileDialog::getSaveFileName(this, tr("Export %1").arg(name), defaultName, tr("Comma separated values (*.csv)"));
-  if (fileName.isEmpty())
-    return;
+  if (fileName.isEmpty()) return;
   QFile file(fileName);
   if (file.open(QFile::WriteOnly | QFile::Truncate)) {
     char decimal = ui->radioButtonCSVDot->isChecked() ? '.' : ',';
@@ -43,6 +44,8 @@ void MainWindow::exportCSV(bool all, int ch) {
         file.write(ui->plot->exportLogicCSV(separator, decimal, ch - ANALOG_COUNT - MATH_COUNT, ui->spinBoxCSVPrecision->value(), ui->checkBoxCSVVRO->isChecked()));
       else if (ch == XY_CHANNEL)
         file.write(ui->plotxy->exportCSV(separator, decimal, ui->spinBoxCSVPrecision->value()));
+      else if (ch == FFT_CHANNEL)
+        file.write(ui->plotFFT->exportCSV(separator, decimal, ui->spinBoxCSVPrecision->value()));
       else
         file.write(ui->plot->exportChannelCSV(separator, decimal, ch, ui->spinBoxCSVPrecision->value(), ui->checkBoxCSVVRO->isChecked()));
     }
@@ -59,15 +62,20 @@ void MainWindow::exportCSV(bool all, int ch) {
 void MainWindow::on_pushButtonPlotImage_clicked() {
   QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/export/plot.png");
   QString fileName = QFileDialog::getSaveFileName(this, tr("Export main plot as image"), defaultName, tr("Portable network graphics (*.png)"));
-  if (fileName.isEmpty())
-    return;
+  if (fileName.isEmpty()) return;
   ui->plot->toPNG().save(fileName);
 }
 
 void MainWindow::on_pushButtonXYImage_clicked() {
   QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/export/xy.png");
   QString fileName = QFileDialog::getSaveFileName(this, tr("Export XY plot as image"), defaultName, tr("Portable network graphics (*.png)"));
-  if (fileName.isEmpty())
-    return;
+  if (fileName.isEmpty()) return;
   ui->plotxy->toPNG().save(fileName);
+}
+
+void MainWindow::on_pushButtonFFTImage_clicked() {
+  QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/export/fft.png");
+  QString fileName = QFileDialog::getSaveFileName(this, tr("Export FFT plot as image"), defaultName, tr("Portable network graphics (*.png)"));
+  if (fileName.isEmpty()) return;
+  ui->plotFFT->toPNG().save(fileName);
 }

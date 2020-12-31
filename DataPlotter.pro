@@ -4,7 +4,7 @@ RC_ICONS = icons/icon.ico
 
 DEFINES += QT_DEPRECATED_WARNINGS
 
-CONFIG += c++11
+CONFIG += c++1z
 
 SOURCES += \
     main.cpp \
@@ -18,6 +18,7 @@ SOURCES += \
     mainwindow_timed_events.cpp \
     mycursorslider.cpp \
     mydial.cpp \
+    myfftplot.cpp \
     mymainplot.cpp \
     myplot.cpp \
     myterminal.cpp \
@@ -26,13 +27,15 @@ SOURCES += \
     plotdata.cpp \
     plotmath.cpp \
     qcustomplot.cpp \
-    serialreader.cpp
+    serialreader.cpp \
+    signalprocessing.cpp
 
 HEADERS += \
     enums_defines_constants.h \
     mainwindow.h \
     mycursorslider.h \
     mydial.h \
+    myfftplot.h \
     mymainplot.h \
     myplot.h \
     myterminal.h \
@@ -41,7 +44,8 @@ HEADERS += \
     plotdata.h \
     plotmath.h \
     qcustomplot.h \
-    serialreader.h
+    serialreader.h \
+    signalprocessing.h
 
 FORMS += mainwindow.ui
 

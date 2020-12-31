@@ -1,4 +1,4 @@
-//  Copyright (C) 2020  Jiří Maier
+//  Copyright (C) 2020-2021  Jiří Maier
 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -16,34 +16,34 @@
 #ifndef PLOTMATH_H
 #define PLOTMATH_H
 
-#include "enums_defines_constants.h"
 #include <QDebug>
 #include <QObject>
 #include <QThread>
 
+#include "enums_defines_constants.h"
 #include "qcustomplot.h"
 
 class PlotMath : public QObject {
   Q_OBJECT
-public:
+ public:
   explicit PlotMath(QObject *parent = nullptr);
   ~PlotMath();
 
-private:
+ private:
   QVector<QSharedPointer<QCPGraphDataContainer>> firsts, seconds = QVector<QSharedPointer<QCPGraphDataContainer>>();
   QSharedPointer<QCPGraphDataContainer> XYx, XYy;
-  MathOperations::enumetrator operations[MATH_COUNT];
-public slots:
+  MathOperations::enumerator operations[MATH_COUNT];
+ public slots:
   void addMathData(int mathNumber, bool isFirst, QSharedPointer<QCPGraphDataContainer> in, bool shouldIgnorePause);
   void clearMath(int math);
   void clearXY();
   void addXYData(bool isFirst, QSharedPointer<QCPGraphDataContainer> in, bool shouldIgnorePause);
-  void resetMath(int mathNumber, MathOperations::enumetrator mode, QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2);
+  void resetMath(int mathNumber, MathOperations::enumerator mode, QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2);
   void resetXY(QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2);
-signals:
+ signals:
   void sendResult(int chNumber, QSharedPointer<QCPGraphDataContainer> result, bool ignorePause);
   void sendResultXY(QSharedPointer<QCPCurveDataContainer> result, bool ignorePause);
   void sendMessage(QString header, QByteArray message, MessageLevel::enumerator type = MessageLevel::error, MessageTarget::enumerator target = MessageTarget::serial1);
 };
 
-#endif // PLOTMATH_H
+#endif  // PLOTMATH_H

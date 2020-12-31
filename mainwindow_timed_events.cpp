@@ -1,4 +1,4 @@
-//  Copyright (C) 2020  Jiří Maier
+//  Copyright (C) 2020-2021  Jiří Maier
 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -40,8 +40,7 @@ void MainWindow::comRefresh() {
     for (int i = 0; i < portList.length(); i++) {
       QSerialPortInfo port = portList.at(i);
       ui->comboBoxCom->addItem(port.portName() + " - " + port.description());
-      if (port.description().contains(PORT_NUCLEO_DESCRIPTION_IDENTIFIER))
-        portWithStName = i;
+      if (port.description().contains(PORT_NUCLEO_DESCRIPTION_IDENTIFIER)) portWithStName = i;
     }
 
     // Znovu vypere původní port; pokud neexistuje, vybere port který je asi Nucleo, pokud žádný popisem neodpovídá, vybere ten první.
@@ -50,39 +49,41 @@ void MainWindow::comRefresh() {
 }
 
 void MainWindow::updateUsedChannels() {
-  updateChannelComboBox(*ui->comboBoxCursor1Channel);
-  updateChannelComboBox(*ui->comboBoxCursor2Channel);
-  updateChannelComboBox(*ui->comboBoxSelectedChannel);
+  updateChannelComboBox(*ui->comboBoxCursor1Channel, true, true);
+  updateChannelComboBox(*ui->comboBoxCursor2Channel, true, true);
+  updateChannelComboBox(*ui->comboBoxSelectedChannel, true, true);
+  updateChannelComboBox(*ui->comboBoxMeasure1, false, false);
+  updateChannelComboBox(*ui->comboBoxMeasure2, false, false);
   colorUpdateNeeded = false;
 }
 
-void MainWindow::updateChannelComboBox(QComboBox &combobox) {
+void MainWindow::updateChannelComboBox(QComboBox &combobox, bool includeLogic, bool leaveAtLeastOne) {
   // Nechá ve výběru kanálu jen ty kanály, které jsou používány
   // Pokud není používán žádný, nechá alespoň CH1 (protože vypadá blbě když v nabídce není nic)
-  bool atLeastOneVisible = false;
-  for (int i = 0; i < LOGIC_GROUPS; i++) {
-    auto *model = qobject_cast<QStandardItemModel *>(combobox.model());
-    auto *item = model->item(i + ANALOG_COUNT + MATH_COUNT);
-    bool willBeVisible = ui->checkBoxSelUnused->isChecked() || ui->plot->isChUsed(GlobalFunctions::getLogicChannelID(i, 1));
-    if (willBeVisible)
-      atLeastOneVisible = true;
-    item->setEnabled(willBeVisible);
-    QListView *view = qobject_cast<QListView *>(combobox.view());
-    view->setRowHidden(i + ANALOG_COUNT + MATH_COUNT, !willBeVisible);
-    if (colorUpdateNeeded) {
-      QPixmap color(12, 12);
-      color.fill(ui->plot->getLogicColor(i));
-      item->setIcon(QIcon(color));
+  // Pokud je leaveAtLeastOne false (u měření, kde je v nabídce vždy ještě off), tak ten CH1 nenechá
+  bool atLeastOneVisible = !leaveAtLeastOne;
+  if (includeLogic) {
+    for (int i = 0; i < LOGIC_GROUPS; i++) {
+      auto *model = qobject_cast<QStandardItemModel *>(combobox.model());
+      auto *item = model->item(i + ANALOG_COUNT + MATH_COUNT);
+      bool willBeVisible = ui->checkBoxSelUnused->isChecked() || ui->plot->isChUsed(GlobalFunctions::getLogicChannelID(i, 1));
+      if (willBeVisible) atLeastOneVisible = true;
+      item->setEnabled(willBeVisible);
+      QListView *view = qobject_cast<QListView *>(combobox.view());
+      view->setRowHidden(i + ANALOG_COUNT + MATH_COUNT, !willBeVisible);
+      if (colorUpdateNeeded) {
+        QPixmap color(12, 12);
+        color.fill(ui->plot->getLogicColor(i));
+        item->setIcon(QIcon(color));
+      }
     }
   }
   for (int i = ANALOG_COUNT + MATH_COUNT - 1; i >= 0; i--) {
     auto *model = qobject_cast<QStandardItemModel *>(combobox.model());
     auto *item = model->item(i);
     bool willBeVisible = ui->checkBoxSelUnused->isChecked() || ui->plot->isChUsed(i);
-    if (willBeVisible)
-      atLeastOneVisible = true;
-    if (i == 0 && !atLeastOneVisible)
-      willBeVisible = true;
+    if (willBeVisible) atLeastOneVisible = true;
+    if (i == 0 && !atLeastOneVisible && !ui->pushButtonXY->isChecked()) willBeVisible = true;
     item->setEnabled(willBeVisible);
     QListView *view = qobject_cast<QListView *>(combobox.view());
     view->setRowHidden(i, !willBeVisible);
@@ -91,5 +92,71 @@ void MainWindow::updateChannelComboBox(QComboBox &combobox) {
       color.fill(ui->plot->getChColor(i));
       item->setIcon(QIcon(color));
     }
+  }
+}
+
+void MainWindow::updateMeasurements() {
+  if (measure1Ready) {
+    if (ui->comboBoxMeasure1->currentIndex() != ui->comboBoxMeasure1->count() - 1) {
+      int chid = ui->comboBoxMeasure1->currentIndex();
+      if (ui->plot->graph(chid)->data()->isEmpty()) return;
+      auto data = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer(*ui->plot->graph(chid)->data()));
+      if (ui->radioButtonSigPart->isChecked()) {
+        data->removeBefore(ui->plot->xAxis->range().lower);
+        data->removeAfter(ui->plot->xAxis->range().upper);
+      }
+      measure1Ready = false;
+      emit processSignal(1, data);
+    } else {
+      ui->labelSig1Period->setText("---");
+      ui->labelSig1Freq->setText("---");
+      ui->labelSig1Amp->setText("---");
+      ui->labelSig1Vpp->setText("---");
+      ui->labelSig1Vrms->setText("---");
+      ui->labelSig1Dc->setText("---");
+      ui->labelSig1Min->setText("---");
+      ui->labelSig1Max->setText("---");
+    }
+  }
+  if (measure2Ready) {
+    if (ui->comboBoxMeasure2->currentIndex() != ui->comboBoxMeasure2->count() - 1) {
+      int chid = ui->comboBoxMeasure2->currentIndex();
+      if (ui->plot->graph(chid)->data()->isEmpty()) return;
+      auto data = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer(*ui->plot->graph(chid)->data()));
+      if (ui->radioButtonSigPart->isChecked()) {
+        data->removeBefore(ui->plot->xAxis->range().lower);
+        data->removeAfter(ui->plot->xAxis->range().upper);
+      }
+      measure2Ready = false;
+      emit processSignal(2, data);
+    } else {
+      ui->labelSig2Period->setText("---");
+      ui->labelSig2Freq->setText("---");
+      ui->labelSig2Amp->setText("---");
+      ui->labelSig2Vpp->setText("---");
+      ui->labelSig2Vrms->setText("---");
+      ui->labelSig2Dc->setText("---");
+      ui->labelSig2Min->setText("---");
+      ui->labelSig2Max->setText("---");
+    }
+  }
+}
+
+void MainWindow::updateFFT() {
+  if (!fftReady) return;
+  if (ui->pushButtonFFT->isChecked()) {
+    int chid = ui->spinBoxFFT->value() - 1;
+    if (ui->plot->graph(chid)->data()->isEmpty()) {
+      ui->plotFFT->clear();
+      return;
+    }
+
+    auto data = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer(*ui->plot->graph(chid)->data()));
+    if (ui->radioButtonFFTPart->isChecked()) {
+      data->removeBefore(ui->plot->xAxis->range().lower);
+      data->removeAfter(ui->plot->xAxis->range().upper);
+    }
+    fftReady = false;
+    emit calculateFFT(data, ui->checkBoxFFTdB->isChecked(), (FFTWindow::enumerator)ui->comboBoxFFTWindow->currentIndex());
   }
 }

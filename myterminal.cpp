@@ -1,4 +1,4 @@
-//  Copyright (C) 2020  Jiří Maier
+//  Copyright (C) 2020-2021  Jiří Maier
 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -49,21 +49,29 @@ void MyTerminal::printText(QByteArray text) {
       moveCursorRelative(-1, 0);
       printChar(' ');
       moveCursorRelative(-1, 0);
-      if (mode == debug) sendDebug("<font color=blue>\\b</font color>");
+      if (mode == debug) emit sendDebug("<font color=blue>\\b</font color>");
       continue;
     }
     if (text.at(i) == '\r') {
       moveCursorAbsolute(0, cursorY);
-      if (mode == debug) sendDebug("<font color=blue>\\r</font color>");
+      if (mode == debug) emit sendDebug("<font color=blue>\\r</font color>");
       continue;
     }
     if (text.at(i) == '\n') {
       moveCursorRelative(0, 1);
-      if (mode == debug) sendDebug("<font color=blue>\\n</font color>");
+      if (mode == debug) emit sendDebug("<font color=blue>\\n</font color>");
+      continue;
+    }
+    if (text.at(i) == '\t') {  // Tabulátor posune kursor na další sloupec který je násobkem 8 (počítáno od 0)
+      do
+        moveCursorRelative(1, 0);
+      while (cursorX % 8);
+
+      if (mode == debug) emit sendDebug("<font color=blue>\\t</font color>");
       continue;
     }
     printChar(text.at(i));
-    if (mode == debug) sendDebug(text.mid(i, 1));
+    if (mode == debug) emit sendDebug(text.mid(i, 1));
   }
 }
 
@@ -155,7 +163,7 @@ void MyTerminal::parseFontEscapeCode(QByteArray data) {
 }
 
 void MyTerminal::parseEscapeCode(QByteArray data) {
-  if (mode == debug) sendDebug(QString("<font color=red>\\e[%1</font color>").arg(QString(data)));
+  if (mode == debug) emit sendDebug(QString("<font color=red>\\e[%1</font color>").arg(QString(data)));
 
   // Uložit pozici kursoru
   if (data == "s") {
@@ -294,6 +302,7 @@ void MyTerminal::setMode(TerminalMode::enumerator mode) {
   } else if (mode == clicksend) {
     this->setSelectionMode(QAbstractItemView::SelectionMode::NoSelection);
   }
+  this->setShowGrid(mode == debug);
 }
 
 void MyTerminal::resetTerminal() {
@@ -381,6 +390,6 @@ void MyTerminal::characterClicked(int r, int c) {
     }
   } else if (mode == debug) {
     moveCursorAbsolute(c, r);
-    sendDebug(QString("<font color=red>\\e[%1;%2H</font color>").arg(r + 1).arg(c + 1));
+    emit sendDebug(QString("<font color=red>\\e[%1;%2H</font color>").arg(r + 1).arg(c + 1));
   }
 }

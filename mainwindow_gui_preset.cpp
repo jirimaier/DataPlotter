@@ -1,4 +1,4 @@
-//  Copyright (C) 2020  Jiří Maier
+//  Copyright (C) 2020-2021  Jiří Maier
 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -45,6 +45,8 @@ void MainWindow::connectSignals() {
   connect(&portsRefreshTimer, &QTimer::timeout, this, &MainWindow::comRefresh);
   connect(&activeChRefreshTimer, &QTimer::timeout, this, &MainWindow::updateUsedChannels);
   connect(&cursorRangeUpdateTimer, &QTimer::timeout, this, &MainWindow::updateCursorRange);
+  connect(&measureRefreshTimer, &QTimer::timeout, this, &MainWindow::updateMeasurements);
+  connect(&fftTimer, &QTimer::timeout, this, &::MainWindow::updateFFT);
 }
 
 void MainWindow::setAdaptiveSpinBoxes() {
@@ -60,6 +62,8 @@ void MainWindow::startTimers() {
   portsRefreshTimer.start(500);
   activeChRefreshTimer.start(500);
   cursorRangeUpdateTimer.start(100);
+  measureRefreshTimer.start(250);
+  fftTimer.start(500);
 }
 
 void MainWindow::setGuiDefaults() {
@@ -68,7 +72,7 @@ void MainWindow::setGuiDefaults() {
   ui->comboBoxOutputLevel->setCurrentIndex((int)OutputLevel::info);
   ui->radioButtonFixedRange->setChecked(true);
   ui->plotxy->setHidden(true);
-  ui->plotEmpty->setHidden(true);
+  ui->plotFFT->setHidden(true);
   ui->frameTermanalDebug->setVisible(ui->pushButtonTerminalDebug->isChecked());
   ui->labelBuildDate->setText(tr("Build: ") + QString(__DATE__) + " " + QString(__TIME__));
   ui->pushButtonPause->setIcon(iconRun);
@@ -97,11 +101,15 @@ void MainWindow::fillChannelSelect() {
   ui->comboBoxSelectedChannel->blockSignals(true);
   ui->comboBoxCursor1Channel->blockSignals(true);
   ui->comboBoxCursor2Channel->blockSignals(true);
+  ui->comboBoxMeasure1->blockSignals(true);
+  ui->comboBoxMeasure2->blockSignals(true);
 
   for (int i = 0; i < ANALOG_COUNT + MATH_COUNT; i++) {
     ui->comboBoxSelectedChannel->addItem(GlobalFunctions::getChName(i));
     ui->comboBoxCursor1Channel->addItem(GlobalFunctions::getChName(i));
     ui->comboBoxCursor2Channel->addItem(GlobalFunctions::getChName(i));
+    ui->comboBoxMeasure1->addItem(GlobalFunctions::getChName(i));
+    ui->comboBoxMeasure2->addItem(GlobalFunctions::getChName(i));
   }
   for (int i = 1; i <= LOGIC_GROUPS; i++) {
     ui->comboBoxSelectedChannel->addItem(tr("Logic %1").arg(i));
@@ -110,6 +118,13 @@ void MainWindow::fillChannelSelect() {
   }
   ui->comboBoxCursor1Channel->addItem(iconXY, (tr("XY")));
   ui->comboBoxCursor2Channel->addItem(iconXY, tr("XY"));
+  ui->comboBoxCursor1Channel->addItem(iconFFT, (tr("FFT")));
+  ui->comboBoxCursor2Channel->addItem(iconFFT, tr("FFT"));
+
+  ui->comboBoxMeasure1->addItem(iconCross, tr("Off"));
+  ui->comboBoxMeasure2->addItem(iconCross, tr("Off"));
+  ui->comboBoxMeasure1->setCurrentIndex(ui->comboBoxMeasure1->count() - 1);
+  ui->comboBoxMeasure2->setCurrentIndex(ui->comboBoxMeasure2->count() - 1);
 
   // Skryje XY kanál z nabýdky.
   auto *model = qobject_cast<QStandardItemModel *>(ui->comboBoxCursor1Channel->model());
@@ -124,7 +139,22 @@ void MainWindow::fillChannelSelect() {
   view = qobject_cast<QListView *>(ui->comboBoxCursor2Channel->view());
   view->setRowHidden(XYID, !false);
 
+  // Skryje FFT kanál z nabýdky.
+  model = qobject_cast<QStandardItemModel *>(ui->comboBoxCursor1Channel->model());
+  item = model->item(FFTID);
+  item->setEnabled(false);
+  view = qobject_cast<QListView *>(ui->comboBoxCursor1Channel->view());
+  view->setRowHidden(FFTID, !false);
+
+  model = qobject_cast<QStandardItemModel *>(ui->comboBoxCursor2Channel->model());
+  item = model->item(FFTID);
+  item->setEnabled(false);
+  view = qobject_cast<QListView *>(ui->comboBoxCursor2Channel->view());
+  view->setRowHidden(FFTID, !false);
+
   ui->comboBoxSelectedChannel->blockSignals(false);
   ui->comboBoxCursor1Channel->blockSignals(false);
   ui->comboBoxCursor2Channel->blockSignals(false);
+  ui->comboBoxMeasure1->blockSignals(false);
+  ui->comboBoxMeasure2->blockSignals(false);
 }
