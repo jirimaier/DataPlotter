@@ -10,6 +10,7 @@ class MyFFTPlot : public MyPlot {
  public:
   explicit MyFFTPlot(QWidget *parent = nullptr);
   QByteArray exportCSV(char separator, char decimal, int precision);
+  QPair<unsigned int, unsigned int> getVisibleSamplesRange();
 
  private:
   bool autoSize = true;
@@ -17,7 +18,7 @@ class MyFFTPlot : public MyPlot {
 
  public slots:
   void newData(QSharedPointer<QCPGraphDataContainer> data);
-  void clear() { graph(0)->data().data()->clear(); }
+  void clear();
   void setStyle(int style);
   void setAutoSize(bool en);
 };

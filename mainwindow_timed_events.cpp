@@ -95,55 +95,55 @@ void MainWindow::updateChannelComboBox(QComboBox &combobox, bool includeLogic, b
   }
 }
 
-void MainWindow::updateMeasurements() {
-  if (measure1Ready) {
-    if (ui->comboBoxMeasure1->currentIndex() != ui->comboBoxMeasure1->count() - 1) {
-      int chid = ui->comboBoxMeasure1->currentIndex();
-      if (ui->plot->graph(chid)->data()->isEmpty()) return;
-      auto data = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer(*ui->plot->graph(chid)->data()));
-      if (ui->radioButtonSigPart->isChecked()) {
-        data->removeBefore(ui->plot->xAxis->range().lower);
-        data->removeAfter(ui->plot->xAxis->range().upper);
-      }
-      measure1Ready = false;
-      emit processSignal(1, data);
-    } else {
-      ui->labelSig1Period->setText("---");
-      ui->labelSig1Freq->setText("---");
-      ui->labelSig1Amp->setText("---");
-      ui->labelSig1Vpp->setText("---");
-      ui->labelSig1Vrms->setText("---");
-      ui->labelSig1Dc->setText("---");
-      ui->labelSig1Min->setText("---");
-      ui->labelSig1Max->setText("---");
+void MainWindow::updateMeasurements1() {
+  if (ui->comboBoxMeasure1->currentIndex() != ui->comboBoxMeasure1->count() - 1) {
+    int chid = ui->comboBoxMeasure1->currentIndex();
+    if (ui->plot->graph(chid)->data()->isEmpty()) goto empty;
+    auto data = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer(*ui->plot->graph(chid)->data()));
+    if (ui->radioButtonSigPart->isChecked()) {
+      data->removeBefore(ui->plot->xAxis->range().lower);
+      data->removeAfter(ui->plot->xAxis->range().upper);
     }
+    measureRefreshTimer1.stop();
+    emit requstMeasurements1(data);
+  } else {
+  empty:
+    ui->labelSig1Period->setText("---");
+    ui->labelSig1Freq->setText("---");
+    ui->labelSig1Amp->setText("---");
+    ui->labelSig1Vpp->setText("---");
+    ui->labelSig1Vrms->setText("---");
+    ui->labelSig1Dc->setText("---");
+    ui->labelSig1Min->setText("---");
+    ui->labelSig1Max->setText("---");
   }
-  if (measure2Ready) {
-    if (ui->comboBoxMeasure2->currentIndex() != ui->comboBoxMeasure2->count() - 1) {
-      int chid = ui->comboBoxMeasure2->currentIndex();
-      if (ui->plot->graph(chid)->data()->isEmpty()) return;
-      auto data = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer(*ui->plot->graph(chid)->data()));
-      if (ui->radioButtonSigPart->isChecked()) {
-        data->removeBefore(ui->plot->xAxis->range().lower);
-        data->removeAfter(ui->plot->xAxis->range().upper);
-      }
-      measure2Ready = false;
-      emit processSignal(2, data);
-    } else {
-      ui->labelSig2Period->setText("---");
-      ui->labelSig2Freq->setText("---");
-      ui->labelSig2Amp->setText("---");
-      ui->labelSig2Vpp->setText("---");
-      ui->labelSig2Vrms->setText("---");
-      ui->labelSig2Dc->setText("---");
-      ui->labelSig2Min->setText("---");
-      ui->labelSig2Max->setText("---");
+}
+
+void MainWindow::updateMeasurements2() {
+  if (ui->comboBoxMeasure2->currentIndex() != ui->comboBoxMeasure2->count() - 1) {
+    int chid = ui->comboBoxMeasure2->currentIndex();
+    if (ui->plot->graph(chid)->data()->isEmpty()) goto empty;
+    auto data = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer(*ui->plot->graph(chid)->data()));
+    if (ui->radioButtonSigPart->isChecked()) {
+      data->removeBefore(ui->plot->xAxis->range().lower);
+      data->removeAfter(ui->plot->xAxis->range().upper);
     }
+    measureRefreshTimer2.stop();
+    emit requstMeasurements2(data);
+  } else {
+  empty:
+    ui->labelSig2Period->setText("---");
+    ui->labelSig2Freq->setText("---");
+    ui->labelSig2Amp->setText("---");
+    ui->labelSig2Vpp->setText("---");
+    ui->labelSig2Vrms->setText("---");
+    ui->labelSig2Dc->setText("---");
+    ui->labelSig2Min->setText("---");
+    ui->labelSig2Max->setText("---");
   }
 }
 
 void MainWindow::updateFFT() {
-  if (!fftReady) return;
   if (ui->pushButtonFFT->isChecked()) {
     int chid = ui->spinBoxFFT->value() - 1;
     if (ui->plot->graph(chid)->data()->isEmpty()) {
@@ -156,7 +156,6 @@ void MainWindow::updateFFT() {
       data->removeBefore(ui->plot->xAxis->range().lower);
       data->removeAfter(ui->plot->xAxis->range().upper);
     }
-    fftReady = false;
-    emit calculateFFT(data, ui->checkBoxFFTdB->isChecked(), (FFTWindow::enumerator)ui->comboBoxFFTWindow->currentIndex());
+    emit requestFFT(data, ui->checkBoxFFTdB->isChecked(), (FFTWindow::enumerator)ui->comboBoxFFTWindow->currentIndex());
   }
 }

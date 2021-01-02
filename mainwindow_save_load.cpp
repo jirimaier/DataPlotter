@@ -137,6 +137,14 @@ QByteArray MainWindow::getSettings() {
   settings.append(ui->radioButtonXYAutoSize->isChecked() ? "xytype:fix" : "xytype:cs");
   settings.append(";\n");
 
+  QColor xyclr = ui->plotxy->graphXY->pen().color();
+  settings.append(QString("xycol:%1,%2,%3").arg(xyclr.red()).arg(xyclr.green()).arg(xyclr.blue()).toUtf8());
+  settings.append(";\n");
+
+  QColor fftclr = ui->plotFFT->graph(0)->pen().color();
+  settings.append(QString("fftcol:%1,%2,%3").arg(fftclr.red()).arg(fftclr.green()).arg(fftclr.blue()).toUtf8());
+  settings.append(";\n");
+
   for (int i = 0; i < ANALOG_COUNT + MATH_COUNT; i++) {
     settings.append("ch:" + QString::number(i + 1).toUtf8());
     settings.append(":off:" + QString::number(ui->plot->getChOffset(i)).toUtf8());
@@ -213,6 +221,26 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumerator sour
   else if (type == "xytype") {
     if (value == "fix") ui->radioButtonXYAutoSize->setChecked(true);
     if (value == "free") ui->radioButtonXYFree->setChecked(true);
+  }
+
+  else if (type == "xycol") {
+    QByteArrayList rgb = value.split(',');
+    if (rgb.length() != 3) {
+      printMessage(tr("Invalid color: ").toUtf8(), settings, MessageLevel::error, source);
+      return;
+    }
+    QColor clr = QColor(rgb.at(0).toInt(), rgb.at(1).toInt(), rgb.at(2).toInt());
+    ui->plotxy->graphXY->setPen(clr);
+  }
+
+  else if (type == "fftcol") {
+    QByteArrayList rgb = value.split(',');
+    if (rgb.length() != 3) {
+      printMessage(tr("Invalid color: ").toUtf8(), settings, MessageLevel::error, source);
+      return;
+    }
+    QColor clr = QColor(rgb.at(0).toInt(), rgb.at(1).toInt(), rgb.at(2).toInt());
+    ui->plotFFT->graph(0)->setPen(clr);
   }
 
   else if (type == "ch") {

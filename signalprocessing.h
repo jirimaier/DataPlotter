@@ -32,7 +32,9 @@ class SignalProcessing : public QObject {
 
  private:
   void calculateHamming(int length);
-  QVector<float> hamming;
+  void calculateHann(int length);
+  void calculateBlackman(int length);
+  QVector<float> hamming, hann, blackman;
   QVector<std::complex<float>> fft(QVector<std::complex<float>> signal);
 
   /// Vratí nejbližší vyšší mocninu dvou
@@ -40,10 +42,10 @@ class SignalProcessing : public QObject {
 
  public slots:
   void plotFFT(QSharedPointer<QCPGraphDataContainer> data, bool dB, FFTWindow::enumerator window);
-  void process(int measureNumber, QSharedPointer<QCPGraphDataContainer> data);
+  void process(QSharedPointer<QCPGraphDataContainer> data);
  signals:
   void fftResult(QSharedPointer<QCPGraphDataContainer> data);
-  void result(int measureNumber, double period, double freq, double amp, double vpp, double min, double max, double vrms, double dc);
+  void result(double period, double freq, double amp, double vpp, double min, double max, double vrms, double dc);
 };
 
 #endif  // SIGNALPROCESSING_H

@@ -237,6 +237,8 @@ void MainWindow::on_radioButtonRollingRange_toggled(bool checked) {
 void MainWindow::on_pushButtonXY_toggled(bool checked) {
   updateXYNow();
 
+  if (!checked) ui->plotxy->clear();
+
   if (checked) {
     ui->plotFFT->setVisible(true);
     ui->plotxy->setVisible(true);
@@ -338,35 +340,32 @@ void MainWindow::printTerminalDebug(QString text) {
   ui->plainTextEditTerminalDebug->setTextCursor(prevCursor);
 }
 
-void MainWindow::signalProcessingResult(int measureNumber, double period, double freq, double amp, double vpp, double min, double max, double vrms, double dc) {
-  if (measureNumber == 1) {
-    measure1Ready = true;
-    ui->labelSig1Amp->setText(QString::number(amp, 'g', 3));
-    ui->labelSig1Freq->setText(QString::number(freq, 'g', 3));
-    ui->labelSig1Period->setText(QString::number(period, 'g', 3));
-    ui->labelSig1Vpp->setText(QString::number(vpp, 'g', 3));
-    ui->labelSig1Vrms->setText(QString::number(vrms, 'g', 3));
-    ui->labelSig1Min->setText(QString::number(min, 'g', 3));
-    ui->labelSig1Max->setText(QString::number(max, 'g', 3));
-    ui->labelSig1Dc->setText(QString::number(dc, 'g', 3));
-  }
-
-  if (measureNumber == 2) {
-    measure2Ready = true;
-    ui->labelSig2Amp->setText(QString::number(amp, 'g', 3));
-    ui->labelSig2Freq->setText(QString::number(freq, 'g', 3));
-    ui->labelSig2Period->setText(QString::number(period, 'g', 3));
-    ui->labelSig2Vpp->setText(QString::number(vpp, 'g', 3));
-    ui->labelSig2Vrms->setText(QString::number(vrms, 'g', 3));
-    ui->labelSig2Min->setText(QString::number(min, 'g', 3));
-    ui->labelSig2Max->setText(QString::number(max, 'g', 3));
-    ui->labelSig2Dc->setText(QString::number(dc, 'g', 3));
-  }
+void MainWindow::signalMeasurementsResult1(double period, double freq, double amp, double vpp, double min, double max, double vrms, double dc) {
+  ui->labelSig1Amp->setText(QString::number(amp, 'g', 3));
+  ui->labelSig1Freq->setText(QString::number(freq, 'g', 3));
+  ui->labelSig1Period->setText(QString::number(period, 'g', 3));
+  ui->labelSig1Vpp->setText(QString::number(vpp, 'g', 3));
+  ui->labelSig1Vrms->setText(QString::number(vrms, 'g', 3));
+  ui->labelSig1Min->setText(QString::number(min, 'g', 3));
+  ui->labelSig1Max->setText(QString::number(max, 'g', 3));
+  ui->labelSig1Dc->setText(QString::number(dc, 'g', 3));
+  measureRefreshTimer1.start(250);
+}
+void MainWindow::signalMeasurementsResult2(double period, double freq, double amp, double vpp, double min, double max, double vrms, double dc) {
+  ui->labelSig2Amp->setText(QString::number(amp, 'g', 3));
+  ui->labelSig2Freq->setText(QString::number(freq, 'g', 3));
+  ui->labelSig2Period->setText(QString::number(period, 'g', 3));
+  ui->labelSig2Vpp->setText(QString::number(vpp, 'g', 3));
+  ui->labelSig2Vrms->setText(QString::number(vrms, 'g', 3));
+  ui->labelSig2Min->setText(QString::number(min, 'g', 3));
+  ui->labelSig2Max->setText(QString::number(max, 'g', 3));
+  ui->labelSig2Dc->setText(QString::number(dc, 'g', 3));
+  measureRefreshTimer2.start(250);
 }
 
 void MainWindow::fftResult(QSharedPointer<QCPGraphDataContainer> data) {
-  ui->plotFFT->newData(data);
-  fftReady = true;
+  if (ui->pushButtonFFT->isChecked()) ui->plotFFT->newData(data);
+  fftTimer.start();
 }
 
 void MainWindow::on_listWidgetTerminalCodeList_itemClicked(QListWidgetItem *item) {
@@ -396,7 +395,10 @@ void MainWindow::on_listWidgetTerminalCodeList_itemClicked(QListWidgetItem *item
 }
 
 void MainWindow::on_pushButtonFFT_toggled(bool checked) {
-  updateFFT();
+  if (!checked)
+    ui->plotFFT->clear();
+  else
+    updateFFT();
 
   if (checked) {
     ui->plotFFT->setVisible(true);
@@ -405,8 +407,6 @@ void MainWindow::on_pushButtonFFT_toggled(bool checked) {
     ui->plotFFT->setVisible(false);
     ui->plotxy->setVisible(false);
   }
-
-  if (!checked) ui->plotFFT->clear();
 
   auto *model = qobject_cast<QStandardItemModel *>(ui->comboBoxCursor1Channel->model());
   auto *item = model->item(FFTID);

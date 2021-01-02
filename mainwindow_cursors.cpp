@@ -26,8 +26,8 @@ void MainWindow::updateCursorRange() {
     range = QPair<long, long>(0, ui->plotxy->graphXY->data()->size() - 1);
     fullRange = range.second;
   } else if (ch == FFTID) {
-    range = QPair<long, long>(0, ui->plotFFT->graph(0)->data()->size() - 1);
-    fullRange = range.second;
+    range = ui->plotFFT->getVisibleSamplesRange();
+    fullRange = ui->plotFFT->graph(0)->data()->size() - 1;
   } else {
     range = ui->plot->getChVisibleSamplesRange(GlobalFunctions::getLogicChannelID(ch - ANALOG_COUNT - MATH_COUNT, 0));
     fullRange = ui->plot->graph(GlobalFunctions::getLogicChannelID(ch - ANALOG_COUNT - MATH_COUNT, 0))->data()->size() - 1;
@@ -43,8 +43,8 @@ void MainWindow::updateCursorRange() {
     range = QPair<long, long>(0, ui->plotxy->graphXY->data()->size());
     fullRange = range.second;
   } else if (ch == FFTID) {
-    range = QPair<long, long>(0, ui->plotFFT->graph(0)->data()->size() - 1);
-    fullRange = range.second;
+    range = ui->plotFFT->getVisibleSamplesRange();
+    fullRange = ui->plotFFT->graph(0)->data()->size() - 1;
   } else {
     range = ui->plot->getChVisibleSamplesRange(GlobalFunctions::getLogicChannelID(ch - ANALOG_COUNT - MATH_COUNT, 0));
     fullRange = ui->plot->graph(GlobalFunctions::getLogicChannelID(ch - ANALOG_COUNT - MATH_COUNT, 0))->data()->size() - 1;

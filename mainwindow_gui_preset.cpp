@@ -45,7 +45,8 @@ void MainWindow::connectSignals() {
   connect(&portsRefreshTimer, &QTimer::timeout, this, &MainWindow::comRefresh);
   connect(&activeChRefreshTimer, &QTimer::timeout, this, &MainWindow::updateUsedChannels);
   connect(&cursorRangeUpdateTimer, &QTimer::timeout, this, &MainWindow::updateCursorRange);
-  connect(&measureRefreshTimer, &QTimer::timeout, this, &MainWindow::updateMeasurements);
+  connect(&measureRefreshTimer1, &QTimer::timeout, this, &MainWindow::updateMeasurements1);
+  connect(&measureRefreshTimer2, &QTimer::timeout, this, &MainWindow::updateMeasurements2);
   connect(&fftTimer, &QTimer::timeout, this, &::MainWindow::updateFFT);
 }
 
@@ -62,8 +63,9 @@ void MainWindow::startTimers() {
   portsRefreshTimer.start(500);
   activeChRefreshTimer.start(500);
   cursorRangeUpdateTimer.start(100);
-  measureRefreshTimer.start(250);
-  fftTimer.start(500);
+  measureRefreshTimer1.start(200);
+  measureRefreshTimer2.start(200);
+  fftTimer.start(200);
 }
 
 void MainWindow::setGuiDefaults() {

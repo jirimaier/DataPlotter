@@ -54,6 +54,8 @@ plottype:fix;
 lang:en;
 csvsep:dc;
 xytype:fix;
+xycol:0,0,255;
+fftcol:0,0,255;
 ch:1:off:0;
 ch:1:sca:1;
 ch:1:inv:0;

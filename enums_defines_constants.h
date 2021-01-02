@@ -29,7 +29,7 @@ enum enumerator { analog, math, logic };
 }
 
 namespace FFTWindow {
-enum enumerator { rectangular = 0, hamming = 1 };
+enum enumerator { rectangular = 0, hamming = 1, hann = 2, blackman = 3 };
 }
 
 namespace PlotRange {

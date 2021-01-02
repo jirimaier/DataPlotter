@@ -21,9 +21,26 @@ QByteArray MyFFTPlot::exportCSV(char separator, char decimal, int precision) {
   return output;
 }
 
+QPair<unsigned int, unsigned int> MyFFTPlot::getVisibleSamplesRange() {
+  unsigned int min = 0;
+  unsigned int max = 0;
+  for (QCPGraphDataContainer::iterator it = graph(0)->data()->begin(); it != graph(0)->data()->end(); it++) {
+    if (it->key < xAxis->range().lower) min++;
+    if (it->key > xAxis->range().upper) break;
+    max++;
+  }
+  if (max > 0) max--;
+  return (QPair<unsigned int, unsigned int>(min, max));
+}
+
 void MyFFTPlot::newData(QSharedPointer<QCPGraphDataContainer> data) {
   graph(0)->setData(data);
   if (autoSize) autoset();
+  this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
+}
+
+void MyFFTPlot::clear() {
+  graph(0)->data().data()->clear();
   this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
 }
 
@@ -49,13 +66,17 @@ void MyFFTPlot::setAutoSize(bool en) {
 }
 
 void MyFFTPlot::autoset() {
-  bool foundrange, foundrange2;
+  bool foundrange;
   QCPRange yRange = graph(0)->data()->valueRange(foundrange);
-  QCPRange xRange = graph(0)->data()->keyRange(foundrange2);
-  yRange.lower = GlobalFunctions::ceilToNiceValue(yRange.lower);
+  QCPRange xRange = graph(0)->data()->keyRange(foundrange);
+  if (yRange.lower >= 0)
+    yRange.lower = 0;
+  else
+    yRange.lower = -50;
+
   yRange.upper = GlobalFunctions::ceilToNiceValue(yRange.upper);
-  xRange.lower = GlobalFunctions::ceilToNiceValue(xRange.lower);
-  xRange.upper = GlobalFunctions::ceilToNiceValue(xRange.upper);
+  xRange.lower = 0;
+  xRange.upper = xRange.upper;
   xAxis->setRange(xRange);
   yAxis->setRange(yRange);
 }

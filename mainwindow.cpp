@@ -87,6 +87,7 @@ void MainWindow::serialConnectResult(bool connected, QString message) {
   if (connected && ui->checkBoxClearOnReconnect->isChecked()) {
     ui->plot->resetChannels();
     ui->plotxy->clear();
+    ui->plotFFT->clear();
     ui->myTerminal->resetTerminal();
     emit resetChannels();
   }
@@ -184,4 +185,14 @@ void MainWindow::on_lineEditTerminalManualInput_returnPressed() {
   data.replace("\\b", "\b");
   ui->lineEditTerminalManualInput->clear();
   ui->myTerminal->printToTerminal(data);
+}
+
+void MainWindow::on_pushButtonChangeFFTColor_clicked() {
+  QColor color = QColorDialog::getColor(ui->plotFFT->graph(0)->pen().color());
+  if (color.isValid()) ui->plotFFT->graph(0)->setPen(QColor(color));
+}
+
+void MainWindow::on_pushButtonChangeXYColor_clicked() {
+  QColor color = QColorDialog::getColor(ui->plotxy->graphXY->pen().color());
+  if (color.isValid()) ui->plotxy->graphXY->setPen(QColor(color));
 }

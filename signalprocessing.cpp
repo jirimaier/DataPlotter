@@ -15,44 +15,50 @@
 
 #include "signalprocessing.h"
 
-#include <QElapsedTimer>
-
 SignalProcessing::SignalProcessing(QObject *parent) : QObject(parent) {}
 
 void SignalProcessing::calculateHamming(int length) {
   if (hamming.size() != length) {
     hamming.resize(length);
-    for (int i = 0; i < length; i++) hamming[i] = 0.54 - 0.46 * cos(2 * M_PI * i / length);
+    for (int n = 0; n < length; n++) hamming[n] = 0.54 - 0.46 * cos(2 * M_PI * n / length);
   }
-  QString txt = "";
-  foreach (double d, hamming) { txt.append(QString::number(d) + "\n"); }
-  QFile file("C:/Users/Maier/Desktop/hamm.csv");
-  if (file.open(QFile::WriteOnly | QFile::Truncate)) {
-    file.write(txt.toLocal8Bit());
+}
+
+void SignalProcessing::calculateHann(int length) {
+  if (hann.size() != length) {
+    hann.resize(length);
+    for (int n = 0; n < length; n++) hann[n] = 0.5 * (1 - cos(2 * M_PI * n / length));
+  }
+}
+
+void SignalProcessing::calculateBlackman(int length) {
+  if (blackman.size() != length) {
+    blackman.resize(length);
+    for (int n = 0; n < length; n++) blackman[n] = 0.42 - 0.5 * cos(2 * M_PI * n / (length - 1)) + 0.08 * cos(4 * M_PI * n / (length - 1));
   }
 }
 
 QVector<std::complex<float>> SignalProcessing::fft(QVector<std::complex<float>> signal) {
-  int n = signal.size();  // NFFT
-  if (n == 1) return signal;
-  std::complex<float> W = std::exp(std::complex<float>(0, 2.0 * M_PI / (float)n));  // exp(2*Pi*i/n)
+  int nfft = signal.size();
+  if (nfft == 1) return signal;
+  std::complex<float> W = std::exp(std::complex<float>(0, 2.0 * M_PI / (float)nfft));  // exp(2*Pi*i/n)
 
   QVector<std::complex<float>> Pe, Po;  // Sudé a liché koeficienty
-  for (int i = 1; i <= n; i++) {
+  for (int i = 1; i <= nfft; i++) {
     if (i % 2)  // Liché
       Po.append(signal.at(i - 1));
     else  // Sudé
       Pe.append(signal.at(i - 1));
   }
 
-  QVector<std::complex<float>> ye = fft(Pe), yo = fft(Po);  // Rekurse
+  QVector<std::complex<float>> ye = fft(Pe), yo = fft(Po);  // Rekurze
 
   QVector<std::complex<float>> result;
-  result.resize(n);
-  for (int i = 0; i < n / 2; i++) {
+  result.resize(nfft);
+  for (int i = 0; i < nfft / 2; i++) {
     std::complex<float> Wi = std::pow(W, i);
     result[i] = ye[i] + Wi * yo[i];
-    result[i + n / 2] = ye[i] - Wi * yo[i];
+    result[i + nfft / 2] = ye[i] - Wi * yo[i];
   }
   return result;
 }
@@ -63,8 +69,7 @@ int SignalProcessing::nextPow2(int number) {
 }
 
 void SignalProcessing::plotFFT(QSharedPointer<QCPGraphDataContainer> data, bool dB, FFTWindow::enumerator window) {
-  bool rangefound = false;
-  double fs = 1 / ((data->keyRange(rangefound).upper - data->keyRange(rangefound).lower) / data->size());
+  float fs = 1.0 / (data->at(1)->key - data->at(0)->key);
 
   QVector<std::complex<float>> values;
   if (window == FFTWindow::rectangular)
@@ -72,15 +77,22 @@ void SignalProcessing::plotFFT(QSharedPointer<QCPGraphDataContainer> data, bool 
   else if (window == FFTWindow::hamming) {
     calculateHamming(data->size());
     for (int i = 0; i < data->size(); i++) values.append(data->at(i)->value * hamming.at(i));
+  } else if (window == FFTWindow::hann) {
+    calculateHann(data->size());
+    for (int i = 0; i < data->size(); i++) values.append(data->at(i)->value * hann.at(i));
+  } else if (window == FFTWindow::blackman) {
+    calculateBlackman(data->size());
+    for (int i = 0; i < data->size(); i++) values.append(data->at(i)->value * blackman.at(i));
   }
   int nfft = nextPow2(values.size());
+  if (nfft < 4096) nfft = 4096;
   values.resize(nfft);
 
   QVector<std::complex<float>> resultValues = fft(values);
 
   auto result = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer);
   double freqStep = fs / nfft;
-  for (int i = 0; i < nfft / 2; i++) {
+  for (int i = 0; i <= nfft / 2.0; i++) {
     if (dB)
       result->add(QCPGraphData(i * freqStep, 20 * log10(std::abs(resultValues.at(i)))));
     else
@@ -89,7 +101,7 @@ void SignalProcessing::plotFFT(QSharedPointer<QCPGraphDataContainer> data, bool 
   emit fftResult(result);
 }
 
-void SignalProcessing::process(int pos, QSharedPointer<QCPGraphDataContainer> data) {
+void SignalProcessing::process(QSharedPointer<QCPGraphDataContainer> data) {
   bool rangefound = false;
   double fs = 1 / ((data->keyRange(rangefound).upper - data->keyRange(rangefound).lower) / data->size());
 
@@ -106,55 +118,67 @@ void SignalProcessing::process(int pos, QSharedPointer<QCPGraphDataContainer> da
   vrms /= data->size();
   vrms = sqrt(vrms);
 
-  QVector<std::complex<float>> acValues;
-  for (QCPGraphDataContainer::iterator it = data->begin(); it != data->end(); it++) acValues.append(it->value - dc);
+  float freq;
 
-  /*int N = acValues.size();
+  // Výpočet frekvence - pro krátký signál (do 4096 vzorků) udělá autokorelaci
+  // a z ní FFT, pro délší signál jen FFT přímo ze signálu (rychlé, ale méně přesné)
+  if (data->size() <= 4096) {
+    QVector<float> acValues;
+    for (QCPGraphDataContainer::iterator it = data->begin(); it != data->end(); it++) acValues.append(it->value - dc);
 
-  QVector<std::complex<float>> xCorr;
-  xCorr.resize(2 * N - 1);
-  for (int m = N - 1; m >= 0; m--) {
-    float val = 0;
-    for (int n = 0; n < N - m; n++) val += acValues.at(n + m) * acValues.at(n);
-    xCorr[N + m - 1] = val / (N - m);
-    xCorr[N - m - 1] = val / (N - m);
-  }
-  int nfft = nextPow2(xCorr.size());
+    int N = acValues.size();
 
-  qDebug() << "x-corr took" << timer.elapsed() << "milliseconds - " << timer.nsecsElapsed() << "nanoseconds";
-  timer.restart();
-
-  xCorr.resize(nfft);
-  QVector<std::complex<float>> xCorrFFT = fft(xCorr);
-
-  qDebug() << "fft took" << timer.elapsed() << "milliseconds - " << timer.nsecsElapsed() << "nanoseconds";
-
-  int maxindex = 0;
-  float maxVal = 0;
-  for (int i = 0; i < nfft / 2; i++) {
-    float value = std::abs(xCorrFFT.at(i));
-    if (value > maxVal) {
-      maxVal = value;
-      maxindex = i;
+    QVector<std::complex<float>> xCorr;
+    xCorr.resize(2 * N - 1);
+    for (int m = N - 1; m >= 0; m--) {
+      float val = 0;
+      for (int n = 0; n < N - m; n++) val += acValues.at(n + m) * acValues.at(n);
+      float unBiassedValue = val / (N - m);
+      xCorr[N + m - 1] = unBiassedValue;
+      xCorr[N - m - 1] = unBiassedValue;
     }
-  }*/
 
-  int nfft = nextPow2(acValues.size());
+    int nfft = 4096;
 
-  acValues.resize(nfft);
-  QVector<std::complex<float>> acSigFFT = fft(acValues);
+    calculateHamming(xCorr.size());
 
-  int maxindex = 0;
-  float maxVal = 0;
-  for (int i = 0; i < nfft / 2; i++) {
-    float value = std::abs(acSigFFT.at(i));
-    if (value > maxVal) {
-      maxVal = value;
-      maxindex = i;
+    for (int i = 0; i <= xCorr.size(); i++) xCorr[i] *= hamming[i];
+
+    xCorr.resize(nfft);
+    QVector<std::complex<float>> xCorrFFT = fft(xCorr);
+
+    int maxindex = 0;
+    float maxVal = 0;
+    for (int i = 0; i < nfft / 2; i++) {
+      float value = std::abs(xCorrFFT.at(i));
+      if (value > maxVal) {
+        maxVal = value;
+        maxindex = i;
+      }
     }
+    freq = maxindex * fs / nfft;
+  } else {
+    calculateHamming(data->size());
+    QVector<std::complex<float>> acValues;
+    for (int i = 0; i < data->size(); i++) acValues.append((data->at(i)->value - dc) * hamming.at(i));
+
+    int nfft = nextPow2(acValues.size());
+
+    if (nfft < 4096) nfft = 4096;
+
+    acValues.resize(nfft);
+    QVector<std::complex<float>> acSigFFT = fft(acValues);
+
+    int maxindex = 0;
+    float maxVal = 0;
+    for (int i = 0; i < nfft / 2; i++) {
+      float value = std::abs(acSigFFT.at(i));
+      if (value > maxVal) {
+        maxVal = value;
+        maxindex = i;
+      }
+    }
+    freq = maxindex * fs / nfft;
   }
-
-  float freq = maxindex * fs / nfft;
-
-  emit result(pos, 1 / freq, freq, amp, (max - min), min, max, vrms, dc);
+  emit result(1 / freq, freq, amp, (max - min), min, max, vrms, dc);
 }

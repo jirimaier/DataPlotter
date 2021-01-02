@@ -91,7 +91,9 @@ int main(int argc, char *argv[]) {
   NewSerialParser *serialParserM = new NewSerialParser(MessageTarget::manual);
   SerialReader *serial1 = new SerialReader();
   PlotMath *plotMath = new PlotMath();
-  SignalProcessing *signalProcessing = new SignalProcessing();
+  SignalProcessing *signalProcessing1 = new SignalProcessing();
+  SignalProcessing *signalProcessing2 = new SignalProcessing();
+  SignalProcessing *signalProcessingFFT = new SignalProcessing();
 
   // Vytvoří vlákna
   QThread plotDataThread;
@@ -99,7 +101,7 @@ int main(int argc, char *argv[]) {
   QThread serialParserMThread;
   QThread plotMathThread;
   QThread serialReader1Thread;
-  QThread signalProcessingThread;
+  QThread signalProcessing1Thread, signalProcessing2Thread, signalProcessingFFTThread;
 
   // Propojí signály
   QObject::connect(serial1, &SerialReader::sendData, serialParser1, &NewSerialParser::parse);
@@ -148,10 +150,12 @@ int main(int argc, char *argv[]) {
   QObject::connect(&mainWindow, &MainWindow::setXYSecond, plotData, &PlotData::setXYSecond);
   QObject::connect(&mainWindow, &MainWindow::clearMath, plotMath, &PlotMath::clearMath);
   QObject::connect(&mainWindow, &MainWindow::clearXY, plotMath, &PlotMath::clearXY);
-  QObject::connect(&mainWindow, &MainWindow::processSignal, signalProcessing, &SignalProcessing::process);
-  QObject::connect(&mainWindow, &MainWindow::calculateFFT, signalProcessing, &SignalProcessing::plotFFT);
-  QObject::connect(signalProcessing, &SignalProcessing::result, &mainWindow, &MainWindow::signalProcessingResult);
-  QObject::connect(signalProcessing, &SignalProcessing::fftResult, &mainWindow, &MainWindow::fftResult);
+  QObject::connect(&mainWindow, &MainWindow::requstMeasurements1, signalProcessing1, &SignalProcessing::process);
+  QObject::connect(&mainWindow, &MainWindow::requstMeasurements2, signalProcessing2, &SignalProcessing::process);
+  QObject::connect(&mainWindow, &MainWindow::requestFFT, signalProcessingFFT, &SignalProcessing::plotFFT);
+  QObject::connect(signalProcessing1, &SignalProcessing::result, &mainWindow, &MainWindow::signalMeasurementsResult1);
+  QObject::connect(signalProcessing2, &SignalProcessing::result, &mainWindow, &MainWindow::signalMeasurementsResult2);
+  QObject::connect(signalProcessingFFT, &SignalProcessing::fftResult, &mainWindow, &MainWindow::fftResult);
 
   // Funkce init jsou zavolány až z nového vlákna
   QObject::connect(&serialParser1Thread, &QThread::started, serialParser1, &NewSerialParser::init);
@@ -159,7 +163,6 @@ int main(int argc, char *argv[]) {
   QObject::connect(&plotDataThread, &QThread::started, plotData, &PlotData::init);
   QObject::connect(&serialReader1Thread, &QThread::started, serial1, &SerialReader::init);
   QObject::connect(&plotDataThread, &QThread::started, plotData, &PlotData::init);
-  // QObject::connect(&signalProcessingThread, &QThread::started, signalProcessing, &PlotData::init);
 
   // Přesuny do vláken
   serial1->moveToThread(&serialReader1Thread);
@@ -167,7 +170,9 @@ int main(int argc, char *argv[]) {
   serialParserM->moveToThread(&serialParserMThread);
   plotData->moveToThread(&plotDataThread);
   plotMath->moveToThread(&plotMathThread);
-  signalProcessing->moveToThread(&signalProcessingThread);
+  signalProcessing1->moveToThread(&signalProcessing1Thread);
+  signalProcessing2->moveToThread(&signalProcessing2Thread);
+  signalProcessingFFT->moveToThread(&signalProcessingFFTThread);
 
   // Zahájí vlákna
   serialReader1Thread.start();
@@ -175,7 +180,9 @@ int main(int argc, char *argv[]) {
   serialParserMThread.start();
   plotDataThread.start();
   plotMathThread.start();
-  signalProcessingThread.start();
+  signalProcessing1Thread.start();
+  signalProcessing2Thread.start();
+  signalProcessingFFTThread.start();
 
   // Zobrazí okno a čeká na ukončení
   mainWindow.init(&translator, plotData, plotMath, serial1);
@@ -188,7 +195,9 @@ int main(int argc, char *argv[]) {
   plotData->deleteLater();
   plotMath->deleteLater();
   serial1->deleteLater();
-  signalProcessing->deleteLater();
+  signalProcessing1->deleteLater();
+  signalProcessing2->deleteLater();
+  signalProcessingFFT->deleteLater();
 
   // Vyžádá ukončení event loopu
   serialParser1Thread.quit();
@@ -196,7 +205,9 @@ int main(int argc, char *argv[]) {
   plotDataThread.quit();
   plotMathThread.quit();
   serialReader1Thread.quit();
-  signalProcessingThread.quit();
+  signalProcessing1Thread.quit();
+  signalProcessing2Thread.quit();
+  signalProcessingFFTThread.quit();
 
   // Čeká na ukončení procesů
   serialParser1Thread.wait();
@@ -204,7 +215,9 @@ int main(int argc, char *argv[]) {
   plotDataThread.wait();
   plotMathThread.wait();
   serialReader1Thread.wait();
-  signalProcessingThread.wait();
+  signalProcessing1Thread.wait();
+  signalProcessing2Thread.wait();
+  signalProcessingFFTThread.wait();
 
   return returnValue;
 }

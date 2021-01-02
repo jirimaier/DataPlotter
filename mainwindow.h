@@ -50,7 +50,7 @@ class MainWindow : public QMainWindow {
  private:
   Ui::MainWindow *ui;
   QTranslator *translator;
-  QTimer portsRefreshTimer, activeChRefreshTimer, cursorRangeUpdateTimer, measureRefreshTimer, fftTimer;
+  QTimer portsRefreshTimer, activeChRefreshTimer, cursorRangeUpdateTimer, measureRefreshTimer1, measureRefreshTimer2, fftTimer;
   QList<QSerialPortInfo> portList;
   void connectSignals();
   void updateChScale();
@@ -76,7 +76,6 @@ class MainWindow : public QMainWindow {
   void updateUsedChannels();
   void updateChannelComboBox(QComboBox &combobox, bool includeLogic, bool leaveAtLeastOne);
   bool colorUpdateNeeded = true;
-  bool fftReady = true, measure1Ready = true, measure2Ready = true;
   void updateMathNow(int number);
   void updateXYNow();
   QIcon iconXY, iconRun, iconPause, iconHidden, iconVisible, iconConnected, iconNotConnected, iconCross, iconFFT;
@@ -89,7 +88,8 @@ class MainWindow : public QMainWindow {
   void rangeTypeChanged();
   void updateCursor(Cursors::enumerator cursor, int selectedChannel, unsigned int sample, double &time, double &value, QByteArray &timeStr, QByteArray &valueStr);
   void updateCursorRange();
-  void updateMeasurements();
+  void updateMeasurements1();
+  void updateMeasurements2();
   void updateFFT();
 
  private slots:  // Autoconnect slots
@@ -185,11 +185,12 @@ class MainWindow : public QMainWindow {
   void on_pushButtonTerminalInputCopy_clicked() { QGuiApplication::clipboard()->setText(ui->plainTextEditTerminalDebug->toPlainText()); }
   void on_listWidgetTerminalCodeList_itemClicked(QListWidgetItem *item);
   void on_lineEditTerminalManualInput_returnPressed();
-  void on_comboBoxMeasure1_currentIndexChanged(int) { updateMeasurements(); }
-  void on_comboBoxMeasure2_currentIndexChanged(int) { updateMeasurements(); }
   void on_pushButtonFFT_toggled(bool checked);
-
   void on_pushButtonFFTImage_clicked();
+
+  void on_pushButtonChangeFFTColor_clicked();
+
+  void on_pushButtonChangeXYColor_clicked();
 
  public slots:
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumerator target);
@@ -201,7 +202,8 @@ class MainWindow : public QMainWindow {
   void printDeviceMessage(QByteArray message, bool warning, bool ended);
   void printSerialMonitor(QByteArray data) { ui->plainTextEditConsole_3->appendPlainText(data); }
   void printTerminalDebug(QString text);
-  void signalProcessingResult(int measureNumber, double period, double freq, double amp, double vpp, double min, double max, double vrms, double dc);
+  void signalMeasurementsResult1(double period, double freq, double amp, double vpp, double min, double max, double vrms, double dc);
+  void signalMeasurementsResult2(double period, double freq, double amp, double vpp, double min, double max, double vrms, double dc);
   void fftResult(QSharedPointer<QCPGraphDataContainer> data);
 
  signals:
@@ -228,7 +230,8 @@ class MainWindow : public QMainWindow {
   void clearXY();
   void resetMath(int mathNumber, MathOperations::enumerator mode, QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2, bool shouldIgnorePause = false);
   void resetXY(QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2, bool shouldIgnorePause = false);
-  void processSignal(int pos, QSharedPointer<QCPGraphDataContainer> data);
-  void calculateFFT(QSharedPointer<QCPGraphDataContainer> data, bool dB, FFTWindow::enumerator window);
+  void requstMeasurements1(QSharedPointer<QCPGraphDataContainer> data);
+  void requstMeasurements2(QSharedPointer<QCPGraphDataContainer> data);
+  void requestFFT(QSharedPointer<QCPGraphDataContainer> data, bool dB, FFTWindow::enumerator window);
 };
 #endif  // MAINWINDOW_H
