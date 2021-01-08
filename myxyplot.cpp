@@ -27,27 +27,11 @@ MyXYPlot::MyXYPlot(QWidget *parent) : MyPlot(parent) {
 
 MyXYPlot::~MyXYPlot() {}
 
-void MyXYPlot::newData(QSharedPointer<QCPCurveDataContainer> data, bool ignorePause) {
-  if (data->size() == 1) {
-    if (plottingStatus == PlotStatus::run || ignorePause) {
-      if (data->at(0)->t <= graphXY->data()->at(graphXY->data()->size() - 1)->t) graphXY->data().data()->clear();
-      graphXY->addData(data->at(0)->t, data->at(0)->key, data->at(0)->value);
-      if (useRange) graphXY->data()->removeBefore(data->at(0)->t - timeRange);
-    } else {
-      if (data->at(0)->t <= pauseBuffer->at(pauseBuffer->size() - 1)->t) pauseBuffer->clear();
-      pauseBuffer->add(QCPCurveData(data->at(0)->t, data->at(0)->key, data->at(0)->value));
-      if (useRange) pauseBuffer->removeBefore(data->at(0)->t - timeRange);
-    }
-  } else {
-    if (plottingStatus == PlotStatus::run || ignorePause)
-      graphXY->setData(data);
-    else
-      pauseBuffer = data;
-  }
-  if (plottingStatus == PlotStatus::run || ignorePause) {
-    if (autoSize) autoset();
-    this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
-  }
+void MyXYPlot::newData(QSharedPointer<QCPCurveDataContainer> data) {
+  graphXY->setData(data);
+  if (autoSize)
+    autoset();
+  this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
 }
 
 void MyXYPlot::setAutoSize(bool en) {
@@ -87,19 +71,6 @@ QByteArray MyXYPlot::exportCSV(char separator, char decimal, int precision) {
   return output;
 }
 
-void MyXYPlot::resume() {
-  plottingStatus = PlotStatus::run;
-  graphXY->setData(pauseBuffer);
-  if (autoSize) autoset();
-  this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
-  pauseBuffer.clear();
-}
-
-void MyXYPlot::pause() {
-  plottingStatus = PlotStatus::pause;
-  pauseBuffer = QSharedPointer<QCPCurveDataContainer>(new QCPCurveDataContainer(*graphXY->data()));  // Zkopíruje existující data do bufferu
-}
-
 void MyXYPlot::autoset() {
   bool foundrange, foundrange2;
   QCPRange yRange = graphXY->data()->valueRange(foundrange);
@@ -110,38 +81,4 @@ void MyXYPlot::autoset() {
   xRange.upper = GlobalFunctions::ceilToNiceValue(xRange.upper);
   xAxis->setRange(xRange);
   yAxis->setRange(yRange);
-}
-
-void MyXYPlot::togglePause() {
-  if (plottingStatus == PlotStatus::run)
-    pause();
-  else
-    resume();
-}
-
-void MyXYPlot::setTimeRange(double interval) {
-  timeRange = interval;
-  if (useRange) {
-    if (plottingStatus == PlotStatus::run)
-      graphXY->data()->removeBefore(graphXY->data()->at(graphXY->data()->size() - 1)->t - timeRange);
-    else
-      pauseBuffer->removeBefore(pauseBuffer->at(pauseBuffer->size())->t - timeRange);
-  }
-}
-
-void MyXYPlot::setUseTimeRange(bool en) {
-  useRange = en;
-  setTimeRange(timeRange);  // Aby se vymazali případné přebytečné
-}
-
-void MyXYPlot::setCenter(double value) {
-  center = value;
-  autoset();
-  this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
-}
-
-void MyXYPlot::setRange(double value) {
-  range = value;
-  autoset();
-  this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
 }

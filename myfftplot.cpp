@@ -8,6 +8,7 @@ MyFFTPlot::MyFFTPlot(QWidget *parent) : MyPlot(parent) {
   this->yAxis->setRange(0, 100);
   setGridHintX(-2);
   setGridHintY(-2);
+  graph(0)->setFillBase(-50);
 }
 
 QByteArray MyFFTPlot::exportCSV(char separator, char decimal, int precision) {
@@ -22,20 +23,22 @@ QByteArray MyFFTPlot::exportCSV(char separator, char decimal, int precision) {
 }
 
 QPair<unsigned int, unsigned int> MyFFTPlot::getVisibleSamplesRange() {
-  unsigned int min = 0;
-  unsigned int max = 0;
-  for (QCPGraphDataContainer::iterator it = graph(0)->data()->begin(); it != graph(0)->data()->end(); it++) {
-    if (it->key < xAxis->range().lower) min++;
-    if (it->key > xAxis->range().upper) break;
-    max++;
-  }
-  if (max > 0) max--;
+  if (graph(0)->data()->isEmpty())
+    return (QPair<unsigned int, unsigned int>(0, 0));
+  int i = 0;
+  while (graph(0)->data()->at(i)->key < xAxis->range().lower)
+    i++;
+  int min = i;
+  while (graph(0)->data()->at(i)->key <= xAxis->range().upper && i < graph(0)->data()->size())
+    i++;
+  int max = i - 1;
   return (QPair<unsigned int, unsigned int>(min, max));
 }
 
 void MyFFTPlot::newData(QSharedPointer<QCPGraphDataContainer> data) {
   graph(0)->setData(data);
-  if (autoSize) autoset();
+  if (autoSize)
+    autoset();
   this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
 }
 
@@ -48,12 +51,19 @@ void MyFFTPlot::setStyle(int style) {
   if (style == GraphStyle::line) {
     graph(0)->setScatterStyle(QCPScatterStyle::ssNone);
     graph(0)->setLineStyle(QCPGraph::lsLine);
+    graph(0)->setBrush(Qt::NoBrush);
   } else if (style == GraphStyle::point) {
     graph(0)->setScatterStyle(POINT_STYLE);
     graph(0)->setLineStyle(QCPGraph::lsNone);
+    graph(0)->setBrush(Qt::NoBrush);
   } else if (style == GraphStyle::linePoint) {
     graph(0)->setScatterStyle(POINT_STYLE);
     graph(0)->setLineStyle(QCPGraph::lsLine);
+    graph(0)->setBrush(Qt::NoBrush);
+  } else if (style == GraphStyle::filled) {
+    graph(0)->setScatterStyle(QCPScatterStyle::ssNone);
+    graph(0)->setLineStyle(QCPGraph::lsLine);
+    graph(0)->setBrush(graph(0)->pen().color());
   }
   this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
 }

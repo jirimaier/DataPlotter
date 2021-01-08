@@ -42,15 +42,15 @@ QT_END_NAMESPACE
 class MainWindow : public QMainWindow {
   Q_OBJECT
 
- public:
+public:
   explicit MainWindow(QWidget *parent = nullptr);
   void init(QTranslator *translator, const PlotData *plotData, const PlotMath *plotMath, const SerialReader *serialReader);
   ~MainWindow();
 
- private:
+private:
   Ui::MainWindow *ui;
   QTranslator *translator;
-  QTimer portsRefreshTimer, activeChRefreshTimer, cursorRangeUpdateTimer, measureRefreshTimer1, measureRefreshTimer2, fftTimer;
+  QTimer portsRefreshTimer, activeChRefreshTimer, xyTimer, cursorRangeUpdateTimer, measureRefreshTimer1, measureRefreshTimer2, fftTimer;
   QList<QSerialPortInfo> portList;
   void connectSignals();
   void updateChScale();
@@ -77,10 +77,10 @@ class MainWindow : public QMainWindow {
   void updateChannelComboBox(QComboBox &combobox, bool includeLogic, bool leaveAtLeastOne);
   bool colorUpdateNeeded = true;
   void updateMathNow(int number);
-  void updateXYNow();
+  void updateXY();
   QIcon iconXY, iconRun, iconPause, iconHidden, iconVisible, iconConnected, iconNotConnected, iconCross, iconFFT;
 
- private slots:
+private slots:
   void updateCursors();
   void setAdaptiveSpinBoxes();
   void updateDivs();
@@ -92,7 +92,7 @@ class MainWindow : public QMainWindow {
   void updateMeasurements2();
   void updateFFT();
 
- private slots:  // Autoconnect slots
+private slots: // Autoconnect slots
   void on_dialRollingRange_realValueChanged(double value) { ui->doubleSpinBoxRangeHorizontal->setValue(value); }
   void on_dialVerticalRange_realValueChanged(double value) { ui->doubleSpinBoxRangeVerticalRange->setValue(value); }
   void on_doubleSpinBoxChOffset_valueChanged(double arg1);
@@ -168,10 +168,7 @@ class MainWindow : public QMainWindow {
   void on_spinBoxMath1Second_valueChanged(int) { updateMathNow(1); };
   void on_spinBoxMath2Second_valueChanged(int) { updateMathNow(2); };
   void on_spinBoxMath3Second_valueChanged(int) { updateMathNow(3); };
-  void on_spinBoxXYFirst_valueChanged(int) { updateXYNow(); }
-  void on_spinBoxXYSecond_valueChanged(int) { updateXYNow(); }
   void on_dialXYGrid_valueChanged(int value);
-  void on_radioButtonRollingRange_toggled(bool checked);
   void on_pushButtonXY_toggled(bool checked);
   void on_comboBoxCursor1Channel_currentIndexChanged(int index);
   void on_comboBoxCursor2Channel_currentIndexChanged(int index);
@@ -187,12 +184,12 @@ class MainWindow : public QMainWindow {
   void on_lineEditTerminalManualInput_returnPressed();
   void on_pushButtonFFT_toggled(bool checked);
   void on_pushButtonFFTImage_clicked();
-
   void on_pushButtonChangeFFTColor_clicked();
-
   void on_pushButtonChangeXYColor_clicked();
+  void on_comboBoxXYy_currentIndexChanged(int) { updateXY(); }
+  void on_comboBoxXYx_currentIndexChanged(int) { updateXY(); }
 
- public slots:
+public slots:
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumerator target);
   void showPlotStatus(PlotStatus::enumerator type);
   void serialConnectResult(bool connected, QString message);
@@ -205,8 +202,9 @@ class MainWindow : public QMainWindow {
   void signalMeasurementsResult1(double period, double freq, double amp, double vpp, double min, double max, double vrms, double dc);
   void signalMeasurementsResult2(double period, double freq, double amp, double vpp, double min, double max, double vrms, double dc);
   void fftResult(QSharedPointer<QCPGraphDataContainer> data);
+  void xyResult(QSharedPointer<QCPCurveDataContainer> data);
 
- signals:
+signals:
   void setChDigital(int chid, int target);
   void setLogicBits(int target, int bits);
   void requestSerialBufferClear();
@@ -224,14 +222,13 @@ class MainWindow : public QMainWindow {
   void enableSerialMonitor(bool enabled);
   void setMathFirst(int math, int ch);
   void setMathSecond(int math, int ch);
-  void setXYFirst(int ch);
-  void setXYSecond(int ch);
+  // void setXYFirst(int ch);
+  // void setXYSecond(int ch);
   void clearMath(int math);
-  void clearXY();
   void resetMath(int mathNumber, MathOperations::enumerator mode, QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2, bool shouldIgnorePause = false);
-  void resetXY(QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2, bool shouldIgnorePause = false);
+  void requestXY(QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2);
   void requstMeasurements1(QSharedPointer<QCPGraphDataContainer> data);
   void requstMeasurements2(QSharedPointer<QCPGraphDataContainer> data);
   void requestFFT(QSharedPointer<QCPGraphDataContainer> data, bool dB, FFTWindow::enumerator window);
 };
-#endif  // MAINWINDOW_H
+#endif // MAINWINDOW_H

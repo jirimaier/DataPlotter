@@ -17,6 +17,7 @@
 
 void MainWindow::comRefresh() {
   // Zjistí, jestli nastala změna v portech.
+
   QList<QSerialPortInfo> newPorts = QSerialPortInfo::availablePorts();
   bool change = false;
   if (newPorts.length() == portList.length()) {
@@ -32,6 +33,7 @@ void MainWindow::comRefresh() {
   // Aktualizuje seznam portů
   if (change) {
     QString current = ui->comboBoxCom->currentText();
+    ui->comboBoxCom->blockSignals(true);
     ui->comboBoxCom->clear();
     portList = newPorts;
     int portWithStName = -1;
@@ -40,11 +42,13 @@ void MainWindow::comRefresh() {
     for (int i = 0; i < portList.length(); i++) {
       QSerialPortInfo port = portList.at(i);
       ui->comboBoxCom->addItem(port.portName() + " - " + port.description());
-      if (port.description().contains(PORT_NUCLEO_DESCRIPTION_IDENTIFIER)) portWithStName = i;
+      if (port.description().contains(PORT_NUCLEO_DESCRIPTION_IDENTIFIER))
+        portWithStName = i;
     }
 
     // Znovu vypere původní port; pokud neexistuje, vybere port který je asi Nucleo, pokud žádný popisem neodpovídá, vybere ten první.
     ui->comboBoxCom->setCurrentIndex(ui->comboBoxCom->findText(current) == -1 ? MAX(portWithStName, 0) : ui->comboBoxCom->findText(current));
+    ui->comboBoxCom->blockSignals(false);
   }
 }
 
@@ -54,6 +58,9 @@ void MainWindow::updateUsedChannels() {
   updateChannelComboBox(*ui->comboBoxSelectedChannel, true, true);
   updateChannelComboBox(*ui->comboBoxMeasure1, false, false);
   updateChannelComboBox(*ui->comboBoxMeasure2, false, false);
+  updateChannelComboBox(*ui->comboBoxFFTCh, false, true);
+  updateChannelComboBox(*ui->comboBoxXYx, false, true);
+  updateChannelComboBox(*ui->comboBoxXYy, false, true);
   colorUpdateNeeded = false;
 }
 
@@ -67,7 +74,8 @@ void MainWindow::updateChannelComboBox(QComboBox &combobox, bool includeLogic, b
       auto *model = qobject_cast<QStandardItemModel *>(combobox.model());
       auto *item = model->item(i + ANALOG_COUNT + MATH_COUNT);
       bool willBeVisible = ui->checkBoxSelUnused->isChecked() || ui->plot->isChUsed(GlobalFunctions::getLogicChannelID(i, 1));
-      if (willBeVisible) atLeastOneVisible = true;
+      if (willBeVisible)
+        atLeastOneVisible = true;
       item->setEnabled(willBeVisible);
       QListView *view = qobject_cast<QListView *>(combobox.view());
       view->setRowHidden(i + ANALOG_COUNT + MATH_COUNT, !willBeVisible);
@@ -82,8 +90,10 @@ void MainWindow::updateChannelComboBox(QComboBox &combobox, bool includeLogic, b
     auto *model = qobject_cast<QStandardItemModel *>(combobox.model());
     auto *item = model->item(i);
     bool willBeVisible = ui->checkBoxSelUnused->isChecked() || ui->plot->isChUsed(i);
-    if (willBeVisible) atLeastOneVisible = true;
-    if (i == 0 && !atLeastOneVisible && !ui->pushButtonXY->isChecked()) willBeVisible = true;
+    if (willBeVisible)
+      atLeastOneVisible = true;
+    if (i == 0 && !atLeastOneVisible && !ui->pushButtonXY->isChecked())
+      willBeVisible = true;
     item->setEnabled(willBeVisible);
     QListView *view = qobject_cast<QListView *>(combobox.view());
     view->setRowHidden(i, !willBeVisible);
@@ -98,7 +108,8 @@ void MainWindow::updateChannelComboBox(QComboBox &combobox, bool includeLogic, b
 void MainWindow::updateMeasurements1() {
   if (ui->comboBoxMeasure1->currentIndex() != ui->comboBoxMeasure1->count() - 1) {
     int chid = ui->comboBoxMeasure1->currentIndex();
-    if (ui->plot->graph(chid)->data()->isEmpty()) goto empty;
+    if (ui->plot->graph(chid)->data()->isEmpty())
+      goto empty;
     auto data = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer(*ui->plot->graph(chid)->data()));
     if (ui->radioButtonSigPart->isChecked()) {
       data->removeBefore(ui->plot->xAxis->range().lower);
@@ -122,7 +133,8 @@ void MainWindow::updateMeasurements1() {
 void MainWindow::updateMeasurements2() {
   if (ui->comboBoxMeasure2->currentIndex() != ui->comboBoxMeasure2->count() - 1) {
     int chid = ui->comboBoxMeasure2->currentIndex();
-    if (ui->plot->graph(chid)->data()->isEmpty()) goto empty;
+    if (ui->plot->graph(chid)->data()->isEmpty())
+      goto empty;
     auto data = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer(*ui->plot->graph(chid)->data()));
     if (ui->radioButtonSigPart->isChecked()) {
       data->removeBefore(ui->plot->xAxis->range().lower);
@@ -145,17 +157,40 @@ void MainWindow::updateMeasurements2() {
 
 void MainWindow::updateFFT() {
   if (ui->pushButtonFFT->isChecked()) {
-    int chid = ui->spinBoxFFT->value() - 1;
-    if (ui->plot->graph(chid)->data()->isEmpty()) {
-      ui->plotFFT->clear();
-      return;
-    }
+    int chid = ui->comboBoxFFTCh->currentIndex();
 
     auto data = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer(*ui->plot->graph(chid)->data()));
     if (ui->radioButtonFFTPart->isChecked()) {
       data->removeBefore(ui->plot->xAxis->range().lower);
       data->removeAfter(ui->plot->xAxis->range().upper);
     }
+
+    if (data->isEmpty()) {
+      ui->plotFFT->clear();
+      return;
+    }
+
+    fftTimer.stop();
     emit requestFFT(data, ui->checkBoxFFTdB->isChecked(), (FFTWindow::enumerator)ui->comboBoxFFTWindow->currentIndex());
+  }
+}
+
+void MainWindow::updateXY() {
+  if (ui->pushButtonXY->isChecked()) {
+    auto in1 = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer(*ui->plot->graph(ui->comboBoxXYx->currentIndex())->data()));
+    auto in2 = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer(*ui->plot->graph(ui->comboBoxXYy->currentIndex())->data()));
+    if (ui->radioButtonXYPart->isChecked()) {
+      in1->removeBefore(ui->plot->xAxis->range().lower);
+      in1->removeAfter(ui->plot->xAxis->range().upper);
+      in2->removeBefore(ui->plot->xAxis->range().lower);
+      in2->removeAfter(ui->plot->xAxis->range().upper);
+    }
+    if (in2->isEmpty() || in1->isEmpty()) {
+      ui->plotxy->clear();
+      return;
+    }
+
+    xyTimer.stop();
+    emit requestXY(in1, in2);
   }
 }

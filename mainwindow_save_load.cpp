@@ -25,13 +25,25 @@ void MainWindow::initSetables() {
 
   // XY
   setables["xyen"] = ui->pushButtonXY;
-  setables["xyxch"] = ui->spinBoxXYFirst;
-  setables["xyych"] = ui->spinBoxXYSecond;
+  setables["xyxch"] = ui->comboBoxXYx;
+  setables["xyych"] = ui->comboBoxXYy;
   setables["xygrid"] = ui->dialXYGrid;
   setables["xystyle"] = ui->comboBoxXYStyle;
 
+  // FFT
+  setables["fften"] = ui->pushButtonFFT;
+  setables["fftch"] = ui->comboBoxFFTCh;
+  setables["fftgridx"] = ui->dialFFTGridX;
+  setables["fftgridy"] = ui->dialFFTGridY;
+  setables["fftstyle"] = ui->comboBoxFFTStyle;
+  setables["fftwin"] = ui->comboBoxFFTWindow;
+
+  // Measure
+  setables["meas1ch"] = ui->comboBoxMeasure1;
+  setables["meas2ch"] = ui->comboBoxMeasure2;
+
   // Export
-  setables["csvprecisoin"] = ui->spinBoxCSVPrecision;
+  setables["csvprec"] = ui->spinBoxCSVPrecision;
   setables["csvinchid"] = ui->checkBoxCSVIncludeHidden;
   setables["csvvro"] = ui->checkBoxCSVVRO;
 
@@ -104,13 +116,20 @@ void MainWindow::applyGuiElementSettings(QWidget *target, QString value) {
 }
 
 QByteArray MainWindow::readGuiElementSettings(QWidget *target) {
-  if (QDoubleSpinBox *newTarget = dynamic_cast<QDoubleSpinBox *>(target)) return (QString::number(newTarget->value()).toUtf8());
-  if (QSpinBox *newTarget = dynamic_cast<QSpinBox *>(target)) return (QString::number(newTarget->value()).toUtf8());
-  if (QScrollBar *newTarget = dynamic_cast<QScrollBar *>(target)) return (QString::number(newTarget->value()).toUtf8());
-  if (QSlider *newTarget = dynamic_cast<QSlider *>(target)) return (QString::number(newTarget->value()).toUtf8());
-  if (QCheckBox *newTarget = dynamic_cast<QCheckBox *>(target)) return (newTarget->isChecked() ? "1" : "0");
-  if (QPushButton *newTarget = dynamic_cast<QPushButton *>(target)) return (newTarget->isChecked() ? "1" : "0");
-  if (QComboBox *newTarget = dynamic_cast<QComboBox *>(target)) return (QString::number(newTarget->currentIndex()).toUtf8());
+  if (QDoubleSpinBox *newTarget = dynamic_cast<QDoubleSpinBox *>(target))
+    return (QString::number(newTarget->value()).toUtf8());
+  if (QSpinBox *newTarget = dynamic_cast<QSpinBox *>(target))
+    return (QString::number(newTarget->value()).toUtf8());
+  if (QScrollBar *newTarget = dynamic_cast<QScrollBar *>(target))
+    return (QString::number(newTarget->value()).toUtf8());
+  if (QSlider *newTarget = dynamic_cast<QSlider *>(target))
+    return (QString::number(newTarget->value()).toUtf8());
+  if (QCheckBox *newTarget = dynamic_cast<QCheckBox *>(target))
+    return (newTarget->isChecked() ? "1" : "0");
+  if (QPushButton *newTarget = dynamic_cast<QPushButton *>(target))
+    return (newTarget->isChecked() ? "1" : "0");
+  if (QComboBox *newTarget = dynamic_cast<QComboBox *>(target))
+    return (QString::number(newTarget->currentIndex()).toUtf8());
   if (QDial *newTarget = dynamic_cast<QDial *>(target))
     return (QString::number(newTarget->value()).toUtf8());
   else if (QLineEdit *newTarget = dynamic_cast<QLineEdit *>(target))
@@ -121,7 +140,8 @@ QByteArray MainWindow::readGuiElementSettings(QWidget *target) {
 QByteArray MainWindow::getSettings() {
   QByteArray settings;
 
-  for (QMap<QString, QWidget *>::iterator it = setables.begin(); it != setables.end(); it++) settings.append(QString(it.key() + ':' + readGuiElementSettings(it.value()) + ";\n").toUtf8());
+  for (QMap<QString, QWidget *>::iterator it = setables.begin(); it != setables.end(); it++)
+    settings.append(QString(it.key() + ':' + readGuiElementSettings(it.value()) + ";\n").toUtf8());
 
   if (ui->radioButtonFixedRange->isChecked())
     settings.append("plottype:fix;\n");
@@ -135,6 +155,14 @@ QByteArray MainWindow::getSettings() {
   settings.append(ui->radioButtonCSVDot->isChecked() ? "csvsep:dc" : "csvsep:cs");
   settings.append(";\n");
   settings.append(ui->radioButtonXYAutoSize->isChecked() ? "xytype:fix" : "xytype:cs");
+  settings.append(";\n");
+  settings.append(ui->radioButtonFFTAutoSize->isChecked() ? "ffttype:fix" : "ffttype:cs");
+  settings.append(";\n");
+  settings.append(ui->radioButtonXYFull->isChecked() ? "xydata:all" : "xydata:view");
+  settings.append(";\n");
+  settings.append(ui->radioButtonFFTFull->isChecked() ? "fftdata:all" : "fftdata:view");
+  settings.append(";\n");
+  settings.append(ui->radioButtonSigFull->isChecked() ? "measure:all" : "measure:view");
   settings.append(";\n");
 
   QColor xyclr = ui->plotxy->graphXY->pen().color();
@@ -203,24 +231,61 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumerator sour
     applyGuiElementSettings(setables[type], value);
 
   else if (type == "lang") {
-    if (value == "en") ui->radioButtonEn->setChecked(true);
-    if (value == "cz") ui->radioButtonCz->setChecked(true);
+    if (value == "en")
+      ui->radioButtonEn->setChecked(true);
+    if (value == "cz")
+      ui->radioButtonCz->setChecked(true);
   }
 
   else if (type == "csvsep") {
-    if (value == "cs") ui->radioButtonCSVComma->setChecked(true);
-    if (value == "dc") ui->radioButtonCSVDot->setChecked(true);
+    if (value == "cs")
+      ui->radioButtonCSVComma->setChecked(true);
+    if (value == "dc")
+      ui->radioButtonCSVDot->setChecked(true);
   }
 
   else if (type == "plottype") {
-    if (value == "fix") ui->radioButtonFixedRange->setChecked(true);
-    if (value == "free") ui->radioButtonFreeRange->setChecked(true);
-    if (value == "roll") ui->radioButtonRollingRange->setChecked(true);
+    if (value == "fix")
+      ui->radioButtonFixedRange->setChecked(true);
+    if (value == "free")
+      ui->radioButtonFreeRange->setChecked(true);
+    if (value == "roll")
+      ui->radioButtonRollingRange->setChecked(true);
   }
 
   else if (type == "xytype") {
-    if (value == "fix") ui->radioButtonXYAutoSize->setChecked(true);
-    if (value == "free") ui->radioButtonXYFree->setChecked(true);
+    if (value == "fix")
+      ui->radioButtonXYAutoSize->setChecked(true);
+    if (value == "free")
+      ui->radioButtonXYFree->setChecked(true);
+  }
+
+  else if (type == "ffttype") {
+    if (value == "fix")
+      ui->radioButtonFFTAutoSize->setChecked(true);
+    if (value == "free")
+      ui->radioButtonFFTFree->setChecked(true);
+  }
+
+  else if (type == "fftdata") {
+    if (value == "all")
+      ui->radioButtonFFTFull->setChecked(true);
+    if (value == "view")
+      ui->radioButtonFFTPart->setChecked(true);
+  }
+
+  else if (type == "xydata") {
+    if (value == "all")
+      ui->radioButtonXYFull->setChecked(true);
+    if (value == "view")
+      ui->radioButtonXYPart->setChecked(true);
+  }
+
+  else if (type == "measure") {
+    if (value == "all")
+      ui->radioButtonSigFull->setChecked(true);
+    if (value == "view")
+      ui->radioButtonSigPart->setChecked(true);
   }
 
   else if (type == "xycol") {
@@ -276,7 +341,8 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumerator sour
       ui->plot->setChColor(ch, clr);
       colorUpdateNeeded = true;
     }
-    if (ui->comboBoxSelectedChannel->currentIndex() == ch) on_comboBoxSelectedChannel_currentIndexChanged(ui->comboBoxSelectedChannel->currentIndex());
+    if (ui->comboBoxSelectedChannel->currentIndex() == ch)
+      on_comboBoxSelectedChannel_currentIndexChanged(ui->comboBoxSelectedChannel->currentIndex());
   }
 
   else if (type == "log") {
@@ -307,7 +373,8 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumerator sour
       ui->plot->setLogicColor(group, clr);
       colorUpdateNeeded = true;
     }
-    if (ui->comboBoxSelectedChannel->currentIndex() == group + ANALOG_COUNT + MATH_COUNT) on_comboBoxSelectedChannel_currentIndexChanged(ui->comboBoxSelectedChannel->currentIndex());
+    if (ui->comboBoxSelectedChannel->currentIndex() == group + ANALOG_COUNT + MATH_COUNT)
+      on_comboBoxSelectedChannel_currentIndexChanged(ui->comboBoxSelectedChannel->currentIndex());
   }
 
   // Error
@@ -315,13 +382,14 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumerator sour
     printMessage(tr("Unknown setting").toUtf8(), type, MessageLevel::error, source);
     return;
   }
-  if (ui->comboBoxOutputLevel->currentIndex() == OutputLevel::info) printMessage(tr("Applied settings").toUtf8(), settings, MessageLevel::info, source);
+  printMessage(tr("Applied settings").toUtf8(), settings, MessageLevel::info, source);
 }
 
 void MainWindow::on_pushButtonLoadFile_clicked() {
   QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/settings/");
   QString fileName = QFileDialog::getOpenFileName(this, tr("Load file"), defaultName, tr("Text file (*.txt);;Any file (*.*)"));
-  if (fileName.isEmpty()) return;
+  if (fileName.isEmpty())
+    return;
   QFile file(fileName);
   if (file.open(QFile::ReadOnly | QFile::Text)) {
     sendFileToParser(file.readAll(), false, ui->checkBoxAddSemicolum->isChecked());
@@ -350,7 +418,8 @@ void MainWindow::on_pushButtonDefaults_clicked() {
 void MainWindow::on_pushButtonSaveSettings_clicked() {
   QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/settings/");
   QString fileName = QFileDialog::getSaveFileName(this, tr("Load settings"), defaultName, tr("Text file (*.txt)"));
-  if (fileName.isEmpty()) return;
+  if (fileName.isEmpty())
+    return;
   QFile file(fileName);
   if (file.open(QFile::WriteOnly | QFile::Truncate)) {
     file.write("$$S\n" + getSettings() + "$$U");
@@ -364,7 +433,8 @@ void MainWindow::on_pushButtonSaveSettings_clicked() {
 
 void MainWindow::on_pushButtonReset_clicked() {
   QFile defaults(":/text/settings/default.txt");
-  if (defaults.open(QFile::ReadOnly | QFile::Text)) sendFileToParser(defaults.readAll(), true);
+  if (defaults.open(QFile::ReadOnly | QFile::Text))
+    sendFileToParser(defaults.readAll(), true);
 }
 
 void MainWindow::setUp() {
@@ -374,7 +444,8 @@ void MainWindow::setUp() {
     sendFileToParser(userDefaultsFile.readAll(), true);
   else {
     QFile defaults(":/text/settings/default.txt");
-    if (defaults.open(QFile::ReadOnly | QFile::Text)) sendFileToParser(defaults.readAll(), true);
+    if (defaults.open(QFile::ReadOnly | QFile::Text))
+      sendFileToParser(defaults.readAll(), true);
   }
 
   QString style = "";
@@ -383,10 +454,10 @@ void MainWindow::setUp() {
     style = ":/text/stylesheets/styleSheetWindows10.txt";
   else
     style = ":/text/stylesheets/styleSheetWindows.txt";
-#endif            // Windows
-#ifdef __linux__  // Linux
+#endif           // Windows
+#ifdef __linux__ // Linux
   style = ":/text/stylesheets/styleSheetLinux.txt";
-#endif  // Linux
+#endif // Linux
   QFile styleSheet(style);
 
   if (styleSheet.open(QFile::ReadOnly | QFile::Text)) {
@@ -396,7 +467,9 @@ void MainWindow::setUp() {
 }
 
 void MainWindow::sendFileToParser(QByteArray text, bool removeLastNewline, bool addSemicolums) {
-  if (removeLastNewline && text.right(1) == "\n") text.remove(text.length() - 1, 1);
-  if (addSemicolums) text.replace("\n", ";");
+  if (removeLastNewline && text.right(1) == "\n")
+    text.remove(text.length() - 1, 1);
+  if (addSemicolums)
+    text.replace("\n", ";");
   emit sendManualInput(text);
 }

@@ -18,7 +18,8 @@
 PlotMath::PlotMath(QObject *parent) : QObject(parent) {
   firsts.resize(MATH_COUNT);
   seconds.resize(MATH_COUNT);
-  for (int i = 0; i < MATH_COUNT; i++) operations[i] = MathOperations::add;
+  for (int i = 0; i < MATH_COUNT; i++)
+    operations[i] = MathOperations::add;
 }
 
 PlotMath::~PlotMath() {}
@@ -62,43 +63,25 @@ void PlotMath::clearMath(int math) {
   seconds[math - 1].clear();
 }
 
-void PlotMath::clearXY() {
-  XYx.clear();
-  XYy.clear();
-}
-
-void PlotMath::addXYData(bool isFirst, QSharedPointer<QCPGraphDataContainer> in, bool shouldIgnorePause) {
-  if (isFirst)
-    XYx = in;
-  else
-    XYy = in;
-
-  if (!XYx.isNull() && !XYy.isNull()) {
-    if (XYx->size() != XYy->size()) {
-      emit sendMessage(tr("XY error"), tr("Channels have different length, can not use XY mode").toUtf8());
-      XYx.clear();
-      XYy.clear();
-      return;
-    }
-    auto result = QSharedPointer<QCPCurveDataContainer>(new QCPCurveDataContainer());
-    for (int i = 0; i < XYx->size(); i++) {
-      result->add(QCPCurveData(XYx->at(i)->key, XYx->at(i)->value, XYy->at(i)->value));
-    }
-    emit sendResultXY(result, shouldIgnorePause);
-    XYx.clear();
-    XYy.clear();
-  }
-}
-
 void PlotMath::resetMath(int mathNumber, MathOperations::enumerator mode, QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2) {
   operations[mathNumber - 1] = mode;
-  seconds[mathNumber - 1].clear();                // Vymaže druhá data
-  firsts[mathNumber - 1] = in1;                   // Vloží první data
-  addMathData(mathNumber - 1, false, in2, true);  // Vloží druhá data, spočítá a pošle do grafu
+  seconds[mathNumber - 1].clear();               // Vymaže druhá data
+  firsts[mathNumber - 1] = in1;                  // Vloží první data
+  addMathData(mathNumber - 1, false, in2, true); // Vloží druhá data, spočítá a pošle do grafu
 }
 
-void PlotMath::resetXY(QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2) {
-  XYy.clear();                  // Vymaže druhá data
-  XYx = in1;                    // Vloží první data
-  addXYData(false, in2, true);  // Vloží druhá data, spočítá a pošle do grafu
+void PlotMath::calculateXY(QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2) {
+  if (in1->size() != in2->size()) {                                                  // Mají kanály stejný počet vzorků? Když ne, budou ustřihnut začátk nebo konec.
+    double mint = MAX(in1->at(0)->key, in2->at(0)->key);                             // Nejnižší společný čas
+    double maxt = MIN(in1->at(in1->size() - 1)->key, in2->at(in2->size() - 1)->key); // Nejvyšší společný čas
+    in1->removeBefore(mint);
+    in2->removeBefore(mint);
+    in1->removeAfter(maxt);
+    in2->removeAfter(maxt);
+  }
+  auto result = QSharedPointer<QCPCurveDataContainer>(new QCPCurveDataContainer());
+  for (int i = 0; i < in1->size(); i++) {
+    result->add(QCPCurveData(in1->at(i)->key, in1->at(i)->value, in2->at(i)->value));
+  }
+  emit sendResultXY(result);
 }

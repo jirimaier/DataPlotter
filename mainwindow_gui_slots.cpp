@@ -64,11 +64,13 @@ void MainWindow::on_dialZoom_valueChanged(int value) {
 }
 
 void MainWindow::on_radioButtonEn_toggled(bool checked) {
-  if (checked) changeLanguage("en");
+  if (checked)
+    changeLanguage("en");
 }
 
 void MainWindow::on_radioButtonCz_toggled(bool checked) {
-  if (checked) changeLanguage("cz");
+  if (checked)
+    changeLanguage("cz");
 }
 
 void MainWindow::on_lineEditManualInput_returnPressed() {
@@ -107,7 +109,8 @@ void MainWindow::on_lineEditCommand_4_returnPressed() {
 }
 
 void MainWindow::on_comboBoxOutputLevel_currentIndexChanged(int index) {
-  if (index >= 0) emit setSerialMessageLevel((OutputLevel::enumerator)index);
+  if (index >= 0)
+    emit setSerialMessageLevel((OutputLevel::enumerator)index);
 }
 
 void MainWindow::on_pushButtonScrollDown_2_clicked() {
@@ -176,7 +179,8 @@ void MainWindow::on_comboBoxSelectedChannel_currentIndexChanged(int index) {
 }
 
 void MainWindow::on_checkBoxChInverted_toggled(bool checked) {
-  if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT) ui->plot->setChInvert(ui->comboBoxSelectedChannel->currentIndex(), checked);
+  if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT)
+    ui->plot->setChInvert(ui->comboBoxSelectedChannel->currentIndex(), checked);
 }
 
 void MainWindow::on_pushButtonResetChannels_clicked() {
@@ -215,7 +219,8 @@ void MainWindow::on_pushButtonChangeChColor_clicked() {
   else
     oldColor = ui->plot->getLogicColor(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT);
   QColor color = QColorDialog::getColor(oldColor);
-  if (!color.isValid()) return;
+  if (!color.isValid())
+    return;
   if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT)
     ui->plot->setChColor(ui->comboBoxSelectedChannel->currentIndex(), color);
   else
@@ -229,15 +234,11 @@ void MainWindow::on_dialXYGrid_valueChanged(int value) {
   ui->plotxy->setGridHintY(value);
 }
 
-void MainWindow::on_radioButtonRollingRange_toggled(bool checked) {
-  ui->plotxy->setUseTimeRange(checked);
-  updateXYNow();
-}
-
 void MainWindow::on_pushButtonXY_toggled(bool checked) {
-  updateXYNow();
-
-  if (!checked) ui->plotxy->clear();
+  if (!checked)
+    ui->plotxy->clear();
+  else
+    updateXY();
 
   if (checked) {
     ui->plotFFT->setVisible(true);
@@ -330,42 +331,50 @@ void MainWindow::on_pushButtonTerminalSelect_toggled(bool checked) {
 }
 
 void MainWindow::printTerminalDebug(QString text) {
-  if (ui->plainTextEditTerminalDebug->toPlainText().length() > 1000) ui->plainTextEditTerminalDebug->clear();
+  if (ui->plainTextEditTerminalDebug->toPlainText().length() > 1000)
+    ui->plainTextEditTerminalDebug->clear();
 
   QTextCursor prevCursor = ui->plainTextEditTerminalDebug->textCursor();
-  text.replace(" ", "&nbsp;");                    // Normální mezera se nezobrazí :-(
-  text.replace("font&nbsp;color", "font color");  // A když už tam tu mezeru změním, tek to zase zničí tu mezeru v "font color" a nefunguje to.
+  text.replace(" ", "&nbsp;");                   // Normální mezera se nezobrazí :-(
+  text.replace("font&nbsp;color", "font color"); // A když už tam tu mezeru změním, tek to zase zničí tu mezeru v "font color" a nefunguje to.
   ui->plainTextEditTerminalDebug->moveCursor(QTextCursor::End);
   ui->plainTextEditTerminalDebug->textCursor().insertHtml(text);
   ui->plainTextEditTerminalDebug->setTextCursor(prevCursor);
 }
 
 void MainWindow::signalMeasurementsResult1(double period, double freq, double amp, double vpp, double min, double max, double vrms, double dc) {
-  ui->labelSig1Amp->setText(QString::number(amp, 'g', 3));
-  ui->labelSig1Freq->setText(QString::number(freq, 'g', 3));
-  ui->labelSig1Period->setText(QString::number(period, 'g', 3));
-  ui->labelSig1Vpp->setText(QString::number(vpp, 'g', 3));
-  ui->labelSig1Vrms->setText(QString::number(vrms, 'g', 3));
-  ui->labelSig1Min->setText(QString::number(min, 'g', 3));
-  ui->labelSig1Max->setText(QString::number(max, 'g', 3));
-  ui->labelSig1Dc->setText(QString::number(dc, 'g', 3));
+  ui->labelSig1Amp->setText(QString::number(amp, 'f', 3));
+  ui->labelSig1Freq->setText(QString::number(freq, 'f', 3));
+  ui->labelSig1Period->setText(QString::number(period, 'f', 3));
+  ui->labelSig1Vpp->setText(QString::number(vpp, 'f', 3));
+  ui->labelSig1Vrms->setText(QString::number(vrms, 'f', 3));
+  ui->labelSig1Min->setText(QString::number(min, 'f', 3));
+  ui->labelSig1Max->setText(QString::number(max, 'f', 3));
+  ui->labelSig1Dc->setText(QString::number(dc, 'f', 3));
   measureRefreshTimer1.start(250);
 }
 void MainWindow::signalMeasurementsResult2(double period, double freq, double amp, double vpp, double min, double max, double vrms, double dc) {
-  ui->labelSig2Amp->setText(QString::number(amp, 'g', 3));
-  ui->labelSig2Freq->setText(QString::number(freq, 'g', 3));
-  ui->labelSig2Period->setText(QString::number(period, 'g', 3));
-  ui->labelSig2Vpp->setText(QString::number(vpp, 'g', 3));
-  ui->labelSig2Vrms->setText(QString::number(vrms, 'g', 3));
-  ui->labelSig2Min->setText(QString::number(min, 'g', 3));
-  ui->labelSig2Max->setText(QString::number(max, 'g', 3));
-  ui->labelSig2Dc->setText(QString::number(dc, 'g', 3));
+  ui->labelSig2Amp->setText(QString::number(amp, 'f', 3));
+  ui->labelSig2Freq->setText(QString::number(freq, 'f', 3));
+  ui->labelSig2Period->setText(QString::number(period, 'f', 3));
+  ui->labelSig2Vpp->setText(QString::number(vpp, 'f', 3));
+  ui->labelSig2Vrms->setText(QString::number(vrms, 'f', 3));
+  ui->labelSig2Min->setText(QString::number(min, 'f', 3));
+  ui->labelSig2Max->setText(QString::number(max, 'f', 3));
+  ui->labelSig2Dc->setText(QString::number(dc, 'f', 3));
   measureRefreshTimer2.start(250);
 }
 
 void MainWindow::fftResult(QSharedPointer<QCPGraphDataContainer> data) {
-  if (ui->pushButtonFFT->isChecked()) ui->plotFFT->newData(data);
+  if (ui->pushButtonFFT->isChecked())
+    ui->plotFFT->newData(data);
   fftTimer.start();
+}
+
+void MainWindow::xyResult(QSharedPointer<QCPCurveDataContainer> data) {
+  if (ui->pushButtonXY->isChecked())
+    ui->plotxy->newData(data);
+  xyTimer.start();
 }
 
 void MainWindow::on_listWidgetTerminalCodeList_itemClicked(QListWidgetItem *item) {
@@ -377,7 +386,8 @@ void MainWindow::on_listWidgetTerminalCodeList_itemClicked(QListWidgetItem *item
 
   if (code == "3?m") {
     QColor color = QColorDialog::getColor(Qt::white);
-    if (!color.isValid()) return;
+    if (!color.isValid())
+      return;
     QByteArray colorCode = ui->myTerminal->nearestColorCode(color);
     ui->myTerminal->printToTerminal(QString("\u001b[3" + colorCode + "m").toUtf8());
     return;
@@ -385,7 +395,8 @@ void MainWindow::on_listWidgetTerminalCodeList_itemClicked(QListWidgetItem *item
 
   if (code == "4?m") {
     QColor color = QColorDialog::getColor(Qt::black);
-    if (!color.isValid()) return;
+    if (!color.isValid())
+      return;
     QByteArray colorCode = ui->myTerminal->nearestColorCode(color);
     ui->myTerminal->printToTerminal(QString("\u001b[4" + colorCode + "m").toUtf8());
     return;

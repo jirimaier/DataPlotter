@@ -31,10 +31,9 @@ void MainWindow::init(QTranslator *translator, const PlotData *plotData, const P
   iconCross = QIcon(":/images/icons/cross.png");
   iconFFT = QIcon(":/images/icons/fft.png");
 
-  fillChannelSelect();  // Vytvoří seznam kanálů pro výběr
+  fillChannelSelect(); // Vytvoří seznam kanálů pro výběr
 
   QObject::connect(plotMath, &PlotMath::sendResult, ui->plot, &MyMainPlot::newDataVector);
-  QObject::connect(plotMath, &PlotMath::sendResultXY, ui->plotxy, &MyXYPlot::newData);
   QObject::connect(plotData, &PlotData::clearXY, ui->plotxy, &MyXYPlot::clear);
   QObject::connect(plotData, &PlotData::addVectorToPlot, ui->plot, &MyMainPlot::newDataVector);
   QObject::connect(plotData, &PlotData::addPointToPlot, ui->plot, &MyMainPlot::newDataPoint);
@@ -94,7 +93,8 @@ void MainWindow::serialConnectResult(bool connected, QString message) {
 }
 
 void MainWindow::serialFinishedWriting() {
-  if (!ui->pushButtonMultiplInputs->isChecked()) ui->lineEditCommand->clear();
+  if (!ui->pushButtonMultiplInputs->isChecked())
+    ui->lineEditCommand->clear();
 }
 
 void MainWindow::updateDivs() {
@@ -116,17 +116,17 @@ void MainWindow::on_pushButtonCenter_clicked() {
 void MainWindow::printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumerator target) {
   QString color = "<font color=black>";
   switch (type) {
-    case MessageLevel::warning:
-      color = "<font color=orange>";
-      break;
-    case MessageLevel::error:
-      color = "<font color=red>";
-      break;
-    case MessageLevel::info:
-      color = "<font color=green>";
-      break;
-    default:
-      color = "<font color=black>";
+  case MessageLevel::warning:
+    color = "<font color=orange>";
+    break;
+  case MessageLevel::error:
+    color = "<font color=red>";
+    break;
+  case MessageLevel::info:
+    color = "<font color=green>";
+    break;
+  default:
+    color = "<font color=black>";
   }
 
   QString stringMessage;
@@ -165,17 +165,6 @@ void MainWindow::updateMathNow(int number) {
   }
 }
 
-void MainWindow::updateXYNow() {
-  emit setXYFirst(ui->pushButtonXY->isChecked() ? ui->spinBoxXYFirst->value() : 0);
-  emit setXYSecond(ui->pushButtonXY->isChecked() ? ui->spinBoxXYSecond->value() : 0);
-  emit clearXY();
-  if (ui->pushButtonXY->isChecked()) {
-    QSharedPointer<QCPGraphDataContainer> in1 = ui->plot->graph(GlobalFunctions::getAnalogChId(ui->spinBoxXYFirst->value(), ChannelType::analog))->data();
-    QSharedPointer<QCPGraphDataContainer> in2 = ui->plot->graph(GlobalFunctions::getAnalogChId(ui->spinBoxXYSecond->value(), ChannelType::analog))->data();
-    emit resetXY(in1, in2);
-  }
-}
-
 void MainWindow::on_lineEditTerminalManualInput_returnPressed() {
   QByteArray data = ui->lineEditTerminalManualInput->text().toUtf8();
   data.replace("\\n", "\n");
@@ -189,10 +178,15 @@ void MainWindow::on_lineEditTerminalManualInput_returnPressed() {
 
 void MainWindow::on_pushButtonChangeFFTColor_clicked() {
   QColor color = QColorDialog::getColor(ui->plotFFT->graph(0)->pen().color());
-  if (color.isValid()) ui->plotFFT->graph(0)->setPen(QColor(color));
+  if (color.isValid()) {
+    ui->plotFFT->graph(0)->setPen(QColor(color));
+    if (ui->comboBoxFFTStyle->currentIndex() == GraphStyle::filled)
+      ui->plotFFT->graph(0)->setBrush(color);
+  }
 }
 
 void MainWindow::on_pushButtonChangeXYColor_clicked() {
   QColor color = QColorDialog::getColor(ui->plotxy->graphXY->pen().color());
-  if (color.isValid()) ui->plotxy->graphXY->setPen(QColor(color));
+  if (color.isValid())
+    ui->plotxy->graphXY->setPen(QColor(color));
 }

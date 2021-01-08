@@ -25,25 +25,22 @@
 
 class PlotMath : public QObject {
   Q_OBJECT
- public:
+public:
   explicit PlotMath(QObject *parent = nullptr);
   ~PlotMath();
 
- private:
+private:
   QVector<QSharedPointer<QCPGraphDataContainer>> firsts, seconds = QVector<QSharedPointer<QCPGraphDataContainer>>();
-  QSharedPointer<QCPGraphDataContainer> XYx, XYy;
   MathOperations::enumerator operations[MATH_COUNT];
- public slots:
+public slots:
   void addMathData(int mathNumber, bool isFirst, QSharedPointer<QCPGraphDataContainer> in, bool shouldIgnorePause);
   void clearMath(int math);
-  void clearXY();
-  void addXYData(bool isFirst, QSharedPointer<QCPGraphDataContainer> in, bool shouldIgnorePause);
   void resetMath(int mathNumber, MathOperations::enumerator mode, QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2);
-  void resetXY(QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2);
- signals:
+  void calculateXY(QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2);
+signals:
   void sendResult(int chNumber, QSharedPointer<QCPGraphDataContainer> result, bool ignorePause);
-  void sendResultXY(QSharedPointer<QCPCurveDataContainer> result, bool ignorePause);
+  void sendResultXY(QSharedPointer<QCPCurveDataContainer> result);
   void sendMessage(QString header, QByteArray message, MessageLevel::enumerator type = MessageLevel::error, MessageTarget::enumerator target = MessageTarget::serial1);
 };
 
-#endif  // PLOTMATH_H
+#endif // PLOTMATH_H

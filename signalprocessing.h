@@ -27,25 +27,26 @@
 
 class SignalProcessing : public QObject {
   Q_OBJECT
- public:
+public:
   explicit SignalProcessing(QObject *parent = nullptr);
 
- private:
-  void calculateHamming(int length);
-  void calculateHann(int length);
-  void calculateBlackman(int length);
+private:
+  void resizeHamming(int length);
+  void resizeHann(int length);
+  void resizeBlackman(int length);
   QVector<float> hamming, hann, blackman;
   QVector<std::complex<float>> fft(QVector<std::complex<float>> signal);
-
+  inline float getStrongestFreq(QSharedPointer<QCPGraphDataContainer> data, float dc);
   /// Vratí nejbližší vyšší mocninu dvou
   int nextPow2(int number);
 
- public slots:
-  void plotFFT(QSharedPointer<QCPGraphDataContainer> data, bool dB, FFTWindow::enumerator window);
+public slots:
+  void calculateSpectrum(QSharedPointer<QCPGraphDataContainer> data, bool dB, FFTWindow::enumerator window);
   void process(QSharedPointer<QCPGraphDataContainer> data);
- signals:
+
+signals:
   void fftResult(QSharedPointer<QCPGraphDataContainer> data);
   void result(double period, double freq, double amp, double vpp, double min, double max, double vrms, double dc);
 };
 
-#endif  // SIGNALPROCESSING_H
+#endif // SIGNALPROCESSING_H

@@ -20,34 +20,22 @@
 
 class MyXYPlot : public MyPlot {
   Q_OBJECT
- public:
+public:
   explicit MyXYPlot(QWidget *parent = nullptr);
   ~MyXYPlot();
   QByteArray exportCSV(char separator, char decimal, int precision);
   QCPCurve *graphXY;
 
- private:
-  PlotStatus::enumerator plottingStatus = PlotStatus::run;
+private:
   QSharedPointer<QCPCurveDataContainer> pauseBuffer;
-  void resume();
-  void pause();
-  double timeRange = 100;
-  double range = 10;
-  double center = 10;
-  bool useRange = false;
   bool autoSize = true;
   void autoset();
 
- public slots:
-  void newData(QSharedPointer<QCPCurveDataContainer> data, bool ignorePause);
+public slots:
+  void newData(QSharedPointer<QCPCurveDataContainer> data);
   void setAutoSize(bool en);
   void clear();
   void setStyle(int style);
-  void togglePause();
-  void setTimeRange(double interval);
-  void setUseTimeRange(bool en);
-  void setCenter(double value);
-  void setRange(double value);
 };
 
-#endif  // MYXYPLOT_H
+#endif // MYXYPLOT_H

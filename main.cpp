@@ -85,7 +85,7 @@ int main(int argc, char *argv[]) {
 
   // Vytvoří instance hlavních objektů
   MainWindow mainWindow;
-  QTranslator translator;  // Musí být zde aby dokázal přeložit i texty v objektech jiných než MainWindow
+  QTranslator translator; // Musí být zde aby dokázal přeložit i texty v objektech jiných než MainWindow
   PlotData *plotData = new PlotData();
   NewSerialParser *serialParser1 = new NewSerialParser(MessageTarget::serial1);
   NewSerialParser *serialParserM = new NewSerialParser(MessageTarget::manual);
@@ -141,21 +141,22 @@ int main(int argc, char *argv[]) {
   QObject::connect(&mainWindow, &MainWindow::setChDigital, plotData, &PlotData::setDigitalChannel);
   QObject::connect(&mainWindow, &MainWindow::setLogicBits, plotData, &PlotData::setLogicBits);
   QObject::connect(&mainWindow, &MainWindow::resetMath, plotMath, &PlotMath::resetMath);
-  QObject::connect(&mainWindow, &MainWindow::resetXY, plotMath, &PlotMath::resetXY);
+  QObject::connect(&mainWindow, &MainWindow::requestXY, plotMath, &PlotMath::calculateXY);
   QObject::connect(plotData, &PlotData::addMathData, plotMath, &PlotMath::addMathData);
-  QObject::connect(plotData, &PlotData::addXYData, plotMath, &PlotMath::addXYData);
+  // QObject::connect(plotData, &PlotData::addXYData, plotMath, &PlotMath::addXYData);
   QObject::connect(&mainWindow, &MainWindow::setMathFirst, plotData, &PlotData::setMathFirst);
   QObject::connect(&mainWindow, &MainWindow::setMathSecond, plotData, &PlotData::setMathSecond);
-  QObject::connect(&mainWindow, &MainWindow::setXYFirst, plotData, &PlotData::setXYFirst);
-  QObject::connect(&mainWindow, &MainWindow::setXYSecond, plotData, &PlotData::setXYSecond);
+  // QObject::connect(&mainWindow, &MainWindow::setXYFirst, plotData, &PlotData::setXYFirst);
+  // QObject::connect(&mainWindow, &MainWindow::setXYSecond, plotData, &PlotData::setXYSecond);
   QObject::connect(&mainWindow, &MainWindow::clearMath, plotMath, &PlotMath::clearMath);
-  QObject::connect(&mainWindow, &MainWindow::clearXY, plotMath, &PlotMath::clearXY);
+  // QObject::connect(&mainWindow, &MainWindow::clearXY, plotMath, &PlotMath::clearXY);
   QObject::connect(&mainWindow, &MainWindow::requstMeasurements1, signalProcessing1, &SignalProcessing::process);
   QObject::connect(&mainWindow, &MainWindow::requstMeasurements2, signalProcessing2, &SignalProcessing::process);
-  QObject::connect(&mainWindow, &MainWindow::requestFFT, signalProcessingFFT, &SignalProcessing::plotFFT);
+  QObject::connect(&mainWindow, &MainWindow::requestFFT, signalProcessingFFT, &SignalProcessing::calculateSpectrum);
   QObject::connect(signalProcessing1, &SignalProcessing::result, &mainWindow, &MainWindow::signalMeasurementsResult1);
   QObject::connect(signalProcessing2, &SignalProcessing::result, &mainWindow, &MainWindow::signalMeasurementsResult2);
   QObject::connect(signalProcessingFFT, &SignalProcessing::fftResult, &mainWindow, &MainWindow::fftResult);
+  QObject::connect(plotMath, &PlotMath::sendResultXY, &mainWindow, &MainWindow::xyResult);
 
   // Funkce init jsou zavolány až z nového vlákna
   QObject::connect(&serialParser1Thread, &QThread::started, serialParser1, &NewSerialParser::init);

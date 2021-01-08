@@ -17,19 +17,15 @@
 
 void MainWindow::connectSignals() {
   connect(ui->pushButtonPause, &QPushButton::clicked, ui->plot, &MyMainPlot::togglePause);
-  connect(ui->pushButtonPause, &QPushButton::clicked, ui->plotxy, &MyXYPlot::togglePause);
   connect(ui->checkBoxVerticalValues, &QCheckBox::toggled, ui->plot, &MyPlot::setShowVerticalValues);
   connect(ui->plot, &MyMainPlot::showPlotStatus, this, &MainWindow::showPlotStatus);
   connect(ui->plot, &MyPlot::gridChanged, this, &MainWindow::updateDivs);
   connect(ui->doubleSpinBoxRangeHorizontal, SIGNAL(valueChanged(double)), ui->plot, SLOT(setRollingRange(double)));
-  connect(ui->doubleSpinBoxRangeHorizontal, SIGNAL(valueChanged(double)), ui->plotxy, SLOT(setTimeRange(double)));
   connect(ui->doubleSpinBoxRangeVerticalRange, SIGNAL(valueChanged(double)), ui->plot, SLOT(setVerticalRange(double)));
-  connect(ui->doubleSpinBoxRangeVerticalRange, SIGNAL(valueChanged(double)), ui->plotxy, SLOT(setRange(double)));
   connect(ui->doubleSpinBoxRangeHorizontal, SIGNAL(valueChanged(double)), ui->dialRollingRange, SLOT(updatePosition(double)));
   connect(ui->doubleSpinBoxRangeVerticalRange, SIGNAL(valueChanged(double)), ui->dialVerticalRange, SLOT(updatePosition(double)));
   connect(ui->doubleSpinBoxChScale, SIGNAL(valueChanged(double)), ui->dialChScale, SLOT(updatePosition(double)));
   connect(ui->dialVerticalCenter, &QDial::valueChanged, ui->plot, &MyMainPlot::setVerticalCenter);
-  connect(ui->dialVerticalCenter, &QDial::valueChanged, ui->plotxy, &MyXYPlot::setCenter);
   connect(ui->horizontalScrollBarHorizontal, &QScrollBar::valueChanged, ui->plot, &MyMainPlot::setHorizontalPos);
   connect(ui->lineEditHtitle, &QLineEdit::textChanged, ui->plot, &MyPlot::setXTitle);
   connect(ui->lineEditVtitle, &QLineEdit::textChanged, ui->plot, &MyPlot::setYTitle);
@@ -48,6 +44,7 @@ void MainWindow::connectSignals() {
   connect(&measureRefreshTimer1, &QTimer::timeout, this, &MainWindow::updateMeasurements1);
   connect(&measureRefreshTimer2, &QTimer::timeout, this, &MainWindow::updateMeasurements2);
   connect(&fftTimer, &QTimer::timeout, this, &::MainWindow::updateFFT);
+  connect(&xyTimer, &QTimer::timeout, this, &::MainWindow::updateXY);
 }
 
 void MainWindow::setAdaptiveSpinBoxes() {
@@ -66,6 +63,7 @@ void MainWindow::startTimers() {
   measureRefreshTimer1.start(200);
   measureRefreshTimer2.start(200);
   fftTimer.start(200);
+  xyTimer.start(200);
 }
 
 void MainWindow::setGuiDefaults() {
@@ -105,6 +103,9 @@ void MainWindow::fillChannelSelect() {
   ui->comboBoxCursor2Channel->blockSignals(true);
   ui->comboBoxMeasure1->blockSignals(true);
   ui->comboBoxMeasure2->blockSignals(true);
+  ui->comboBoxFFTCh->blockSignals(true);
+  ui->comboBoxXYx->blockSignals(true);
+  ui->comboBoxXYy->blockSignals(true);
 
   for (int i = 0; i < ANALOG_COUNT + MATH_COUNT; i++) {
     ui->comboBoxSelectedChannel->addItem(GlobalFunctions::getChName(i));
@@ -112,6 +113,9 @@ void MainWindow::fillChannelSelect() {
     ui->comboBoxCursor2Channel->addItem(GlobalFunctions::getChName(i));
     ui->comboBoxMeasure1->addItem(GlobalFunctions::getChName(i));
     ui->comboBoxMeasure2->addItem(GlobalFunctions::getChName(i));
+    ui->comboBoxFFTCh->addItem(GlobalFunctions::getChName(i));
+    ui->comboBoxXYx->addItem(GlobalFunctions::getChName(i));
+    ui->comboBoxXYy->addItem(GlobalFunctions::getChName(i));
   }
   for (int i = 1; i <= LOGIC_GROUPS; i++) {
     ui->comboBoxSelectedChannel->addItem(tr("Logic %1").arg(i));
@@ -159,4 +163,7 @@ void MainWindow::fillChannelSelect() {
   ui->comboBoxCursor2Channel->blockSignals(false);
   ui->comboBoxMeasure1->blockSignals(false);
   ui->comboBoxMeasure2->blockSignals(false);
+  ui->comboBoxFFTCh->blockSignals(false);
+  ui->comboBoxXYx->blockSignals(false);
+  ui->comboBoxXYy->blockSignals(false);
 }
