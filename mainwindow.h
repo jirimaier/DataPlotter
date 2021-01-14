@@ -79,7 +79,7 @@ private:
   void updateMathNow(int number);
   void updateXY();
   QIcon iconXY, iconRun, iconPause, iconHidden, iconVisible, iconConnected, iconNotConnected, iconCross, iconFFT;
-
+  void insertInTerminalDebug(QString text, QColor textColor);
 private slots:
   void updateCursors();
   void setAdaptiveSpinBoxes();
@@ -179,15 +179,18 @@ private slots: // Autoconnect slots
   void on_pushButtonTerminalDebug_toggled(bool checked);
   void on_pushButtonTerminalClickToSend_toggled(bool checked);
   void on_pushButtonTerminalSelect_toggled(bool checked);
-  void on_pushButtonTerminalInputCopy_clicked() { QGuiApplication::clipboard()->setText(ui->plainTextEditTerminalDebug->toPlainText()); }
+  void on_pushButtonTerminalInputCopy_clicked() { QGuiApplication::clipboard()->setText(ui->textEditTerminalDebug->toPlainText().replace('\n', "\\r\\n")); }
   void on_listWidgetTerminalCodeList_itemClicked(QListWidgetItem *item);
-  void on_lineEditTerminalManualInput_returnPressed();
   void on_pushButtonFFT_toggled(bool checked);
   void on_pushButtonFFTImage_clicked();
   void on_pushButtonChangeFFTColor_clicked();
   void on_pushButtonChangeXYColor_clicked();
   void on_comboBoxXYy_currentIndexChanged(int) { updateXY(); }
   void on_comboBoxXYx_currentIndexChanged(int) { updateXY(); }
+  void on_pushButtonTerminalDebugSend_clicked();
+  void on_textEditTerminalDebug_cursorPositionChanged();
+
+  void on_myTerminal_cellClicked(int row, int column);
 
 public slots:
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumerator target);
@@ -198,7 +201,6 @@ public slots:
   void useSettings(QByteArray settings, MessageTarget::enumerator source);
   void printDeviceMessage(QByteArray message, bool warning, bool ended);
   void printSerialMonitor(QByteArray data) { ui->plainTextEditConsole_3->appendPlainText(data); }
-  void printTerminalDebug(QString text);
   void signalMeasurementsResult1(double period, double freq, double amp, double vpp, double min, double max, double vrms, double dc);
   void signalMeasurementsResult2(double period, double freq, double amp, double vpp, double min, double max, double vrms, double dc);
   void fftResult(QSharedPointer<QCPGraphDataContainer> data);
@@ -229,6 +231,6 @@ signals:
   void requestXY(QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2);
   void requstMeasurements1(QSharedPointer<QCPGraphDataContainer> data);
   void requstMeasurements2(QSharedPointer<QCPGraphDataContainer> data);
-  void requestFFT(QSharedPointer<QCPGraphDataContainer> data, bool dB, FFTWindow::enumerator window);
+  void requestFFT(QSharedPointer<QCPGraphDataContainer> data, FFTType::enumerator type, FFTWindow::enumerator window);
 };
 #endif // MAINWINDOW_H

@@ -37,6 +37,7 @@ void MainWindow::initSetables() {
   setables["fftgridy"] = ui->dialFFTGridY;
   setables["fftstyle"] = ui->comboBoxFFTStyle;
   setables["fftwin"] = ui->comboBoxFFTWindow;
+  setables["ffttype"] = ui->comboBoxFFTType;
 
   // Measure
   setables["meas1ch"] = ui->comboBoxMeasure1;

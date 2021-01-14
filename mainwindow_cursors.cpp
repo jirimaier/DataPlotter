@@ -84,15 +84,51 @@ void MainWindow::updateCursors() {
   if (ui->checkBoxCur1Visible->isChecked() && ui->checkBoxCur2Visible->isChecked()) {
     double dt = time2 - time1;
     double dy = value2 - value1;
-    ui->labelCurDeltaTime->setText(QString::number(dt, 'f', std::abs(dt) < 1000 ? 3 : 0));
-    ui->labelCurDeltaValue->setText(QString::number(dy, 'f', std::abs(dy) < 1000 ? 3 : 0));
-    ui->labelCurSlope->setText(QString::number(dy / dt, 'f', std::abs(dy / dt) < 1000 ? 3 : 0));
-    ui->labelCurFreq->setText(QString::number(1 / dt, 'f', std::abs(1 / dt) < 1000 ? 3 : 0));
+    // dB FFT
+    if (ui->comboBoxCursor1Channel->currentIndex() == FFTID && ui->comboBoxCursor2Channel->currentIndex() == FFTID && ui->comboBoxFFTType->currentIndex() != FFTType::spectrum) {
+      ui->labelCurDeltaTime->setText(GlobalFunctions::floatToNiceString(dt, 2, true) + "Hz");
+      ui->labelCurDeltaValue->setText(GlobalFunctions::floatToNiceString(dy, 2, true) + "dB");
+      ui->labelCurRatio->setText("");
+      ui->labelCurSlope->setText("");
+      ui->labelCurFreq->setText("");
+    }
+
+    // linear FFT
+    else if (ui->comboBoxCursor1Channel->currentIndex() == FFTID && ui->comboBoxCursor2Channel->currentIndex() == FFTID && ui->comboBoxFFTType->currentIndex() == FFTType::spectrum) {
+      ui->labelCurDeltaTime->setText(GlobalFunctions::floatToNiceString(dt, 2, true) + "Hz");
+      ui->labelCurDeltaValue->setText(GlobalFunctions::floatToNiceString(dy, 2, true));
+      ui->labelCurRatio->setText(GlobalFunctions::floatToNiceString(value1 / value2, 2, true));
+      ui->labelCurSlope->setText("");
+      ui->labelCurFreq->setText("");
+    }
+
+    // XY
+    else if (ui->comboBoxCursor1Channel->currentIndex() == XYID && ui->comboBoxCursor2Channel->currentIndex() == XYID) {
+      ui->labelCurDeltaTime->setText(GlobalFunctions::floatToNiceString(dt, 2, true) + "V");
+      ui->labelCurDeltaValue->setText(GlobalFunctions::floatToNiceString(dy, 2, true) + "V");
+      ui->labelCurRatio->setText("");
+      ui->labelCurSlope->setText("");
+      ui->labelCurFreq->setText("");
+    }
+
+    // Time
+    else if (ui->comboBoxCursor1Channel->currentIndex() < XYID && ui->comboBoxCursor2Channel->currentIndex() < XYID) {
+      ui->labelCurDeltaTime->setText(GlobalFunctions::floatToNiceString(dt, 2, true) + "V");
+      ui->labelCurDeltaValue->setText(GlobalFunctions::floatToNiceString(dy, 2, true) + "V");
+      ui->labelCurRatio->setText(GlobalFunctions::floatToNiceString(value1 / value2, 2, true) + "  ");
+      ui->labelCurSlope->setText(GlobalFunctions::floatToNiceString(dy / dt, 2, true) + "V/s");
+      ui->labelCurFreq->setText(GlobalFunctions::floatToNiceString(1.0 / dt, 2, true) + "Hz");
+    }
+
+    else
+      goto EMPTY;
   } else {
-    ui->labelCurDeltaTime->setText("---");
-    ui->labelCurDeltaValue->setText("---");
-    ui->labelCurSlope->setText("---");
-    ui->labelCurFreq->setText("---");
+  EMPTY:
+    ui->labelCurDeltaTime->setText("");
+    ui->labelCurDeltaValue->setText("");
+    ui->labelCurSlope->setText("");
+    ui->labelCurRatio->setText("");
+    ui->labelCurFreq->setText("");
   }
 }
 
@@ -101,10 +137,11 @@ void MainWindow::updateCursor(Cursors::enumerator cursor, int selectedChannel, u
     // Analogový kanál
     time = ui->plot->graph(selectedChannel)->data()->at(sample)->key;
     value = ui->plot->graph(selectedChannel)->data()->at(sample)->value;
-    if (ui->plot->isChInverted(selectedChannel)) value *= (-1);
+    if (ui->plot->isChInverted(selectedChannel))
+      value *= (-1);
     double valueOffseted = value * ui->plot->getChScale(selectedChannel) + ui->plot->getChOffset(selectedChannel);
-    timeStr = QString::number(time, 'f', 3).toLocal8Bit();
-    valueStr = QString::number(value, 'f', 3).toLocal8Bit();
+    timeStr = QString(GlobalFunctions::floatToNiceString(time, 3) + "s").toUtf8();
+    timeStr = QString(GlobalFunctions::floatToNiceString(value, 3) + "V").toUtf8();
     ui->plot->setCursorVisible(cursor, true);
     ui->plot->setCursorVisible(cursor + 2, true);
     ui->plot->updateCursor(cursor, time);
@@ -115,8 +152,8 @@ void MainWindow::updateCursor(Cursors::enumerator cursor, int selectedChannel, u
     double valueX = ui->plotxy->graphXY->data()->at(sample)->key;
     double valueY = ui->plotxy->graphXY->data()->at(sample)->value;
 
-    timeStr = QString::number(realyTime, 'f', 3).toLocal8Bit();
-    valueStr = ("X: " + QString::number(valueX, 'f', 3) + "\n" + "Y: " + QString::number(valueY, 'f', 3)).toLocal8Bit();
+    timeStr = QString(GlobalFunctions::floatToNiceString(realyTime, 3) + "V").toUtf8();
+    valueStr = ("X: " + QString(GlobalFunctions::floatToNiceString(valueX, 3) + "V") + "\n" + "Y: " + QString(GlobalFunctions::floatToNiceString(valueY, 3) + "V")).toUtf8();
     time = valueX;
     value = valueY;
     ui->plotxy->setCursorVisible(cursor, true);
@@ -126,10 +163,10 @@ void MainWindow::updateCursor(Cursors::enumerator cursor, int selectedChannel, u
   } else if (selectedChannel == FFTID) {
     // FFT
     double freq = ui->plotFFT->graph(0)->data()->at(sample)->key;
-    double value = ui->plotFFT->graph(0)->data()->at(sample)->value;
+    value = ui->plotFFT->graph(0)->data()->at(sample)->value;
 
-    timeStr = QString::number(freq, 'f', 3).toLocal8Bit() + " Hz";
-    valueStr = QString::number(value, 'f', 3).toLocal8Bit() + (ui->checkBoxFFTdB->isChecked() ? " dB" : "");
+    timeStr = QString(GlobalFunctions::floatToNiceString(freq, 3) + "Hz").toUtf8();
+    valueStr = QString::number(value, 'f', 3).rightJustified(8).toLocal8Bit() + (ui->comboBoxFFTType->currentIndex() != FFTType::spectrum ? " dB" : "");
     time = freq;
     ui->plotFFT->setCursorVisible(cursor, true);
     ui->plotFFT->setCursorVisible(cursor + 2, true);
@@ -154,9 +191,11 @@ void MainWindow::updateCursor(Cursors::enumerator cursor, int selectedChannel, u
       } else {
         bits.push_front('0');
       }
-      if (!((bit + 1) % 4)) bits.push_front(' ');
+      if (!((bit + 1) % 4))
+        bits.push_front(' ');
     }
-    if (bits.left(1) == " ") bits = bits.mid(1);
+    if (bits.left(1) == " ")
+      bits = bits.mid(1);
     timeStr = QString::number(time, 'f', 3).toLocal8Bit();
     valueStr = "0x" + QString::number((uint32_t)value, 16).toUpper().rightJustified(ceil(bitsUsed / 4.0), '0').toLocal8Bit();
     valueStr.append("\n" + bits);

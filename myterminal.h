@@ -16,6 +16,7 @@
 #ifndef MYTERMINAL_H
 #define MYTERMINAL_H
 
+#include <QApplication>
 #include <QClipboard>
 #include <QColor>
 #include <QDebug>
@@ -31,12 +32,12 @@ using namespace TerminalMode;
 
 class MyTerminal : public QTableWidget {
   Q_OBJECT
- public:
+public:
   explicit MyTerminal(QWidget *parent = nullptr);
   QByteArray nearestColorCode(QColor color);
   ~MyTerminal();
 
- private:
+private:
   TerminalMode::enumerator mode = clicksend;
   QByteArray buffer;
   QMap<QString, QColor> colorCodes;
@@ -67,24 +68,22 @@ class MyTerminal : public QTableWidget {
   QColor inverseColor(QColor color) { return QColor(255 - color.red(), 255 - color.green(), 255 - color.blue()); }
 
   void clearCell(int x, int y);
- private slots:
+private slots:
   void characterClicked(int r, int c);
 
- public slots:
+public slots:
   void printToTerminal(QByteArray data);
   void setMode(TerminalMode::enumerator mode);
   void resetTerminal();
   void copyToClipboard();
 
- signals:
+signals:
   /// Pošle zprávu do výpisu
   void sendMessage(QByteArray header, QByteArray message, MessageLevel::enumerator type, MessageTarget::enumerator target = MessageTarget::serial1);
   /// Pošle data pro zapsání do portu
   void writeToSerial(QByteArray byte);
 
-  void sendDebug(QString text);
-
- private:
+private:
   uint32_t colorCodes256[256] = {0x000000, 0x800000, 0x008000, 0x808000, 0x000080, 0x800080, 0x008080, 0xc0c0c0, 0x808080, 0xff0000, 0x00ff00, 0xffff00, 0x0000ff, 0xff00ff, 0x00ffff, 0xffffff, 0x000000, 0x00005f, 0x000087, 0x0000af, 0x0000d7, 0x0000ff, 0x005f00, 0x005f5f, 0x005f87, 0x005faf,
                                  0x005fd7, 0x005fff, 0x008700, 0x00875f, 0x008787, 0x0087af, 0x0087d7, 0x0087ff, 0x00af00, 0x00af5f, 0x00af87, 0x00afaf, 0x00afd7, 0x00afff, 0x00d700, 0x00d75f, 0x00d787, 0x00d7af, 0x00d7d7, 0x00d7ff, 0x00ff00, 0x00ff5f, 0x00ff87, 0x00ffaf, 0x00ffd7, 0x00ffff,
                                  0x5f0000, 0x5f005f, 0x5f0087, 0x5f00af, 0x5f00d7, 0x5f00ff, 0x5f5f00, 0x5f5f5f, 0x5f5f87, 0x5f5faf, 0x5f5fd7, 0x5f5fff, 0x5f8700, 0x5f875f, 0x5f8787, 0x5f87af, 0x5f87d7, 0x5f87ff, 0x5faf00, 0x5faf5f, 0x5faf87, 0x5fafaf, 0x5fafd7, 0x5fafff, 0x5fd700, 0x5fd75f,
@@ -97,4 +96,4 @@ class MyTerminal : public QTableWidget {
                                  0x1c1c1c, 0x262626, 0x303030, 0x3a3a3a, 0x444444, 0x4e4e4e, 0x585858, 0x626262, 0x6c6c6c, 0x767676, 0x808080, 0x8a8a8a, 0x949494, 0x9e9e9e, 0xa8a8a8, 0xb2b2b2, 0xbcbcbc, 0xc6c6c6, 0xd0d0d0, 0xdadada, 0xe4e4e4, 0xeeeeee};
 };
 
-#endif  // MYTERMINAL_H
+#endif // MYTERMINAL_H

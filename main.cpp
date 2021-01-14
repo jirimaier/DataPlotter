@@ -65,6 +65,7 @@ Q_DECLARE_METATYPE(QSharedPointer<QCPGraphDataContainer>);
 Q_DECLARE_METATYPE(QSharedPointer<QCPCurveDataContainer>);
 Q_DECLARE_METATYPE(MathOperations::enumerator);
 Q_DECLARE_METATYPE(FFTWindow::enumerator);
+Q_DECLARE_METATYPE(FFTType::enumerator);
 
 int main(int argc, char *argv[]) {
   QApplication application(argc, argv);
@@ -82,6 +83,7 @@ int main(int argc, char *argv[]) {
   qRegisterMetaType<QSharedPointer<QCPCurveDataContainer>>();
   qRegisterMetaType<MathOperations::enumerator>();
   qRegisterMetaType<FFTWindow::enumerator>();
+  qRegisterMetaType<FFTType::enumerator>();
 
   // Vytvoří instance hlavních objektů
   MainWindow mainWindow;

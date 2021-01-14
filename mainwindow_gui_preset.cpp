@@ -36,7 +36,6 @@ void MainWindow::connectSignals() {
   connect(ui->dialhorizontalDiv, &QDial::valueChanged, ui->plot, &MyPlot::setGridHintX);
   connect(ui->spinBoxShiftStep, SIGNAL(valueChanged(int)), ui->plot, SLOT(setShiftStep(int)));
   connect(ui->plot, &MyMainPlot::requestCursorUpdate, this, &MainWindow::updateCursors);
-  connect(ui->myTerminal, &MyTerminal::sendDebug, this, &MainWindow::printTerminalDebug);
 
   connect(&portsRefreshTimer, &QTimer::timeout, this, &MainWindow::comRefresh);
   connect(&activeChRefreshTimer, &QTimer::timeout, this, &MainWindow::updateUsedChannels);

@@ -74,42 +74,47 @@ int SignalProcessing::nextPow2(int number) {
       return (pow(2, i));
 }
 
-void SignalProcessing::calculateSpectrum(QSharedPointer<QCPGraphDataContainer> data, bool dB, FFTWindow::enumerator window) {
-  float fs = data->size() / (data->at(data->size() - 1)->key - data->at(0)->key);
+void SignalProcessing::calculateSpectrum(QSharedPointer<QCPGraphDataContainer> data, FFTType::enumerator type, FFTWindow::enumerator window) {
+  if (type != FFTType::pwelch) {
+    float fs = data->size() / (data->at(data->size() - 1)->key - data->at(0)->key);
 
-  QVector<std::complex<float>> values;
-  if (window == FFTWindow::rectangular)
-    for (int i = 0; i < data->size(); i++)
-      values.append(data->at(i)->value);
-  else if (window == FFTWindow::hamming) {
-    resizeHamming(data->size());
-    for (int i = 0; i < data->size(); i++)
-      values.append(data->at(i)->value * hamming.at(i));
-  } else if (window == FFTWindow::hann) {
-    resizeHann(data->size());
-    for (int i = 0; i < data->size(); i++)
-      values.append(data->at(i)->value * hann.at(i));
-  } else if (window == FFTWindow::blackman) {
-    resizeBlackman(data->size());
-    for (int i = 0; i < data->size(); i++)
-      values.append(data->at(i)->value * blackman.at(i));
+    QVector<std::complex<float>> values;
+    if (window == FFTWindow::rectangular)
+      for (int i = 0; i < data->size(); i++)
+        values.append(data->at(i)->value);
+    else if (window == FFTWindow::hamming) {
+      resizeHamming(data->size());
+      for (int i = 0; i < data->size(); i++)
+        values.append(data->at(i)->value * hamming.at(i));
+    } else if (window == FFTWindow::hann) {
+      resizeHann(data->size());
+      for (int i = 0; i < data->size(); i++)
+        values.append(data->at(i)->value * hann.at(i));
+    } else if (window == FFTWindow::blackman) {
+      resizeBlackman(data->size());
+      for (int i = 0; i < data->size(); i++)
+        values.append(data->at(i)->value * blackman.at(i));
+    }
+    int nfft = nextPow2(values.size());
+    if (nfft < 1024)
+      nfft = 1024;
+    values.resize(nfft);
+
+    QVector<std::complex<float>> resultValues = fft(values);
+
+    auto result = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer);
+    double freqStep = fs / nfft;
+    for (int i = 0; i <= nfft / 2.0; i++) {
+      if (type == FFTType::periodogram) {
+        // Výpočet |x|^2 jako x * komplexně sdružené x;
+        float absSquared = (resultValues.at(i) * std::complex<float>(resultValues.at(i).real(), -resultValues.at(i).imag())).real();
+        // float absSquared = abs(resultValues.at(i)) * abs(resultValues.at(i));
+        result->add(QCPGraphData(i * freqStep, 10 * log10(absSquared / nfft)));
+      } else
+        result->add(QCPGraphData(i * freqStep, std::abs(resultValues.at(i))));
+    }
+    emit fftResult(result);
   }
-  int nfft = nextPow2(values.size());
-  if (nfft < 1024)
-    nfft = 1024;
-  values.resize(nfft);
-
-  QVector<std::complex<float>> resultValues = fft(values);
-
-  auto result = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer);
-  double freqStep = fs / nfft;
-  for (int i = 0; i <= nfft / 2.0; i++) {
-    if (dB)
-      result->add(QCPGraphData(i * freqStep, 20 * log10(std::abs(resultValues.at(i)))));
-    else
-      result->add(QCPGraphData(i * freqStep, std::abs(resultValues.at(i))));
-  }
-  emit fftResult(result);
 }
 
 void SignalProcessing::process(QSharedPointer<QCPGraphDataContainer> data) {

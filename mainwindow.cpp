@@ -138,6 +138,11 @@ void MainWindow::printMessage(QString messageHeader, QByteArray messageBody, int
 }
 
 void MainWindow::printDeviceMessage(QByteArray message, bool warning, bool ended) {
+  if (message.contains('\a')) {
+    QApplication::beep(); // Bell character
+    message.replace('\a', "");
+  }
+
   if (!pendingDeviceMessage && !message.isEmpty()) {
     if (warning)
       ui->plainTextEditConsole->appendHtml(tr("<font color=darkred>Device warning:</font color> "));
@@ -165,17 +170,6 @@ void MainWindow::updateMathNow(int number) {
   }
 }
 
-void MainWindow::on_lineEditTerminalManualInput_returnPressed() {
-  QByteArray data = ui->lineEditTerminalManualInput->text().toUtf8();
-  data.replace("\\n", "\n");
-  data.replace("\\e", "\u001b");
-  data.replace("\\r", "\r");
-  data.replace("\\t", "\t");
-  data.replace("\\b", "\b");
-  ui->lineEditTerminalManualInput->clear();
-  ui->myTerminal->printToTerminal(data);
-}
-
 void MainWindow::on_pushButtonChangeFFTColor_clicked() {
   QColor color = QColorDialog::getColor(ui->plotFFT->graph(0)->pen().color());
   if (color.isValid()) {
@@ -189,4 +183,27 @@ void MainWindow::on_pushButtonChangeXYColor_clicked() {
   QColor color = QColorDialog::getColor(ui->plotxy->graphXY->pen().color());
   if (color.isValid())
     ui->plotxy->graphXY->setPen(QColor(color));
+}
+
+void MainWindow::on_pushButtonTerminalDebugSend_clicked() {
+  QByteArray data = ui->textEditTerminalDebug->toPlainText().toUtf8();
+  data.replace("\n", "\r\n"); // Odřádkování v textovém poli
+
+  data.replace("\\n", "\n");
+  data.replace("\\e", "\u001b");
+  data.replace("\\r", "\r");
+  data.replace("\\t", "\t");
+  data.replace("\\b", "\b");
+  data.replace("\\a", "\a");
+  ui->myTerminal->printToTerminal(data);
+}
+
+void MainWindow::on_textEditTerminalDebug_cursorPositionChanged() {
+  if (ui->textEditTerminalDebug->textCursor().selectedText().isEmpty())
+    ui->textEditTerminalDebug->setTextColor(Qt::black);
+}
+
+void MainWindow::on_myTerminal_cellClicked(int row, int column) {
+  if (ui->pushButtonTerminalDebug->isChecked())
+    insertInTerminalDebug(QString("\\e[%1;%2H").arg(row + 1).arg(column + 1), Qt::red);
 }

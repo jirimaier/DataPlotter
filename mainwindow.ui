@@ -721,7 +721,7 @@
              <enum>QTabWidget::Rounded</enum>
             </property>
             <property name="currentIndex">
-             <number>4</number>
+             <number>5</number>
             </property>
             <property name="iconSize">
              <size>
@@ -2082,7 +2082,7 @@
                <widget class="QFrame" name="frame">
                 <property name="minimumSize">
                  <size>
-                  <width>120</width>
+                  <width>0</width>
                   <height>0</height>
                  </size>
                 </property>
@@ -2092,7 +2092,19 @@
                 <property name="frameShadow">
                  <enum>QFrame::Sunken</enum>
                 </property>
-                <layout class="QGridLayout" name="gridLayout_12">
+                <layout class="QGridLayout" name="gridLayout_7">
+                 <property name="leftMargin">
+                  <number>6</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>6</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>6</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>6</number>
+                 </property>
                  <item row="0" column="0">
                   <widget class="QLabel" name="label_18">
                    <property name="text">
@@ -2109,7 +2121,7 @@
                  <item row="0" column="1">
                   <widget class="QLabel" name="labelCurDeltaTime">
                    <property name="sizePolicy">
-                    <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                    <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                      <horstretch>0</horstretch>
                      <verstretch>0</verstretch>
                     </sizepolicy>
@@ -2117,16 +2129,19 @@
                    <property name="font">
                     <font>
                      <family>Courier New</family>
-                     <pointsize>11</pointsize>
+                     <pointsize>10</pointsize>
                      <weight>75</weight>
                      <bold>true</bold>
                     </font>
                    </property>
                    <property name="text">
-                    <string>---</string>
+                    <string notr="true">---</string>
+                   </property>
+                   <property name="textFormat">
+                    <enum>Qt::PlainText</enum>
                    </property>
                    <property name="alignment">
-                    <set>Qt::AlignCenter</set>
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                    </property>
                   </widget>
                  </item>
@@ -2143,7 +2158,7 @@
                  <item row="1" column="1">
                   <widget class="QLabel" name="labelCurDeltaValue">
                    <property name="sizePolicy">
-                    <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                    <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                      <horstretch>0</horstretch>
                      <verstretch>0</verstretch>
                     </sizepolicy>
@@ -2151,20 +2166,60 @@
                    <property name="font">
                     <font>
                      <family>Courier New</family>
-                     <pointsize>11</pointsize>
+                     <pointsize>10</pointsize>
                      <weight>75</weight>
                      <bold>true</bold>
                     </font>
                    </property>
                    <property name="text">
-                    <string>---</string>
+                    <string notr="true">---</string>
+                   </property>
+                   <property name="textFormat">
+                    <enum>Qt::PlainText</enum>
                    </property>
                    <property name="alignment">
-                    <set>Qt::AlignCenter</set>
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                    </property>
                   </widget>
                  </item>
                  <item row="2" column="0">
+                  <widget class="QLabel" name="label_37">
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="pixmap">
+                    <pixmap resource="resources.qrc">:/images/icons/divide.png</pixmap>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="1">
+                  <widget class="QLabel" name="labelCurRatio">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <family>Courier New</family>
+                     <pointsize>10</pointsize>
+                     <weight>75</weight>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string notr="true">---</string>
+                   </property>
+                   <property name="textFormat">
+                    <enum>Qt::PlainText</enum>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="0">
                   <widget class="QLabel" name="label_23">
                    <property name="text">
                     <string/>
@@ -2174,10 +2229,10 @@
                    </property>
                   </widget>
                  </item>
-                 <item row="2" column="1">
+                 <item row="3" column="1">
                   <widget class="QLabel" name="labelCurSlope">
                    <property name="sizePolicy">
-                    <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                    <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                      <horstretch>0</horstretch>
                      <verstretch>0</verstretch>
                     </sizepolicy>
@@ -2185,20 +2240,23 @@
                    <property name="font">
                     <font>
                      <family>Courier New</family>
-                     <pointsize>11</pointsize>
+                     <pointsize>10</pointsize>
                      <weight>75</weight>
                      <bold>true</bold>
                     </font>
                    </property>
                    <property name="text">
-                    <string>---</string>
+                    <string notr="true">---</string>
+                   </property>
+                   <property name="textFormat">
+                    <enum>Qt::PlainText</enum>
                    </property>
                    <property name="alignment">
-                    <set>Qt::AlignCenter</set>
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                    </property>
                   </widget>
                  </item>
-                 <item row="3" column="0">
+                 <item row="4" column="0">
                   <widget class="QLabel" name="label_14">
                    <property name="text">
                     <string/>
@@ -2208,10 +2266,10 @@
                    </property>
                   </widget>
                  </item>
-                 <item row="3" column="1">
+                 <item row="4" column="1">
                   <widget class="QLabel" name="labelCurFreq">
                    <property name="sizePolicy">
-                    <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                    <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                      <horstretch>0</horstretch>
                      <verstretch>0</verstretch>
                     </sizepolicy>
@@ -2219,16 +2277,19 @@
                    <property name="font">
                     <font>
                      <family>Courier New</family>
-                     <pointsize>11</pointsize>
+                     <pointsize>10</pointsize>
                      <weight>75</weight>
                      <bold>true</bold>
                     </font>
                    </property>
                    <property name="text">
-                    <string>---</string>
+                    <string notr="true">---</string>
+                   </property>
+                   <property name="textFormat">
+                    <enum>Qt::PlainText</enum>
                    </property>
                    <property name="alignment">
-                    <set>Qt::AlignCenter</set>
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                    </property>
                   </widget>
                  </item>
@@ -2581,6 +2642,19 @@
               <item>
                <layout class="QVBoxLayout" name="verticalLayout_23">
                 <item>
+                 <spacer name="verticalSpacer_3">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
                  <widget class="QGroupBox" name="groupBox_4">
                   <property name="title">
                    <string>Calculate from</string>
@@ -2605,19 +2679,6 @@
                    </item>
                   </layout>
                  </widget>
-                </item>
-                <item>
-                 <spacer name="verticalSpacer_3">
-                  <property name="orientation">
-                   <enum>Qt::Vertical</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>20</width>
-                    <height>40</height>
-                   </size>
-                  </property>
-                 </spacer>
                 </item>
                </layout>
               </item>
@@ -3634,13 +3695,20 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QCheckBox" name="checkBoxFFTdB">
-                   <property name="text">
-                    <string>Show in dB</string>
+                  <widget class="QComboBox" name="comboBoxFFTType">
+                   <property name="currentIndex">
+                    <number>0</number>
                    </property>
-                   <property name="checked">
-                    <bool>true</bool>
-                   </property>
+                   <item>
+                    <property name="text">
+                     <string>Spectrum</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Periodogram</string>
+                    </property>
+                   </item>
                   </widget>
                  </item>
                  <item>
@@ -5390,22 +5458,20 @@ gridline-color: rgb(255, 255, 255);</string>
                    </property>
                   </widget>
                  </item>
+                 <item>
+                  <widget class="QPushButton" name="pushButtonTerminalDebugSend">
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="resources.qrc">
+                     <normaloff>:/images/icons/send.png</normaloff>:/images/icons/send.png</iconset>
+                   </property>
+                  </widget>
+                 </item>
                 </layout>
                </item>
-               <item row="0" column="0">
-                <widget class="QPlainTextEdit" name="plainTextEditTerminalDebug">
-                 <property name="horizontalScrollBarPolicy">
-                  <enum>Qt::ScrollBarAlwaysOff</enum>
-                 </property>
-                 <property name="lineWrapMode">
-                  <enum>QPlainTextEdit::WidgetWidth</enum>
-                 </property>
-                 <property name="readOnly">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="1">
+               <item row="0" column="1" rowspan="2">
                 <widget class="QListWidget" name="listWidgetTerminalCodeList">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
@@ -5519,18 +5585,45 @@ gridline-color: rgb(255, 255, 255);</string>
                    <string>u Load position</string>
                   </property>
                  </item>
+                 <item>
+                  <property name="text">
+                   <string>\n New line</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>\r Carriage return</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>\b Backspace</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>\e Escape</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>\a Bell</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>\t Tabulator</string>
+                  </property>
+                 </item>
                 </widget>
                </item>
-               <item row="1" column="1">
-                <widget class="QLineEdit" name="lineEditTerminalManualInput">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
+               <item row="0" column="0">
+                <widget class="QTextEdit" name="textEditTerminalDebug">
+                 <property name="horizontalScrollBarPolicy">
+                  <enum>Qt::ScrollBarAlwaysOff</enum>
                  </property>
-                 <property name="placeholderText">
-                  <string>Manual input</string>
+                 <property name="textInteractionFlags">
+                  <set>Qt::TextEditorInteraction</set>
                  </property>
                 </widget>
                </item>
@@ -6797,8 +6890,8 @@ unused channels</string>
    <slot>setAutoSize(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>211</x>
-     <y>414</y>
+     <x>256</x>
+     <y>433</y>
     </hint>
     <hint type="destinationlabel">
      <x>144</x>
@@ -6887,22 +6980,6 @@ unused channels</string>
    </hints>
   </connection>
   <connection>
-   <sender>pushButtonTerminalInputClear</sender>
-   <signal>clicked()</signal>
-   <receiver>plainTextEditTerminalDebug</receiver>
-   <slot>clear()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>630</x>
-     <y>485</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>639</x>
-     <y>451</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>pushButtonClearFFT</sender>
    <signal>clicked()</signal>
    <receiver>plotFFT</receiver>
@@ -6979,6 +7056,22 @@ unused channels</string>
     <hint type="destinationlabel">
      <x>412</x>
      <y>141</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonTerminalInputClear</sender>
+   <signal>clicked()</signal>
+   <receiver>textEditTerminalDebug</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>619</x>
+     <y>481</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>630</x>
+     <y>420</y>
     </hint>
    </hints>
   </connection>

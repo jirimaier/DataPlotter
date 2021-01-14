@@ -291,7 +291,6 @@ void MainWindow::on_pushButtonTerminalDebug_toggled(bool checked) {
     ui->pushButtonTerminalCopy->setEnabled(false);
     ui->frameTermanalDebug->setVisible(true);
     ui->myTerminal->setMode(TerminalMode::debug);
-    ui->plainTextEditTerminalDebug->clear();
   } else {
     ui->myTerminal->setMode(TerminalMode::none);
     ui->frameTermanalDebug->setVisible(false);
@@ -330,16 +329,11 @@ void MainWindow::on_pushButtonTerminalSelect_toggled(bool checked) {
   }
 }
 
-void MainWindow::printTerminalDebug(QString text) {
-  if (ui->plainTextEditTerminalDebug->toPlainText().length() > 1000)
-    ui->plainTextEditTerminalDebug->clear();
-
-  QTextCursor prevCursor = ui->plainTextEditTerminalDebug->textCursor();
-  text.replace(" ", "&nbsp;");                   // Normální mezera se nezobrazí :-(
-  text.replace("font&nbsp;color", "font color"); // A když už tam tu mezeru změním, tek to zase zničí tu mezeru v "font color" a nefunguje to.
-  ui->plainTextEditTerminalDebug->moveCursor(QTextCursor::End);
-  ui->plainTextEditTerminalDebug->textCursor().insertHtml(text);
-  ui->plainTextEditTerminalDebug->setTextCursor(prevCursor);
+void MainWindow::insertInTerminalDebug(QString text, QColor textColor) {
+  // text.replace(" ", "&nbsp;"); // Normální mezera se nezobrazí :-(
+  ui->textEditTerminalDebug->setTextColor(textColor);
+  ui->textEditTerminalDebug->textCursor().insertText(text);
+  ui->textEditTerminalDebug->setTextColor(Qt::black);
 }
 
 void MainWindow::signalMeasurementsResult1(double period, double freq, double amp, double vpp, double min, double max, double vrms, double dc) {
@@ -384,25 +378,27 @@ void MainWindow::on_listWidgetTerminalCodeList_itemClicked(QListWidgetItem *item
   else
     code = item->text();
 
-  if (code == "3?m") {
+  if (code.at(0) == '\\')
+    insertInTerminalDebug(QString(code.left(2)), Qt::blue);
+
+  else if (code == "3?m") {
     QColor color = QColorDialog::getColor(Qt::white);
     if (!color.isValid())
       return;
     QByteArray colorCode = ui->myTerminal->nearestColorCode(color);
-    ui->myTerminal->printToTerminal(QString("\u001b[3" + colorCode + "m").toUtf8());
-    return;
+    insertInTerminalDebug(QString("\\e[3" + colorCode + "m").toUtf8(), Qt::red);
   }
 
-  if (code == "4?m") {
+  else if (code == "4?m") {
     QColor color = QColorDialog::getColor(Qt::black);
     if (!color.isValid())
       return;
     QByteArray colorCode = ui->myTerminal->nearestColorCode(color);
-    ui->myTerminal->printToTerminal(QString("\u001b[4" + colorCode + "m").toUtf8());
-    return;
+    insertInTerminalDebug(QString("\\e[4" + colorCode + "m").toUtf8(), Qt::red);
   }
 
-  ui->myTerminal->printToTerminal(QString("\u001b[" + code).toUtf8());
+  else
+    insertInTerminalDebug(QString("\\e[" + code).toUtf8(), Qt::red);
 }
 
 void MainWindow::on_pushButtonFFT_toggled(bool checked) {

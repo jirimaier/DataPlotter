@@ -171,7 +171,7 @@ void MainWindow::updateFFT() {
     }
 
     fftTimer.stop();
-    emit requestFFT(data, ui->checkBoxFFTdB->isChecked(), (FFTWindow::enumerator)ui->comboBoxFFTWindow->currentIndex());
+    emit requestFFT(data, (FFTType ::enumerator)ui->comboBoxFFTType->currentIndex(), (FFTWindow::enumerator)ui->comboBoxFFTWindow->currentIndex());
   }
 }
 

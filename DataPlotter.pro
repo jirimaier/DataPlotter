@@ -4,7 +4,7 @@ RC_ICONS = icons/icon.ico
 
 DEFINES += QT_DEPRECATED_WARNINGS
 
-CONFIG += c++1z
+CONFIG += c++11
 
 SOURCES += \
     main.cpp \
@@ -50,8 +50,8 @@ HEADERS += \
 FORMS += mainwindow.ui
 
 TRANSLATIONS += \
-    translation_en.ts \
-    translation_cz.ts
+    translations/translation_en.ts \
+    translations/translation_cz.ts
 
 RESOURCES += resources.qrc
 
