@@ -48,12 +48,12 @@ QVector<std::complex<float>> SignalProcessing::fft(QVector<std::complex<float>> 
     return x; // Konec rekurze
 
   // exp(2*Pi*i/N)
-  std::complex<float> Wn = std::exp(std::complex<float>(0, 2.0 * M_PI / (float)N));
+  auto Wn = std::exp(std::complex<float>(0, 2.0 * M_PI / (float)N));
 
   QVector<std::complex<float>> Pe, Po; // Sudé a liché koeficienty
   for (int n = 1; n < N; n += 2) {
-    Po.append(x.at(n - 1)); // Liché
-    Pe.append(x.at(n));     // Sudé
+    Pe.append(x.at(n - 1)); // Sudé
+    Po.append(x.at(n));     // Liché
   }
 
   QVector<std::complex<float>> Xe = fft(Pe), Xo = fft(Po); // Rekurze
@@ -137,7 +137,7 @@ void SignalProcessing::process(QSharedPointer<QCPGraphDataContainer> data) {
 
   float freq = getStrongestFreq(data, dc);
 
-  emit result(1 / freq, freq, (max - min) / 2, (max - min), min, max, vrms, dc);
+  emit result(1.0 / freq, freq, (max - min), min, max, vrms, dc);
 }
 
 float SignalProcessing::getStrongestFreq(QSharedPointer<QCPGraphDataContainer> data, float dc) {

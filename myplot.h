@@ -32,6 +32,7 @@ private:
   QSharedPointer<QCPAxisTickerFixed> fixedTickerX, fixedTickerY;
   void setVerticalDiv(double value);
   void setHorizontalDiv(double value);
+  QCPItemTracer *tracer;
 
 public:
   explicit MyPlot(QWidget *parent = nullptr);
@@ -53,7 +54,6 @@ protected:
   void setMouseControlls(bool enabled);
 
 public slots:
-
   void setShowVerticalValues(bool enabled);
   void setShowHorizontalValues(int type);
   void setXTitle(QString title);
@@ -64,6 +64,7 @@ public slots:
 private slots:
   void onXRangeChanged(QCPRange range);
   void onYRangeChanged(QCPRange range);
+  void showPointToolTip(QMouseEvent *event);
 
 signals:
   void gridChanged();

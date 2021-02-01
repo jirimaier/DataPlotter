@@ -75,7 +75,7 @@ void MainWindow::showPlotStatus(PlotStatus::enumerator type) {
 void MainWindow::updateChScale() {
   if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT) {
     double perDiv = ui->plot->getCHDiv(ui->comboBoxSelectedChannel->currentIndex());
-    ui->labelChScale->setText(QString::number(perDiv, 'f', 3) + tr(" / Div"));
+    ui->labelChScale->setText(GlobalFunctions::floatToNiceString(perDiv, 2, true, false, true) + tr("V / Div"));
   } else
     ui->labelChScale->setText(tr("---"));
 }
@@ -100,10 +100,10 @@ void MainWindow::serialFinishedWriting() {
 void MainWindow::updateDivs() {
   updateChScale();
   if (ui->labelHDiv->isEnabled())
-    ui->labelHDiv->setText(QString::number(ui->plot->getHDiv()) + tr(" / Div"));
+    ui->labelHDiv->setText(GlobalFunctions::floatToNiceString(ui->plot->getHDiv(), 0, false, false) + tr("s/Div"));
   else
     ui->labelHDiv->setText("---");
-  ui->labelVDiv->setText(QString::number(ui->plot->getVDiv()) + tr(" / Div"));
+  ui->labelVDiv->setText(GlobalFunctions::floatToNiceString(ui->plot->getVDiv(), 0, false, false) + tr("V/Div"));
 }
 
 void MainWindow::on_pushButtonCenter_clicked() {

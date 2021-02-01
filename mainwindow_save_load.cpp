@@ -98,6 +98,8 @@ void MainWindow::initSetables() {
 void MainWindow::applyGuiElementSettings(QWidget *target, QString value) {
   if (QDoubleSpinBox *newTarget = dynamic_cast<QDoubleSpinBox *>(target))
     newTarget->setValue(value.toDouble());
+  else if (QComboBox *newTarget = dynamic_cast<QComboBox *>(target))
+    newTarget->setCurrentIndex(value.toUInt());
   else if (QSpinBox *newTarget = dynamic_cast<QSpinBox *>(target))
     newTarget->setValue(value.toInt());
   else if (QScrollBar *newTarget = dynamic_cast<QScrollBar *>(target))
@@ -108,8 +110,6 @@ void MainWindow::applyGuiElementSettings(QWidget *target, QString value) {
     newTarget->setChecked((bool)value.toUInt());
   else if (QPushButton *newTarget = dynamic_cast<QPushButton *>(target))
     newTarget->setChecked((bool)value.toUInt());
-  else if (QComboBox *newTarget = dynamic_cast<QComboBox *>(target))
-    newTarget->setCurrentIndex(value.toUInt());
   else if (QDial *newTarget = dynamic_cast<QDial *>(target))
     newTarget->setValue(value.toInt());
   else if (QLineEdit *newTarget = dynamic_cast<QLineEdit *>(target))
@@ -145,11 +145,11 @@ QByteArray MainWindow::getSettings() {
     settings.append(QString(it.key() + ':' + readGuiElementSettings(it.value()) + ";\n").toUtf8());
 
   if (ui->radioButtonFixedRange->isChecked())
-    settings.append("plottype:fix;\n");
+    settings.append("plotrange:fix;\n");
   else if (ui->radioButtonFreeRange->isChecked())
-    settings.append("plottype:free;\n");
+    settings.append("plotrange:free;\n");
   else if (ui->radioButtonRollingRange->isChecked())
-    settings.append("plottype:roll;\n");
+    settings.append("plotrange:roll;\n");
 
   settings.append(ui->radioButtonEn->isChecked() ? "lang:en" : "lang:cz");
   settings.append(";\n");
@@ -245,7 +245,7 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumerator sour
       ui->radioButtonCSVDot->setChecked(true);
   }
 
-  else if (type == "plottype") {
+  else if (type == "plotrange") {
     if (value == "fix")
       ui->radioButtonFixedRange->setChecked(true);
     if (value == "free")
@@ -254,14 +254,14 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumerator sour
       ui->radioButtonRollingRange->setChecked(true);
   }
 
-  else if (type == "xytype") {
+  else if (type == "xyrange") {
     if (value == "fix")
       ui->radioButtonXYAutoSize->setChecked(true);
     if (value == "free")
       ui->radioButtonXYFree->setChecked(true);
   }
 
-  else if (type == "ffttype") {
+  else if (type == "fftrange") {
     if (value == "fix")
       ui->radioButtonFFTAutoSize->setChecked(true);
     if (value == "free")

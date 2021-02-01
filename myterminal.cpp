@@ -34,8 +34,10 @@ MyTerminal::MyTerminal(QWidget *parent) : QTableWidget(parent) {
   colorCodes["6;1"] = Qt::cyan;
   colorCodes["7;1"] = Qt::white;
 
-  setMode(mode);
   connect(this, &QTableWidget::cellClicked, this, &MyTerminal::characterClicked);
+  connect(this, &QTableWidget::cellDoubleClicked, this, &MyTerminal::characterDoubleClicked);
+  setMode(mode);
+  clickBlinkTimer.setSingleShot(true);
 }
 
 MyTerminal::~MyTerminal() {
@@ -107,6 +109,17 @@ void MyTerminal::clearTerminal() {
   this->setColumnCount(1);
   resetFont();
   moveCursorAbsolute(0, 0);
+}
+
+void MyTerminal::highLightField(QTableWidgetItem *field) {
+  QColor clr = field->background().color();
+  if (clr.lightness() < 127) // Tmavou barvu zesvětlá
+    clr.setHsl(clr.hue(), clr.saturation(), clr.lightness() + 50);
+  else // Světlo stmaví
+    clr.setHsl(clr.hue(), clr.saturation(), clr.lightness() - 50);
+  if (field->background().color() == field->foreground().color())
+    field->setForeground(clr); // Pokud byl text schovaný stejnou barvou, bude mít novou barvu
+  field->setBackground(clr);
 }
 
 QByteArray MyTerminal::nearestColorCode(QColor color) {
@@ -398,18 +411,22 @@ void MyTerminal::characterClicked(int r, int c) {
     QTableWidgetItem *it = item(r, c);
     if (it) {
       emit writeToSerial(it->text().toLocal8Bit());
-      it->setBackground(inverseColor(it->background().color()));
-      it->setForeground(inverseColor(it->foreground().color()));
-      QTimer *timer = new QTimer(this);
-      connect(timer, &QTimer::timeout, [r, c, this] {
-        QTableWidgetItem *it = item(r, c);
-        if (it) {
-          it->setBackground(inverseColor(it->background().color()));
-          it->setForeground(inverseColor(it->foreground().color()));
-        }
-      });
-      timer->setSingleShot(true);
-      timer->start(100);
+      if (!blickInProgress) {
+        blickInProgress = true;
+        QColor origBack = it->background().color();
+        QColor origFont = it->foreground().color();
+        highLightField(it);
+        connect(&clickBlinkTimer, &QTimer::timeout, this, [r, c, this, origBack, origFont] {
+          QTableWidgetItem *it = this->item(r, c);
+          if (it) {
+            it->setBackground(origBack);
+            it->setForeground(origFont);
+            blickInProgress = false;
+          }
+        });
+        clickBlinkTimer.start(100);
+      } else
+        clickBlinkTimer.setInterval(50);
     }
   } else if (mode == debug) {
     moveCursorAbsolute(c, r);

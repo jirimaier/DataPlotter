@@ -198,6 +198,7 @@ void MainWindow::on_pushButtonResetChannels_clicked() {
 
 void MainWindow::on_comboBoxHAxisType_currentIndexChanged(int index) {
   ui->labelHDiv->setEnabled(index <= 1);
+  updateDivs();
   ui->plot->setShowHorizontalValues(index);
 }
 
@@ -336,26 +337,24 @@ void MainWindow::insertInTerminalDebug(QString text, QColor textColor) {
   ui->textEditTerminalDebug->setTextColor(Qt::black);
 }
 
-void MainWindow::signalMeasurementsResult1(double period, double freq, double amp, double vpp, double min, double max, double vrms, double dc) {
-  ui->labelSig1Amp->setText(QString::number(amp, 'f', 3));
-  ui->labelSig1Freq->setText(QString::number(freq, 'f', 3));
-  ui->labelSig1Period->setText(QString::number(period, 'f', 3));
-  ui->labelSig1Vpp->setText(QString::number(vpp, 'f', 3));
-  ui->labelSig1Vrms->setText(QString::number(vrms, 'f', 3));
-  ui->labelSig1Min->setText(QString::number(min, 'f', 3));
-  ui->labelSig1Max->setText(QString::number(max, 'f', 3));
-  ui->labelSig1Dc->setText(QString::number(dc, 'f', 3));
+void MainWindow::signalMeasurementsResult1(double period, double freq, double amp, double min, double max, double vrms, double dc) {
+  ui->labelSig1Amp->setText(GlobalFunctions::floatToNiceString(amp, 2, true, true) + "Vpp");
+  ui->labelSig1Freq->setText(GlobalFunctions::floatToNiceString(freq, 2, true, true) + "Hz");
+  ui->labelSig1Period->setText(GlobalFunctions::floatToNiceString(period, 2, true, true) + "s");
+  ui->labelSig1Vrms->setText(GlobalFunctions::floatToNiceString(vrms, 2, true, true) + "V");
+  ui->labelSig1Min->setText(GlobalFunctions::floatToNiceString(min, 2, true, true) + "V");
+  ui->labelSig1Max->setText(GlobalFunctions::floatToNiceString(max, 2, true, true) + "V");
+  ui->labelSig1Dc->setText(GlobalFunctions::floatToNiceString(dc, 2, true, true) + "V");
   measureRefreshTimer1.start(250);
 }
-void MainWindow::signalMeasurementsResult2(double period, double freq, double amp, double vpp, double min, double max, double vrms, double dc) {
-  ui->labelSig2Amp->setText(QString::number(amp, 'f', 3));
-  ui->labelSig2Freq->setText(QString::number(freq, 'f', 3));
-  ui->labelSig2Period->setText(QString::number(period, 'f', 3));
-  ui->labelSig2Vpp->setText(QString::number(vpp, 'f', 3));
-  ui->labelSig2Vrms->setText(QString::number(vrms, 'f', 3));
-  ui->labelSig2Min->setText(QString::number(min, 'f', 3));
-  ui->labelSig2Max->setText(QString::number(max, 'f', 3));
-  ui->labelSig2Dc->setText(QString::number(dc, 'f', 3));
+void MainWindow::signalMeasurementsResult2(double period, double freq, double amp, double min, double max, double vrms, double dc) {
+  ui->labelSig2Amp->setText(GlobalFunctions::floatToNiceString(amp, 2, true, true) + "Vpp");
+  ui->labelSig2Freq->setText(GlobalFunctions::floatToNiceString(freq, 2, true, true) + "Hz");
+  ui->labelSig2Period->setText(GlobalFunctions::floatToNiceString(period, 2, true, true) + "s");
+  ui->labelSig2Vrms->setText(GlobalFunctions::floatToNiceString(vrms, 2, true, true) + "V");
+  ui->labelSig2Min->setText(GlobalFunctions::floatToNiceString(min, 2, true, true) + "V");
+  ui->labelSig2Max->setText(GlobalFunctions::floatToNiceString(max, 2, true, true) + "V");
+  ui->labelSig2Dc->setText(GlobalFunctions::floatToNiceString(dc, 2, true, true) + "V");
   measureRefreshTimer2.start(250);
 }
 

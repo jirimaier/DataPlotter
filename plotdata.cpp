@@ -15,11 +15,7 @@
 
 #include "plotdata.h"
 
-PlotData::PlotData(QObject *parent) : QObject(parent) {}
-
-PlotData::~PlotData() {}
-
-void PlotData::init() {
+PlotData::PlotData(QObject *parent) : QObject(parent) {
   for (int i = 0; i < LOGIC_GROUPS; i++) {
     logicTargets[i] = -1;
     logicBits[i] = 0;
@@ -30,6 +26,8 @@ void PlotData::init() {
   }
   reset();
 }
+
+PlotData::~PlotData() {}
 
 double PlotData::getValue(QByteArray number, ValueType::enumerator type) {
   if (type == u1) {
@@ -199,59 +197,51 @@ void PlotData::addPoint(QByteArrayList data) {
   for (unsigned int ch = 1; (int)ch < data.length(); ch++) {
     if (data.at(ch).isEmpty())
       continue;
-    if (data.at(ch).at(0) != 'b' && data.at(ch).at(0) != 'B') {
-      // Analog
-      double value = arrayToDouble(data[ch], isok);
-      if (!isok) {
-        sendMessageIfAllowed(tr("Can not parse points value").toUtf8(), data[ch], MessageLevel::error);
-        return;
-      }
+    double value = arrayToDouble(data[ch], isok);
+    if (!isok) {
+      sendMessageIfAllowed(tr("Can not parse points value").toUtf8(), data[ch], MessageLevel::error);
+      return;
+    }
 
-      emit addPointToPlot(ch - 1, time, value, time >= lastTimes[ch - 1]);
-      for (int math = 0; math < MATH_COUNT; math++) {
-        if (mathFirsts[math] == ch) {
-          auto point = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer());
-          point->add(QCPGraphData(time, value));
-          emit addMathData(math, true, point);
+    bool isLogic = false;
+    for (int i = 0; i < LOGIC_GROUPS; i++)
+      if (logicTargets[i] == ch)
+        isLogic = true;
+    if (isLogic) {
+      if (data[ch].left(1).toLower() == "u") {
+        bool isok;
+        unsigned int bits = 8 * data[ch].mid(1, 1).toUInt(&isok);
+        QVector<double> digitalChannels;
+        uint32_t digitalValue = getBits(data.at(ch).mid(2), getType(data.at(ch).left(2)));
+        for (uint8_t bit = 0; bit < bits; bit++)
+          digitalChannels.append((((bool)((digitalValue) & ((uint32_t)1 << (bit)))) + bit * 3));
+
+        for (int logicGroup = 0; logicGroup < LOGIC_GROUPS; logicGroup++) {
+          if (logicTargets[logicGroup] != ch)
+            continue;
+          if (logicBits[ch - 1] > 0 && logicBits[ch - 1] < bits)
+            bits = logicBits[ch - 1];
+          for (uint8_t bit = 0; bit < bits; bit++) {
+            emit addPointToPlot(GlobalFunctions::getLogicChannelID(logicGroup, bit), time, digitalChannels.at(bit), time >= lastTimes[ch - 1]);
+          }
         }
-        if (mathSeconds[math] == ch) {
-          auto point = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer());
-          point->add(QCPGraphData(time, value));
-          emit addMathData(math, false, point);
-        }
+      } else {
+        sendMessageIfAllowed(tr("Can not show channel %1 as logic").arg(ch), tr("digital mode is only available for unsigned integer data type").toUtf8(), MessageLevel::warning);
       }
-      /*if (xyFirst == ch) {
+    }
+
+    emit addPointToPlot(ch - 1, time, value, time >= lastTimes[ch - 1]);
+    for (int math = 0; math < MATH_COUNT; math++) {
+      if (mathFirsts[math] == ch) {
         auto point = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer());
         point->add(QCPGraphData(time, value));
-        emit addXYData(true, point);
+        emit addMathData(math, true, point);
       }
-      if (xySecond == ch) {
+      if (mathSeconds[math] == ch) {
         auto point = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer());
         point->add(QCPGraphData(time, value));
-        emit addXYData(false, point);
-      }*/
-    } else {
-      // Logika
-      int bits = (data.at(ch).mid(1, 1).toUInt(&isok, 16)) * 8;
-      if (!isok) {
-        sendMessageIfAllowed(tr("Invalid logic bytes").toUtf8(), data[ch], MessageLevel::error);
-        return;
+        emit addMathData(math, false, point);
       }
-
-      if (data.at(ch).at(0) == 'b')
-        data[ch].replace(0, 1, "u");
-      else if (data.at(ch).at(0) == 'B')
-        data[ch].replace(0, 1, "U");
-
-      if (logicBits[ch - 1] > 0)
-        bits = logicBits[ch - 1];
-      if (ch > LOGIC_GROUPS) {
-        emit sendMessage(tr("Error, can not show channel %1 as logic").arg(ch), tr("logic is available only for channels less or equal %1").arg(LOGIC_BITS).toUtf8(), MessageLevel::error);
-        continue;
-      }
-      uint32_t digitalValue = getBits(data.at(ch).mid(2), getType(data.at(ch).left(2)));
-      for (uint8_t bit = 0; bit < bits; bit++)
-        emit addPointToPlot(GlobalFunctions::getLogicChannelID(ch - 1, bit), time, (double)((bool)((digitalValue) & ((uint32_t)1 << (bit)))) + bit * 3, time >= lastTimes[ch - 1]);
     }
     lastTimes[ch - 1] = time;
   }
@@ -259,7 +249,7 @@ void PlotData::addPoint(QByteArrayList data) {
     emit sendMessage(tr("Received point").toUtf8(), tr("%1 channels").arg(data.length() - 1).toUtf8(), MessageLevel::info);
 }
 
-void PlotData::addChannel(QByteArray data, unsigned int ch, QByteArray timeRaw, int bits, QByteArray min, QByteArray max) {
+void PlotData::addChannel(QByteArray data, unsigned int ch, QByteArray timeRaw, QByteArray unit, int zeroIndex, int bits, QByteArray min, QByteArray max) {
   // Zjistí datový typ vstupu
   ValueType::enumerator type = getType(data.left(2));
   if (type == unrecognised) {
@@ -272,6 +262,14 @@ void PlotData::addChannel(QByteArray data, unsigned int ch, QByteArray timeRaw, 
   if (!isok) {
     sendMessageIfAllowed(tr("Can not parse channel time step").toUtf8(), timeRaw, MessageLevel::error);
     return;
+  }
+  if (!unit.isEmpty()) {
+    bool isok;
+    timeStep *= arrayToDouble(unit, isok);
+    if (!isok) {
+      sendMessageIfAllowed(tr("Invalid time interval  unit").toUtf8(), unit, MessageLevel::error);
+      return;
+    }
   }
 
   // Přemapování provede poud je vyplněno max
@@ -305,7 +303,7 @@ void PlotData::addChannel(QByteArray data, unsigned int ch, QByteArray timeRaw, 
 
   // Informace o přijatém kanálu
   if (debugLevel == OutputLevel::info) {
-    QByteArray message = tr("%1 samples, time step %2, %3 bits").arg(data.length() / bytesPerValue).arg(timeStep).arg(bits).toUtf8();
+    QByteArray message = tr("%1 samples, sampling period %2s, %4 bits").arg(data.length() / bytesPerValue).arg(GlobalFunctions::floatToNiceString(timeStep, 4, false, false, false)).arg(bits).toUtf8();
     if (remap)
       message.append(tr(", from %1 to %2").arg(minimum).arg(maximum).toUtf8());
     emit sendMessage(tr("Received channel %1").arg(ch).toUtf8(), message, MessageLevel::info);
@@ -329,8 +327,8 @@ void PlotData::addChannel(QByteArray data, unsigned int ch, QByteArray timeRaw, 
   QVector<double> times;
   QVector<uint32_t> valuesDigital;
   QCPGraphData point;
-  for (uint32_t i = 0; i < (uint32_t)data.length(); i += bytesPerValue) {
-    times.append((i / bytesPerValue) * timeStep);
+  for (int i = 0; i < data.length(); i += bytesPerValue) {
+    times.append(((i / bytesPerValue) - zeroIndex) * timeStep);
     point.key = times.last();
     if (remap)
       point.value = minimum + getValue(data.mid(i, bytesPerValue), type) * remapMultiple;
@@ -365,7 +363,7 @@ void PlotData::addChannel(QByteArray data, unsigned int ch, QByteArray timeRaw, 
     for (int logicGroup = 0; logicGroup < LOGIC_GROUPS; logicGroup++) {
       if (logicTargets[logicGroup] != ch)
         continue;
-      if (logicBits[ch - 1] > 0)
+      if (logicBits[ch - 1] > 0 && logicBits[ch - 1] < (unsigned int)bits)
         bits = logicBits[ch - 1];
       for (uint8_t bit = 0; bit < bits; bit++) {
         emit addVectorToPlot(GlobalFunctions::getLogicChannelID(logicGroup, bit), digitalChannels.at(bit));

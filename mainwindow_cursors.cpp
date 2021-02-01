@@ -86,8 +86,8 @@ void MainWindow::updateCursors() {
     double dy = value2 - value1;
     // dB FFT
     if (ui->comboBoxCursor1Channel->currentIndex() == FFTID && ui->comboBoxCursor2Channel->currentIndex() == FFTID && ui->comboBoxFFTType->currentIndex() != FFTType::spectrum) {
-      ui->labelCurDeltaTime->setText(GlobalFunctions::floatToNiceString(dt, 2, true) + "Hz");
-      ui->labelCurDeltaValue->setText(GlobalFunctions::floatToNiceString(dy, 2, true) + "dB");
+      ui->labelCurDeltaTime->setText(GlobalFunctions::floatToNiceString(dt, 2) + "Hz");
+      ui->labelCurDeltaValue->setText(GlobalFunctions::floatToNiceString(dy, 2) + "dB");
       ui->labelCurRatio->setText("");
       ui->labelCurSlope->setText("");
       ui->labelCurFreq->setText("");
@@ -95,17 +95,17 @@ void MainWindow::updateCursors() {
 
     // linear FFT
     else if (ui->comboBoxCursor1Channel->currentIndex() == FFTID && ui->comboBoxCursor2Channel->currentIndex() == FFTID && ui->comboBoxFFTType->currentIndex() == FFTType::spectrum) {
-      ui->labelCurDeltaTime->setText(GlobalFunctions::floatToNiceString(dt, 2, true) + "Hz");
-      ui->labelCurDeltaValue->setText(GlobalFunctions::floatToNiceString(dy, 2, true));
-      ui->labelCurRatio->setText(GlobalFunctions::floatToNiceString(value1 / value2, 2, true));
+      ui->labelCurDeltaTime->setText(GlobalFunctions::floatToNiceString(dt, 2) + "Hz");
+      ui->labelCurDeltaValue->setText(GlobalFunctions::floatToNiceString(dy, 2));
+      ui->labelCurRatio->setText(GlobalFunctions::floatToNiceString(value1 / value2, 2));
       ui->labelCurSlope->setText("");
       ui->labelCurFreq->setText("");
     }
 
     // XY
     else if (ui->comboBoxCursor1Channel->currentIndex() == XYID && ui->comboBoxCursor2Channel->currentIndex() == XYID) {
-      ui->labelCurDeltaTime->setText(GlobalFunctions::floatToNiceString(dt, 2, true) + "V");
-      ui->labelCurDeltaValue->setText(GlobalFunctions::floatToNiceString(dy, 2, true) + "V");
+      ui->labelCurDeltaTime->setText(GlobalFunctions::floatToNiceString(dt, 2) + "V");
+      ui->labelCurDeltaValue->setText(GlobalFunctions::floatToNiceString(dy, 2) + "V");
       ui->labelCurRatio->setText("");
       ui->labelCurSlope->setText("");
       ui->labelCurFreq->setText("");
@@ -113,11 +113,11 @@ void MainWindow::updateCursors() {
 
     // Time
     else if (ui->comboBoxCursor1Channel->currentIndex() < XYID && ui->comboBoxCursor2Channel->currentIndex() < XYID) {
-      ui->labelCurDeltaTime->setText(GlobalFunctions::floatToNiceString(dt, 2, true) + "V");
-      ui->labelCurDeltaValue->setText(GlobalFunctions::floatToNiceString(dy, 2, true) + "V");
-      ui->labelCurRatio->setText(GlobalFunctions::floatToNiceString(value1 / value2, 2, true) + "  ");
-      ui->labelCurSlope->setText(GlobalFunctions::floatToNiceString(dy / dt, 2, true) + "V/s");
-      ui->labelCurFreq->setText(GlobalFunctions::floatToNiceString(1.0 / dt, 2, true) + "Hz");
+      ui->labelCurDeltaTime->setText(GlobalFunctions::floatToNiceString(dt, 2) + "V");
+      ui->labelCurDeltaValue->setText(GlobalFunctions::floatToNiceString(dy, 2) + "V");
+      ui->labelCurRatio->setText(GlobalFunctions::floatToNiceString(value1 / value2, 2) + "V/V");
+      ui->labelCurSlope->setText(GlobalFunctions::floatToNiceString(dy / dt, 2) + "V/s");
+      ui->labelCurFreq->setText(GlobalFunctions::floatToNiceString(1.0 / dt, 2) + "Hz");
     }
 
     else
@@ -140,8 +140,8 @@ void MainWindow::updateCursor(Cursors::enumerator cursor, int selectedChannel, u
     if (ui->plot->isChInverted(selectedChannel))
       value *= (-1);
     double valueOffseted = value * ui->plot->getChScale(selectedChannel) + ui->plot->getChOffset(selectedChannel);
-    timeStr = QString(GlobalFunctions::floatToNiceString(time, 3) + "s").toUtf8();
-    timeStr = QString(GlobalFunctions::floatToNiceString(value, 3) + "V").toUtf8();
+    timeStr = QString(GlobalFunctions::floatToNiceString(time, 3, true, false) + "s").toUtf8();
+    valueStr = QString(GlobalFunctions::floatToNiceString(value, 3, true, false) + "V").toUtf8();
     ui->plot->setCursorVisible(cursor, true);
     ui->plot->setCursorVisible(cursor + 2, true);
     ui->plot->updateCursor(cursor, time);
@@ -152,7 +152,7 @@ void MainWindow::updateCursor(Cursors::enumerator cursor, int selectedChannel, u
     double valueX = ui->plotxy->graphXY->data()->at(sample)->key;
     double valueY = ui->plotxy->graphXY->data()->at(sample)->value;
 
-    timeStr = QString(GlobalFunctions::floatToNiceString(realyTime, 3) + "V").toUtf8();
+    timeStr = QString(GlobalFunctions::floatToNiceString(realyTime, 3, true, false) + "V").toUtf8();
     valueStr = ("X: " + QString(GlobalFunctions::floatToNiceString(valueX, 3) + "V") + "\n" + "Y: " + QString(GlobalFunctions::floatToNiceString(valueY, 3) + "V")).toUtf8();
     time = valueX;
     value = valueY;
@@ -165,7 +165,7 @@ void MainWindow::updateCursor(Cursors::enumerator cursor, int selectedChannel, u
     double freq = ui->plotFFT->graph(0)->data()->at(sample)->key;
     value = ui->plotFFT->graph(0)->data()->at(sample)->value;
 
-    timeStr = QString(GlobalFunctions::floatToNiceString(freq, 3) + "Hz").toUtf8();
+    timeStr = QString(GlobalFunctions::floatToNiceString(freq, 3, true, false) + "Hz").toUtf8();
     valueStr = QString::number(value, 'f', 3).rightJustified(8).toLocal8Bit() + (ui->comboBoxFFTType->currentIndex() != FFTType::spectrum ? " dB" : "");
     time = freq;
     ui->plotFFT->setCursorVisible(cursor, true);
@@ -280,6 +280,11 @@ void MainWindow::on_comboBoxCursor1Channel_currentIndexChanged(int index) {
     ui->plot->setCursorVisible(Cursors::X1, ui->checkBoxCur1Visible->isChecked());
     ui->plot->setCursorVisible(Cursors::Y1, ui->checkBoxCur1Visible->isChecked());
   }
+  if (index == FFTID)
+    ui->labelCur1TimeCaption->setText(tr("Frequency"));
+  else
+    ui->labelCur1TimeCaption->setText(tr("Time"));
+
   updateCursors();
 }
 
@@ -306,6 +311,10 @@ void MainWindow::on_comboBoxCursor2Channel_currentIndexChanged(int index) {
     ui->plot->setCursorVisible(Cursors::X2, ui->checkBoxCur2Visible->isChecked());
     ui->plot->setCursorVisible(Cursors::Y2, ui->checkBoxCur2Visible->isChecked());
   }
+  if (index == FFTID)
+    ui->labelCur2TimeCaption->setText(tr("Frequency"));
+  else
+    ui->labelCur2TimeCaption->setText(tr("Time"));
   updateCursors();
 }
 void MainWindow::on_spinBoxCur1Sample_valueChanged(int arg1) {

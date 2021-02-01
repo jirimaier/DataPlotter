@@ -189,7 +189,6 @@ private slots: // Autoconnect slots
   void on_comboBoxXYx_currentIndexChanged(int) { updateXY(); }
   void on_pushButtonTerminalDebugSend_clicked();
   void on_textEditTerminalDebug_cursorPositionChanged();
-
   void on_myTerminal_cellClicked(int row, int column);
 
 public slots:
@@ -201,8 +200,8 @@ public slots:
   void useSettings(QByteArray settings, MessageTarget::enumerator source);
   void printDeviceMessage(QByteArray message, bool warning, bool ended);
   void printSerialMonitor(QByteArray data) { ui->plainTextEditConsole_3->appendPlainText(data); }
-  void signalMeasurementsResult1(double period, double freq, double amp, double vpp, double min, double max, double vrms, double dc);
-  void signalMeasurementsResult2(double period, double freq, double amp, double vpp, double min, double max, double vrms, double dc);
+  void signalMeasurementsResult1(double period, double freq, double amp, double min, double max, double vrms, double dc);
+  void signalMeasurementsResult2(double period, double freq, double amp, double min, double max, double vrms, double dc);
   void fftResult(QSharedPointer<QCPGraphDataContainer> data);
   void xyResult(QSharedPointer<QCPCurveDataContainer> data);
 
@@ -224,8 +223,6 @@ signals:
   void enableSerialMonitor(bool enabled);
   void setMathFirst(int math, int ch);
   void setMathSecond(int math, int ch);
-  // void setXYFirst(int ch);
-  // void setXYSecond(int ch);
   void clearMath(int math);
   void resetMath(int mathNumber, MathOperations::enumerator mode, QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2, bool shouldIgnorePause = false);
   void requestXY(QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2);

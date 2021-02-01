@@ -31,11 +31,22 @@ MyPlot::MyPlot(QWidget *parent) : QCustomPlot(parent) {
   fixedTickerY->setScaleStrategy(QCPAxisTickerFixed::ssNone);
   timeTickerX->setTickStepStrategy(QCPAxisTickerTime::tssMeetTickCount);
   longTimeTickerX->setTickStepStrategy(QCPAxisTickerTime::tssMeetTickCount);
+  this->xAxis->setNumberFormat("gb");
+  this->yAxis->setNumberFormat("gb");
   this->xAxis->setTicker(fixedTickerX);
   this->yAxis->setTicker(fixedTickerY);
   initcursors();
+  tracer = new QCPItemTracer(this);
   connect(this->xAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(onXRangeChanged(QCPRange)));
   connect(this->yAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(onYRangeChanged(QCPRange)));
+  connect(this, SIGNAL(mouseMove(QMouseEvent *)), this, SLOT(showPointToolTip(QMouseEvent *)));
+}
+
+void MyPlot::showPointToolTip(QMouseEvent *event) {
+  double x = this->xAxis->pixelToCoord(event->pos().x());
+  double y = this->yAxis->pixelToCoord(event->pos().y());
+  tracer->setGraph(graph(0));
+  tracer->setGraphKey(x);
 }
 
 void MyPlot::onXRangeChanged(QCPRange range) {

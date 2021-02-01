@@ -38,6 +38,8 @@ public:
   ~MyTerminal();
 
 private:
+  QTimer clickBlinkTimer;
+  bool blickInProgress = false;
   TerminalMode::enumerator mode = clicksend;
   QByteArray buffer;
   QMap<QString, QColor> colorCodes;
@@ -65,11 +67,14 @@ private:
   void resetFont();
   bool isSmallest(uint8_t number, QVector<uint8_t> list);
   void clearTerminal();
-  QColor inverseColor(QColor color) { return QColor(255 - color.red(), 255 - color.green(), 255 - color.blue()); }
+  void highLightField(QTableWidgetItem *field);
 
   void clearCell(int x, int y);
 private slots:
   void characterClicked(int r, int c);
+
+  // Aby se dvojité kliknutí chovalo jako dvě kliknutí
+  void characterDoubleClicked(int r, int c) { characterClicked(r, c); }
 
 public slots:
   void printToTerminal(QByteArray data);

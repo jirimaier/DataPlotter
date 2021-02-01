@@ -145,13 +145,9 @@ int main(int argc, char *argv[]) {
   QObject::connect(&mainWindow, &MainWindow::resetMath, plotMath, &PlotMath::resetMath);
   QObject::connect(&mainWindow, &MainWindow::requestXY, plotMath, &PlotMath::calculateXY);
   QObject::connect(plotData, &PlotData::addMathData, plotMath, &PlotMath::addMathData);
-  // QObject::connect(plotData, &PlotData::addXYData, plotMath, &PlotMath::addXYData);
   QObject::connect(&mainWindow, &MainWindow::setMathFirst, plotData, &PlotData::setMathFirst);
   QObject::connect(&mainWindow, &MainWindow::setMathSecond, plotData, &PlotData::setMathSecond);
-  // QObject::connect(&mainWindow, &MainWindow::setXYFirst, plotData, &PlotData::setXYFirst);
-  // QObject::connect(&mainWindow, &MainWindow::setXYSecond, plotData, &PlotData::setXYSecond);
   QObject::connect(&mainWindow, &MainWindow::clearMath, plotMath, &PlotMath::clearMath);
-  // QObject::connect(&mainWindow, &MainWindow::clearXY, plotMath, &PlotMath::clearXY);
   QObject::connect(&mainWindow, &MainWindow::requstMeasurements1, signalProcessing1, &SignalProcessing::process);
   QObject::connect(&mainWindow, &MainWindow::requstMeasurements2, signalProcessing2, &SignalProcessing::process);
   QObject::connect(&mainWindow, &MainWindow::requestFFT, signalProcessingFFT, &SignalProcessing::calculateSpectrum);
@@ -160,12 +156,8 @@ int main(int argc, char *argv[]) {
   QObject::connect(signalProcessingFFT, &SignalProcessing::fftResult, &mainWindow, &MainWindow::fftResult);
   QObject::connect(plotMath, &PlotMath::sendResultXY, &mainWindow, &MainWindow::xyResult);
 
-  // Funkce init jsou zavolány až z nového vlákna
-  QObject::connect(&serialParser1Thread, &QThread::started, serialParser1, &NewSerialParser::init);
-  QObject::connect(&serialParserMThread, &QThread::started, serialParser1, &NewSerialParser::init);
-  QObject::connect(&plotDataThread, &QThread::started, plotData, &PlotData::init);
+  // Funkce init je zavolána až z nového vlákna
   QObject::connect(&serialReader1Thread, &QThread::started, serial1, &SerialReader::init);
-  QObject::connect(&plotDataThread, &QThread::started, plotData, &PlotData::init);
 
   // Přesuny do vláken
   serial1->moveToThread(&serialReader1Thread);

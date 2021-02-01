@@ -18,11 +18,13 @@
 SerialReader::SerialReader(QObject *parent) : QObject(parent) {}
 
 SerialReader::~SerialReader() {
-  if (serial->isOpen()) serial->close();
+  if (serial->isOpen())
+    serial->close();
   delete serial;
 }
 
 void SerialReader::init() {
+  // QSerialPrort musí být vytvořen tady (fungkce init zavolána po spuštění vlákna), ne v konstruktoru, protože pak by SerialPort byl v GUI vláknu.
   serial = new QSerialPort;
   connect(serial, &QSerialPort::bytesWritten, this, &SerialReader::finishedWriting);
   // V starším Qt (Win XP) není signál pro error
@@ -32,7 +34,8 @@ void SerialReader::init() {
 }
 
 void SerialReader::begin(QString portName, int baudRate) {
-  if (serial->isOpen()) end();
+  if (serial->isOpen())
+    end(); // Pokud je port otevřen, tak ho zavře
   serial->setPortName(portName);
   serial->setBaudRate(baudRate);
   serial->setDataBits(QSerialPort::Data8);
@@ -47,12 +50,13 @@ void SerialReader::begin(QString portName, int baudRate) {
     emit connectionResult(false, tr("Error: ") + serial->errorString());
   if (serial->isOpen()) {
     serial->clear();
-    emit started();
+    emit started(); // Parser si vymaže buffer a odpoví že je připraven, teprve po odpovědi se začnou číst data.
   }
 }
 
 void SerialReader::write(QByteArray data) {
-  if (serial->isOpen()) serial->write(data);
+  if (serial->isOpen())
+    serial->write(data);
 }
 
 void SerialReader::parserReady() { connect(serial, &QSerialPort::readyRead, this, &SerialReader::read); }
@@ -60,14 +64,17 @@ void SerialReader::parserReady() { connect(serial, &QSerialPort::readyRead, this
 void SerialReader::end() {
   disconnect(serial, &QSerialPort::readyRead, this, &SerialReader::read);
   emit connectionResult(false, tr("Not connected"));
-  if (!serial->isOpen()) return;
+  if (!serial->isOpen())
+    return;
   serial->close();
 }
 
 void SerialReader::errorOccurred() {
-  if (serial->error() == QSerialPort::NoError) return;
+  if (serial->error() == QSerialPort::NoError)
+    return;
   QString error = serial->errorString();
-  if (serial->error() == QSerialPort::PermissionError) error = tr("Access denied.");
+  if (serial->error() == QSerialPort::PermissionError)
+    error = tr("Access denied.");
   disconnect(serial, &QSerialPort::readyRead, this, &SerialReader::read);
   if (serial->isOpen()) {
     serial->close();

@@ -27,7 +27,6 @@ class SerialReader : public QObject {
 public:
   explicit SerialReader(QObject *parent = nullptr);
   ~SerialReader();
-  void init();
 
 private:
   QSerialPort *serial;
@@ -48,6 +47,8 @@ signals:
   /// Přeposílá data
   void monitor(QByteArray data);
 public slots:
+  /// Vytvoří instanci QSerialPortu
+  void init();
   /// Připojí nebo odpojí port
   void toggle(QString portName, int baudRate);
   /// Pokusí se otevřít port

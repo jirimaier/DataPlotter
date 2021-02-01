@@ -122,7 +122,6 @@ void MainWindow::updateMeasurements1() {
     ui->labelSig1Period->setText("---");
     ui->labelSig1Freq->setText("---");
     ui->labelSig1Amp->setText("---");
-    ui->labelSig1Vpp->setText("---");
     ui->labelSig1Vrms->setText("---");
     ui->labelSig1Dc->setText("---");
     ui->labelSig1Min->setText("---");
@@ -147,7 +146,6 @@ void MainWindow::updateMeasurements2() {
     ui->labelSig2Period->setText("---");
     ui->labelSig2Freq->setText("---");
     ui->labelSig2Amp->setText("---");
-    ui->labelSig2Vpp->setText("---");
     ui->labelSig2Vrms->setText("---");
     ui->labelSig2Dc->setText("---");
     ui->labelSig2Min->setText("---");

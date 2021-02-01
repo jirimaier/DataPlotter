@@ -46,7 +46,7 @@ public slots:
 
 signals:
   void fftResult(QSharedPointer<QCPGraphDataContainer> data);
-  void result(double period, double freq, double amp, double vpp, double min, double max, double vrms, double dc);
+  void result(double period, double freq, double amp, double min, double max, double vrms, double dc);
 };
 
 #endif // SIGNALPROCESSING_H

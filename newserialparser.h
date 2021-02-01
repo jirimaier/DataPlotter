@@ -24,12 +24,11 @@
 
 class NewSerialParser : public QObject {
   Q_OBJECT
- public:
+public:
   explicit NewSerialParser(MessageTarget::enumerator target, QObject *parent = nullptr);
   ~NewSerialParser();
-  void init();
 
- signals:
+signals:
   /// Pošle zprávu do záznamu
   void sendDeviceMessage(QByteArray header, bool warning, bool ended);
   /// Předá zprávu od zařízení
@@ -43,21 +42,22 @@ class NewSerialParser : public QObject {
   /// Pošle bod ke zpracování
   void sendPoint(QByteArrayList data);
   /// Pošle kanál ke zpracování
-  void sendChannel(QByteArray data, unsigned int ch, QByteArray timeRaw, int bits, QByteArray min, QByteArray max);
+  void sendChannel(QByteArray data, unsigned int ch, QByteArray timeRaw, QByteArray unit, int zeroIndex, int bits, QByteArray min, QByteArray max);
   /// Potvrdí připravenost
   void ready();
   /// Pošle data která mají být poslána zpět do portu
   void sendEcho(QByteArray);
 
- private:
+private:
   MessageTarget::enumerator target;
   void resetChHeader();
   bool channelHeaderOK = false;
-  QByteArray channelTime, channelMin, channelMax;
+  QByteArray channelTime, channelMin, channelMax, channelTimeMultiple;
   int channelBits = -1;
+  int zeroIndex = 0;
   uint32_t channelLength;
   int channelNumber;
-  void fatalError(QString header, QByteArray &message);
+  void fatalError(QString header, QByteArray message);
   enum readResult { incomplete = 0, complete = 1, notProperlyEnded = 2 };
   enum delimiter { comma, semicolon, dollar, none };
   void sendMessageIfAllowed(QString header, QByteArray &message, MessageLevel::enumerator type);
@@ -75,7 +75,7 @@ class NewSerialParser : public QObject {
   uint32_t arrayToUint(QByteArray array, bool &isok);
   readResult bufferPullChannel(QByteArray &result);
 
- public slots:
+public slots:
   /// Zpracuje data
   void parse(QByteArray newData);
   /// Clear buffers
@@ -88,4 +88,4 @@ class NewSerialParser : public QObject {
   void getReady();
 };
 
-#endif  // NEWSERIALPARSER_H
+#endif // NEWSERIALPARSER_H

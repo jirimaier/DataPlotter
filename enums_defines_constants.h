@@ -104,8 +104,10 @@ namespace Global {
 
 const static QString lineEndings[4] = {"", "\n", "\r", "\r\n"};
 
-#define LOG_SET_SIZE 31 //                              0       1       2       3      4      5      6     7     8     9    10   11  12 13 14  15  16  17  18   19   20   21    22    23    24     25     26     27      28      29      30
-const static double logaritmicSettings[LOG_SET_SIZE] = {0.0001, 0.0002, 0.0005, 0.001, 0.002, 0.005, 0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000, 200000, 500000, 1000000};
+#define LOG_SET_SIZE 48 //                              0     1     2     3     4     5     6     7     8     9     10    11    12    13    14    15    16    17    18    19    20    21    22    23
+const static double logaritmicSettings[LOG_SET_SIZE] = {1e-9, 2e-9, 5e-9, 1e-8, 2e-8, 5e-8, 1e-7, 2e-7, 5e-7, 1e-6, 2e-6, 5e-6, 1e-5, 2e-5, 5e-5, 1e-4, 2e-4, 5e-4, 1e-3, 2e-3, 5e-3, 1e-2, 2e-2, 5e-2,
+                                                        // 24 25    26    27   28   29   30   31   32   33   34   35   36   37   38   39   40   41   42   43   44   45   46   47
+                                                        1e-1, 2e-1, 5e-1, 1e0, 2e0, 5e0, 1e1, 2e1, 5e1, 1e2, 2e2, 5e2, 1e3, 2e3, 5e3, 1e4, 2e4, 5e4, 1e5, 2e5, 5e5, 1e6, 2e6, 5e6};
 } // namespace Global
 
 struct GlobalFunctions {
@@ -144,51 +146,56 @@ struct GlobalFunctions {
     return ((QObject::tr("Ch %1").arg(chid + 1)));
   }
 
-  static QString floatToNiceString(double d, int prec = 2, bool zeroPadAtUnit = false) {
+  static QString floatToNiceString(double d, int prec = 2, bool justify = true, bool alignUnit = true, bool dontShowDecimalsIfRound = false) {
     QString text = "";
-    if (d == Q_INFINITY) {
-      text = "inf ";
-      if (zeroPadAtUnit)
-        text.append(" ");
-    } else if (d == Q_QNAN) {
-      text = "nan ";
-      if (zeroPadAtUnit)
-        text.append(" ");
-    } else if (abs(d) >= 1e18)
+    if (d == Q_INFINITY)
+      text = "INF ";
+    else if (d == Q_QNAN)
+      text = "NaN ";
+    else if (std::abs(d) >= 1e18)
       text = (QString::number(d / 1e18, 'f', prec) + " E");
-    else if (abs(d) >= 1e15)
+    else if (std::abs(d) >= 1e15)
       text = (QString::number(d / 1e15, 'f', prec) + " P");
-    else if (abs(d) >= 1e12)
+    else if (std::abs(d) >= 1e12)
       text = (QString::number(d / 1e12, 'f', prec) + " T");
-    else if (abs(d) >= 1e9)
+    else if (std::abs(d) >= 1e9)
       text = (QString::number(d / 1e9, 'f', prec) + " G");
-    else if (abs(d) >= 1e6)
+    else if (std::abs(d) >= 1e6)
       text = (QString::number(d / 1e6, 'f', prec) + " M");
-    else if (abs(d) >= 1e3)
+    else if (std::abs(d) >= 1e3)
       text = (QString::number(d / 1e3, 'f', prec) + " k");
-    else if (abs(d) >= 1) {
+    else if (std::abs(d) >= 1) {
       text = (QString::number(d, 'f', prec) + " ");
-      if (zeroPadAtUnit)
-        text.append(" ");
-    } else if (abs(d) >= 1e-3)
+    } else if (std::abs(d) >= 1e-3)
       text = (QString::number(d * 1e3, 'f', prec) + " m");
-    else if (abs(d) >= 1e-6)
+    else if (std::abs(d) >= 1e-6)
       text = (QString::number(d * 1e6, 'f', prec) + " " + QString::fromUtf8("\xc2\xb5")); // mikro
-    else if (abs(d) >= 1e-9)
+    else if (std::abs(d) >= 1e-9)
       text = (QString::number(d * 1e9, 'f', prec) + " n");
-    else if (abs(d) >= 1e-12)
+    else if (std::abs(d) >= 1e-12)
       text = (QString::number(d * 1e12, 'f', prec) + " p");
-    else if (abs(d) >= 1e-15)
+    else if (std::abs(d) >= 1e-15)
       text = (QString::number(d * 1e15, 'f', prec) + " f");
-    else if (abs(d) >= 1e-18)
+    else if (std::abs(d) >= 1e-18)
       text = (QString::number(d * 1e18, 'f', prec) + " a");
     else {
-      text = "0.00 ";
-      if (zeroPadAtUnit)
-        text.append(" ");
+      text = (QString::number(d * 1e18, 'f', prec) + " ");
     }
-    return text.rightJustified(9);
-    return text;
+
+    if (dontShowDecimalsIfRound) {
+      QString emptydecimals = ".";
+      for (int i = 0; i < prec; i++)
+        emptydecimals.append("0");
+      if (text.contains(emptydecimals))
+        text.replace(emptydecimals, "");
+    }
+
+    if (justify) {
+      if (text.right(1) == " " && alignUnit)
+        text.append(" ");
+      return text.rightJustified(5 + prec + 2);
+    } else
+      return text;
   }
 };
 

@@ -32,7 +32,6 @@ class PlotData : public QObject {
 public:
   explicit PlotData(QObject *parent = nullptr);
   ~PlotData();
-  void init();
 
 private:
   unsigned int logicTargets[LOGIC_GROUPS];
@@ -51,7 +50,7 @@ private:
 
 public slots:
   void addPoint(QByteArrayList data);
-  void addChannel(QByteArray data, unsigned int ch, QByteArray timeRaw, int bits, QByteArray min, QByteArray max);
+  void addChannel(QByteArray data, unsigned int ch, QByteArray timeRaw, QByteArray unit, int zeroIndex, int bits, QByteArray min, QByteArray max);
   void reset();
   /// Nastavý úroveň výpisu
   void setDebugLevel(OutputLevel::enumerator debugLevel) { this->debugLevel = debugLevel; }
