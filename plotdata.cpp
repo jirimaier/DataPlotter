@@ -303,7 +303,7 @@ void PlotData::addChannel(QByteArray data, unsigned int ch, QByteArray timeRaw, 
 
   // Informace o přijatém kanálu
   if (debugLevel == OutputLevel::info) {
-    QByteArray message = tr("%1 samples, sampling period %2s, %4 bits").arg(data.length() / bytesPerValue).arg(GlobalFunctions::floatToNiceString(timeStep, 4, false, false, false)).arg(bits).toUtf8();
+    QByteArray message = tr("%1 samples, sampling period %2s, %4 bits").arg(data.length() / bytesPerValue).arg(GlobalFunctions::floatToNiceString(timeStep, 4, false, false)).arg(bits).toUtf8();
     if (remap)
       message.append(tr(", from %1 to %2").arg(minimum).arg(maximum).toUtf8());
     emit sendMessage(tr("Received channel %1").arg(ch).toUtf8(), message, MessageLevel::info);

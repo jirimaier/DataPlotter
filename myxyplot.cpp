@@ -32,6 +32,16 @@ void MyXYPlot::newData(QSharedPointer<QCPCurveDataContainer> data) {
   if (autoSize)
     autoset();
   this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
+
+  // Přepsat text u traceru
+  if (tracer->visible()) {
+    QString tracerTextStr;
+    tracerTextStr.append("X: " + GlobalFunctions::floatToNiceString(tracer->position->key(), 4, true, true) + getXUnit() + "\n");
+    tracerTextStr.append("Y: " + GlobalFunctions::floatToNiceString(tracer->position->value(), 4, true, true) + getYUnit() + "\n");
+    tracerTextStr.append("t: " + GlobalFunctions::floatToNiceString(graphXY->data().data()->at(tracer->sampleNumber())->t, 4, true, true) + tUnit);
+    tracerText->setText(tracerTextStr);
+    tracerLayer->replot();
+  }
 }
 
 void MyXYPlot::setAutoSize(bool en) {
@@ -81,4 +91,26 @@ void MyXYPlot::autoset() {
   xRange.upper = GlobalFunctions::ceilToNiceValue(xRange.upper);
   xAxis->setRange(xRange);
   yAxis->setRange(yRange);
+}
+
+void MyXYPlot::showTracer(QMouseEvent *event) {
+  if ((unsigned int)graphXY->selectTest(event->pos(), false) < 20) {
+    tracer->setVisible(true);
+    tracerText->setVisible(true);
+    tracer->setCurve(graphXY);
+    tracer->setPoint(event->pos());
+    QString tracerTextStr;
+    tracerTextStr.append("X: " + GlobalFunctions::floatToNiceString(tracer->position->key(), 4, false, false) + getXUnit() + "\n");
+    tracerTextStr.append("Y: " + GlobalFunctions::floatToNiceString(tracer->position->value(), 4, false, false) + getYUnit() + "\n");
+    tracerTextStr.append("t: " + GlobalFunctions::floatToNiceString(graphXY->data().data()->at(tracer->sampleNumber())->t, 4, false, false) + tUnit);
+    tracerText->setText(tracerTextStr);
+    checkIfTracerTextFits();
+    tracerLayer->replot();
+
+    if (mouseIsPressed) {
+      this->setInteraction(QCP::iRangeDrag, false);
+      emit moveCursor(XYID, event->buttons() == Qt::RightButton ? 2 : 1, tracer->sampleNumber());
+    }
+  } else
+    hideTracer();
 }

@@ -20,6 +20,10 @@ void MainWindow::connectSignals() {
   connect(ui->checkBoxVerticalValues, &QCheckBox::toggled, ui->plot, &MyPlot::setShowVerticalValues);
   connect(ui->plot, &MyMainPlot::showPlotStatus, this, &MainWindow::showPlotStatus);
   connect(ui->plot, &MyPlot::gridChanged, this, &MainWindow::updateDivs);
+  connect(ui->plot, &MyPlot::moveCursor, this, &MainWindow::moveCursor);
+  connect(ui->plot, &MyMainPlot::offsetChangedByMouse, this, &MainWindow::offsetChangedByMouse);
+  connect(ui->plotxy, &MyPlot::moveCursor, this, &MainWindow::moveCursor);
+  connect(ui->plotFFT, &MyPlot::moveCursor, this, &MainWindow::moveCursor);
   connect(ui->doubleSpinBoxRangeHorizontal, SIGNAL(valueChanged(double)), ui->plot, SLOT(setRollingRange(double)));
   connect(ui->doubleSpinBoxRangeVerticalRange, SIGNAL(valueChanged(double)), ui->plot, SLOT(setVerticalRange(double)));
   connect(ui->doubleSpinBoxRangeHorizontal, SIGNAL(valueChanged(double)), ui->dialRollingRange, SLOT(updatePosition(double)));
@@ -32,8 +36,8 @@ void MainWindow::connectSignals() {
   connect(ui->lineEditVtitle, &QLineEdit::textChanged, ui->plotxy, &MyPlot::setXTitle);
   connect(ui->lineEditVtitle, &QLineEdit::textChanged, ui->plotxy, &MyPlot::setYTitle);
   connect(ui->myTerminal, &MyTerminal::sendMessage, this, &MainWindow::printMessage);
-  connect(ui->dialVerticalDiv, &QDial::valueChanged, ui->plot, &MyPlot::setGridHintY);
-  connect(ui->dialhorizontalDiv, &QDial::valueChanged, ui->plot, &MyPlot::setGridHintX);
+  connect(ui->horizontalSliderVGrid, &QDial::valueChanged, ui->plot, &MyPlot::setGridHintY);
+  connect(ui->horizontalSliderHGrid, &QDial::valueChanged, ui->plot, &MyPlot::setGridHintX);
   connect(ui->spinBoxShiftStep, SIGNAL(valueChanged(int)), ui->plot, SLOT(setShiftStep(int)));
   connect(ui->plot, &MyMainPlot::requestCursorUpdate, this, &MainWindow::updateCursors);
 
@@ -76,6 +80,13 @@ void MainWindow::setGuiDefaults() {
   ui->labelBuildDate->setText(tr("Build: ") + QString(__DATE__) + " " + QString(__TIME__));
   ui->pushButtonPause->setIcon(iconRun);
   ui->pushButtonMultiplInputs->setChecked(false);
+  ui->plot->setXUnit("s");
+  ui->plotxy->tUnit = "s";
+  ui->plotFFT->setXUnit("Hz");
+  ui->plot->setYUnit("V");
+  ui->plotxy->setYUnit("V");
+  ui->plotxy->setYUnit("V");
+  on_comboBoxFFTType_currentIndexChanged(ui->comboBoxFFTType->currentIndex());
 }
 
 void MainWindow::setGuiArrays() {

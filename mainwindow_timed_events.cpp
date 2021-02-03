@@ -126,6 +126,10 @@ void MainWindow::updateMeasurements1() {
     ui->labelSig1Dc->setText("---");
     ui->labelSig1Min->setText("---");
     ui->labelSig1Max->setText("---");
+    ui->labelSig1samples->setText("---");
+    ui->labelSig1fs->setText("---");
+    ui->labelSig1rise->setText("---");
+    ui->labelSig1fall->setText("---");
   }
 }
 
@@ -150,6 +154,10 @@ void MainWindow::updateMeasurements2() {
     ui->labelSig2Dc->setText("---");
     ui->labelSig2Min->setText("---");
     ui->labelSig2Max->setText("---");
+    ui->labelSig2samples->setText("---");
+    ui->labelSig2fs->setText("---");
+    ui->labelSig2rise->setText("---");
+    ui->labelSig2fall->setText("---");
   }
 }
 

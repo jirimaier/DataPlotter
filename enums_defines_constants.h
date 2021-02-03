@@ -19,6 +19,7 @@
 #include <QColor>
 #include <QObject>
 #include <QVector>
+#include <cmath>
 
 namespace PlotStatus {
 enum enumerator { run, pause };
@@ -100,6 +101,19 @@ enum enumerator { unrecognised, u1, u2, u3, u4, U1, U2, U3, U4, i1, i2, i3, i4, 
 #define XYID ANALOG_COUNT + MATH_COUNT + LOGIC_GROUPS
 #define FFTID ANALOG_COUNT + MATH_COUNT + LOGIC_GROUPS + 1
 
+#define MIN(a, b) (((a) < (b)) ? (a) : (b))
+#define MAX(a, b) (((a) > (b)) ? (a) : (b))
+
+#define XY_CHANNEL -1
+#define FFT_CHANNEL -2
+
+#define IS_ANALOG_OR_MATH(ch) (ch < ANALOG_COUNT + MATH_COUNT)
+#define IS_LOGIC_CH(ch) (ch >= ANALOG_COUNT + MATH_COUNT)
+#define CH_LIST_LOGIC_GROUP(ch) (ch - ANALOG_COUNT - MATH_COUNT)
+
+#define ChID_TO_LOGIC_GROUP(ch) ((ch - ANALOG_COUNT - MATH_COUNT) / LOGIC_BITS)
+#define ChID_TO_LOGIC_GROUP_BIT(ch) ((ch - ANALOG_COUNT - MATH_COUNT) % LOGIC_BITS)
+
 namespace Global {
 
 const static QString lineEndings[4] = {"", "\n", "\r", "\r\n"};
@@ -140,60 +154,74 @@ struct GlobalFunctions {
   /// Chid od 0
   static QString getChName(int chid) {
     if (chid >= ANALOG_COUNT + MATH_COUNT)
-      return ((QObject::tr("Logic %1 bit %2").arg((chid - ANALOG_COUNT - MATH_COUNT) / LOGIC_BITS + 1).arg((chid - ANALOG_COUNT - MATH_COUNT) % LOGIC_BITS + 1)));
+      return (QObject::tr("Logic %1 bit %2").arg(ChID_TO_LOGIC_GROUP(chid) + 1).arg(ChID_TO_LOGIC_GROUP_BIT(chid) + 1));
     if (chid >= ANALOG_COUNT)
-      return ((QObject::tr("Math %1").arg(chid - ANALOG_COUNT + 1)));
-    return ((QObject::tr("Ch %1").arg(chid + 1)));
+      return (QObject::tr("Math %1").arg(chid - ANALOG_COUNT + 1));
+    return (QObject::tr("Ch %1").arg(chid + 1));
   }
 
-  static QString floatToNiceString(double d, int prec = 2, bool justify = true, bool alignUnit = true, bool dontShowDecimalsIfRound = false) {
+  static QString floatToNiceString(double d, int prec = 5, bool justify = false, bool addSpaceIfNoPrefix = false, bool trimZeroes = false, int ordersBelowUnit = 0) {
     QString text = "";
-    if (d == Q_INFINITY)
-      text = "INF ";
-    else if (d == Q_QNAN)
-      text = "NaN ";
-    else if (std::abs(d) >= 1e18)
-      text = (QString::number(d / 1e18, 'f', prec) + " E");
-    else if (std::abs(d) >= 1e15)
-      text = (QString::number(d / 1e15, 'f', prec) + " P");
-    else if (std::abs(d) >= 1e12)
-      text = (QString::number(d / 1e12, 'f', prec) + " T");
-    else if (std::abs(d) >= 1e9)
-      text = (QString::number(d / 1e9, 'f', prec) + " G");
-    else if (std::abs(d) >= 1e6)
-      text = (QString::number(d / 1e6, 'f', prec) + " M");
-    else if (std::abs(d) >= 1e3)
-      text = (QString::number(d / 1e3, 'f', prec) + " k");
-    else if (std::abs(d) >= 1) {
-      text = (QString::number(d, 'f', prec) + " ");
-    } else if (std::abs(d) >= 1e-3)
-      text = (QString::number(d * 1e3, 'f', prec) + " m");
-    else if (std::abs(d) >= 1e-6)
-      text = (QString::number(d * 1e6, 'f', prec) + " " + QString::fromUtf8("\xc2\xb5")); // mikro
-    else if (std::abs(d) >= 1e-9)
-      text = (QString::number(d * 1e9, 'f', prec) + " n");
-    else if (std::abs(d) >= 1e-12)
-      text = (QString::number(d * 1e12, 'f', prec) + " p");
-    else if (std::abs(d) >= 1e-15)
-      text = (QString::number(d * 1e15, 'f', prec) + " f");
-    else if (std::abs(d) >= 1e-18)
-      text = (QString::number(d * 1e18, 'f', prec) + " a");
+    QString postfix = "";
+    if (qIsInf(d))
+      text = "\xe2\x88\x9e "; // Nekonečno
+    else if (qIsNaN(d))
+      text = "--- ";
     else {
-      text = (QString::number(d * 1e18, 'f', prec) + " ");
+      int order = floor(std::log10(std::abs(d))) + ordersBelowUnit;
+
+      if (order >= 18)
+        postfix = " E";
+      else if (order >= 15)
+        postfix = " P";
+      else if (order >= 12)
+        postfix = " T";
+      else if (order >= 9)
+        postfix = " G";
+      else if (order >= 6)
+        postfix = " M";
+      else if (order >= 3)
+        postfix = " k";
+      else if (order >= 0)
+        postfix = addSpaceIfNoPrefix ? "  " : " ";
+      else if (order >= -3)
+        postfix = " m";
+      else if (order >= -6)
+        postfix = " " + QString::fromUtf8("\xc2\xb5"); // mikro
+      else if (order >= -9)
+        postfix = " n";
+      else if (order >= -12)
+        postfix = " p";
+      else if (order >= -15)
+        postfix = " f";
+      else if (order >= -18)
+        postfix = " a";
+      else {
+        postfix = addSpaceIfNoPrefix ? "  " : " ";
+      }
+      // Zaokrouhlený na násobek tří
+      int order3 = ((int)floor((order / 3.0f))) * 3;
+      d /= std::pow(10, order3);
+      if (std::abs(d) >= 100)
+        text = QString::number(d, 'f', MAX(prec - 3, 0));
+      else if (std::abs(d) >= 10)
+        text = QString::number(d, 'f', MAX(prec - 2, 0));
+      else
+        text = QString::number(d, 'f', MAX(prec - 1, 0));
     }
 
-    if (dontShowDecimalsIfRound) {
-      QString emptydecimals = ".";
-      for (int i = 0; i < prec; i++)
-        emptydecimals.append("0");
-      if (text.contains(emptydecimals))
-        text.replace(emptydecimals, "");
+    if (trimZeroes) {
+      if (text.contains('.')) {
+        while (text.right(1) == "0")
+          text = text.left(text.length() - 1);
+        if (text.right(1) == ".")
+          text = text.left(text.length() - 1);
+      }
     }
 
+    text.append(postfix);
     if (justify) {
-      if (text.right(1) == " " && alignUnit)
-        text.append(" ");
-      return text.rightJustified(5 + prec + 2);
+      return text.rightJustified(prec + ((text.right(1) == " " && !addSpaceIfNoPrefix) ? 3 : 4));
     } else
       return text;
   }
@@ -207,15 +235,5 @@ struct ChannelSettings_t {
   bool inverted = false;
   bool visible = true;
 };
-
-#define MIN(a, b) (((a) < (b)) ? (a) : (b))
-#define MAX(a, b) (((a) > (b)) ? (a) : (b))
-
-#define CMD_END_LENGTH (sizeof(CMD_END) - 1)
-#define TIMEOUT_SYMBOL_LENGTH (sizeof(TIMEOUT_SYMBOL) - 1)
-#define CMD_BEGIN_LENGTH (sizeof(CMD_BEGIN) - 1)
-
-#define XY_CHANNEL -1
-#define FFT_CHANNEL -2
 
 #endif // SETTINGS_H

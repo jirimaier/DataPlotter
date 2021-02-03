@@ -56,6 +56,7 @@ MyMainPlot::MyMainPlot(QWidget *parent) : MyPlot(parent) {
   // Propojení musí být až po skončení inicializace!
   connect(this->yAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(verticalAxisRangeChanged(void)));
   connect(&plotUpdateTimer, &QTimer::timeout, this, &MyMainPlot::update);
+  connect(this, SIGNAL(mouseRelease(QMouseEvent *)), this, SLOT(resetOffsetDragLock()));
   plotUpdateTimer.start(50);
   replot();
 }
@@ -74,8 +75,10 @@ void MyMainPlot::initZeroLines() {
     zeroLine.start->setTypeX(QCPItemPosition::ptViewportRatio);
     zeroLine.end->setTypeY(QCPItemPosition::ptPlotCoords);
     zeroLine.end->setTypeX(QCPItemPosition::ptViewportRatio);
-    zeroLine.start->setCoords(0, channelSettings.at(i).offset);
-    zeroLine.end->setCoords(1, channelSettings.at(i).offset);
+    zeroLine.start->setAxes(xAxis, graph(i)->valueAxis());
+    zeroLine.end->setAxes(xAxis, graph(i)->valueAxis());
+    zeroLine.start->setCoords(0, 0);
+    zeroLine.end->setCoords(1, 0);
     zeroLine.setVisible(channelSettings.at(i).offset != 0);
   }
 }
@@ -143,6 +146,23 @@ QPair<QVector<double>, QVector<double>> MyMainPlot::getDataVector(int chID, bool
     }
   }
   return QPair<QVector<double>, QVector<double>>(keys, values);
+}
+
+void MyMainPlot::updateTracerText(int index) {
+  QString tracerTextStr;
+  tracerTextStr.append(" " + GlobalFunctions::getChName(index) + "\n");
+  if (IS_LOGIC_CH(index)) {
+    tracerTextStr.append(tr("=%1, ").arg((uint32_t)1 << ChID_TO_LOGIC_GROUP_BIT(index)));
+    if ((int)tracer->position->value() % 3)
+      tracerTextStr.append(tr("HIGH"));
+    else
+      tracerTextStr.append(tr("LOW"));
+    tracerTextStr.append(tr("\n"));
+  } else
+    tracerTextStr.append(GlobalFunctions::floatToNiceString(tracer->position->value(), 4, true, false) + getYUnit() + "\n");
+  tracerTextStr.append(GlobalFunctions::floatToNiceString(tracer->position->key(), 4, true, false) + getXUnit());
+  tracerText->setText(tracerTextStr);
+  tracerLayer->replot();
 }
 
 void MyMainPlot::setLogicOffset(int group, double offset) {
@@ -269,8 +289,6 @@ void MyMainPlot::setChColor(int chID, QColor color) {
 void MyMainPlot::setChOffset(int chID, double offset) {
   channelSettings[chID].offset = offset;
   reOffsetAndRescaleCH(chID);
-  zeroLines.at(chID)->start->setCoords(0, offset);
-  zeroLines.at(chID)->end->setCoords(1, offset);
   zeroLines.at(chID)->setVisible(offset != 0);
   this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
   emit requestCursorUpdate();
@@ -329,6 +347,11 @@ void MyMainPlot::redraw() {
     }
   }
   emit requestCursorUpdate();
+
+  // Přepsat text u traceru
+  if (tracer->visible())
+    updateTracerText(currentTracerIndex);
+
   this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
 }
 
@@ -522,4 +545,64 @@ QByteArray MyMainPlot::exportAllCSV(char separator, char decimal, int precision,
     }
   }
   return output;
+}
+
+void MyMainPlot::showTracer(QMouseEvent *event) {
+  if (mousedrag < 0) { // Není tažen offset
+    int nearestIndex = -1;
+    unsigned int nearestDistance = 20;
+    if (mousedrag == -2)
+      nearestDistance = 1000; // Když už táhnu kurzor, tak je tolerance vyšší
+    for (int i = 0; i < graphCount(); i++) {
+      unsigned int distance = (unsigned int)graph(i)->selectTest(event->pos(), false);
+      if (distance < nearestDistance) {
+        nearestIndex = i;
+        nearestDistance = distance;
+      }
+    }
+
+    if (nearestIndex != -1) { // Myš je na grafu
+      tracer->setVisible(true);
+      tracerText->setVisible(true);
+      tracer->setGraph(graph(nearestIndex));
+      tracer->setYAxis(graph(nearestIndex)->valueAxis());
+      tracer->setPoint(event->pos());
+      updateTracerText(nearestIndex);
+      checkIfTracerTextFits();
+      currentTracerIndex = nearestIndex;
+
+      if (mouseIsPressed) { // Tažení kursoru
+        this->setInteraction(QCP::iRangeDrag, false);
+        mousedrag = -2;
+        emit moveCursor(nearestIndex, event->buttons() == Qt::RightButton ? 2 : 1, tracer->sampleNumber());
+      }
+    } else {
+      hideTracer(); // Myš není na grafu
+
+      // Je myš na čáře offsetu?
+      if (mouseIsPressed && mousedrag != -2) {
+        nearestIndex = -1;
+        nearestDistance = 20;
+        for (int i = 0; i < zeroLines.count(); i++) {
+          unsigned int distance = (unsigned int)zeroLines.at(i)->selectTest(event->pos(), false);
+          if (distance < nearestDistance) {
+            nearestIndex = i;
+            nearestDistance = distance;
+          }
+        }
+
+        if (nearestIndex >= 0 && !graph(nearestIndex)->data()->isEmpty()) { // Myš je na čáře offsetu
+          if (zeroLines.at(nearestIndex)->visible()) {
+            mousedrag = nearestIndex;
+            this->setInteraction(QCP::iRangeDrag, false);
+            goto DRAG_OFFSET;
+          }
+        }
+      }
+    }
+  } else {
+  DRAG_OFFSET:
+    setChOffset(mousedrag, yAxis->pixelToCoord(event->pos().y()));
+    emit offsetChangedByMouse(mousedrag);
+  }
 }

@@ -75,7 +75,7 @@ void MainWindow::showPlotStatus(PlotStatus::enumerator type) {
 void MainWindow::updateChScale() {
   if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT) {
     double perDiv = ui->plot->getCHDiv(ui->comboBoxSelectedChannel->currentIndex());
-    ui->labelChScale->setText(GlobalFunctions::floatToNiceString(perDiv, 2, true, false, true) + tr("V / Div"));
+    ui->labelChScale->setText(GlobalFunctions::floatToNiceString(perDiv, 3, true, false) + tr("V / Div"));
   } else
     ui->labelChScale->setText(tr("---"));
 }
@@ -100,10 +100,10 @@ void MainWindow::serialFinishedWriting() {
 void MainWindow::updateDivs() {
   updateChScale();
   if (ui->labelHDiv->isEnabled())
-    ui->labelHDiv->setText(GlobalFunctions::floatToNiceString(ui->plot->getHDiv(), 0, false, false) + tr("s/Div"));
+    ui->labelHDiv->setText(GlobalFunctions::floatToNiceString(ui->plot->getHDiv(), 3, false, false, true) + tr("s/Div"));
   else
     ui->labelHDiv->setText("---");
-  ui->labelVDiv->setText(GlobalFunctions::floatToNiceString(ui->plot->getVDiv(), 0, false, false) + tr("V/Div"));
+  ui->labelVDiv->setText(GlobalFunctions::floatToNiceString(ui->plot->getVDiv(), 3, false, false, true) + tr("V/Div"));
 }
 
 void MainWindow::on_pushButtonCenter_clicked() {
@@ -206,4 +206,17 @@ void MainWindow::on_textEditTerminalDebug_cursorPositionChanged() {
 void MainWindow::on_myTerminal_cellClicked(int row, int column) {
   if (ui->pushButtonTerminalDebug->isChecked())
     insertInTerminalDebug(QString("\\e[%1;%2H").arg(row + 1).arg(column + 1), Qt::red);
+}
+
+void MainWindow::on_comboBoxFFTType_currentIndexChanged(int index) {
+  if (index != FFTType::spectrum)
+    ui->plotFFT->setYUnit("dB");
+  else
+    ui->plotFFT->setYUnit("");
+}
+
+void MainWindow::on_lineEditVUnit_textEdited(const QString &arg1) {
+  ui->plot->setYUnit(arg1);
+  ui->plotxy->setYUnit(arg1);
+  ui->plotxy->setXUnit(arg1);
 }

@@ -19,7 +19,7 @@ void MainWindow::updateCursorRange() {
   int ch = ui->comboBoxCursor1Channel->currentIndex();
   QPair<long, long> range;
   int fullRange;
-  if (ch < ANALOG_COUNT + MATH_COUNT) {
+  if (IS_ANALOG_OR_MATH(ch)) {
     range = ui->plot->getChVisibleSamplesRange(ch);
     fullRange = ui->plot->graph(ch)->data()->size() - 1;
   } else if (ch == XYID) {
@@ -29,14 +29,14 @@ void MainWindow::updateCursorRange() {
     range = ui->plotFFT->getVisibleSamplesRange();
     fullRange = ui->plotFFT->graph(0)->data()->size() - 1;
   } else {
-    range = ui->plot->getChVisibleSamplesRange(GlobalFunctions::getLogicChannelID(ch - ANALOG_COUNT - MATH_COUNT, 0));
-    fullRange = ui->plot->graph(GlobalFunctions::getLogicChannelID(ch - ANALOG_COUNT - MATH_COUNT, 0))->data()->size() - 1;
+    range = ui->plot->getChVisibleSamplesRange(GlobalFunctions::getLogicChannelID(CH_LIST_LOGIC_GROUP(ch), 0));
+    fullRange = ui->plot->graph(GlobalFunctions::getLogicChannelID(CH_LIST_LOGIC_GROUP(ch), 0))->data()->size() - 1;
   }
   ui->horizontalSliderTimeCur1->updateRange(range.first, range.second);
   ui->spinBoxCur1Sample->setMaximum(fullRange);
 
   ch = ui->comboBoxCursor2Channel->currentIndex();
-  if (ch < ANALOG_COUNT + MATH_COUNT) {
+  if (IS_ANALOG_OR_MATH(ch)) {
     range = ui->plot->getChVisibleSamplesRange(ch);
     fullRange = ui->plot->graph(ch)->data()->size() - 1;
   } else if (ch == XYID) {
@@ -46,21 +46,21 @@ void MainWindow::updateCursorRange() {
     range = ui->plotFFT->getVisibleSamplesRange();
     fullRange = ui->plotFFT->graph(0)->data()->size() - 1;
   } else {
-    range = ui->plot->getChVisibleSamplesRange(GlobalFunctions::getLogicChannelID(ch - ANALOG_COUNT - MATH_COUNT, 0));
-    fullRange = ui->plot->graph(GlobalFunctions::getLogicChannelID(ch - ANALOG_COUNT - MATH_COUNT, 0))->data()->size() - 1;
+    range = ui->plot->getChVisibleSamplesRange(GlobalFunctions::getLogicChannelID(CH_LIST_LOGIC_GROUP(ch), 0));
+    fullRange = ui->plot->graph(GlobalFunctions::getLogicChannelID(CH_LIST_LOGIC_GROUP(ch), 0))->data()->size() - 1;
   }
   ui->horizontalSliderTimeCur2->updateRange(range.first, range.second);
   ui->spinBoxCur2Sample->setMaximum(fullRange);
 }
 
 void MainWindow::updateCursors() {
-  int ch = ui->comboBoxCursor1Channel->currentIndex();
+  int ch1 = ui->comboBoxCursor1Channel->currentIndex();
   updateCursorRange();
   double time1 = 0, value1 = 0, time2 = 0, value2 = 0;
   QByteArray timeStr, valueStr;
 
   if (ui->checkBoxCur1Visible->isChecked()) {
-    updateCursor(Cursors::X1, ch, ui->spinBoxCur1Sample->value(), time1, value1, timeStr, valueStr);
+    updateCursor(Cursors::X1, ch1, ui->spinBoxCur1Sample->value(), time1, value1, timeStr, valueStr);
     ui->labelCur1Time->setText(timeStr);
     ui->labelCur1Val->setText(valueStr);
   } else {
@@ -68,12 +68,12 @@ void MainWindow::updateCursors() {
     ui->labelCur1Val->setText("---");
   }
 
-  ch = ui->comboBoxCursor2Channel->currentIndex();
+  int ch2 = ui->comboBoxCursor2Channel->currentIndex();
   timeStr = "";
   valueStr = "";
 
   if (ui->checkBoxCur2Visible->isChecked()) {
-    updateCursor(Cursors::X2, ch, ui->spinBoxCur2Sample->value(), time2, value2, timeStr, valueStr);
+    updateCursor(Cursors::X2, ch2, ui->spinBoxCur2Sample->value(), time2, value2, timeStr, valueStr);
     ui->labelCur2Time->setText(timeStr);
     ui->labelCur2Val->setText(valueStr);
   } else {
@@ -86,8 +86,8 @@ void MainWindow::updateCursors() {
     double dy = value2 - value1;
     // dB FFT
     if (ui->comboBoxCursor1Channel->currentIndex() == FFTID && ui->comboBoxCursor2Channel->currentIndex() == FFTID && ui->comboBoxFFTType->currentIndex() != FFTType::spectrum) {
-      ui->labelCurDeltaTime->setText(GlobalFunctions::floatToNiceString(dt, 2) + "Hz");
-      ui->labelCurDeltaValue->setText(GlobalFunctions::floatToNiceString(dy, 2) + "dB");
+      ui->labelCurDeltaTime->setText(GlobalFunctions::floatToNiceString(dt, 4, true, true) + ui->plotFFT->getXUnit());
+      ui->labelCurDeltaValue->setText(GlobalFunctions::floatToNiceString(dy, 4, true, true) + ui->plotFFT->getYUnit());
       ui->labelCurRatio->setText("");
       ui->labelCurSlope->setText("");
       ui->labelCurFreq->setText("");
@@ -95,17 +95,17 @@ void MainWindow::updateCursors() {
 
     // linear FFT
     else if (ui->comboBoxCursor1Channel->currentIndex() == FFTID && ui->comboBoxCursor2Channel->currentIndex() == FFTID && ui->comboBoxFFTType->currentIndex() == FFTType::spectrum) {
-      ui->labelCurDeltaTime->setText(GlobalFunctions::floatToNiceString(dt, 2) + "Hz");
-      ui->labelCurDeltaValue->setText(GlobalFunctions::floatToNiceString(dy, 2));
-      ui->labelCurRatio->setText(GlobalFunctions::floatToNiceString(value1 / value2, 2));
+      ui->labelCurDeltaTime->setText(GlobalFunctions::floatToNiceString(dt, 4, true, true) + ui->plotFFT->getXUnit());
+      ui->labelCurDeltaValue->setText(GlobalFunctions::floatToNiceString(dy, 4, true, true));
+      ui->labelCurRatio->setText(GlobalFunctions::floatToNiceString(value1 / value2, 4, true, true));
       ui->labelCurSlope->setText("");
       ui->labelCurFreq->setText("");
     }
 
     // XY
     else if (ui->comboBoxCursor1Channel->currentIndex() == XYID && ui->comboBoxCursor2Channel->currentIndex() == XYID) {
-      ui->labelCurDeltaTime->setText(GlobalFunctions::floatToNiceString(dt, 2) + "V");
-      ui->labelCurDeltaValue->setText(GlobalFunctions::floatToNiceString(dy, 2) + "V");
+      ui->labelCurDeltaTime->setText(GlobalFunctions::floatToNiceString(dt, 4, true, true) + ui->plotxy->getXUnit());
+      ui->labelCurDeltaValue->setText(GlobalFunctions::floatToNiceString(dy, 4, true, true) + ui->plotxy->getXUnit());
       ui->labelCurRatio->setText("");
       ui->labelCurSlope->setText("");
       ui->labelCurFreq->setText("");
@@ -113,11 +113,28 @@ void MainWindow::updateCursors() {
 
     // Time
     else if (ui->comboBoxCursor1Channel->currentIndex() < XYID && ui->comboBoxCursor2Channel->currentIndex() < XYID) {
-      ui->labelCurDeltaTime->setText(GlobalFunctions::floatToNiceString(dt, 2) + "V");
-      ui->labelCurDeltaValue->setText(GlobalFunctions::floatToNiceString(dy, 2) + "V");
-      ui->labelCurRatio->setText(GlobalFunctions::floatToNiceString(value1 / value2, 2) + "V/V");
-      ui->labelCurSlope->setText(GlobalFunctions::floatToNiceString(dy / dt, 2) + "V/s");
-      ui->labelCurFreq->setText(GlobalFunctions::floatToNiceString(1.0 / dt, 2) + "Hz");
+      if (IS_ANALOG_OR_MATH(ch1) && IS_ANALOG_OR_MATH(ch2)) {
+        // Both analog
+        ui->labelCurDeltaTime->setText(GlobalFunctions::floatToNiceString(dt, 4, true, true) + ui->plot->getXUnit());
+        ui->labelCurDeltaValue->setText(GlobalFunctions::floatToNiceString(dy, 4, true, true) + ui->plot->getYUnit());
+        ui->labelCurRatio->setText(GlobalFunctions::floatToNiceString(value1 / value2, 4, true, true) + ui->plot->getYUnit() + "/" + ui->plot->getYUnit());
+        ui->labelCurSlope->setText(GlobalFunctions::floatToNiceString(dy / dt, 4, true, true) + ui->plot->getYUnit() + "/" + ui->plot->getXUnit());
+        ui->labelCurFreq->setText(GlobalFunctions::floatToNiceString(1.0 / dt, 4, true, true) + ui->plotFFT->getXUnit());
+      } else if (IS_ANALOG_OR_MATH(ch1) || IS_ANALOG_OR_MATH(ch2)) {
+        // Analog and Logic
+        ui->labelCurDeltaTime->setText(GlobalFunctions::floatToNiceString(dt, 4, true, false) + ui->plot->getXUnit());
+        ui->labelCurDeltaValue->setText("");
+        ui->labelCurRatio->setText("");
+        ui->labelCurSlope->setText("");
+        ui->labelCurFreq->setText(GlobalFunctions::floatToNiceString(1.0 / dt, 4, true, false) + ui->plotFFT->getXUnit());
+      } else {
+        ui->labelCurDeltaTime->setText(GlobalFunctions::floatToNiceString(dt, 4, true, false) + ui->plot->getXUnit());
+        ui->labelCurDeltaValue->setText((dy >= 0 ? " 0x" : "-0x") + QString::number((uint32_t)std::abs(dy), 16).toUpper().rightJustified(valueStr.indexOf('\n') - 2, '0'));
+        ui->labelCurRatio->setText("");
+        ui->labelCurSlope->setText("");
+        ui->labelCurFreq->setText(GlobalFunctions::floatToNiceString(1.0 / dt, 4, true, false) + ui->plotFFT->getXUnit());
+      }
+
     }
 
     else
@@ -133,50 +150,52 @@ void MainWindow::updateCursors() {
 }
 
 void MainWindow::updateCursor(Cursors::enumerator cursor, int selectedChannel, unsigned int sample, double &time, double &value, QByteArray &timeStr, QByteArray &valueStr) {
-  if (selectedChannel < ANALOG_COUNT + MATH_COUNT) {
+  if (IS_ANALOG_OR_MATH(selectedChannel)) {
     // Analogový kanál
     time = ui->plot->graph(selectedChannel)->data()->at(sample)->key;
     value = ui->plot->graph(selectedChannel)->data()->at(sample)->value;
     if (ui->plot->isChInverted(selectedChannel))
       value *= (-1);
     double valueOffseted = value * ui->plot->getChScale(selectedChannel) + ui->plot->getChOffset(selectedChannel);
-    timeStr = QString(GlobalFunctions::floatToNiceString(time, 3, true, false) + "s").toUtf8();
-    valueStr = QString(GlobalFunctions::floatToNiceString(value, 3, true, false) + "V").toUtf8();
+    timeStr = QString(GlobalFunctions::floatToNiceString(time, 5, true, false) + ui->plot->getXUnit()).toUtf8();
+    valueStr = QString(GlobalFunctions::floatToNiceString(value, 5, true, false) + ui->plot->getYUnit()).toUtf8();
     ui->plot->setCursorVisible(cursor, true);
     ui->plot->setCursorVisible(cursor + 2, true);
-    ui->plot->updateCursor(cursor, time);
-    ui->plot->updateCursor(cursor + 2, valueOffseted);
+    ui->plot->updateCursor(cursor, time, timeStr);
+    ui->plot->updateCursor(cursor + 2, valueOffseted, valueStr);
   } else if (selectedChannel == XYID) {
     // XY
     double realyTime = ui->plotxy->graphXY->data()->at(sample)->t;
     double valueX = ui->plotxy->graphXY->data()->at(sample)->key;
     double valueY = ui->plotxy->graphXY->data()->at(sample)->value;
 
-    timeStr = QString(GlobalFunctions::floatToNiceString(realyTime, 3, true, false) + "V").toUtf8();
-    valueStr = ("X: " + QString(GlobalFunctions::floatToNiceString(valueX, 3) + "V") + "\n" + "Y: " + QString(GlobalFunctions::floatToNiceString(valueY, 3) + "V")).toUtf8();
+    timeStr = QString(GlobalFunctions::floatToNiceString(realyTime, 5, true, false) + ui->plotxy->tUnit).toUtf8();
+    QString valStrX = QString(GlobalFunctions::floatToNiceString(valueX, 5)) + ui->plotxy->getXUnit();
+    QString valStrY = QString(GlobalFunctions::floatToNiceString(valueY, 5)) + ui->plotxy->getYUnit();
+    valueStr = ("X: " + valStrX + "\n" + "Y: " + valStrY).toUtf8();
     time = valueX;
     value = valueY;
     ui->plotxy->setCursorVisible(cursor, true);
     ui->plotxy->setCursorVisible(cursor + 2, true);
-    ui->plotxy->updateCursor(cursor, valueX);
-    ui->plotxy->updateCursor(cursor + 2, valueY);
+    ui->plotxy->updateCursor(cursor, valueX, valStrX);
+    ui->plotxy->updateCursor(cursor + 2, valueY, valStrY);
   } else if (selectedChannel == FFTID) {
     // FFT
     double freq = ui->plotFFT->graph(0)->data()->at(sample)->key;
     value = ui->plotFFT->graph(0)->data()->at(sample)->value;
 
-    timeStr = QString(GlobalFunctions::floatToNiceString(freq, 3, true, false) + "Hz").toUtf8();
-    valueStr = QString::number(value, 'f', 3).rightJustified(8).toLocal8Bit() + (ui->comboBoxFFTType->currentIndex() != FFTType::spectrum ? " dB" : "");
+    timeStr = QString(GlobalFunctions::floatToNiceString(freq, 5, true, false) + ui->plotFFT->getXUnit()).toUtf8();
+    valueStr = (QString::number(value, 'f', 3).rightJustified(8) + ui->plotFFT->getYUnit()).toUtf8();
     time = freq;
     ui->plotFFT->setCursorVisible(cursor, true);
     ui->plotFFT->setCursorVisible(cursor + 2, true);
-    ui->plotFFT->updateCursor(cursor, freq);
-    ui->plotFFT->updateCursor(cursor + 2, value);
+    ui->plotFFT->updateCursor(cursor, freq, timeStr);
+    ui->plotFFT->updateCursor(cursor + 2, value, valueStr);
   } else {
     // Logický kanál
     QByteArray bits;
     value = 0.0;
-    int group = selectedChannel - ANALOG_COUNT - MATH_COUNT;
+    int group = CH_LIST_LOGIC_GROUP(selectedChannel);
     time = ui->plot->graph(GlobalFunctions::getLogicChannelID(group, 0))->data()->at(sample)->key;
     int bitsUsed = ui->plot->getLogicBitsUsed(group);
     for (int bit = 0; bit < bitsUsed; bit++) {
@@ -196,12 +215,12 @@ void MainWindow::updateCursor(Cursors::enumerator cursor, int selectedChannel, u
     }
     if (bits.left(1) == " ")
       bits = bits.mid(1);
-    timeStr = QString::number(time, 'f', 3).toLocal8Bit();
+    timeStr = QString(GlobalFunctions::floatToNiceString(time, 5, true, false) + ui->plot->getXUnit()).toUtf8();
     valueStr = "0x" + QString::number((uint32_t)value, 16).toUpper().rightJustified(ceil(bitsUsed / 4.0), '0').toLocal8Bit();
     valueStr.append("\n" + bits);
     ui->plot->setCursorVisible(cursor, true);
     ui->plot->setCursorVisible(cursor + 2, false);
-    ui->plot->updateCursor(cursor, time);
+    ui->plot->updateCursor(cursor, time, valueStr + "\n" + timeStr);
   }
 }
 
@@ -335,4 +354,22 @@ void MainWindow::on_spinBoxCur2Sample_valueChanged(int arg1) {
   } else {
     ui->checkBoxCur1Visible->setChecked(false);
   }
+}
+
+void MainWindow::moveCursor(int chid, int cursor, int sample) {
+  if (!IS_ANALOG_OR_MATH(chid)) {
+    chid = ChID_TO_LOGIC_GROUP(chid) + ANALOG_COUNT + MATH_COUNT;
+  }
+  if (cursor == 1) {
+    ui->comboBoxCursor1Channel->setCurrentIndex(chid);
+    ui->spinBoxCur1Sample->setValue(sample);
+  } else {
+    ui->comboBoxCursor2Channel->setCurrentIndex(chid);
+    ui->spinBoxCur2Sample->setValue(sample);
+  }
+}
+
+void MainWindow::offsetChangedByMouse(int chid) {
+  if (ui->comboBoxSelectedChannel->currentIndex() == chid)
+    ui->doubleSpinBoxChOffset->setValue(ui->plot->getChOffset(chid));
 }

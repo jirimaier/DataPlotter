@@ -14,7 +14,7 @@ fftwin:1;
 haxis:1;
 hdiv:-3;
 hlabel:;
-hrange:1000;
+hrange:100;
 lineending:1;
 log1bits:0;
 log1ch:1;

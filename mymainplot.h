@@ -23,7 +23,7 @@
 
 class MyMainPlot : public MyPlot {
   Q_OBJECT
- public:
+public:
   explicit MyMainPlot(QWidget *parent = nullptr);
   ~MyMainPlot();
   void init();
@@ -64,7 +64,7 @@ class MyMainPlot : public MyPlot {
   QByteArray exportLogicCSV(char separator, char decimal, int group, int precision, bool onlyInView);
   QByteArray exportAllCSV(char separator, char decimal, int precision, bool onlyInView, bool includeHidden);
 
- private:
+private:
   QTimer plotUpdateTimer;
 
   void resume();
@@ -75,6 +75,11 @@ class MyMainPlot : public MyPlot {
   void reOffsetAndRescaleCH(int chID);
   void reOffsetAndRescaleLogic(int chID);
   QPair<QVector<double>, QVector<double>> getDataVector(int chID, bool onlyInView = false);
+  void updateTracerText(int index);
+  int currentTracerIndex = -1;
+
+  // -1=nic, -2=kursor, 0... = offset
+  int mousedrag = -1;
 
   bool newData = true;
   double minT = 0.0, maxT = 1.0;
@@ -92,10 +97,12 @@ class MyMainPlot : public MyPlot {
   PlotStatus::enumerator plottingStatus = PlotStatus::run;
   PlotRange::enumerator plotRangeType = PlotRange::fixedRange;
 
- private slots:
+private slots:
   void verticalAxisRangeChanged();
+  void showTracer(QMouseEvent *event);
+  void resetOffsetDragLock() { mousedrag = -1; }
 
- public slots:
+public slots:
   void togglePause();
   void resetChannels();
   void update();
@@ -114,10 +121,11 @@ class MyMainPlot : public MyPlot {
   void newDataPoint(int chID, double time, double value, bool append);
   void newDataVector(int chID, QSharedPointer<QCPGraphDataContainer> data, bool ignorePause = false);
 
- signals:
+signals:
   void updateHPosSlider(double min, double max, int step);
   void showPlotStatus(PlotStatus::enumerator type);
   void requestCursorUpdate();
+  void offsetChangedByMouse(int chid);
 };
 
-#endif  // MYMAINPLOT_H
+#endif // MYMAINPLOT_H

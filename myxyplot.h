@@ -25,11 +25,15 @@ public:
   ~MyXYPlot();
   QByteArray exportCSV(char separator, char decimal, int precision);
   QCPCurve *graphXY;
+  QString tUnit = "s";
 
 private:
   QSharedPointer<QCPCurveDataContainer> pauseBuffer;
   bool autoSize = true;
   void autoset();
+
+private slots:
+  void showTracer(QMouseEvent *event);
 
 public slots:
   void newData(QSharedPointer<QCPCurveDataContainer> data);

@@ -6463,7 +6463,9 @@ public:
   virtual double selectTest(const QPointF &pos, bool onlySelectable, QVariant *details = 0) const Q_DECL_OVERRIDE;
 
   // non-virtual methods:
-  void updatePosition();
+
+  // TOTO JSEM UPRAVIL !!!
+  virtual void updatePosition();
 
   QCPItemPosition *const position;
 

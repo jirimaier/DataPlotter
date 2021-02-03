@@ -122,6 +122,8 @@ void SignalProcessing::process(QSharedPointer<QCPGraphDataContainer> data) {
   float max = data->valueRange(rangefound).upper;
   float min = data->valueRange(rangefound).lower;
 
+  float fs = data->size() / (data->at(data->size() - 1)->key - data->at(0)->key);
+
   // Stejnosměrná složka
   float dc = 0;
   for (QCPGraphDataContainer::iterator it = data->begin(); it != data->end(); it++)
@@ -135,14 +137,22 @@ void SignalProcessing::process(QSharedPointer<QCPGraphDataContainer> data) {
   vrms /= data->size();
   vrms = sqrt(vrms);
 
-  float freq = getStrongestFreq(data, dc);
+  float freq = getStrongestFreq(data, dc, fs);
 
-  emit result(1.0 / freq, freq, (max - min), min, max, vrms, dc);
+  float period = 1.0 / freq;
+
+  int samples = data->size();
+
+  // Od teď se počítá jen v posledními dvěma periodami !!!
+  data->removeBefore(data->at(data->size() - 1)->key - 2.0 * period);
+
+  auto risefall = getRiseFall(data);
+
+  emit result(period, freq, (max - min), min, max, vrms, dc, fs, risefall.first, risefall.second, samples);
 }
 
-float SignalProcessing::getStrongestFreq(QSharedPointer<QCPGraphDataContainer> data, float dc) {
+float SignalProcessing::getStrongestFreq(QSharedPointer<QCPGraphDataContainer> data, float dc, float fs) {
   // Vzorkovací frekvence (převrácený interval mezi vzorky, předpokládá se konstantní)
-  float fs = data->size() / (data->at(data->size() - 1)->key - data->at(0)->key);
 
   //    // Výpočet frekvence - pro krátký signál (do 4096 vzorků) udělám autokorelaci
   //    // a z ní FFT; pro delší signál jen FFT přímo ze signálu (rychlé, ale méně přesné)
@@ -209,4 +219,57 @@ float SignalProcessing::getStrongestFreq(QSharedPointer<QCPGraphDataContainer> d
     }
   }
   return (maxindex * fs / nfft);
+}
+
+QPair<float, float> SignalProcessing::getRiseFall(QSharedPointer<QCPGraphDataContainer> data) {
+  auto risefall = QPair<float, float>(Q_QNAN, Q_QNAN);
+
+  // Zde se počítá je s posledními dvěma periodami (aby se zamezil vliv náhodných špiček na min/max)
+  bool rangefound = false; // Nevyužité, ale je potřeba do funkcí co hledají max/min
+  float max = data->valueRange(rangefound).upper;
+  float min = data->valueRange(rangefound).lower;
+
+  float top = min + 0.9 * (max - min);    // 90 %
+  float bottom = min + 0.1 * (max - min); // 10 %
+
+  int riseEnd = -1;
+  int fallEnd = -1;
+
+  // postupuje se od konce - platí poslední vzestup/sestup
+  // vzestup
+  for (int i = data->size() - 1; i >= 0; i--) {
+    if (data->at(i)->value >= top)
+      riseEnd = i; // Je nad 90 %
+    else if (riseEnd != -1) {
+      // Konec už mám, tohle může být začátek, pokud je pod 10 %
+      if (data->at(i)->value <= bottom) {
+        // Je to začátek (první před koncem co je pod 10 %)
+        // Aby to fungovalo i pro malo vzorků, tak to podle začátku a konce
+        // nahradím přímkou a spočítám za jak dlouho naroste z min na max
+        QCPGraphData end = *data->at(riseEnd);
+        QCPGraphData begin = *data->at(i);
+        float slope = (end.value - begin.value) / (end.key - begin.key);
+        risefall.first = (max - min) / slope * 0.8;
+        // Risetime je definován jako čas mezi 10 % a 90 %, toto je od min do max, tedy 0 - 100 %,
+        // tedy hodnotu násobím 0.8, aby to odpovídalo.
+        break;
+      }
+    }
+  }
+
+  // Falltime, analogicky k předchozímu...
+  for (int i = data->size() - 1; i >= 0; i--) {
+    if (data->at(i)->value <= bottom)
+      fallEnd = i;
+    else if (fallEnd != -1) {
+      if (data->at(i)->value >= top) {
+        QCPGraphData end = *data->at(fallEnd);
+        QCPGraphData begin = *data->at(i);
+        float slope = (end.value - begin.value) / (end.key - begin.key);
+        risefall.second = (min - max) / slope * 0.8; // min a max je prohozeno, aby výsledek nebyl záporný
+        break;
+      }
+    }
+  }
+  return risefall;
 }

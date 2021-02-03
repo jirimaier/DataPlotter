@@ -190,6 +190,9 @@ private slots: // Autoconnect slots
   void on_pushButtonTerminalDebugSend_clicked();
   void on_textEditTerminalDebug_cursorPositionChanged();
   void on_myTerminal_cellClicked(int row, int column);
+  void on_comboBoxFFTType_currentIndexChanged(int index);
+
+  void on_lineEditVUnit_textEdited(const QString &arg1);
 
 public slots:
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumerator target);
@@ -200,10 +203,12 @@ public slots:
   void useSettings(QByteArray settings, MessageTarget::enumerator source);
   void printDeviceMessage(QByteArray message, bool warning, bool ended);
   void printSerialMonitor(QByteArray data) { ui->plainTextEditConsole_3->appendPlainText(data); }
-  void signalMeasurementsResult1(double period, double freq, double amp, double min, double max, double vrms, double dc);
-  void signalMeasurementsResult2(double period, double freq, double amp, double min, double max, double vrms, double dc);
+  void signalMeasurementsResult1(float period, float freq, float amp, float min, float max, float vrms, float dc, float fs, float rise, float fall, int samples);
+  void signalMeasurementsResult2(float period, float freq, float amp, float min, float max, float vrms, float dc, float fs, float rise, float fall, int samples);
   void fftResult(QSharedPointer<QCPGraphDataContainer> data);
   void xyResult(QSharedPointer<QCPCurveDataContainer> data);
+  void moveCursor(int chid, int cursor, int sample);
+  void offsetChangedByMouse(int chid);
 
 signals:
   void setChDigital(int chid, int target);

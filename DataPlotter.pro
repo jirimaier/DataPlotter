@@ -16,10 +16,12 @@ SOURCES += \
     mainwindow_gui_slots.cpp \
     mainwindow_save_load.cpp \
     mainwindow_timed_events.cpp \
+    myaxistickerwithunit.cpp \
     mycursorslider.cpp \
     mydial.cpp \
     myfftplot.cpp \
     mymainplot.cpp \
+    mymodifiedqcptracer.cpp \
     myplot.cpp \
     myterminal.cpp \
     myxyplot.cpp \
@@ -33,10 +35,12 @@ SOURCES += \
 HEADERS += \
     enums_defines_constants.h \
     mainwindow.h \
+    myaxistickerwithunit.h \
     mycursorslider.h \
     mydial.h \
     myfftplot.h \
     mymainplot.h \
+    mymodifiedqcptracer.h \
     myplot.h \
     myterminal.h \
     myxyplot.h \

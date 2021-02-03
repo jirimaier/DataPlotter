@@ -16,37 +16,35 @@
 #include "myplot.h"
 
 MyPlot::MyPlot(QWidget *parent) : QCustomPlot(parent) {
-  // setNoAntialiasingOnDrag(true);
-  // setInteraction(QCP::iSelectPlottables, true);
   this->addLayer("cursorLayer", 0, limAbove);
+  this->addLayer("tracerLayer", 0, limAbove);
   cursorLayer = this->layer("cursorLayer");
+  tracerLayer = this->layer("tracerLayer");
   cursorLayer->setMode(QCPLayer::lmBuffered);
-  fixedTickerX = QSharedPointer<QCPAxisTickerFixed>(new QCPAxisTickerFixed);
-  fixedTickerY = QSharedPointer<QCPAxisTickerFixed>(new QCPAxisTickerFixed);
+  unitTickerX = QSharedPointer<MyAxisTickerWithUnit>(new MyAxisTickerWithUnit);
+  unitTickerY = QSharedPointer<MyAxisTickerWithUnit>(new MyAxisTickerWithUnit);
   timeTickerX = QSharedPointer<QCPAxisTickerTime>(new QCPAxisTickerTime);
   longTimeTickerX = QSharedPointer<QCPAxisTickerTime>(new QCPAxisTickerTime);
   timeTickerX->setTimeFormat("%m:%s");
   longTimeTickerX->setTimeFormat("%h:%m:%s");
-  fixedTickerX->setScaleStrategy(QCPAxisTickerFixed::ssNone);
-  fixedTickerY->setScaleStrategy(QCPAxisTickerFixed::ssNone);
+  unitTickerX->setScaleStrategy(QCPAxisTickerFixed::ssNone);
+  unitTickerY->setScaleStrategy(QCPAxisTickerFixed::ssNone);
   timeTickerX->setTickStepStrategy(QCPAxisTickerTime::tssMeetTickCount);
   longTimeTickerX->setTickStepStrategy(QCPAxisTickerTime::tssMeetTickCount);
   this->xAxis->setNumberFormat("gb");
   this->yAxis->setNumberFormat("gb");
-  this->xAxis->setTicker(fixedTickerX);
-  this->yAxis->setTicker(fixedTickerY);
+  this->xAxis->setTicker(unitTickerX);
+  this->yAxis->setTicker(unitTickerY);
+
   initcursors();
-  tracer = new QCPItemTracer(this);
+
+  initTracer();
+
   connect(this->xAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(onXRangeChanged(QCPRange)));
   connect(this->yAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(onYRangeChanged(QCPRange)));
-  connect(this, SIGNAL(mouseMove(QMouseEvent *)), this, SLOT(showPointToolTip(QMouseEvent *)));
-}
-
-void MyPlot::showPointToolTip(QMouseEvent *event) {
-  double x = this->xAxis->pixelToCoord(event->pos().x());
-  double y = this->yAxis->pixelToCoord(event->pos().y());
-  tracer->setGraph(graph(0));
-  tracer->setGraphKey(x);
+  connect(this, SIGNAL(mouseMove(QMouseEvent *)), this, SLOT(showTracer(QMouseEvent *)));
+  connect(this, SIGNAL(mousePress(QMouseEvent *)), this, SLOT(mousePressed(QMouseEvent *)));
+  connect(this, SIGNAL(mouseRelease(QMouseEvent *)), this, SLOT(mouseReleased(QMouseEvent *)));
 }
 
 void MyPlot::onXRangeChanged(QCPRange range) {
@@ -64,6 +62,25 @@ void MyPlot::onXRangeChanged(QCPRange range) {
   updateGridX();
 }
 
+void MyPlot::initTracer() {
+  tracer = new MyModifiedQCPTracer(this);
+  tracerText = new QCPItemText(this);
+  tracer->setLayer(tracerLayer);
+  tracer->setStyle(QCPItemTracer::tsPlus);
+  tracer->setSize(50);
+  tracer->setVisible(false);
+  tracerText->setVisible(false);
+  tracerText->setLayer(tracerLayer);
+  tracerText->position->setParentAnchor(tracer->position);
+  tracerText->setTextAlignment(Qt::AlignLeft);
+  tracerText->setPadding(QMargins(2, 2, 2, 2));
+  changeTracerTextPosition(TR);
+  tracerText->setBrush(transparentWhite);
+  tracerText->setFont(QFont("Courier New"));
+  tracerText->setClipToAxisRect(false);
+  tracer->use2DPositionForGraphToo = true;
+}
+
 void MyPlot::onYRangeChanged(QCPRange range) {
   bool changed = false;
   if (range.lower < -MAX_PLOT_ZOOMOUT) {
@@ -79,15 +96,29 @@ void MyPlot::onYRangeChanged(QCPRange range) {
   updateGridY();
 }
 
-void MyPlot::updateCursor(int cursor, double cursorPosition) {
+void MyPlot::updateCursor(int cursor, double cursorPosition, QString label) {
   if (cursor < 2) {
     cursors.at(cursor)->start->setCoords(cursorPosition, 0);
     cursors.at(cursor)->end->setCoords(cursorPosition, 1);
+    curKeys.at(cursor)->setText(label);
   } else {
     cursors.at(cursor)->start->setCoords(0, cursorPosition);
     cursors.at(cursor)->end->setCoords(1, cursorPosition);
+    curVals.at(cursor - 2)->setText(label);
   }
   cursorLayer->replot();
+}
+
+void MyPlot::setCursorVisible(int cursor, bool visible) {
+  if (cursors.at(cursor)->visible() != visible) {
+    cursors.at(cursor)->setVisible(visible);
+    if (cursor < 2) {
+      curNums.at(cursor)->setVisible(visible);
+      curKeys.at(cursor)->setVisible(visible);
+    } else
+      curVals.at(cursor - 2)->setVisible(visible);
+    cursorLayer->replot();
+  }
 }
 
 void MyPlot::updateGridX() {
@@ -118,16 +149,60 @@ void MyPlot::initcursors() {
     line->setLayer(cursorLayer);
     cursors.append(line);
     if (i < 2) {
+      // Svislí kursor
       cursors.at(i)->start->setTypeX(QCPItemPosition::ptPlotCoords);
       cursors.at(i)->start->setTypeY(QCPItemPosition::ptViewportRatio);
       cursors.at(i)->end->setTypeX(QCPItemPosition::ptPlotCoords);
       cursors.at(i)->end->setTypeY(QCPItemPosition::ptViewportRatio);
+
+      auto curNum = new QCPItemText(this);
+      curNum->setLayer(cursorLayer);
+      curNums.append(curNum);
+
+      curNum->setText(i ? QString::fromUtf8("2") : QString::fromUtf8("1"));
+
+      // Číslo v kroužku
+      // curNum->setText(i ? QString::fromUtf8("\xe2\x91\xa1") : QString::fromUtf8("\xe2\x91\xa0"));
+
+      curNum->setTextAlignment(Qt::AlignRight);
+      curNum->setPositionAlignment(Qt::AlignTop | Qt::AlignRight);
+      curNum->position->setParentAnchorX(cursors.at(i)->start);
+      curNum->position->setTypeY(QCPItemPosition::ptAxisRectRatio);
+      curNum->position->setCoords(-2, 0);
+      curNum->setVisible(false);
+      curNum->setBrush(transparentWhite);
+      curNum->setPadding(QMargins(2, 2, 2, 2));
+
+      auto curKey = new QCPItemText(this);
+      curKey->setLayer(cursorLayer);
+      curKeys.append(curKey);
+      curKey->setTextAlignment(Qt::AlignLeft);
+      curKey->setPositionAlignment(Qt::AlignTop | Qt::AlignLeft);
+      curKey->position->setParentAnchorX(cursors.at(i)->start);
+      curKey->position->setTypeY(QCPItemPosition::ptAxisRectRatio);
+      curKey->position->setCoords(4, 0);
+      curKey->setVisible(false);
+      curKey->setBrush(transparentWhite);
+      curKey->setPadding(QMargins(2, 2, 2, 2));
     } else {
+      // Vodorovný kursor
       cursorpen.setStyle(Qt::DashLine);
       cursors.at(i)->start->setTypeX(QCPItemPosition::ptViewportRatio);
       cursors.at(i)->start->setTypeY(QCPItemPosition::ptPlotCoords);
       cursors.at(i)->end->setTypeX(QCPItemPosition::ptViewportRatio);
       cursors.at(i)->end->setTypeY(QCPItemPosition::ptPlotCoords);
+
+      auto curVal = new QCPItemText(this);
+      curVal->setLayer(cursorLayer);
+      curVals.append(curVal);
+      curVal->setTextAlignment(Qt::AlignRight);
+      curVal->setPositionAlignment(Qt::AlignBottom | Qt::AlignRight);
+      curVal->position->setParentAnchorY(cursors.at(i)->start);
+      curVal->position->setTypeX(QCPItemPosition::ptAxisRectRatio);
+      curVal->position->setCoords(1, -2);
+      curVal->setVisible(false);
+      curVal->setBrush(transparentWhite);
+      curVal->setPadding(QMargins(2, 2, 2, 2));
     }
     cursors.at(i)->setPen(cursorpen);
     cursors.at(i)->setVisible(false);
@@ -143,6 +218,55 @@ void MyPlot::setMouseControlls(bool enabled) {
     this->setInteraction(QCP::iRangeDrag, false);
     this->setInteraction(QCP::iRangeZoom, false);
   }
+  isFreeMove = enabled;
+}
+
+void MyPlot::checkIfTracerTextFits() {
+  int clearTop = tracer->position->pixelPosition().y();
+  int clearRight = width() - tracer->position->pixelPosition().x();
+
+  // takhle spočítaná šířka neodpovídá těm vypočteným vzdálenostem, nevím proč :-(
+  int textW = tracerText->bottomRight->pixelPosition().x() - tracerText->topLeft->pixelPosition().x();
+  int textH = tracerText->bottomRight->pixelPosition().y() - tracerText->topLeft->pixelPosition().y();
+
+  // int textH = 30;
+  // int textW = 50;
+
+  bool topok = (textH <= clearTop);
+  bool rightok = (textW <= clearRight);
+
+  if (topok && rightok) {
+    if (!(tracerTextPos == TR))
+      changeTracerTextPosition(TR);
+  } else {
+    int clearBottom = height() - tracer->position->pixelPosition().y();
+    int clearLeft = tracer->position->pixelPosition().x();
+
+    bool bottomok = (textH <= clearBottom);
+    bool leftok = (textW <= clearLeft);
+
+    if (bottomok && leftok) {
+      if (!(tracerTextPos == BL))
+        changeTracerTextPosition(BL);
+    } else if (bottomok && rightok) {
+      if (!(tracerTextPos == BR))
+        changeTracerTextPosition(BR);
+    } else if (topok && leftok) {
+      if (!(tracerTextPos == TL))
+        changeTracerTextPosition(TL);
+    }
+  }
+}
+
+void MyPlot::mouseReleased(QMouseEvent *) {
+  mouseIsPressed = false;
+  if (isFreeMove)
+    this->setInteraction(QCP::iRangeDrag, true);
+}
+
+void MyPlot::mousePressed(QMouseEvent *event) {
+  mouseIsPressed = true;
+  showTracer(event);
 }
 
 void MyPlot::setGridHintX(int hint) {
@@ -155,12 +279,35 @@ void MyPlot::setGridHintY(int hint) {
   updateGridY();
 }
 
-void MyPlot::setVerticalDiv(double value) { fixedTickerY->setTickStep(value); }
+void MyPlot::hideTracer() {
+  tracer->setVisible(false);
+  tracerText->setVisible(false);
+  tracerLayer->replot();
+}
+
+void MyPlot::setVerticalDiv(double value) { unitTickerY->setTickStep(value); }
 
 void MyPlot::setHorizontalDiv(double value) {
-  fixedTickerX->setTickStep(value);
+  unitTickerX->setTickStep(value);
   timeTickerX->setTickCount((xAxis->range().upper - xAxis->range().lower) / value);
   longTimeTickerX->setTickCount((xAxis->range().upper - xAxis->range().lower) / value);
+}
+
+void MyPlot::changeTracerTextPosition(MyPlot::TracerTextPos pos) {
+  if (pos == TR) {
+    tracerText->position->setCoords(3, -3);
+    tracerText->setPositionAlignment(Qt::AlignBottom | Qt::AlignLeft);
+  } else if (pos == TL) {
+    tracerText->position->setCoords(-3, -3);
+    tracerText->setPositionAlignment(Qt::AlignBottom | Qt::AlignRight);
+  } else if (pos == BL) {
+    tracerText->position->setCoords(-3, 3);
+    tracerText->setPositionAlignment(Qt::AlignTop | Qt::AlignRight);
+  } else {
+    tracerText->position->setCoords(3, 3);
+    tracerText->setPositionAlignment(Qt::AlignTop | Qt::AlignLeft);
+  }
+  tracerTextPos = pos;
 }
 
 void MyPlot::setShowVerticalValues(bool enabled) {
@@ -176,7 +323,7 @@ void MyPlot::setShowHorizontalValues(int type) {
 
   if (enabled) {
     if (type == HAxisType::fixed)
-      this->xAxis->setTicker(fixedTickerX);
+      this->xAxis->setTicker(unitTickerX);
     if (type == HAxisType::MS)
       this->xAxis->setTicker(timeTickerX);
     if (type == HAxisType::HMS)

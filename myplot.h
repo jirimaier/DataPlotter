@@ -17,6 +17,8 @@
 #define MYPLOT_H
 
 #include "enums_defines_constants.h"
+#include "myaxistickerwithunit.h"
+#include "mymodifiedqcptracer.h"
 #include "qcustomplot.h"
 #include <QWidget>
 
@@ -25,33 +27,54 @@ class MyPlot : public QCustomPlot {
 private:
   void updateGridX();
   void updateGridY();
-  int xGridHint = -4;
-  int yGridHint = -4;
+  int xGridHint = -3;
+  int yGridHint = -3;
   double lastGridX = 0, lastGridY = 0;
   QSharedPointer<QCPAxisTickerTime> timeTickerX, longTimeTickerX;
-  QSharedPointer<QCPAxisTickerFixed> fixedTickerX, fixedTickerY;
+  QSharedPointer<MyAxisTickerWithUnit> unitTickerX, unitTickerY;
   void setVerticalDiv(double value);
   void setHorizontalDiv(double value);
-  QCPItemTracer *tracer;
+  bool isFreeMove = false;
+  enum TracerTextPos { TR, TL, BR, BL } tracerTextPos;
+  void changeTracerTextPosition(TracerTextPos pos);
+  QColor transparentWhite = QColor::fromRgbF(1, 1, 1, 0.8);
+  QString xUnit, yUnit;
 
 public:
   explicit MyPlot(QWidget *parent = nullptr);
-  void updateCursor(int cursor, double cursorPosition);
-  void setCursorVisible(int cursor, bool visible) {
-    if (cursors.at(cursor)->visible() != visible) {
-      cursors.at(cursor)->setVisible(visible);
-      replot();
-    }
-  }
-  double getVDiv() { return fixedTickerY->tickStep(); }
-  double getHDiv() { return fixedTickerX->tickStep(); }
+  void updateCursor(int cursor, double cursorPosition, QString label);
+  void setCursorVisible(int cursor, bool visible);
+  double getVDiv() { return unitTickerY->tickStep(); }
+  double getHDiv() { return unitTickerX->tickStep(); }
   QImage toPNG() { return (this->toPixmap().toImage()); };
+  void setXUnit(QString unit) {
+    xUnit = unit;
+    unitTickerX->unit = unit;
+  }
+  void setYUnit(QString unit) {
+    yUnit = unit;
+    unitTickerY->unit = unit;
+  }
+  QString getXUnit() { return xUnit; }
+  QString getYUnit() { return yUnit; }
 
 protected:
   QCPLayer *cursorLayer;
   QVector<QCPItemLine *> cursors;
+  QVector<QCPItemText *> curNums, curKeys, curVals;
+  MyModifiedQCPTracer *tracer;
+  QCPItemText *tracerText;
+  QCPLayer *tracerLayer;
   void initcursors();
+  void initTracer();
   void setMouseControlls(bool enabled);
+  bool mouseIsPressed = false;
+  void checkIfTracerTextFits();
+
+protected slots:
+  virtual void showTracer(QMouseEvent *event) = 0;
+  virtual void mouseReleased(QMouseEvent *);
+  virtual void mousePressed(QMouseEvent *event);
 
 public slots:
   void setShowVerticalValues(bool enabled);
@@ -60,13 +83,14 @@ public slots:
   void setYTitle(QString title);
   void setGridHintX(int hint);
   void setGridHintY(int hint);
+  void hideTracer();
 
 private slots:
   void onXRangeChanged(QCPRange range);
   void onYRangeChanged(QCPRange range);
-  void showPointToolTip(QMouseEvent *event);
 
 signals:
   void gridChanged();
+  void moveCursor(int chid, int cursor, int sample);
 };
 #endif // MYPLOT_H

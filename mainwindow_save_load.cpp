@@ -20,8 +20,8 @@ void MainWindow::initSetables() {
   setables["vrange"] = ui->doubleSpinBoxRangeVerticalRange;
   setables["hrange"] = ui->doubleSpinBoxRangeHorizontal;
   setables["vpos"] = ui->dialVerticalCenter;
-  setables["hdiv"] = ui->dialhorizontalDiv;
-  setables["vdiv"] = ui->dialVerticalDiv;
+  setables["hdiv"] = ui->horizontalSliderHGrid;
+  setables["vdiv"] = ui->horizontalSliderVGrid;
 
   // XY
   setables["xyen"] = ui->pushButtonXY;

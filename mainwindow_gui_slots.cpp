@@ -337,24 +337,34 @@ void MainWindow::insertInTerminalDebug(QString text, QColor textColor) {
   ui->textEditTerminalDebug->setTextColor(Qt::black);
 }
 
-void MainWindow::signalMeasurementsResult1(double period, double freq, double amp, double min, double max, double vrms, double dc) {
-  ui->labelSig1Amp->setText(GlobalFunctions::floatToNiceString(amp, 2, true, true) + "Vpp");
-  ui->labelSig1Freq->setText(GlobalFunctions::floatToNiceString(freq, 2, true, true) + "Hz");
-  ui->labelSig1Period->setText(GlobalFunctions::floatToNiceString(period, 2, true, true) + "s");
-  ui->labelSig1Vrms->setText(GlobalFunctions::floatToNiceString(vrms, 2, true, true) + "V");
-  ui->labelSig1Min->setText(GlobalFunctions::floatToNiceString(min, 2, true, true) + "V");
-  ui->labelSig1Max->setText(GlobalFunctions::floatToNiceString(max, 2, true, true) + "V");
-  ui->labelSig1Dc->setText(GlobalFunctions::floatToNiceString(dc, 2, true, true) + "V");
+void MainWindow::signalMeasurementsResult1(float period, float freq, float amp, float min, float max, float vrms, float dc, float fs, float rise, float fall, int samples) {
+  ui->labelSig1Amp->setText(GlobalFunctions::floatToNiceString(amp, 4) + ui->plot->getYUnit() + "pp");
+  ui->labelSig1Freq->setText(GlobalFunctions::floatToNiceString(freq, 4) + ui->plotFFT->getXUnit());
+  ui->labelSig1Period->setText(GlobalFunctions::floatToNiceString(period, 4) + ui->plot->getXUnit());
+  ui->labelSig1Vrms->setText(GlobalFunctions::floatToNiceString(vrms, 4) + ui->plot->getYUnit());
+  ui->labelSig1Min->setText(GlobalFunctions::floatToNiceString(min, 4) + ui->plot->getYUnit());
+  ui->labelSig1Max->setText(GlobalFunctions::floatToNiceString(max, 4) + ui->plot->getYUnit());
+  ui->labelSig1Dc->setText(GlobalFunctions::floatToNiceString(dc, 4) + ui->plot->getYUnit());
+  ui->labelSig1fs->setText(GlobalFunctions::floatToNiceString(fs, 4) + ui->plotFFT->getXUnit());
+  // Pokud je falltime nabo risetime menší než 2 periody vzorkování, je považován za nepřesný (znaménko menší než)
+  ui->labelSig1rise->setText((rise < 2.0 / fs ? "<" : "") + GlobalFunctions::floatToNiceString(rise, 4) + ui->plot->getXUnit());
+  ui->labelSig1fall->setText((fall < 2.0 / fs ? "<" : "") + GlobalFunctions::floatToNiceString(fall, 4) + ui->plot->getXUnit());
+  ui->labelSig1samples->setText(QString::number(samples));
   measureRefreshTimer1.start(250);
 }
-void MainWindow::signalMeasurementsResult2(double period, double freq, double amp, double min, double max, double vrms, double dc) {
-  ui->labelSig2Amp->setText(GlobalFunctions::floatToNiceString(amp, 2, true, true) + "Vpp");
-  ui->labelSig2Freq->setText(GlobalFunctions::floatToNiceString(freq, 2, true, true) + "Hz");
-  ui->labelSig2Period->setText(GlobalFunctions::floatToNiceString(period, 2, true, true) + "s");
-  ui->labelSig2Vrms->setText(GlobalFunctions::floatToNiceString(vrms, 2, true, true) + "V");
-  ui->labelSig2Min->setText(GlobalFunctions::floatToNiceString(min, 2, true, true) + "V");
-  ui->labelSig2Max->setText(GlobalFunctions::floatToNiceString(max, 2, true, true) + "V");
-  ui->labelSig2Dc->setText(GlobalFunctions::floatToNiceString(dc, 2, true, true) + "V");
+void MainWindow::signalMeasurementsResult2(float period, float freq, float amp, float min, float max, float vrms, float dc, float fs, float rise, float fall, int samples) {
+  ui->labelSig2Amp->setText(GlobalFunctions::floatToNiceString(amp, 4) + ui->plot->getYUnit() + "pp");
+  ui->labelSig2Freq->setText(GlobalFunctions::floatToNiceString(freq, 4) + ui->plotFFT->getXUnit());
+  ui->labelSig2Period->setText(GlobalFunctions::floatToNiceString(period, 4) + ui->plot->getXUnit());
+  ui->labelSig2Vrms->setText(GlobalFunctions::floatToNiceString(vrms, 4) + ui->plot->getYUnit());
+  ui->labelSig2Min->setText(GlobalFunctions::floatToNiceString(min, 4) + ui->plot->getYUnit());
+  ui->labelSig2Max->setText(GlobalFunctions::floatToNiceString(max, 4) + ui->plot->getYUnit());
+  ui->labelSig2Dc->setText(GlobalFunctions::floatToNiceString(dc, 4) + ui->plot->getYUnit());
+  ui->labelSig2fs->setText(GlobalFunctions::floatToNiceString(fs, 4) + ui->plotFFT->getXUnit());
+  // Pokud je falltime nabo risetime menší než 2 periody vzorkování, je považován za nepřesný (znaménko menší než)
+  ui->labelSig2rise->setText((rise < 2.0 / fs ? "<" : "") + GlobalFunctions::floatToNiceString(rise, 4) + ui->plot->getXUnit());
+  ui->labelSig2fall->setText((fall < 2.0 / fs ? "<" : "") + GlobalFunctions::floatToNiceString(fall, 4) + ui->plot->getXUnit());
+  ui->labelSig2samples->setText(QString::number(samples));
   measureRefreshTimer2.start(250);
 }
 

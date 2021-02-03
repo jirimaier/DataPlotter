@@ -40,6 +40,15 @@ void MyFFTPlot::newData(QSharedPointer<QCPGraphDataContainer> data) {
   if (autoSize)
     autoset();
   this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
+
+  // Přepsat text u traceru
+  if (tracer->visible()) {
+    QString tracerTextStr;
+    tracerTextStr.append(GlobalFunctions::floatToNiceString(tracer->position->value(), 4, true, true) + getYUnit() + "\n");
+    tracerTextStr.append(GlobalFunctions::floatToNiceString(tracer->position->key(), 4, true, true) + getXUnit());
+    tracerText->setText(tracerTextStr);
+    tracerLayer->replot();
+  }
 }
 
 void MyFFTPlot::clear() {
@@ -89,4 +98,25 @@ void MyFFTPlot::autoset() {
   xRange.upper = xRange.upper;
   xAxis->setRange(xRange);
   yAxis->setRange(yRange);
+}
+
+void MyFFTPlot::showTracer(QMouseEvent *event) {
+  if ((unsigned int)graph(0)->selectTest(event->pos(), false) < 20) {
+    tracer->setVisible(true);
+    tracerText->setVisible(true);
+    tracer->setGraph(graph(0));
+    tracer->setPoint(event->pos());
+    QString tracerTextStr;
+    tracerTextStr.append(GlobalFunctions::floatToNiceString(tracer->position->value(), 4, true, true) + getYUnit() + "\n");
+    tracerTextStr.append(GlobalFunctions::floatToNiceString(tracer->position->key(), 4, true, true) + getXUnit());
+    tracerText->setText(tracerTextStr);
+    checkIfTracerTextFits();
+    tracerLayer->replot();
+
+    if (mouseIsPressed) {
+      this->setInteraction(QCP::iRangeDrag, false);
+      emit moveCursor(FFTID, event->buttons() == Qt::RightButton ? 2 : 1, tracer->sampleNumber());
+    }
+  } else
+    hideTracer();
 }
