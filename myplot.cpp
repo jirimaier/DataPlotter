@@ -16,11 +16,13 @@
 #include "myplot.h"
 
 MyPlot::MyPlot(QWidget *parent) : QCustomPlot(parent) {
+  this->setAntialiasedElement(QCP::AntialiasedElement::aePlottables);
   this->addLayer("cursorLayer", 0, limAbove);
   this->addLayer("tracerLayer", 0, limAbove);
   cursorLayer = this->layer("cursorLayer");
   tracerLayer = this->layer("tracerLayer");
   cursorLayer->setMode(QCPLayer::lmBuffered);
+  tracerLayer->setMode(QCPLayer::lmBuffered);
   unitTickerX = QSharedPointer<MyAxisTickerWithUnit>(new MyAxisTickerWithUnit);
   unitTickerY = QSharedPointer<MyAxisTickerWithUnit>(new MyAxisTickerWithUnit);
   timeTickerX = QSharedPointer<QCPAxisTickerTime>(new QCPAxisTickerTime);
@@ -42,7 +44,7 @@ MyPlot::MyPlot(QWidget *parent) : QCustomPlot(parent) {
 
   connect(this->xAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(onXRangeChanged(QCPRange)));
   connect(this->yAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(onYRangeChanged(QCPRange)));
-  connect(this, SIGNAL(mouseMove(QMouseEvent *)), this, SLOT(showTracer(QMouseEvent *)));
+  connect(this, SIGNAL(mouseMove(QMouseEvent *)), this, SLOT(moveTracer(QMouseEvent *)));
   connect(this, SIGNAL(mousePress(QMouseEvent *)), this, SLOT(mousePressed(QMouseEvent *)));
   connect(this, SIGNAL(mouseRelease(QMouseEvent *)), this, SLOT(mouseReleased(QMouseEvent *)));
 }
@@ -78,7 +80,6 @@ void MyPlot::initTracer() {
   tracerText->setBrush(transparentWhite);
   tracerText->setFont(QFont("Courier New"));
   tracerText->setClipToAxisRect(false);
-  tracer->use2DPositionForGraphToo = true;
 }
 
 void MyPlot::onYRangeChanged(QCPRange range) {
@@ -260,13 +261,14 @@ void MyPlot::checkIfTracerTextFits() {
 
 void MyPlot::mouseReleased(QMouseEvent *) {
   mouseIsPressed = false;
+  mouseDrag = MouseDrag::nothing;
   if (isFreeMove)
     this->setInteraction(QCP::iRangeDrag, true);
 }
 
 void MyPlot::mousePressed(QMouseEvent *event) {
   mouseIsPressed = true;
-  showTracer(event);
+  moveTracer(event);
 }
 
 void MyPlot::setGridHintX(int hint) {
@@ -283,6 +285,18 @@ void MyPlot::hideTracer() {
   tracer->setVisible(false);
   tracerText->setVisible(false);
   tracerLayer->replot();
+}
+
+void MyPlot::enableMouseCursorControll(bool enabled) {
+  if (enabled) {
+    connect(this, SIGNAL(mouseMove(QMouseEvent *)), this, SLOT(moveTracer(QMouseEvent *)));
+    connect(this, SIGNAL(mousePress(QMouseEvent *)), this, SLOT(mousePressed(QMouseEvent *)));
+    connect(this, SIGNAL(mouseRelease(QMouseEvent *)), this, SLOT(mouseReleased(QMouseEvent *)));
+  } else {
+    disconnect(this, SIGNAL(mouseMove(QMouseEvent *)), this, SLOT(moveTracer(QMouseEvent *)));
+    disconnect(this, SIGNAL(mousePress(QMouseEvent *)), this, SLOT(mousePressed(QMouseEvent *)));
+    disconnect(this, SIGNAL(mouseRelease(QMouseEvent *)), this, SLOT(mouseReleased(QMouseEvent *)));
+  }
 }
 
 void MyPlot::setVerticalDiv(double value) { unitTickerY->setTickStep(value); }

@@ -93,24 +93,45 @@ void MyXYPlot::autoset() {
   yAxis->setRange(yRange);
 }
 
-void MyXYPlot::showTracer(QMouseEvent *event) {
-  if ((unsigned int)graphXY->selectTest(event->pos(), false) < 20) {
-    tracer->setVisible(true);
-    tracerText->setVisible(true);
-    tracer->setCurve(graphXY);
-    tracer->setPoint(event->pos());
-    QString tracerTextStr;
-    tracerTextStr.append("X: " + GlobalFunctions::floatToNiceString(tracer->position->key(), 4, false, false) + getXUnit() + "\n");
-    tracerTextStr.append("Y: " + GlobalFunctions::floatToNiceString(tracer->position->value(), 4, false, false) + getYUnit() + "\n");
-    tracerTextStr.append("t: " + GlobalFunctions::floatToNiceString(graphXY->data().data()->at(tracer->sampleNumber())->t, 4, false, false) + tUnit);
-    tracerText->setText(tracerTextStr);
-    checkIfTracerTextFits();
-    tracerLayer->replot();
+void MyXYPlot::moveTracer(QMouseEvent *event) {
+  if (mouseDrag == MouseDrag::nothing) {
+    // Nic není taženo myší
+    if ((unsigned int)graphXY->selectTest(event->pos(), false) < 20) {
+      tracer->setVisible(true);
+      tracer->setCurve(graphXY);
+      tracer->setPoint(event->pos());
 
-    if (mouseIsPressed) {
-      this->setInteraction(QCP::iRangeDrag, false);
-      emit moveCursor(XYID, event->buttons() == Qt::RightButton ? 2 : 1, tracer->sampleNumber());
-    }
-  } else
-    hideTracer();
+      if (mouseIsPressed) {
+        tracerText->setVisible(false);
+        this->setInteraction(QCP::iRangeDrag, false);
+        if (event->buttons() == Qt::RightButton)
+          mouseDrag = MouseDrag::cursor2;
+        else {
+          if (cursors.at(Cursors::X2)->visible() && (unsigned int)cursors.at(Cursors::X2)->selectTest(event->pos(), false) <= 5)
+            mouseDrag = MouseDrag::cursor2;
+          else
+            mouseDrag = MouseDrag::cursor1;
+        }
+        goto DRAG_CURSOR;
+      } else {
+        tracerText->setVisible(true);
+        QString tracerTextStr;
+        tracerTextStr.append("X: " + GlobalFunctions::floatToNiceString(tracer->position->key(), 4, false, false) + getXUnit() + "\n");
+        tracerTextStr.append("Y: " + GlobalFunctions::floatToNiceString(tracer->position->value(), 4, false, false) + getYUnit() + "\n");
+        tracerTextStr.append("t: " + GlobalFunctions::floatToNiceString(graphXY->data().data()->at(tracer->sampleNumber())->t, 4, false, false) + tUnit);
+        tracerText->setText(tracerTextStr);
+        checkIfTracerTextFits();
+      }
+
+      tracerLayer->replot();
+    } else
+      hideTracer();
+  } else {
+  DRAG_CURSOR:
+    tracer->setVisible(true);
+    tracerText->setVisible(false);
+    tracer->setPoint(event->pos());
+    tracerLayer->replot();
+    emit moveCursor(XYID, mouseDrag == MouseDrag::cursor1 ? 1 : 2, tracer->sampleNumber());
+  }
 }

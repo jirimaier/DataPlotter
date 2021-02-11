@@ -168,7 +168,7 @@ private slots: // Autoconnect slots
   void on_spinBoxMath1Second_valueChanged(int) { updateMathNow(1); };
   void on_spinBoxMath2Second_valueChanged(int) { updateMathNow(2); };
   void on_spinBoxMath3Second_valueChanged(int) { updateMathNow(3); };
-  void on_dialXYGrid_valueChanged(int value);
+  void on_horizontalSliderXYGrid_valueChanged(int value);
   void on_pushButtonXY_toggled(bool checked);
   void on_comboBoxCursor1Channel_currentIndexChanged(int index);
   void on_comboBoxCursor2Channel_currentIndexChanged(int index);
@@ -191,8 +191,10 @@ private slots: // Autoconnect slots
   void on_textEditTerminalDebug_cursorPositionChanged();
   void on_myTerminal_cellClicked(int row, int column);
   void on_comboBoxFFTType_currentIndexChanged(int index);
-
   void on_lineEditVUnit_textEdited(const QString &arg1);
+  void on_checkBoxOpenGL_toggled(bool checked);
+
+  void on_checkBoxMouseControls_toggled(bool checked);
 
 public slots:
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumerator target);

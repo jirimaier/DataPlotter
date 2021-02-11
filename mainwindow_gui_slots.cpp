@@ -230,7 +230,7 @@ void MainWindow::on_pushButtonChangeChColor_clicked() {
   updateUsedChannels();
 }
 
-void MainWindow::on_dialXYGrid_valueChanged(int value) {
+void MainWindow::on_horizontalSliderXYGrid_valueChanged(int value) {
   ui->plotxy->setGridHintX(value);
   ui->plotxy->setGridHintY(value);
 }

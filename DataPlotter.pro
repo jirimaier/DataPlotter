@@ -1,8 +1,10 @@
 QT += core gui serialport widgets printsupport opengl
 
+LIBS += -lOpenGL32
+
 RC_ICONS = icons/icon.ico
 
-DEFINES += QT_DEPRECATED_WARNINGS
+DEFINES += QT_DEPRECATED_WARNINGS QCUSTOMPLOT_USE_OPENGL
 
 CONFIG += c++11
 

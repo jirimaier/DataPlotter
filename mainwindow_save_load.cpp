@@ -27,7 +27,7 @@ void MainWindow::initSetables() {
   setables["xyen"] = ui->pushButtonXY;
   setables["xyxch"] = ui->comboBoxXYx;
   setables["xyych"] = ui->comboBoxXYy;
-  setables["xygrid"] = ui->dialXYGrid;
+  setables["xygrid"] = ui->horizontalSliderXYGrid;
   setables["xystyle"] = ui->comboBoxXYStyle;
 
   // FFT

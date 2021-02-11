@@ -56,7 +56,6 @@ MyMainPlot::MyMainPlot(QWidget *parent) : MyPlot(parent) {
   // Propojení musí být až po skončení inicializace!
   connect(this->yAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(verticalAxisRangeChanged(void)));
   connect(&plotUpdateTimer, &QTimer::timeout, this, &MyMainPlot::update);
-  connect(this, SIGNAL(mouseRelease(QMouseEvent *)), this, SLOT(resetOffsetDragLock()));
   plotUpdateTimer.start(50);
   replot();
 }
@@ -547,17 +546,19 @@ QByteArray MyMainPlot::exportAllCSV(char separator, char decimal, int precision,
   return output;
 }
 
-void MyMainPlot::showTracer(QMouseEvent *event) {
-  if (mousedrag < 0) { // Není tažen offset
+void MyMainPlot::moveTracer(QMouseEvent *event) {
+  if (mouseDrag == MouseDrag::nothing) {
+    // Nic není taženo myší
+    // Najde nejbližší kanál k místu kliknutí, pokud žádný není blíž než 20 pixelů, vůbec se nezobrazí
     int nearestIndex = -1;
     unsigned int nearestDistance = 20;
-    if (mousedrag == -2)
-      nearestDistance = 1000; // Když už táhnu kurzor, tak je tolerance vyšší
     for (int i = 0; i < graphCount(); i++) {
-      unsigned int distance = (unsigned int)graph(i)->selectTest(event->pos(), false);
-      if (distance < nearestDistance) {
-        nearestIndex = i;
-        nearestDistance = distance;
+      if (graph(i)->visible()) {
+        unsigned int distance = (unsigned int)graph(i)->selectTest(event->pos(), false);
+        if (distance < nearestDistance) {
+          nearestIndex = i;
+          nearestDistance = distance;
+        }
       }
     }
 
@@ -573,36 +574,53 @@ void MyMainPlot::showTracer(QMouseEvent *event) {
 
       if (mouseIsPressed) { // Tažení kursoru
         this->setInteraction(QCP::iRangeDrag, false);
-        mousedrag = -2;
-        emit moveCursor(nearestIndex, event->buttons() == Qt::RightButton ? 2 : 1, tracer->sampleNumber());
+        mouseDragChIndex = nearestIndex;
+        if (event->buttons() == Qt::RightButton)
+          mouseDrag = MouseDrag::cursor2;
+        else {
+          if (cursors.at(Cursors::X2)->visible() && (unsigned int)cursors.at(Cursors::X2)->selectTest(event->pos(), false) <= 5)
+            mouseDrag = MouseDrag::cursor2;
+          else
+            mouseDrag = MouseDrag::cursor1;
+        }
+        goto DRAG_CURSOR;
       }
     } else {
       hideTracer(); // Myš není na grafu
 
       // Je myš na čáře offsetu?
-      if (mouseIsPressed && mousedrag != -2) {
+      if (mouseIsPressed) {
         nearestIndex = -1;
         nearestDistance = 20;
         for (int i = 0; i < zeroLines.count(); i++) {
-          unsigned int distance = (unsigned int)zeroLines.at(i)->selectTest(event->pos(), false);
-          if (distance < nearestDistance) {
-            nearestIndex = i;
-            nearestDistance = distance;
+          if (!graph(i)->data()->isEmpty() && zeroLines.at(nearestIndex)->visible()) {
+            unsigned int distance = (unsigned int)zeroLines.at(i)->selectTest(event->pos(), false);
+            if (distance < nearestDistance) {
+              nearestIndex = i;
+              nearestDistance = distance;
+            }
           }
         }
 
-        if (nearestIndex >= 0 && !graph(nearestIndex)->data()->isEmpty()) { // Myš je na čáře offsetu
-          if (zeroLines.at(nearestIndex)->visible()) {
-            mousedrag = nearestIndex;
-            this->setInteraction(QCP::iRangeDrag, false);
-            goto DRAG_OFFSET;
-          }
+        if (nearestIndex != -1) { // Myš je na čáře offsetu
+          mouseDrag = MouseDrag::zeroline;
+          mouseDragChIndex = nearestIndex;
+          this->setInteraction(QCP::iRangeDrag, false);
+          goto DRAG_OFFSET;
         }
       }
     }
-  } else {
+  } else if (mouseDrag == MouseDrag::zeroline) {
   DRAG_OFFSET:
-    setChOffset(mousedrag, yAxis->pixelToCoord(event->pos().y()));
-    emit offsetChangedByMouse(mousedrag);
+    setChOffset(mouseDragChIndex, yAxis->pixelToCoord(event->pos().y()));
+    emit offsetChangedByMouse(mouseDragChIndex);
+  } else {
+  DRAG_CURSOR:
+    tracer->setVisible(true);
+    tracerText->setVisible(false);
+    tracer->setYAxis(graph(mouseDragChIndex)->valueAxis());
+    tracer->setPoint(event->pos());
+    tracerLayer->replot();
+    emit moveCursor(mouseDragChIndex, mouseDrag == MouseDrag::cursor1 ? 1 : 2, tracer->sampleNumber());
   }
 }

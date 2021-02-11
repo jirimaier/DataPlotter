@@ -100,23 +100,44 @@ void MyFFTPlot::autoset() {
   yAxis->setRange(yRange);
 }
 
-void MyFFTPlot::showTracer(QMouseEvent *event) {
-  if ((unsigned int)graph(0)->selectTest(event->pos(), false) < 20) {
-    tracer->setVisible(true);
-    tracerText->setVisible(true);
-    tracer->setGraph(graph(0));
-    tracer->setPoint(event->pos());
-    QString tracerTextStr;
-    tracerTextStr.append(GlobalFunctions::floatToNiceString(tracer->position->value(), 4, true, true) + getYUnit() + "\n");
-    tracerTextStr.append(GlobalFunctions::floatToNiceString(tracer->position->key(), 4, true, true) + getXUnit());
-    tracerText->setText(tracerTextStr);
-    checkIfTracerTextFits();
-    tracerLayer->replot();
+void MyFFTPlot::moveTracer(QMouseEvent *event) {
+  if (mouseDrag == MouseDrag::nothing) {
+    // Nic není taženo myší
+    if ((unsigned int)graph(0)->selectTest(event->pos(), false) < 20) {
+      tracer->setVisible(true);
+      tracer->setGraph(graph(0));
+      tracer->setPoint(event->pos());
 
-    if (mouseIsPressed) {
-      this->setInteraction(QCP::iRangeDrag, false);
-      emit moveCursor(FFTID, event->buttons() == Qt::RightButton ? 2 : 1, tracer->sampleNumber());
-    }
-  } else
-    hideTracer();
+      if (mouseIsPressed) {
+        tracerText->setVisible(false);
+        this->setInteraction(QCP::iRangeDrag, false);
+        if (event->buttons() == Qt::RightButton)
+          mouseDrag = MouseDrag::cursor2;
+        else {
+          if (cursors.at(Cursors::X2)->visible() && (unsigned int)cursors.at(Cursors::X2)->selectTest(event->pos(), false) <= 5)
+            mouseDrag = MouseDrag::cursor2;
+          else
+            mouseDrag = MouseDrag::cursor1;
+        }
+        goto DRAG_CURSOR;
+      } else {
+        tracerText->setVisible(true);
+        QString tracerTextStr;
+        tracerTextStr.append(GlobalFunctions::floatToNiceString(tracer->position->value(), 4, true, true) + getYUnit() + "\n");
+        tracerTextStr.append(GlobalFunctions::floatToNiceString(tracer->position->key(), 4, true, true) + getXUnit());
+        tracerText->setText(tracerTextStr);
+        checkIfTracerTextFits();
+      }
+
+      tracerLayer->replot();
+    } else
+      hideTracer();
+  } else {
+  DRAG_CURSOR:
+    tracer->setVisible(true);
+    tracerText->setVisible(false);
+    tracer->setPoint(event->pos());
+    tracerLayer->replot();
+    emit moveCursor(FFTID, mouseDrag == MouseDrag::cursor1 ? 1 : 2, tracer->sampleNumber());
+  }
 }

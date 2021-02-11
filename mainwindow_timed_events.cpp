@@ -106,6 +106,8 @@ void MainWindow::updateChannelComboBox(QComboBox &combobox, bool includeLogic, b
 }
 
 void MainWindow::updateMeasurements1() {
+  if (ui->tabsControll->currentIndex() != 2)
+    return; // Stránky s měřením není zobrazena, je zbytečné počítat
   if (ui->comboBoxMeasure1->currentIndex() != ui->comboBoxMeasure1->count() - 1) {
     int chid = ui->comboBoxMeasure1->currentIndex();
     if (ui->plot->graph(chid)->data()->isEmpty())
@@ -134,6 +136,8 @@ void MainWindow::updateMeasurements1() {
 }
 
 void MainWindow::updateMeasurements2() {
+  if (ui->tabsControll->currentIndex() != 2)
+    return; // Stránky s měřením není zobrazena, je zbytečné počítat
   if (ui->comboBoxMeasure2->currentIndex() != ui->comboBoxMeasure2->count() - 1) {
     int chid = ui->comboBoxMeasure2->currentIndex();
     if (ui->plot->graph(chid)->data()->isEmpty())

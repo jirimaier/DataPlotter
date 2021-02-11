@@ -70,9 +70,10 @@ protected:
   void setMouseControlls(bool enabled);
   bool mouseIsPressed = false;
   void checkIfTracerTextFits();
+  enum MouseDrag { cursor1, cursor2, nothing, zeroline } mouseDrag = nothing; // Vyšší čísla jsou číslo kanálu pro nulo
 
 protected slots:
-  virtual void showTracer(QMouseEvent *event) = 0;
+  virtual void moveTracer(QMouseEvent *event) = 0;
   virtual void mouseReleased(QMouseEvent *);
   virtual void mousePressed(QMouseEvent *event);
 
@@ -84,6 +85,7 @@ public slots:
   void setGridHintX(int hint);
   void setGridHintY(int hint);
   void hideTracer();
+  void enableMouseCursorControll(bool enabled);
 
 private slots:
   void onXRangeChanged(QCPRange range);

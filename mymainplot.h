@@ -78,8 +78,7 @@ private:
   void updateTracerText(int index);
   int currentTracerIndex = -1;
 
-  // -1=nic, -2=kursor, 0... = offset
-  int mousedrag = -1;
+  int mouseDragChIndex = 0;
 
   bool newData = true;
   double minT = 0.0, maxT = 1.0;
@@ -99,8 +98,7 @@ private:
 
 private slots:
   void verticalAxisRangeChanged();
-  void showTracer(QMouseEvent *event);
-  void resetOffsetDragLock() { mousedrag = -1; }
+  void moveTracer(QMouseEvent *event);
 
 public slots:
   void togglePause();

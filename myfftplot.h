@@ -23,7 +23,7 @@ public slots:
   void setAutoSize(bool en);
 
 private slots:
-  void showTracer(QMouseEvent *event);
+  void moveTracer(QMouseEvent *event);
 };
 
 #endif // MYFFTPLOT_H

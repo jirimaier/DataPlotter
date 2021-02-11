@@ -39,7 +39,6 @@ void MainWindow::init(QTranslator *translator, const PlotData *plotData, const P
   QObject::connect(plotData, &PlotData::addPointToPlot, ui->plot, &MyMainPlot::newDataPoint);
   QObject::connect(plotData, &PlotData::clearLogic, ui->plot, &MyMainPlot::clearLogicGroup);
   QObject::connect(ui->myTerminal, &MyTerminal::writeToSerial, serialReader, &SerialReader::write);
-  // QObject::connect(signalProcessing, &SignalProcessing::fftResult, ui->plotFFT, &MyFFTPlot::newData);
 
   this->translator = translator;
   setGuiArrays();
@@ -219,4 +218,12 @@ void MainWindow::on_lineEditVUnit_textEdited(const QString &arg1) {
   ui->plot->setYUnit(arg1);
   ui->plotxy->setYUnit(arg1);
   ui->plotxy->setXUnit(arg1);
+}
+
+void MainWindow::on_checkBoxOpenGL_toggled(bool checked) { ui->plot->setOpenGl(checked); }
+
+void MainWindow::on_checkBoxMouseControls_toggled(bool checked) {
+  ui->plot->enableMouseCursorControll(checked);
+  ui->plotxy->enableMouseCursorControll(checked);
+  ui->plotFFT->enableMouseCursorControll(checked);
 }

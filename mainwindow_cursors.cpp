@@ -357,7 +357,7 @@ void MainWindow::on_spinBoxCur2Sample_valueChanged(int arg1) {
 }
 
 void MainWindow::moveCursor(int chid, int cursor, int sample) {
-  if (!IS_ANALOG_OR_MATH(chid)) {
+  if (!IS_ANALOG_OR_MATH(chid) && !(chid == FFTID) && !(chid == XYID)) {
     chid = ChID_TO_LOGIC_GROUP(chid) + ANALOG_COUNT + MATH_COUNT;
   }
   if (cursor == 1) {

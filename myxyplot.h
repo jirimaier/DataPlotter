@@ -33,7 +33,7 @@ private:
   void autoset();
 
 private slots:
-  void showTracer(QMouseEvent *event);
+  void moveTracer(QMouseEvent *event);
 
 public slots:
   void newData(QSharedPointer<QCPCurveDataContainer> data);

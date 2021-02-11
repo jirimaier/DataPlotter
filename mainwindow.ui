@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>912</width>
-    <height>660</height>
+    <width>930</width>
+    <height>685</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -709,7 +709,7 @@
              <enum>QTabWidget::Rounded</enum>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>3</number>
             </property>
             <property name="iconSize">
              <size>
@@ -1089,7 +1089,7 @@
                     <enum>Qt::Horizontal</enum>
                    </property>
                    <property name="tickPosition">
-                    <enum>QSlider::TicksBothSides</enum>
+                    <enum>QSlider::TicksBelow</enum>
                    </property>
                    <property name="tickInterval">
                     <number>1</number>
@@ -1576,7 +1576,7 @@
                     <enum>Qt::Horizontal</enum>
                    </property>
                    <property name="tickPosition">
-                    <enum>QSlider::TicksBothSides</enum>
+                    <enum>QSlider::TicksBelow</enum>
                    </property>
                    <property name="tickInterval">
                     <number>1</number>
@@ -2303,178 +2303,10 @@
               </property>
               <item>
                <layout class="QGridLayout" name="gridLayout_15">
-                <item row="3" column="3">
-                 <widget class="QLabel" name="labelSig1Dc">
-                  <property name="font">
-                   <font>
-                    <pointsize>8</pointsize>
-                    <weight>75</weight>
-                    <bold>true</bold>
-                   </font>
-                  </property>
-                  <property name="text">
-                   <string>---</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="5">
-                 <widget class="QLabel" name="label_44">
-                  <property name="text">
-                   <string>Samples</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item row="3" column="1">
-                 <widget class="QLabel" name="labelSig1Min">
-                  <property name="font">
-                   <font>
-                    <pointsize>8</pointsize>
-                    <weight>75</weight>
-                    <bold>true</bold>
-                   </font>
-                  </property>
-                  <property name="text">
-                   <string>---</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item row="3" column="2">
-                 <widget class="QLabel" name="labelSig1Max">
-                  <property name="font">
-                   <font>
-                    <pointsize>8</pointsize>
-                    <weight>75</weight>
-                    <bold>true</bold>
-                   </font>
-                  </property>
-                  <property name="text">
-                   <string>---</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item row="2" column="4">
-                 <widget class="QLabel" name="label_45">
-                  <property name="text">
-                   <string>Rise</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="1">
-                 <widget class="QLabel" name="labelSig1Period">
-                  <property name="font">
-                   <font>
-                    <pointsize>8</pointsize>
-                    <weight>75</weight>
-                    <bold>true</bold>
-                   </font>
-                  </property>
-                  <property name="text">
-                   <string notr="true">---</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item row="2" column="2">
-                 <widget class="QLabel" name="label_33">
-                  <property name="text">
-                   <string>max</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="0" rowspan="2">
-                 <widget class="QComboBox" name="comboBoxMeasure1">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="maxVisibleItems">
-                   <number>1000</number>
-                  </property>
-                  <property name="sizeAdjustPolicy">
-                   <enum>QComboBox::AdjustToContents</enum>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="3">
-                 <widget class="QLabel" name="labelSig1Amp">
-                  <property name="font">
-                   <font>
-                    <pointsize>8</pointsize>
-                    <weight>75</weight>
-                    <bold>true</bold>
-                   </font>
-                  </property>
-                  <property name="text">
-                   <string>---</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item row="2" column="5">
-                 <widget class="QLabel" name="label_46">
-                  <property name="text">
-                   <string>Fall</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="2">
-                 <widget class="QLabel" name="labelSig1Freq">
-                  <property name="font">
-                   <font>
-                    <pointsize>8</pointsize>
-                    <weight>75</weight>
-                    <bold>true</bold>
-                   </font>
-                  </property>
-                  <property name="text">
-                   <string notr="true">---</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
                 <item row="2" column="3">
                  <widget class="QLabel" name="label_34">
                   <property name="text">
                    <string>dc</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="1">
-                 <widget class="QLabel" name="label_29">
-                  <property name="text">
-                   <string>Period</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -2491,16 +2323,6 @@
                   </property>
                  </widget>
                 </item>
-                <item row="2" column="1">
-                 <widget class="QLabel" name="label_32">
-                  <property name="text">
-                   <string>min</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
                 <item row="0" column="3">
                  <widget class="QLabel" name="label_28">
                   <property name="text">
@@ -2511,8 +2333,8 @@
                   </property>
                  </widget>
                 </item>
-                <item row="3" column="4">
-                 <widget class="QLabel" name="labelSig1rise">
+                <item row="3" column="0">
+                 <widget class="QLabel" name="labelSig1fs">
                   <property name="font">
                    <font>
                     <weight>75</weight>
@@ -2529,8 +2351,67 @@
                 </item>
                 <item row="1" column="5">
                  <widget class="QLabel" name="labelSig1samples">
+                  <property name="minimumSize">
+                   <size>
+                    <width>60</width>
+                    <height>0</height>
+                   </size>
+                  </property>
                   <property name="font">
                    <font>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>---</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="label_20">
+                  <property name="text">
+                   <string>Sampling freq</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="2">
+                 <widget class="QLabel" name="label_33">
+                  <property name="text">
+                   <string>max</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="QLabel" name="label_32">
+                  <property name="text">
+                   <string>min</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="4">
+                 <widget class="QLabel" name="labelSig1Vrms">
+                  <property name="minimumSize">
+                   <size>
+                    <width>60</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>8</pointsize>
                     <weight>75</weight>
                     <bold>true</bold>
                    </font>
@@ -2559,18 +2440,77 @@
                   </property>
                  </widget>
                 </item>
-                <item row="2" column="0">
-                 <widget class="QLabel" name="label_20">
+                <item row="1" column="1">
+                 <widget class="QLabel" name="labelSig1Period">
+                  <property name="minimumSize">
+                   <size>
+                    <width>60</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>8</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
                   <property name="text">
-                   <string>Sampling freq</string>
+                   <string notr="true">---</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
                   </property>
                  </widget>
                 </item>
-                <item row="1" column="4">
-                 <widget class="QLabel" name="labelSig1Vrms">
+                <item row="0" column="0" rowspan="2">
+                 <widget class="QComboBox" name="comboBoxMeasure1">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="maxVisibleItems">
+                   <number>1000</number>
+                  </property>
+                  <property name="sizeAdjustPolicy">
+                   <enum>QComboBox::AdjustToContents</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="4">
+                 <widget class="QLabel" name="label_45">
+                  <property name="text">
+                   <string>Rise</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="5">
+                 <widget class="QLabel" name="label_46">
+                  <property name="text">
+                   <string>Fall</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="5">
+                 <widget class="QLabel" name="label_44">
+                  <property name="text">
+                   <string>Samples</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="2">
+                 <widget class="QLabel" name="labelSig1Max">
                   <property name="font">
                    <font>
                     <pointsize>8</pointsize>
@@ -2586,10 +2526,83 @@
                   </property>
                  </widget>
                 </item>
-                <item row="3" column="0">
-                 <widget class="QLabel" name="labelSig1fs">
+                <item row="3" column="1">
+                 <widget class="QLabel" name="labelSig1Min">
                   <property name="font">
                    <font>
+                    <pointsize>8</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>---</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QLabel" name="label_29">
+                  <property name="text">
+                   <string>Period</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="2">
+                 <widget class="QLabel" name="labelSig1Freq">
+                  <property name="minimumSize">
+                   <size>
+                    <width>60</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>8</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string notr="true">---</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="4">
+                 <widget class="QLabel" name="labelSig1rise">
+                  <property name="font">
+                   <font>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>---</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="3">
+                 <widget class="QLabel" name="labelSig1Amp">
+                  <property name="minimumSize">
+                   <size>
+                    <width>60</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>8</pointsize>
                     <weight>75</weight>
                     <bold>true</bold>
                    </font>
@@ -2612,6 +2625,36 @@
                   </property>
                  </widget>
                 </item>
+                <item row="3" column="3">
+                 <widget class="QLabel" name="labelSig1Dc">
+                  <property name="font">
+                   <font>
+                    <pointsize>8</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>---</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="6" rowspan="4">
+                 <spacer name="horizontalSpacer_5">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>1</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
                </layout>
               </item>
               <item>
@@ -2623,178 +2666,10 @@
               </item>
               <item>
                <layout class="QGridLayout" name="gridLayout_19">
-                <item row="3" column="1">
-                 <widget class="QLabel" name="labelSig2Min">
-                  <property name="font">
-                   <font>
-                    <pointsize>8</pointsize>
-                    <weight>75</weight>
-                    <bold>true</bold>
-                   </font>
-                  </property>
+                <item row="2" column="4">
+                 <widget class="QLabel" name="label_49">
                   <property name="text">
-                   <string>---</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="1">
-                 <widget class="QLabel" name="labelSig2Period">
-                  <property name="font">
-                   <font>
-                    <pointsize>8</pointsize>
-                    <weight>75</weight>
-                    <bold>true</bold>
-                   </font>
-                  </property>
-                  <property name="text">
-                   <string notr="true">---</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item row="2" column="3">
-                 <widget class="QLabel" name="label_43">
-                  <property name="text">
-                   <string>dc</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item row="3" column="3">
-                 <widget class="QLabel" name="labelSig2Dc">
-                  <property name="font">
-                   <font>
-                    <pointsize>8</pointsize>
-                    <weight>75</weight>
-                    <bold>true</bold>
-                   </font>
-                  </property>
-                  <property name="text">
-                   <string>---</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item row="2" column="1">
-                 <widget class="QLabel" name="label_41">
-                  <property name="text">
-                   <string>min</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="2">
-                 <widget class="QLabel" name="labelSig2Freq">
-                  <property name="font">
-                   <font>
-                    <pointsize>8</pointsize>
-                    <weight>75</weight>
-                    <bold>true</bold>
-                   </font>
-                  </property>
-                  <property name="text">
-                   <string>---</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="3">
-                 <widget class="QLabel" name="label_39">
-                  <property name="text">
-                   <string>Amplitude</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="0" rowspan="2">
-                 <widget class="QComboBox" name="comboBoxMeasure2">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="maxVisibleItems">
-                   <number>1000</number>
-                  </property>
-                  <property name="sizeAdjustPolicy">
-                   <enum>QComboBox::AdjustToContents</enum>
-                  </property>
-                 </widget>
-                </item>
-                <item row="3" column="2">
-                 <widget class="QLabel" name="labelSig2Max">
-                  <property name="font">
-                   <font>
-                    <pointsize>8</pointsize>
-                    <weight>75</weight>
-                    <bold>true</bold>
-                   </font>
-                  </property>
-                  <property name="text">
-                   <string>---</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="2">
-                 <widget class="QLabel" name="label_38">
-                  <property name="text">
-                   <string>Frequency</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="3">
-                 <widget class="QLabel" name="labelSig2Amp">
-                  <property name="font">
-                   <font>
-                    <pointsize>8</pointsize>
-                    <weight>75</weight>
-                    <bold>true</bold>
-                   </font>
-                  </property>
-                  <property name="text">
-                   <string>---</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="1">
-                 <widget class="QLabel" name="label_30">
-                  <property name="text">
-                   <string>Period</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item row="2" column="2">
-                 <widget class="QLabel" name="label_42">
-                  <property name="text">
-                   <string>max</string>
+                   <string>Rise</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -2811,28 +2686,41 @@
                   </property>
                  </widget>
                 </item>
-                <item row="2" column="4">
-                 <widget class="QLabel" name="label_49">
+                <item row="1" column="1">
+                 <widget class="QLabel" name="labelSig2Period">
+                  <property name="minimumSize">
+                   <size>
+                    <width>60</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>8</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
                   <property name="text">
-                   <string>Rise</string>
+                   <string notr="true">---</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
                   </property>
                  </widget>
                 </item>
-                <item row="2" column="5">
-                 <widget class="QLabel" name="label_50">
+                <item row="2" column="1">
+                 <widget class="QLabel" name="label_41">
                   <property name="text">
-                   <string>Fall</string>
+                   <string>min</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
                   </property>
                  </widget>
                 </item>
-                <item row="3" column="4">
-                 <widget class="QLabel" name="labelSig2rise">
+                <item row="3" column="0">
+                 <widget class="QLabel" name="labelSig2fs">
                   <property name="font">
                    <font>
                     <weight>75</weight>
@@ -2847,8 +2735,8 @@
                   </property>
                  </widget>
                 </item>
-                <item row="1" column="5">
-                 <widget class="QLabel" name="labelSig2samples">
+                <item row="3" column="4">
+                 <widget class="QLabel" name="labelSig2rise">
                   <property name="font">
                    <font>
                     <weight>75</weight>
@@ -2889,24 +2777,8 @@
                   </property>
                  </widget>
                 </item>
-                <item row="3" column="0">
-                 <widget class="QLabel" name="labelSig2fs">
-                  <property name="font">
-                   <font>
-                    <weight>75</weight>
-                    <bold>true</bold>
-                   </font>
-                  </property>
-                  <property name="text">
-                   <string>---</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="4">
-                 <widget class="QLabel" name="labelSig2Vrms">
+                <item row="3" column="3">
+                 <widget class="QLabel" name="labelSig2Dc">
                   <property name="font">
                    <font>
                     <pointsize>8</pointsize>
@@ -2922,6 +2794,49 @@
                   </property>
                  </widget>
                 </item>
+                <item row="1" column="4">
+                 <widget class="QLabel" name="labelSig2Vrms">
+                  <property name="minimumSize">
+                   <size>
+                    <width>60</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>8</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>---</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="3">
+                 <widget class="QLabel" name="label_39">
+                  <property name="text">
+                   <string>Amplitude</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="2">
+                 <widget class="QLabel" name="label_42">
+                  <property name="text">
+                   <string>max</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
                 <item row="2" column="0">
                  <widget class="QLabel" name="label_47">
                   <property name="text">
@@ -2931,6 +2846,177 @@
                    <set>Qt::AlignCenter</set>
                   </property>
                  </widget>
+                </item>
+                <item row="1" column="3">
+                 <widget class="QLabel" name="labelSig2Amp">
+                  <property name="minimumSize">
+                   <size>
+                    <width>60</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>8</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>---</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="0" rowspan="2">
+                 <widget class="QComboBox" name="comboBoxMeasure2">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="maxVisibleItems">
+                   <number>1000</number>
+                  </property>
+                  <property name="sizeAdjustPolicy">
+                   <enum>QComboBox::AdjustToContents</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QLabel" name="label_30">
+                  <property name="text">
+                   <string>Period</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="5">
+                 <widget class="QLabel" name="labelSig2samples">
+                  <property name="minimumSize">
+                   <size>
+                    <width>60</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>---</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="3">
+                 <widget class="QLabel" name="label_43">
+                  <property name="text">
+                   <string>dc</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="2">
+                 <widget class="QLabel" name="label_38">
+                  <property name="text">
+                   <string>Frequency</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="2">
+                 <widget class="QLabel" name="labelSig2Freq">
+                  <property name="minimumSize">
+                   <size>
+                    <width>60</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <pointsize>8</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>---</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="5">
+                 <widget class="QLabel" name="label_50">
+                  <property name="text">
+                   <string>Fall</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="1">
+                 <widget class="QLabel" name="labelSig2Min">
+                  <property name="font">
+                   <font>
+                    <pointsize>8</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>---</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="2">
+                 <widget class="QLabel" name="labelSig2Max">
+                  <property name="font">
+                   <font>
+                    <pointsize>8</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>---</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="6" rowspan="4">
+                 <spacer name="horizontalSpacer_8">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>1</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
                 </item>
                </layout>
               </item>
@@ -2992,7 +3078,7 @@
              <attribute name="title">
               <string/>
              </attribute>
-             <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="1,1000">
+             <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="1,0">
               <property name="leftMargin">
                <number>6</number>
               </property>
@@ -3572,17 +3658,17 @@
                </layout>
               </item>
               <item>
-               <widget class="QLabel" name="label_4">
-                <property name="text">
-                 <string>Logic has effect on new data only</string>
+               <spacer name="horizontalSpacer_10">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
                 </property>
-                <property name="alignment">
-                 <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
                 </property>
-                <property name="wordWrap">
-                 <bool>true</bool>
-                </property>
-               </widget>
+               </spacer>
               </item>
              </layout>
             </widget>
@@ -3847,46 +3933,27 @@
                   </spacer>
                  </item>
                  <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_52">
-                   <item>
-                    <widget class="QLabel" name="label_26">
-                     <property name="text">
-                      <string>Grid</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QDial" name="dialXYGrid">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>40</width>
-                       <height>40</height>
-                      </size>
-                     </property>
-                     <property name="minimum">
-                      <number>-5</number>
-                     </property>
-                     <property name="maximum">
-                      <number>-1</number>
-                     </property>
-                     <property name="pageStep">
-                      <number>1</number>
-                     </property>
-                     <property name="value">
-                      <number>-2</number>
-                     </property>
-                     <property name="notchesVisible">
-                      <bool>true</bool>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
+                  <widget class="QLabel" name="label_26">
+                   <property name="text">
+                    <string>Grid</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSlider" name="horizontalSliderXYGrid">
+                   <property name="minimum">
+                    <number>-4</number>
+                   </property>
+                   <property name="maximum">
+                    <number>-2</number>
+                   </property>
+                   <property name="value">
+                    <number>-3</number>
+                   </property>
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                  </widget>
                  </item>
                 </layout>
                </widget>
@@ -4697,7 +4764,7 @@
            </size>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>3</number>
           </property>
           <property name="iconSize">
            <size>
@@ -6070,12 +6137,15 @@ gridline-color: rgb(255, 255, 255);</string>
                <property name="bottomMargin">
                 <number>6</number>
                </property>
-               <item row="0" column="0" colspan="2">
-                <widget class="QFrame" name="frame_97">
+               <item row="1" column="1">
+                <widget class="QFrame" name="frame_6">
                  <property name="frameShape">
                   <enum>QFrame::StyledPanel</enum>
                  </property>
-                 <layout class="QHBoxLayout" name="horizontalLayout_11">
+                 <property name="frameShadow">
+                  <enum>QFrame::Plain</enum>
+                 </property>
+                 <layout class="QVBoxLayout" name="verticalLayout_14">
                   <property name="leftMargin">
                    <number>6</number>
                   </property>
@@ -6089,29 +6159,63 @@ gridline-color: rgb(255, 255, 255);</string>
                    <number>6</number>
                   </property>
                   <item>
-                   <widget class="QLabel" name="label_2">
+                   <widget class="QLabel" name="label_25">
                     <property name="text">
-                     <string>Shift mode prestep</string>
+                     <string>Horizontal axis</string>
                     </property>
                    </widget>
                   </item>
                   <item>
-                   <widget class="QSpinBox" name="spinBoxShiftStep">
-                    <property name="specialValueText">
-                     <string>Smooth</string>
+                   <widget class="QComboBox" name="comboBoxHAxisType">
+                    <property name="currentIndex">
+                     <number>1</number>
                     </property>
-                    <property name="suffix">
-                     <string> %</string>
+                    <item>
+                     <property name="text">
+                      <string>Hidden</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Normal</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>MM:SS</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>HH:MM:SS</string>
+                     </property>
+                    </item>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLineEdit" name="lineEditHtitle">
+                    <property name="placeholderText">
+                     <string>Title</string>
                     </property>
-                    <property name="maximum">
-                     <number>100</number>
-                    </property>
-                    <property name="singleStep">
-                     <number>10</number>
+                    <property name="clearButtonEnabled">
+                     <bool>true</bool>
                     </property>
                    </widget>
                   </item>
                  </layout>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="QPushButton" name="pushButtonClearAll">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>Clear graphs</string>
+                 </property>
                 </widget>
                </item>
                <item row="1" column="0">
@@ -6197,15 +6301,12 @@ gridline-color: rgb(255, 255, 255);</string>
                  </layout>
                 </widget>
                </item>
-               <item row="1" column="1">
-                <widget class="QFrame" name="frame_6">
+               <item row="0" column="0" colspan="2">
+                <widget class="QFrame" name="frame_97">
                  <property name="frameShape">
                   <enum>QFrame::StyledPanel</enum>
                  </property>
-                 <property name="frameShadow">
-                  <enum>QFrame::Plain</enum>
-                 </property>
-                 <layout class="QVBoxLayout" name="verticalLayout_14">
+                 <layout class="QHBoxLayout" name="horizontalLayout_11">
                   <property name="leftMargin">
                    <number>6</number>
                   </property>
@@ -6219,46 +6320,25 @@ gridline-color: rgb(255, 255, 255);</string>
                    <number>6</number>
                   </property>
                   <item>
-                   <widget class="QLabel" name="label_25">
+                   <widget class="QLabel" name="label_2">
                     <property name="text">
-                     <string>Horizontal axis</string>
+                     <string>Shift mode prestep</string>
                     </property>
                    </widget>
                   </item>
                   <item>
-                   <widget class="QComboBox" name="comboBoxHAxisType">
-                    <property name="currentIndex">
-                     <number>1</number>
+                   <widget class="QSpinBox" name="spinBoxShiftStep">
+                    <property name="specialValueText">
+                     <string>Smooth</string>
                     </property>
-                    <item>
-                     <property name="text">
-                      <string>Hidden</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>Normal</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>MM:SS</string>
-                     </property>
-                    </item>
-                    <item>
-                     <property name="text">
-                      <string>HH:MM:SS</string>
-                     </property>
-                    </item>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QLineEdit" name="lineEditHtitle">
-                    <property name="placeholderText">
-                     <string>Title</string>
+                    <property name="suffix">
+                     <string> %</string>
                     </property>
-                    <property name="clearButtonEnabled">
-                     <bool>true</bool>
+                    <property name="maximum">
+                     <number>100</number>
+                    </property>
+                    <property name="singleStep">
+                     <number>10</number>
                     </property>
                    </widget>
                   </item>
@@ -6266,27 +6346,27 @@ gridline-color: rgb(255, 255, 255);</string>
                 </widget>
                </item>
                <item row="2" column="0">
-                <widget class="QCheckBox" name="checkBoxSelUnused">
+                <widget class="QCheckBox" name="checkBoxOpenGL">
                  <property name="text">
-                  <string>Allow selecting
-unused channels</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="1">
-                <widget class="QPushButton" name="pushButtonClearAll">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="text">
-                  <string>Clear graphs</string>
+                  <string>Use OpenGL</string>
                  </property>
                 </widget>
                </item>
               </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="checkBoxSelUnused">
+              <property name="text">
+               <string>Allow selecting unused channels</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="checkBoxMouseControls">
+              <property name="text">
+               <string>Show values and move cursors by mouse</string>
+              </property>
              </widget>
             </item>
             <item>
@@ -6423,6 +6503,25 @@ unused channels</string>
              <widget class="QPushButton" name="pushButtonOpenHelp">
               <property name="text">
                <string>Open help file</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QTextEdit" name="textEdit">
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+              <property name="html">
+               <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Quick tips:&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Clicking on graph will bring cursor to that position. Left click for cursor 1, right click for cursor 2)&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Channel offset can be moved by mouse dragging zero line (only if offset is different than zero)&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;To improve performance: Set console output to only warnings/errors/device, not info. Don't use color fill under graph for logic, if using fill, try enabling OpenGL.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;In measurement page, rise time and fall time are calculated only from last period of signal/visible interval.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Logic channel is calculated only from newly recieved data, it will not show when enabled during pause.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
              </widget>
             </item>
@@ -6843,6 +6942,9 @@ unused channels</string>
    <extends>QWidget</extends>
    <header>mymainplot.h</header>
    <container>1</container>
+   <slots>
+    <slot>setOpenGl(bool)</slot>
+   </slots>
   </customwidget>
   <customwidget>
    <class>myDial</class>
@@ -7002,12 +7104,12 @@ unused channels</string>
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>724</x>
-     <y>228</y>
+     <x>780</x>
+     <y>225</y>
     </hint>
     <hint type="destinationlabel">
-     <x>848</x>
-     <y>188</y>
+     <x>904</x>
+     <y>185</y>
     </hint>
    </hints>
   </connection>
@@ -7018,12 +7120,12 @@ unused channels</string>
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>802</x>
-     <y>348</y>
+     <x>858</x>
+     <y>342</y>
     </hint>
     <hint type="destinationlabel">
-     <x>848</x>
-     <y>308</y>
+     <x>904</x>
+     <y>302</y>
     </hint>
    </hints>
   </connection>
@@ -7034,12 +7136,12 @@ unused channels</string>
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>785</x>
-     <y>493</y>
+     <x>841</x>
+     <y>487</y>
     </hint>
     <hint type="destinationlabel">
-     <x>848</x>
-     <y>426</y>
+     <x>904</x>
+     <y>420</y>
     </hint>
    </hints>
   </connection>
@@ -7050,12 +7152,12 @@ unused channels</string>
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>855</x>
-     <y>640</y>
+     <x>911</x>
+     <y>634</y>
     </hint>
     <hint type="destinationlabel">
-     <x>825</x>
-     <y>534</y>
+     <x>881</x>
+     <y>528</y>
     </hint>
    </hints>
   </connection>
@@ -7066,12 +7168,12 @@ unused channels</string>
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>855</x>
-     <y>640</y>
+     <x>911</x>
+     <y>634</y>
     </hint>
     <hint type="destinationlabel">
-     <x>825</x>
-     <y>561</y>
+     <x>881</x>
+     <y>555</y>
     </hint>
    </hints>
   </connection>
@@ -7082,12 +7184,12 @@ unused channels</string>
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>855</x>
-     <y>640</y>
+     <x>911</x>
+     <y>634</y>
     </hint>
     <hint type="destinationlabel">
-     <x>825</x>
-     <y>588</y>
+     <x>881</x>
+     <y>582</y>
     </hint>
    </hints>
   </connection>
@@ -7098,12 +7200,12 @@ unused channels</string>
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>855</x>
-     <y>640</y>
+     <x>911</x>
+     <y>634</y>
     </hint>
     <hint type="destinationlabel">
-     <x>856</x>
-     <y>534</y>
+     <x>912</x>
+     <y>528</y>
     </hint>
    </hints>
   </connection>
@@ -7114,12 +7216,12 @@ unused channels</string>
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>855</x>
-     <y>640</y>
+     <x>911</x>
+     <y>634</y>
     </hint>
     <hint type="destinationlabel">
-     <x>856</x>
-     <y>561</y>
+     <x>912</x>
+     <y>555</y>
     </hint>
    </hints>
   </connection>
@@ -7130,12 +7232,12 @@ unused channels</string>
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>855</x>
-     <y>640</y>
+     <x>911</x>
+     <y>634</y>
     </hint>
     <hint type="destinationlabel">
-     <x>856</x>
-     <y>588</y>
+     <x>912</x>
+     <y>582</y>
     </hint>
    </hints>
   </connection>
@@ -7146,7 +7248,7 @@ unused channels</string>
    <slot>resetTerminal()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>845</x>
+     <x>904</x>
      <y>365</y>
     </hint>
     <hint type="destinationlabel">
@@ -7162,8 +7264,8 @@ unused channels</string>
    <slot>rangeTypeChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>214</x>
-     <y>432</y>
+     <x>217</x>
+     <y>423</y>
     </hint>
     <hint type="destinationlabel">
      <x>385</x>
@@ -7178,8 +7280,8 @@ unused channels</string>
    <slot>rangeTypeChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>214</x>
-     <y>459</y>
+     <x>217</x>
+     <y>450</y>
     </hint>
     <hint type="destinationlabel">
      <x>507</x>
@@ -7194,8 +7296,8 @@ unused channels</string>
    <slot>rangeTypeChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>214</x>
-     <y>486</y>
+     <x>217</x>
+     <y>477</y>
     </hint>
     <hint type="destinationlabel">
      <x>630</x>
@@ -7210,8 +7312,8 @@ unused channels</string>
    <slot>setAutoSize(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>256</x>
-     <y>433</y>
+     <x>259</x>
+     <y>424</y>
     </hint>
     <hint type="destinationlabel">
      <x>144</x>
@@ -7246,8 +7348,8 @@ unused channels</string>
      <y>416</y>
     </hint>
     <hint type="destinationlabel">
-     <x>67</x>
-     <y>490</y>
+     <x>70</x>
+     <y>481</y>
     </hint>
    </hints>
   </connection>
@@ -7258,12 +7360,12 @@ unused channels</string>
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>170</x>
-     <y>528</y>
+     <x>219</x>
+     <y>519</y>
     </hint>
     <hint type="destinationlabel">
-     <x>67</x>
-     <y>592</y>
+     <x>70</x>
+     <y>583</y>
     </hint>
    </hints>
   </connection>
@@ -7290,7 +7392,7 @@ unused channels</string>
    <slot>copyToClipboard()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>796</x>
+     <x>854</x>
      <y>365</y>
     </hint>
     <hint type="destinationlabel">
@@ -7322,8 +7424,8 @@ unused channels</string>
    <slot>setAutoSize(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>184</x>
-     <y>426</y>
+     <x>251</x>
+     <y>421</y>
     </hint>
     <hint type="destinationlabel">
      <x>322</x>
@@ -7386,12 +7488,12 @@ unused channels</string>
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>619</x>
-     <y>481</y>
+     <x>696</x>
+     <y>488</y>
     </hint>
     <hint type="destinationlabel">
-     <x>630</x>
-     <y>420</y>
+     <x>780</x>
+     <y>460</y>
     </hint>
    </hints>
   </connection>
