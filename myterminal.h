@@ -40,7 +40,7 @@ public:
 private:
   QTimer clickBlinkTimer;
   bool blickInProgress = false;
-  TerminalMode::enumerator mode = clicksend;
+  TerminalMode::enumTerminalMode mode = clicksend;
   QByteArray buffer;
   QMap<QString, QColor> colorCodes;
   void printChar(char text);
@@ -78,13 +78,13 @@ private slots:
 
 public slots:
   void printToTerminal(QByteArray data);
-  void setMode(TerminalMode::enumerator mode);
+  void setMode(TerminalMode::enumTerminalMode mode);
   void resetTerminal();
   void copyToClipboard();
 
 signals:
   /// Pošle zprávu do výpisu
-  void sendMessage(QByteArray header, QByteArray message, MessageLevel::enumerator type, MessageTarget::enumerator target = MessageTarget::serial1);
+  void sendMessage(QByteArray header, QByteArray message, MessageLevel::enumMessageLevel type, MessageTarget::enumMessageTarget target = MessageTarget::serial1);
   /// Pošle data pro zapsání do portu
   void writeToSerial(QByteArray byte);
 

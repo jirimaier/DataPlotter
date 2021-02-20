@@ -39,8 +39,8 @@ void MainWindow::on_pushButtonAutoset_clicked() {
       if (ui->plot->isChUsed(i) && ui->plot->isChVisible(i)) {
         bool foundRange; // Zbytečné, ale ta funkce to potřebuje.
         QCPRange range = ui->plot->graph(i)->data()->valueRange(foundRange);
-        range.lower = GlobalFunctions::ceilToNiceValue(range.lower) * ui->plot->getChScale(i);
-        range.upper = GlobalFunctions::ceilToNiceValue(range.upper) * ui->plot->getChScale(i);
+        range.lower = ceilToNiceValue(range.lower) * ui->plot->getChScale(i);
+        range.upper = ceilToNiceValue(range.upper) * ui->plot->getChScale(i);
         recentOffset -= range.lower;
         ui->plot->setChOffset(i, recentOffset);
         recentOffset += range.upper;
@@ -58,10 +58,10 @@ void MainWindow::on_pushButtonAutoset_clicked() {
       QCPRange range = ui->plot->graph(activeAnalogs.at(0))->data()->valueRange(foundrange);
       if (range.lower >= 0) {
         on_pushButtonPositive_clicked();
-        ui->doubleSpinBoxRangeVerticalRange->setValue(GlobalFunctions::ceilToNiceValue(range.upper));
+        ui->doubleSpinBoxRangeVerticalRange->setValue(ceilToNiceValue(range.upper));
       } else {
         on_pushButtonCenter_clicked();
-        ui->doubleSpinBoxRangeVerticalRange->setValue(2 * GlobalFunctions::ceilToNiceValue(MAX(std::abs(range.upper), std::abs(range.lower))));
+        ui->doubleSpinBoxRangeVerticalRange->setValue(2 * ceilToNiceValue(MAX(std::abs(range.upper), std::abs(range.lower))));
       }
       ui->checkBoxVerticalValues->setChecked(true);
     }

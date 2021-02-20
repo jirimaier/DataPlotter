@@ -48,6 +48,7 @@ void MainWindow::connectSignals() {
   connect(&measureRefreshTimer2, &QTimer::timeout, this, &MainWindow::updateMeasurements2);
   connect(&fftTimer, &QTimer::timeout, this, &::MainWindow::updateFFT);
   connect(&xyTimer, &QTimer::timeout, this, &::MainWindow::updateXY);
+  connect(&serialMonitorTimer, &QTimer::timeout, this, &MainWindow::updateSerialMonitor);
 }
 
 void MainWindow::setAdaptiveSpinBoxes() {
@@ -67,6 +68,7 @@ void MainWindow::startTimers() {
   measureRefreshTimer2.start(200);
   fftTimer.start(200);
   xyTimer.start(200);
+  serialMonitorTimer.start(200);
 }
 
 void MainWindow::setGuiDefaults() {
@@ -118,14 +120,14 @@ void MainWindow::fillChannelSelect() {
   ui->comboBoxXYy->blockSignals(true);
 
   for (int i = 0; i < ANALOG_COUNT + MATH_COUNT; i++) {
-    ui->comboBoxSelectedChannel->addItem(GlobalFunctions::getChName(i));
-    ui->comboBoxCursor1Channel->addItem(GlobalFunctions::getChName(i));
-    ui->comboBoxCursor2Channel->addItem(GlobalFunctions::getChName(i));
-    ui->comboBoxMeasure1->addItem(GlobalFunctions::getChName(i));
-    ui->comboBoxMeasure2->addItem(GlobalFunctions::getChName(i));
-    ui->comboBoxFFTCh->addItem(GlobalFunctions::getChName(i));
-    ui->comboBoxXYx->addItem(GlobalFunctions::getChName(i));
-    ui->comboBoxXYy->addItem(GlobalFunctions::getChName(i));
+    ui->comboBoxSelectedChannel->addItem(getChName(i));
+    ui->comboBoxCursor1Channel->addItem(getChName(i));
+    ui->comboBoxCursor2Channel->addItem(getChName(i));
+    ui->comboBoxMeasure1->addItem(getChName(i));
+    ui->comboBoxMeasure2->addItem(getChName(i));
+    ui->comboBoxFFTCh->addItem(getChName(i));
+    ui->comboBoxXYx->addItem(getChName(i));
+    ui->comboBoxXYy->addItem(getChName(i));
   }
   for (int i = 1; i <= LOGIC_GROUPS; i++) {
     ui->comboBoxSelectedChannel->addItem(tr("Logic %1").arg(i));

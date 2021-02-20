@@ -90,8 +90,8 @@ void MyMainPlot::updateMinMaxTimes() {
       lasts.append((graph(i)->data()->end() - 1)->key);
     }
   for (int i = 0; i < LOGIC_GROUPS; i++)
-    if (!this->graph(GlobalFunctions::getLogicChannelID(i, 0))->data()->isEmpty() && logicSettings.at(i).visible) {
-      int chID = GlobalFunctions::getLogicChannelID(i, 0);
+    if (!this->graph(getLogicChannelID(i, 0))->data()->isEmpty() && logicSettings.at(i).visible) {
+      int chID = getLogicChannelID(i, 0);
       firsts.append(graph(chID)->data()->begin()->key);
       lasts.append((graph(chID)->data()->end() - 1)->key);
     }
@@ -149,7 +149,7 @@ QPair<QVector<double>, QVector<double>> MyMainPlot::getDataVector(int chID, bool
 
 void MyMainPlot::updateTracerText(int index) {
   QString tracerTextStr;
-  tracerTextStr.append(" " + GlobalFunctions::getChName(index) + "\n");
+  tracerTextStr.append(" " + getChName(index) + "\n");
   if (IS_LOGIC_CH(index)) {
     tracerTextStr.append(tr("=%1, ").arg((uint32_t)1 << ChID_TO_LOGIC_GROUP_BIT(index)));
     if ((int)tracer->position->value() % 3)
@@ -158,8 +158,8 @@ void MyMainPlot::updateTracerText(int index) {
       tracerTextStr.append(tr("LOW"));
     tracerTextStr.append(tr("\n"));
   } else
-    tracerTextStr.append(GlobalFunctions::floatToNiceString(tracer->position->value(), 4, true, false) + getYUnit() + "\n");
-  tracerTextStr.append(GlobalFunctions::floatToNiceString(tracer->position->key(), 4, true, false) + getXUnit());
+    tracerTextStr.append(floatToNiceString(tracer->position->value(), 4, true, false) + getYUnit() + "\n");
+  tracerTextStr.append(floatToNiceString(tracer->position->key(), 4, true, false) + getXUnit());
   tracerText->setText(tracerTextStr);
   tracerLayer->replot();
 }
@@ -179,7 +179,7 @@ void MyMainPlot::setLogicScale(int group, double scale) {
 void MyMainPlot::setLogicStyle(int group, int style) {
   logicSettings[group].style = style;
   for (int bit = 0; bit < LOGIC_BITS; bit++) {
-    int chID = GlobalFunctions::getLogicChannelID(group, bit);
+    int chID = getLogicChannelID(group, bit);
     if (style == GraphStyle::linePoint) {
       this->graph(chID)->setScatterStyle(POINT_STYLE);
       this->graph(chID)->setLineStyle(QCPGraph::lsLine);
@@ -212,9 +212,10 @@ void MyMainPlot::setLogicStyle(int group, int style) {
 void MyMainPlot::setLogicColor(int group, QColor color) {
   logicSettings[group].color = color;
   for (int bit = 0; bit < LOGIC_BITS; bit++) {
-    this->graph(GlobalFunctions::getLogicChannelID(group, bit))->setPen(QPen(color));
-    if (logicSettings.at(group).style == GraphStyle::filled || logicSettings.at(group).style == GraphStyle::squareFilled)
-      this->graph(GlobalFunctions::getLogicChannelID(group, bit))->setBrush(color);
+    this->graph(getLogicChannelID(group, bit))->setPen(QPen(color));
+    if (logicSettings.at(group).style == GraphStyle::filled || logicSettings.at(group).style == GraphStyle::squareFilled) {
+      this->graph(getLogicChannelID(group, bit))->setBrush(color);
+    }
   }
   this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
 }
@@ -222,13 +223,13 @@ void MyMainPlot::setLogicColor(int group, QColor color) {
 void MyMainPlot::setLogicVisibility(int group, bool visible) {
   logicSettings[group].visible = visible;
   for (int bit = 0; bit < LOGIC_BITS; bit++)
-    this->graph(GlobalFunctions::getLogicChannelID(group, bit))->setVisible(visible);
+    this->graph(getLogicChannelID(group, bit))->setVisible(visible);
   this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
 }
 
 int MyMainPlot::getLogicBitsUsed(int group) {
   for (int i = 0; i < LOGIC_BITS; i++)
-    if (!isChUsed(GlobalFunctions::getLogicChannelID(group, i)))
+    if (!isChUsed(getLogicChannelID(group, i)))
       return (i);
   return LOGIC_BITS;
 }
@@ -354,7 +355,7 @@ void MyMainPlot::redraw() {
   this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
 }
 
-void MyMainPlot::setRangeType(PlotRange::enumerator type) {
+void MyMainPlot::setRangeType(PlotRange::enumPlotRange type) {
   if (plotRangeType == PlotRange::freeMove && type != PlotRange::freeMove) {
     this->yAxis->setRange(presetVRange * presetVCenterRatio / 200.0, presetVRange, Qt::AlignCenter);
     this->yAxis->setRange(presetVRange * presetVCenterRatio / 200.0, yAxis->range().size(), Qt::AlignCenter);
@@ -377,9 +378,9 @@ void MyMainPlot::pause() {
 }
 
 void MyMainPlot::clearLogicGroup(int number, int fromBit) {
-  if (isChUsed(GlobalFunctions::getLogicChannelID(number, fromBit))) {
+  if (isChUsed(getLogicChannelID(number, fromBit))) {
     for (int i = fromBit; i < LOGIC_BITS; i++)
-      clearCh(GlobalFunctions::getLogicChannelID(number, i));
+      clearCh(getLogicChannelID(number, i));
     newData = true;
   }
 }
@@ -467,7 +468,7 @@ void MyMainPlot::newDataPoint(int chID, double time, double value, bool append) 
 }
 
 QByteArray MyMainPlot::exportChannelCSV(char separator, char decimal, int chID, int precision, bool onlyInView) {
-  QByteArray output = (QString("time%1%2\n").arg(separator).arg(GlobalFunctions::getChName(chID))).toUtf8();
+  QByteArray output = (QString("time%1%2\n").arg(separator).arg(getChName(chID))).toUtf8();
   for (QCPGraphDataContainer::iterator it = graph(chID)->data()->begin(); it != graph(chID)->data()->end(); it++) {
     if (!onlyInView || (it->key >= this->xAxis->range().lower && it->key <= this->xAxis->range().upper)) {
       output.append(QString::number(it->key, 'f', precision).replace('.', decimal).toUtf8());
@@ -488,13 +489,13 @@ QByteArray MyMainPlot::exportLogicCSV(char separator, char decimal, int group, i
     output.append(tr("bit %1").arg(i).toUtf8());
   }
   output.append('\n');
-  for (int i = 0; i < graph(GlobalFunctions::getLogicChannelID(group, 0))->dataCount(); i++) {
-    double time = graph(GlobalFunctions::getLogicChannelID(group, 0))->data()->at(i)->key;
+  for (int i = 0; i < graph(getLogicChannelID(group, 0))->dataCount(); i++) {
+    double time = graph(getLogicChannelID(group, 0))->data()->at(i)->key;
     if (!onlyInView || (time >= this->xAxis->range().lower && time <= this->xAxis->range().upper)) {
       output.append(QString::number(time, 'f', precision).toUtf8());
       for (int bit = bits - 1; bit >= 0; bit++) {
         output.append(separator);
-        int chID = GlobalFunctions::getLogicChannelID(group, bit);
+        int chID = getLogicChannelID(group, bit);
         output.append(QString((((int)graph(chID)->data()->at(i)->value) % 3) ? "0" : "1").replace('.', decimal).toUtf8());
       }
       output.append('\n');
@@ -520,7 +521,7 @@ QByteArray MyMainPlot::exportAllCSV(char separator, char decimal, int precision,
       }
       channels.append(getDataVector(i, onlyInView));
       output.append(separator);
-      output.append(GlobalFunctions::getChName(i).toUtf8());
+      output.append(getChName(i).toUtf8());
     }
   }
   QList<double> times;
@@ -593,7 +594,7 @@ void MyMainPlot::moveTracer(QMouseEvent *event) {
         nearestIndex = -1;
         nearestDistance = 20;
         for (int i = 0; i < zeroLines.count(); i++) {
-          if (!graph(i)->data()->isEmpty() && zeroLines.at(nearestIndex)->visible()) {
+          if (zeroLines.at(i)->visible()) {
             unsigned int distance = (unsigned int)zeroLines.at(i)->selectTest(event->pos(), false);
             if (distance < nearestDistance) {
               nearestIndex = i;

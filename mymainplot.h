@@ -64,12 +64,13 @@ public:
   QByteArray exportLogicCSV(char separator, char decimal, int group, int precision, bool onlyInView);
   QByteArray exportAllCSV(char separator, char decimal, int precision, bool onlyInView, bool includeHidden);
 
+  void redraw();
+
 private:
   QTimer plotUpdateTimer;
 
   void resume();
   void pause();
-  void redraw();
   void initZeroLines();
   void updateMinMaxTimes();
   void reOffsetAndRescaleCH(int chID);
@@ -93,8 +94,8 @@ private:
   QVector<ChannelSettings_t> channelSettings;
   QVector<ChannelSettings_t> logicSettings;
   QVector<QCPItemLine *> zeroLines;
-  PlotStatus::enumerator plottingStatus = PlotStatus::run;
-  PlotRange::enumerator plotRangeType = PlotRange::fixedRange;
+  PlotStatus::enumPlotStatus plottingStatus = PlotStatus::run;
+  PlotRange::enumPlotRange plotRangeType = PlotRange::fixedRange;
 
 private slots:
   void verticalAxisRangeChanged();
@@ -105,7 +106,7 @@ public slots:
   void resetChannels();
   void update();
 
-  void setRangeType(PlotRange::enumerator type);
+  void setRangeType(PlotRange::enumPlotRange type);
   void setRollingRange(double value);
   void setHorizontalPos(double value);
   void setVerticalRange(double value);
@@ -121,7 +122,7 @@ public slots:
 
 signals:
   void updateHPosSlider(double min, double max, int step);
-  void showPlotStatus(PlotStatus::enumerator type);
+  void showPlotStatus(PlotStatus::enumPlotStatus type);
   void requestCursorUpdate();
   void offsetChangedByMouse(int chid);
 };

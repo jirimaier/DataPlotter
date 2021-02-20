@@ -33,8 +33,8 @@ void MainWindow::initSetables() {
   // FFT
   setables["fften"] = ui->pushButtonFFT;
   setables["fftch"] = ui->comboBoxFFTCh;
-  setables["fftgridx"] = ui->dialFFTGridX;
-  setables["fftgridy"] = ui->dialFFTGridY;
+  setables["fftgridx"] = ui->horizontalSliderGridFFTH;
+  setables["fftgridy"] = ui->horizontalSliderGridFFTV;
   setables["fftstyle"] = ui->comboBoxFFTStyle;
   setables["fftwin"] = ui->comboBoxFFTWindow;
   setables["ffttype"] = ui->comboBoxFFTType;
@@ -53,7 +53,10 @@ void MainWindow::initSetables() {
   setables["haxis"] = ui->comboBoxHAxisType;
   setables["hlabel"] = ui->lineEditHtitle;
   setables["vlabel"] = ui->lineEditVtitle;
+  setables["vunit"] = ui->lineEditVUnit;
   setables["selunused"] = ui->checkBoxSelUnused;
+  setables["mousecur"] = ui->checkBoxMouseControls;
+  setables["opengl"] = ui->checkBoxOpenGL;
   setables["movestep"] = ui->spinBoxShiftStep;
 
   // Connection
@@ -155,9 +158,9 @@ QByteArray MainWindow::getSettings() {
   settings.append(";\n");
   settings.append(ui->radioButtonCSVDot->isChecked() ? "csvsep:dc" : "csvsep:cs");
   settings.append(";\n");
-  settings.append(ui->radioButtonXYAutoSize->isChecked() ? "xytype:fix" : "xytype:cs");
+  settings.append(ui->radioButtonXYAutoSize->isChecked() ? "xytype:fix" : "xytype:free");
   settings.append(";\n");
-  settings.append(ui->radioButtonFFTAutoSize->isChecked() ? "ffttype:fix" : "ffttype:cs");
+  settings.append(ui->radioButtonFFTAutoSize->isChecked() ? "fftrange:fix" : "fftrange:free");
   settings.append(";\n");
   settings.append(ui->radioButtonXYFull->isChecked() ? "xydata:all" : "xydata:view");
   settings.append(";\n");
@@ -217,7 +220,7 @@ QByteArray MainWindow::getSettings() {
   return settings;
 }
 
-void MainWindow::useSettings(QByteArray settings, MessageTarget::enumerator source = MessageTarget::manual) {
+void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarget source = MessageTarget::manual) {
   settings.replace('\n', "");
   settings.replace('\r', "");
   if (!settings.contains(':')) {

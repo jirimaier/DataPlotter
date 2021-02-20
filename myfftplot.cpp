@@ -44,8 +44,8 @@ void MyFFTPlot::newData(QSharedPointer<QCPGraphDataContainer> data) {
   // Přepsat text u traceru
   if (tracer->visible()) {
     QString tracerTextStr;
-    tracerTextStr.append(GlobalFunctions::floatToNiceString(tracer->position->value(), 4, true, true) + getYUnit() + "\n");
-    tracerTextStr.append(GlobalFunctions::floatToNiceString(tracer->position->key(), 4, true, true) + getXUnit());
+    tracerTextStr.append(floatToNiceString(tracer->position->value(), 4, true, true) + getYUnit() + "\n");
+    tracerTextStr.append(floatToNiceString(tracer->position->key(), 4, true, true) + getXUnit());
     tracerText->setText(tracerTextStr);
     tracerLayer->replot();
   }
@@ -93,7 +93,7 @@ void MyFFTPlot::autoset() {
   else
     yRange.lower = -50;
 
-  yRange.upper = GlobalFunctions::ceilToNiceValue(yRange.upper);
+  yRange.upper = ceilToNiceValue(yRange.upper);
   xRange.lower = 0;
   xRange.upper = xRange.upper;
   xAxis->setRange(xRange);
@@ -123,8 +123,8 @@ void MyFFTPlot::moveTracer(QMouseEvent *event) {
       } else {
         tracerText->setVisible(true);
         QString tracerTextStr;
-        tracerTextStr.append(GlobalFunctions::floatToNiceString(tracer->position->value(), 4, true, true) + getYUnit() + "\n");
-        tracerTextStr.append(GlobalFunctions::floatToNiceString(tracer->position->key(), 4, true, true) + getXUnit());
+        tracerTextStr.append(floatToNiceString(tracer->position->value(), 4, true, true) + getYUnit() + "\n");
+        tracerTextStr.append(floatToNiceString(tracer->position->key(), 4, true, true) + getXUnit());
         tracerText->setText(tracerTextStr);
         checkIfTracerTextFits();
       }

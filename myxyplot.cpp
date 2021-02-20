@@ -36,9 +36,9 @@ void MyXYPlot::newData(QSharedPointer<QCPCurveDataContainer> data) {
   // Přepsat text u traceru
   if (tracer->visible()) {
     QString tracerTextStr;
-    tracerTextStr.append("X: " + GlobalFunctions::floatToNiceString(tracer->position->key(), 4, true, true) + getXUnit() + "\n");
-    tracerTextStr.append("Y: " + GlobalFunctions::floatToNiceString(tracer->position->value(), 4, true, true) + getYUnit() + "\n");
-    tracerTextStr.append("t: " + GlobalFunctions::floatToNiceString(graphXY->data().data()->at(tracer->sampleNumber())->t, 4, true, true) + tUnit);
+    tracerTextStr.append("X: " + floatToNiceString(tracer->position->key(), 4, true, true) + getXUnit() + "\n");
+    tracerTextStr.append("Y: " + floatToNiceString(tracer->position->value(), 4, true, true) + getYUnit() + "\n");
+    tracerTextStr.append("t: " + floatToNiceString(graphXY->data().data()->at(tracer->sampleNumber())->t, 4, true, true) + tUnit);
     tracerText->setText(tracerTextStr);
     tracerLayer->replot();
   }
@@ -85,10 +85,10 @@ void MyXYPlot::autoset() {
   bool foundrange, foundrange2;
   QCPRange yRange = graphXY->data()->valueRange(foundrange);
   QCPRange xRange = graphXY->data()->keyRange(foundrange2);
-  yRange.lower = GlobalFunctions::ceilToNiceValue(yRange.lower);
-  yRange.upper = GlobalFunctions::ceilToNiceValue(yRange.upper);
-  xRange.lower = GlobalFunctions::ceilToNiceValue(xRange.lower);
-  xRange.upper = GlobalFunctions::ceilToNiceValue(xRange.upper);
+  yRange.lower = ceilToNiceValue(yRange.lower);
+  yRange.upper = ceilToNiceValue(yRange.upper);
+  xRange.lower = ceilToNiceValue(xRange.lower);
+  xRange.upper = ceilToNiceValue(xRange.upper);
   xAxis->setRange(xRange);
   yAxis->setRange(yRange);
 }
@@ -116,9 +116,9 @@ void MyXYPlot::moveTracer(QMouseEvent *event) {
       } else {
         tracerText->setVisible(true);
         QString tracerTextStr;
-        tracerTextStr.append("X: " + GlobalFunctions::floatToNiceString(tracer->position->key(), 4, false, false) + getXUnit() + "\n");
-        tracerTextStr.append("Y: " + GlobalFunctions::floatToNiceString(tracer->position->value(), 4, false, false) + getYUnit() + "\n");
-        tracerTextStr.append("t: " + GlobalFunctions::floatToNiceString(graphXY->data().data()->at(tracer->sampleNumber())->t, 4, false, false) + tUnit);
+        tracerTextStr.append("X: " + floatToNiceString(tracer->position->key(), 4, false, false) + getXUnit() + "\n");
+        tracerTextStr.append("Y: " + floatToNiceString(tracer->position->value(), 4, false, false) + getYUnit() + "\n");
+        tracerTextStr.append("t: " + floatToNiceString(graphXY->data().data()->at(tracer->sampleNumber())->t, 4, false, false) + tUnit);
         tracerText->setText(tracerTextStr);
         checkIfTracerTextFits();
       }

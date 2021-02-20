@@ -17,7 +17,6 @@
 
 void MainWindow::comRefresh() {
   // Zjistí, jestli nastala změna v portech.
-
   QList<QSerialPortInfo> newPorts = QSerialPortInfo::availablePorts();
   bool change = false;
   if (newPorts.length() == portList.length()) {
@@ -73,7 +72,7 @@ void MainWindow::updateChannelComboBox(QComboBox &combobox, bool includeLogic, b
     for (int i = 0; i < LOGIC_GROUPS; i++) {
       auto *model = qobject_cast<QStandardItemModel *>(combobox.model());
       auto *item = model->item(i + ANALOG_COUNT + MATH_COUNT);
-      bool willBeVisible = ui->checkBoxSelUnused->isChecked() || ui->plot->isChUsed(GlobalFunctions::getLogicChannelID(i, 1));
+      bool willBeVisible = ui->checkBoxSelUnused->isChecked() || ui->plot->isChUsed(getLogicChannelID(i, 1));
       if (willBeVisible)
         atLeastOneVisible = true;
       item->setEnabled(willBeVisible);
@@ -181,7 +180,26 @@ void MainWindow::updateFFT() {
     }
 
     fftTimer.stop();
-    emit requestFFT(data, (FFTType ::enumerator)ui->comboBoxFFTType->currentIndex(), (FFTWindow::enumerator)ui->comboBoxFFTWindow->currentIndex());
+    emit requestFFT(data, (FFTType::enumFFTType)ui->comboBoxFFTType->currentIndex(), (FFTWindow::enumFFTWindow)ui->comboBoxFFTWindow->currentIndex());
+  }
+}
+
+void MainWindow::updateSerialMonitor() {
+  if (ui->checkBoxSerialMonitor->isChecked()) {
+    if (!serialMonitor.isEmpty()) {
+      QScrollBar *scroll = ui->plainTextEditConsole_3->verticalScrollBar();
+      int lastVal = -1;
+      if (scroll->value() != scroll->maximum())
+        lastVal = scroll->value();
+
+      ui->plainTextEditConsole_3->textCursor().insertText(serialMonitor);
+      serialMonitor.clear();
+
+      if (lastVal == -1)
+        scroll->setValue(scroll->maximum());
+      else
+        scroll->setValue(lastVal);
+    }
   }
 }
 

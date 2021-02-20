@@ -315,7 +315,7 @@ void MyTerminal::printToTerminal(QByteArray data) {
   }
 }
 
-void MyTerminal::setMode(TerminalMode::enumerator mode) {
+void MyTerminal::setMode(TerminalMode::enumTerminalMode mode) {
   this->clearSelection();
   this->mode = mode;
   if (mode == debug) {

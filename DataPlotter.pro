@@ -21,6 +21,7 @@ SOURCES += \
     myaxistickerwithunit.cpp \
     mycursorslider.cpp \
     mydial.cpp \
+    mydoublespinboxwithunits.cpp \
     myfftplot.cpp \
     mymainplot.cpp \
     mymodifiedqcptracer.cpp \
@@ -40,6 +41,7 @@ HEADERS += \
     myaxistickerwithunit.h \
     mycursorslider.h \
     mydial.h \
+    mydoublespinboxwithunits.h \
     myfftplot.h \
     mymainplot.h \
     mymodifiedqcptracer.h \

@@ -33,8 +33,8 @@ MyPlot::MyPlot(QWidget *parent) : QCustomPlot(parent) {
   unitTickerY->setScaleStrategy(QCPAxisTickerFixed::ssNone);
   timeTickerX->setTickStepStrategy(QCPAxisTickerTime::tssMeetTickCount);
   longTimeTickerX->setTickStepStrategy(QCPAxisTickerTime::tssMeetTickCount);
-  this->xAxis->setNumberFormat("gb");
-  this->yAxis->setNumberFormat("gb");
+  this->xAxis->setNumberFormat("gb"); // Formát s hezkým 10^něco
+  this->yAxis->setNumberFormat("gb"); // Formát s hezkým 10^něco
   this->xAxis->setTicker(unitTickerX);
   this->yAxis->setTicker(unitTickerY);
 
@@ -123,7 +123,7 @@ void MyPlot::setCursorVisible(int cursor, bool visible) {
 }
 
 void MyPlot::updateGridX() {
-  double newGrid = Global::logaritmicSettings[MAX(GlobalFunctions::indexOfStandardValuesCeil(xAxis->range().upper - xAxis->range().lower) + xGridHint, 0)];
+  double newGrid = logaritmicSettings[MAX(indexOfStandardValuesCeil(xAxis->range().upper - xAxis->range().lower) + xGridHint, 0)];
   if (newGrid != lastGridX) {
     lastGridX = newGrid;
     setHorizontalDiv(newGrid);
@@ -133,7 +133,7 @@ void MyPlot::updateGridX() {
 }
 
 void MyPlot::updateGridY() {
-  double newGrid = Global::logaritmicSettings[MAX(GlobalFunctions::indexOfStandardValuesCeil(yAxis->range().upper - yAxis->range().lower) + yGridHint, 0)];
+  double newGrid = logaritmicSettings[MAX(indexOfStandardValuesCeil(yAxis->range().upper - yAxis->range().lower) + yGridHint, 0)];
   if (newGrid != lastGridY) {
     lastGridY = newGrid;
     setVerticalDiv(newGrid);

@@ -27,12 +27,13 @@ void MainWindow::exportCSV(bool all, int ch) {
     else if (ch >= ANALOG_COUNT + MATH_COUNT)
       name = tr("Logic %1").arg(ch - ANALOG_COUNT - MATH_COUNT + 1);
     else {
-      name = GlobalFunctions::getChName(ch);
+      name = getChName(ch);
     }
   }
   QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/export/%1.csv").arg(name);
   QString fileName = QFileDialog::getSaveFileName(this, tr("Export %1").arg(name), defaultName, tr("Comma separated values (*.csv)"));
-  if (fileName.isEmpty()) return;
+  if (fileName.isEmpty())
+    return;
   QFile file(fileName);
   if (file.open(QFile::WriteOnly | QFile::Truncate)) {
     char decimal = ui->radioButtonCSVDot->isChecked() ? '.' : ',';
@@ -62,20 +63,23 @@ void MainWindow::exportCSV(bool all, int ch) {
 void MainWindow::on_pushButtonPlotImage_clicked() {
   QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/export/plot.png");
   QString fileName = QFileDialog::getSaveFileName(this, tr("Export main plot as image"), defaultName, tr("Portable network graphics (*.png)"));
-  if (fileName.isEmpty()) return;
+  if (fileName.isEmpty())
+    return;
   ui->plot->toPNG().save(fileName);
 }
 
 void MainWindow::on_pushButtonXYImage_clicked() {
   QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/export/xy.png");
   QString fileName = QFileDialog::getSaveFileName(this, tr("Export XY plot as image"), defaultName, tr("Portable network graphics (*.png)"));
-  if (fileName.isEmpty()) return;
+  if (fileName.isEmpty())
+    return;
   ui->plotxy->toPNG().save(fileName);
 }
 
 void MainWindow::on_pushButtonFFTImage_clicked() {
   QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/export/fft.png");
   QString fileName = QFileDialog::getSaveFileName(this, tr("Export FFT plot as image"), defaultName, tr("Portable network graphics (*.png)"));
-  if (fileName.isEmpty()) return;
+  if (fileName.isEmpty())
+    return;
   ui->plotFFT->toPNG().save(fileName);
 }

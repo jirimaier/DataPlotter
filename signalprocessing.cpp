@@ -42,7 +42,7 @@ void SignalProcessing::resizeBlackman(int length) {
 }
 
 QVector<std::complex<float>> SignalProcessing::fft(QVector<std::complex<float>> x) {
-  int N = x.size();
+  int N = x.size(); // Velikost x musí být mocnina 2.
 
   if (N == 1)
     return x; // Konec rekurze
@@ -74,7 +74,7 @@ int SignalProcessing::nextPow2(int number) {
       return (pow(2, i));
 }
 
-void SignalProcessing::calculateSpectrum(QSharedPointer<QCPGraphDataContainer> data, FFTType::enumerator type, FFTWindow::enumerator window) {
+void SignalProcessing::calculateSpectrum(QSharedPointer<QCPGraphDataContainer> data, FFTType::enumFFTType type, FFTWindow::enumFFTWindow window) {
   if (type != FFTType::pwelch) {
     float fs = data->size() / (data->at(data->size() - 1)->key - data->at(0)->key);
 

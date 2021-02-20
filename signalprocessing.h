@@ -42,7 +42,7 @@ private:
   int nextPow2(int number);
 
 public slots:
-  void calculateSpectrum(QSharedPointer<QCPGraphDataContainer> data, FFTType::enumerator type, FFTWindow::enumerator window);
+  void calculateSpectrum(QSharedPointer<QCPGraphDataContainer> data, FFTType::enumFFTType type, FFTWindow::enumFFTWindow window);
   void process(QSharedPointer<QCPGraphDataContainer> data);
 
 signals:

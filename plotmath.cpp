@@ -52,7 +52,7 @@ void PlotMath::addMathData(int mathNumber, bool isFirst, QSharedPointer<QCPGraph
         resultSample /= second->at(i)->value;
       result->add(QCPGraphData(first->at(i)->key, resultSample));
     }
-    emit sendResult(GlobalFunctions::getAnalogChId(mathNumber + 1, ChannelType::math), result, shouldIgnorePause);
+    emit sendResult(getAnalogChId(mathNumber + 1, ChannelType::math), result, shouldIgnorePause);
     first.clear();
     second.clear();
   }
@@ -63,7 +63,7 @@ void PlotMath::clearMath(int math) {
   seconds[math - 1].clear();
 }
 
-void PlotMath::resetMath(int mathNumber, MathOperations::enumerator mode, QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2) {
+void PlotMath::resetMath(int mathNumber, MathOperations::enumMathOperations mode, QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2) {
   operations[mathNumber - 1] = mode;
   seconds[mathNumber - 1].clear();               // Vymaže druhá data
   firsts[mathNumber - 1] = in1;                  // Vloží první data

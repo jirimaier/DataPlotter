@@ -29,151 +29,121 @@ PlotData::PlotData(QObject *parent) : QObject(parent) {
 
 PlotData::~PlotData() {}
 
-double PlotData::getValue(QByteArray number, ValueType::enumerator type) {
-  if (type == u1) {
-    return (double)((uint8_t)number.at(0));
-  } else if (type == u2) { // unsigned int 16
-    char bytes[2] = {number.at(0), number.at(1)};
-    return (double)*((uint16_t *)bytes);
-  } else if (type == u3) { // unsigned int 32
-    char bytes[4] = {number.at(0), number.at(1), number.at(2), 0};
-    return (double)*((uint32_t *)bytes);
-  } else if (type == u4) { // unsigned int 32
-    char bytes[4] = {number.at(0), number.at(1), number.at(2), number.at(3)};
-    return (double)*((uint32_t *)bytes);
-  } else if (type == i1) { // signed int 8
-    return (double)((int8_t)number.at(0));
-  } else if (type == i2) { // signed int 16
-    char bytes[2] = {number.at(0), number.at(1)};
-    return (double)*((int16_t *)bytes);
-  } else if (type == i4) { // signed int 32
-    char bytes[4] = {number.at(0), number.at(1), number.at(2), number.at(3)};
-    return (double)*((int32_t *)bytes);
-  } else if (type == f4) { // float
-    char bytes[4] = {number.at(0), number.at(1), number.at(2), number.at(3)};
-    return (double)*((float *)bytes);
-  } else if (type == d8) { // double
-    char bytes[8] = {number.at(0), number.at(1), number.at(2), number.at(3), number.at(4), number.at(5), number.at(6), number.at(7)};
-    return (*((double *)bytes));
-
-    // Big endian
-  } else if (type == U1) { // unsigned int 8
-    return (double)((uint8_t)number.at(0));
-  } else if (type == U2) { // unsigned int 16
-    char bytes[2] = {number.at(1), number.at(0)};
-    return (double)*((uint16_t *)bytes);
-  } else if (type == U3) { // unsigned int 32
-    char bytes[4] = {number.at(2), number.at(1), number.at(0), 0};
-    return (double)*((uint32_t *)bytes);
-  } else if (type == U4) { // unsigned int 32
-    char bytes[4] = {number.at(3), number.at(2), number.at(1), number.at(0)};
-    return (double)*((uint32_t *)bytes);
-  } else if (type == I1) { // signed int 8
-    return (double)((int8_t)number.at(0));
-  } else if (type == I2) { // signed int 16
-    char bytes[2] = {number.at(1), number.at(0)};
-    return (double)*((int16_t *)bytes);
-  } else if (type == I4) { // signed int 32
-    char bytes[4] = {number.at(3), number.at(2), number.at(1), number.at(0)};
-    return (double)*((int32_t *)bytes);
-  } else if (type == F4) { // float
-    char bytes[4] = {number.at(3), number.at(2), number.at(1), number.at(0)};
-    return (double)*((float *)bytes);
-  } else if (type == D8) { // double
-    char bytes[8] = {number.at(7), number.at(6), number.at(5), number.at(4), number.at(3), number.at(2), number.at(1), number.at(0)};
-    return (*((double *)bytes));
+double PlotData::getValue(QPair<ValueType, QByteArray> value, bool &isok) {
+  if (!value.first.isBinary) {
+    return value.second.toDouble(&isok);
   }
-  return 0;
-}
-
-enumerator PlotData::getType(QByteArray array) {
-  // Little endian
-  if (array.left(2) == "u1") // unsigned int 8
-    return u1;
-  else if (array.left(2) == "u2") // unsigned int 16;
-    return u2;
-  if (array.left(2) == "u3") // unsigned int 32
-    return u3;
-  if (array.left(2) == "u4") // unsigned int 32
-    return u4;
-  else if (array.left(2) == "i1") // signed int 8
-    return i1;
-  else if (array.left(2) == "i2") // signed int 16
-    return i2;
-  else if (array.left(2) == "i4") // signed int 32
-    return i4;
-  else if (array.left(2) == "f4") // float
-    return f4;
-  else if (array.left(2) == "d8") // double
-    return d8;
-
-  // Big endian
-  else if (array.left(2) == "U1") // unsigned int 8
-    return U1;
-  else if (array.left(2) == "U2") // unsigned int 16
-    return U2;
-  else if (array.left(2) == "U3") // unsigned int 32
-    return U3;
-  else if (array.left(2) == "U4") // unsigned int 32
-    return U4;
-  else if (array.left(2) == "I1") // signed int 8
-    return I1;
-  else if (array.left(2) == "I2") // signed int 16;
-    return I2;
-  else if (array.left(2) == "I4") // signed int 32
-    return I4;
-  else if (array.left(2) == "F4") // float
-    return F4;
-  else if (array.left(2) == "D8") // double
-    return D8;
-  sendMessageIfAllowed(tr("Unknown type").toUtf8(), array, MessageLevel::error);
-  return unrecognised;
-}
-
-double PlotData::arrayToDouble(QByteArray &array, bool &isok) {
   isok = true;
-  if (isdigit(array.at(0)) || array.at(0) == '-') {
-    return array.toDouble(&isok);
+  if (value.first.bigEndian) {
+    // Big endian
+    if (value.first.type == ValueType::Type::unsignedint) {
+      if (value.first.bytes == 1) { // unsigned int 8
+        return (double)((uint8_t)value.second.at(0)) * value.first.multiplier;
+      } else if (value.first.bytes == 2) { // unsigned int 16
+        char bytes[2] = {value.second.at(1), value.second.at(0)};
+        return (double)*((uint16_t *)bytes) * value.first.multiplier;
+      } else if (value.first.bytes == 3) { // unsigned int 32
+        char bytes[4] = {value.second.at(2), value.second.at(1), value.second.at(0), 0};
+        return (double)*((uint32_t *)bytes) * value.first.multiplier;
+      } else if (value.first.bytes == 4) { // unsigned int 32
+        char bytes[4] = {value.second.at(3), value.second.at(2), value.second.at(1), value.second.at(0)};
+        return (double)*((uint32_t *)bytes) * value.first.multiplier;
+      }
+    } else if (value.first.type == ValueType::Type::integer) {
+      if (value.first.bytes == 1) { // signed int 8
+        return (double)((int8_t)value.second.at(0)) * value.first.multiplier;
+      } else if (value.first.bytes == 2) { // signed int 16
+        char bytes[2] = {value.second.at(1), value.second.at(0)};
+        return (double)*((int16_t *)bytes) * value.first.multiplier;
+      } else if (value.first.bytes == 4) { // signed int 32
+        char bytes[4] = {value.second.at(3), value.second.at(2), value.second.at(1), value.second.at(0)};
+        return (double)*((int32_t *)bytes) * value.first.multiplier;
+      }
+    } else if (value.first.type == ValueType::Type::floatingpoint) {
+      if (value.first.bytes == 4) { // float
+        char bytes[4] = {value.second.at(3), value.second.at(2), value.second.at(1), value.second.at(0)};
+        return (double)*((float *)bytes) * value.first.multiplier;
+      } else if (value.first.bytes == 8) { // double
+        char bytes[8] = {value.second.at(7), value.second.at(6), value.second.at(5), value.second.at(4), value.second.at(3), value.second.at(2), value.second.at(1), value.second.at(0)};
+        return (*((double *)bytes)) * value.first.multiplier;
+      }
+    }
+  } else {
+    if (value.first.type == ValueType::Type::unsignedint) {
+      if (value.first.bytes == 1) {
+        return (double)((uint8_t)value.second.at(0)) * value.first.multiplier;
+      } else if (value.first.bytes == 2) { // unsigned int 16
+        char bytes[2] = {value.second.at(0), value.second.at(1)};
+        return (double)*((uint16_t *)bytes) * value.first.multiplier;
+      } else if (value.first.bytes == 3) { // unsigned int 32
+        char bytes[4] = {value.second.at(0), value.second.at(1), value.second.at(2), 0};
+        return (double)*((uint32_t *)bytes) * value.first.multiplier;
+      } else if (value.first.bytes == 4) { // unsigned int 32
+        char bytes[4] = {value.second.at(0), value.second.at(1), value.second.at(2), value.second.at(3)};
+        return (double)*((uint32_t *)bytes) * value.first.multiplier;
+      }
+    } else if (value.first.type == ValueType::Type::integer) {
+      if (value.first.bytes == 1) { // signed int 8
+        return (double)((int8_t)value.second.at(0)) * value.first.multiplier;
+      } else if (value.first.bytes == 2) { // signed int 16
+        char bytes[2] = {value.second.at(0), value.second.at(1)};
+        return (double)*((int16_t *)bytes) * value.first.multiplier;
+      } else if (value.first.bytes == 4) { // signed int 32
+        char bytes[4] = {value.second.at(0), value.second.at(1), value.second.at(2), value.second.at(3)};
+        return (double)*((int32_t *)bytes) * value.first.multiplier;
+      }
+    } else if (value.first.type == ValueType::Type::floatingpoint) {
+      if (value.first.bytes == 4) { // float
+        char bytes[4] = {value.second.at(0), value.second.at(1), value.second.at(2), value.second.at(3)};
+        return (double)*((float *)bytes) * value.first.multiplier;
+      } else if (value.first.bytes == 8) { // double
+        char bytes[8] = {value.second.at(0), value.second.at(1), value.second.at(2), value.second.at(3), value.second.at(4), value.second.at(5), value.second.at(6), value.second.at(7)};
+        return (*((double *)bytes)) * value.first.multiplier;
+      }
+    }
   }
-  enumerator type = getType(array.left(2));
-  if (type == unrecognised) {
-    isok = false;
-    return 0;
-  }
-  return getValue(array.mid(2), type);
+  isok = false;
+  return 0;
 }
 
-uint32_t PlotData::getBits(QByteArray data, enumerator type) {
-  // Little endian
-  if (type == u1) {
-    return ((uint32_t)((uint8_t)data.at(0)));
-  } else if (type == u2) { // unsigned int 16
-    char bytes[2] = {data.at(0), data.at(1)};
-    return ((uint32_t) * ((uint16_t *)bytes));
-  } else if (type == u3) { // unsigned int 32
-    char bytes[4] = {data.at(0), data.at(1), data.at(2), 0};
-    return (*((uint32_t *)bytes));
-  } else if (type == u4) { // unsigned int 32
-    char bytes[4] = {data.at(0), data.at(1), data.at(2), data.at(3)};
-    return (*((uint32_t *)bytes));
-
+uint32_t PlotData::getBits(QPair<ValueType, QByteArray> value) {
+  if (value.first.bigEndian) {
     // Big endian
-  } else if (type == U1) { // unsigned int 8
-    return ((uint32_t)((uint8_t)data.at(0)));
-  } else if (type == U2) { // unsigned int 16
-    char bytes[2] = {data.at(1), data.at(0)};
-    return ((uint32_t) * ((uint16_t *)bytes));
-  } else if (type == U3) { // unsigned int 32
-    char bytes[4] = {data.at(2), data.at(1), data.at(0), 0};
-    return (*((uint32_t *)bytes));
-  } else if (type == U4) { // unsigned int 32
-    char bytes[4] = {data.at(3), data.at(2), data.at(1), data.at(0)};
-    return (*((uint32_t *)bytes));
+    if (value.first.bytes == 1)
+      return ((uint32_t)((uint8_t)value.second.at(0)));
+    if (value.first.bytes == 2) {
+      char bytes[2] = {value.second.at(1), value.second.at(0)};
+      return ((uint32_t) * ((uint16_t *)bytes));
+    }
+    if (value.first.bytes == 3) {
+      char bytes[4] = {value.second.at(2), value.second.at(1), value.second.at(0), 0};
+      return (*((uint32_t *)bytes));
+    }
+    if (value.first.bytes == 4) {
+      char bytes[4] = {value.second.at(3), value.second.at(2), value.second.at(1), value.second.at(0)};
+      return (*((uint32_t *)bytes));
+    }
+  } else {
+    // Little endian
+    if (value.first.bytes == 1)
+      return ((uint32_t)((uint8_t)value.second.at(0)));
+    if (value.first.bytes == 2) {
+      char bytes[2] = {value.second.at(0), value.second.at(1)};
+      return ((uint32_t) * ((uint16_t *)bytes));
+    }
+    if (value.first.bytes == 3) {
+      char bytes[4] = {value.second.at(0), value.second.at(1), value.second.at(2), 0};
+      return (*((uint32_t *)bytes));
+    }
+    if (value.first.bytes == 4) {
+      char bytes[4] = {value.second.at(0), value.second.at(1), value.second.at(2), value.second.at(3)};
+      return (*((uint32_t *)bytes));
+    }
   }
   return 0;
 }
 
-void PlotData::addPoint(QByteArrayList data) {
+void PlotData::addPoint(QList<QPair<ValueType, QByteArray>> data) {
   if (data.length() > ANALOG_COUNT) {
     QByteArray message = QString::number(data.length() - 1).toUtf8();
     sendMessageIfAllowed(tr("Too many channels in point (missing ';' ?)").toUtf8(), message, MessageLevel::error);
@@ -181,25 +151,24 @@ void PlotData::addPoint(QByteArrayList data) {
   }
   bool isok;
   double time;
-  if (data.at(0).isEmpty()) {
+  if (data.at(0).second.isEmpty()) {
     if (qIsInf(lastTimes[0]))
       time = 0;
     else
       time = lastTimes[0] + defaultTimestep;
   } else {
-    time = arrayToDouble(data[0], isok);
-
+    time = getValue(data.at(0), isok);
     if (!isok) {
-      sendMessageIfAllowed(tr("Can not parse points time").toUtf8(), data[0], MessageLevel::error);
+      sendMessageIfAllowed(tr("Can not parse points time").toUtf8(), data.at(0).second, MessageLevel::error);
       return;
     }
   }
   for (unsigned int ch = 1; (int)ch < data.length(); ch++) {
-    if (data.at(ch).isEmpty())
+    if (data.at(ch).second.isEmpty())
       continue;
-    double value = arrayToDouble(data[ch], isok);
+    double value = getValue(data.at(ch), isok);
     if (!isok) {
-      sendMessageIfAllowed(tr("Can not parse points value").toUtf8(), data[ch], MessageLevel::error);
+      sendMessageIfAllowed(tr("Can not parse points value").toUtf8(), data.at(ch).second, MessageLevel::error);
       return;
     }
 
@@ -208,21 +177,19 @@ void PlotData::addPoint(QByteArrayList data) {
       if (logicTargets[i] == ch)
         isLogic = true;
     if (isLogic) {
-      if (data[ch].left(1).toLower() == "u") {
-        bool isok;
-        unsigned int bits = 8 * data[ch].mid(1, 1).toUInt(&isok);
+      if (data.at(ch).first.type == ValueType::Type::unsignedint) {
+        unsigned int bits = 8 * data.at(ch).first.bytes;
         QVector<double> digitalChannels;
-        uint32_t digitalValue = getBits(data.at(ch).mid(2), getType(data.at(ch).left(2)));
+        uint32_t digitalValue = getBits(data.at(ch));
         for (uint8_t bit = 0; bit < bits; bit++)
           digitalChannels.append((((bool)((digitalValue) & ((uint32_t)1 << (bit)))) + bit * 3));
-
         for (int logicGroup = 0; logicGroup < LOGIC_GROUPS; logicGroup++) {
           if (logicTargets[logicGroup] != ch)
             continue;
           if (logicBits[ch - 1] > 0 && logicBits[ch - 1] < bits)
             bits = logicBits[ch - 1];
           for (uint8_t bit = 0; bit < bits; bit++) {
-            emit addPointToPlot(GlobalFunctions::getLogicChannelID(logicGroup, bit), time, digitalChannels.at(bit), time >= lastTimes[ch - 1]);
+            emit addPointToPlot(getLogicChannelID(logicGroup, bit), time, digitalChannels.at(bit), time >= lastTimes[ch - 1]);
           }
         }
       } else {
@@ -249,61 +216,46 @@ void PlotData::addPoint(QByteArrayList data) {
     emit sendMessage(tr("Received point").toUtf8(), tr("%1 channels").arg(data.length() - 1).toUtf8(), MessageLevel::info);
 }
 
-void PlotData::addChannel(QByteArray data, unsigned int ch, QByteArray timeRaw, QByteArray unit, int zeroIndex, int bits, QByteArray min, QByteArray max) {
+void PlotData::addChannel(QPair<ValueType, QByteArray> data, unsigned int ch, QPair<ValueType, QByteArray> timeRaw, int zeroIndex, int bits, QPair<ValueType, QByteArray> min, QPair<ValueType, QByteArray> max) {
   // Zjistí datový typ vstupu
-  ValueType::enumerator type = getType(data.left(2));
-  if (type == unrecognised) {
-    return;
-  }
+  QByteArray typeID, numberBytes;
 
   // Převede časový interval na číslo
   bool isok;
-  double timeStep = arrayToDouble(timeRaw, isok);
+  double timeStep = getValue(timeRaw, isok);
   if (!isok) {
-    sendMessageIfAllowed(tr("Can not parse channel time step").toUtf8(), timeRaw, MessageLevel::error);
+    sendMessageIfAllowed(tr("Can not parse channel time step").toUtf8(), timeRaw.second, MessageLevel::error);
     return;
-  }
-  if (!unit.isEmpty()) {
-    bool isok;
-    timeStep *= arrayToDouble(unit, isok);
-    if (!isok) {
-      sendMessageIfAllowed(tr("Invalid time interval  unit").toUtf8(), unit, MessageLevel::error);
-      return;
-    }
   }
 
   // Přemapování provede poud je vyplněno max
-  bool remap = !max.isEmpty();
+  bool remap = !max.second.isEmpty();
 
   // Převede minimální hodnotu na číslo na číslo
   double minimum = 0;
-  if (!min.isEmpty()) {
+  if (!min.second.isEmpty()) {
     if (!remap)
       sendMessageIfAllowed(tr("Minumum value is stated, but maximum is not").toUtf8(), tr("Value will not be remaped!").toUtf8(), MessageLevel::warning);
-    minimum = arrayToDouble(min, isok);
+    minimum = getValue(min, isok);
     if (!isok) {
-      sendMessageIfAllowed(tr("Can not parse minimum value").toUtf8(), min, MessageLevel::error);
+      sendMessageIfAllowed(tr("Can not parse minimum value").toUtf8(), min.second, MessageLevel::error);
       return;
     }
   }
 
   // Převede minimální hodnotu na číslo na číslo
   double maximum = 0;
-  if (remap || !min.isEmpty()) {
-    maximum = arrayToDouble(max, isok);
+  if (remap || !min.second.isEmpty()) {
+    maximum = getValue(max, isok);
     if (!isok) {
-      sendMessageIfAllowed(tr("Can not parse maximum value").toUtf8(), max, MessageLevel::error);
+      sendMessageIfAllowed(tr("Can not parse maximum value").toUtf8(), max.second, MessageLevel::error);
       return;
     }
   }
 
-  // Zjistí počet bajtů na hodnotu a z dat odebere identifikátor typu
-  uint8_t bytesPerValue = data.mid(1, 1).toUInt(nullptr, 16);
-  data.remove(0, 2);
-
   // Informace o přijatém kanálu
   if (debugLevel == OutputLevel::info) {
-    QByteArray message = tr("%1 samples, sampling period %2s, %4 bits").arg(data.length() / bytesPerValue).arg(GlobalFunctions::floatToNiceString(timeStep, 4, false, false)).arg(bits).toUtf8();
+    QByteArray message = tr("%1 samples, sampling period %2s, %4 bits").arg(data.second.length() / data.first.bytes).arg(floatToNiceString(timeStep, 4, false, false)).arg(bits).toUtf8();
     if (remap)
       message.append(tr(", from %1 to %2").arg(minimum).arg(maximum).toUtf8());
     emit sendMessage(tr("Received channel %1").arg(ch).toUtf8(), message, MessageLevel::info);
@@ -313,29 +265,25 @@ void PlotData::addChannel(QByteArray data, unsigned int ch, QByteArray timeRaw, 
   for (int i = 0; i < LOGIC_GROUPS; i++)
     if (logicTargets[i] == ch)
       isLogic = true;
-  if (isLogic && type != u1 && type != u2 && type != u3 && type != u4 && type != U1 && type != U2 && type != U3 && type != U4) {
+  if (isLogic && data.first.type != ValueType::Type::unsignedint) {
     isLogic = false;
     sendMessageIfAllowed(tr("Can not show channel %1 as logic").arg(ch), tr("digital mode is only available for unsigned integer data type").toUtf8(), MessageLevel::warning);
   }
 
-  double remapMultiple = 1;
   if (remap)
-    remapMultiple = (maximum - minimum) / ((1 << bits) - 1);
+    data.first.multiplier *= (maximum - minimum) / ((1 << bits) - 1);
 
   // Vektory se pošlou jako pointer, graf je po zpracování smaže.
   auto analogData = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer);
   QVector<double> times;
   QVector<uint32_t> valuesDigital;
   QCPGraphData point;
-  for (int i = 0; i < data.length(); i += bytesPerValue) {
-    times.append(((i / bytesPerValue) - zeroIndex) * timeStep);
+  for (int i = 0; i < data.second.length(); i += data.first.bytes) {
+    times.append(((i / data.first.bytes) - zeroIndex) * timeStep);
     point.key = times.last();
-    if (remap)
-      point.value = minimum + getValue(data.mid(i, bytesPerValue), type) * remapMultiple;
-    else
-      point.value = getValue(data.mid(i, bytesPerValue), type);
+    point.value = minimum + getValue(QPair<ValueType, QByteArray>(data.first, data.second.mid(i, data.first.bytes)), isok);
     if (isLogic)
-      valuesDigital.append(getBits(data.mid(i, bytesPerValue), type));
+      valuesDigital.append(getBits(QPair<ValueType, QByteArray>(data.first, data.second.mid(i, data.first.bytes))));
     analogData->add(point);
   }
 
@@ -366,7 +314,7 @@ void PlotData::addChannel(QByteArray data, unsigned int ch, QByteArray timeRaw, 
       if (logicBits[ch - 1] > 0 && logicBits[ch - 1] < (unsigned int)bits)
         bits = logicBits[ch - 1];
       for (uint8_t bit = 0; bit < bits; bit++) {
-        emit addVectorToPlot(GlobalFunctions::getLogicChannelID(logicGroup, bit), digitalChannels.at(bit));
+        emit addVectorToPlot(getLogicChannelID(logicGroup, bit), digitalChannels.at(bit));
       }
     }
   }
@@ -387,7 +335,7 @@ void PlotData::setLogicBits(int target, int bits) {
   emit clearLogic(target - 1, bits);
 }
 
-void PlotData::sendMessageIfAllowed(QString header, QByteArray message, MessageLevel::enumerator type) {
+void PlotData::sendMessageIfAllowed(QString header, QByteArray message, MessageLevel::enumMessageLevel type) {
   if ((int)debugLevel >= (int)type)
     emit sendMessage(header, message, type);
 }

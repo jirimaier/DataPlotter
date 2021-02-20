@@ -26,7 +26,6 @@
 #include "enums_defines_constants.h"
 #include "qcustomplot.h"
 
-using namespace ValueType;
 class PlotData : public QObject {
   Q_OBJECT
 public:
@@ -39,21 +38,21 @@ private:
   unsigned int mathFirsts[MATH_COUNT];
   unsigned int mathSeconds[MATH_COUNT];
   // unsigned int xyFirst, xySecond;
-  double getValue(QByteArray number, ValueType::enumerator type);
-  ValueType::enumerator getType(QByteArray array);
-  OutputLevel::enumerator debugLevel = OutputLevel::info;
+  double getValue(QPair<ValueType, QByteArray> value, bool &isok);
+  OutputLevel::enumOutputLevel debugLevel = OutputLevel::info;
   double lastTimes[ANALOG_COUNT];
   double defaultTimestep = 1;
-  void sendMessageIfAllowed(QString header, QByteArray message, MessageLevel::enumerator type);
-  double arrayToDouble(QByteArray &array, bool &isok);
-  uint32_t getBits(QByteArray data, ValueType::enumerator type);
+  void sendMessageIfAllowed(QString header, QByteArray message, MessageLevel::enumMessageLevel type);
+  uint32_t getBits(QPair<ValueType, QByteArray> value);
+  double unitToMultiple(char unit);
 
 public slots:
-  void addPoint(QByteArrayList data);
-  void addChannel(QByteArray data, unsigned int ch, QByteArray timeRaw, QByteArray unit, int zeroIndex, int bits, QByteArray min, QByteArray max);
+  void addPoint(QList<QPair<ValueType, QByteArray>> data);
+  void addChannel(QPair<ValueType, QByteArray> data, unsigned int ch, QPair<ValueType, QByteArray> timeRaw, int zeroIndex, int bits, QPair<ValueType, QByteArray> min, QPair<ValueType, QByteArray> max);
   void reset();
+
   /// Nastavý úroveň výpisu
-  void setDebugLevel(OutputLevel::enumerator debugLevel) { this->debugLevel = debugLevel; }
+  void setDebugLevel(OutputLevel::enumOutputLevel debugLevel) { this->debugLevel = debugLevel; }
 
   void setDigitalChannel(int logicGroup, int ch);
 
@@ -61,12 +60,10 @@ public slots:
 
   void setMathFirst(int math, int ch) { mathFirsts[math - 1] = ch; }
   void setMathSecond(int math, int ch) { mathSeconds[math - 1] = ch; }
-  // void setXYFirst(int ch) { xyFirst = ch; }
-  // void setXYSecond(int ch) { xySecond = ch; }
 
 signals:
   /// Pošle zprávu do výpisu
-  void sendMessage(QString header, QByteArray message, MessageLevel::enumerator type, MessageTarget::enumerator target = MessageTarget::serial1);
+  void sendMessage(QString header, QByteArray message, MessageLevel::enumMessageLevel type, MessageTarget::enumMessageTarget target = MessageTarget::serial1);
 
   /// Předá data do grafu
   void addVectorToPlot(int ch, QSharedPointer<QCPGraphDataContainer>, bool isMath = false);
@@ -77,9 +74,6 @@ signals:
   void clearLogic(int group, int fromBit);
 
   void addMathData(int mathNumber, bool isFirst, QSharedPointer<QCPGraphDataContainer> in, bool shouldIgnorePause = false);
-  // void addXYData(bool isFirst, QSharedPointer<QCPGraphDataContainer> in, bool shouldIgnorePause = false);
-
-  void clearXY();
 };
 
 #endif // PLOTTING_H

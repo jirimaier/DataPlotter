@@ -13,12 +13,24 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#include "myaxistickerwithunit.h"
+#ifndef MYDOUBLESPINBOXWITHUNITS_H
+#define MYDOUBLESPINBOXWITHUNITS_H
 
-QString MyAxisTickerWithUnit::getTickLabel(double tick, const QLocale &locale, QChar formatChar, int precision) {
-  if (unit.isEmpty())
-    return (locale.toString(tick, formatChar.toLatin1(), precision));
-  else {
-    return (floatToNiceString(tick, 2, false, false, false, false) + unit);
-  }
-}
+#include "enums_defines_constants.h"
+#include <QDoubleSpinBox>
+#include <QWidget>
+
+class MyDoubleSpinBoxWithUnits : public QDoubleSpinBox {
+  Q_OBJECT
+public:
+  explicit MyDoubleSpinBoxWithUnits(QWidget *parent = nullptr);
+
+private:
+  QValidator::State validate(QString &input, int &pos) const;
+  QString textFromValue(double val) const;
+  double valueFromText(const QString &text) const;
+  QString validchars = "Mkmu";
+signals:
+};
+
+#endif // MYDOUBLESPINBOXWITHUNITS_H

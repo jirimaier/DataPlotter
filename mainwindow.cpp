@@ -34,7 +34,6 @@ void MainWindow::init(QTranslator *translator, const PlotData *plotData, const P
   fillChannelSelect(); // Vytvoří seznam kanálů pro výběr
 
   QObject::connect(plotMath, &PlotMath::sendResult, ui->plot, &MyMainPlot::newDataVector);
-  QObject::connect(plotData, &PlotData::clearXY, ui->plotxy, &MyXYPlot::clear);
   QObject::connect(plotData, &PlotData::addVectorToPlot, ui->plot, &MyMainPlot::newDataVector);
   QObject::connect(plotData, &PlotData::addPointToPlot, ui->plot, &MyMainPlot::newDataPoint);
   QObject::connect(plotData, &PlotData::clearLogic, ui->plot, &MyMainPlot::clearLogicGroup);
@@ -61,7 +60,7 @@ void MainWindow::changeLanguage(QString code) {
   ui->retranslateUi(this);
 }
 
-void MainWindow::showPlotStatus(PlotStatus::enumerator type) {
+void MainWindow::showPlotStatus(PlotStatus::enumPlotStatus type) {
   if (type == PlotStatus::pause) {
     ui->pushButtonPause->setIcon(iconPause);
     ui->pushButtonPause->setToolTip(tr("Paused (click to resume)"));
@@ -74,7 +73,7 @@ void MainWindow::showPlotStatus(PlotStatus::enumerator type) {
 void MainWindow::updateChScale() {
   if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT) {
     double perDiv = ui->plot->getCHDiv(ui->comboBoxSelectedChannel->currentIndex());
-    ui->labelChScale->setText(GlobalFunctions::floatToNiceString(perDiv, 3, true, false) + tr("V / Div"));
+    ui->labelChScale->setText(floatToNiceString(perDiv, 3, true, false) + tr("V / Div"));
   } else
     ui->labelChScale->setText(tr("---"));
 }
@@ -99,10 +98,10 @@ void MainWindow::serialFinishedWriting() {
 void MainWindow::updateDivs() {
   updateChScale();
   if (ui->labelHDiv->isEnabled())
-    ui->labelHDiv->setText(GlobalFunctions::floatToNiceString(ui->plot->getHDiv(), 3, false, false, true) + tr("s/Div"));
+    ui->labelHDiv->setText(floatToNiceString(ui->plot->getHDiv(), 3, false, false, true) + tr("s/Div"));
   else
     ui->labelHDiv->setText("---");
-  ui->labelVDiv->setText(GlobalFunctions::floatToNiceString(ui->plot->getVDiv(), 3, false, false, true) + tr("V/Div"));
+  ui->labelVDiv->setText(floatToNiceString(ui->plot->getVDiv(), 3, false, false, true) + tr("V/Div"));
 }
 
 void MainWindow::on_pushButtonCenter_clicked() {
@@ -112,7 +111,7 @@ void MainWindow::on_pushButtonCenter_clicked() {
     ui->plot->setVerticalCenter(0);
 }
 
-void MainWindow::printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumerator target) {
+void MainWindow::printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumMessageTarget target) {
   QString color = "<font color=black>";
   switch (type) {
   case MessageLevel::warning:
@@ -160,11 +159,11 @@ void MainWindow::updateMathNow(int number) {
   emit setMathFirst(number, mathEn[number - 1]->isChecked() ? mathFirst[number - 1]->value() : 0);
   emit setMathSecond(number, mathEn[number - 1]->isChecked() ? mathSecond[number - 1]->value() : 0);
   emit clearMath(number);
-  ui->plot->clearCh(GlobalFunctions::getAnalogChId(number, ChannelType::math));
+  ui->plot->clearCh(getAnalogChId(number, ChannelType::math));
   if (mathEn[number - 1]->isChecked()) {
-    MathOperations::enumerator operation = (MathOperations::enumerator)mathOp[number - 1]->currentIndex();
-    QSharedPointer<QCPGraphDataContainer> in1 = ui->plot->graph(GlobalFunctions::getAnalogChId(mathFirst[number - 1]->value(), ChannelType::analog))->data();
-    QSharedPointer<QCPGraphDataContainer> in2 = ui->plot->graph(GlobalFunctions::getAnalogChId(mathSecond[number - 1]->value(), ChannelType::analog))->data();
+    MathOperations::enumMathOperations operation = (MathOperations::enumMathOperations)mathOp[number - 1]->currentIndex();
+    QSharedPointer<QCPGraphDataContainer> in1 = ui->plot->graph(getAnalogChId(mathFirst[number - 1]->value(), ChannelType::analog))->data();
+    QSharedPointer<QCPGraphDataContainer> in2 = ui->plot->graph(getAnalogChId(mathSecond[number - 1]->value(), ChannelType::analog))->data();
     emit resetMath(number, operation, in1, in2);
   }
 }
@@ -214,13 +213,18 @@ void MainWindow::on_comboBoxFFTType_currentIndexChanged(int index) {
     ui->plotFFT->setYUnit("");
 }
 
-void MainWindow::on_lineEditVUnit_textEdited(const QString &arg1) {
+void MainWindow::on_lineEditVUnit_textChanged(const QString &arg1) {
   ui->plot->setYUnit(arg1);
   ui->plotxy->setYUnit(arg1);
   ui->plotxy->setXUnit(arg1);
+  ui->doubleSpinBoxRangeVerticalRange->setSuffix(arg1);
+  ui->doubleSpinBoxChOffset->setSuffix(arg1);
 }
 
-void MainWindow::on_checkBoxOpenGL_toggled(bool checked) { ui->plot->setOpenGl(checked); }
+void MainWindow::on_checkBoxOpenGL_toggled(bool checked) {
+  ui->plot->setOpenGl(checked);
+  ui->plot->redraw();
+}
 
 void MainWindow::on_checkBoxMouseControls_toggled(bool checked) {
   ui->plot->enableMouseCursorControll(checked);

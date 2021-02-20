@@ -55,17 +55,18 @@
 #include "signalprocessing.h"
 
 Q_DECLARE_METATYPE(ChannelSettings_t)
-Q_DECLARE_METATYPE(DataMode::enumerator)
-Q_DECLARE_METATYPE(OutputLevel::enumerator)
-Q_DECLARE_METATYPE(MessageLevel::enumerator)
-Q_DECLARE_METATYPE(PlotStatus::enumerator)
-Q_DECLARE_METATYPE(MessageTarget::enumerator)
+Q_DECLARE_METATYPE(DataMode::enumDataMode)
+Q_DECLARE_METATYPE(OutputLevel::enumOutputLevel)
+Q_DECLARE_METATYPE(MessageLevel::enumMessageLevel)
+Q_DECLARE_METATYPE(PlotStatus::enumPlotStatus)
+Q_DECLARE_METATYPE(MessageTarget::enumMessageTarget)
 Q_DECLARE_METATYPE(QSharedPointer<QVector<double>>);
 Q_DECLARE_METATYPE(QSharedPointer<QCPGraphDataContainer>);
 Q_DECLARE_METATYPE(QSharedPointer<QCPCurveDataContainer>);
-Q_DECLARE_METATYPE(MathOperations::enumerator);
-Q_DECLARE_METATYPE(FFTWindow::enumerator);
-Q_DECLARE_METATYPE(FFTType::enumerator);
+Q_DECLARE_METATYPE(MathOperations::enumMathOperations);
+Q_DECLARE_METATYPE(FFTWindow::enumFFTWindow);
+Q_DECLARE_METATYPE(FFTType::enumFFTType);
+Q_DECLARE_METATYPE(ValueType);
 
 int main(int argc, char *argv[]) {
   QApplication application(argc, argv);
@@ -73,17 +74,19 @@ int main(int argc, char *argv[]) {
   // Zaregistruje typy aby je šlo posílat signály mezi vlákny
   qRegisterMetaType<ChannelSettings_t>();
   qRegisterMetaType<QPair<QVector<double>, QVector<double>>>();
-  qRegisterMetaType<DataMode::enumerator>();
-  qRegisterMetaType<OutputLevel::enumerator>();
-  qRegisterMetaType<MessageLevel::enumerator>();
-  qRegisterMetaType<PlotStatus::enumerator>();
-  qRegisterMetaType<MessageTarget::enumerator>();
+  qRegisterMetaType<DataMode::enumDataMode>();
+  qRegisterMetaType<OutputLevel::enumOutputLevel>();
+  qRegisterMetaType<MessageLevel::enumMessageLevel>();
+  qRegisterMetaType<PlotStatus::enumPlotStatus>();
+  qRegisterMetaType<MessageTarget::enumMessageTarget>();
   qRegisterMetaType<QSharedPointer<QVector<double>>>();
   qRegisterMetaType<QSharedPointer<QCPGraphDataContainer>>();
   qRegisterMetaType<QSharedPointer<QCPCurveDataContainer>>();
-  qRegisterMetaType<MathOperations::enumerator>();
-  qRegisterMetaType<FFTWindow::enumerator>();
-  qRegisterMetaType<FFTType::enumerator>();
+  qRegisterMetaType<MathOperations::enumMathOperations>();
+  qRegisterMetaType<FFTWindow::enumFFTWindow>();
+  qRegisterMetaType<FFTType::enumFFTType>();
+  qRegisterMetaType<QPair<ValueType, QByteArray>>();
+  qRegisterMetaType<QList<QPair<ValueType, QByteArray>>>();
 
   // Vytvoří instance hlavních objektů
   MainWindow mainWindow;

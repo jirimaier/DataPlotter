@@ -50,7 +50,7 @@ public:
 private:
   Ui::MainWindow *ui;
   QTranslator *translator;
-  QTimer portsRefreshTimer, activeChRefreshTimer, xyTimer, cursorRangeUpdateTimer, measureRefreshTimer1, measureRefreshTimer2, fftTimer;
+  QTimer portsRefreshTimer, activeChRefreshTimer, xyTimer, cursorRangeUpdateTimer, measureRefreshTimer1, measureRefreshTimer2, fftTimer, serialMonitorTimer;
   QList<QSerialPortInfo> portList;
   void connectSignals();
   void updateChScale();
@@ -80,17 +80,20 @@ private:
   void updateXY();
   QIcon iconXY, iconRun, iconPause, iconHidden, iconVisible, iconConnected, iconNotConnected, iconCross, iconFFT;
   void insertInTerminalDebug(QString text, QColor textColor);
+  QByteArray serialMonitor;
+
 private slots:
   void updateCursors();
   void setAdaptiveSpinBoxes();
   void updateDivs();
   void comRefresh();
   void rangeTypeChanged();
-  void updateCursor(Cursors::enumerator cursor, int selectedChannel, unsigned int sample, double &time, double &value, QByteArray &timeStr, QByteArray &valueStr);
+  void updateCursor(Cursors::enumCursors cursor, int selectedChannel, unsigned int sample, double &time, double &value, QByteArray &timeStr, QByteArray &valueStr);
   void updateCursorRange();
   void updateMeasurements1();
   void updateMeasurements2();
   void updateFFT();
+  void updateSerialMonitor();
 
 private slots: // Autoconnect slots
   void on_dialRollingRange_realValueChanged(double value) { ui->doubleSpinBoxRangeHorizontal->setValue(value); }
@@ -135,7 +138,6 @@ private slots: // Autoconnect slots
   void on_comboBoxCom_currentIndexChanged(int) { emit disconnectSerial(); }
   void on_comboBoxBaud_currentIndexChanged(int) { emit disconnectSerial(); }
   void on_pushButtonScrollDown_2_clicked();
-  void on_pushButtonScrollDown_3_clicked();
   void on_checkBoxSerialMonitor_toggled(bool checked);
   void on_comboBoxSelectedChannel_currentIndexChanged(int index);
   void on_pushButtonResetChannels_clicked();
@@ -191,20 +193,25 @@ private slots: // Autoconnect slots
   void on_textEditTerminalDebug_cursorPositionChanged();
   void on_myTerminal_cellClicked(int row, int column);
   void on_comboBoxFFTType_currentIndexChanged(int index);
-  void on_lineEditVUnit_textEdited(const QString &arg1);
   void on_checkBoxOpenGL_toggled(bool checked);
 
   void on_checkBoxMouseControls_toggled(bool checked);
 
+  void on_lineEditVUnit_textChanged(const QString &arg1);
+
+  void on_pushButtonClearReceivedList_3_clicked() { serialMonitor.clear(); }
+
+  void on_pushButtonScrollDown_3_clicked();
+
 public slots:
-  void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumerator target);
-  void showPlotStatus(PlotStatus::enumerator type);
+  void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumMessageTarget target);
+  void showPlotStatus(PlotStatus::enumPlotStatus type);
   void serialConnectResult(bool connected, QString message);
   void printToTerminal(QByteArray data) { ui->myTerminal->printToTerminal(data); }
   void serialFinishedWriting();
-  void useSettings(QByteArray settings, MessageTarget::enumerator source);
+  void useSettings(QByteArray settings, MessageTarget::enumMessageTarget source);
   void printDeviceMessage(QByteArray message, bool warning, bool ended);
-  void printSerialMonitor(QByteArray data) { ui->plainTextEditConsole_3->appendPlainText(data); }
+  void printSerialMonitor(QByteArray data) { serialMonitor.append(data); }
   void signalMeasurementsResult1(float period, float freq, float amp, float min, float max, float vrms, float dc, float fs, float rise, float fall, int samples);
   void signalMeasurementsResult2(float period, float freq, float amp, float min, float max, float vrms, float dc, float fs, float rise, float fall, int samples);
   void fftResult(QSharedPointer<QCPGraphDataContainer> data);
@@ -225,16 +232,16 @@ signals:
   void disconnectSerial();
   void sendManualInput(QByteArray data);
   void parseError(QByteArray, int type = DataLineType::debugMessage);
-  void setSerialMessageLevel(OutputLevel::enumerator level);
-  void setManualMessageLevel(OutputLevel::enumerator level);
+  void setSerialMessageLevel(OutputLevel::enumOutputLevel level);
+  void setManualMessageLevel(OutputLevel::enumOutputLevel level);
   void enableSerialMonitor(bool enabled);
   void setMathFirst(int math, int ch);
   void setMathSecond(int math, int ch);
   void clearMath(int math);
-  void resetMath(int mathNumber, MathOperations::enumerator mode, QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2, bool shouldIgnorePause = false);
+  void resetMath(int mathNumber, MathOperations::enumMathOperations mode, QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2, bool shouldIgnorePause = false);
   void requestXY(QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2);
   void requstMeasurements1(QSharedPointer<QCPGraphDataContainer> data);
   void requstMeasurements2(QSharedPointer<QCPGraphDataContainer> data);
-  void requestFFT(QSharedPointer<QCPGraphDataContainer> data, FFTType::enumerator type, FFTWindow::enumerator window);
+  void requestFFT(QSharedPointer<QCPGraphDataContainer> data, FFTType::enumFFTType type, FFTWindow::enumFFTWindow window);
 };
 #endif // MAINWINDOW_H
