@@ -15,7 +15,7 @@
 
 #include "mydial.h"
 
-myDial::myDial(QWidget *parent) : QDial(parent) {
+myDial::myDial(QWidget* parent) : QDial(parent) {
   lastPosition = this->value();
   connect(this, &QDial::valueChanged, this, &myDial::positionChanged);
 }

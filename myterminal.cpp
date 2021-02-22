@@ -15,7 +15,7 @@
 
 #include "myterminal.h"
 
-MyTerminal::MyTerminal(QWidget *parent) : QTableWidget(parent) {
+MyTerminal::MyTerminal(QWidget* parent) : QTableWidget(parent) {
   colorCodes["0"] = Qt::black;
   colorCodes["1"] = Qt::darkRed;
   colorCodes["2"] = Qt::darkGreen;
@@ -47,7 +47,8 @@ MyTerminal::~MyTerminal() {
         delete this->item(r, c);
 }
 
-void MyTerminal::printText(QByteArray text) {
+void MyTerminal::printText(QByteArray bytes) {
+  QString text = QString::fromUtf8(bytes);
   for (uint16_t i = 0; i < text.length(); i++) {
     if (text.at(i) == '\b' || text.at(i) == 0x7f) {
       moveCursorRelative(-1, 0);
@@ -77,9 +78,9 @@ void MyTerminal::printText(QByteArray text) {
   }
 }
 
-void MyTerminal::printChar(char letter) {
+void MyTerminal::printChar(QChar letter) {
   clearCell(cursorX, cursorY);
-  this->setItem(cursorY, cursorX, new QTableWidgetItem(QChar(letter)));
+  this->setItem(cursorY, cursorX, new QTableWidgetItem(letter));
   this->item(cursorY, cursorX)->setBackground(backColor);
   this->item(cursorY, cursorX)->setForeground(fontColor);
   this->item(cursorY, cursorX)->setTextAlignment(Qt::AlignCenter);
@@ -111,7 +112,7 @@ void MyTerminal::clearTerminal() {
   moveCursorAbsolute(0, 0);
 }
 
-void MyTerminal::highLightField(QTableWidgetItem *field) {
+void MyTerminal::highLightField(QTableWidgetItem* field) {
   QColor clr = field->background().color();
   if (clr.lightness() < 127) // Tmavou barvu zesvětlá
     clr.setHsl(clr.hue(), clr.saturation(), clr.lightness() + 50);
@@ -338,7 +339,7 @@ void MyTerminal::resetTerminal() {
 }
 
 void MyTerminal::copyToClipboard() {
-  QClipboard *clipboard = QGuiApplication::clipboard();
+  QClipboard* clipboard = QGuiApplication::clipboard();
   QString text = "";
   QModelIndexList selection = this->selectionModel()->selectedIndexes();
   if (selection.isEmpty())
@@ -408,16 +409,16 @@ void MyTerminal::clearCell(int x, int y) {
 
 void MyTerminal::characterClicked(int r, int c) {
   if (mode == clicksend) {
-    QTableWidgetItem *it = item(r, c);
+    QTableWidgetItem* it = item(r, c);
     if (it) {
-      emit writeToSerial(it->text().toLocal8Bit());
+      emit writeToSerial(it->text().toUtf8());
       if (!blickInProgress) {
         blickInProgress = true;
         QColor origBack = it->background().color();
         QColor origFont = it->foreground().color();
         highLightField(it);
         connect(&clickBlinkTimer, &QTimer::timeout, this, [r, c, this, origBack, origFont] {
-          QTableWidgetItem *it = this->item(r, c);
+          QTableWidgetItem* it = this->item(r, c);
           if (it) {
             it->setBackground(origBack);
             it->setForeground(origFont);

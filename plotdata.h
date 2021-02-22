@@ -22,23 +22,26 @@
 #include <QVector>
 #include <QWidget>
 #include <QtMath>
+#include <QTime>
 
 #include "enums_defines_constants.h"
 #include "qcustomplot.h"
 
 class PlotData : public QObject {
   Q_OBJECT
-public:
-  explicit PlotData(QObject *parent = nullptr);
+ public:
+  explicit PlotData(QObject* parent = nullptr);
   ~PlotData();
 
-private:
+ private:
+  QTime qTime;
+
   unsigned int logicTargets[LOGIC_GROUPS];
   unsigned int logicBits[LOGIC_GROUPS];
   unsigned int mathFirsts[MATH_COUNT];
   unsigned int mathSeconds[MATH_COUNT];
   // unsigned int xyFirst, xySecond;
-  double getValue(QPair<ValueType, QByteArray> value, bool &isok);
+  double getValue(QPair<ValueType, QByteArray> value, bool& isok);
   OutputLevel::enumOutputLevel debugLevel = OutputLevel::info;
   double lastTimes[ANALOG_COUNT];
   double defaultTimestep = 1;
@@ -46,7 +49,9 @@ private:
   uint32_t getBits(QPair<ValueType, QByteArray> value);
   double unitToMultiple(char unit);
 
-public slots:
+  bool lastTimeWasHMS = false;
+
+ public slots:
   void addPoint(QList<QPair<ValueType, QByteArray>> data);
   void addChannel(QPair<ValueType, QByteArray> data, unsigned int ch, QPair<ValueType, QByteArray> timeRaw, int zeroIndex, int bits, QPair<ValueType, QByteArray> min, QPair<ValueType, QByteArray> max);
   void reset();
@@ -61,7 +66,7 @@ public slots:
   void setMathFirst(int math, int ch) { mathFirsts[math - 1] = ch; }
   void setMathSecond(int math, int ch) { mathSeconds[math - 1] = ch; }
 
-signals:
+ signals:
   /// Pošle zprávu do výpisu
   void sendMessage(QString header, QByteArray message, MessageLevel::enumMessageLevel type, MessageTarget::enumMessageTarget target = MessageTarget::serial1);
 
@@ -74,6 +79,8 @@ signals:
   void clearLogic(int group, int fromBit);
 
   void addMathData(int mathNumber, bool isFirst, QSharedPointer<QCPGraphDataContainer> in, bool shouldIgnorePause = false);
+
+  void ch1dataUpdated(bool wasPoint, bool HMS);
 };
 
 #endif // PLOTTING_H

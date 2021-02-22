@@ -15,7 +15,7 @@
 
 #include "plotdata.h"
 
-PlotData::PlotData(QObject *parent) : QObject(parent) {
+PlotData::PlotData(QObject* parent) : QObject(parent) {
   for (int i = 0; i < LOGIC_GROUPS; i++) {
     logicTargets[i] = -1;
     logicBits[i] = 0;
@@ -29,7 +29,7 @@ PlotData::PlotData(QObject *parent) : QObject(parent) {
 
 PlotData::~PlotData() {}
 
-double PlotData::getValue(QPair<ValueType, QByteArray> value, bool &isok) {
+double PlotData::getValue(QPair<ValueType, QByteArray> value, bool& isok) {
   if (!value.first.isBinary) {
     return value.second.toDouble(&isok);
   }
@@ -41,31 +41,31 @@ double PlotData::getValue(QPair<ValueType, QByteArray> value, bool &isok) {
         return (double)((uint8_t)value.second.at(0)) * value.first.multiplier;
       } else if (value.first.bytes == 2) { // unsigned int 16
         char bytes[2] = {value.second.at(1), value.second.at(0)};
-        return (double)*((uint16_t *)bytes) * value.first.multiplier;
+        return (double) * ((uint16_t*)bytes) * value.first.multiplier;
       } else if (value.first.bytes == 3) { // unsigned int 32
         char bytes[4] = {value.second.at(2), value.second.at(1), value.second.at(0), 0};
-        return (double)*((uint32_t *)bytes) * value.first.multiplier;
+        return (double) * ((uint32_t*)bytes) * value.first.multiplier;
       } else if (value.first.bytes == 4) { // unsigned int 32
         char bytes[4] = {value.second.at(3), value.second.at(2), value.second.at(1), value.second.at(0)};
-        return (double)*((uint32_t *)bytes) * value.first.multiplier;
+        return (double) * ((uint32_t*)bytes) * value.first.multiplier;
       }
     } else if (value.first.type == ValueType::Type::integer) {
       if (value.first.bytes == 1) { // signed int 8
         return (double)((int8_t)value.second.at(0)) * value.first.multiplier;
       } else if (value.first.bytes == 2) { // signed int 16
         char bytes[2] = {value.second.at(1), value.second.at(0)};
-        return (double)*((int16_t *)bytes) * value.first.multiplier;
+        return (double) * ((int16_t*)bytes) * value.first.multiplier;
       } else if (value.first.bytes == 4) { // signed int 32
         char bytes[4] = {value.second.at(3), value.second.at(2), value.second.at(1), value.second.at(0)};
-        return (double)*((int32_t *)bytes) * value.first.multiplier;
+        return (double) * ((int32_t*)bytes) * value.first.multiplier;
       }
     } else if (value.first.type == ValueType::Type::floatingpoint) {
       if (value.first.bytes == 4) { // float
         char bytes[4] = {value.second.at(3), value.second.at(2), value.second.at(1), value.second.at(0)};
-        return (double)*((float *)bytes) * value.first.multiplier;
+        return (double) * ((float*)bytes) * value.first.multiplier;
       } else if (value.first.bytes == 8) { // double
         char bytes[8] = {value.second.at(7), value.second.at(6), value.second.at(5), value.second.at(4), value.second.at(3), value.second.at(2), value.second.at(1), value.second.at(0)};
-        return (*((double *)bytes)) * value.first.multiplier;
+        return (*((double*)bytes)) * value.first.multiplier;
       }
     }
   } else {
@@ -74,31 +74,31 @@ double PlotData::getValue(QPair<ValueType, QByteArray> value, bool &isok) {
         return (double)((uint8_t)value.second.at(0)) * value.first.multiplier;
       } else if (value.first.bytes == 2) { // unsigned int 16
         char bytes[2] = {value.second.at(0), value.second.at(1)};
-        return (double)*((uint16_t *)bytes) * value.first.multiplier;
+        return (double) * ((uint16_t*)bytes) * value.first.multiplier;
       } else if (value.first.bytes == 3) { // unsigned int 32
         char bytes[4] = {value.second.at(0), value.second.at(1), value.second.at(2), 0};
-        return (double)*((uint32_t *)bytes) * value.first.multiplier;
+        return (double) * ((uint32_t*)bytes) * value.first.multiplier;
       } else if (value.first.bytes == 4) { // unsigned int 32
         char bytes[4] = {value.second.at(0), value.second.at(1), value.second.at(2), value.second.at(3)};
-        return (double)*((uint32_t *)bytes) * value.first.multiplier;
+        return (double) * ((uint32_t*)bytes) * value.first.multiplier;
       }
     } else if (value.first.type == ValueType::Type::integer) {
       if (value.first.bytes == 1) { // signed int 8
         return (double)((int8_t)value.second.at(0)) * value.first.multiplier;
       } else if (value.first.bytes == 2) { // signed int 16
         char bytes[2] = {value.second.at(0), value.second.at(1)};
-        return (double)*((int16_t *)bytes) * value.first.multiplier;
+        return (double) * ((int16_t*)bytes) * value.first.multiplier;
       } else if (value.first.bytes == 4) { // signed int 32
         char bytes[4] = {value.second.at(0), value.second.at(1), value.second.at(2), value.second.at(3)};
-        return (double)*((int32_t *)bytes) * value.first.multiplier;
+        return (double) * ((int32_t*)bytes) * value.first.multiplier;
       }
     } else if (value.first.type == ValueType::Type::floatingpoint) {
       if (value.first.bytes == 4) { // float
         char bytes[4] = {value.second.at(0), value.second.at(1), value.second.at(2), value.second.at(3)};
-        return (double)*((float *)bytes) * value.first.multiplier;
+        return (double) * ((float*)bytes) * value.first.multiplier;
       } else if (value.first.bytes == 8) { // double
         char bytes[8] = {value.second.at(0), value.second.at(1), value.second.at(2), value.second.at(3), value.second.at(4), value.second.at(5), value.second.at(6), value.second.at(7)};
-        return (*((double *)bytes)) * value.first.multiplier;
+        return (*((double*)bytes)) * value.first.multiplier;
       }
     }
   }
@@ -113,15 +113,15 @@ uint32_t PlotData::getBits(QPair<ValueType, QByteArray> value) {
       return ((uint32_t)((uint8_t)value.second.at(0)));
     if (value.first.bytes == 2) {
       char bytes[2] = {value.second.at(1), value.second.at(0)};
-      return ((uint32_t) * ((uint16_t *)bytes));
+      return ((uint32_t) * ((uint16_t*)bytes));
     }
     if (value.first.bytes == 3) {
       char bytes[4] = {value.second.at(2), value.second.at(1), value.second.at(0), 0};
-      return (*((uint32_t *)bytes));
+      return (*((uint32_t*)bytes));
     }
     if (value.first.bytes == 4) {
       char bytes[4] = {value.second.at(3), value.second.at(2), value.second.at(1), value.second.at(0)};
-      return (*((uint32_t *)bytes));
+      return (*((uint32_t*)bytes));
     }
   } else {
     // Little endian
@@ -129,15 +129,15 @@ uint32_t PlotData::getBits(QPair<ValueType, QByteArray> value) {
       return ((uint32_t)((uint8_t)value.second.at(0)));
     if (value.first.bytes == 2) {
       char bytes[2] = {value.second.at(0), value.second.at(1)};
-      return ((uint32_t) * ((uint16_t *)bytes));
+      return ((uint32_t) * ((uint16_t*)bytes));
     }
     if (value.first.bytes == 3) {
       char bytes[4] = {value.second.at(0), value.second.at(1), value.second.at(2), 0};
-      return (*((uint32_t *)bytes));
+      return (*((uint32_t*)bytes));
     }
     if (value.first.bytes == 4) {
       char bytes[4] = {value.second.at(0), value.second.at(1), value.second.at(2), value.second.at(3)};
-      return (*((uint32_t *)bytes));
+      return (*((uint32_t*)bytes));
     }
   }
   return 0;
@@ -151,11 +151,16 @@ void PlotData::addPoint(QList<QPair<ValueType, QByteArray>> data) {
   }
   bool isok;
   double time;
+  lastTimeWasHMS = false;
   if (data.at(0).second.isEmpty()) {
     if (qIsInf(lastTimes[0]))
       time = 0;
     else
       time = lastTimes[0] + defaultTimestep;
+  } else if (data.at(0).second == "-tod") {
+    auto msec = qTime.currentTime().msecsSinceStartOfDay();
+    time = msec / 1000.0;
+    lastTimeWasHMS = true;
   } else {
     time = getValue(data.at(0), isok);
     if (!isok) {
@@ -196,6 +201,9 @@ void PlotData::addPoint(QList<QPair<ValueType, QByteArray>> data) {
         sendMessageIfAllowed(tr("Can not show channel %1 as logic").arg(ch), tr("digital mode is only available for unsigned integer data type").toUtf8(), MessageLevel::warning);
       }
     }
+
+    if (ch == 1)
+      emit ch1dataUpdated(true, lastTimeWasHMS);
 
     emit addPointToPlot(ch - 1, time, value, time >= lastTimes[ch - 1]);
     for (int math = 0; math < MATH_COUNT; math++) {
@@ -258,6 +266,8 @@ void PlotData::addChannel(QPair<ValueType, QByteArray> data, unsigned int ch, QP
     QByteArray message = tr("%1 samples, sampling period %2s, %4 bits").arg(data.second.length() / data.first.bytes).arg(floatToNiceString(timeStep, 4, false, false)).arg(bits).toUtf8();
     if (remap)
       message.append(tr(", from %1 to %2").arg(minimum).arg(maximum).toUtf8());
+    if (zeroIndex > 0)
+      message.append(tr(", zero time at sample index %3").arg(zeroIndex).toUtf8());
     emit sendMessage(tr("Received channel %1").arg(ch).toUtf8(), message, MessageLevel::info);
   }
 
@@ -294,9 +304,9 @@ void PlotData::addChannel(QPair<ValueType, QByteArray> data, unsigned int ch, QP
     if (mathSeconds[math] == ch)
       emit addMathData(math, false, analogData);
   }
-  // if (xyFirst == ch) emit addXYData(true, analogData);
-  // if (xySecond == ch) emit addXYData(false, analogData);
 
+  if (ch == 1)
+    emit ch1dataUpdated(false, false);
   emit addVectorToPlot(ch - 1, analogData);
 
   if (isLogic) {

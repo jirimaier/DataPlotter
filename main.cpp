@@ -68,7 +68,7 @@ Q_DECLARE_METATYPE(FFTWindow::enumFFTWindow);
 Q_DECLARE_METATYPE(FFTType::enumFFTType);
 Q_DECLARE_METATYPE(ValueType);
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) {
   QApplication application(argc, argv);
 
   // Zaregistruje typy aby je šlo posílat signály mezi vlákny
@@ -91,14 +91,14 @@ int main(int argc, char *argv[]) {
   // Vytvoří instance hlavních objektů
   MainWindow mainWindow;
   QTranslator translator; // Musí být zde aby dokázal přeložit i texty v objektech jiných než MainWindow
-  PlotData *plotData = new PlotData();
-  NewSerialParser *serialParser1 = new NewSerialParser(MessageTarget::serial1);
-  NewSerialParser *serialParserM = new NewSerialParser(MessageTarget::manual);
-  SerialReader *serial1 = new SerialReader();
-  PlotMath *plotMath = new PlotMath();
-  SignalProcessing *signalProcessing1 = new SignalProcessing();
-  SignalProcessing *signalProcessing2 = new SignalProcessing();
-  SignalProcessing *signalProcessingFFT = new SignalProcessing();
+  PlotData* plotData = new PlotData();
+  NewSerialParser* serialParser1 = new NewSerialParser(MessageTarget::serial1);
+  NewSerialParser* serialParserM = new NewSerialParser(MessageTarget::manual);
+  SerialReader* serial1 = new SerialReader();
+  PlotMath* plotMath = new PlotMath();
+  SignalProcessing* signalProcessing1 = new SignalProcessing();
+  SignalProcessing* signalProcessing2 = new SignalProcessing();
+  SignalProcessing* signalProcessingFFT = new SignalProcessing();
 
   // Vytvoří vlákna
   QThread plotDataThread;
@@ -142,6 +142,7 @@ int main(int argc, char *argv[]) {
   QObject::connect(&mainWindow, &MainWindow::writeToSerial, serial1, &SerialReader::write);
   QObject::connect(&mainWindow, &MainWindow::sendManualInput, serialParserM, &NewSerialParser::parse);
   QObject::connect(plotData, &PlotData::sendMessage, &mainWindow, &MainWindow::printMessage);
+  QObject::connect(plotData, &PlotData::ch1dataUpdated, &mainWindow, &MainWindow::ch1WasUpdated);
   QObject::connect(plotMath, &PlotMath::sendMessage, &mainWindow, &MainWindow::printMessage);
   QObject::connect(&mainWindow, &MainWindow::setChDigital, plotData, &PlotData::setDigitalChannel);
   QObject::connect(&mainWindow, &MainWindow::setLogicBits, plotData, &PlotData::setLogicBits);

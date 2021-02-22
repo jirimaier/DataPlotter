@@ -49,6 +49,7 @@ void MainWindow::connectSignals() {
   connect(&fftTimer, &QTimer::timeout, this, &::MainWindow::updateFFT);
   connect(&xyTimer, &QTimer::timeout, this, &::MainWindow::updateXY);
   connect(&serialMonitorTimer, &QTimer::timeout, this, &MainWindow::updateSerialMonitor);
+  connect(&dataRateTimer, &QTimer::timeout, this, &MainWindow::updateDataRate);
 }
 
 void MainWindow::setAdaptiveSpinBoxes() {
@@ -69,6 +70,7 @@ void MainWindow::startTimers() {
   fftTimer.start(200);
   xyTimer.start(200);
   serialMonitorTimer.start(200);
+  dataRateTimer.start(1000);
 }
 
 void MainWindow::setGuiDefaults() {
@@ -145,29 +147,29 @@ void MainWindow::fillChannelSelect() {
   ui->comboBoxMeasure2->setCurrentIndex(ui->comboBoxMeasure2->count() - 1);
 
   // Skryje XY kanál z nabýdky.
-  auto *model = qobject_cast<QStandardItemModel *>(ui->comboBoxCursor1Channel->model());
-  auto *item = model->item(XYID);
+  auto* model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor1Channel->model());
+  auto* item = model->item(XYID);
   item->setEnabled(false);
-  QListView *view = qobject_cast<QListView *>(ui->comboBoxCursor1Channel->view());
+  QListView* view = qobject_cast<QListView*>(ui->comboBoxCursor1Channel->view());
   view->setRowHidden(XYID, !false);
 
-  model = qobject_cast<QStandardItemModel *>(ui->comboBoxCursor2Channel->model());
+  model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor2Channel->model());
   item = model->item(XYID);
   item->setEnabled(false);
-  view = qobject_cast<QListView *>(ui->comboBoxCursor2Channel->view());
+  view = qobject_cast<QListView*>(ui->comboBoxCursor2Channel->view());
   view->setRowHidden(XYID, !false);
 
   // Skryje FFT kanál z nabýdky.
-  model = qobject_cast<QStandardItemModel *>(ui->comboBoxCursor1Channel->model());
+  model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor1Channel->model());
   item = model->item(FFTID);
   item->setEnabled(false);
-  view = qobject_cast<QListView *>(ui->comboBoxCursor1Channel->view());
+  view = qobject_cast<QListView*>(ui->comboBoxCursor1Channel->view());
   view->setRowHidden(FFTID, !false);
 
-  model = qobject_cast<QStandardItemModel *>(ui->comboBoxCursor2Channel->model());
+  model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor2Channel->model());
   item = model->item(FFTID);
   item->setEnabled(false);
-  view = qobject_cast<QListView *>(ui->comboBoxCursor2Channel->view());
+  view = qobject_cast<QListView*>(ui->comboBoxCursor2Channel->view());
   view->setRowHidden(FFTID, !false);
 
   ui->comboBoxSelectedChannel->blockSignals(false);

@@ -15,11 +15,11 @@
 
 #include "mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) { ui->setupUi(this); }
+MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWindow) { ui->setupUi(this); }
 
 MainWindow::~MainWindow() { delete ui; }
 
-void MainWindow::init(QTranslator *translator, const PlotData *plotData, const PlotMath *plotMath, const SerialReader *serialReader) {
+void MainWindow::init(QTranslator* translator, const PlotData* plotData, const PlotMath* plotMath, const SerialReader* serialReader) {
   // Načte ikony které se mění za běhu
   iconXY = QIcon(":/images/icons/xyChannel.png");
   iconRun = QIcon(":/images/icons/run.png");
@@ -86,7 +86,20 @@ void MainWindow::serialConnectResult(bool connected, QString message) {
     ui->plotxy->clear();
     ui->plotFFT->clear();
     ui->myTerminal->resetTerminal();
+    ui->plainTextEditConsole->clear();
+    ui->plainTextEditConsole_3->clear();
     emit resetChannels();
+  }
+  if (connected && ui->checkBoxResetCmdEn->isChecked() && (!ui->lineEditResetCmd->text().isEmpty())) {
+    // Poslat reset příkaz
+    QByteArray data = ui->textEditTerminalDebug->toPlainText().toLocal8Bit();
+    data.replace("\\n", "\n");
+    data.replace("\\e", "\u001b");
+    data.replace("\\r", "\r");
+    data.replace("\\t", "\t");
+    data.replace("\\b", "\b");
+    data.replace("\\a", "\a");
+    emit writeToSerial(ui->lineEditResetCmd->text().toLocal8Bit());
   }
 }
 
@@ -111,20 +124,38 @@ void MainWindow::on_pushButtonCenter_clicked() {
     ui->plot->setVerticalCenter(0);
 }
 
+void MainWindow::on_pushButtonClearAll_clicked() {
+  ui->plot->resetChannels();
+  // emit resetChannels();
+}
+
+void MainWindow::on_pushButtonTerminalInputCopy_clicked() {
+  QByteArray bytes = ui->textEditTerminalDebug->toPlainText().replace('\n', "\\r\\n").toUtf8();
+  for (unsigned char ch = 0;; ch++) {
+    if (ch == 32)
+      ch = 127;
+    bytes.replace(ch, ("\\x" + QString::number(ch, 16)).toLocal8Bit() + "\"\"");
+    if (ch == 255)
+      break;
+  }
+
+  QGuiApplication::clipboard()->setText(bytes);
+}
+
 void MainWindow::printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumMessageTarget target) {
   QString color = "<font color=black>";
   switch (type) {
-  case MessageLevel::warning:
-    color = "<font color=orange>";
-    break;
-  case MessageLevel::error:
-    color = "<font color=red>";
-    break;
-  case MessageLevel::info:
-    color = "<font color=green>";
-    break;
-  default:
-    color = "<font color=black>";
+    case MessageLevel::warning:
+      color = "<font color=orange>";
+      break;
+    case MessageLevel::error:
+      color = "<font color=red>";
+      break;
+    case MessageLevel::info:
+      color = "<font color=green>";
+      break;
+    default:
+      color = "<font color=black>";
   }
 
   QString stringMessage;
@@ -150,10 +181,12 @@ void MainWindow::printDeviceMessage(QByteArray message, bool warning, bool ended
   ui->plainTextEditConsole->moveCursor(QTextCursor::End);
   ui->plainTextEditConsole->insertPlainText(message);
   ui->plainTextEditConsole->moveCursor(QTextCursor::End);
-  QScrollBar *scroll = ui->plainTextEditConsole->horizontalScrollBar();
+  QScrollBar* scroll = ui->plainTextEditConsole->horizontalScrollBar();
   scroll->setValue(scroll->minimum());
   pendingDeviceMessage = !ended;
 }
+
+void MainWindow::ch1WasUpdated(bool wasPoint, bool HMS) {lastUpdateWasPoint = wasPoint; dataUpdates++; lastPointTimeWasHMS = HMS;}
 
 void MainWindow::updateMathNow(int number) {
   emit setMathFirst(number, mathEn[number - 1]->isChecked() ? mathFirst[number - 1]->value() : 0);
@@ -193,6 +226,7 @@ void MainWindow::on_pushButtonTerminalDebugSend_clicked() {
   data.replace("\\t", "\t");
   data.replace("\\b", "\b");
   data.replace("\\a", "\a");
+
   ui->myTerminal->printToTerminal(data);
 }
 
@@ -213,7 +247,7 @@ void MainWindow::on_comboBoxFFTType_currentIndexChanged(int index) {
     ui->plotFFT->setYUnit("");
 }
 
-void MainWindow::on_lineEditVUnit_textChanged(const QString &arg1) {
+void MainWindow::on_lineEditVUnit_textChanged(const QString& arg1) {
   ui->plot->setYUnit(arg1);
   ui->plotxy->setYUnit(arg1);
   ui->plotxy->setXUnit(arg1);

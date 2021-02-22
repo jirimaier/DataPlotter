@@ -336,7 +336,7 @@ void MyPlot::setShowHorizontalValues(int type) {
   this->xAxis->setBasePen(enabled ? Qt::SolidLine : Qt::NoPen);
 
   if (enabled) {
-    if (type == HAxisType::fixed)
+    if (type == HAxisType::normal)
       this->xAxis->setTicker(unitTickerX);
     if (type == HAxisType::MS)
       this->xAxis->setTicker(timeTickerX);

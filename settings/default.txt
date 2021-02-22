@@ -1,5 +1,5 @@
 $$S
-baud:0;
+baud:3;
 clearonrec:1;
 csvinchid:0;
 csvprec:5;

@@ -15,7 +15,7 @@
 
 #include "serialreader.h"
 
-SerialReader::SerialReader(QObject *parent) : QObject(parent) {}
+SerialReader::SerialReader(QObject* parent) : QObject(parent) {}
 
 SerialReader::~SerialReader() {
   if (serial->isOpen())
@@ -43,9 +43,9 @@ void SerialReader::begin(QString portName, int baudRate) {
   serial->setStopBits(QSerialPort::OneStop);
   serial->setFlowControl(QSerialPort::NoFlowControl);
   if (serial->open(QIODevice::ReadWrite)) {
-    emit connectionResult(true, tr("Connected (") + serial->portName() + tr(", ") + QString::number(serial->baudRate()) + ")");
+    emit connectionResult(true, tr("Connected"));
   } else if (serial->open(QIODevice::ReadOnly)) {
-    emit connectionResult(true, tr("Connected (") + serial->portName() + tr(", ") + QString::number(serial->baudRate()) + ")");
+    emit connectionResult(true, tr("Connected (read only)"));
   } else
     emit connectionResult(false, tr("Error: ") + serial->errorString());
   if (serial->isOpen()) {

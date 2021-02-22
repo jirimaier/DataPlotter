@@ -62,7 +62,7 @@ enum enumDataLineType { command, dataEnded, dataTimeouted, dataImplicitEnded, de
 }
 
 namespace HAxisType {
-enum enumHAxisType { none, fixed, MS, HMS };
+enum enumHAxisType { none = 0, normal = 1, MS = 2, HMS = 3 };
 }
 
 namespace MessageLevel {
@@ -89,7 +89,7 @@ struct ValueType {
   double multiplier = 1.0;
 };
 
-inline ValueType readValuePrefix(QByteArray &buffer, int *detectedPrefixLength) {
+inline ValueType readValuePrefix(QByteArray& buffer, int* detectedPrefixLength) {
   ValueType valType;
   if (buffer.length() < 2)
     return valType; // Incomplete
@@ -98,79 +98,77 @@ inline ValueType readValuePrefix(QByteArray &buffer, int *detectedPrefixLength) 
     if (buffer.length() < 3)
       return valType; // Incomplete
     switch (buffer.at(0)) {
-    case 'T':
-      valType.multiplier = 1e12;
-      break;
-    case 'G':
-      valType.multiplier = 1e9;
-      break;
-    case 'M':
-      valType.multiplier = 1e6;
-      break;
-    case 'k':
-      valType.multiplier = 1e3;
-      break;
-    case 'h':
-      valType.multiplier = 1e2;
-      break;
-    case 'D':
-      valType.multiplier = 1e1;
-      break;
-    case 'd':
-      valType.multiplier = 1e-1;
-      break;
-    case 'c':
-      valType.multiplier = 1e-2;
-      break;
-    case 'm':
-      valType.multiplier = 1e-3;
-      break;
-    case 'u':
-      valType.multiplier = 1e-6;
-      break;
-    case 'n':
-      valType.multiplier = 1e-9;
-      break;
-    case 'p':
-      valType.multiplier = 1e-12;
-      break;
-    case 'f':
-      valType.multiplier = 1e-15;
-      break;
-    case 'a':
-      valType.multiplier = 1e-18;
-      break;
-    default:
-      valType.type = ValueType::invalid;
-      buffer.remove(0, 3);
-      return valType; // Invalid
+      case 'T':
+        valType.multiplier = 1e12;
+        break;
+      case 'G':
+        valType.multiplier = 1e9;
+        break;
+      case 'M':
+        valType.multiplier = 1e6;
+        break;
+      case 'k':
+        valType.multiplier = 1e3;
+        break;
+      case 'h':
+        valType.multiplier = 1e2;
+        break;
+      case 'D':
+        valType.multiplier = 1e1;
+        break;
+      case 'd':
+        valType.multiplier = 1e-1;
+        break;
+      case 'c':
+        valType.multiplier = 1e-2;
+        break;
+      case 'm':
+        valType.multiplier = 1e-3;
+        break;
+      case 'u':
+        valType.multiplier = 1e-6;
+        break;
+      case 'n':
+        valType.multiplier = 1e-9;
+        break;
+      case 'p':
+        valType.multiplier = 1e-12;
+        break;
+      case 'f':
+        valType.multiplier = 1e-15;
+        break;
+      case 'a':
+        valType.multiplier = 1e-18;
+        break;
+      default:
+        valType.type = ValueType::invalid;
+        return valType; // Invalid
     }
   } else
     *detectedPrefixLength = 2;
 
   switch (tolower(buffer.at(0))) {
-  case 'u':
-    valType.type = ValueType::unsignedint;
-    valType.bytes = buffer.at(1) - '0';
-    if (valType.bytes != 1 && valType.bytes != 2 && valType.bytes != 3 && valType.bytes != 4)
+    case 'u':
+      valType.type = ValueType::unsignedint;
+      valType.bytes = buffer.at(1) - '0';
+      if (valType.bytes != 1 && valType.bytes != 2 && valType.bytes != 3 && valType.bytes != 4)
+        valType.type = ValueType::invalid;
+      break;
+    case 'i':
+      valType.type = ValueType::integer;
+      valType.bytes = buffer.at(1) - '0';
+      if (valType.bytes != 1 && valType.bytes != 2 && valType.bytes != 4)
+        valType.type = ValueType::invalid;
+      break;
+    case 'f':
+      valType.type = ValueType::floatingpoint;
+      valType.bytes = buffer.at(1) - '0';
+      if (valType.bytes != 4 && valType.bytes != 8)
+        valType.type = ValueType::invalid;
+      break;
+    default:
       valType.type = ValueType::invalid;
-    break;
-  case 'i':
-    valType.type = ValueType::integer;
-    valType.bytes = buffer.at(1) - '0';
-    if (valType.bytes != 1 && valType.bytes != 2 && valType.bytes != 4)
-      valType.type = ValueType::invalid;
-    break;
-  case 'f':
-    valType.type = ValueType::floatingpoint;
-    valType.bytes = buffer.at(1) - '0';
-    if (valType.bytes != 4 && valType.bytes != 8)
-      valType.type = ValueType::invalid;
-    break;
-  default:
-    valType.type = ValueType::invalid;
-    buffer.remove(0, 2);
-    return valType; // Invalid
+      return valType; // Invalid
   }
   valType.bigEndian = (buffer.at(0) == toupper(buffer.at(0)));
   return valType;
@@ -181,21 +179,21 @@ inline QString valueTypeToString(ValueType val) {
     QString description;
     description = QString::number(val.bytes * 8) + "-bit ";
     switch (val.type) {
-    case ValueType::Type::invalid:
-      return "Invalid data";
-    case ValueType::Type::incomplete:
-      return "Incomplete data";
-    case ValueType::Type::integer:
-      description += "signed integer";
-      break;
-    case ValueType::Type::unsignedint:
-      description += "unsigned integer";
-      break;
-    case ValueType::Type::floatingpoint:
-      description += "floating point";
-      break;
-    default:
-      break;
+      case ValueType::Type::invalid:
+        return "Invalid data";
+      case ValueType::Type::incomplete:
+        return "Incomplete data";
+      case ValueType::Type::integer:
+        description += "signed integer";
+        break;
+      case ValueType::Type::unsignedint:
+        description += "unsigned integer";
+        break;
+      case ValueType::Type::floatingpoint:
+        description += "floating point";
+        break;
+      default:
+        break;
     }
     if (val.bigEndian)
       description.append(" (big endian)");
@@ -242,15 +240,16 @@ const static QString lineEndings[4] = {"", "\n", "\r", "\r\n"};
 #define LOG_SET_SIZE 48 //                              0     1     2     3     4     5     6     7     8     9     10    11    12    13    14    15    16    17    18    19    20    21    22    23
 const static double logaritmicSettings[LOG_SET_SIZE] = {1e-9, 2e-9, 5e-9, 1e-8, 2e-8, 5e-8, 1e-7, 2e-7, 5e-7, 1e-6, 2e-6, 5e-6, 1e-5, 2e-5, 5e-5, 1e-4, 2e-4, 5e-4, 1e-3, 2e-3, 5e-3, 1e-2, 2e-2, 5e-2,
                                                         // 24 25    26    27   28   29   30   31   32   33   34   35   36   37   38   39   40   41   42   43   44   45   46   47
-                                                        1e-1, 2e-1, 5e-1, 1e0, 2e0, 5e0, 1e1, 2e1, 5e1, 1e2, 2e2, 5e2, 1e3, 2e3, 5e3, 1e4, 2e4, 5e4, 1e5, 2e5, 5e5, 1e6, 2e6, 5e6};
+                                                        1e-1, 2e-1, 5e-1, 1e0, 2e0, 5e0, 1e1, 2e1, 5e1, 1e2, 2e2, 5e2, 1e3, 2e3, 5e3, 1e4, 2e4, 5e4, 1e5, 2e5, 5e5, 1e6, 2e6, 5e6
+                                                       };
 
 inline int indexOfStandardValuesCeil(double value) {
   for (int i = 0; i < LOG_SET_SIZE; i++)
     if (value <= logaritmicSettings[i])
       return i;
-  return 28;
+  return (LOG_SET_SIZE - 1);
 }
-inline int ceilToNiceValue(double value) {
+inline double ceilToNiceValue(double value) {
   if (value > 0)
     return (logaritmicSettings[indexOfStandardValuesCeil(value)]);
   else if (value < 0)
@@ -268,7 +267,7 @@ inline int getAnalogChId(int number, ChannelType::enumChannelType type) {
 }
 
 /// Skupina od 0, bit od 0, Vrátí chID
-inline int getLogicChannelID(int group, int bit) { return (ANALOG_COUNT + MATH_COUNT + (group)*LOGIC_BITS + bit); }
+inline int getLogicChannelID(int group, int bit) { return (ANALOG_COUNT + MATH_COUNT + (group) * LOGIC_BITS + bit); }
 
 /// Chid od 0
 inline QString getChName(int chid) {

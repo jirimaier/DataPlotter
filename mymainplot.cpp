@@ -15,7 +15,7 @@
 
 #include "mymainplot.h"
 
-MyMainPlot::MyMainPlot(QWidget *parent) : MyPlot(parent) {
+MyMainPlot::MyMainPlot(QWidget* parent) : MyPlot(parent) {
   xAxis->setSubTicks(false);
   yAxis->setSubTicks(false);
   yAxis->setRange(0, 10, Qt::AlignCenter);
@@ -68,7 +68,7 @@ void MyMainPlot::initZeroLines() {
   zeroPen.setStyle(Qt::DotLine);
   for (int i = 0; i < ANALOG_COUNT + MATH_COUNT; i++) {
     zeroPen.setColor(channelSettings.at(i).color);
-    QCPItemLine &zeroLine = *zeroLines.at(i);
+    QCPItemLine& zeroLine = *zeroLines.at(i);
     zeroLine.setPen(zeroPen);
     zeroLine.start->setTypeY(QCPItemPosition::ptPlotCoords);
     zeroLine.start->setTypeX(QCPItemPosition::ptViewportRatio);
@@ -547,7 +547,7 @@ QByteArray MyMainPlot::exportAllCSV(char separator, char decimal, int precision,
   return output;
 }
 
-void MyMainPlot::moveTracer(QMouseEvent *event) {
+void MyMainPlot::moveTracer(QMouseEvent* event) {
   if (mouseDrag == MouseDrag::nothing) {
     // Nic není taženo myší
     // Najde nejbližší kanál k místu kliknutí, pokud žádný není blíž než 20 pixelů, vůbec se nezobrazí
@@ -612,11 +612,11 @@ void MyMainPlot::moveTracer(QMouseEvent *event) {
       }
     }
   } else if (mouseDrag == MouseDrag::zeroline) {
-  DRAG_OFFSET:
+DRAG_OFFSET:
     setChOffset(mouseDragChIndex, yAxis->pixelToCoord(event->pos().y()));
     emit offsetChangedByMouse(mouseDragChIndex);
   } else {
-  DRAG_CURSOR:
+DRAG_CURSOR:
     tracer->setVisible(true);
     tracerText->setVisible(false);
     tracer->setYAxis(graph(mouseDragChIndex)->valueAxis());

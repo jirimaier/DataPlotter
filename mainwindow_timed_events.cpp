@@ -63,20 +63,20 @@ void MainWindow::updateUsedChannels() {
   colorUpdateNeeded = false;
 }
 
-void MainWindow::updateChannelComboBox(QComboBox &combobox, bool includeLogic, bool leaveAtLeastOne) {
+void MainWindow::updateChannelComboBox(QComboBox& combobox, bool includeLogic, bool leaveAtLeastOne) {
   // Nechá ve výběru kanálu jen ty kanály, které jsou používány
   // Pokud není používán žádný, nechá alespoň CH1 (protože vypadá blbě když v nabídce není nic)
   // Pokud je leaveAtLeastOne false (u měření, kde je v nabídce vždy ještě off), tak ten CH1 nenechá
   bool atLeastOneVisible = !leaveAtLeastOne;
   if (includeLogic) {
     for (int i = 0; i < LOGIC_GROUPS; i++) {
-      auto *model = qobject_cast<QStandardItemModel *>(combobox.model());
-      auto *item = model->item(i + ANALOG_COUNT + MATH_COUNT);
+      auto* model = qobject_cast<QStandardItemModel*>(combobox.model());
+      auto* item = model->item(i + ANALOG_COUNT + MATH_COUNT);
       bool willBeVisible = ui->checkBoxSelUnused->isChecked() || ui->plot->isChUsed(getLogicChannelID(i, 1));
       if (willBeVisible)
         atLeastOneVisible = true;
       item->setEnabled(willBeVisible);
-      QListView *view = qobject_cast<QListView *>(combobox.view());
+      QListView* view = qobject_cast<QListView*>(combobox.view());
       view->setRowHidden(i + ANALOG_COUNT + MATH_COUNT, !willBeVisible);
       if (colorUpdateNeeded) {
         QPixmap color(12, 12);
@@ -86,15 +86,15 @@ void MainWindow::updateChannelComboBox(QComboBox &combobox, bool includeLogic, b
     }
   }
   for (int i = ANALOG_COUNT + MATH_COUNT - 1; i >= 0; i--) {
-    auto *model = qobject_cast<QStandardItemModel *>(combobox.model());
-    auto *item = model->item(i);
+    auto* model = qobject_cast<QStandardItemModel*>(combobox.model());
+    auto* item = model->item(i);
     bool willBeVisible = ui->checkBoxSelUnused->isChecked() || ui->plot->isChUsed(i);
     if (willBeVisible)
       atLeastOneVisible = true;
     if (i == 0 && !atLeastOneVisible && !ui->pushButtonXY->isChecked())
       willBeVisible = true;
     item->setEnabled(willBeVisible);
-    QListView *view = qobject_cast<QListView *>(combobox.view());
+    QListView* view = qobject_cast<QListView*>(combobox.view());
     view->setRowHidden(i, !willBeVisible);
     if (colorUpdateNeeded) {
       QPixmap color(12, 12);
@@ -119,7 +119,7 @@ void MainWindow::updateMeasurements1() {
     measureRefreshTimer1.stop();
     emit requstMeasurements1(data);
   } else {
-  empty:
+empty:
     ui->labelSig1Period->setText("---");
     ui->labelSig1Freq->setText("---");
     ui->labelSig1Amp->setText("---");
@@ -149,7 +149,7 @@ void MainWindow::updateMeasurements2() {
     measureRefreshTimer2.stop();
     emit requstMeasurements2(data);
   } else {
-  empty:
+empty:
     ui->labelSig2Period->setText("---");
     ui->labelSig2Freq->setText("---");
     ui->labelSig2Amp->setText("---");
@@ -187,12 +187,14 @@ void MainWindow::updateFFT() {
 void MainWindow::updateSerialMonitor() {
   if (ui->checkBoxSerialMonitor->isChecked()) {
     if (!serialMonitor.isEmpty()) {
-      QScrollBar *scroll = ui->plainTextEditConsole_3->verticalScrollBar();
+      QScrollBar* scroll = ui->plainTextEditConsole_3->verticalScrollBar();
       int lastVal = -1;
       if (scroll->value() != scroll->maximum())
         lastVal = scroll->value();
 
-      ui->plainTextEditConsole_3->textCursor().insertText(serialMonitor);
+      auto cursor = ui->plainTextEditConsole_3->textCursor();
+      cursor.movePosition(QTextCursor::End);
+      cursor.insertText(serialMonitor);
       serialMonitor.clear();
 
       if (lastVal == -1)
@@ -201,6 +203,14 @@ void MainWindow::updateSerialMonitor() {
         scroll->setValue(lastVal);
     }
   }
+}
+
+void MainWindow::updateDataRate() {
+  if (dataUpdates > 0) {
+    ui->labelUpdateRate->setText("Ch1: " + QString::number(dataUpdates) + " " + (lastUpdateWasPoint ? tr("points") : tr("updates")) + " / s");
+  } else
+    ui->labelUpdateRate->clear();
+  dataUpdates = 0;
 }
 
 void MainWindow::updateXY() {

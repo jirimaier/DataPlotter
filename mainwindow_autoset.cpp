@@ -67,4 +67,20 @@ void MainWindow::on_pushButtonAutoset_clicked() {
     }
   }
   on_comboBoxSelectedChannel_currentIndexChanged(ui->comboBoxSelectedChannel->currentIndex());
+  if (lastUpdateWasPoint) {
+    ui->radioButtonRollingRange->setChecked(true);
+    if (dataUpdates > 10)
+      ui->doubleSpinBoxRangeHorizontal->setValue(10);
+    else
+      ui->doubleSpinBoxRangeHorizontal->setValue(100);
+    if (lastPointTimeWasHMS)
+      ui->comboBoxHAxisType->setCurrentIndex(HAxisType::HMS);
+    else
+      ui->comboBoxHAxisType->setCurrentIndex(HAxisType::normal);
+  } else {
+    // Pevný režim
+    ui->dialZoom->setValue(ui->dialZoom->maximum());// Zoom žádný
+    ui->radioButtonFixedRange->setChecked(true);
+    ui->comboBoxHAxisType->setCurrentIndex(HAxisType::normal);
+  }
 }

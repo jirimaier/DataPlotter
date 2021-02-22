@@ -42,14 +42,14 @@ QT_END_NAMESPACE
 class MainWindow : public QMainWindow {
   Q_OBJECT
 
-public:
-  explicit MainWindow(QWidget *parent = nullptr);
-  void init(QTranslator *translator, const PlotData *plotData, const PlotMath *plotMath, const SerialReader *serialReader);
+ public:
+  explicit MainWindow(QWidget* parent = nullptr);
+  void init(QTranslator* translator, const PlotData* plotData, const PlotMath* plotMath, const SerialReader* serialReader);
   ~MainWindow();
 
-private:
-  Ui::MainWindow *ui;
-  QTranslator *translator;
+ private:
+  Ui::MainWindow* ui;
+  QTranslator* translator;
   QTimer portsRefreshTimer, activeChRefreshTimer, xyTimer, cursorRangeUpdateTimer, measureRefreshTimer1, measureRefreshTimer2, fftTimer, serialMonitorTimer;
   QList<QSerialPortInfo> portList;
   void connectSignals();
@@ -63,39 +63,44 @@ private:
   void startTimers();
   void setGuiDefaults();
   void setGuiArrays();
-  QPushButton *mathEn[4];
-  QSpinBox *mathFirst[4], *mathSecond[4];
-  QComboBox *mathOp[4];
-  QMap<QString, QWidget *> setables;
+  QPushButton* mathEn[4];
+  QSpinBox* mathFirst[4], *mathSecond[4];
+  QComboBox* mathOp[4];
+  QMap<QString, QWidget*> setables;
   bool pendingDeviceMessage = false;
-  void applyGuiElementSettings(QWidget *, QString value);
-  QByteArray readGuiElementSettings(QWidget *target);
+  void applyGuiElementSettings(QWidget*, QString value);
+  QByteArray readGuiElementSettings(QWidget* target);
   void updateSelectedChannel(int arg1);
   void sendFileToParser(QByteArray text, bool removeLastNewline = false, bool addSemicolums = false);
   void fillChannelSelect();
   void updateUsedChannels();
-  void updateChannelComboBox(QComboBox &combobox, bool includeLogic, bool leaveAtLeastOne);
+  void updateChannelComboBox(QComboBox& combobox, bool includeLogic, bool leaveAtLeastOne);
   bool colorUpdateNeeded = true;
   void updateMathNow(int number);
   void updateXY();
   QIcon iconXY, iconRun, iconPause, iconHidden, iconVisible, iconConnected, iconNotConnected, iconCross, iconFFT;
   void insertInTerminalDebug(QString text, QColor textColor);
   QByteArray serialMonitor;
+  QTimer dataRateTimer;
+  int dataUpdates = 0;
+  bool lastUpdateWasPoint = false;
+  bool lastPointTimeWasHMS = false;
 
-private slots:
+ private slots:
   void updateCursors();
   void setAdaptiveSpinBoxes();
   void updateDivs();
   void comRefresh();
   void rangeTypeChanged();
-  void updateCursor(Cursors::enumCursors cursor, int selectedChannel, unsigned int sample, double &time, double &value, QByteArray &timeStr, QByteArray &valueStr);
+  void updateCursor(Cursors::enumCursors cursor, int selectedChannel, unsigned int sample, double& time, double& value, QByteArray& timeStr, QByteArray& valueStr);
   void updateCursorRange();
   void updateMeasurements1();
   void updateMeasurements2();
   void updateFFT();
   void updateSerialMonitor();
+  void updateDataRate();
 
-private slots: // Autoconnect slots
+ private slots: // Autoconnect slots
   void on_dialRollingRange_realValueChanged(double value) { ui->doubleSpinBoxRangeHorizontal->setValue(value); }
   void on_dialVerticalRange_realValueChanged(double value) { ui->doubleSpinBoxRangeVerticalRange->setValue(value); }
   void on_doubleSpinBoxChOffset_valueChanged(double arg1);
@@ -155,7 +160,7 @@ private slots: // Autoconnect slots
   void on_checkBoxCur1Visible_toggled(bool checked);
   void on_checkBoxCur2Visible_toggled(bool checked);
   void on_pushButtonChangeChColor_clicked();
-  void on_pushButtonClearAll_clicked() { ui->plot->resetChannels(); }
+  void on_pushButtonClearAll_clicked();
   void on_checkBoxChInverted_toggled(bool checked);
   void on_pushButtonHideCh_toggled(bool checked);
   void on_pushButtonMath1_toggled(bool) { updateMathNow(1); }
@@ -174,15 +179,15 @@ private slots: // Autoconnect slots
   void on_pushButtonXY_toggled(bool checked);
   void on_comboBoxCursor1Channel_currentIndexChanged(int index);
   void on_comboBoxCursor2Channel_currentIndexChanged(int index);
-  void on_labelLicense_linkActivated(const QString &link) { QDesktopServices::openUrl(link); }
+  void on_labelLicense_linkActivated(const QString& link) { QDesktopServices::openUrl(link); }
   void on_pushButtonPositive_clicked();
   void on_spinBoxCur1Sample_valueChanged(int arg1);
   void on_spinBoxCur2Sample_valueChanged(int arg1);
   void on_pushButtonTerminalDebug_toggled(bool checked);
   void on_pushButtonTerminalClickToSend_toggled(bool checked);
   void on_pushButtonTerminalSelect_toggled(bool checked);
-  void on_pushButtonTerminalInputCopy_clicked() { QGuiApplication::clipboard()->setText(ui->textEditTerminalDebug->toPlainText().replace('\n', "\\r\\n")); }
-  void on_listWidgetTerminalCodeList_itemClicked(QListWidgetItem *item);
+  void on_pushButtonTerminalInputCopy_clicked();
+  void on_listWidgetTerminalCodeList_itemClicked(QListWidgetItem* item);
   void on_pushButtonFFT_toggled(bool checked);
   void on_pushButtonFFTImage_clicked();
   void on_pushButtonChangeFFTColor_clicked();
@@ -197,13 +202,13 @@ private slots: // Autoconnect slots
 
   void on_checkBoxMouseControls_toggled(bool checked);
 
-  void on_lineEditVUnit_textChanged(const QString &arg1);
+  void on_lineEditVUnit_textChanged(const QString& arg1);
 
   void on_pushButtonClearReceivedList_3_clicked() { serialMonitor.clear(); }
 
   void on_pushButtonScrollDown_3_clicked();
 
-public slots:
+ public slots:
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumMessageTarget target);
   void showPlotStatus(PlotStatus::enumPlotStatus type);
   void serialConnectResult(bool connected, QString message);
@@ -218,8 +223,9 @@ public slots:
   void xyResult(QSharedPointer<QCPCurveDataContainer> data);
   void moveCursor(int chid, int cursor, int sample);
   void offsetChangedByMouse(int chid);
+  void ch1WasUpdated(bool wasPoint, bool HMS);
 
-signals:
+ signals:
   void setChDigital(int chid, int target);
   void setLogicBits(int target, int bits);
   void requestSerialBufferClear();
