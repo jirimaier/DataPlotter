@@ -20,9 +20,14 @@
 #include "qcustomplot.h"
 
 class MyAxisTickerWithUnit : public QCPAxisTickerFixed {
-public:
+ private:
+  int tickStepOrder = 0;
+  bool stepIsMultipleOfTen = false;
+
+ public:
   QString unit = "";
-  QString getTickLabel(double tick, const QLocale &locale, QChar formatChar, int precision);
+  QString getTickLabel(double tick, const QLocale& locale, QChar formatChar, int precision);
+  void setTickStep(double value);
 };
 
 #endif // MYAXISTICKERWITHUNIT_H

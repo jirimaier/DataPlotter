@@ -140,7 +140,7 @@ void MainWindow::updateCursors() {
     else
       goto EMPTY;
   } else {
-  EMPTY:
+EMPTY:
     ui->labelCurDeltaTime->setText("");
     ui->labelCurDeltaValue->setText("");
     ui->labelCurSlope->setText("");
@@ -149,7 +149,7 @@ void MainWindow::updateCursors() {
   }
 }
 
-void MainWindow::updateCursor(Cursors::enumCursors cursor, int selectedChannel, unsigned int sample, double &time, double &value, QByteArray &timeStr, QByteArray &valueStr) {
+void MainWindow::updateCursor(Cursors::enumCursors cursor, int selectedChannel, unsigned int sample, double& time, double& value, QByteArray& timeStr, QByteArray& valueStr) {
   if (IS_ANALOG_OR_MATH(selectedChannel)) {
     // Analogový kanál
     time = ui->plot->graph(selectedChannel)->data()->at(sample)->key;
@@ -170,8 +170,8 @@ void MainWindow::updateCursor(Cursors::enumCursors cursor, int selectedChannel, 
     double valueY = ui->plotxy->graphXY->data()->at(sample)->value;
 
     timeStr = QString(floatToNiceString(realyTime, 5, true, false) + ui->plotxy->tUnit).toUtf8();
-    QString valStrX = QString(floatToNiceString(valueX, 5)) + ui->plotxy->getXUnit();
-    QString valStrY = QString(floatToNiceString(valueY, 5)) + ui->plotxy->getYUnit();
+    QString valStrX = QString(floatToNiceString(valueX, 5, false, false)) + ui->plotxy->getXUnit();
+    QString valStrY = QString(floatToNiceString(valueY, 5, false, false)) + ui->plotxy->getYUnit();
     valueStr = ("X: " + valStrX + "\n" + "Y: " + valStrY).toUtf8();
     time = valueX;
     value = valueY;

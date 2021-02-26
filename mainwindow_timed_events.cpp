@@ -179,8 +179,15 @@ void MainWindow::updateFFT() {
       return;
     }
 
+    if (ui->comboBoxFFTType->currentIndex() == FFTType::pwelch) {
+      if (ui->spinBoxFFTSegments->value() > data->size()) {
+        ui->plotFFT->clear();
+        return;
+      }
+    }
+
     fftTimer.stop();
-    emit requestFFT(data, (FFTType::enumFFTType)ui->comboBoxFFTType->currentIndex(), (FFTWindow::enumFFTWindow)ui->comboBoxFFTWindow->currentIndex());
+    emit requestFFT(data, (FFTType::enumFFTType)ui->comboBoxFFTType->currentIndex(), (FFTWindow::enumFFTWindow)ui->comboBoxFFTWindow->currentIndex(), ui->checkBoxFFTNoDC->isChecked(), ui->spinBoxFFTSegments->value(), ui->checkBoxFFTTwoSided->isChecked(), ui->checkBoxFFTZeroCenter->isChecked());
   }
 }
 
@@ -211,6 +218,15 @@ void MainWindow::updateDataRate() {
   } else
     ui->labelUpdateRate->clear();
   dataUpdates = 0;
+}
+
+void MainWindow::FFTlengthChanged(int formerLength, int newLength) {
+  // Pokud se změní počet vzorků FFT, změnit polohu (index vzorku) kursoru tak, aby byl na stejné
+  // (nejbližší možné) frekvenci.
+  if (ui->checkBoxCur1Visible && ui->comboBoxCursor1Channel->currentIndex() == FFTID)
+    ui->spinBoxCur1Sample->setValue(newLength * ui->spinBoxCur1Sample->value() / formerLength);
+  if (ui->checkBoxCur2Visible && ui->comboBoxCursor2Channel->currentIndex() == FFTID)
+    ui->spinBoxCur2Sample->setValue(newLength * ui->spinBoxCur2Sample->value() / formerLength);
 }
 
 void MainWindow::updateXY() {

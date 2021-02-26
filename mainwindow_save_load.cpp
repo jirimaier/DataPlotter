@@ -38,6 +38,9 @@ void MainWindow::initSetables() {
   setables["fftstyle"] = ui->comboBoxFFTStyle;
   setables["fftwin"] = ui->comboBoxFFTWindow;
   setables["ffttype"] = ui->comboBoxFFTType;
+  setables["fftnodc"] = ui->checkBoxFFTNoDC;
+  setables["ffttwosided"] = ui->checkBoxFFTTwoSided;
+  setables["fftzerocenter"] = ui->checkBoxFFTZeroCenter;
 
   // Measure
   setables["meas1ch"] = ui->comboBoxMeasure1;
@@ -57,7 +60,7 @@ void MainWindow::initSetables() {
   setables["selunused"] = ui->checkBoxSelUnused;
   setables["mousecur"] = ui->checkBoxMouseControls;
   setables["opengl"] = ui->checkBoxOpenGL;
-  setables["movestep"] = ui->spinBoxShiftStep;
+  setables["rollstep"] = ui->spinBoxShiftStep;
 
   // Connection
   setables["baud"] = ui->comboBoxBaud;
@@ -65,8 +68,10 @@ void MainWindow::initSetables() {
 
   // Settings
   setables["clearonrec"] = ui->checkBoxClearOnReconnect;
-  setables["manin"] = ui->checkBoxShowManualInput;
-  setables["sermon"] = ui->checkBoxSerialMonitor;
+  setables["manualin"] = ui->checkBoxShowManualInput;
+  setables["serialmon"] = ui->checkBoxSerialMonitor;
+  setables["sendonrec"] = ui->checkBoxResetCmdEn;
+  setables["rstcmd"] = ui->lineEditResetCmd;
 
   // Send
   setables["lineending"] = ui->comboBoxLineEnding;
@@ -98,45 +103,45 @@ void MainWindow::initSetables() {
   setables["log3bits"] = ui->spinBoxLog3bits;
 }
 
-void MainWindow::applyGuiElementSettings(QWidget *target, QString value) {
-  if (QDoubleSpinBox *newTarget = dynamic_cast<QDoubleSpinBox *>(target))
+void MainWindow::applyGuiElementSettings(QWidget* target, QString value) {
+  if (QDoubleSpinBox* newTarget = dynamic_cast<QDoubleSpinBox*>(target))
     newTarget->setValue(value.toDouble());
-  else if (QComboBox *newTarget = dynamic_cast<QComboBox *>(target))
+  else if (QComboBox* newTarget = dynamic_cast<QComboBox*>(target))
     newTarget->setCurrentIndex(value.toUInt());
-  else if (QSpinBox *newTarget = dynamic_cast<QSpinBox *>(target))
+  else if (QSpinBox* newTarget = dynamic_cast<QSpinBox*>(target))
     newTarget->setValue(value.toInt());
-  else if (QScrollBar *newTarget = dynamic_cast<QScrollBar *>(target))
+  else if (QScrollBar* newTarget = dynamic_cast<QScrollBar*>(target))
     newTarget->setValue(value.toInt());
-  else if (QSlider *newTarget = dynamic_cast<QSlider *>(target))
+  else if (QSlider* newTarget = dynamic_cast<QSlider*>(target))
     newTarget->setValue(value.toInt());
-  else if (QCheckBox *newTarget = dynamic_cast<QCheckBox *>(target))
+  else if (QCheckBox* newTarget = dynamic_cast<QCheckBox*>(target))
     newTarget->setChecked((bool)value.toUInt());
-  else if (QPushButton *newTarget = dynamic_cast<QPushButton *>(target))
+  else if (QPushButton* newTarget = dynamic_cast<QPushButton*>(target))
     newTarget->setChecked((bool)value.toUInt());
-  else if (QDial *newTarget = dynamic_cast<QDial *>(target))
+  else if (QDial* newTarget = dynamic_cast<QDial*>(target))
     newTarget->setValue(value.toInt());
-  else if (QLineEdit *newTarget = dynamic_cast<QLineEdit *>(target))
+  else if (QLineEdit* newTarget = dynamic_cast<QLineEdit*>(target))
     newTarget->setText(value);
 }
 
-QByteArray MainWindow::readGuiElementSettings(QWidget *target) {
-  if (QDoubleSpinBox *newTarget = dynamic_cast<QDoubleSpinBox *>(target))
+QByteArray MainWindow::readGuiElementSettings(QWidget* target) {
+  if (QDoubleSpinBox* newTarget = dynamic_cast<QDoubleSpinBox*>(target))
     return (QString::number(newTarget->value()).toUtf8());
-  if (QSpinBox *newTarget = dynamic_cast<QSpinBox *>(target))
+  if (QSpinBox* newTarget = dynamic_cast<QSpinBox*>(target))
     return (QString::number(newTarget->value()).toUtf8());
-  if (QScrollBar *newTarget = dynamic_cast<QScrollBar *>(target))
+  if (QScrollBar* newTarget = dynamic_cast<QScrollBar*>(target))
     return (QString::number(newTarget->value()).toUtf8());
-  if (QSlider *newTarget = dynamic_cast<QSlider *>(target))
+  if (QSlider* newTarget = dynamic_cast<QSlider*>(target))
     return (QString::number(newTarget->value()).toUtf8());
-  if (QCheckBox *newTarget = dynamic_cast<QCheckBox *>(target))
+  if (QCheckBox* newTarget = dynamic_cast<QCheckBox*>(target))
     return (newTarget->isChecked() ? "1" : "0");
-  if (QPushButton *newTarget = dynamic_cast<QPushButton *>(target))
+  if (QPushButton* newTarget = dynamic_cast<QPushButton*>(target))
     return (newTarget->isChecked() ? "1" : "0");
-  if (QComboBox *newTarget = dynamic_cast<QComboBox *>(target))
+  if (QComboBox* newTarget = dynamic_cast<QComboBox*>(target))
     return (QString::number(newTarget->currentIndex()).toUtf8());
-  if (QDial *newTarget = dynamic_cast<QDial *>(target))
+  if (QDial* newTarget = dynamic_cast<QDial*>(target))
     return (QString::number(newTarget->value()).toUtf8());
-  else if (QLineEdit *newTarget = dynamic_cast<QLineEdit *>(target))
+  else if (QLineEdit* newTarget = dynamic_cast<QLineEdit*>(target))
     return (newTarget->text().toUtf8());
   return "";
 }
@@ -144,7 +149,7 @@ QByteArray MainWindow::readGuiElementSettings(QWidget *target) {
 QByteArray MainWindow::getSettings() {
   QByteArray settings;
 
-  for (QMap<QString, QWidget *>::iterator it = setables.begin(); it != setables.end(); it++)
+  for (QMap<QString, QWidget*>::iterator it = setables.begin(); it != setables.end(); it++)
     settings.append(QString(it.key() + ':' + readGuiElementSettings(it.value()) + ";\n").toUtf8());
 
   if (ui->radioButtonFixedRange->isChecked())
@@ -158,7 +163,7 @@ QByteArray MainWindow::getSettings() {
   settings.append(";\n");
   settings.append(ui->radioButtonCSVDot->isChecked() ? "csvsep:dc" : "csvsep:cs");
   settings.append(";\n");
-  settings.append(ui->radioButtonXYAutoSize->isChecked() ? "xytype:fix" : "xytype:free");
+  settings.append(ui->radioButtonXYAutoSize->isChecked() ? "xyrange:fix" : "xyrange:free");
   settings.append(";\n");
   settings.append(ui->radioButtonFFTAutoSize->isChecked() ? "fftrange:fix" : "fftrange:free");
   settings.append(";\n");

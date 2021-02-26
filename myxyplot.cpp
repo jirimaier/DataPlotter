@@ -15,7 +15,7 @@
 
 #include "myxyplot.h"
 
-MyXYPlot::MyXYPlot(QWidget *parent) : MyPlot(parent) {
+MyXYPlot::MyXYPlot(QWidget* parent) : MyPlot(parent) {
   xAxis->setSubTicks(false);
   yAxis->setSubTicks(false);
   graphXY = new QCPCurve(this->xAxis, this->yAxis);
@@ -36,9 +36,9 @@ void MyXYPlot::newData(QSharedPointer<QCPCurveDataContainer> data) {
   // Přepsat text u traceru
   if (tracer->visible()) {
     QString tracerTextStr;
-    tracerTextStr.append("X: " + floatToNiceString(tracer->position->key(), 4, true, true) + getXUnit() + "\n");
-    tracerTextStr.append("Y: " + floatToNiceString(tracer->position->value(), 4, true, true) + getYUnit() + "\n");
-    tracerTextStr.append("t: " + floatToNiceString(graphXY->data().data()->at(tracer->sampleNumber())->t, 4, true, true) + tUnit);
+    tracerTextStr.append("X: " + floatToNiceString(tracer->position->key(), 4, true, false) + getXUnit() + "\n");
+    tracerTextStr.append("Y: " + floatToNiceString(tracer->position->value(), 4, true, false) + getYUnit() + "\n");
+    tracerTextStr.append("t: " + floatToNiceString(graphXY->data().data()->at(tracer->sampleNumber())->t, 4, true, false) + tUnit);
     tracerText->setText(tracerTextStr);
     tracerLayer->replot();
   }
@@ -93,7 +93,7 @@ void MyXYPlot::autoset() {
   yAxis->setRange(yRange);
 }
 
-void MyXYPlot::moveTracer(QMouseEvent *event) {
+void MyXYPlot::moveTracer(QMouseEvent* event) {
   if (mouseDrag == MouseDrag::nothing) {
     // Nic není taženo myší
     if ((unsigned int)graphXY->selectTest(event->pos(), false) < 20) {
@@ -116,9 +116,9 @@ void MyXYPlot::moveTracer(QMouseEvent *event) {
       } else {
         tracerText->setVisible(true);
         QString tracerTextStr;
-        tracerTextStr.append("X: " + floatToNiceString(tracer->position->key(), 4, false, false) + getXUnit() + "\n");
-        tracerTextStr.append("Y: " + floatToNiceString(tracer->position->value(), 4, false, false) + getYUnit() + "\n");
-        tracerTextStr.append("t: " + floatToNiceString(graphXY->data().data()->at(tracer->sampleNumber())->t, 4, false, false) + tUnit);
+        tracerTextStr.append("X: " + floatToNiceString(tracer->position->key(), 4, true, false) + getXUnit() + "\n");
+        tracerTextStr.append("Y: " + floatToNiceString(tracer->position->value(), 4, true, false) + getYUnit() + "\n");
+        tracerTextStr.append("t: " + floatToNiceString(graphXY->data().data()->at(tracer->sampleNumber())->t, 4, true, false) + tUnit);
         tracerText->setText(tracerTextStr);
         checkIfTracerTextFits();
       }
@@ -127,7 +127,7 @@ void MyXYPlot::moveTracer(QMouseEvent *event) {
     } else
       hideTracer();
   } else {
-  DRAG_CURSOR:
+DRAG_CURSOR:
     tracer->setVisible(true);
     tracerText->setVisible(false);
     tracer->setPoint(event->pos());

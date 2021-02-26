@@ -82,7 +82,7 @@ void MainWindow::on_lineEditManualInput_returnPressed() {
 }
 
 void MainWindow::on_pushButtonScrollDown_clicked() {
-  QScrollBar *scroll = ui->plainTextEditConsole->verticalScrollBar();
+  QScrollBar* scroll = ui->plainTextEditConsole->verticalScrollBar();
   scroll->setValue(scroll->maximum());
   scroll = ui->plainTextEditConsole->horizontalScrollBar();
   scroll->setValue(scroll->minimum());
@@ -114,14 +114,14 @@ void MainWindow::on_comboBoxOutputLevel_currentIndexChanged(int index) {
 }
 
 void MainWindow::on_pushButtonScrollDown_2_clicked() {
-  QScrollBar *scroll = ui->plainTextEditConsole_2->verticalScrollBar();
+  QScrollBar* scroll = ui->plainTextEditConsole_2->verticalScrollBar();
   scroll->setValue(scroll->maximum());
   scroll = ui->plainTextEditConsole_2->horizontalScrollBar();
   scroll->setValue(scroll->minimum());
 }
 
 void MainWindow::on_pushButtonScrollDown_3_clicked() {
-  QScrollBar *scroll = ui->plainTextEditConsole_3->verticalScrollBar();
+  QScrollBar* scroll = ui->plainTextEditConsole_3->verticalScrollBar();
   scroll->setValue(scroll->maximum());
   scroll = ui->plainTextEditConsole_3->horizontalScrollBar();
   scroll->setValue(scroll->minimum());
@@ -241,6 +241,7 @@ void MainWindow::on_pushButtonXY_toggled(bool checked) {
   else
     updateXY();
 
+#ifdef XY_AND_FFT_ALLWAYS_TOGETHER
   if (checked) {
     ui->plotFFT->setVisible(true);
     ui->plotxy->setVisible(true);
@@ -248,17 +249,20 @@ void MainWindow::on_pushButtonXY_toggled(bool checked) {
     ui->plotFFT->setVisible(false);
     ui->plotxy->setVisible(false);
   }
+#else
+  ui->plotxy->setVisible(checked);
+#endif
 
-  auto *model = qobject_cast<QStandardItemModel *>(ui->comboBoxCursor1Channel->model());
-  auto *item = model->item(XYID);
+  auto* model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor1Channel->model());
+  auto* item = model->item(XYID);
   item->setEnabled(checked);
-  QListView *view = qobject_cast<QListView *>(ui->comboBoxCursor1Channel->view());
+  QListView* view = qobject_cast<QListView*>(ui->comboBoxCursor1Channel->view());
   view->setRowHidden(XYID, !checked);
 
-  model = qobject_cast<QStandardItemModel *>(ui->comboBoxCursor2Channel->model());
+  model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor2Channel->model());
   item = model->item(XYID);
   item->setEnabled(checked);
-  view = qobject_cast<QListView *>(ui->comboBoxCursor2Channel->view());
+  view = qobject_cast<QListView*>(ui->comboBoxCursor2Channel->view());
   view->setRowHidden(XYID, !checked);
 }
 
@@ -338,32 +342,32 @@ void MainWindow::insertInTerminalDebug(QString text, QColor textColor) {
 }
 
 void MainWindow::signalMeasurementsResult1(float period, float freq, float amp, float min, float max, float vrms, float dc, float fs, float rise, float fall, int samples) {
-  ui->labelSig1Amp->setText(floatToNiceString(amp, 4) + ui->plot->getYUnit() + "pp");
-  ui->labelSig1Freq->setText(floatToNiceString(freq, 4) + ui->plotFFT->getXUnit());
-  ui->labelSig1Period->setText(floatToNiceString(period, 4) + ui->plot->getXUnit());
-  ui->labelSig1Vrms->setText(floatToNiceString(vrms, 4) + ui->plot->getYUnit());
-  ui->labelSig1Min->setText(floatToNiceString(min, 4) + ui->plot->getYUnit());
-  ui->labelSig1Max->setText(floatToNiceString(max, 4) + ui->plot->getYUnit());
-  ui->labelSig1Dc->setText(floatToNiceString(dc, 4) + ui->plot->getYUnit());
-  ui->labelSig1fs->setText(floatToNiceString(fs, 4) + ui->plotFFT->getXUnit());
+  ui->labelSig1Amp->setText(floatToNiceString(amp, 4, false, false) + ui->plot->getYUnit() + "pp");
+  ui->labelSig1Freq->setText(floatToNiceString(freq, 4, false, false) + ui->plotFFT->getXUnit());
+  ui->labelSig1Period->setText(floatToNiceString(period, 4, false, false) + ui->plot->getXUnit());
+  ui->labelSig1Vrms->setText(floatToNiceString(vrms, 4, false, false) + ui->plot->getYUnit());
+  ui->labelSig1Min->setText(floatToNiceString(min, 4, false, false) + ui->plot->getYUnit());
+  ui->labelSig1Max->setText(floatToNiceString(max, 4, false, false) + ui->plot->getYUnit());
+  ui->labelSig1Dc->setText(floatToNiceString(dc, 4, false, false) + ui->plot->getYUnit());
+  ui->labelSig1fs->setText(floatToNiceString(fs, 4, false, false) + ui->plotFFT->getXUnit());
   // Pokud je falltime nabo risetime menší než 2 periody vzorkování, je považován za nepřesný (znaménko menší než)
-  ui->labelSig1rise->setText((rise < 2.0 / fs ? "<" : "") + floatToNiceString(rise, 4) + ui->plot->getXUnit());
-  ui->labelSig1fall->setText((fall < 2.0 / fs ? "<" : "") + floatToNiceString(fall, 4) + ui->plot->getXUnit());
+  ui->labelSig1rise->setText((rise < 2.0 / fs ? "<" : "") + floatToNiceString(rise, 4, false, false) + ui->plot->getXUnit());
+  ui->labelSig1fall->setText((fall < 2.0 / fs ? "<" : "") + floatToNiceString(fall, 4, false, false) + ui->plot->getXUnit());
   ui->labelSig1samples->setText(QString::number(samples));
   measureRefreshTimer1.start(250);
 }
 void MainWindow::signalMeasurementsResult2(float period, float freq, float amp, float min, float max, float vrms, float dc, float fs, float rise, float fall, int samples) {
-  ui->labelSig2Amp->setText(floatToNiceString(amp, 4) + ui->plot->getYUnit() + "pp");
-  ui->labelSig2Freq->setText(floatToNiceString(freq, 4) + ui->plotFFT->getXUnit());
-  ui->labelSig2Period->setText(floatToNiceString(period, 4) + ui->plot->getXUnit());
-  ui->labelSig2Vrms->setText(floatToNiceString(vrms, 4) + ui->plot->getYUnit());
-  ui->labelSig2Min->setText(floatToNiceString(min, 4) + ui->plot->getYUnit());
-  ui->labelSig2Max->setText(floatToNiceString(max, 4) + ui->plot->getYUnit());
-  ui->labelSig2Dc->setText(floatToNiceString(dc, 4) + ui->plot->getYUnit());
-  ui->labelSig2fs->setText(floatToNiceString(fs, 4) + ui->plotFFT->getXUnit());
+  ui->labelSig2Amp->setText(floatToNiceString(amp, 4, false, false) + ui->plot->getYUnit() + "pp");
+  ui->labelSig2Freq->setText(floatToNiceString(freq, 4, false, false) + ui->plotFFT->getXUnit());
+  ui->labelSig2Period->setText(floatToNiceString(period, 4, false, false) + ui->plot->getXUnit());
+  ui->labelSig2Vrms->setText(floatToNiceString(vrms, 4, false, false) + ui->plot->getYUnit());
+  ui->labelSig2Min->setText(floatToNiceString(min, 4, false, false) + ui->plot->getYUnit());
+  ui->labelSig2Max->setText(floatToNiceString(max, 4, false, false) + ui->plot->getYUnit());
+  ui->labelSig2Dc->setText(floatToNiceString(dc, 4, false, false) + ui->plot->getYUnit());
+  ui->labelSig2fs->setText(floatToNiceString(fs, 4, false, false) + ui->plotFFT->getXUnit());
   // Pokud je falltime nabo risetime menší než 2 periody vzorkování, je považován za nepřesný (znaménko menší než)
-  ui->labelSig2rise->setText((rise < 2.0 / fs ? "<" : "") + floatToNiceString(rise, 4) + ui->plot->getXUnit());
-  ui->labelSig2fall->setText((fall < 2.0 / fs ? "<" : "") + floatToNiceString(fall, 4) + ui->plot->getXUnit());
+  ui->labelSig2rise->setText((rise < 2.0 / fs ? "<" : "") + floatToNiceString(rise, 4, false, false) + ui->plot->getXUnit());
+  ui->labelSig2fall->setText((fall < 2.0 / fs ? "<" : "") + floatToNiceString(fall, 4, false, false) + ui->plot->getXUnit());
   ui->labelSig2samples->setText(QString::number(samples));
   measureRefreshTimer2.start(250);
 }
@@ -380,7 +384,7 @@ void MainWindow::xyResult(QSharedPointer<QCPCurveDataContainer> data) {
   xyTimer.start();
 }
 
-void MainWindow::on_listWidgetTerminalCodeList_itemClicked(QListWidgetItem *item) {
+void MainWindow::on_listWidgetTerminalCodeList_itemClicked(QListWidgetItem* item) {
   QString code = "";
   if (item->text().contains(" "))
     code = item->text().left(item->text().indexOf(" "));
@@ -416,6 +420,7 @@ void MainWindow::on_pushButtonFFT_toggled(bool checked) {
   else
     updateFFT();
 
+#ifdef XY_AND_FFT_ALLWAYS_TOGETHER
   if (checked) {
     ui->plotFFT->setVisible(true);
     ui->plotxy->setVisible(true);
@@ -423,16 +428,19 @@ void MainWindow::on_pushButtonFFT_toggled(bool checked) {
     ui->plotFFT->setVisible(false);
     ui->plotxy->setVisible(false);
   }
+#else
+  ui->plotFFT->setVisible(checked);
+#endif
 
-  auto *model = qobject_cast<QStandardItemModel *>(ui->comboBoxCursor1Channel->model());
-  auto *item = model->item(FFTID);
+  auto* model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor1Channel->model());
+  auto* item = model->item(FFTID);
   item->setEnabled(checked);
-  QListView *view = qobject_cast<QListView *>(ui->comboBoxCursor1Channel->view());
+  QListView* view = qobject_cast<QListView*>(ui->comboBoxCursor1Channel->view());
   view->setRowHidden(FFTID, !checked);
 
-  model = qobject_cast<QStandardItemModel *>(ui->comboBoxCursor2Channel->model());
+  model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor2Channel->model());
   item = model->item(FFTID);
   item->setEnabled(checked);
-  view = qobject_cast<QListView *>(ui->comboBoxCursor2Channel->view());
+  view = qobject_cast<QListView*>(ui->comboBoxCursor2Channel->view());
   view->setRowHidden(FFTID, !checked);
 }

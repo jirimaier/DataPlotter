@@ -73,14 +73,9 @@ void MainWindow::on_pushButtonAutoset_clicked() {
       ui->doubleSpinBoxRangeHorizontal->setValue(10);
     else
       ui->doubleSpinBoxRangeHorizontal->setValue(100);
-    if (lastPointTimeWasHMS)
-      ui->comboBoxHAxisType->setCurrentIndex(HAxisType::HMS);
-    else
-      ui->comboBoxHAxisType->setCurrentIndex(HAxisType::normal);
   } else {
     // Pevný režim
     ui->dialZoom->setValue(ui->dialZoom->maximum());// Zoom žádný
     ui->radioButtonFixedRange->setChecked(true);
-    ui->comboBoxHAxisType->setCurrentIndex(HAxisType::normal);
   }
 }

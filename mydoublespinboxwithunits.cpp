@@ -15,9 +15,9 @@
 
 #include "mydoublespinboxwithunits.h"
 
-MyDoubleSpinBoxWithUnits::MyDoubleSpinBoxWithUnits(QWidget *parent) : QDoubleSpinBox(parent) {}
+MyDoubleSpinBoxWithUnits::MyDoubleSpinBoxWithUnits(QWidget* parent) : QDoubleSpinBox(parent) {}
 
-QValidator::State MyDoubleSpinBoxWithUnits::validate(QString &input, int &pos) const {
+QValidator::State MyDoubleSpinBoxWithUnits::validate(QString& input, int& pos) const {
   // Tato funkce kontroluje, jestli to co uživatel zadává je platná hodnota
   input.replace(',', '.');
   if (!input.isEmpty()) {
@@ -49,10 +49,10 @@ QValidator::State MyDoubleSpinBoxWithUnits::validate(QString &input, int &pos) c
 
 QString MyDoubleSpinBoxWithUnits::textFromValue(double val) const {
   // Zobrazení hodnoty
-  return (floatToNiceString(val, 5, false, false, true, false));
+  return (floatToNiceString(val, 4, false, false, true));
 }
 
-double MyDoubleSpinBoxWithUnits::valueFromText(const QString &text) const {
+double MyDoubleSpinBoxWithUnits::valueFromText(const QString& text) const {
   // Zpracování hodnoty napsané uživatelem
   bool isok = false;
   double val;

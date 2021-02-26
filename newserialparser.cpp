@@ -55,6 +55,8 @@ void NewSerialParser::showBuffer() {
     foreach (auto line, pendingPointBuffer)
       emit sendMessage("->" + valueTypeToString(line.first).toUtf8(), (line.first.isBinary ? line.second.toHex() : line.second), MessageLevel::info, target);
   }
+  if (buffer.isEmpty() && pendingDataBuffer.isEmpty() && pendingPointBuffer.isEmpty())
+    emit sendMessage("Buffer is empty", "", MessageLevel::info, target);
 }
 
 void NewSerialParser::getReady() {

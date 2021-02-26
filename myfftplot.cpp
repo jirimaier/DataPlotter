@@ -1,13 +1,13 @@
 #include "myfftplot.h"
 
-MyFFTPlot::MyFFTPlot(QWidget *parent) : MyPlot(parent) {
+MyFFTPlot::MyFFTPlot(QWidget* parent) : MyPlot(parent) {
   addGraph();
   xAxis->setSubTicks(false);
   yAxis->setSubTicks(false);
   this->xAxis->setRange(0, 1000);
   this->yAxis->setRange(0, 100);
-  setGridHintX(-2);
-  setGridHintY(-2);
+  setGridHintX(-3);
+  setGridHintY(-3);
   graph(0)->setFillBase(-50);
 }
 
@@ -36,6 +36,8 @@ QPair<unsigned int, unsigned int> MyFFTPlot::getVisibleSamplesRange() {
 }
 
 void MyFFTPlot::newData(QSharedPointer<QCPGraphDataContainer> data) {
+  if (data->size() != graph(0)->data()->size())
+    emit lengthChanged(graph(0)->data()->size(), data->size());
   graph(0)->setData(data);
   if (autoSize)
     autoset();
@@ -44,8 +46,8 @@ void MyFFTPlot::newData(QSharedPointer<QCPGraphDataContainer> data) {
   // Přepsat text u traceru
   if (tracer->visible()) {
     QString tracerTextStr;
-    tracerTextStr.append(floatToNiceString(tracer->position->value(), 4, true, true) + getYUnit() + "\n");
-    tracerTextStr.append(floatToNiceString(tracer->position->key(), 4, true, true) + getXUnit());
+    tracerTextStr.append(floatToNiceString(tracer->position->value(), 4, true, false) + getYUnit() + "\n");
+    tracerTextStr.append(floatToNiceString(tracer->position->key(), 4, true, false) + getXUnit());
     tracerText->setText(tracerTextStr);
     tracerLayer->replot();
   }
@@ -94,13 +96,13 @@ void MyFFTPlot::autoset() {
     yRange.lower = -50;
 
   yRange.upper = ceilToNiceValue(yRange.upper);
-  xRange.lower = 0;
+  xRange.lower = xRange.lower;
   xRange.upper = xRange.upper;
   xAxis->setRange(xRange);
   yAxis->setRange(yRange);
 }
 
-void MyFFTPlot::moveTracer(QMouseEvent *event) {
+void MyFFTPlot::moveTracer(QMouseEvent* event) {
   if (mouseDrag == MouseDrag::nothing) {
     // Nic není taženo myší
     if ((unsigned int)graph(0)->selectTest(event->pos(), false) < 20) {
@@ -123,8 +125,8 @@ void MyFFTPlot::moveTracer(QMouseEvent *event) {
       } else {
         tracerText->setVisible(true);
         QString tracerTextStr;
-        tracerTextStr.append(floatToNiceString(tracer->position->value(), 4, true, true) + getYUnit() + "\n");
-        tracerTextStr.append(floatToNiceString(tracer->position->key(), 4, true, true) + getXUnit());
+        tracerTextStr.append(floatToNiceString(tracer->position->value(), 4, true, false) + getYUnit() + "\n");
+        tracerTextStr.append(floatToNiceString(tracer->position->key(), 4, true, false) + getXUnit());
         tracerText->setText(tracerTextStr);
         checkIfTracerTextFits();
       }
@@ -133,7 +135,7 @@ void MyFFTPlot::moveTracer(QMouseEvent *event) {
     } else
       hideTracer();
   } else {
-  DRAG_CURSOR:
+DRAG_CURSOR:
     tracer->setVisible(true);
     tracerText->setVisible(false);
     tracer->setPoint(event->pos());

@@ -66,6 +66,7 @@ Q_DECLARE_METATYPE(QSharedPointer<QCPCurveDataContainer>);
 Q_DECLARE_METATYPE(MathOperations::enumMathOperations);
 Q_DECLARE_METATYPE(FFTWindow::enumFFTWindow);
 Q_DECLARE_METATYPE(FFTType::enumFFTType);
+Q_DECLARE_METATYPE(HAxisType::enumHAxisType);
 Q_DECLARE_METATYPE(ValueType);
 
 int main(int argc, char* argv[]) {
@@ -85,6 +86,7 @@ int main(int argc, char* argv[]) {
   qRegisterMetaType<MathOperations::enumMathOperations>();
   qRegisterMetaType<FFTWindow::enumFFTWindow>();
   qRegisterMetaType<FFTType::enumFFTType>();
+  qRegisterMetaType<HAxisType::enumHAxisType>();
   qRegisterMetaType<QPair<ValueType, QByteArray>>();
   qRegisterMetaType<QList<QPair<ValueType, QByteArray>>>();
 
@@ -154,7 +156,7 @@ int main(int argc, char* argv[]) {
   QObject::connect(&mainWindow, &MainWindow::clearMath, plotMath, &PlotMath::clearMath);
   QObject::connect(&mainWindow, &MainWindow::requstMeasurements1, signalProcessing1, &SignalProcessing::process);
   QObject::connect(&mainWindow, &MainWindow::requstMeasurements2, signalProcessing2, &SignalProcessing::process);
-  QObject::connect(&mainWindow, &MainWindow::requestFFT, signalProcessingFFT, &SignalProcessing::calculateSpectrum);
+  QObject::connect(&mainWindow, &MainWindow::requestFFT, signalProcessingFFT, &SignalProcessing::getFFTPlot);
   QObject::connect(signalProcessing1, &SignalProcessing::result, &mainWindow, &MainWindow::signalMeasurementsResult1);
   QObject::connect(signalProcessing2, &SignalProcessing::result, &mainWindow, &MainWindow::signalMeasurementsResult2);
   QObject::connect(signalProcessingFFT, &SignalProcessing::fftResult, &mainWindow, &MainWindow::fftResult);

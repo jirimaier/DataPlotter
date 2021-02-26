@@ -15,7 +15,7 @@
 
 #include "signalprocessing.h"
 
-SignalProcessing::SignalProcessing(QObject *parent) : QObject(parent) {}
+SignalProcessing::SignalProcessing(QObject* parent) : QObject(parent) {}
 
 void SignalProcessing::resizeHamming(int length) {
   if (hamming.size() != length) {
@@ -74,47 +74,118 @@ int SignalProcessing::nextPow2(int number) {
       return (pow(2, i));
 }
 
-void SignalProcessing::calculateSpectrum(QSharedPointer<QCPGraphDataContainer> data, FFTType::enumFFTType type, FFTWindow::enumFFTWindow window) {
-  if (type != FFTType::pwelch) {
-    float fs = data->size() / (data->at(data->size() - 1)->key - data->at(0)->key);
+void SignalProcessing::getFFTPlot(QSharedPointer<QCPGraphDataContainer> data, FFTType::enumFFTType type, FFTWindow::enumFFTWindow window, bool removeDC, int segmentCount, bool twosided, bool zerocenter) {
+  if (removeDC) {
+    // Stejnosměrná složka
+    float dc = 0;
+    for (QCPGraphDataContainer::iterator it = data->begin(); it != data->end(); it++)
+      dc += it->value;
+    dc /= data->size();
 
+    // Odstranění stejnosměrné složky
+    for (QCPGraphDataContainer::iterator it = data->begin(); it != data->end(); it++)
+      it->value -= dc;
+  }
+
+  float fs = data->size() / (data->at(data->size() - 1)->key - data->at(0)->key);
+
+  if (type == FFTType::spectrum || type == FFTType::periodogram) {
     QVector<std::complex<float>> values;
-    if (window == FFTWindow::rectangular)
-      for (int i = 0; i < data->size(); i++)
-        values.append(data->at(i)->value);
-    else if (window == FFTWindow::hamming) {
-      resizeHamming(data->size());
-      for (int i = 0; i < data->size(); i++)
-        values.append(data->at(i)->value * hamming.at(i));
-    } else if (window == FFTWindow::hann) {
-      resizeHann(data->size());
-      for (int i = 0; i < data->size(); i++)
-        values.append(data->at(i)->value * hann.at(i));
-    } else if (window == FFTWindow::blackman) {
-      resizeBlackman(data->size());
-      for (int i = 0; i < data->size(); i++)
-        values.append(data->at(i)->value * blackman.at(i));
-    }
-    int nfft = nextPow2(values.size());
-    if (nfft < 1024)
-      nfft = 1024;
-    values.resize(nfft);
+    for (int i = 0; i < data->size(); i++)
+      values.append(std::complex<float>(data->at(i)->value, 0));
 
-    QVector<std::complex<float>> resultValues = fft(values);
+    QVector<std::complex<float>> resultValues = calculateSpectrum(values, window);
+    int nfft = resultValues.size();
 
     auto result = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer);
     double freqStep = fs / nfft;
-    for (int i = 0; i <= nfft / 2.0; i++) {
+    for (int i = 0; (twosided ? (i < nfft) : (i <= nfft / 2)); i++) {
+      float freq = i * freqStep;
+      if (zerocenter && i > nfft / 2)
+        freq -= nfft * freqStep;
       if (type == FFTType::periodogram) {
         // Výpočet |x|^2 jako x * komplexně sdružené x;
         float absSquared = (resultValues.at(i) * std::complex<float>(resultValues.at(i).real(), -resultValues.at(i).imag())).real();
         // float absSquared = abs(resultValues.at(i)) * abs(resultValues.at(i));
-        result->add(QCPGraphData(i * freqStep, 10 * log10(absSquared / nfft)));
+        result->add(QCPGraphData(freq, 10 * log10(absSquared / nfft)));
       } else
-        result->add(QCPGraphData(i * freqStep, std::abs(resultValues.at(i))));
+        result->add(QCPGraphData(freq, std::abs(resultValues.at(i))));
     }
     emit fftResult(result);
   }
+
+  else if (type == FFTType::pwelch) {
+    // Výpočet periodogramu Welchovou metodou
+
+    //Rozdělení na segmenty s 50% překryvem
+    // Kolik půl-segmentů se vejde?
+    int halfSegmentLength = data->size() / segmentCount;
+    // Pokud je počet půlsegmentů sudý, poslední překryvný se nevejde, bude o jeden méně, než se chtělo
+    // |___ ___ ___ ___ ___ _|
+    // |  ___ ___ ___ ___ ___|
+    // V horní řadě je 5 a půl segmentů (lichý počet půlsegmentů), do spodní se vejde taky 5
+    //
+    // |___ ___ ___ ___ ___|
+    // |  ___ ___ ___ ___   |
+    // V horní řadě je 5 celých segmentů (sudý počet půlsegmentů), do spodní se vejde je 4
+    if ((data->size() / halfSegmentLength) % 2 == 0)
+      segmentCount--;
+
+    // Rozdělení na segmenty
+    QVector<QVector<std::complex<float>>> segments;
+    segments.resize(segmentCount);
+    for (int i = 0; i < segments.size(); i++) {
+      for (int j = i * halfSegmentLength; j < (i + 2)*halfSegmentLength; j++)
+        segments[i].append(std::complex<float>(data->at(j)->value, 0));
+    }
+
+    // Výpočet spektra pro jednotlivé segmenty
+    // Funkce calculateSpectrum použije okno a doplní nulami na mocninu dvou
+    for (int i = 0; i < segments.size(); i++) {
+      segments[i] = calculateSpectrum(segments.at(i), window);
+    }
+
+    int nfft = segments.at(0).length();
+
+    // Výpočet periodogramů a zprůměrování
+    auto result = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer);
+    double freqStep = fs / nfft;
+    for (int i = 0; (twosided ? (i < nfft) : (i <= nfft / 2)); i++) {
+      float value = 0;
+      float freq = i * freqStep;
+      if (zerocenter && i > nfft / 2)
+        freq -= nfft * freqStep;
+      for (int j = 0; j < segments.size(); j++)
+        // Přičte k value |x|^2, Výpočet |x|^2 jako x * komplexně sdružené x;
+        value += (segments.at(j).at(i) * std::complex<float>(segments.at(j).at(i).real(), -segments.at(j).at(i).imag())).real();
+      //Přidá do výsledku bod - součet hodnot ze segmentů dělený nfft a počtem segmentů. V dB.
+      result->add(QCPGraphData(freq, 10 * log10(value / nfft / segments.size())));
+    }
+    emit fftResult(result);
+  }
+}
+
+QVector<std::complex<float>> SignalProcessing::calculateSpectrum(QVector<std::complex<float>> data, FFTWindow::enumFFTWindow window) {
+  if (window == FFTWindow::hamming) {
+    resizeHamming(data.size());
+    for (int i = 0; i < data.size(); i++)
+      data[i] *= hamming.at(i);
+  } else if (window == FFTWindow::hann) {
+    resizeHann(data.size());
+    for (int i = 0; i < data.size(); i++)
+      data[i] *= hann.at(i);
+  } else if (window == FFTWindow::blackman) {
+    resizeBlackman(data.size());
+    for (int i = 0; i < data.size(); i++)
+      data[i] *= blackman.at(i);
+  }
+
+  int nfft = nextPow2(data.size());
+  if (nfft < 128)
+    nfft = 128;
+  data.resize(nfft);
+
+  return fft(data);
 }
 
 void SignalProcessing::process(QSharedPointer<QCPGraphDataContainer> data) {
@@ -152,8 +223,6 @@ void SignalProcessing::process(QSharedPointer<QCPGraphDataContainer> data) {
 }
 
 float SignalProcessing::getStrongestFreq(QSharedPointer<QCPGraphDataContainer> data, float dc, float fs) {
-  // Vzorkovací frekvence (převrácený interval mezi vzorky, předpokládá se konstantní)
-
   //    // Výpočet frekvence - pro krátký signál (do 4096 vzorků) udělám autokorelaci
   //    // a z ní FFT; pro delší signál jen FFT přímo ze signálu (rychlé, ale méně přesné)
   //    if (data->size() <= 4096) {
@@ -197,6 +266,8 @@ float SignalProcessing::getStrongestFreq(QSharedPointer<QCPGraphDataContainer> d
   //      }
   //      freq = maxindex * fs / nfft;
   //    } else {
+
+  // Prostě udělám FFT (po odečtení DC) a najdu globální maximum
   QVector<std::complex<float>> acValues;
   for (int i = 0; i < data->size(); i++)
     acValues.append((data->at(i)->value - dc));
@@ -211,7 +282,7 @@ float SignalProcessing::getStrongestFreq(QSharedPointer<QCPGraphDataContainer> d
 
   int maxindex = 0;
   float maxVal = 0;
-  for (int i = 0; i < nfft / 2; i++) {
+  for (int i = 0; i <= nfft / 2; i++) {
     float value = std::abs(acSigFFT.at(i));
     if (value > maxVal) {
       maxVal = value;

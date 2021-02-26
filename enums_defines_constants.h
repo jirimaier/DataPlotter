@@ -213,6 +213,8 @@ inline QString valueTypeToString(ValueType val) {
 #define LOGIC_COUNT LOGIC_BITS *LOGIC_GROUPS
 #define ALL_COUNT (ANALOG_COUNT + MATH_COUNT + LOGIC_COUNT)
 
+#define XY_AND_FFT_ALLWAYS_TOGETHER
+
 #define PORT_NUCLEO_DESCRIPTION_IDENTIFIER "ST"
 
 #define POINT_STYLE QCPScatterStyle::ssDisc
@@ -278,7 +280,50 @@ inline QString getChName(int chid) {
   return (QObject::tr("Ch %1").arg(chid + 1));
 }
 
-inline QString floatToNiceString(double d, int prec = 5, bool justify = false, bool addSpaceIfNoPrefix = false, bool trimZeroes = false, bool tenthsAsMilli = true) {
+static int fastLog10(double x) {
+  x = abs(x);
+  int result = 0;
+  if (x > 1)
+    for (double d = 10.0; d <= x; d *= 10, result++);
+  else
+    for (double d = 1; d > x; d /= 10, result--);
+  return result;
+}
+
+static int fastPow10(int n) {
+  if (n == 0)
+    return 1;
+  if (n > 0)
+    return 10 * fastPow10(n - 1);
+  else
+    return fastPow10(n + 1) / 10;
+}
+
+static QString toSignificantDigits(double x, double prec, bool noDecimalsIfInteger = false) {
+  if (x == 0)
+    return "0";
+  if (noDecimalsIfInteger)
+    if (round(x) == x)
+      return QString::number((int)round(x));
+  int log10ofX = fastLog10(x);
+  if (log10ofX >= prec - 1) {
+    return QString::number((int)round(x));
+  } else {
+    QString result = QString::number((int)round(x * (fastPow10(prec - log10ofX - 1))));
+    int decimalPoint = result.length() - prec + log10ofX + 1;
+    if (decimalPoint > 0)
+      result.insert(decimalPoint, '.');
+    else {
+      for (; decimalPoint < 0; decimalPoint++)
+        result.push_front('0');
+      result.push_front('.');
+      result.push_front('0');
+    }
+    return result;
+  }
+}
+
+inline QString floatToNiceString(double d, int significantDigits, bool justify, bool justifyUnit, bool noDecimalsIfInteger = false) {
   QString text = "";
   QString postfix = "";
   if (qIsInf(d))
@@ -286,64 +331,56 @@ inline QString floatToNiceString(double d, int prec = 5, bool justify = false, b
   else if (qIsNaN(d))
     text = "--- ";
   else {
-    int order = floor(std::log10(std::abs(d)));
-    if (!tenthsAsMilli && order == -1) {
-      postfix = addSpaceIfNoPrefix ? "  " : " ";
-      text = QString::number(d, 'f', MAX(prec - 1, 0));
-    } else {
-      if (order >= 18)
-        postfix = " E";
-      else if (order >= 15)
-        postfix = " P";
-      else if (order >= 12)
-        postfix = " T";
-      else if (order >= 9)
-        postfix = " G";
-      else if (order >= 6)
-        postfix = " M";
-      else if (order >= 3)
-        postfix = " k";
-      else if (order >= 0)
-        postfix = addSpaceIfNoPrefix ? "  " : " ";
-      else if (order >= -3)
-        postfix = " m";
-      else if (order >= -6)
-        postfix = " " + QString::fromUtf8("\xc2\xb5"); // mikro
-      else if (order >= -9)
-        postfix = " n";
-      else if (order >= -12)
-        postfix = " p";
-      else if (order >= -15)
-        postfix = " f";
-      else if (order >= -18)
-        postfix = " a";
-      else {
-        postfix = addSpaceIfNoPrefix ? "  " : " ";
-      }
-      // Zaokrouhlený na násobek tří
-      int order3 = ((int)floor((order / 3.0f))) * 3;
-      d /= std::pow(10, order3);
-      if (std::abs(d) >= 100)
-        text = QString::number(d, 'f', MAX(prec - 3, 0));
-      else if (std::abs(d) >= 10)
-        text = QString::number(d, 'f', MAX(prec - 2, 0));
-      else
-        text = QString::number(d, 'f', MAX(prec - 1, 0));
-    }
-  }
+    int order = fastLog10(d);
 
-  if (trimZeroes) {
-    if (text.contains('.')) {
-      while (text.right(1) == "0")
-        text = text.left(text.length() - 1);
-      if (text.right(1) == ".")
-        text = text.left(text.length() - 1);
+    if (order >= 18) {
+      postfix = " E";
+      d /= 1e18;
+    } else if (order >= 15) {
+      postfix = " P";
+      d /= 1e15;
+    } else if (order >= 12) {
+      postfix = " T";
+      d /= 1e12;
+    } else if (order >= 9) {
+      postfix = " G";
+      d /= 1e9;
+    } else if (order >= 6) {
+      postfix = " M";
+      d /= 1e6;
+    } else if (order >= 3) {
+      postfix = " k";
+      d /= 1e3;
+    } else if (order >= 0) {
+      postfix = justifyUnit ? "  " : " ";
+    } else if (order >= -3) {
+      postfix = " m";
+      d /= 1e-3;
+    } else if (order >= -6) {
+      postfix = " " + QString::fromUtf8("\xc2\xb5"); // mikro
+      d /= 1e-6;
+    } else if (order >= -9) {
+      postfix = " n";
+      d /= 1e-9;
+    } else if (order >= -12) {
+      postfix = " p";
+      d /= 1e-12;
+    } else if (order >= -15) {
+      postfix = " f";
+      d /= 1e-15;
+    } else if (order >= -18) {
+      postfix = " a";
+      d /= 1e-18;
+    } else {
+      d = 0;
+      postfix = justify ? "  " : " ";
     }
+    text = toSignificantDigits(d, significantDigits, noDecimalsIfInteger);
   }
 
   text.append(postfix);
   if (justify) {
-    return text.rightJustified(prec + ((text.right(1) == " " && !addSpaceIfNoPrefix) ? 3 : 4));
+    return text.rightJustified(significantDigits + ((text.right(1) == " " && !justifyUnit) ? 3 : 4));
   } else
     return text;
 }

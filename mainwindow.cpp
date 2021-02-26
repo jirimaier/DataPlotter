@@ -111,10 +111,10 @@ void MainWindow::serialFinishedWriting() {
 void MainWindow::updateDivs() {
   updateChScale();
   if (ui->labelHDiv->isEnabled())
-    ui->labelHDiv->setText(floatToNiceString(ui->plot->getHDiv(), 3, false, false, true) + tr("s/Div"));
+    ui->labelHDiv->setText(floatToNiceString(ui->plot->getHDiv(), 1, false, false) + tr("s/Div"));
   else
     ui->labelHDiv->setText("---");
-  ui->labelVDiv->setText(floatToNiceString(ui->plot->getVDiv(), 3, false, false, true) + tr("V/Div"));
+  ui->labelVDiv->setText(floatToNiceString(ui->plot->getVDiv(), 1, false, false) + tr("V/Div"));
 }
 
 void MainWindow::on_pushButtonCenter_clicked() {
@@ -161,9 +161,9 @@ void MainWindow::printMessage(QString messageHeader, QByteArray messageBody, int
   QString stringMessage;
   stringMessage = messageBody;
   if (target == MessageTarget::serial1)
-    ui->plainTextEditConsole->appendHtml(color + QString(messageHeader) + "</font color>: " + stringMessage);
+    ui->plainTextEditConsole->appendHtml(color + QString(messageHeader) + "</font color>" + (stringMessage.isEmpty() ? "" : ": ") + stringMessage);
   else
-    ui->plainTextEditConsole_2->appendHtml(color + QString(messageHeader) + "</font color>: " + stringMessage);
+    ui->plainTextEditConsole_2->appendHtml(color + QString(messageHeader) + "</font color>" + (stringMessage.isEmpty() ? "" : ": ") + stringMessage);
 }
 
 void MainWindow::printDeviceMessage(QByteArray message, bool warning, bool ended) {
@@ -186,7 +186,7 @@ void MainWindow::printDeviceMessage(QByteArray message, bool warning, bool ended
   pendingDeviceMessage = !ended;
 }
 
-void MainWindow::ch1WasUpdated(bool wasPoint, bool HMS) {lastUpdateWasPoint = wasPoint; dataUpdates++; lastPointTimeWasHMS = HMS;}
+void MainWindow::ch1WasUpdated(bool wasPoint, HAxisType::enumHAxisType recommandedTimeBase) {lastUpdateWasPoint = wasPoint; dataUpdates++; recommandedAxisType = recommandedTimeBase;}
 
 void MainWindow::updateMathNow(int number) {
   emit setMathFirst(number, mathEn[number - 1]->isChecked() ? mathFirst[number - 1]->value() : 0);
@@ -245,6 +245,7 @@ void MainWindow::on_comboBoxFFTType_currentIndexChanged(int index) {
     ui->plotFFT->setYUnit("dB");
   else
     ui->plotFFT->setYUnit("");
+  ui->spinBoxFFTSegments->setEnabled(index == FFTType::pwelch);
 }
 
 void MainWindow::on_lineEditVUnit_textChanged(const QString& arg1) {

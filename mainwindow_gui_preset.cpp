@@ -24,6 +24,7 @@ void MainWindow::connectSignals() {
   connect(ui->plot, &MyMainPlot::offsetChangedByMouse, this, &MainWindow::offsetChangedByMouse);
   connect(ui->plotxy, &MyPlot::moveCursor, this, &MainWindow::moveCursor);
   connect(ui->plotFFT, &MyPlot::moveCursor, this, &MainWindow::moveCursor);
+  connect(ui->plotFFT, &MyFFTPlot::lengthChanged, this, &MainWindow::FFTlengthChanged);
   connect(ui->doubleSpinBoxRangeHorizontal, SIGNAL(valueChanged(double)), ui->plot, SLOT(setRollingRange(double)));
   connect(ui->doubleSpinBoxRangeVerticalRange, SIGNAL(valueChanged(double)), ui->plot, SLOT(setVerticalRange(double)));
   connect(ui->doubleSpinBoxRangeHorizontal, SIGNAL(valueChanged(double)), ui->dialRollingRange, SLOT(updatePosition(double)));

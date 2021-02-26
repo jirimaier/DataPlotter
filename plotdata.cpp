@@ -151,16 +151,20 @@ void PlotData::addPoint(QList<QPair<ValueType, QByteArray>> data) {
   }
   bool isok;
   double time;
-  lastTimeWasHMS = false;
-  if (data.at(0).second.isEmpty()) {
+  lastRecommandedAxisType = HAxisType::normal;
+  if (data.at(0).second.isEmpty() || data.at(0).second == "-sample") {
     if (qIsInf(lastTimes[0]))
       time = 0;
     else
       time = lastTimes[0] + defaultTimestep;
   } else if (data.at(0).second == "-tod") {
-    auto msec = qTime.currentTime().msecsSinceStartOfDay();
-    time = msec / 1000.0;
-    lastTimeWasHMS = true;
+    time = qTime.currentTime().msecsSinceStartOfDay() / 1000.0;
+    lastRecommandedAxisType = HAxisType::HMS;
+  } else if (data.at(0).second == "-auto") {
+    if (!timerRunning)
+      elapsedTime.start();
+    time = elapsedTime.nsecsElapsed() * 1e-9;
+    lastRecommandedAxisType = time >= 3600 ? HAxisType::HMS : HAxisType::MS;
   } else {
     time = getValue(data.at(0), isok);
     if (!isok) {
@@ -203,7 +207,7 @@ void PlotData::addPoint(QList<QPair<ValueType, QByteArray>> data) {
     }
 
     if (ch == 1)
-      emit ch1dataUpdated(true, lastTimeWasHMS);
+      emit ch1dataUpdated(true, lastRecommandedAxisType);
 
     emit addPointToPlot(ch - 1, time, value, time >= lastTimes[ch - 1]);
     for (int math = 0; math < MATH_COUNT; math++) {
@@ -306,7 +310,7 @@ void PlotData::addChannel(QPair<ValueType, QByteArray> data, unsigned int ch, QP
   }
 
   if (ch == 1)
-    emit ch1dataUpdated(false, false);
+    emit ch1dataUpdated(false, HAxisType::normal);
   emit addVectorToPlot(ch - 1, analogData);
 
   if (isLogic) {

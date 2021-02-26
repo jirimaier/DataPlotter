@@ -100,7 +100,7 @@ void MyMainPlot::updateMinMaxTimes() {
     maxT = *std::max_element(lasts.begin(), lasts.end());
   } else {
     minT = 0;
-    maxT = 100;
+    maxT = 10;
   }
 }
 

@@ -27,10 +27,10 @@
 
 class SignalProcessing : public QObject {
   Q_OBJECT
-public:
-  explicit SignalProcessing(QObject *parent = nullptr);
+ public:
+  explicit SignalProcessing(QObject* parent = nullptr);
 
-private:
+ private:
   void resizeHamming(int length);
   void resizeHann(int length);
   void resizeBlackman(int length);
@@ -41,11 +41,12 @@ private:
   /// Vratí nejbližší vyšší mocninu dvou
   int nextPow2(int number);
 
-public slots:
-  void calculateSpectrum(QSharedPointer<QCPGraphDataContainer> data, FFTType::enumFFTType type, FFTWindow::enumFFTWindow window);
+ public slots:
+  void getFFTPlot(QSharedPointer<QCPGraphDataContainer> data, FFTType::enumFFTType type, FFTWindow::enumFFTWindow window, bool removeDC, int segmentCount, bool twosided, bool zerocenter);
+  QVector<std::complex<float> > calculateSpectrum(QVector<std::complex<float>> data, FFTWindow::enumFFTWindow window);
   void process(QSharedPointer<QCPGraphDataContainer> data);
 
-signals:
+ signals:
   void fftResult(QSharedPointer<QCPGraphDataContainer> data);
   void result(float period, float freq, float amp, float min, float max, float vrms, float dc, float fs, float rise, float fall, int samples);
 };

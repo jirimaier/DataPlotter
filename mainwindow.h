@@ -84,7 +84,7 @@ class MainWindow : public QMainWindow {
   QTimer dataRateTimer;
   int dataUpdates = 0;
   bool lastUpdateWasPoint = false;
-  bool lastPointTimeWasHMS = false;
+  HAxisType::enumHAxisType recommandedAxisType = HAxisType::normal;
 
  private slots:
   void updateCursors();
@@ -99,6 +99,7 @@ class MainWindow : public QMainWindow {
   void updateFFT();
   void updateSerialMonitor();
   void updateDataRate();
+  void FFTlengthChanged(int formerLength, int newLength);
 
  private slots: // Autoconnect slots
   void on_dialRollingRange_realValueChanged(double value) { ui->doubleSpinBoxRangeHorizontal->setValue(value); }
@@ -223,7 +224,7 @@ class MainWindow : public QMainWindow {
   void xyResult(QSharedPointer<QCPCurveDataContainer> data);
   void moveCursor(int chid, int cursor, int sample);
   void offsetChangedByMouse(int chid);
-  void ch1WasUpdated(bool wasPoint, bool HMS);
+  void ch1WasUpdated(bool wasPoint,   HAxisType::enumHAxisType recommandedTimeBase);
 
  signals:
   void setChDigital(int chid, int target);
@@ -248,6 +249,6 @@ class MainWindow : public QMainWindow {
   void requestXY(QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2);
   void requstMeasurements1(QSharedPointer<QCPGraphDataContainer> data);
   void requstMeasurements2(QSharedPointer<QCPGraphDataContainer> data);
-  void requestFFT(QSharedPointer<QCPGraphDataContainer> data, FFTType::enumFFTType type, FFTWindow::enumFFTWindow window);
+  void requestFFT(QSharedPointer<QCPGraphDataContainer> data, FFTType::enumFFTType type, FFTWindow::enumFFTWindow window, bool removeDC, int pWelchtimeDivisions, bool twosided, bool zerocenter);
 };
 #endif // MAINWINDOW_H

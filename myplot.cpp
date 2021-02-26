@@ -15,7 +15,7 @@
 
 #include "myplot.h"
 
-MyPlot::MyPlot(QWidget *parent) : QCustomPlot(parent) {
+MyPlot::MyPlot(QWidget* parent) : QCustomPlot(parent) {
   this->setAntialiasedElement(QCP::AntialiasedElement::aePlottables);
   this->addLayer("cursorLayer", 0, limAbove);
   this->addLayer("tracerLayer", 0, limAbove);
@@ -44,9 +44,9 @@ MyPlot::MyPlot(QWidget *parent) : QCustomPlot(parent) {
 
   connect(this->xAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(onXRangeChanged(QCPRange)));
   connect(this->yAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(onYRangeChanged(QCPRange)));
-  connect(this, SIGNAL(mouseMove(QMouseEvent *)), this, SLOT(moveTracer(QMouseEvent *)));
-  connect(this, SIGNAL(mousePress(QMouseEvent *)), this, SLOT(mousePressed(QMouseEvent *)));
-  connect(this, SIGNAL(mouseRelease(QMouseEvent *)), this, SLOT(mouseReleased(QMouseEvent *)));
+  connect(this, SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(moveTracer(QMouseEvent*)));
+  connect(this, SIGNAL(mousePress(QMouseEvent*)), this, SLOT(mousePressed(QMouseEvent*)));
+  connect(this, SIGNAL(mouseRelease(QMouseEvent*)), this, SLOT(mouseReleased(QMouseEvent*)));
 }
 
 void MyPlot::onXRangeChanged(QCPRange range) {
@@ -259,14 +259,14 @@ void MyPlot::checkIfTracerTextFits() {
   }
 }
 
-void MyPlot::mouseReleased(QMouseEvent *) {
+void MyPlot::mouseReleased(QMouseEvent*) {
   mouseIsPressed = false;
   mouseDrag = MouseDrag::nothing;
   if (isFreeMove)
     this->setInteraction(QCP::iRangeDrag, true);
 }
 
-void MyPlot::mousePressed(QMouseEvent *event) {
+void MyPlot::mousePressed(QMouseEvent* event) {
   mouseIsPressed = true;
   moveTracer(event);
 }
@@ -289,17 +289,17 @@ void MyPlot::hideTracer() {
 
 void MyPlot::enableMouseCursorControll(bool enabled) {
   if (enabled) {
-    connect(this, SIGNAL(mouseMove(QMouseEvent *)), this, SLOT(moveTracer(QMouseEvent *)));
-    connect(this, SIGNAL(mousePress(QMouseEvent *)), this, SLOT(mousePressed(QMouseEvent *)));
-    connect(this, SIGNAL(mouseRelease(QMouseEvent *)), this, SLOT(mouseReleased(QMouseEvent *)));
+    connect(this, SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(moveTracer(QMouseEvent*)));
+    connect(this, SIGNAL(mousePress(QMouseEvent*)), this, SLOT(mousePressed(QMouseEvent*)));
+    connect(this, SIGNAL(mouseRelease(QMouseEvent*)), this, SLOT(mouseReleased(QMouseEvent*)));
   } else {
-    disconnect(this, SIGNAL(mouseMove(QMouseEvent *)), this, SLOT(moveTracer(QMouseEvent *)));
-    disconnect(this, SIGNAL(mousePress(QMouseEvent *)), this, SLOT(mousePressed(QMouseEvent *)));
-    disconnect(this, SIGNAL(mouseRelease(QMouseEvent *)), this, SLOT(mouseReleased(QMouseEvent *)));
+    disconnect(this, SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(moveTracer(QMouseEvent*)));
+    disconnect(this, SIGNAL(mousePress(QMouseEvent*)), this, SLOT(mousePressed(QMouseEvent*)));
+    disconnect(this, SIGNAL(mouseRelease(QMouseEvent*)), this, SLOT(mouseReleased(QMouseEvent*)));
   }
 }
 
-void MyPlot::setVerticalDiv(double value) { unitTickerY->setTickStep(value); }
+void MyPlot::setVerticalDiv(double value) { unitTickerY->setTickStep(value);}
 
 void MyPlot::setHorizontalDiv(double value) {
   unitTickerX->setTickStep(value);

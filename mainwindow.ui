@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>997</width>
-    <height>711</height>
+    <width>1000</width>
+    <height>720</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -56,8 +56,33 @@
         <enum>QFrame::Plain</enum>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_10" stretch="1000,1">
+        <property name="leftMargin">
+         <number>6</number>
+        </property>
+        <property name="topMargin">
+         <number>6</number>
+        </property>
+        <property name="rightMargin">
+         <number>6</number>
+        </property>
+        <property name="bottomMargin">
+         <number>6</number>
+        </property>
         <item>
-         <layout class="QGridLayout" name="gridLayout" rowstretch="0,0" columnstretch="0,0">
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="0" column="0">
+           <widget class="MyXYPlot" name="plotxy" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>1</horstretch>
+              <verstretch>1</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">background-color:gray;</string>
+            </property>
+           </widget>
+          </item>
           <item row="0" column="1">
            <widget class="MyFFTPlot" name="plotFFT" native="true">
             <property name="sizePolicy">
@@ -84,23 +109,10 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="0">
-           <widget class="MyXYPlot" name="plotxy" native="true">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-              <horstretch>1</horstretch>
-              <verstretch>1</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">background-color:gray;</string>
-            </property>
-           </widget>
-          </item>
          </layout>
         </item>
         <item>
-         <layout class="QGridLayout" name="gridLayout_8" rowstretch="0,0" columnstretch="1000,0">
+         <layout class="QGridLayout" name="gridLayout_8" rowstretch="1,100" columnstretch="1000,0">
           <item row="0" column="0" rowspan="2">
            <widget class="QTabWidget" name="tabsControll">
             <property name="sizePolicy">
@@ -128,7 +140,7 @@
              <enum>QTabWidget::Rounded</enum>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>6</number>
             </property>
             <property name="iconSize">
              <size>
@@ -137,7 +149,7 @@
              </size>
             </property>
             <property name="elideMode">
-             <enum>Qt::ElideRight</enum>
+             <enum>Qt::ElideNone</enum>
             </property>
             <property name="usesScrollButtons">
              <bool>true</bool>
@@ -231,6 +243,9 @@
                  </item>
                  <item>
                   <widget class="QSlider" name="horizontalSliderVGrid">
+                   <property name="toolTip">
+                    <string>Grid resolution</string>
+                   </property>
                    <property name="minimum">
                     <number>-4</number>
                    </property>
@@ -358,16 +373,16 @@
                       </size>
                      </property>
                      <property name="toolTip">
-                      <string>Vertical axis range</string>
+                      <string/>
                      </property>
                      <property name="autoFillBackground">
                       <bool>false</bool>
                      </property>
                      <property name="minimum">
-                      <number>9</number>
+                      <number>12</number>
                      </property>
                      <property name="maximum">
-                      <number>46</number>
+                      <number>40</number>
                      </property>
                      <property name="pageStep">
                       <number>1</number>
@@ -414,7 +429,7 @@
                     </font>
                    </property>
                    <property name="toolTip">
-                    <string>Vertical axis range</string>
+                    <string/>
                    </property>
                    <property name="alignment">
                     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -479,7 +494,7 @@
                       </size>
                      </property>
                      <property name="toolTip">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Position of zero value&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                      <string/>
                      </property>
                      <property name="minimum">
                       <number>-100</number>
@@ -508,7 +523,7 @@
                    <item>
                     <widget class="QPushButton" name="pushButtonCenter">
                      <property name="toolTip">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Symetric&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                      <string>Symetric positive and negative</string>
                      </property>
                      <property name="text">
                       <string/>
@@ -528,7 +543,7 @@
                    <item>
                     <widget class="QPushButton" name="pushButtonPositive">
                      <property name="toolTip">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Positive&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                      <string>Only positive</string>
                      </property>
                      <property name="text">
                       <string/>
@@ -600,10 +615,10 @@
                  <item>
                   <widget class="QRadioButton" name="radioButtonRollingRange">
                    <property name="toolTip">
-                    <string>Plot shows newest data, old data shifts left</string>
+                    <string>Plot shows newest part of data</string>
                    </property>
                    <property name="text">
-                    <string>Shifting</string>
+                    <string>Rolling</string>
                    </property>
                   </widget>
                  </item>
@@ -658,6 +673,9 @@
                  </item>
                  <item>
                   <widget class="QSlider" name="horizontalSliderHGrid">
+                   <property name="toolTip">
+                    <string>Grid resolution</string>
+                   </property>
                    <property name="minimum">
                     <number>-4</number>
                    </property>
@@ -837,8 +855,11 @@
                             <height>40</height>
                            </size>
                           </property>
+                          <property name="toolTip">
+                           <string>Length of data shown</string>
+                          </property>
                           <property name="minimum">
-                           <number>18</number>
+                           <number>21</number>
                           </property>
                           <property name="maximum">
                            <number>40</number>
@@ -892,6 +913,9 @@
                          <font>
                           <pointsize>12</pointsize>
                          </font>
+                        </property>
+                        <property name="toolTip">
+                         <string>Length of data shown</string>
                         </property>
                         <property name="alignment">
                          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1011,6 +1035,9 @@
                         <width>40</width>
                         <height>40</height>
                        </size>
+                      </property>
+                      <property name="toolTip">
+                       <string>Zoom</string>
                       </property>
                       <property name="minimum">
                        <number>10</number>
@@ -1174,6 +1201,9 @@
                     <layout class="QHBoxLayout" name="horizontalLayout_4">
                      <item>
                       <widget class="QCheckBox" name="checkBoxCur1Visible">
+                       <property name="toolTip">
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show cursor&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                       </property>
                        <property name="text">
                         <string/>
                        </property>
@@ -1233,6 +1263,9 @@
                          <horstretch>0</horstretch>
                          <verstretch>0</verstretch>
                         </sizepolicy>
+                       </property>
+                       <property name="toolTip">
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sample on which cursor is&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                        </property>
                        <property name="specialValueText">
                         <string>---</string>
@@ -1342,6 +1375,9 @@
                     <layout class="QHBoxLayout" name="horizontalLayout_9">
                      <item>
                       <widget class="QCheckBox" name="checkBoxCur2Visible">
+                       <property name="toolTip">
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show cursor&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                       </property>
                        <property name="text">
                         <string/>
                        </property>
@@ -1462,6 +1498,9 @@
                          <verstretch>0</verstretch>
                         </sizepolicy>
                        </property>
+                       <property name="toolTip">
+                        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sample on which cursor is&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                       </property>
                        <property name="specialValueText">
                         <string>---</string>
                        </property>
@@ -1522,6 +1561,9 @@
                  </property>
                  <item row="0" column="0">
                   <widget class="QLabel" name="label_18">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Difference in time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
                    <property name="text">
                     <string/>
                    </property>
@@ -1562,6 +1604,9 @@
                  </item>
                  <item row="1" column="0">
                   <widget class="QLabel" name="label_11">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Difference of values&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
                    <property name="text">
                     <string/>
                    </property>
@@ -1599,6 +1644,9 @@
                  </item>
                  <item row="2" column="0">
                   <widget class="QLabel" name="label_37">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ratio (cursor1 / cursor2)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
                    <property name="text">
                     <string/>
                    </property>
@@ -1636,6 +1684,9 @@
                  </item>
                  <item row="3" column="0">
                   <widget class="QLabel" name="label_23">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slope between cursors&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
                    <property name="text">
                     <string/>
                    </property>
@@ -1673,6 +1724,9 @@
                  </item>
                  <item row="4" column="0">
                   <widget class="QLabel" name="label_14">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Reciprocal of time interval between cursors&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
                    <property name="text">
                     <string/>
                    </property>
@@ -2797,6 +2851,9 @@
                     <verstretch>0</verstretch>
                    </sizepolicy>
                   </property>
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of bits shown (from least significant), auto means same as data type (for example 16 bits for U2).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
                   <property name="alignment">
                    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
                   </property>
@@ -2821,6 +2878,9 @@
                     <horstretch>0</horstretch>
                     <verstretch>0</verstretch>
                    </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of bits shown (from least significant), auto means same as data type (for example 16 bits for U2).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -2907,6 +2967,9 @@
                     <horstretch>0</horstretch>
                     <verstretch>0</verstretch>
                    </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of bits shown (from least significant), auto means same as data type (for example 16 bits for U2).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -3183,19 +3246,6 @@
                   </layout>
                  </item>
                  <item>
-                  <spacer name="verticalSpacer_5">
-                   <property name="orientation">
-                    <enum>Qt::Vertical</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>20</width>
-                     <height>0</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                 <item>
                   <widget class="QRadioButton" name="radioButtonXYFull">
                    <property name="text">
                     <string>Whole signal</string>
@@ -3214,6 +3264,19 @@
                     <bool>true</bool>
                    </property>
                   </widget>
+                 </item>
+                 <item>
+                  <spacer name="verticalSpacer_5">
+                   <property name="orientation">
+                    <enum>Qt::Vertical</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>20</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                  </spacer>
                  </item>
                  <item>
                   <widget class="QPushButton" name="pushButtonXYClear">
@@ -3245,6 +3308,9 @@
                  </property>
                  <item>
                   <widget class="QRadioButton" name="radioButtonXYAutoSize">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Automatic range&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
                    <property name="text">
                     <string>Fixed size</string>
                    </property>
@@ -3255,6 +3321,9 @@
                  </item>
                  <item>
                   <widget class="QRadioButton" name="radioButtonXYFree">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Move and zoom plot by mouse&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
                    <property name="text">
                     <string>Free move</string>
                    </property>
@@ -3413,7 +3482,7 @@
              <attribute name="title">
               <string/>
              </attribute>
-             <layout class="QHBoxLayout" name="horizontalLayout_13" stretch="1,1,1000">
+             <layout class="QHBoxLayout" name="horizontalLayout_13" stretch="1,0,1,1000">
               <property name="leftMargin">
                <number>6</number>
               </property>
@@ -3481,7 +3550,71 @@
                   </widget>
                  </item>
                  <item>
+                  <widget class="QRadioButton" name="radioButtonFFTFull">
+                   <property name="text">
+                    <string>Whole signal</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QRadioButton" name="radioButtonFFTPart">
+                   <property name="text">
+                    <string>Visible interval</string>
+                   </property>
+                   <property name="checked">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <spacer name="verticalSpacer_7">
+                   <property name="orientation">
+                    <enum>Qt::Vertical</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>20</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="pushButtonClearFFT">
+                   <property name="text">
+                    <string>Clear plot</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QFrame" name="frame_8">
+                <property name="frameShape">
+                 <enum>QFrame::StyledPanel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Plain</enum>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_29">
+                 <property name="leftMargin">
+                  <number>6</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>6</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>6</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>6</number>
+                 </property>
+                 <item>
                   <widget class="QComboBox" name="comboBoxFFTType">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Type of graph shown&lt;/p&gt;&lt;p&gt;Spectrum: module of DFT result in linear scale&lt;/p&gt;&lt;p&gt;Periodogram: (|X|^2)/N in decibel&lt;/p&gt;&lt;p&gt;Welch PSD: power spectral density estimate using Welch's method. Unit should be dB/(rad/sample)).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
                    <property name="currentIndex">
                     <number>0</number>
                    </property>
@@ -3495,10 +3628,18 @@
                      <string>Periodogram</string>
                     </property>
                    </item>
+                   <item>
+                    <property name="text">
+                     <string>Welch PSD</string>
+                    </property>
+                   </item>
                   </widget>
                  </item>
                  <item>
                   <widget class="QComboBox" name="comboBoxFFTWindow">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Window&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
                    <property name="currentIndex">
                     <number>1</number>
                    </property>
@@ -3525,26 +3666,73 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QRadioButton" name="radioButtonFFTFull">
-                   <property name="text">
-                    <string>Whole signal</string>
+                  <widget class="QSpinBox" name="spinBoxFFTSegments">
+                   <property name="enabled">
+                    <bool>false</bool>
+                   </property>
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of segments for Welch's PSD estimate. (with 50% overlap)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                   <property name="suffix">
+                    <string> segments</string>
+                   </property>
+                   <property name="minimum">
+                    <number>4</number>
+                   </property>
+                   <property name="maximum">
+                    <number>128</number>
+                   </property>
+                   <property name="value">
+                    <number>16</number>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QRadioButton" name="radioButtonFFTPart">
-                   <property name="text">
-                    <string>Visible interval</string>
+                  <spacer name="verticalSpacer_6">
+                   <property name="orientation">
+                    <enum>Qt::Vertical</enum>
                    </property>
-                   <property name="checked">
-                    <bool>true</bool>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>20</width>
+                     <height>1</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item>
+                  <widget class="QCheckBox" name="checkBoxFFTNoDC">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove DC component from signal before calculating DFT.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                   <property name="text">
+                    <string>Remove DC</string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QPushButton" name="pushButtonClearFFT">
+                  <widget class="QCheckBox" name="checkBoxFFTTwoSided">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show from 0 to f&lt;span style=&quot; vertical-align:sub;&quot;&gt;s &lt;/span&gt; instead of only f&lt;span style=&quot; vertical-align:sub;&quot;&gt;s&lt;/span&gt;/2&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
                    <property name="text">
-                    <string>Clear plot</string>
+                    <string>Two-sided</string>
+                   </property>
+                   <property name="tristate">
+                    <bool>false</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QCheckBox" name="checkBoxFFTZeroCenter">
+                   <property name="enabled">
+                    <bool>false</bool>
+                   </property>
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show from -f&lt;span style=&quot; vertical-align:sub;&quot;&gt;s&lt;/span&gt;/2 to f&lt;span style=&quot; vertical-align:sub;&quot;&gt;s&lt;/span&gt;/2&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                   <property name="text">
+                    <string>Zero-centered</string>
                    </property>
                   </widget>
                  </item>
@@ -3571,6 +3759,9 @@
                  </property>
                  <item>
                   <widget class="QRadioButton" name="radioButtonFFTAutoSize">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show whole spectrum. If values are in dB, bottom is at -50 dB, top is automatic.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
                    <property name="text">
                     <string>Fixed size</string>
                    </property>
@@ -3581,6 +3772,9 @@
                  </item>
                  <item>
                   <widget class="QRadioButton" name="radioButtonFFTFree">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Move and zoom plot by mouse&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
                    <property name="text">
                     <string>Free move</string>
                    </property>
@@ -4041,6 +4235,19 @@
                     </widget>
                    </item>
                    <item>
+                    <spacer name="verticalSpacer_8">
+                     <property name="orientation">
+                      <enum>Qt::Vertical</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>20</width>
+                       <height>1</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                   <item>
                     <widget class="QSpinBox" name="spinBoxCSVPrecision">
                      <property name="suffix">
                       <string> decimal places</string>
@@ -4165,6 +4372,9 @@
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
+                 <property name="toolTip">
+                  <string>Show/hide channel</string>
+                 </property>
                  <property name="text">
                   <string/>
                  </property>
@@ -4244,6 +4454,9 @@
                    <width>40</width>
                    <height>40</height>
                   </size>
+                 </property>
+                 <property name="toolTip">
+                  <string>Scale channel (does not affect values shown by cursors)</string>
                  </property>
                  <property name="autoFillBackground">
                   <bool>false</bool>
@@ -4360,7 +4573,7 @@
                   </font>
                  </property>
                  <property name="toolTip">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Channel style&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Channel style&lt;/p&gt;&lt;p&gt;Fill under channel (useful in logic channels) has high performance inpact, enable OpenGL in settings tab before use.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                  <property name="iconSize">
                   <size>
@@ -4488,7 +4701,7 @@
               </layout>
              </item>
              <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_8">
+              <layout class="QHBoxLayout" name="horizontalLayout_8" stretch="1,100">
                <item>
                 <widget class="QLabel" name="label_7">
                  <property name="font">
@@ -4606,7 +4819,7 @@
                 </sizepolicy>
                </property>
                <property name="toolTip">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Spread channels automaticaly&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                <string>Autoset</string>
                </property>
                <property name="text">
                 <string/>
@@ -4644,7 +4857,7 @@
                 </size>
                </property>
                <property name="toolTip">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Reset channels&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                <string>Reset channel offset and scale</string>
                </property>
                <property name="text">
                 <string/>
@@ -4727,9 +4940,12 @@
            </size>
           </property>
           <property name="elideMode">
-           <enum>Qt::ElideRight</enum>
+           <enum>Qt::ElideNone</enum>
           </property>
           <property name="usesScrollButtons">
+           <bool>false</bool>
+          </property>
+          <property name="documentMode">
            <bool>false</bool>
           </property>
           <widget class="QWidget" name="tab_7">
@@ -5630,7 +5846,7 @@ gridline-color: rgb(255, 255, 255);</string>
               <item>
                <widget class="QPushButton" name="pushButtonTerminalClickToSend">
                 <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Click to send mode&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Click to send mode (for interactive menu)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="text">
                  <string/>
@@ -6078,6 +6294,34 @@ gridline-color: rgb(255, 255, 255);</string>
                 </widget>
                </item>
                <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_30">
+                 <item>
+                  <widget class="QCheckBox" name="checkBoxResetCmdEn">
+                   <property name="text">
+                    <string>Send on connect:</string>
+                   </property>
+                   <property name="checked">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="lineEditResetCmd">
+                   <property name="placeholderText">
+                    <string>( reset command )</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <widget class="Line" name="line_3">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                </widget>
+               </item>
+               <item>
                 <layout class="QHBoxLayout" name="horizontalLayout_29">
                  <item>
                   <widget class="QCheckBox" name="checkBoxShowManualInput">
@@ -6096,24 +6340,6 @@ gridline-color: rgb(255, 255, 255);</string>
                    </property>
                    <property name="checked">
                     <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </item>
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_30">
-                 <item>
-                  <widget class="QCheckBox" name="checkBoxResetCmdEn">
-                   <property name="text">
-                    <string>Send on connect:</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="lineEditResetCmd">
-                   <property name="placeholderText">
-                    <string>( reset command )</string>
                    </property>
                   </widget>
                  </item>
@@ -6170,6 +6396,9 @@ gridline-color: rgb(255, 255, 255);</string>
                   </item>
                   <item>
                    <widget class="QComboBox" name="comboBoxHAxisType">
+                    <property name="toolTip">
+                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Style of time values&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    </property>
                     <property name="currentIndex">
                      <number>1</number>
                     </property>
@@ -6208,6 +6437,16 @@ gridline-color: rgb(255, 255, 255);</string>
                  </layout>
                 </widget>
                </item>
+               <item row="2" column="0">
+                <widget class="QCheckBox" name="checkBoxOpenGL">
+                 <property name="toolTip">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable OpenGL hardware acceleration for drawing main plot (recommended for logic channels with fill under graph line)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                 <property name="text">
+                  <string>Use OpenGL</string>
+                 </property>
+                </widget>
+               </item>
                <item row="2" column="1">
                 <widget class="QPushButton" name="pushButtonClearAll">
                  <property name="sizePolicy">
@@ -6216,10 +6455,40 @@ gridline-color: rgb(255, 255, 255);</string>
                    <verstretch>0</verstretch>
                   </sizepolicy>
                  </property>
+                 <property name="toolTip">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Erase data in main plot&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
                  <property name="text">
                   <string>Clear graphs</string>
                  </property>
                 </widget>
+               </item>
+               <item row="0" column="0" colspan="2">
+                <layout class="QHBoxLayout" name="horizontalLayout_11">
+                 <item>
+                  <widget class="QLabel" name="label_2">
+                   <property name="text">
+                    <string>Rolling mode step</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="spinBoxShiftStep">
+                   <property name="specialValueText">
+                    <string>Smooth</string>
+                   </property>
+                   <property name="suffix">
+                    <string> %</string>
+                   </property>
+                   <property name="maximum">
+                    <number>100</number>
+                   </property>
+                   <property name="singleStep">
+                    <number>10</number>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
                </item>
                <item row="1" column="0">
                 <widget class="QFrame" name="frame_5">
@@ -6288,6 +6557,9 @@ gridline-color: rgb(255, 255, 255);</string>
                     </item>
                     <item>
                      <widget class="QLineEdit" name="lineEditVUnit">
+                      <property name="toolTip">
+                       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Unit of values. Use base unit without any prefix.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                      </property>
                       <property name="text">
                        <string>V</string>
                       </property>
@@ -6307,75 +6579,30 @@ gridline-color: rgb(255, 255, 255);</string>
                  </layout>
                 </widget>
                </item>
-               <item row="0" column="0" colspan="2">
-                <widget class="QFrame" name="frame_97">
-                 <property name="frameShape">
-                  <enum>QFrame::StyledPanel</enum>
+               <item row="3" column="0" colspan="2">
+                <widget class="QCheckBox" name="checkBoxSelUnused">
+                 <property name="toolTip">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Normaly, only nonempty channel are showen in channel selection, this allows to show all available channels.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
-                 <layout class="QHBoxLayout" name="horizontalLayout_11">
-                  <property name="leftMargin">
-                   <number>6</number>
-                  </property>
-                  <property name="topMargin">
-                   <number>6</number>
-                  </property>
-                  <property name="rightMargin">
-                   <number>6</number>
-                  </property>
-                  <property name="bottomMargin">
-                   <number>6</number>
-                  </property>
-                  <item>
-                   <widget class="QLabel" name="label_2">
-                    <property name="text">
-                     <string>Rolling mode step</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QSpinBox" name="spinBoxShiftStep">
-                    <property name="specialValueText">
-                     <string>Smooth</string>
-                    </property>
-                    <property name="suffix">
-                     <string> %</string>
-                    </property>
-                    <property name="maximum">
-                     <number>100</number>
-                    </property>
-                    <property name="singleStep">
-                     <number>10</number>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
+                 <property name="text">
+                  <string>Allow selecting unused channels</string>
+                 </property>
                 </widget>
                </item>
-               <item row="2" column="0">
-                <widget class="QCheckBox" name="checkBoxOpenGL">
+               <item row="4" column="0" colspan="2">
+                <widget class="QCheckBox" name="checkBoxMouseControls">
+                 <property name="toolTip">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show sample value when mouse cursor is near, move cursors by clicking on graph.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
                  <property name="text">
-                  <string>Use OpenGL</string>
+                  <string>Show values and move cursors by mouse</string>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
                  </property>
                 </widget>
                </item>
               </layout>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="checkBoxSelUnused">
-              <property name="text">
-               <string>Allow selecting unused channels</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="checkBoxMouseControls">
-              <property name="text">
-               <string>Show values and move cursors by mouse</string>
-              </property>
-              <property name="checked">
-               <bool>true</bool>
-              </property>
              </widget>
             </item>
             <item>
@@ -6404,6 +6631,9 @@ gridline-color: rgb(255, 255, 255);</string>
                 </item>
                 <item>
                  <widget class="QCheckBox" name="checkBoxAddSemicolum">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;End line by ';' instead of '\n', this may allow inporting CSV (add &amp;quot;$$P&amp;quot; to file begin, remove header and load as settings file), because point syntax is same as CSV, just with semicolumn instead of newline.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
                   <property name="text">
                    <string>Add semicolum to line</string>
                   </property>
@@ -6875,6 +7105,9 @@ p, li { white-space: pre-wrap; }
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This will be added to the end of sent message.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
                <item>
                 <property name="text">
                  <string>No line ending</string>
@@ -6899,6 +7132,9 @@ p, li { white-space: pre-wrap; }
              </item>
              <item>
               <widget class="QPushButton" name="pushButtonMultiplInputs">
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show multiple lines for sending message, this allows to have up to 4 commands prepared. Line will not be erased after send in this mode.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
                <property name="text">
                 <string>Multiple inputs</string>
                </property>
@@ -7071,8 +7307,8 @@ p, li { white-space: pre-wrap; }
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>722</x>
-     <y>187</y>
+     <x>845</x>
+     <y>182</y>
     </hint>
     <hint type="destinationlabel">
      <x>848</x>
@@ -7087,8 +7323,8 @@ p, li { white-space: pre-wrap; }
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>840</x>
-     <y>187</y>
+     <x>962</x>
+     <y>182</y>
     </hint>
     <hint type="destinationlabel">
      <x>848</x>
@@ -7119,8 +7355,8 @@ p, li { white-space: pre-wrap; }
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>858</x>
-     <y>342</y>
+     <x>925</x>
+     <y>397</y>
     </hint>
     <hint type="destinationlabel">
      <x>904</x>
@@ -7135,8 +7371,8 @@ p, li { white-space: pre-wrap; }
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>841</x>
-     <y>487</y>
+     <x>908</x>
+     <y>544</y>
     </hint>
     <hint type="destinationlabel">
      <x>904</x>
@@ -7151,12 +7387,12 @@ p, li { white-space: pre-wrap; }
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>911</x>
-     <y>665</y>
+     <x>978</x>
+     <y>691</y>
     </hint>
     <hint type="destinationlabel">
-     <x>881</x>
-     <y>559</y>
+     <x>948</x>
+     <y>585</y>
     </hint>
    </hints>
   </connection>
@@ -7167,12 +7403,12 @@ p, li { white-space: pre-wrap; }
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>911</x>
-     <y>665</y>
+     <x>978</x>
+     <y>691</y>
     </hint>
     <hint type="destinationlabel">
-     <x>881</x>
-     <y>586</y>
+     <x>948</x>
+     <y>612</y>
     </hint>
    </hints>
   </connection>
@@ -7183,12 +7419,12 @@ p, li { white-space: pre-wrap; }
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>911</x>
-     <y>665</y>
+     <x>978</x>
+     <y>691</y>
     </hint>
     <hint type="destinationlabel">
-     <x>881</x>
-     <y>613</y>
+     <x>948</x>
+     <y>639</y>
     </hint>
    </hints>
   </connection>
@@ -7199,12 +7435,12 @@ p, li { white-space: pre-wrap; }
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>911</x>
-     <y>665</y>
+     <x>978</x>
+     <y>691</y>
     </hint>
     <hint type="destinationlabel">
-     <x>912</x>
-     <y>559</y>
+     <x>979</x>
+     <y>585</y>
     </hint>
    </hints>
   </connection>
@@ -7215,12 +7451,12 @@ p, li { white-space: pre-wrap; }
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>911</x>
-     <y>665</y>
+     <x>978</x>
+     <y>691</y>
     </hint>
     <hint type="destinationlabel">
-     <x>912</x>
-     <y>586</y>
+     <x>979</x>
+     <y>612</y>
     </hint>
    </hints>
   </connection>
@@ -7231,12 +7467,12 @@ p, li { white-space: pre-wrap; }
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>911</x>
-     <y>665</y>
+     <x>978</x>
+     <y>691</y>
     </hint>
     <hint type="destinationlabel">
-     <x>912</x>
-     <y>613</y>
+     <x>979</x>
+     <y>639</y>
     </hint>
    </hints>
   </connection>
@@ -7247,8 +7483,8 @@ p, li { white-space: pre-wrap; }
    <slot>resetTerminal()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>904</x>
-     <y>365</y>
+     <x>971</x>
+     <y>422</y>
     </hint>
     <hint type="destinationlabel">
      <x>846</x>
@@ -7263,8 +7499,8 @@ p, li { white-space: pre-wrap; }
    <slot>rangeTypeChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>197</x>
-     <y>454</y>
+     <x>212</x>
+     <y>479</y>
     </hint>
     <hint type="destinationlabel">
      <x>385</x>
@@ -7279,8 +7515,8 @@ p, li { white-space: pre-wrap; }
    <slot>rangeTypeChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>197</x>
-     <y>481</y>
+     <x>212</x>
+     <y>508</y>
     </hint>
     <hint type="destinationlabel">
      <x>507</x>
@@ -7295,8 +7531,8 @@ p, li { white-space: pre-wrap; }
    <slot>rangeTypeChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>197</x>
-     <y>508</y>
+     <x>212</x>
+     <y>537</y>
     </hint>
     <hint type="destinationlabel">
      <x>630</x>
@@ -7311,8 +7547,8 @@ p, li { white-space: pre-wrap; }
    <slot>setAutoSize(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>267</x>
-     <y>455</y>
+     <x>281</x>
+     <y>475</y>
     </hint>
     <hint type="destinationlabel">
      <x>144</x>
@@ -7327,8 +7563,8 @@ p, li { white-space: pre-wrap; }
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>141</x>
-     <y>619</y>
+     <x>157</x>
+     <y>648</y>
     </hint>
     <hint type="destinationlabel">
      <x>57</x>
@@ -7343,12 +7579,12 @@ p, li { white-space: pre-wrap; }
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>118</x>
-     <y>448</y>
+     <x>164</x>
+     <y>471</y>
     </hint>
     <hint type="destinationlabel">
-     <x>70</x>
-     <y>512</y>
+     <x>67</x>
+     <y>537</y>
     </hint>
    </hints>
   </connection>
@@ -7359,12 +7595,12 @@ p, li { white-space: pre-wrap; }
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>268</x>
-     <y>550</y>
+     <x>314</x>
+     <y>576</y>
     </hint>
     <hint type="destinationlabel">
-     <x>70</x>
-     <y>614</y>
+     <x>67</x>
+     <y>642</y>
     </hint>
    </hints>
   </connection>
@@ -7375,8 +7611,8 @@ p, li { white-space: pre-wrap; }
    <slot>setStyle(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>267</x>
-     <y>514</y>
+     <x>232</x>
+     <y>647</y>
     </hint>
     <hint type="destinationlabel">
      <x>186</x>
@@ -7391,8 +7627,8 @@ p, li { white-space: pre-wrap; }
    <slot>copyToClipboard()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>854</x>
-     <y>365</y>
+     <x>921</x>
+     <y>422</y>
     </hint>
     <hint type="destinationlabel">
      <x>846</x>
@@ -7407,8 +7643,8 @@ p, li { white-space: pre-wrap; }
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>127</x>
-     <y>619</y>
+     <x>124</x>
+     <y>648</y>
     </hint>
     <hint type="destinationlabel">
      <x>333</x>
@@ -7423,8 +7659,8 @@ p, li { white-space: pre-wrap; }
    <slot>setAutoSize(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>251</x>
-     <y>452</y>
+     <x>362</x>
+     <y>475</y>
     </hint>
     <hint type="destinationlabel">
      <x>322</x>
@@ -7439,8 +7675,8 @@ p, li { white-space: pre-wrap; }
    <slot>setStyle(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>202</x>
-     <y>520</y>
+     <x>313</x>
+     <y>647</y>
     </hint>
     <hint type="destinationlabel">
      <x>433</x>
@@ -7455,8 +7691,8 @@ p, li { white-space: pre-wrap; }
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>696</x>
-     <y>519</y>
+     <x>763</x>
+     <y>545</y>
     </hint>
     <hint type="destinationlabel">
      <x>780</x>
@@ -7471,12 +7707,12 @@ p, li { white-space: pre-wrap; }
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>172</x>
-     <y>443</y>
+     <x>212</x>
+     <y>479</y>
     </hint>
     <hint type="destinationlabel">
-     <x>99</x>
-     <y>448</y>
+     <x>130</x>
+     <y>497</y>
     </hint>
    </hints>
   </connection>
@@ -7487,12 +7723,12 @@ p, li { white-space: pre-wrap; }
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>175</x>
-     <y>444</y>
+     <x>212</x>
+     <y>479</y>
     </hint>
     <hint type="destinationlabel">
-     <x>116</x>
-     <y>491</y>
+     <x>131</x>
+     <y>532</y>
     </hint>
    </hints>
   </connection>
@@ -7503,12 +7739,12 @@ p, li { white-space: pre-wrap; }
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>185</x>
-     <y>444</y>
+     <x>212</x>
+     <y>479</y>
     </hint>
     <hint type="destinationlabel">
-     <x>113</x>
-     <y>571</y>
+     <x>130</x>
+     <y>613</y>
     </hint>
    </hints>
   </connection>
@@ -7519,12 +7755,12 @@ p, li { white-space: pre-wrap; }
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>182</x>
-     <y>442</y>
+     <x>212</x>
+     <y>479</y>
     </hint>
     <hint type="destinationlabel">
-     <x>72</x>
-     <y>608</y>
+     <x>78</x>
+     <y>647</y>
     </hint>
    </hints>
   </connection>
@@ -7535,12 +7771,12 @@ p, li { white-space: pre-wrap; }
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>189</x>
-     <y>447</y>
+     <x>212</x>
+     <y>479</y>
     </hint>
     <hint type="destinationlabel">
-     <x>110</x>
-     <y>612</y>
+     <x>130</x>
+     <y>647</y>
     </hint>
    </hints>
   </connection>
@@ -7551,12 +7787,12 @@ p, li { white-space: pre-wrap; }
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>177</x>
-     <y>451</y>
+     <x>212</x>
+     <y>479</y>
     </hint>
     <hint type="destinationlabel">
-     <x>241</x>
-     <y>555</y>
+     <x>282</x>
+     <y>604</y>
     </hint>
    </hints>
   </connection>
@@ -7567,12 +7803,12 @@ p, li { white-space: pre-wrap; }
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>174</x>
-     <y>443</y>
+     <x>212</x>
+     <y>479</y>
     </hint>
     <hint type="destinationlabel">
-     <x>236</x>
-     <y>595</y>
+     <x>283</x>
+     <y>647</y>
     </hint>
    </hints>
   </connection>
@@ -7583,12 +7819,12 @@ p, li { white-space: pre-wrap; }
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>183</x>
-     <y>436</y>
+     <x>212</x>
+     <y>479</y>
     </hint>
     <hint type="destinationlabel">
-     <x>359</x>
-     <y>589</y>
+     <x>468</x>
+     <y>648</y>
     </hint>
    </hints>
   </connection>
@@ -7599,12 +7835,12 @@ p, li { white-space: pre-wrap; }
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>187</x>
-     <y>445</y>
+     <x>212</x>
+     <y>479</y>
     </hint>
     <hint type="destinationlabel">
-     <x>400</x>
-     <y>554</y>
+     <x>468</x>
+     <y>602</y>
     </hint>
    </hints>
   </connection>
@@ -7615,8 +7851,8 @@ p, li { white-space: pre-wrap; }
    <slot>setGridHintX(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>216</x>
-     <y>567</y>
+     <x>362</x>
+     <y>552</y>
     </hint>
     <hint type="destinationlabel">
      <x>387</x>
@@ -7631,12 +7867,44 @@ p, li { white-space: pre-wrap; }
    <slot>setGridHintY(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>193</x>
-     <y>610</y>
+     <x>362</x>
+     <y>604</y>
     </hint>
     <hint type="destinationlabel">
      <x>529</x>
      <y>139</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBoxResetCmdEn</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>lineEditResetCmd</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>818</x>
+     <y>200</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>870</x>
+     <y>199</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBoxFFTTwoSided</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkBoxFFTZeroCenter</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>170</x>
+     <y>614</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>170</x>
+     <y>639</y>
     </hint>
    </hints>
   </connection>

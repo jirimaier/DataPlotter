@@ -23,6 +23,7 @@
 #include <QWidget>
 #include <QtMath>
 #include <QTime>
+#include <QElapsedTimer>
 
 #include "enums_defines_constants.h"
 #include "qcustomplot.h"
@@ -35,6 +36,8 @@ class PlotData : public QObject {
 
  private:
   QTime qTime;
+  QElapsedTimer elapsedTime;
+  bool timerRunning;
 
   unsigned int logicTargets[LOGIC_GROUPS];
   unsigned int logicBits[LOGIC_GROUPS];
@@ -49,7 +52,7 @@ class PlotData : public QObject {
   uint32_t getBits(QPair<ValueType, QByteArray> value);
   double unitToMultiple(char unit);
 
-  bool lastTimeWasHMS = false;
+  HAxisType::enumHAxisType lastRecommandedAxisType = HAxisType::normal;
 
  public slots:
   void addPoint(QList<QPair<ValueType, QByteArray>> data);
@@ -80,7 +83,7 @@ class PlotData : public QObject {
 
   void addMathData(int mathNumber, bool isFirst, QSharedPointer<QCPGraphDataContainer> in, bool shouldIgnorePause = false);
 
-  void ch1dataUpdated(bool wasPoint, bool HMS);
+  void ch1dataUpdated(bool wasPoint,   HAxisType::enumHAxisType recommandedAxisType = HAxisType::normal);
 };
 
 #endif // PLOTTING_H
