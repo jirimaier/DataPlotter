@@ -21,7 +21,6 @@ MainWindow::~MainWindow() { delete ui; }
 
 void MainWindow::init(QTranslator* translator, const PlotData* plotData, const PlotMath* plotMath, const SerialReader* serialReader) {
   // Načte ikony které se mění za běhu
-  iconXY = QIcon(":/images/icons/xyChannel.png");
   iconRun = QIcon(":/images/icons/run.png");
   iconPause = QIcon(":/images/icons/pause.png");
   iconHidden = QIcon(":/images/icons/hidden.png");
@@ -29,7 +28,6 @@ void MainWindow::init(QTranslator* translator, const PlotData* plotData, const P
   iconConnected = QIcon(":/images/icons/connected.png");
   iconNotConnected = QIcon(":/images/icons/disconnected.png");
   iconCross = QIcon(":/images/icons/cross.png");
-  iconFFT = QIcon(":/images/icons/fft.png");
 
   fillChannelSelect(); // Vytvoří seznam kanálů pro výběr
 
@@ -84,7 +82,8 @@ void MainWindow::serialConnectResult(bool connected, QString message) {
   if (connected && ui->checkBoxClearOnReconnect->isChecked()) {
     ui->plot->resetChannels();
     ui->plotxy->clear();
-    ui->plotFFT->clear();
+    ui->plotFFT->clear(0);
+    ui->plotFFT->clear(1);
     ui->myTerminal->resetTerminal();
     ui->plainTextEditConsole->clear();
     ui->plainTextEditConsole_3->clear();
@@ -115,6 +114,12 @@ void MainWindow::updateDivs() {
   else
     ui->labelHDiv->setText("---");
   ui->labelVDiv->setText(floatToNiceString(ui->plot->getVDiv(), 1, false, false) + tr("V/Div"));
+}
+
+void MainWindow::on_doubleSpinBoxRangeVerticalRange_valueChanged(double arg1) {
+  ui->doubleSpinBoxChOffset->setSingleStep(pow(10, floor(log10(arg1)) - 2));
+  ui->doubleSpinBoxYCur1->setSingleStep(pow(10, floor(log10(arg1)) - 2));
+  ui->doubleSpinBoxYCur2->setSingleStep(pow(10, floor(log10(arg1)) - 2));
 }
 
 void MainWindow::on_pushButtonCenter_clicked() {
@@ -201,15 +206,6 @@ void MainWindow::updateMathNow(int number) {
   }
 }
 
-void MainWindow::on_pushButtonChangeFFTColor_clicked() {
-  QColor color = QColorDialog::getColor(ui->plotFFT->graph(0)->pen().color());
-  if (color.isValid()) {
-    ui->plotFFT->graph(0)->setPen(QColor(color));
-    if (ui->comboBoxFFTStyle->currentIndex() == GraphStyle::filled)
-      ui->plotFFT->graph(0)->setBrush(color);
-  }
-}
-
 void MainWindow::on_pushButtonChangeXYColor_clicked() {
   QColor color = QColorDialog::getColor(ui->plotxy->graphXY->pen().color());
   if (color.isValid())
@@ -241,11 +237,20 @@ void MainWindow::on_myTerminal_cellClicked(int row, int column) {
 }
 
 void MainWindow::on_comboBoxFFTType_currentIndexChanged(int index) {
-  if (index != FFTType::spectrum)
+  if (index != FFTType::spectrum) {
     ui->plotFFT->setYUnit("dB");
-  else
+    if (IS_FFT(ui->comboBoxCursor1Channel->currentIndex()))
+      ui->doubleSpinBoxYCur1->setSuffix("dB");
+    if (IS_FFT(ui->comboBoxCursor2Channel->currentIndex()))
+      ui->doubleSpinBoxYCur2->setSuffix("dB");
+  } else {
     ui->plotFFT->setYUnit("");
-  ui->spinBoxFFTSegments->setEnabled(index == FFTType::pwelch);
+    if (IS_FFT(ui->comboBoxCursor1Channel->currentIndex()))
+      ui->doubleSpinBoxYCur1->setSuffix("");
+    if (IS_FFT(ui->comboBoxCursor2Channel->currentIndex()))
+      ui->doubleSpinBoxYCur2->setSuffix("");
+  } ui->spinBoxFFTSegments1->setVisible(index == FFTType::pwelch);
+  ui->spinBoxFFTSegments2->setVisible(index == FFTType::pwelch);
 }
 
 void MainWindow::on_lineEditVUnit_textChanged(const QString& arg1) {
@@ -254,6 +259,14 @@ void MainWindow::on_lineEditVUnit_textChanged(const QString& arg1) {
   ui->plotxy->setXUnit(arg1);
   ui->doubleSpinBoxRangeVerticalRange->setSuffix(arg1);
   ui->doubleSpinBoxChOffset->setSuffix(arg1);
+  if (IS_ANALOG_OR_MATH(ui->comboBoxCursor1Channel->currentIndex()))
+    ui->doubleSpinBoxYCur1->setSuffix(arg1);
+  if (IS_ANALOG_OR_MATH(ui->comboBoxCursor1Channel->currentIndex()))
+    ui->doubleSpinBoxYCur2->setSuffix(arg1);
+  ui->doubleSpinBoxXYCurX1->setSuffix(arg1);
+  ui->doubleSpinBoxXYCurX2->setSuffix(arg1);
+  ui->doubleSpinBoxXYCurY1->setSuffix(arg1);
+  ui->doubleSpinBoxXYCurY2->setSuffix(arg1);
 }
 
 void MainWindow::on_checkBoxOpenGL_toggled(bool checked) {
@@ -266,3 +279,33 @@ void MainWindow::on_checkBoxMouseControls_toggled(bool checked) {
   ui->plotxy->enableMouseCursorControll(checked);
   ui->plotFFT->enableMouseCursorControll(checked);
 }
+
+void MainWindow::on_checkBoxFFTCh1_toggled(bool checked) {
+  auto* model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor1Channel->model());
+  auto* item = model->item(FFTID(0));
+  item->setEnabled(checked);
+  QListView* view = qobject_cast<QListView*>(ui->comboBoxCursor1Channel->view());
+  view->setRowHidden(FFTID(0), !checked);
+
+  model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor2Channel->model());
+  item = model->item(FFTID(0));
+  item->setEnabled(checked);
+  view = qobject_cast<QListView*>(ui->comboBoxCursor2Channel->view());
+  view->setRowHidden(FFTID(0), !checked);
+}
+
+void MainWindow::on_checkBoxFFTCh2_toggled(bool checked) {
+  auto* model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor1Channel->model());
+  auto* item = model->item(FFTID(1));
+  item->setEnabled(checked);
+  QListView* view = qobject_cast<QListView*>(ui->comboBoxCursor1Channel->view());
+  view->setRowHidden(FFTID(1), !checked);
+
+  model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor2Channel->model());
+  item = model->item(FFTID(1));
+  item->setEnabled(checked);
+  view = qobject_cast<QListView*>(ui->comboBoxCursor2Channel->view());
+  view->setRowHidden(FFTID(1), !checked);
+}
+
+

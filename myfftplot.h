@@ -10,24 +10,33 @@ class MyFFTPlot : public MyPlot {
  public:
   explicit MyFFTPlot(QWidget* parent = nullptr);
   QByteArray exportCSV(char separator, char decimal, int precision);
-  QPair<unsigned int, unsigned int> getVisibleSamplesRange();
+  QPair<unsigned int, unsigned int> getVisibleSamplesRange(int ch);
 
+  /// Přizpůsobý barvu a popis, vrátí true, pokud se barva změnila
+  bool setChSorce(int ch, int sourceChannel, QColor color);
 
  private:
   bool autoSize = true;
   void autoset();
+  void setMouseCursorStyle(QMouseEvent* event);
+  void updateTracerText(int index);
+  int currentTracerIndex = -1;
+  int chSourceChannel[2];
+  QColor chSourceColor[2];
 
  public slots:
-  void newData(QSharedPointer<QCPGraphDataContainer> data);
+  void newData(int ch, QSharedPointer<QCPGraphDataContainer> data);
+  void clear(int ch);
   void clear();
-  void setStyle(int style);
+  void setStyle(int ch, int style);
   void setAutoSize(bool en);
 
  private slots:
-  void moveTracer(QMouseEvent* event);
+  void mouseMoved(QMouseEvent* event);
+  void mousePressed(QMouseEvent* event);
 
  signals:
-  void lengthChanged(int formerLength, int newLength);
+  void lengthChanged(int fftChID, int formerLength, int newLength);
 };
 
 #endif // MYFFTPLOT_H

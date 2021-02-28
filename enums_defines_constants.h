@@ -70,7 +70,7 @@ enum enumMessageLevel { deviceInfo = -1, deviceWarning = 0, error = 1, warning =
 }
 
 namespace Cursors {
-enum enumCursors { X1 = 0, X2 = 1, Y1 = 2, Y2 = 3 };
+enum enumCursors { Cursor1 = 0, Cursor2 = 1 };
 }
 
 namespace MessageTarget {
@@ -221,8 +221,9 @@ inline QString valueTypeToString(ValueType val) {
 
 #define MAX_PLOT_ZOOMOUT 1000000
 
-#define XYID ANALOG_COUNT + MATH_COUNT + LOGIC_GROUPS
-#define FFTID ANALOG_COUNT + MATH_COUNT + LOGIC_GROUPS + 1
+#define FFTID(a) (ANALOG_COUNT + MATH_COUNT + LOGIC_GROUPS +a)
+#define IS_FFT(chID) (chID>=FFTID(0))
+#define CHID_TO_FFT_CHID(chID)(chID-FFTID(0))
 
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))
@@ -231,7 +232,8 @@ inline QString valueTypeToString(ValueType val) {
 #define FFT_CHANNEL -2
 
 #define IS_ANALOG_OR_MATH(ch) (ch < ANALOG_COUNT + MATH_COUNT)
-#define IS_LOGIC_CH(ch) (ch >= ANALOG_COUNT + MATH_COUNT)
+#define IS_ANALOG_OR_MATH_OR_LOGIC(ch) (ch < ANALOG_COUNT + MATH_COUNT+LOGIC_GROUPS)
+#define IS_LOGIC_CH(ch) ((ch >= ANALOG_COUNT + MATH_COUNT)&&ch<FFTID(0))
 #define CH_LIST_LOGIC_GROUP(ch) (ch - ANALOG_COUNT - MATH_COUNT)
 
 #define ChID_TO_LOGIC_GROUP(ch) ((ch - ANALOG_COUNT - MATH_COUNT) / LOGIC_BITS)
@@ -299,9 +301,18 @@ static int fastPow10(int n) {
     return fastPow10(n + 1) / 10;
 }
 
+/// Nejbližší vyšší (nebo rovná) mocnina 2
+inline int nextPow2(int number) {
+  for (int i = 1;; i++)
+    if (pow(2, i) >= number)
+      return (pow(2, i));
+}
+
 static QString toSignificantDigits(double x, double prec, bool noDecimalsIfInteger = false) {
-  if (x == 0)
-    return "0";
+  if (x == 0) {
+    QString zero = "0.0000000000";
+    return zero.left(prec + 1);
+  }
   if (noDecimalsIfInteger)
     if (round(x) == x)
       return QString::number((int)round(x));
@@ -368,9 +379,6 @@ inline QString floatToNiceString(double d, int significantDigits, bool justify, 
     } else if (order >= -15) {
       postfix = " f";
       d /= 1e-15;
-    } else if (order >= -18) {
-      postfix = " a";
-      d /= 1e-18;
     } else {
       d = 0;
       postfix = justify ? "  " : " ";

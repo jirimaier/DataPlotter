@@ -44,7 +44,7 @@ MyPlot::MyPlot(QWidget* parent) : QCustomPlot(parent) {
 
   connect(this->xAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(onXRangeChanged(QCPRange)));
   connect(this->yAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(onYRangeChanged(QCPRange)));
-  connect(this, SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(moveTracer(QMouseEvent*)));
+  connect(this, SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(mouseMoved(QMouseEvent*)));
   connect(this, SIGNAL(mousePress(QMouseEvent*)), this, SLOT(mousePressed(QMouseEvent*)));
   connect(this, SIGNAL(mouseRelease(QMouseEvent*)), this, SLOT(mouseReleased(QMouseEvent*)));
 }
@@ -97,27 +97,39 @@ void MyPlot::onYRangeChanged(QCPRange range) {
   updateGridY();
 }
 
-void MyPlot::updateCursor(int cursor, double cursorPosition, QString label) {
-  if (cursor < 2) {
-    cursors.at(cursor)->start->setCoords(cursorPosition, 0);
-    cursors.at(cursor)->end->setCoords(cursorPosition, 1);
-    curKeys.at(cursor)->setText(label);
-  } else {
-    cursors.at(cursor)->start->setCoords(0, cursorPosition);
-    cursors.at(cursor)->end->setCoords(1, cursorPosition);
-    curVals.at(cursor - 2)->setText(label);
-  }
+void MyPlot::updateTimeCursor(Cursors::enumCursors cursor, double cursorPosition, QString label, QCPGraph* graph) {
+  cursorsKey.at(cursor)->start->setCoords(cursorPosition, 0);
+  cursorsKey.at(cursor)->end->setCoords(cursorPosition, 1);
+  curKeys.at(cursor)->setText(label);
   cursorLayer->replot();
+  if (cursor == Cursors::Cursor1)
+    cur1Graph = graph; else cur2Graph = graph;
 }
 
-void MyPlot::setCursorVisible(int cursor, bool visible) {
-  if (cursors.at(cursor)->visible() != visible) {
-    cursors.at(cursor)->setVisible(visible);
-    if (cursor < 2) {
-      curNums.at(cursor)->setVisible(visible);
-      curKeys.at(cursor)->setVisible(visible);
-    } else
-      curVals.at(cursor - 2)->setVisible(visible);
+void MyPlot::updateValueCursor(Cursors::enumCursors cursor, double cursorPosition, QString label, QCPAxis* relativeToAxis) {
+  cursorsVal.at(cursor)->start->setCoords(0, cursorPosition);
+  cursorsVal.at(cursor)->end->setCoords(1, cursorPosition);
+  cursorsVal.at(cursor)->start->setAxes(xAxis, relativeToAxis);
+  cursorsVal.at(cursor)->end->setAxes(xAxis, relativeToAxis);
+  curVals.at(cursor)->setText(label);
+  cursorLayer->replot();
+  if (cursor == Cursors::Cursor1)
+    cur1YAxis = relativeToAxis; else cur2YAxis = relativeToAxis;
+}
+
+void MyPlot::setTimeCursorVisible(Cursors::enumCursors cursor, bool visible) {
+  if (cursorsKey.at(cursor)->visible() != visible) {
+    cursorsKey.at(cursor)->setVisible(visible);
+    curNums.at(cursor)->setVisible(visible);
+    curKeys.at(cursor)->setVisible(visible);
+    cursorLayer->replot();
+  }
+}
+
+void MyPlot::setValueCursorVisible(Cursors::enumCursors cursor, bool visible) {
+  if (cursorsVal.at(cursor)->visible() != visible) {
+    cursorsVal.at(cursor)->setVisible(visible);
+    curVals.at(cursor)->setVisible(visible);
     cursorLayer->replot();
   }
 }
@@ -143,70 +155,78 @@ void MyPlot::updateGridY() {
 }
 
 void MyPlot::initcursors() {
-  QPen cursorpen;
-  cursorpen.setColor(Qt::black);
-  for (int i = 0; i < 4; i++) {
+  QPen cursorPen;
+  cursorPen.setColor(Qt::black);
+  cursorPen.setStyle(Qt::SolidLine);
+
+  for (int i = 0; i < 2; i++) {
+    // Svislí kursor
     auto line = new QCPItemLine(this);
+
+    line->start->setTypeX(QCPItemPosition::ptPlotCoords);
+    line->start->setTypeY(QCPItemPosition::ptViewportRatio);
+    line->end->setTypeX(QCPItemPosition::ptPlotCoords);
+    line->end->setTypeY(QCPItemPosition::ptViewportRatio);
+    line->start->setCoords(0, 0);
+    line->end->setCoords(0, 1);
+    line->setVisible(false);
     line->setLayer(cursorLayer);
-    cursors.append(line);
-    if (i < 2) {
-      // Svislí kursor
-      cursors.at(i)->start->setTypeX(QCPItemPosition::ptPlotCoords);
-      cursors.at(i)->start->setTypeY(QCPItemPosition::ptViewportRatio);
-      cursors.at(i)->end->setTypeX(QCPItemPosition::ptPlotCoords);
-      cursors.at(i)->end->setTypeY(QCPItemPosition::ptViewportRatio);
+    line->setPen(cursorPen);
+    cursorsKey.append(line);
 
-      auto curNum = new QCPItemText(this);
-      curNum->setLayer(cursorLayer);
-      curNums.append(curNum);
+    auto curNum = new QCPItemText(this);
+    curNum->setLayer(cursorLayer);
+    curNum->setText(i ? QString::fromUtf8("2") : QString::fromUtf8("1"));
+    // Číslo v kroužku (Není moc hezké)
+    // curNum->setText(i ? QString::fromUtf8("\xe2\x91\xa1") : QString::fromUtf8("\xe2\x91\xa0"));
+    curNum->setTextAlignment(Qt::AlignRight);
+    curNum->setPositionAlignment(Qt::AlignTop | Qt::AlignRight);
+    curNum->position->setParentAnchorX(line->start);
+    curNum->position->setTypeY(QCPItemPosition::ptAxisRectRatio);
+    curNum->position->setCoords(-2, 0);
+    curNum->setVisible(false);
+    curNum->setBrush(transparentWhite);
+    curNum->setPadding(QMargins(2, 2, 2, 2));
+    curNums.append(curNum);
 
-      curNum->setText(i ? QString::fromUtf8("2") : QString::fromUtf8("1"));
+    auto curKey = new QCPItemText(this);
+    curKey->setLayer(cursorLayer);
+    curKey->setTextAlignment(Qt::AlignLeft);
+    curKey->setPositionAlignment(Qt::AlignTop | Qt::AlignLeft);
+    curKey->position->setParentAnchorX(line->start);
+    curKey->position->setTypeY(QCPItemPosition::ptAxisRectRatio);
+    curKey->position->setCoords(4, 0);
+    curKey->setVisible(false);
+    curKey->setBrush(transparentWhite);
+    curKey->setPadding(QMargins(2, 2, 2, 2));
+    curKeys.append(curKey);
 
-      // Číslo v kroužku
-      // curNum->setText(i ? QString::fromUtf8("\xe2\x91\xa1") : QString::fromUtf8("\xe2\x91\xa0"));
+  }
+  for (int i = 0; i < 2; i++) {
+    // Vodorovný kursor
+    auto line = new QCPItemLine(this);
+    line->start->setTypeX(QCPItemPosition::ptViewportRatio);
+    line->start->setTypeY(QCPItemPosition::ptPlotCoords);
+    line->end->setTypeX(QCPItemPosition::ptViewportRatio);
+    line->end->setTypeY(QCPItemPosition::ptPlotCoords);
+    line->start->setCoords(0, 0);
+    line->end->setCoords(1, 0);
+    line->setVisible(false);
+    line->setLayer(cursorLayer);
+    line->setPen(cursorPen);
+    cursorsVal.append(line);
 
-      curNum->setTextAlignment(Qt::AlignRight);
-      curNum->setPositionAlignment(Qt::AlignTop | Qt::AlignRight);
-      curNum->position->setParentAnchorX(cursors.at(i)->start);
-      curNum->position->setTypeY(QCPItemPosition::ptAxisRectRatio);
-      curNum->position->setCoords(-2, 0);
-      curNum->setVisible(false);
-      curNum->setBrush(transparentWhite);
-      curNum->setPadding(QMargins(2, 2, 2, 2));
-
-      auto curKey = new QCPItemText(this);
-      curKey->setLayer(cursorLayer);
-      curKeys.append(curKey);
-      curKey->setTextAlignment(Qt::AlignLeft);
-      curKey->setPositionAlignment(Qt::AlignTop | Qt::AlignLeft);
-      curKey->position->setParentAnchorX(cursors.at(i)->start);
-      curKey->position->setTypeY(QCPItemPosition::ptAxisRectRatio);
-      curKey->position->setCoords(4, 0);
-      curKey->setVisible(false);
-      curKey->setBrush(transparentWhite);
-      curKey->setPadding(QMargins(2, 2, 2, 2));
-    } else {
-      // Vodorovný kursor
-      cursorpen.setStyle(Qt::DashLine);
-      cursors.at(i)->start->setTypeX(QCPItemPosition::ptViewportRatio);
-      cursors.at(i)->start->setTypeY(QCPItemPosition::ptPlotCoords);
-      cursors.at(i)->end->setTypeX(QCPItemPosition::ptViewportRatio);
-      cursors.at(i)->end->setTypeY(QCPItemPosition::ptPlotCoords);
-
-      auto curVal = new QCPItemText(this);
-      curVal->setLayer(cursorLayer);
-      curVals.append(curVal);
-      curVal->setTextAlignment(Qt::AlignRight);
-      curVal->setPositionAlignment(Qt::AlignBottom | Qt::AlignRight);
-      curVal->position->setParentAnchorY(cursors.at(i)->start);
-      curVal->position->setTypeX(QCPItemPosition::ptAxisRectRatio);
-      curVal->position->setCoords(1, -2);
-      curVal->setVisible(false);
-      curVal->setBrush(transparentWhite);
-      curVal->setPadding(QMargins(2, 2, 2, 2));
-    }
-    cursors.at(i)->setPen(cursorpen);
-    cursors.at(i)->setVisible(false);
+    auto curVal = new QCPItemText(this);
+    curVal->setLayer(cursorLayer);
+    curVal->setTextAlignment(Qt::AlignRight);
+    curVal->setPositionAlignment(Qt::AlignBottom | Qt::AlignRight);
+    curVal->position->setParentAnchorY(line->start);
+    curVal->position->setTypeX(QCPItemPosition::ptAxisRectRatio);
+    curVal->position->setCoords(1, -2);
+    curVal->setVisible(false);
+    curVal->setBrush(transparentWhite);
+    curVal->setPadding(QMargins(2, 2, 2, 2));
+    curVals.append(curVal);
   }
 }
 
@@ -259,16 +279,38 @@ void MyPlot::checkIfTracerTextFits() {
   }
 }
 
-void MyPlot::mouseReleased(QMouseEvent*) {
-  mouseIsPressed = false;
+int MyPlot::keyToNearestSample(QCPGraph* mGraph, double keyCoord) {
+  // Převzato z funkce pro originální tracer v QCustomPlot a upraveno
+
+  QCPGraphDataContainer::const_iterator it = mGraph->data()->findBegin(keyCoord);
+  if (it != mGraph->data()->constEnd()) // mGraphKey is not exactly on last iterator,
+    // but somewhere between iterators
+  {
+    QCPGraphDataContainer::const_iterator prevIt = it;
+    ++it; // won't advance to constEnd because we handled that case
+    // (mGraphKey >= last->key) before
+
+    // find iterator with key closest to mGraphKey:
+    if (keyCoord < (prevIt->key + it->key) * 0.5)
+      return prevIt - mGraph->data()->begin(); // Vrátí index vzorku
+    else
+      return it - mGraph->data()->begin();  // Vrátí index vzorku
+  } else // mGraphKey is exactly on last iterator (should actually be
+    // caught when comparing first/last keys, but this is a
+    // failsafe for fp uncertainty)
+    return it - mGraph->data()->begin();  // Vrátí index vzorku
+}
+
+void MyPlot::mouseReleased(QMouseEvent* event) {
+  Q_UNUSED(event);
   mouseDrag = MouseDrag::nothing;
   if (isFreeMove)
     this->setInteraction(QCP::iRangeDrag, true);
+
 }
 
 void MyPlot::mousePressed(QMouseEvent* event) {
-  mouseIsPressed = true;
-  moveTracer(event);
+  mouseMoved(event);
 }
 
 void MyPlot::setGridHintX(int hint) {
@@ -289,11 +331,11 @@ void MyPlot::hideTracer() {
 
 void MyPlot::enableMouseCursorControll(bool enabled) {
   if (enabled) {
-    connect(this, SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(moveTracer(QMouseEvent*)));
+    connect(this, SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(mouseMoved(QMouseEvent*)));
     connect(this, SIGNAL(mousePress(QMouseEvent*)), this, SLOT(mousePressed(QMouseEvent*)));
     connect(this, SIGNAL(mouseRelease(QMouseEvent*)), this, SLOT(mouseReleased(QMouseEvent*)));
   } else {
-    disconnect(this, SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(moveTracer(QMouseEvent*)));
+    disconnect(this, SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(mouseMoved(QMouseEvent*)));
     disconnect(this, SIGNAL(mousePress(QMouseEvent*)), this, SLOT(mousePressed(QMouseEvent*)));
     disconnect(this, SIGNAL(mouseRelease(QMouseEvent*)), this, SLOT(mouseReleased(QMouseEvent*)));
   }

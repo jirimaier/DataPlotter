@@ -38,12 +38,10 @@ class SignalProcessing : public QObject {
   QVector<std::complex<float>> fft(QVector<std::complex<float>> signal);
   inline float getStrongestFreq(QSharedPointer<QCPGraphDataContainer> data, float dc, float fs);
   inline QPair<float, float> getRiseFall(QSharedPointer<QCPGraphDataContainer> data);
-  /// Vratí nejbližší vyšší mocninu dvou
-  int nextPow2(int number);
 
  public slots:
-  void getFFTPlot(QSharedPointer<QCPGraphDataContainer> data, FFTType::enumFFTType type, FFTWindow::enumFFTWindow window, bool removeDC, int segmentCount, bool twosided, bool zerocenter);
-  QVector<std::complex<float> > calculateSpectrum(QVector<std::complex<float>> data, FFTWindow::enumFFTWindow window);
+  void getFFTPlot(QSharedPointer<QCPGraphDataContainer> data, FFTType::enumFFTType type, FFTWindow::enumFFTWindow window, bool removeDC, int segmentCount, bool twosided, bool zerocenter, int minNFFT);
+  QVector<std::complex<float> > calculateSpectrum(QVector<std::complex<float>> data, FFTWindow::enumFFTWindow window, int minNFFT);
   void process(QSharedPointer<QCPGraphDataContainer> data);
 
  signals:

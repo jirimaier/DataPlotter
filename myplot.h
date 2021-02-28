@@ -24,7 +24,7 @@
 
 class MyPlot : public QCustomPlot {
   Q_OBJECT
-private:
+ private:
   void updateGridX();
   void updateGridY();
   int xGridHint = -3;
@@ -40,10 +40,12 @@ private:
   QColor transparentWhite = QColor::fromRgbF(1, 1, 1, 0.8);
   QString xUnit, yUnit;
 
-public:
-  explicit MyPlot(QWidget *parent = nullptr);
-  void updateCursor(int cursor, double cursorPosition, QString label);
-  void setCursorVisible(int cursor, bool visible);
+ public:
+  explicit MyPlot(QWidget* parent = nullptr);
+  void updateTimeCursor(Cursors::enumCursors cursor, double cursorPosition, QString label, QCPGraph* graph);
+  void updateValueCursor(Cursors::enumCursors cursor, double cursorPosition, QString label, QCPAxis* relativeToAxis);
+  void setValueCursorVisible(Cursors::enumCursors cursor, bool visible);
+  void setTimeCursorVisible(Cursors::enumCursors cursor, bool visible);
   double getVDiv() { return unitTickerY->tickStep(); }
   double getHDiv() { return unitTickerX->tickStep(); }
   QImage toPNG() { return (this->toPixmap().toImage()); };
@@ -57,27 +59,30 @@ public:
   }
   QString getXUnit() { return xUnit; }
   QString getYUnit() { return yUnit; }
+  double getValueCursorPosition(Cursors::enumCursors cursor) {return cursorsVal.at(cursor)->start->coords().y();}
 
-protected:
-  QCPLayer *cursorLayer;
-  QVector<QCPItemLine *> cursors;
-  QVector<QCPItemText *> curNums, curKeys, curVals;
-  MyModifiedQCPTracer *tracer;
-  QCPItemText *tracerText;
-  QCPLayer *tracerLayer;
+ protected:
+  QCPLayer* cursorLayer;
+  QVector<QCPItemLine*> cursorsKey, cursorsVal;
+  QVector<QCPItemText*> curNums, curKeys, curVals;
+  MyModifiedQCPTracer* tracer;
+  QCPItemText* tracerText;
+  QCPLayer* tracerLayer;
   void initcursors();
   void initTracer();
   void setMouseControlls(bool enabled);
-  bool mouseIsPressed = false;
   void checkIfTracerTextFits();
-  enum MouseDrag { cursor1, cursor2, nothing, zeroline } mouseDrag = nothing; // Vyšší čísla jsou číslo kanálu pro nulo
+  enum MouseDrag { cursorX1, cursorX2, cursorY1, cursorY2, nothing, zeroline } mouseDrag = nothing; // Vyšší čísla jsou číslo kanálu pro nulo
+  int keyToNearestSample(QCPGraph* graph, double keyCoord);
+  QCPGraph* cur1Graph = 0, *cur2Graph = 0;
+  QCPAxis* cur1YAxis = yAxis, *cur2YAxis = yAxis;
 
-protected slots:
-  virtual void moveTracer(QMouseEvent *event) = 0;
-  virtual void mouseReleased(QMouseEvent *);
-  virtual void mousePressed(QMouseEvent *event);
+ protected slots:
+  virtual void mouseMoved(QMouseEvent* event) = 0;
+  virtual void mouseReleased(QMouseEvent*);
+  virtual void mousePressed(QMouseEvent* event) = 0;
 
-public slots:
+ public slots:
   void setShowVerticalValues(bool enabled);
   void setShowHorizontalValues(int type);
   void setXTitle(QString title);
@@ -87,12 +92,14 @@ public slots:
   void hideTracer();
   void enableMouseCursorControll(bool enabled);
 
-private slots:
+ private slots:
   void onXRangeChanged(QCPRange range);
   void onYRangeChanged(QCPRange range);
 
-signals:
+ signals:
   void gridChanged();
-  void moveCursor(int chid, int cursor, int sample);
+  void moveTimeCursor(Cursors::enumCursors cursor, int sample);
+  void moveValueCursor(Cursors::enumCursors cursor, double value);
+  void setCursorPos(int chid, Cursors::enumCursors cursor, int sample);
 };
 #endif // MYPLOT_H

@@ -63,6 +63,9 @@
         <file>icons/cross.png</file>
         <file>icons/fft.png</file>
         <file>icons/measure.png</file>
+        <file>icons/timecur.png</file>
+        <file>icons/valcur.png</file>
+        <file>icons/xyphase.png</file>
     </qresource>
     <qresource prefix="/translations">
         <file>translations/translation_cz.qm</file>

@@ -319,17 +319,17 @@ void MyTerminal::printToTerminal(QByteArray data) {
 void MyTerminal::setMode(TerminalMode::enumTerminalMode mode) {
   this->clearSelection();
   this->mode = mode;
-  if (mode == debug) {
+  if (mode == TerminalMode::debug) {
     this->setSelectionMode(QAbstractItemView::SelectionMode::NoSelection);
     this->setCurrentCell(cursorY, cursorX, QItemSelectionModel::Select);
     this->setRowCount(MAX(10, rowCount()));
     this->setColumnCount(MAX(10, columnCount()));
-  } else if (mode == select) {
+  } else if (mode == TerminalMode::select) {
     this->setSelectionMode(QAbstractItemView::SelectionMode::ContiguousSelection);
-  } else if (mode == clicksend) {
+  } else if (mode == TerminalMode::clicksend) {
     this->setSelectionMode(QAbstractItemView::SelectionMode::NoSelection);
   }
-  this->setShowGrid(mode == debug);
+  this->setShowGrid(mode == TerminalMode::debug);
 }
 
 void MyTerminal::resetTerminal() {

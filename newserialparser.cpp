@@ -182,7 +182,7 @@ void NewSerialParser::parse(QByteArray newData) {
               if (buffer.contains(';'))
                 semicolumPositionMessage = tr("There is semicolum %1 bytes after end.").arg(buffer.indexOf(';')).toUtf8();
             }
-            sendMessage(tr("Channel not ended with ';'"), semicolumPositionMessage, MessageLevel::warning, target);
+            emit sendMessage(tr("Channel not ended with ';'"), semicolumPositionMessage, MessageLevel::warning, target);
           }
 
           int zeroIndex = 0, channelBits = channel.first.bytes * 8;
@@ -415,7 +415,7 @@ uint32_t NewSerialParser::arrayToUint(QPair<ValueType, QByteArray> value) {
     }
   } else {
     // Little endian
-    if (value.first.bytes == 1) {
+    if (value.first.bytes == 1) { // unsigned int 8
       return (double)((uint8_t)value.second.at(0));
     } else if (value.first.bytes == 2) { // unsigned int 16
       char bytes[2] = {value.second.at(0), value.second.at(1)};

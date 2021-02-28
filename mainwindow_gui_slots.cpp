@@ -252,18 +252,6 @@ void MainWindow::on_pushButtonXY_toggled(bool checked) {
 #else
   ui->plotxy->setVisible(checked);
 #endif
-
-  auto* model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor1Channel->model());
-  auto* item = model->item(XYID);
-  item->setEnabled(checked);
-  QListView* view = qobject_cast<QListView*>(ui->comboBoxCursor1Channel->view());
-  view->setRowHidden(XYID, !checked);
-
-  model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor2Channel->model());
-  item = model->item(XYID);
-  item->setEnabled(checked);
-  view = qobject_cast<QListView*>(ui->comboBoxCursor2Channel->view());
-  view->setRowHidden(XYID, !checked);
 }
 
 void MainWindow::on_pushButtonHideCh_toggled(bool checked) {
@@ -372,10 +360,26 @@ void MainWindow::signalMeasurementsResult2(float period, float freq, float amp, 
   measureRefreshTimer2.start(250);
 }
 
-void MainWindow::fftResult(QSharedPointer<QCPGraphDataContainer> data) {
+void MainWindow::fftResult1(QSharedPointer<QCPGraphDataContainer> data) {
   if (ui->pushButtonFFT->isChecked())
-    ui->plotFFT->newData(data);
-  fftTimer.start();
+    ui->plotFFT->newData(0, data);
+
+  // Výběr min nfft se změní na délku tohoto výsledku, pro polovinu spektra délka neodpovídá (je o 1 vyšší než polovina skutečné),
+  // ale to se zaokrouhlí (na nejbližší vyšší mocninu dvou) ve funkci setValue, takže se prakticky zdvojnásobí na správnou hodnotu.
+  //ui->spinBoxFFTSamples1->setValue(data->size());
+
+  fftTimer1.start();
+}
+
+void MainWindow::fftResult2(QSharedPointer<QCPGraphDataContainer> data) {
+  if (ui->pushButtonFFT->isChecked())
+    ui->plotFFT->newData(1, data);
+
+  // Výběr min nfft se změní na délku tohoto výsledku, pro polovinu spektra délka neodpovídá (je o 1 vyšší než polovina skutečné),
+  // ale to se zaokrouhlí (na nejbližší vyšší mocninu dvou) ve funkci setValue, takže se prakticky zdvojnásobí na správnou hodnotu.
+  //ui->spinBoxFFTSamples2->setValue(data->size());
+
+  fftTimer2.start();
 }
 
 void MainWindow::xyResult(QSharedPointer<QCPCurveDataContainer> data) {
@@ -415,10 +419,13 @@ void MainWindow::on_listWidgetTerminalCodeList_itemClicked(QListWidgetItem* item
 }
 
 void MainWindow::on_pushButtonFFT_toggled(bool checked) {
-  if (!checked)
-    ui->plotFFT->clear();
-  else
-    updateFFT();
+  if (!checked) {
+    ui->plotFFT->clear(0);
+    ui->plotFFT->clear(1);
+  } else {
+    updateFFT1();
+    updateFFT2();
+  }
 
 #ifdef XY_AND_FFT_ALLWAYS_TOGETHER
   if (checked) {
@@ -431,16 +438,4 @@ void MainWindow::on_pushButtonFFT_toggled(bool checked) {
 #else
   ui->plotFFT->setVisible(checked);
 #endif
-
-  auto* model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor1Channel->model());
-  auto* item = model->item(FFTID);
-  item->setEnabled(checked);
-  QListView* view = qobject_cast<QListView*>(ui->comboBoxCursor1Channel->view());
-  view->setRowHidden(FFTID, !checked);
-
-  model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor2Channel->model());
-  item = model->item(FFTID);
-  item->setEnabled(checked);
-  view = qobject_cast<QListView*>(ui->comboBoxCursor2Channel->view());
-  view->setRowHidden(FFTID, !checked);
 }

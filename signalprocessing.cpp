@@ -68,13 +68,7 @@ QVector<std::complex<float>> SignalProcessing::fft(QVector<std::complex<float>> 
   return X;
 }
 
-int SignalProcessing::nextPow2(int number) {
-  for (int i = 1;; i++)
-    if (pow(2, i) >= number)
-      return (pow(2, i));
-}
-
-void SignalProcessing::getFFTPlot(QSharedPointer<QCPGraphDataContainer> data, FFTType::enumFFTType type, FFTWindow::enumFFTWindow window, bool removeDC, int segmentCount, bool twosided, bool zerocenter) {
+void SignalProcessing::getFFTPlot(QSharedPointer<QCPGraphDataContainer> data, FFTType::enumFFTType type, FFTWindow::enumFFTWindow window, bool removeDC, int segmentCount, bool twosided, bool zerocenter, int minNFFT) {
   if (removeDC) {
     // Stejnosměrná složka
     float dc = 0;
@@ -94,7 +88,7 @@ void SignalProcessing::getFFTPlot(QSharedPointer<QCPGraphDataContainer> data, FF
     for (int i = 0; i < data->size(); i++)
       values.append(std::complex<float>(data->at(i)->value, 0));
 
-    QVector<std::complex<float>> resultValues = calculateSpectrum(values, window);
+    QVector<std::complex<float>> resultValues = calculateSpectrum(values, window, minNFFT);
     int nfft = resultValues.size();
 
     auto result = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer);
@@ -142,7 +136,7 @@ void SignalProcessing::getFFTPlot(QSharedPointer<QCPGraphDataContainer> data, FF
     // Výpočet spektra pro jednotlivé segmenty
     // Funkce calculateSpectrum použije okno a doplní nulami na mocninu dvou
     for (int i = 0; i < segments.size(); i++) {
-      segments[i] = calculateSpectrum(segments.at(i), window);
+      segments[i] = calculateSpectrum(segments.at(i), window, minNFFT);
     }
 
     int nfft = segments.at(0).length();
@@ -165,7 +159,7 @@ void SignalProcessing::getFFTPlot(QSharedPointer<QCPGraphDataContainer> data, FF
   }
 }
 
-QVector<std::complex<float>> SignalProcessing::calculateSpectrum(QVector<std::complex<float>> data, FFTWindow::enumFFTWindow window) {
+QVector<std::complex<float>> SignalProcessing::calculateSpectrum(QVector<std::complex<float>> data, FFTWindow::enumFFTWindow window, int minNFFT) {
   if (window == FFTWindow::hamming) {
     resizeHamming(data.size());
     for (int i = 0; i < data.size(); i++)
@@ -181,8 +175,8 @@ QVector<std::complex<float>> SignalProcessing::calculateSpectrum(QVector<std::co
   }
 
   int nfft = nextPow2(data.size());
-  if (nfft < 128)
-    nfft = 128;
+  if (nfft < minNFFT)
+    nfft = minNFFT;
   data.resize(nfft);
 
   return fft(data);

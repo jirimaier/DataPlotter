@@ -547,10 +547,11 @@ QByteArray MyMainPlot::exportAllCSV(char separator, char decimal, int precision,
   return output;
 }
 
-void MyMainPlot::moveTracer(QMouseEvent* event) {
+void MyMainPlot::mouseMoved(QMouseEvent* event) {
   if (mouseDrag == MouseDrag::nothing) {
-    // Nic není taženo myší
-    // Najde nejbližší kanál k místu kliknutí, pokud žádný není blíž než 20 pixelů, vůbec se nezobrazí
+    //Nic není taženo, zobrazí tracer
+
+    // Najde nejbližší kanál k myši, pokud žádný není blíž než 20 pixelů, vůbec se nezobrazí
     int nearestIndex = -1;
     unsigned int nearestDistance = 20;
     for (int i = 0; i < graphCount(); i++) {
@@ -570,58 +571,149 @@ void MyMainPlot::moveTracer(QMouseEvent* event) {
       tracer->setYAxis(graph(nearestIndex)->valueAxis());
       tracer->setPoint(event->pos());
       updateTracerText(nearestIndex);
-      checkIfTracerTextFits();
       currentTracerIndex = nearestIndex;
-
-      if (mouseIsPressed) { // Tažení kursoru
-        this->setInteraction(QCP::iRangeDrag, false);
-        mouseDragChIndex = nearestIndex;
-        if (event->buttons() == Qt::RightButton)
-          mouseDrag = MouseDrag::cursor2;
-        else {
-          if (cursors.at(Cursors::X2)->visible() && (unsigned int)cursors.at(Cursors::X2)->selectTest(event->pos(), false) <= 5)
-            mouseDrag = MouseDrag::cursor2;
-          else
-            mouseDrag = MouseDrag::cursor1;
-        }
-        goto DRAG_CURSOR;
-      }
+      this->QWidget::setCursor(Qt::ArrowCursor); // Cursor myši, ne ten grafový
     } else {
-      hideTracer(); // Myš není na grafu
+      if (tracer->visible())
+        hideTracer();
+      setMouseCursorStyle(event);
+    }
+  } else {
+    if (tracer->visible())
+      hideTracer();
 
-      // Je myš na čáře offsetu?
-      if (mouseIsPressed) {
-        nearestIndex = -1;
-        nearestDistance = 20;
-        for (int i = 0; i < zeroLines.count(); i++) {
-          if (zeroLines.at(i)->visible()) {
-            unsigned int distance = (unsigned int)zeroLines.at(i)->selectTest(event->pos(), false);
-            if (distance < nearestDistance) {
-              nearestIndex = i;
-              nearestDistance = distance;
-            }
-          }
-        }
+    if (mouseDrag == MouseDrag::zeroline) { // Je tažen offset
+      setChOffset(mouseDragChIndex, yAxis->pixelToCoord(event->pos().y()));
+      emit offsetChangedByMouse(mouseDragChIndex);
+    } else if (mouseDrag == MouseDrag::cursorY1)
+      emit moveValueCursor(Cursors::Cursor1, cur1YAxis->pixelToCoord(event->pos().y()));
+    else if (mouseDrag == MouseDrag::cursorY2)
+      emit moveValueCursor(Cursors::Cursor2, cur2YAxis->pixelToCoord(event->pos().y()));
+    else if (mouseDrag == MouseDrag::cursorX1)
+      emit moveTimeCursor(Cursors::Cursor1, keyToNearestSample(cur1Graph, xAxis->pixelToCoord(event->pos().x())));
+    else if (mouseDrag == MouseDrag::cursorX2)
+      emit moveTimeCursor(Cursors::Cursor2, keyToNearestSample(cur2Graph, xAxis->pixelToCoord(event->pos().x())));
+  }
+}
 
-        if (nearestIndex != -1) { // Myš je na čáře offsetu
-          mouseDrag = MouseDrag::zeroline;
-          mouseDragChIndex = nearestIndex;
-          this->setInteraction(QCP::iRangeDrag, false);
-          goto DRAG_OFFSET;
-        }
+void MyMainPlot::mousePressed(QMouseEvent* event) {
+  // Kanál
+  int nearestIndex = -1;
+  unsigned int nearestDistance = 20;
+  for (int i = 0; i < graphCount(); i++) {
+    if (graph(i)->visible()) {
+      unsigned int distance = (unsigned int)graph(i)->selectTest(event->pos(), false);
+      if (distance < nearestDistance) {
+        nearestIndex = i;
+        nearestDistance = distance;
       }
     }
-  } else if (mouseDrag == MouseDrag::zeroline) {
-DRAG_OFFSET:
-    setChOffset(mouseDragChIndex, yAxis->pixelToCoord(event->pos().y()));
-    emit offsetChangedByMouse(mouseDragChIndex);
-  } else {
-DRAG_CURSOR:
-    tracer->setVisible(true);
-    tracerText->setVisible(false);
-    tracer->setYAxis(graph(mouseDragChIndex)->valueAxis());
-    tracer->setPoint(event->pos());
-    tracerLayer->replot();
-    emit moveCursor(mouseDragChIndex, mouseDrag == MouseDrag::cursor1 ? 1 : 2, tracer->sampleNumber());
   }
+
+  if (nearestIndex != -1) {
+    tracer->setGraph(graph(nearestIndex));
+    tracer->setYAxis(graph(nearestIndex)->valueAxis());
+    tracer->setPoint(event->pos());
+    tracer->updatePosition();
+    if (event->button() == Qt::RightButton) {
+      mouseDrag = MouseDrag::cursorX2;
+      emit setCursorPos(nearestIndex, Cursors::Cursor2, tracer->sampleNumber());
+    } else {
+      mouseDrag = MouseDrag::cursorX1;
+      emit setCursorPos(nearestIndex, Cursors::Cursor1, tracer->sampleNumber());
+    }
+    return;
+  }
+
+  // Kursory svislé
+  unsigned int cur1dist = UINT_MAX, cur2dist = UINT_MAX;
+  if (cursorsKey.at(Cursors::Cursor1)->visible())
+    cur1dist = (unsigned int)cursorsKey.at(Cursors::Cursor1)->selectTest(event->pos(), false);
+  if (cursorsKey.at(Cursors::Cursor2)->visible())
+    cur2dist = (unsigned int)cursorsKey.at(Cursors::Cursor2)->selectTest(event->pos(), false);
+  if (cur1dist <= cur2dist) {
+    if (cur1dist < 20) {
+      mouseDrag = MouseDrag::cursorX1;
+      this->setInteraction(QCP::iRangeDrag, false);
+      return;
+    }
+  } else if (cur2dist < 20) {
+    mouseDrag = MouseDrag::cursorX2;
+    this->setInteraction(QCP::iRangeDrag, false);
+    return;
+  }
+
+  // Kursory vodorovné
+  cur1dist = UINT_MAX, cur2dist = UINT_MAX;
+  if (cursorsVal.at(Cursors::Cursor1)->visible())
+    cur1dist = (unsigned int)cursorsVal.at(Cursors::Cursor1)->selectTest(event->pos(), false);
+  if (cursorsVal.at(Cursors::Cursor2)->visible())
+    cur2dist = (unsigned int)cursorsVal.at(Cursors::Cursor2)->selectTest(event->pos(), false);
+  if (cur1dist <= cur2dist) {
+    if (cur1dist < 20) {
+      mouseDrag = MouseDrag::cursorY1;
+      this->setInteraction(QCP::iRangeDrag, false);
+      return;
+    }
+  } else if (cur2dist < 20) {
+    mouseDrag = MouseDrag::cursorY2;
+    this->setInteraction(QCP::iRangeDrag, false);
+    return;
+  }
+
+// Offset
+  nearestIndex = -1;
+  nearestDistance = 20;
+  for (int i = 0; i < zeroLines.count(); i++) {
+    if (zeroLines.at(i)->visible() || isChUsed(i)) {
+      unsigned int distance = (unsigned int)zeroLines.at(i)->selectTest(event->pos(), false);
+      if (distance < nearestDistance) {
+        nearestIndex = i;
+        nearestDistance = distance;
+      }
+    }
+  }
+  if (nearestIndex != -1) {
+    mouseDragChIndex = nearestIndex;
+    mouseDrag = MouseDrag::zeroline;
+    this->setInteraction(QCP::iRangeDrag, false);
+  }
+}
+
+void MyMainPlot::setMouseCursorStyle(QMouseEvent* event) {
+  // Kursory svislé
+  unsigned int cur1dist = UINT_MAX, cur2dist = UINT_MAX;
+  if (cursorsKey.at(Cursors::Cursor1)->visible())
+    cur1dist = (unsigned int)cursorsKey.at(Cursors::Cursor1)->selectTest(event->pos(), false);
+  if (cursorsKey.at(Cursors::Cursor2)->visible())
+    cur2dist = (unsigned int)cursorsKey.at(Cursors::Cursor2)->selectTest(event->pos(), false);
+  if (cur1dist < 20 || cur2dist < 20) {
+    this->QWidget::setCursor(Qt::SizeHorCursor); // Cursor myši, ne ten grafový
+    return;
+  }
+
+  // Kursory vodorovné
+  cur1dist = UINT_MAX, cur2dist = UINT_MAX;
+  if (cursorsVal.at(Cursors::Cursor1)->visible())
+    cur1dist = (unsigned int)cursorsVal.at(Cursors::Cursor1)->selectTest(event->pos(), false);
+  if (cursorsVal.at(Cursors::Cursor2)->visible())
+    cur2dist = (unsigned int)cursorsVal.at(Cursors::Cursor2)->selectTest(event->pos(), false);
+  if (cur1dist < 20 || cur2dist < 20) {
+    this->QWidget::setCursor(Qt::SizeVerCursor); // Cursor myši, ne ten grafový
+    return;
+  }
+
+  // Offset
+  for (int i = 0; i < zeroLines.count(); i++) {
+    if (zeroLines.at(i)->visible() || isChUsed(i)) {
+      unsigned int distance = (unsigned int)zeroLines.at(i)->selectTest(event->pos(), false);
+      if (distance < 20) {
+        this->QWidget::setCursor(Qt::SizeVerCursor); // Cursor myši, ne ten grafový
+        return;
+      }
+    }
+  }
+
+  // Nic
+  this->QWidget::setCursor(Qt::ArrowCursor); // Cursor myši, ne ten grafový
 }

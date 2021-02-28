@@ -23,8 +23,8 @@
 
 class MyMainPlot : public MyPlot {
   Q_OBJECT
-public:
-  explicit MyMainPlot(QWidget *parent = nullptr);
+ public:
+  explicit MyMainPlot(QWidget* parent = nullptr);
   ~MyMainPlot();
   void init();
 
@@ -66,7 +66,9 @@ public:
 
   void redraw();
 
-private:
+  QCPAxis* getAnalogAxis(int chID)const {return analogAxis.at(chID);}
+
+ private:
   QTimer plotUpdateTimer;
 
   void resume();
@@ -80,6 +82,7 @@ private:
   int currentTracerIndex = -1;
 
   int mouseDragChIndex = 0;
+  void setMouseCursorStyle(QMouseEvent* event);
 
   bool newData = true;
   double minT = 0.0, maxT = 1.0;
@@ -89,19 +92,20 @@ private:
   int zoom = 1000;
   double horizontalPos = 500;
 
-  QList<QCPAxis *> analogAxis, logicGroupAxis;
+  QList<QCPAxis*> analogAxis, logicGroupAxis;
   QVector<QSharedPointer<QCPGraphDataContainer>> pauseBuffer;
   QVector<ChannelSettings_t> channelSettings;
   QVector<ChannelSettings_t> logicSettings;
-  QVector<QCPItemLine *> zeroLines;
+  QVector<QCPItemLine*> zeroLines;
   PlotStatus::enumPlotStatus plottingStatus = PlotStatus::run;
   PlotRange::enumPlotRange plotRangeType = PlotRange::fixedRange;
 
-private slots:
+ private slots:
   void verticalAxisRangeChanged();
-  void moveTracer(QMouseEvent *event);
+  void mouseMoved(QMouseEvent* event);
+  void mousePressed(QMouseEvent* event);
 
-public slots:
+ public slots:
   void togglePause();
   void resetChannels();
   void update();
@@ -120,7 +124,7 @@ public slots:
   void newDataPoint(int chID, double time, double value, bool append);
   void newDataVector(int chID, QSharedPointer<QCPGraphDataContainer> data, bool ignorePause = false);
 
-signals:
+ signals:
   void updateHPosSlider(double min, double max, int step);
   void showPlotStatus(PlotStatus::enumPlotStatus type);
   void requestCursorUpdate();

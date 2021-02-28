@@ -32,6 +32,7 @@
 #include "serialreader.h"
 #include "signalprocessing.h"
 #include "ui_mainwindow.h"
+#include "myplot.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -50,7 +51,7 @@ class MainWindow : public QMainWindow {
  private:
   Ui::MainWindow* ui;
   QTranslator* translator;
-  QTimer portsRefreshTimer, activeChRefreshTimer, xyTimer, cursorRangeUpdateTimer, measureRefreshTimer1, measureRefreshTimer2, fftTimer, serialMonitorTimer;
+  QTimer portsRefreshTimer, activeChRefreshTimer, xyTimer, cursorRangeUpdateTimer, measureRefreshTimer1, measureRefreshTimer2, fftTimer1, fftTimer2, serialMonitorTimer;
   QList<QSerialPortInfo> portList;
   void connectSignals();
   void updateChScale();
@@ -78,13 +79,15 @@ class MainWindow : public QMainWindow {
   bool colorUpdateNeeded = true;
   void updateMathNow(int number);
   void updateXY();
-  QIcon iconXY, iconRun, iconPause, iconHidden, iconVisible, iconConnected, iconNotConnected, iconCross, iconFFT;
+  QIcon iconRun, iconPause, iconHidden, iconVisible, iconConnected, iconNotConnected, iconCross;
   void insertInTerminalDebug(QString text, QColor textColor);
   QByteArray serialMonitor;
   QTimer dataRateTimer;
   int dataUpdates = 0;
   bool lastUpdateWasPoint = false;
   HAxisType::enumHAxisType recommandedAxisType = HAxisType::normal;
+  void setCursorsVisibility(Cursors::enumCursors cursor, int graph, bool timeCurVisible, int valueCurState);
+  void updateXYCursorsCalculations();
 
  private slots:
   void updateCursors();
@@ -92,14 +95,15 @@ class MainWindow : public QMainWindow {
   void updateDivs();
   void comRefresh();
   void rangeTypeChanged();
-  void updateCursor(Cursors::enumCursors cursor, int selectedChannel, unsigned int sample, double& time, double& value, QByteArray& timeStr, QByteArray& valueStr);
+  void updateCursor(Cursors::enumCursors cursor, int selectedChannel, unsigned int sample, double& time, double& value, QByteArray& timeStr, QByteArray& valueStr, bool useValueCursor);
   void updateCursorRange();
   void updateMeasurements1();
   void updateMeasurements2();
-  void updateFFT();
+  void updateFFT1();
+  void updateFFT2();
   void updateSerialMonitor();
   void updateDataRate();
-  void FFTlengthChanged(int formerLength, int newLength);
+  void FFTlengthChanged(int fftChID, int formerLength, int newLength);
 
  private slots: // Autoconnect slots
   void on_dialRollingRange_realValueChanged(double value) { ui->doubleSpinBoxRangeHorizontal->setValue(value); }
@@ -118,7 +122,7 @@ class MainWindow : public QMainWindow {
   void on_radioButtonEn_toggled(bool checked);
   void on_radioButtonCz_toggled(bool checked);
   void on_pushButtonAllCSV_clicked() { exportCSV(true); }
-  void on_doubleSpinBoxRangeVerticalRange_valueChanged(double arg1) { ui->doubleSpinBoxChOffset->setSingleStep(pow(10, floor(log10(arg1)) - 2)); }
+  void on_doubleSpinBoxRangeVerticalRange_valueChanged(double arg1);
   void on_lineEditManualInput_returnPressed();
   void on_pushButtonLoadFile_clicked();
   void on_pushButtonDefaults_clicked();
@@ -191,7 +195,6 @@ class MainWindow : public QMainWindow {
   void on_listWidgetTerminalCodeList_itemClicked(QListWidgetItem* item);
   void on_pushButtonFFT_toggled(bool checked);
   void on_pushButtonFFTImage_clicked();
-  void on_pushButtonChangeFFTColor_clicked();
   void on_pushButtonChangeXYColor_clicked();
   void on_comboBoxXYy_currentIndexChanged(int) { updateXY(); }
   void on_comboBoxXYx_currentIndexChanged(int) { updateXY(); }
@@ -200,14 +203,24 @@ class MainWindow : public QMainWindow {
   void on_myTerminal_cellClicked(int row, int column);
   void on_comboBoxFFTType_currentIndexChanged(int index);
   void on_checkBoxOpenGL_toggled(bool checked);
-
   void on_checkBoxMouseControls_toggled(bool checked);
-
   void on_lineEditVUnit_textChanged(const QString& arg1);
-
   void on_pushButtonClearReceivedList_3_clicked() { serialMonitor.clear(); }
-
   void on_pushButtonScrollDown_3_clicked();
+  void on_checkBoxYCur1_stateChanged(int arg1);
+  void on_checkBoxYCur2_stateChanged(int arg1);
+  void on_doubleSpinBoxYCur2_valueChanged(double arg1);
+  void on_doubleSpinBoxYCur1_valueChanged(double arg1);
+  void on_checkBoxFFTCh1_toggled(bool checked);
+  void on_checkBoxFFTCh2_toggled(bool checked);
+  void on_comboBoxFFTStyle1_currentIndexChanged(int index) {ui->plotFFT->setStyle(0, index);}
+  void on_comboBoxFFTStyle2_currentIndexChanged(int index) {ui->plotFFT->setStyle(1, index);}
+  void on_checkBoxXYCur1_toggled(bool checked);
+  void on_checkBoxXYCur2_toggled(bool checked);
+  void on_doubleSpinBoxXYCurY1_valueChanged(double arg1);
+  void on_doubleSpinBoxXYCurY2_valueChanged(double arg1);
+  void on_doubleSpinBoxXYCurX1_valueChanged(double arg1);
+  void on_doubleSpinBoxXYCurX2_valueChanged(double arg1);
 
  public slots:
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumMessageTarget target);
@@ -220,11 +233,17 @@ class MainWindow : public QMainWindow {
   void printSerialMonitor(QByteArray data) { serialMonitor.append(data); }
   void signalMeasurementsResult1(float period, float freq, float amp, float min, float max, float vrms, float dc, float fs, float rise, float fall, int samples);
   void signalMeasurementsResult2(float period, float freq, float amp, float min, float max, float vrms, float dc, float fs, float rise, float fall, int samples);
-  void fftResult(QSharedPointer<QCPGraphDataContainer> data);
+  void fftResult1(QSharedPointer<QCPGraphDataContainer> data);
+  void fftResult2(QSharedPointer<QCPGraphDataContainer> data);
   void xyResult(QSharedPointer<QCPCurveDataContainer> data);
-  void moveCursor(int chid, int cursor, int sample);
+  void timeCursorMovedByMouse(Cursors::enumCursors cursor, int sample);
+  void valueCursorMovedByMouse(Cursors::enumCursors cursor, double value);
+  void cursorSetByMouse(int chid, Cursors::enumCursors cursor, int sample);
   void offsetChangedByMouse(int chid);
   void ch1WasUpdated(bool wasPoint,   HAxisType::enumHAxisType recommandedTimeBase);
+  void moveTimeCursorXY(Cursors::enumCursors cursor, double pos);
+  void moveValueCursorXY(Cursors::enumCursors cursor, double pos);
+  void setCursorPosXY(Cursors::enumCursors cursor, double x, double y);
 
  signals:
   void setChDigital(int chid, int target);
@@ -249,6 +268,7 @@ class MainWindow : public QMainWindow {
   void requestXY(QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2);
   void requstMeasurements1(QSharedPointer<QCPGraphDataContainer> data);
   void requstMeasurements2(QSharedPointer<QCPGraphDataContainer> data);
-  void requestFFT(QSharedPointer<QCPGraphDataContainer> data, FFTType::enumFFTType type, FFTWindow::enumFFTWindow window, bool removeDC, int pWelchtimeDivisions, bool twosided, bool zerocenter);
+  void requestFFT1(QSharedPointer<QCPGraphDataContainer> data, FFTType::enumFFTType type, FFTWindow::enumFFTWindow window, bool removeDC, int pWelchtimeDivisions, bool twosided, bool zerocenter, int minNFFT);
+  void requestFFT2(QSharedPointer<QCPGraphDataContainer> data, FFTType::enumFFTType type, FFTWindow::enumFFTWindow window, bool removeDC, int pWelchtimeDivisions, bool twosided, bool zerocenter, int minNFFT);
 };
 #endif // MAINWINDOW_H

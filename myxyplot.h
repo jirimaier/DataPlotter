@@ -20,26 +20,32 @@
 
 class MyXYPlot : public MyPlot {
   Q_OBJECT
-public:
-  explicit MyXYPlot(QWidget *parent = nullptr);
+ public:
+  explicit MyXYPlot(QWidget* parent = nullptr);
   ~MyXYPlot();
   QByteArray exportCSV(char separator, char decimal, int precision);
-  QCPCurve *graphXY;
+  QCPCurve* graphXY;
   QString tUnit = "s";
 
-private:
+ private:
   QSharedPointer<QCPCurveDataContainer> pauseBuffer;
   bool autoSize = true;
   void autoset();
 
-private slots:
-  void moveTracer(QMouseEvent *event);
+  void setMouseCursorStyle(QMouseEvent* event);
+ private slots:
+  void mouseMoved(QMouseEvent* event);
+  void mousePressed(QMouseEvent* event);
 
-public slots:
+ public slots:
   void newData(QSharedPointer<QCPCurveDataContainer> data);
   void setAutoSize(bool en);
   void clear();
   void setStyle(int style);
+
+ signals:
+  void moveTimeCursorXY(Cursors::enumCursors cursor, double pos);
+  void setCursorPosXY(Cursors::enumCursors cursor, double x, double y);
 };
 
 #endif // MYXYPLOT_H

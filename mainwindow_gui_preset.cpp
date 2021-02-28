@@ -20,10 +20,16 @@ void MainWindow::connectSignals() {
   connect(ui->checkBoxVerticalValues, &QCheckBox::toggled, ui->plot, &MyPlot::setShowVerticalValues);
   connect(ui->plot, &MyMainPlot::showPlotStatus, this, &MainWindow::showPlotStatus);
   connect(ui->plot, &MyPlot::gridChanged, this, &MainWindow::updateDivs);
-  connect(ui->plot, &MyPlot::moveCursor, this, &MainWindow::moveCursor);
+  connect(ui->plot, &MyPlot::moveTimeCursor, this, &MainWindow::timeCursorMovedByMouse);
+  connect(ui->plot, &MyPlot::moveValueCursor, this, &MainWindow::valueCursorMovedByMouse);
+  connect(ui->plot, &MyPlot::setCursorPos, this, &MainWindow::cursorSetByMouse);
   connect(ui->plot, &MyMainPlot::offsetChangedByMouse, this, &MainWindow::offsetChangedByMouse);
-  connect(ui->plotxy, &MyPlot::moveCursor, this, &MainWindow::moveCursor);
-  connect(ui->plotFFT, &MyPlot::moveCursor, this, &MainWindow::moveCursor);
+  connect(ui->plotxy, &MyXYPlot::moveTimeCursorXY, this, &MainWindow::moveTimeCursorXY);
+  connect(ui->plotFFT, &MyPlot::moveTimeCursor, this, &MainWindow::timeCursorMovedByMouse);
+  connect(ui->plotxy, &MyPlot::moveValueCursor, this, &MainWindow::moveValueCursorXY);
+  connect(ui->plotFFT, &MyPlot::moveValueCursor, this, &MainWindow::valueCursorMovedByMouse);
+  connect(ui->plotxy, &MyXYPlot::setCursorPosXY, this, &MainWindow::setCursorPosXY);
+  connect(ui->plotFFT, &MyPlot::setCursorPos, this, &MainWindow::cursorSetByMouse);
   connect(ui->plotFFT, &MyFFTPlot::lengthChanged, this, &MainWindow::FFTlengthChanged);
   connect(ui->doubleSpinBoxRangeHorizontal, SIGNAL(valueChanged(double)), ui->plot, SLOT(setRollingRange(double)));
   connect(ui->doubleSpinBoxRangeVerticalRange, SIGNAL(valueChanged(double)), ui->plot, SLOT(setVerticalRange(double)));
@@ -47,7 +53,8 @@ void MainWindow::connectSignals() {
   connect(&cursorRangeUpdateTimer, &QTimer::timeout, this, &MainWindow::updateCursorRange);
   connect(&measureRefreshTimer1, &QTimer::timeout, this, &MainWindow::updateMeasurements1);
   connect(&measureRefreshTimer2, &QTimer::timeout, this, &MainWindow::updateMeasurements2);
-  connect(&fftTimer, &QTimer::timeout, this, &::MainWindow::updateFFT);
+  connect(&fftTimer1, &QTimer::timeout, this, &::MainWindow::updateFFT1);
+  connect(&fftTimer2, &QTimer::timeout, this, &::MainWindow::updateFFT2);
   connect(&xyTimer, &QTimer::timeout, this, &::MainWindow::updateXY);
   connect(&serialMonitorTimer, &QTimer::timeout, this, &MainWindow::updateSerialMonitor);
   connect(&dataRateTimer, &QTimer::timeout, this, &MainWindow::updateDataRate);
@@ -68,7 +75,8 @@ void MainWindow::startTimers() {
   cursorRangeUpdateTimer.start(100);
   measureRefreshTimer1.start(200);
   measureRefreshTimer2.start(200);
-  fftTimer.start(200);
+  fftTimer1.start(200);
+  fftTimer2.start(200);
   xyTimer.start(200);
   serialMonitorTimer.start(200);
   dataRateTimer.start(1000);
@@ -92,6 +100,10 @@ void MainWindow::setGuiDefaults() {
   ui->plotxy->setYUnit("V");
   ui->plotxy->setYUnit("V");
   on_comboBoxFFTType_currentIndexChanged(ui->comboBoxFFTType->currentIndex());
+  ui->checkBoxYCur1->setCheckState(Qt::CheckState::PartiallyChecked);
+  ui->checkBoxYCur2->setCheckState(Qt::CheckState::PartiallyChecked);
+  ui->spinBoxFFTSegments1->setVisible(ui->comboBoxFFTType->currentIndex() == FFTType::pwelch);
+  ui->spinBoxFFTSegments2->setVisible(ui->comboBoxFFTType->currentIndex() == FFTType::pwelch);
 }
 
 void MainWindow::setGuiArrays() {
@@ -118,7 +130,8 @@ void MainWindow::fillChannelSelect() {
   ui->comboBoxCursor2Channel->blockSignals(true);
   ui->comboBoxMeasure1->blockSignals(true);
   ui->comboBoxMeasure2->blockSignals(true);
-  ui->comboBoxFFTCh->blockSignals(true);
+  ui->comboBoxFFTCh1->blockSignals(true);
+  ui->comboBoxFFTCh2->blockSignals(true);
   ui->comboBoxXYx->blockSignals(true);
   ui->comboBoxXYy->blockSignals(true);
 
@@ -128,7 +141,8 @@ void MainWindow::fillChannelSelect() {
     ui->comboBoxCursor2Channel->addItem(getChName(i));
     ui->comboBoxMeasure1->addItem(getChName(i));
     ui->comboBoxMeasure2->addItem(getChName(i));
-    ui->comboBoxFFTCh->addItem(getChName(i));
+    ui->comboBoxFFTCh1->addItem(getChName(i));
+    ui->comboBoxFFTCh2->addItem(getChName(i));
     ui->comboBoxXYx->addItem(getChName(i));
     ui->comboBoxXYy->addItem(getChName(i));
   }
@@ -137,48 +151,38 @@ void MainWindow::fillChannelSelect() {
     ui->comboBoxCursor1Channel->addItem(tr("Logic %1").arg(i));
     ui->comboBoxCursor2Channel->addItem(tr("Logic %1").arg(i));
   }
-  ui->comboBoxCursor1Channel->addItem(iconXY, (tr("XY")));
-  ui->comboBoxCursor2Channel->addItem(iconXY, tr("XY"));
-  ui->comboBoxCursor1Channel->addItem(iconFFT, (tr("FFT")));
-  ui->comboBoxCursor2Channel->addItem(iconFFT, tr("FFT"));
+  ui->comboBoxCursor1Channel->addItem((tr("FFT 1")));
+  ui->comboBoxCursor1Channel->addItem(tr("FFT 2"));
+  ui->comboBoxCursor2Channel->addItem((tr("FFT 1")));
+  ui->comboBoxCursor2Channel->addItem(tr("FFT 2"));
 
   ui->comboBoxMeasure1->addItem(iconCross, tr("Off"));
   ui->comboBoxMeasure2->addItem(iconCross, tr("Off"));
   ui->comboBoxMeasure1->setCurrentIndex(ui->comboBoxMeasure1->count() - 1);
   ui->comboBoxMeasure2->setCurrentIndex(ui->comboBoxMeasure2->count() - 1);
 
-  // Skryje XY kanál z nabýdky.
-  auto* model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor1Channel->model());
-  auto* item = model->item(XYID);
-  item->setEnabled(false);
-  QListView* view = qobject_cast<QListView*>(ui->comboBoxCursor1Channel->view());
-  view->setRowHidden(XYID, !false);
+  // Skryje FFT kanály z nabýdky.
+  for (int i = 0; i < 2; i++) {
+    auto model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor1Channel->model());
+    auto item = model->item(FFTID(i));
+    item->setEnabled(false);
+    auto view = qobject_cast<QListView*>(ui->comboBoxCursor1Channel->view());
+    view->setRowHidden(FFTID(i), !false);
 
-  model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor2Channel->model());
-  item = model->item(XYID);
-  item->setEnabled(false);
-  view = qobject_cast<QListView*>(ui->comboBoxCursor2Channel->view());
-  view->setRowHidden(XYID, !false);
-
-  // Skryje FFT kanál z nabýdky.
-  model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor1Channel->model());
-  item = model->item(FFTID);
-  item->setEnabled(false);
-  view = qobject_cast<QListView*>(ui->comboBoxCursor1Channel->view());
-  view->setRowHidden(FFTID, !false);
-
-  model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor2Channel->model());
-  item = model->item(FFTID);
-  item->setEnabled(false);
-  view = qobject_cast<QListView*>(ui->comboBoxCursor2Channel->view());
-  view->setRowHidden(FFTID, !false);
+    model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor2Channel->model());
+    item = model->item(FFTID(i));
+    item->setEnabled(false);
+    view = qobject_cast<QListView*>(ui->comboBoxCursor2Channel->view());
+    view->setRowHidden(FFTID(i), !false);
+  }
 
   ui->comboBoxSelectedChannel->blockSignals(false);
   ui->comboBoxCursor1Channel->blockSignals(false);
   ui->comboBoxCursor2Channel->blockSignals(false);
   ui->comboBoxMeasure1->blockSignals(false);
   ui->comboBoxMeasure2->blockSignals(false);
-  ui->comboBoxFFTCh->blockSignals(false);
+  ui->comboBoxFFTCh1->blockSignals(false);
+  ui->comboBoxFFTCh2->blockSignals(false);
   ui->comboBoxXYx->blockSignals(false);
   ui->comboBoxXYy->blockSignals(false);
 }

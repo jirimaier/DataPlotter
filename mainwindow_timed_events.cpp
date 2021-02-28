@@ -57,7 +57,8 @@ void MainWindow::updateUsedChannels() {
   updateChannelComboBox(*ui->comboBoxSelectedChannel, true, true);
   updateChannelComboBox(*ui->comboBoxMeasure1, false, false);
   updateChannelComboBox(*ui->comboBoxMeasure2, false, false);
-  updateChannelComboBox(*ui->comboBoxFFTCh, false, true);
+  updateChannelComboBox(*ui->comboBoxFFTCh1, false, true);
+  updateChannelComboBox(*ui->comboBoxFFTCh2, false, true);
   updateChannelComboBox(*ui->comboBoxXYx, false, true);
   updateChannelComboBox(*ui->comboBoxXYy, false, true);
   colorUpdateNeeded = false;
@@ -164,9 +165,12 @@ empty:
   }
 }
 
-void MainWindow::updateFFT() {
-  if (ui->pushButtonFFT->isChecked()) {
-    int chid = ui->comboBoxFFTCh->currentIndex();
+void MainWindow::updateFFT1() {
+  if (!ui->pushButtonFFT->isChecked())
+    return;
+
+  if (ui->checkBoxFFTCh1->isChecked()) {
+    int chid = ui->comboBoxFFTCh1->currentIndex();
 
     auto data = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer(*ui->plot->graph(chid)->data()));
     if (ui->radioButtonFFTPart->isChecked()) {
@@ -175,20 +179,75 @@ void MainWindow::updateFFT() {
     }
 
     if (data->isEmpty()) {
-      ui->plotFFT->clear();
+      ui->plotFFT->clear(0);
       return;
     }
 
     if (ui->comboBoxFFTType->currentIndex() == FFTType::pwelch) {
-      if (ui->spinBoxFFTSegments->value() > data->size()) {
-        ui->plotFFT->clear();
+      if (ui->spinBoxFFTSegments1->value() > data->size()) {
+        ui->plotFFT->clear(0);
         return;
       }
     }
 
-    fftTimer.stop();
-    emit requestFFT(data, (FFTType::enumFFTType)ui->comboBoxFFTType->currentIndex(), (FFTWindow::enumFFTWindow)ui->comboBoxFFTWindow->currentIndex(), ui->checkBoxFFTNoDC->isChecked(), ui->spinBoxFFTSegments->value(), ui->checkBoxFFTTwoSided->isChecked(), ui->checkBoxFFTZeroCenter->isChecked());
-  }
+    if (ui->plotFFT->setChSorce(1, chid, ui->plot->getChColor(chid))) {
+      QPixmap color(12, 12);
+      color.fill(ui->plot->getChColor(chid));
+      auto* model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor1Channel->model());
+      auto* item = model->item(FFTID(0));
+      item->setIcon(QIcon(color));
+
+      model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor2Channel->model());
+      item = model->item(FFTID(0));
+      item->setIcon(QIcon(color));
+    }
+
+    fftTimer1.stop();
+    emit requestFFT1(data, (FFTType::enumFFTType)ui->comboBoxFFTType->currentIndex(), (FFTWindow::enumFFTWindow)ui->comboBoxFFTWindow1->currentIndex(), ui->checkBoxFFTNoDC1->isChecked(), ui->spinBoxFFTSegments1->value(), ui->checkBoxFFTTwoSided->isChecked(), ui->checkBoxFFTZeroCenter->isChecked(), ui->spinBoxFFTSamples1->value());
+  } else
+    ui->plotFFT->clear(0);
+}
+
+void MainWindow::updateFFT2() {
+  if (!ui->pushButtonFFT->isChecked())
+    return;
+
+  if (ui->checkBoxFFTCh2->isChecked()) {
+    int chid = ui->comboBoxFFTCh2->currentIndex();
+
+    auto data = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer(*ui->plot->graph(chid)->data()));
+    if (ui->radioButtonFFTPart->isChecked()) {
+      data->removeBefore(ui->plot->xAxis->range().lower);
+      data->removeAfter(ui->plot->xAxis->range().upper);
+    }
+
+    if (data->isEmpty()) {
+      ui->plotFFT->clear(1);
+      return;
+    }
+
+    if (ui->comboBoxFFTType->currentIndex() == FFTType::pwelch) {
+      if (ui->spinBoxFFTSegments2->value() > data->size()) {
+        ui->plotFFT->clear(1);
+        return;
+      }
+    }
+
+    if (ui->plotFFT->setChSorce(2, chid, ui->plot->getChColor(chid))) {
+      QPixmap color(12, 12);
+      color.fill(ui->plot->getChColor(chid));
+      auto* model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor1Channel->model());
+      auto* item = model->item(FFTID(1));
+      item->setIcon(QIcon(color));
+
+      model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor2Channel->model());
+      item = model->item(FFTID(1));
+      item->setIcon(QIcon(color));
+    }
+    fftTimer2.stop();
+    emit requestFFT2(data, (FFTType::enumFFTType)ui->comboBoxFFTType->currentIndex(), (FFTWindow::enumFFTWindow)ui->comboBoxFFTWindow2->currentIndex(), ui->checkBoxFFTNoDC2->isChecked(), ui->spinBoxFFTSegments2->value(), ui->checkBoxFFTTwoSided->isChecked(), ui->checkBoxFFTZeroCenter->isChecked(), ui->spinBoxFFTSamples2->value());
+  } else
+    ui->plotFFT->clear(1);
 }
 
 void MainWindow::updateSerialMonitor() {
@@ -220,12 +279,12 @@ void MainWindow::updateDataRate() {
   dataUpdates = 0;
 }
 
-void MainWindow::FFTlengthChanged(int formerLength, int newLength) {
+void MainWindow::FFTlengthChanged(int fftChID, int formerLength, int newLength) {
   // Pokud se změní počet vzorků FFT, změnit polohu (index vzorku) kursoru tak, aby byl na stejné
   // (nejbližší možné) frekvenci.
-  if (ui->checkBoxCur1Visible && ui->comboBoxCursor1Channel->currentIndex() == FFTID)
+  if (ui->checkBoxCur1Visible && ui->comboBoxCursor1Channel->currentIndex() == FFTID(fftChID))
     ui->spinBoxCur1Sample->setValue(newLength * ui->spinBoxCur1Sample->value() / formerLength);
-  if (ui->checkBoxCur2Visible && ui->comboBoxCursor2Channel->currentIndex() == FFTID)
+  if (ui->checkBoxCur2Visible && ui->comboBoxCursor2Channel->currentIndex() == FFTID(fftChID))
     ui->spinBoxCur2Sample->setValue(newLength * ui->spinBoxCur2Sample->value() / formerLength);
 }
 

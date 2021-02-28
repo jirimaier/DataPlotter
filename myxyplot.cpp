@@ -21,8 +21,9 @@ MyXYPlot::MyXYPlot(QWidget* parent) : MyPlot(parent) {
   graphXY = new QCPCurve(this->xAxis, this->yAxis);
   this->xAxis->setRange(-100, 100);
   this->yAxis->setRange(-100, 100);
-  setGridHintX(-2);
-  setGridHintY(-2);
+  setGridHintX(-3);
+  setGridHintY(-3);
+  tracer->setCurve(graphXY);
 }
 
 MyXYPlot::~MyXYPlot() {}
@@ -93,45 +94,115 @@ void MyXYPlot::autoset() {
   yAxis->setRange(yRange);
 }
 
-void MyXYPlot::moveTracer(QMouseEvent* event) {
+void MyXYPlot::mouseMoved(QMouseEvent* event) {
   if (mouseDrag == MouseDrag::nothing) {
     // Nic není taženo myší
     if ((unsigned int)graphXY->selectTest(event->pos(), false) < 20) {
       tracer->setVisible(true);
-      tracer->setCurve(graphXY);
       tracer->setPoint(event->pos());
-
-      if (mouseIsPressed) {
-        tracerText->setVisible(false);
-        this->setInteraction(QCP::iRangeDrag, false);
-        if (event->buttons() == Qt::RightButton)
-          mouseDrag = MouseDrag::cursor2;
-        else {
-          if (cursors.at(Cursors::X2)->visible() && (unsigned int)cursors.at(Cursors::X2)->selectTest(event->pos(), false) <= 5)
-            mouseDrag = MouseDrag::cursor2;
-          else
-            mouseDrag = MouseDrag::cursor1;
-        }
-        goto DRAG_CURSOR;
-      } else {
-        tracerText->setVisible(true);
-        QString tracerTextStr;
-        tracerTextStr.append("X: " + floatToNiceString(tracer->position->key(), 4, true, false) + getXUnit() + "\n");
-        tracerTextStr.append("Y: " + floatToNiceString(tracer->position->value(), 4, true, false) + getYUnit() + "\n");
-        tracerTextStr.append("t: " + floatToNiceString(graphXY->data().data()->at(tracer->sampleNumber())->t, 4, true, false) + tUnit);
-        tracerText->setText(tracerTextStr);
-        checkIfTracerTextFits();
-      }
-
+      tracerText->setVisible(true);
+      QString tracerTextStr;
+      tracerTextStr.append("X: " + floatToNiceString(tracer->position->key(), 4, true, false) + getXUnit() + "\n");
+      tracerTextStr.append("Y: " + floatToNiceString(tracer->position->value(), 4, true, false) + getYUnit() + "\n");
+      tracerTextStr.append("t: " + floatToNiceString(graphXY->data().data()->at(tracer->sampleNumber())->t, 4, true, false) + tUnit);
+      tracerText->setText(tracerTextStr);
+      checkIfTracerTextFits();
       tracerLayer->replot();
-    } else
-      hideTracer();
+      this->QWidget::setCursor(Qt::ArrowCursor); // Cursor myši, ne ten grafový
+    } else {
+      if (tracer->visible())
+        hideTracer();
+      setMouseCursorStyle(event);
+    }
   } else {
-DRAG_CURSOR:
-    tracer->setVisible(true);
-    tracerText->setVisible(false);
-    tracer->setPoint(event->pos());
-    tracerLayer->replot();
-    emit moveCursor(XYID, mouseDrag == MouseDrag::cursor1 ? 1 : 2, tracer->sampleNumber());
+    if (tracer->visible())
+      hideTracer();
+
+    if (mouseDrag == MouseDrag::cursorY1)
+      emit moveValueCursor(Cursors::Cursor1, yAxis->pixelToCoord(event->pos().y()));
+    else if (mouseDrag == MouseDrag::cursorY2)
+      emit moveValueCursor(Cursors::Cursor2, yAxis->pixelToCoord(event->pos().y()));
+    else if (mouseDrag == MouseDrag::cursorX1)
+      emit moveTimeCursorXY(Cursors::Cursor1, xAxis->pixelToCoord(event->pos().x()));
+    else if (mouseDrag == MouseDrag::cursorX2)
+      emit moveTimeCursorXY(Cursors::Cursor2, xAxis->pixelToCoord(event->pos().x()));
   }
+}
+
+void MyXYPlot::mousePressed(QMouseEvent* event) {
+  if ((unsigned int)graphXY->selectTest(event->pos(), false) < 20) {
+    tracer->setPoint(event->pos());
+    tracer->updatePosition();
+    if (event->button() == Qt::RightButton) {
+      mouseDrag = MouseDrag::cursorX2;
+      emit setCursorPosXY(Cursors::Cursor2, tracer->position->key(), tracer->position->value());
+    } else {
+      mouseDrag = MouseDrag::cursorX1;
+      emit setCursorPosXY(Cursors::Cursor1, tracer->position->key(), tracer->position->value());
+    }
+    return;
+  }
+
+  // Kursory svislé
+  unsigned int cur1dist = UINT_MAX, cur2dist = UINT_MAX;
+  if (cursorsKey.at(Cursors::Cursor1)->visible())
+    cur1dist = (unsigned int)cursorsKey.at(Cursors::Cursor1)->selectTest(event->pos(), false);
+  if (cursorsKey.at(Cursors::Cursor2)->visible())
+    cur2dist = (unsigned int)cursorsKey.at(Cursors::Cursor2)->selectTest(event->pos(), false);
+  if (cur1dist <= cur2dist) {
+    if (cur1dist < 20) {
+      mouseDrag = MouseDrag::cursorX1;
+      this->setInteraction(QCP::iRangeDrag, false);
+      return;
+    }
+  } else if (cur2dist < 20) {
+    mouseDrag = MouseDrag::cursorX2;
+    this->setInteraction(QCP::iRangeDrag, false);
+    return;
+  }
+
+  // Kursory vodorovné
+  cur1dist = UINT_MAX, cur2dist = UINT_MAX;
+  if (cursorsVal.at(Cursors::Cursor1)->visible())
+    cur1dist = (unsigned int)cursorsVal.at(Cursors::Cursor1)->selectTest(event->pos(), false);
+  if (cursorsVal.at(Cursors::Cursor2)->visible())
+    cur2dist = (unsigned int)cursorsVal.at(Cursors::Cursor2)->selectTest(event->pos(), false);
+  if (cur1dist <= cur2dist) {
+    if (cur1dist < 20) {
+      mouseDrag = MouseDrag::cursorY1;
+      this->setInteraction(QCP::iRangeDrag, false);
+      return;
+    }
+  } else if (cur2dist < 20) {
+    mouseDrag = MouseDrag::cursorY2;
+    this->setInteraction(QCP::iRangeDrag, false);
+    return;
+  }
+}
+
+void MyXYPlot::setMouseCursorStyle(QMouseEvent* event) {
+  // Kursory svislé
+  unsigned int cur1dist = UINT_MAX, cur2dist = UINT_MAX;
+  if (cursorsKey.at(Cursors::Cursor1)->visible())
+    cur1dist = (unsigned int)cursorsKey.at(Cursors::Cursor1)->selectTest(event->pos(), false);
+  if (cursorsKey.at(Cursors::Cursor2)->visible())
+    cur2dist = (unsigned int)cursorsKey.at(Cursors::Cursor2)->selectTest(event->pos(), false);
+  if (cur1dist < 20 || cur2dist < 20) {
+    this->QWidget::setCursor(Qt::SizeHorCursor); // Cursor myši, ne ten grafový
+    return;
+  }
+
+  // Kursory vodorovné
+  cur1dist = UINT_MAX, cur2dist = UINT_MAX;
+  if (cursorsVal.at(Cursors::Cursor1)->visible())
+    cur1dist = (unsigned int)cursorsVal.at(Cursors::Cursor1)->selectTest(event->pos(), false);
+  if (cursorsVal.at(Cursors::Cursor2)->visible())
+    cur2dist = (unsigned int)cursorsVal.at(Cursors::Cursor2)->selectTest(event->pos(), false);
+  if (cur1dist < 20 || cur2dist < 20) {
+    this->QWidget::setCursor(Qt::SizeVerCursor); // Cursor myši, ne ten grafový
+    return;
+  }
+
+  // Nic
+  this->QWidget::setCursor(Qt::ArrowCursor); // Cursor myši, ne ten grafový
 }

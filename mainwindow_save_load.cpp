@@ -32,13 +32,19 @@ void MainWindow::initSetables() {
 
   // FFT
   setables["fften"] = ui->pushButtonFFT;
-  setables["fftch"] = ui->comboBoxFFTCh;
+  setables["fftch1"] = ui->comboBoxFFTCh1;
+  setables["fftch2en"] = ui->checkBoxFFTCh2;
+  setables["fftch1en"] = ui->checkBoxFFTCh1;
+  setables["fftch2"] = ui->comboBoxFFTCh2;
   setables["fftgridx"] = ui->horizontalSliderGridFFTH;
   setables["fftgridy"] = ui->horizontalSliderGridFFTV;
-  setables["fftstyle"] = ui->comboBoxFFTStyle;
-  setables["fftwin"] = ui->comboBoxFFTWindow;
+  setables["fftstyle1"] = ui->comboBoxFFTStyle1;
+  setables["fftwin1"] = ui->comboBoxFFTWindow1;
+  setables["fftstyle2"] = ui->comboBoxFFTStyle2;
+  setables["fftwin2"] = ui->comboBoxFFTWindow2;
   setables["ffttype"] = ui->comboBoxFFTType;
-  setables["fftnodc"] = ui->checkBoxFFTNoDC;
+  setables["fftnodc1"] = ui->checkBoxFFTNoDC1;
+  setables["fftnodc2"] = ui->checkBoxFFTNoDC2;
   setables["ffttwosided"] = ui->checkBoxFFTTwoSided;
   setables["fftzerocenter"] = ui->checkBoxFFTZeroCenter;
 

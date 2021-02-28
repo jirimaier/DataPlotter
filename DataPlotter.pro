@@ -13,6 +13,7 @@ SOURCES += \
     mainwindow.cpp \
     mainwindow_autoset.cpp \
     mainwindow_cursors.cpp \
+    mainwindow_cursors_xy.cpp \
     mainwindow_export.cpp \
     mainwindow_gui_preset.cpp \
     mainwindow_gui_slots.cpp \
@@ -26,6 +27,7 @@ SOURCES += \
     mymainplot.cpp \
     mymodifiedqcptracer.cpp \
     myplot.cpp \
+    mypow2spinbox.cpp \
     myterminal.cpp \
     myxyplot.cpp \
     newserialparser.cpp \
@@ -46,6 +48,7 @@ HEADERS += \
     mymainplot.h \
     mymodifiedqcptracer.h \
     myplot.h \
+    mypow2spinbox.h \
     myterminal.h \
     myxyplot.h \
     newserialparser.h \
