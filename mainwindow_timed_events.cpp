@@ -279,15 +279,6 @@ void MainWindow::updateDataRate() {
   dataUpdates = 0;
 }
 
-void MainWindow::FFTlengthChanged(int fftChID, int formerLength, int newLength) {
-  // Pokud se změní počet vzorků FFT, změnit polohu (index vzorku) kursoru tak, aby byl na stejné
-  // (nejbližší možné) frekvenci.
-  if (ui->checkBoxCur1Visible && ui->comboBoxCursor1Channel->currentIndex() == FFTID(fftChID))
-    ui->spinBoxCur1Sample->setValue(newLength * ui->spinBoxCur1Sample->value() / formerLength);
-  if (ui->checkBoxCur2Visible && ui->comboBoxCursor2Channel->currentIndex() == FFTID(fftChID))
-    ui->spinBoxCur2Sample->setValue(newLength * ui->spinBoxCur2Sample->value() / formerLength);
-}
-
 void MainWindow::updateXY() {
   if (ui->pushButtonXY->isChecked()) {
     auto in1 = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer(*ui->plot->graph(ui->comboBoxXYx->currentIndex())->data()));

@@ -39,8 +39,8 @@ class PlotData : public QObject {
   QElapsedTimer elapsedTime;
   bool timerRunning;
 
-  unsigned int logicTargets[LOGIC_GROUPS];
-  unsigned int logicBits[LOGIC_GROUPS];
+  unsigned int logicTargets[LOGIC_GROUPS - 1];
+  unsigned int logicBits[LOGIC_GROUPS - 1];
   unsigned int mathFirsts[MATH_COUNT];
   unsigned int mathSeconds[MATH_COUNT];
   // unsigned int xyFirst, xySecond;
@@ -57,6 +57,9 @@ class PlotData : public QObject {
  public slots:
   void addPoint(QList<QPair<ValueType, QByteArray>> data);
   void addChannel(QPair<ValueType, QByteArray> data, unsigned int ch, QPair<ValueType, QByteArray> timeRaw, int zeroIndex, int bits, QPair<ValueType, QByteArray> min, QPair<ValueType, QByteArray> max);
+  void addLogicChannel(QPair<ValueType, QByteArray> data, QPair<ValueType, QByteArray> timeRaw, int bits, int zeroIndex);
+
+
   void reset();
 
   /// Nastavý úroveň výpisu

@@ -123,8 +123,8 @@ void MainWindow::on_doubleSpinBoxRangeVerticalRange_valueChanged(double arg1) {
 }
 
 void MainWindow::on_pushButtonCenter_clicked() {
-  if (ui->dialVerticalCenter->value() != 0)
-    ui->dialVerticalCenter->setValue(0);
+  if (ui->sliderVerticalCenter->value() != 0)
+    ui->sliderVerticalCenter->setValue(0);
   else
     ui->plot->setVerticalCenter(0);
 }
@@ -283,29 +283,27 @@ void MainWindow::on_checkBoxMouseControls_toggled(bool checked) {
 void MainWindow::on_checkBoxFFTCh1_toggled(bool checked) {
   auto* model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor1Channel->model());
   auto* item = model->item(FFTID(0));
-  item->setEnabled(checked);
+  item->setEnabled(checked && ui->pushButtonFFT->isChecked());
   QListView* view = qobject_cast<QListView*>(ui->comboBoxCursor1Channel->view());
-  view->setRowHidden(FFTID(0), !checked);
+  view->setRowHidden(FFTID(0), !(checked && ui->pushButtonFFT->isChecked()));
 
   model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor2Channel->model());
   item = model->item(FFTID(0));
-  item->setEnabled(checked);
+  item->setEnabled(checked && ui->pushButtonFFT->isChecked());
   view = qobject_cast<QListView*>(ui->comboBoxCursor2Channel->view());
-  view->setRowHidden(FFTID(0), !checked);
+  view->setRowHidden(FFTID(0), !(checked && ui->pushButtonFFT->isChecked()));
 }
 
 void MainWindow::on_checkBoxFFTCh2_toggled(bool checked) {
   auto* model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor1Channel->model());
   auto* item = model->item(FFTID(1));
-  item->setEnabled(checked);
+  item->setEnabled(checked && ui->pushButtonFFT->isChecked());
   QListView* view = qobject_cast<QListView*>(ui->comboBoxCursor1Channel->view());
-  view->setRowHidden(FFTID(1), !checked);
+  view->setRowHidden(FFTID(1), !(checked && ui->pushButtonFFT->isChecked()));
 
   model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor2Channel->model());
   item = model->item(FFTID(1));
-  item->setEnabled(checked);
+  item->setEnabled(checked && ui->pushButtonFFT->isChecked());
   view = qobject_cast<QListView*>(ui->comboBoxCursor2Channel->view());
-  view->setRowHidden(FFTID(1), !checked);
+  view->setRowHidden(FFTID(1), !(checked && ui->pushButtonFFT->isChecked()));
 }
-
-

@@ -46,7 +46,7 @@ enum enumGraphStyle { line = 0, point = 1, linePoint = 2, filled = 3, square = 4
 }
 
 namespace DataMode {
-enum enumDataMode { unknown, terminal, info, warning, settings, point, channel, echo };
+enum enumDataMode { unknown, terminal, info, warning, settings, point, channel, echo, logicChannel, logicPoints };
 }
 
 namespace OutputLevel {
@@ -221,6 +221,9 @@ inline QString valueTypeToString(ValueType val) {
 
 #define MAX_PLOT_ZOOMOUT 1000000
 
+#define PLOT_ELEMENTS_MOUSE_DISTANCE 10
+#define TRACER_MOUSE_DISTANCE 20
+
 #define FFTID(a) (ANALOG_COUNT + MATH_COUNT + LOGIC_GROUPS +a)
 #define IS_FFT(chID) (chID>=FFTID(0))
 #define CHID_TO_FFT_CHID(chID)(chID-FFTID(0))
@@ -228,13 +231,14 @@ inline QString valueTypeToString(ValueType val) {
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))
 
-#define XY_CHANNEL -1
-#define FFT_CHANNEL -2
+#define EXPORT_XY -1
+#define EXPORT_FFT -2
 
 #define IS_ANALOG_OR_MATH(ch) (ch < ANALOG_COUNT + MATH_COUNT)
 #define IS_ANALOG_OR_MATH_OR_LOGIC(ch) (ch < ANALOG_COUNT + MATH_COUNT+LOGIC_GROUPS)
-#define IS_LOGIC_CH(ch) ((ch >= ANALOG_COUNT + MATH_COUNT)&&ch<FFTID(0))
-#define CH_LIST_LOGIC_GROUP(ch) (ch - ANALOG_COUNT - MATH_COUNT)
+#define IS_LOGIC_CH(ch) ((ch >= ANALOG_COUNT + MATH_COUNT))
+#define CH_LIST_INDEX_TO_LOGIC_GROUP(group) (group - ANALOG_COUNT - MATH_COUNT)
+#define LOGIC_GROUP_TO_CH_LIST_INDEX(group) (group + ANALOG_COUNT + MATH_COUNT)
 
 #define ChID_TO_LOGIC_GROUP(ch) ((ch - ANALOG_COUNT - MATH_COUNT) / LOGIC_BITS)
 #define ChID_TO_LOGIC_GROUP_BIT(ch) ((ch - ANALOG_COUNT - MATH_COUNT) % LOGIC_BITS)
@@ -275,6 +279,8 @@ inline int getLogicChannelID(int group, int bit) { return (ANALOG_COUNT + MATH_C
 
 /// Chid od 0
 inline QString getChName(int chid) {
+  if (chid == ANALOG_COUNT + MATH_COUNT + LOGIC_GROUPS - 1)
+    return (QObject::tr("Logic bit %1").arg(ChID_TO_LOGIC_GROUP_BIT(chid) + 1));
   if (chid >= ANALOG_COUNT + MATH_COUNT)
     return (QObject::tr("Logic %1 bit %2").arg(ChID_TO_LOGIC_GROUP(chid) + 1).arg(ChID_TO_LOGIC_GROUP_BIT(chid) + 1));
   if (chid >= ANALOG_COUNT)
@@ -394,7 +400,7 @@ inline QString floatToNiceString(double d, int significantDigits, bool justify, 
 }
 
 struct ChannelSettings_t {
-  QColor color = QColor(Qt::blue);
+  QColor color = QColor(Qt::black);
   int style = GraphStyle::line;
   double offset = 0;
   double scale = 1;

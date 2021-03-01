@@ -20,12 +20,12 @@ void MainWindow::exportCSV(bool all, int ch) {
   if (all)
     name = tr("all");
   else {
-    if (ch == FFT_CHANNEL)
+    if (ch == EXPORT_FFT)
       name = tr("fft");
-    else if (ch == XY_CHANNEL)
+    else if (ch == EXPORT_XY)
       name = tr("xy");
     else if (ch >= ANALOG_COUNT + MATH_COUNT)
-      name = tr("Logic %1").arg(ch - ANALOG_COUNT - MATH_COUNT + 1);
+      name = tr("logic %1").arg(ch - ANALOG_COUNT - MATH_COUNT + 1);
     else {
       name = getChName(ch);
     }
@@ -43,9 +43,9 @@ void MainWindow::exportCSV(bool all, int ch) {
     else {
       if (ch >= ANALOG_COUNT + MATH_COUNT)
         file.write(ui->plot->exportLogicCSV(separator, decimal, ch - ANALOG_COUNT - MATH_COUNT, ui->spinBoxCSVPrecision->value(), ui->checkBoxCSVVRO->isChecked()));
-      else if (ch == XY_CHANNEL)
+      else if (ch == EXPORT_XY)
         file.write(ui->plotxy->exportCSV(separator, decimal, ui->spinBoxCSVPrecision->value()));
-      else if (ch == FFT_CHANNEL)
+      else if (ch == EXPORT_FFT)
         file.write(ui->plotFFT->exportCSV(separator, decimal, ui->spinBoxCSVPrecision->value()));
       else
         file.write(ui->plot->exportChannelCSV(separator, decimal, ch, ui->spinBoxCSVPrecision->value(), ui->checkBoxCSVVRO->isChecked()));

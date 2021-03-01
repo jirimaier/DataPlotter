@@ -76,6 +76,7 @@ class MyPlot : public QCustomPlot {
   int keyToNearestSample(QCPGraph* graph, double keyCoord);
   QCPGraph* cur1Graph = 0, *cur2Graph = 0;
   QCPAxis* cur1YAxis = yAxis, *cur2YAxis = yAxis;
+  QCursor defaultMouseCursor = Qt::ArrowCursor;
 
  protected slots:
   virtual void mouseMoved(QMouseEvent* event) = 0;

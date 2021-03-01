@@ -237,13 +237,8 @@ int MyMainPlot::getLogicBitsUsed(int group) {
 QPair<unsigned int, unsigned int> MyMainPlot::getChVisibleSamplesRange(int chID) {
   if (graph(chID)->data()->isEmpty())
     return (QPair<unsigned int, unsigned int>(0, 0));
-  int i = 0;
-  while (graph(chID)->data()->at(i)->key < xAxis->range().lower)
-    i++;
-  int min = i;
-  while (graph(chID)->data()->at(i)->key <= xAxis->range().upper && i < graph(chID)->data()->size())
-    i++;
-  int max = i - 1;
+  unsigned int min = graph(chID)->findBegin(xAxis->range().lower, false);
+  unsigned int max = graph(chID)->findBegin(xAxis->range().upper, false);
   return (QPair<unsigned int, unsigned int>(min, max));
 }
 
@@ -535,7 +530,7 @@ QByteArray MyMainPlot::exportAllCSV(char separator, char decimal, int precision,
     output.append('\n');
     output.append(QString::number(time, 'f', precision).replace('.', decimal).toUtf8());
     for (QVector<QPair<QVector<double>, QVector<double>>>::iterator it = channels.begin(); it != channels.end(); it++) {
-      output.append(',');
+      output.append(separator);
       if (!it->first.isEmpty())
         if (it->first.first() == time) {
           output.append(QString::number(it->second.first(), 'f', precision).replace('.', decimal).toUtf8());
@@ -553,7 +548,7 @@ void MyMainPlot::mouseMoved(QMouseEvent* event) {
 
     // Najde nejbližší kanál k myši, pokud žádný není blíž než 20 pixelů, vůbec se nezobrazí
     int nearestIndex = -1;
-    unsigned int nearestDistance = 20;
+    unsigned int nearestDistance = TRACER_MOUSE_DISTANCE;
     for (int i = 0; i < graphCount(); i++) {
       if (graph(i)->visible()) {
         unsigned int distance = (unsigned int)graph(i)->selectTest(event->pos(), false);
@@ -572,7 +567,7 @@ void MyMainPlot::mouseMoved(QMouseEvent* event) {
       tracer->setPoint(event->pos());
       updateTracerText(nearestIndex);
       currentTracerIndex = nearestIndex;
-      this->QWidget::setCursor(Qt::ArrowCursor); // Cursor myši, ne ten grafový
+      this->QWidget::setCursor(defaultMouseCursor); // Cursor myši, ne ten grafový
     } else {
       if (tracer->visible())
         hideTracer();
@@ -599,7 +594,7 @@ void MyMainPlot::mouseMoved(QMouseEvent* event) {
 void MyMainPlot::mousePressed(QMouseEvent* event) {
   // Kanál
   int nearestIndex = -1;
-  unsigned int nearestDistance = 20;
+  unsigned int nearestDistance = TRACER_MOUSE_DISTANCE;
   for (int i = 0; i < graphCount(); i++) {
     if (graph(i)->visible()) {
       unsigned int distance = (unsigned int)graph(i)->selectTest(event->pos(), false);
@@ -615,11 +610,15 @@ void MyMainPlot::mousePressed(QMouseEvent* event) {
     tracer->setYAxis(graph(nearestIndex)->valueAxis());
     tracer->setPoint(event->pos());
     tracer->updatePosition();
+    if (IS_LOGIC_CH(nearestIndex))
+      nearestIndex = LOGIC_GROUP_TO_CH_LIST_INDEX(ChID_TO_LOGIC_GROUP(nearestIndex));
     if (event->button() == Qt::RightButton) {
       mouseDrag = MouseDrag::cursorX2;
+      this->setInteraction(QCP::iRangeDrag, false);
       emit setCursorPos(nearestIndex, Cursors::Cursor2, tracer->sampleNumber());
     } else {
       mouseDrag = MouseDrag::cursorX1;
+      this->setInteraction(QCP::iRangeDrag, false);
       emit setCursorPos(nearestIndex, Cursors::Cursor1, tracer->sampleNumber());
     }
     return;
@@ -632,12 +631,12 @@ void MyMainPlot::mousePressed(QMouseEvent* event) {
   if (cursorsKey.at(Cursors::Cursor2)->visible())
     cur2dist = (unsigned int)cursorsKey.at(Cursors::Cursor2)->selectTest(event->pos(), false);
   if (cur1dist <= cur2dist) {
-    if (cur1dist < 20) {
+    if (cur1dist < PLOT_ELEMENTS_MOUSE_DISTANCE) {
       mouseDrag = MouseDrag::cursorX1;
       this->setInteraction(QCP::iRangeDrag, false);
       return;
     }
-  } else if (cur2dist < 20) {
+  } else if (cur2dist < PLOT_ELEMENTS_MOUSE_DISTANCE) {
     mouseDrag = MouseDrag::cursorX2;
     this->setInteraction(QCP::iRangeDrag, false);
     return;
@@ -650,12 +649,12 @@ void MyMainPlot::mousePressed(QMouseEvent* event) {
   if (cursorsVal.at(Cursors::Cursor2)->visible())
     cur2dist = (unsigned int)cursorsVal.at(Cursors::Cursor2)->selectTest(event->pos(), false);
   if (cur1dist <= cur2dist) {
-    if (cur1dist < 20) {
+    if (cur1dist < PLOT_ELEMENTS_MOUSE_DISTANCE) {
       mouseDrag = MouseDrag::cursorY1;
       this->setInteraction(QCP::iRangeDrag, false);
       return;
     }
-  } else if (cur2dist < 20) {
+  } else if (cur2dist < PLOT_ELEMENTS_MOUSE_DISTANCE) {
     mouseDrag = MouseDrag::cursorY2;
     this->setInteraction(QCP::iRangeDrag, false);
     return;
@@ -663,7 +662,7 @@ void MyMainPlot::mousePressed(QMouseEvent* event) {
 
 // Offset
   nearestIndex = -1;
-  nearestDistance = 20;
+  nearestDistance = PLOT_ELEMENTS_MOUSE_DISTANCE;
   for (int i = 0; i < zeroLines.count(); i++) {
     if (zeroLines.at(i)->visible() || isChUsed(i)) {
       unsigned int distance = (unsigned int)zeroLines.at(i)->selectTest(event->pos(), false);
@@ -687,7 +686,7 @@ void MyMainPlot::setMouseCursorStyle(QMouseEvent* event) {
     cur1dist = (unsigned int)cursorsKey.at(Cursors::Cursor1)->selectTest(event->pos(), false);
   if (cursorsKey.at(Cursors::Cursor2)->visible())
     cur2dist = (unsigned int)cursorsKey.at(Cursors::Cursor2)->selectTest(event->pos(), false);
-  if (cur1dist < 20 || cur2dist < 20) {
+  if (cur1dist < PLOT_ELEMENTS_MOUSE_DISTANCE || cur2dist < PLOT_ELEMENTS_MOUSE_DISTANCE) {
     this->QWidget::setCursor(Qt::SizeHorCursor); // Cursor myši, ne ten grafový
     return;
   }
@@ -698,7 +697,7 @@ void MyMainPlot::setMouseCursorStyle(QMouseEvent* event) {
     cur1dist = (unsigned int)cursorsVal.at(Cursors::Cursor1)->selectTest(event->pos(), false);
   if (cursorsVal.at(Cursors::Cursor2)->visible())
     cur2dist = (unsigned int)cursorsVal.at(Cursors::Cursor2)->selectTest(event->pos(), false);
-  if (cur1dist < 20 || cur2dist < 20) {
+  if (cur1dist < PLOT_ELEMENTS_MOUSE_DISTANCE || cur2dist < PLOT_ELEMENTS_MOUSE_DISTANCE) {
     this->QWidget::setCursor(Qt::SizeVerCursor); // Cursor myši, ne ten grafový
     return;
   }
@@ -707,7 +706,7 @@ void MyMainPlot::setMouseCursorStyle(QMouseEvent* event) {
   for (int i = 0; i < zeroLines.count(); i++) {
     if (zeroLines.at(i)->visible() || isChUsed(i)) {
       unsigned int distance = (unsigned int)zeroLines.at(i)->selectTest(event->pos(), false);
-      if (distance < 20) {
+      if (distance < PLOT_ELEMENTS_MOUSE_DISTANCE) {
         this->QWidget::setCursor(Qt::SizeVerCursor); // Cursor myši, ne ten grafový
         return;
       }
@@ -715,5 +714,5 @@ void MyMainPlot::setMouseCursorStyle(QMouseEvent* event) {
   }
 
   // Nic
-  this->QWidget::setCursor(Qt::ArrowCursor); // Cursor myši, ne ten grafový
+  this->QWidget::setCursor(defaultMouseCursor); // Cursor myši, ne ten grafový
 }

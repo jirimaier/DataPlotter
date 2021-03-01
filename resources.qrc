@@ -66,6 +66,10 @@
         <file>icons/timecur.png</file>
         <file>icons/valcur.png</file>
         <file>icons/xyphase.png</file>
+        <file>icons/verticalNegative.png</file>
+        <file>icons/vrange.png</file>
+        <file>icons/zoom.png</file>
+        <file>icons/hrange.png</file>
     </qresource>
     <qresource prefix="/translations">
         <file>translations/translation_cz.qm</file>

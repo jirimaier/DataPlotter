@@ -267,10 +267,17 @@ void MainWindow::on_pushButtonHideCh_toggled(bool checked) {
 }
 
 void MainWindow::on_pushButtonPositive_clicked() {
-  if (ui->dialVerticalCenter->value() != ui->dialVerticalCenter->maximum())
-    ui->dialVerticalCenter->setValue(ui->dialVerticalCenter->maximum());
+  if (ui->sliderVerticalCenter->value() != ui->sliderVerticalCenter->maximum())
+    ui->sliderVerticalCenter->setValue(ui->sliderVerticalCenter->maximum());
   else
-    ui->plot->setVerticalCenter(ui->dialVerticalCenter->maximum());
+    ui->plot->setVerticalCenter(ui->sliderVerticalCenter->maximum());
+}
+
+void MainWindow::on_pushButtonNegative_clicked() {
+  if (ui->sliderVerticalCenter->value() != ui->sliderVerticalCenter->minimum())
+    ui->sliderVerticalCenter->setValue(ui->sliderVerticalCenter->minimum());
+  else
+    ui->plot->setVerticalCenter(ui->sliderVerticalCenter->minimum());
 }
 
 void MainWindow::on_pushButtonTerminalDebug_toggled(bool checked) {
@@ -419,6 +426,9 @@ void MainWindow::on_listWidgetTerminalCodeList_itemClicked(QListWidgetItem* item
 }
 
 void MainWindow::on_pushButtonFFT_toggled(bool checked) {
+  on_checkBoxFFTCh1_toggled(ui->checkBoxFFTCh1->isChecked());
+  on_checkBoxFFTCh2_toggled(ui->checkBoxFFTCh2->isChecked());
+
   if (!checked) {
     ui->plotFFT->clear(0);
     ui->plotFFT->clear(1);

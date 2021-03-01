@@ -255,6 +255,89 @@ void NewSerialParser::parse(QByteArray newData) {
         }
       }
 
+      if (currentMode == DataMode::logicChannel) {
+        if (!channelHeaderRead) {
+          readResult result = bufferReadPoint(pendingPointBuffer);
+          if (result == complete) {
+            if (pendingPointBuffer.length() >= 2 && pendingPointBuffer.length() <= 4) {
+              channelHeaderRead = true;
+
+              channelTime = pendingPointBuffer.at(0);
+
+              try {
+                channelLength = arrayToUint(pendingPointBuffer.at(1));
+              } catch (QString msg) {
+                throw (tr("Invallid logic channel: ") + tr("Invalid channel length - ") + msg);
+              }
+
+              for (int i = 2; i < pendingPointBuffer.length(); i++) {
+                aditionalHeaderParameters.append(pendingPointBuffer.at(i));
+              }
+
+              pendingPointBuffer.clear();
+
+            } else
+              throw (tr("Invallid logic channel: ") + tr("Wrong header length (%1 entries)").arg(pendingPointBuffer.length()));
+          }
+          if (result == incomplete)
+            break;
+          if (result == notProperlyEnded)
+            throw(tr("Invallid logic channel: ") + tr("Header not properly ended"));
+        }
+        if (channelHeaderRead) {
+          QPair<ValueType, QByteArray> channel;
+          readResult result;
+          try {
+            result = bufferPullChannel(channel);
+          } catch (QString msg) {
+            throw (tr("Error reading logic channel: ") + msg);
+          }
+
+          if (result == incomplete)
+            break;
+
+          if (result == notProperlyEnded && debugLevel >= OutputLevel::warning) {
+            QByteArray semicolumPositionMessage = tr("No semicolum found").toUtf8();
+            if (buffer.contains(';') && channel.second.contains(';'))
+              semicolumPositionMessage = tr("There are semicolums %1 byte before and %2 after end.").arg(buffer.indexOf(';')).arg(channel.second.length() - channel.second.lastIndexOf(';')).toUtf8();
+            else {
+              if (channel.second.contains(';'))
+                semicolumPositionMessage = tr("There is semicolum %1 bytes before end.").arg(channel.second.length() - channel.second.lastIndexOf(';')).toUtf8();
+              if (buffer.contains(';'))
+                semicolumPositionMessage = tr("There is semicolum %1 bytes after end.").arg(buffer.indexOf(';')).toUtf8();
+            }
+            emit sendMessage(tr("Channel not ended with ';'"), semicolumPositionMessage, MessageLevel::warning, target);
+          }
+
+          int zeroIndex = 0, channelBits = channel.first.bytes * 8;
+
+          if (!(channel.first.type == ValueType::Type::unsignedint))
+            emit sendMessage(tr("Logic channel warning"), tr("data are not designated as unsigned integer").toUtf8(), MessageLevel::warning, target);
+
+          if (!aditionalHeaderParameters.isEmpty()) {
+            try {
+              channelBits = arrayToUint(aditionalHeaderParameters.first());
+            } catch (QString msg) {
+              throw (tr("Invallid logic channel: ") + tr("Invalid number of bits - ") + msg);
+            }
+          }
+          if (aditionalHeaderParameters.length() == 2) {
+            try {
+              zeroIndex = arrayToUint(aditionalHeaderParameters.at(1));
+              pendingPointBuffer.clear();
+            } catch (QString msg) {
+              throw (tr("Invallid logic channel: ") + tr("Invalid zero position - ") + msg);
+            }
+          }
+          // Delší by neprošlo kontrolou při čtení záhlaví
+
+          emit sendLogicChannel(channel, channelTime, channelBits, zeroIndex);
+
+          resetChHeader();
+          continue;
+        }
+      }
+
       if (currentMode == DataMode::info || currentMode == DataMode::warning) {
         QByteArray message;
         readResult result = bufferPullFull(message);
@@ -450,6 +533,10 @@ void NewSerialParser::parseMode(QChar modeChar) {
     changeMode(DataMode::unknown, previousMode, tr("Unknown").toUtf8());
   else if (modeIdent == 'E')
     changeMode(DataMode::echo, previousMode, tr("Echo").toUtf8());
+  else if (modeIdent == 'L')
+    changeMode(DataMode::logicChannel, previousMode, tr("Logic channel").toUtf8());
+  else if (modeIdent == 'B')
+    changeMode(DataMode::logicPoints, previousMode, tr("Logic points").toUtf8());
   else {
     currentMode = DataMode::unknown;
     QByteArray character = QString(modeChar).toLocal8Bit();

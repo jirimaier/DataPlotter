@@ -25,11 +25,11 @@
 class NewSerialParser : public QObject {
   Q_OBJECT
 
-public:
-  explicit NewSerialParser(MessageTarget::enumMessageTarget target, QObject *parent = nullptr);
+ public:
+  explicit NewSerialParser(MessageTarget::enumMessageTarget target, QObject* parent = nullptr);
   ~NewSerialParser();
 
-signals:
+ signals:
   /// Pošle zprávu do záznamu
   void sendDeviceMessage(QByteArray header, bool warning, bool ended);
   /// Předá zprávu od zařízení
@@ -44,12 +44,14 @@ signals:
   void sendPoint(QList<QPair<ValueType, QByteArray>> data);
   /// Pošle kanál ke zpracování
   void sendChannel(QPair<ValueType, QByteArray> data, unsigned int ch, QPair<ValueType, QByteArray> timeRaw, int zeroIndex, int bits, QPair<ValueType, QByteArray> min, QPair<ValueType, QByteArray> max);
+  /// Pošle logický kanál ke zpracování
+  void sendLogicChannel(QPair<ValueType, QByteArray> data, QPair<ValueType, QByteArray> timeRaw, int bits, int zeroIndex);
   /// Potvrdí připravenost
   void ready();
   /// Pošle data která mají být poslána zpět do portu
   void sendEcho(QByteArray);
 
-private:
+ private:
   MessageTarget::enumMessageTarget target;
   void resetChHeader();
   bool channelHeaderRead = false;
@@ -68,14 +70,14 @@ private:
   QByteArray pendingDataBuffer;
   QList<QPair<ValueType, QByteArray>> pendingPointBuffer;
   void parseMode(QChar modeChar);
-  readResult bufferPullFull(QByteArray &result);
+  readResult bufferPullFull(QByteArray& result);
   void changeMode(DataMode::enumDataMode mode, DataMode::enumDataMode previousMode, QByteArray modeName);
-  readResult bufferPullBeforeSemicolumn(QByteArray &result, bool removeNewline = false);
-  readResult bufferReadPoint(QList<QPair<ValueType, QByteArray>> &result);
+  readResult bufferPullBeforeSemicolumn(QByteArray& result, bool removeNewline = false);
+  readResult bufferReadPoint(QList<QPair<ValueType, QByteArray>>& result);
   uint32_t arrayToUint(QPair<ValueType, QByteArray> value);
-  readResult bufferPullChannel(QPair<ValueType, QByteArray> &result);
+  readResult bufferPullChannel(QPair<ValueType, QByteArray>& result);
 
-public slots:
+ public slots:
   /// Zpracuje data
   void parse(QByteArray newData);
   /// Clear buffers

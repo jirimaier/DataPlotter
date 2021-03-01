@@ -10,13 +10,49 @@ MyFFTPlot::MyFFTPlot(QWidget* parent) : MyPlot(parent) {
   setGridHintY(-3);
 }
 
+QPair<QVector<double>, QVector<double>> MyFFTPlot::getDataVector(int chID) {
+  QVector<double> keys, values;
+  for (QCPGraphDataContainer::iterator it = graph(chID)->data()->begin(); it != graph(chID)->data()->end(); it++) {
+    keys.append(it->key);
+    values.append(it->value);
+  }
+  return QPair<QVector<double>, QVector<double>>(keys, values);
+}
+
 QByteArray MyFFTPlot::exportCSV(char separator, char decimal, int precision) {
-  QByteArray output = (QString("frequency%1amplitude\n").arg(separator)).toUtf8();
-  for (QCPGraphDataContainer::iterator it = graph(0)->data()->begin(); it != graph(0)->data()->end(); it++) {
-    output.append(QString::number(it->key, 'f', precision).replace('.', decimal).toUtf8());
-    output.append(separator);
-    output.append(QString::number(it->value, 'f', precision).replace('.', decimal).toUtf8());
+  QByteArray output = "";
+  QVector<QPair<QVector<double>, QVector<double>>> channels;
+  bool firstNonEmpty = true;
+  for (int i = 0; i < graphCount(); i++) {
+    if (!graph(i)->data()->isEmpty()) {
+      if (firstNonEmpty) {
+        firstNonEmpty = false;
+        output.append(tr("frequency").toUtf8());
+      }
+      channels.append(getDataVector(i));
+      output.append(separator);
+      output.append(QString(getChName(chSourceChannel[i])).toUtf8());
+    }
+  }
+  QList<double> times;
+  for (QVector<QPair<QVector<double>, QVector<double>>>::iterator it = channels.begin(); it != channels.end(); it++)
+    foreach (double time, it->first)
+      if (!times.contains(time))
+        times.append(time);
+  std::sort(times.begin(), times.end());
+
+  foreach (double time, times) {
     output.append('\n');
+    output.append(QString::number(time, 'f', precision).replace('.', decimal).toUtf8());
+    for (QVector<QPair<QVector<double>, QVector<double>>>::iterator it = channels.begin(); it != channels.end(); it++) {
+      output.append(separator);
+      if (!it->first.isEmpty())
+        if (it->first.first() == time) {
+          output.append(QString::number(it->second.first(), 'f', precision).replace('.', decimal).toUtf8());
+          it->first.pop_front();
+          it->second.pop_front();
+        }
+    }
   }
   return output;
 }
@@ -24,13 +60,8 @@ QByteArray MyFFTPlot::exportCSV(char separator, char decimal, int precision) {
 QPair<unsigned int, unsigned int> MyFFTPlot::getVisibleSamplesRange(int ch) {
   if (graph(ch)->data()->isEmpty())
     return (QPair<unsigned int, unsigned int>(0, 0));
-  int i = 0;
-  while (graph(ch)->data()->at(i)->key < xAxis->range().lower)
-    i++;
-  int min = i;
-  while (graph(ch)->data()->at(i)->key <= xAxis->range().upper && i < graph(ch)->data()->size())
-    i++;
-  int max = i - 1;
+  unsigned int min = graph(ch)->findBegin(xAxis->range().lower, false);
+  unsigned int max = graph(ch)->findBegin(xAxis->range().upper, false);
   return (QPair<unsigned int, unsigned int>(min, max));
 }
 
@@ -45,9 +76,26 @@ bool MyFFTPlot::setChSorce(int ch, int sourceChannel, QColor color) {
 }
 
 void MyFFTPlot::newData(int ch, QSharedPointer<QCPGraphDataContainer> data) {
-  if (data->size() != graph(ch)->data()->size())
-    emit lengthChanged(ch, graph(ch)->data()->size(), data->size());
-  graph(ch)->setData(data);
+  // Pokud se změní počet vzorků, kursor by se posunul mimo původní pozici (z hlediska polohy na ose), protože se drží
+  // indexu vzorku, v případě změny se tedy kursor přesune na nový vzorek, který je nejblíže původní poloze
+  if (data->size() != graph(ch)->data()->size()) {
+    double cur1ShouldBeAtKey, cur2ShouldBeAtKey;
+    if (cursorsKey[Cursors::Cursor1]->visible() && cur1Graph == graph(ch))
+      cur1ShouldBeAtKey = cursorsKey[Cursors::Cursor1]->start->coords().x();
+    if (cursorsKey[Cursors::Cursor2]->visible() && cur2Graph == graph(ch))
+      cur2ShouldBeAtKey = cursorsKey[Cursors::Cursor2]->start->coords().x();
+
+    graph(ch)->setData(data);
+
+    if (cursorsKey[Cursors::Cursor1]->visible() && cur1Graph == graph(ch))
+      emit moveTimeCursor(Cursors::Cursor1, keyToNearestSample(cur1Graph, cur1ShouldBeAtKey));
+    if (cursorsKey[Cursors::Cursor2]->visible() && cur2Graph == graph(ch))
+      emit moveTimeCursor(Cursors::Cursor2, keyToNearestSample(cur2Graph, cur2ShouldBeAtKey));
+
+  } else {
+    graph(ch)->setData(data);
+  }
+
   if (autoSize)
     autoset();
   this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
@@ -95,18 +143,25 @@ void MyFFTPlot::setAutoSize(bool en) {
 
 void MyFFTPlot::autoset() {
   bool foundrange;
-  QCPRange yRange = graph(0)->data()->valueRange(foundrange);
-  QCPRange xRange = graph(0)->data()->keyRange(foundrange);
-  if (yRange.lower >= 0)
-    yRange.lower = 0;
-  else
-    yRange.lower = -50;
+  QCPRange yRange1 = graph(0)->data()->valueRange(foundrange);
+  QCPRange xRange1 = graph(0)->data()->keyRange(foundrange);
 
-  yRange.upper = ceilToNiceValue(yRange.upper);
-  xRange.lower = xRange.lower;
-  xRange.upper = xRange.upper;
-  xAxis->setRange(xRange);
-  yAxis->setRange(yRange);
+  QCPRange yRange2 = graph(1)->data()->valueRange(foundrange);
+  QCPRange xRange2 = graph(1)->data()->keyRange(foundrange);
+
+  double yMax = MAX(yRange1.upper, yRange2.upper);
+  double yMin = MIN(yRange1.lower, yRange2.lower);
+  double xMax = MAX(xRange1.upper, xRange2.upper);
+  double xMin = MIN(xRange1.lower, xRange2.lower);
+
+  if (yMin >= 0)
+    yMin = 0;
+  else
+    yMin = -50;
+
+  yMax = ceilToNiceValue(yMax);
+  xAxis->setRange(xMin, xMax);
+  yAxis->setRange(yMin, yMax);
 }
 
 void MyFFTPlot::setMouseCursorStyle(QMouseEvent* event) {
@@ -116,7 +171,7 @@ void MyFFTPlot::setMouseCursorStyle(QMouseEvent* event) {
     cur1dist = (unsigned int)cursorsKey.at(Cursors::Cursor1)->selectTest(event->pos(), false);
   if (cursorsKey.at(Cursors::Cursor2)->visible())
     cur2dist = (unsigned int)cursorsKey.at(Cursors::Cursor2)->selectTest(event->pos(), false);
-  if (cur1dist < 20 || cur2dist < 20) {
+  if (cur1dist < PLOT_ELEMENTS_MOUSE_DISTANCE || cur2dist < PLOT_ELEMENTS_MOUSE_DISTANCE) {
     this->QWidget::setCursor(Qt::SizeHorCursor); // Cursor myši, ne ten grafový
     return;
   }
@@ -127,13 +182,13 @@ void MyFFTPlot::setMouseCursorStyle(QMouseEvent* event) {
     cur1dist = (unsigned int)cursorsVal.at(Cursors::Cursor1)->selectTest(event->pos(), false);
   if (cursorsVal.at(Cursors::Cursor2)->visible())
     cur2dist = (unsigned int)cursorsVal.at(Cursors::Cursor2)->selectTest(event->pos(), false);
-  if (cur1dist < 20 || cur2dist < 20) {
+  if (cur1dist < PLOT_ELEMENTS_MOUSE_DISTANCE || cur2dist < PLOT_ELEMENTS_MOUSE_DISTANCE) {
     this->QWidget::setCursor(Qt::SizeVerCursor); // Cursor myši, ne ten grafový
     return;
   }
 
   // Nic
-  this->QWidget::setCursor(Qt::ArrowCursor); // Cursor myši, ne ten grafový
+  this->QWidget::setCursor(defaultMouseCursor); // Cursor myši, ne ten grafový
 }
 
 void MyFFTPlot::updateTracerText(int index) {
@@ -153,9 +208,9 @@ void MyFFTPlot::mouseMoved(QMouseEvent* event) {
   if (mouseDrag == MouseDrag::nothing) {
     //Nic není taženo, zobrazí tracer
 
-    // Najde nejbližší kanál k myši, pokud žádný není blíž než 20 pixelů, vůbec se nezobrazí
+    // Najde nejbližší kanál k myši, pokud žádný není blíž než TRACER_MOUSE_DISTANCE pixelů, vůbec se nezobrazí
     int nearestIndex = -1;
-    unsigned int nearestDistance = 20;
+    unsigned int nearestDistance = TRACER_MOUSE_DISTANCE;
     for (int i = 0; i < graphCount(); i++) {
       if (graph(i)->visible()) {
         unsigned int distance = (unsigned int)graph(i)->selectTest(event->pos(), false);
@@ -174,7 +229,7 @@ void MyFFTPlot::mouseMoved(QMouseEvent* event) {
       tracer->setPoint(event->pos());
       updateTracerText(nearestIndex);
       currentTracerIndex = nearestIndex;
-      this->QWidget::setCursor(Qt::ArrowCursor); // Cursor myši, ne ten grafový
+      this->QWidget::setCursor(defaultMouseCursor); // Cursor myši, ne ten grafový
     } else {
       if (tracer->visible())
         hideTracer();
@@ -198,7 +253,7 @@ void MyFFTPlot::mouseMoved(QMouseEvent* event) {
 void MyFFTPlot::mousePressed(QMouseEvent* event) {
   // Kanál
   int nearestIndex = -1;
-  unsigned int nearestDistance = 20;
+  unsigned int nearestDistance = TRACER_MOUSE_DISTANCE;
   for (int i = 0; i < graphCount(); i++) {
     if (graph(i)->visible()) {
       unsigned int distance = (unsigned int)graph(i)->selectTest(event->pos(), false);
@@ -215,9 +270,11 @@ void MyFFTPlot::mousePressed(QMouseEvent* event) {
     tracer->updatePosition();
     if (event->button() == Qt::RightButton) {
       mouseDrag = MouseDrag::cursorX2;
+      this->setInteraction(QCP::iRangeDrag, false);
       emit setCursorPos(FFTID(nearestIndex), Cursors::Cursor2, tracer->sampleNumber());
     } else {
       mouseDrag = MouseDrag::cursorX1;
+      this->setInteraction(QCP::iRangeDrag, false);
       emit setCursorPos(FFTID(nearestIndex), Cursors::Cursor1, tracer->sampleNumber());
     }
     return;
@@ -230,12 +287,12 @@ void MyFFTPlot::mousePressed(QMouseEvent* event) {
   if (cursorsKey.at(Cursors::Cursor2)->visible())
     cur2dist = (unsigned int)cursorsKey.at(Cursors::Cursor2)->selectTest(event->pos(), false);
   if (cur1dist <= cur2dist) {
-    if (cur1dist < 20) {
+    if (cur1dist < PLOT_ELEMENTS_MOUSE_DISTANCE) {
       mouseDrag = MouseDrag::cursorX1;
       this->setInteraction(QCP::iRangeDrag, false);
       return;
     }
-  } else if (cur2dist < 20) {
+  } else if (cur2dist < PLOT_ELEMENTS_MOUSE_DISTANCE) {
     mouseDrag = MouseDrag::cursorX2;
     this->setInteraction(QCP::iRangeDrag, false);
     return;
@@ -248,12 +305,12 @@ void MyFFTPlot::mousePressed(QMouseEvent* event) {
   if (cursorsVal.at(Cursors::Cursor2)->visible())
     cur2dist = (unsigned int)cursorsVal.at(Cursors::Cursor2)->selectTest(event->pos(), false);
   if (cur1dist <= cur2dist) {
-    if (cur1dist < 20) {
+    if (cur1dist < PLOT_ELEMENTS_MOUSE_DISTANCE) {
       mouseDrag = MouseDrag::cursorY1;
       this->setInteraction(QCP::iRangeDrag, false);
       return;
     }
-  } else if (cur2dist < 20) {
+  } else if (cur2dist < PLOT_ELEMENTS_MOUSE_DISTANCE) {
     mouseDrag = MouseDrag::cursorY2;
     this->setInteraction(QCP::iRangeDrag, false);
     return;

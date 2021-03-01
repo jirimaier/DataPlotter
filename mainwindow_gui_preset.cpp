@@ -30,13 +30,12 @@ void MainWindow::connectSignals() {
   connect(ui->plotFFT, &MyPlot::moveValueCursor, this, &MainWindow::valueCursorMovedByMouse);
   connect(ui->plotxy, &MyXYPlot::setCursorPosXY, this, &MainWindow::setCursorPosXY);
   connect(ui->plotFFT, &MyPlot::setCursorPos, this, &MainWindow::cursorSetByMouse);
-  connect(ui->plotFFT, &MyFFTPlot::lengthChanged, this, &MainWindow::FFTlengthChanged);
   connect(ui->doubleSpinBoxRangeHorizontal, SIGNAL(valueChanged(double)), ui->plot, SLOT(setRollingRange(double)));
   connect(ui->doubleSpinBoxRangeVerticalRange, SIGNAL(valueChanged(double)), ui->plot, SLOT(setVerticalRange(double)));
   connect(ui->doubleSpinBoxRangeHorizontal, SIGNAL(valueChanged(double)), ui->dialRollingRange, SLOT(updatePosition(double)));
   connect(ui->doubleSpinBoxRangeVerticalRange, SIGNAL(valueChanged(double)), ui->dialVerticalRange, SLOT(updatePosition(double)));
   connect(ui->doubleSpinBoxChScale, SIGNAL(valueChanged(double)), ui->dialChScale, SLOT(updatePosition(double)));
-  connect(ui->dialVerticalCenter, &QDial::valueChanged, ui->plot, &MyMainPlot::setVerticalCenter);
+  connect(ui->sliderVerticalCenter, &QSlider::valueChanged, ui->plot, &MyMainPlot::setVerticalCenter);
   connect(ui->horizontalScrollBarHorizontal, &QScrollBar::valueChanged, ui->plot, &MyMainPlot::setHorizontalPos);
   connect(ui->lineEditHtitle, &QLineEdit::textChanged, ui->plot, &MyPlot::setXTitle);
   connect(ui->lineEditVtitle, &QLineEdit::textChanged, ui->plot, &MyPlot::setYTitle);
@@ -66,6 +65,11 @@ void MainWindow::setAdaptiveSpinBoxes() {
   ui->doubleSpinBoxChScale->setStepType(QAbstractSpinBox::AdaptiveDecimalStepType);
   ui->doubleSpinBoxRangeHorizontal->setStepType(QAbstractSpinBox::AdaptiveDecimalStepType);
   ui->doubleSpinBoxRangeVerticalRange->setStepType(QAbstractSpinBox::AdaptiveDecimalStepType);
+
+  ui->doubleSpinBoxXYCurX1->setStepType(QAbstractSpinBox::AdaptiveDecimalStepType);
+  ui->doubleSpinBoxXYCurX2->setStepType(QAbstractSpinBox::AdaptiveDecimalStepType);
+  ui->doubleSpinBoxXYCurY1->setStepType(QAbstractSpinBox::AdaptiveDecimalStepType);
+  ui->doubleSpinBoxXYCurY2->setStepType(QAbstractSpinBox::AdaptiveDecimalStepType);
 #endif
 }
 
@@ -93,17 +97,37 @@ void MainWindow::setGuiDefaults() {
   ui->labelBuildDate->setText(tr("Build: ") + QString(__DATE__) + " " + QString(__TIME__));
   ui->pushButtonPause->setIcon(iconRun);
   ui->pushButtonMultiplInputs->setChecked(false);
+
   ui->plot->setXUnit("s");
   ui->plotxy->tUnit = "s";
   ui->plotFFT->setXUnit("Hz");
   ui->plot->setYUnit("V");
   ui->plotxy->setYUnit("V");
   ui->plotxy->setYUnit("V");
+
   on_comboBoxFFTType_currentIndexChanged(ui->comboBoxFFTType->currentIndex());
+
   ui->checkBoxYCur1->setCheckState(Qt::CheckState::PartiallyChecked);
   ui->checkBoxYCur2->setCheckState(Qt::CheckState::PartiallyChecked);
   ui->spinBoxFFTSegments1->setVisible(ui->comboBoxFFTType->currentIndex() == FFTType::pwelch);
   ui->spinBoxFFTSegments2->setVisible(ui->comboBoxFFTType->currentIndex() == FFTType::pwelch);
+  ui->checkBoxFFTCh1->setChecked(true);
+  ui->comboBoxFFTCh1->setCurrentIndex(0);
+  ui->comboBoxFFTCh2->setCurrentIndex(1);
+  ui->comboBoxXYx->setCurrentIndex(0);
+  ui->comboBoxXYy->setCurrentIndex(1);
+
+  ui->comboBoxMeasure1->setCurrentIndex(0);
+  ui->comboBoxMeasure2->setCurrentIndex(1);
+
+  ui->comboBoxFFTType->setCurrentIndex(1);
+
+  ui->plot->setGridHintX(ui->horizontalSliderHGrid->value());
+  ui->plot->setGridHintY(ui->horizontalSliderVGrid->value());
+  ui->plotxy->setGridHintX(ui->horizontalSliderXYGrid->value());
+  ui->plotxy->setGridHintY(ui->horizontalSliderXYGrid->value());
+  ui->plotFFT->setGridHintX(ui->horizontalSliderGridFFTH->value());
+  ui->plotFFT->setGridHintY(ui->horizontalSliderGridFFTV->value());
 }
 
 void MainWindow::setGuiArrays() {
@@ -146,14 +170,20 @@ void MainWindow::fillChannelSelect() {
     ui->comboBoxXYx->addItem(getChName(i));
     ui->comboBoxXYy->addItem(getChName(i));
   }
-  for (int i = 1; i <= LOGIC_GROUPS; i++) {
+  for (int i = 1; i <= LOGIC_GROUPS - 1; i++) {
     ui->comboBoxSelectedChannel->addItem(tr("Logic %1").arg(i));
     ui->comboBoxCursor1Channel->addItem(tr("Logic %1").arg(i));
     ui->comboBoxCursor2Channel->addItem(tr("Logic %1").arg(i));
   }
-  ui->comboBoxCursor1Channel->addItem((tr("FFT 1")));
+
+  // Poslední logický kanál (pro přímý zápis) je bez čísla
+  ui->comboBoxSelectedChannel->addItem(tr("Logic"));
+  ui->comboBoxCursor1Channel->addItem(tr("Logic"));
+  ui->comboBoxCursor2Channel->addItem(tr("Logic"));
+
+  ui->comboBoxCursor1Channel->addItem(tr("FFT 1"));
   ui->comboBoxCursor1Channel->addItem(tr("FFT 2"));
-  ui->comboBoxCursor2Channel->addItem((tr("FFT 1")));
+  ui->comboBoxCursor2Channel->addItem(tr("FFT 1"));
   ui->comboBoxCursor2Channel->addItem(tr("FFT 2"));
 
   ui->comboBoxMeasure1->addItem(iconCross, tr("Off"));

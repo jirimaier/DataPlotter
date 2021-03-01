@@ -23,6 +23,7 @@ class MyFFTPlot : public MyPlot {
   int currentTracerIndex = -1;
   int chSourceChannel[2];
   QColor chSourceColor[2];
+  QPair<QVector<double>, QVector<double> > getDataVector(int chID);
 
  public slots:
   void newData(int ch, QSharedPointer<QCPGraphDataContainer> data);
@@ -34,9 +35,6 @@ class MyFFTPlot : public MyPlot {
  private slots:
   void mouseMoved(QMouseEvent* event);
   void mousePressed(QMouseEvent* event);
-
- signals:
-  void lengthChanged(int fftChID, int formerLength, int newLength);
 };
 
 #endif // MYFFTPLOT_H

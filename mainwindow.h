@@ -103,7 +103,6 @@ class MainWindow : public QMainWindow {
   void updateFFT2();
   void updateSerialMonitor();
   void updateDataRate();
-  void FFTlengthChanged(int fftChID, int formerLength, int newLength);
 
  private slots: // Autoconnect slots
   void on_dialRollingRange_realValueChanged(double value) { ui->doubleSpinBoxRangeHorizontal->setValue(value); }
@@ -129,8 +128,8 @@ class MainWindow : public QMainWindow {
   void on_pushButtonSaveSettings_clicked();
   void on_pushButtonReset_clicked();
   void on_pushButtonAutoset_clicked();
-  void on_pushButtonCSVXY_clicked() { exportCSV(false, XY_CHANNEL); }
-  void on_pushButtonCSVFFT_clicked() { exportCSV(false, FFT_CHANNEL); }
+  void on_pushButtonCSVXY_clicked() { exportCSV(false, EXPORT_XY); }
+  void on_pushButtonCSVFFT_clicked() { exportCSV(false, EXPORT_FFT); }
   void on_comboBoxHAxisType_currentIndexChanged(int index);
   void on_pushButtonOpenHelp_clicked();
   void on_pushButtonCenter_clicked();
@@ -153,13 +152,10 @@ class MainWindow : public QMainWindow {
   void on_pushButtonResetChannels_clicked();
   void on_pushButtonLog1_toggled(bool checked) { emit setChDigital(1, checked ? ui->spinBoxLog1source->value() : 0); }
   void on_pushButtonLog2_toggled(bool checked) { emit setChDigital(2, checked ? ui->spinBoxLog2source->value() : 0); }
-  void on_pushButtonLog3_toggled(bool checked) { emit setChDigital(3, checked ? ui->spinBoxLog3source->value() : 0); }
   void on_spinBoxLog1bits_valueChanged(int arg1) { emit setLogicBits(1, arg1); }
   void on_spinBoxLog2bits_valueChanged(int arg1) { emit setLogicBits(2, arg1); }
-  void on_spinBoxLog3bits_valueChanged(int arg1) { emit setLogicBits(3, arg1); }
   void on_spinBoxLog1source_valueChanged(int arg1) { emit setChDigital(1, ui->pushButtonLog1->isChecked() ? arg1 : 0); }
   void on_spinBoxLog2source_valueChanged(int arg1) { emit setChDigital(2, ui->pushButtonLog2->isChecked() ? arg1 : 0); }
-  void on_spinBoxLog3source_valueChanged(int arg1) { emit setChDigital(3, ui->pushButtonLog3->isChecked() ? arg1 : 0); }
   void on_pushButtonPlotImage_clicked();
   void on_pushButtonXYImage_clicked();
   void on_checkBoxCur1Visible_toggled(bool checked);
@@ -186,6 +182,7 @@ class MainWindow : public QMainWindow {
   void on_comboBoxCursor2Channel_currentIndexChanged(int index);
   void on_labelLicense_linkActivated(const QString& link) { QDesktopServices::openUrl(link); }
   void on_pushButtonPositive_clicked();
+  void on_pushButtonNegative_clicked();
   void on_spinBoxCur1Sample_valueChanged(int arg1);
   void on_spinBoxCur2Sample_valueChanged(int arg1);
   void on_pushButtonTerminalDebug_toggled(bool checked);

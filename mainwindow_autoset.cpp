@@ -64,6 +64,13 @@ void MainWindow::on_pushButtonAutoset_clicked() {
         ui->doubleSpinBoxRangeVerticalRange->setValue(2 * ceilToNiceValue(MAX(std::abs(range.upper), std::abs(range.lower))));
       }
       ui->checkBoxVerticalValues->setChecked(true);
+    } else if (!activeLogic.isEmpty()) {
+      on_pushButtonResetChannels_clicked();
+      int bitsUsed = ui->plot->getLogicBitsUsed(activeLogic.at(0));
+      // Skupina logických kanálů má spodek na 0 a vršek je 3*počet kanálů (bitů)
+      ui->doubleSpinBoxRangeVerticalRange->setValue(bitsUsed * 3 * ui->plot->getLogicScale(activeLogic.at(0)));
+      ui->checkBoxVerticalValues->setChecked(false);
+      on_pushButtonPositive_clicked();
     }
   }
   on_comboBoxSelectedChannel_currentIndexChanged(ui->comboBoxSelectedChannel->currentIndex());

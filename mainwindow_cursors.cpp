@@ -28,8 +28,8 @@ void MainWindow::updateCursorRange() {
     range = ui->plotFFT->getVisibleSamplesRange(CHID_TO_FFT_CHID(ch));
     fullRange = ui->plotFFT->graph(CHID_TO_FFT_CHID(ch))->data()->size() - 1;
   } else {
-    range = ui->plot->getChVisibleSamplesRange(getLogicChannelID(CH_LIST_LOGIC_GROUP(ch), 0));
-    fullRange = ui->plot->graph(getLogicChannelID(CH_LIST_LOGIC_GROUP(ch), 0))->data()->size() - 1;
+    range = ui->plot->getChVisibleSamplesRange(getLogicChannelID(CH_LIST_INDEX_TO_LOGIC_GROUP(ch), 0));
+    fullRange = ui->plot->graph(getLogicChannelID(CH_LIST_INDEX_TO_LOGIC_GROUP(ch), 0))->data()->size() - 1;
   }
   ui->horizontalSliderTimeCur1->updateRange(range.first, range.second);
   ui->spinBoxCur1Sample->setMaximum(fullRange);
@@ -42,8 +42,8 @@ void MainWindow::updateCursorRange() {
     range = ui->plotFFT->getVisibleSamplesRange(CHID_TO_FFT_CHID(ch));
     fullRange = ui->plotFFT->graph(CHID_TO_FFT_CHID(ch))->data()->size() - 1;
   } else {
-    range = ui->plot->getChVisibleSamplesRange(getLogicChannelID(CH_LIST_LOGIC_GROUP(ch), 0));
-    fullRange = ui->plot->graph(getLogicChannelID(CH_LIST_LOGIC_GROUP(ch), 0))->data()->size() - 1;
+    range = ui->plot->getChVisibleSamplesRange(getLogicChannelID(CH_LIST_INDEX_TO_LOGIC_GROUP(ch), 0));
+    fullRange = ui->plot->graph(getLogicChannelID(CH_LIST_INDEX_TO_LOGIC_GROUP(ch), 0))->data()->size() - 1;
   }
   ui->horizontalSliderTimeCur2->updateRange(range.first, range.second);
   ui->spinBoxCur2Sample->setMaximum(fullRange);
@@ -177,7 +177,7 @@ void MainWindow::updateCursor(Cursors::enumCursors cursor, int selectedChannel, 
     // Logický kanál
     QByteArray bits;
     value = 0.0;
-    int group = CH_LIST_LOGIC_GROUP(selectedChannel);
+    int group = CH_LIST_INDEX_TO_LOGIC_GROUP(selectedChannel);
     time = ui->plot->graph(getLogicChannelID(group, 0))->data()->at(sample)->key;
     int bitsUsed = ui->plot->getLogicBitsUsed(group);
     for (int bit = 0; bit < bitsUsed; bit++) {
@@ -287,9 +287,6 @@ void MainWindow::valueCursorMovedByMouse(enumCursors cursor, double value) {
 }
 
 void MainWindow::cursorSetByMouse(int chid, Cursors::enumCursors cursor, int sample) {
-  if (IS_LOGIC_CH(chid)) {
-    chid = ChID_TO_LOGIC_GROUP(chid) + ANALOG_COUNT + MATH_COUNT;
-  }
   if (cursor == Cursor1) {
     if (ui->checkBoxYCur1->checkState() == Qt::CheckState::Checked)
       ui->checkBoxYCur1->setCheckState(Qt::CheckState::PartiallyChecked);

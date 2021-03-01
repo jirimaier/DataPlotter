@@ -230,7 +230,7 @@ void PlotData::addPoint(QList<QPair<ValueType, QByteArray>> data) {
 
 void PlotData::addChannel(QPair<ValueType, QByteArray> data, unsigned int ch, QPair<ValueType, QByteArray> timeRaw, int zeroIndex, int bits, QPair<ValueType, QByteArray> min, QPair<ValueType, QByteArray> max) {
   // Zjistí datový typ vstupu
-  QByteArray typeID, numberBytes;
+  //QByteArray typeID, numberBytes;
 
   // Převede časový interval na číslo
   bool isok;
@@ -310,7 +310,7 @@ void PlotData::addChannel(QPair<ValueType, QByteArray> data, unsigned int ch, QP
   }
 
   if (ch == 1)
-    emit ch1dataUpdated(false, HAxisType::normal);
+    emit ch1dataUpdated(false, HAxisType::normal); // Aktualizuje počítadlo rychlosti přicházejících dat a nastavý fixed režim pro autoset
   emit addVectorToPlot(ch - 1, analogData);
 
   if (isLogic) {
@@ -332,6 +332,44 @@ void PlotData::addChannel(QPair<ValueType, QByteArray> data, unsigned int ch, QP
       }
     }
   }
+}
+
+void PlotData::addLogicChannel(QPair<ValueType, QByteArray> data, QPair<ValueType, QByteArray> timeRaw, int bits, int zeroIndex) {
+  // Převede časový interval na číslo
+  bool isok;
+  double timeStep = getValue(timeRaw, isok);
+  if (!isok) {
+    sendMessageIfAllowed(tr("Can not parse logic channel time step").toUtf8(), timeRaw.second, MessageLevel::error);
+    return;
+  }
+
+  // Informace o přijatém kanálu
+  if (debugLevel == OutputLevel::info) {
+    QByteArray message = tr("%1 samples, sampling period %2s, %4 bits").arg(data.second.length() / data.first.bytes).arg(floatToNiceString(timeStep, 4, false, false)).arg(bits).toUtf8();
+    if (zeroIndex > 0)
+      message.append(tr(", zero time at sample index %3").arg(zeroIndex).toUtf8());
+    emit sendMessage(tr("Received logic channel").toUtf8(), message, MessageLevel::info);
+  }
+
+  QVector<double> times;
+  QVector<uint32_t> valuesDigital;
+  for (int i = 0; i < data.second.length(); i += data.first.bytes) {
+    times.append(((i / data.first.bytes) - zeroIndex) * timeStep);
+    valuesDigital.append(getBits(QPair<ValueType, QByteArray>(data.first, data.second.mid(i, data.first.bytes))));
+  }
+
+  emit ch1dataUpdated(false, HAxisType::normal); // Aktualizuje počítadlo rychlosti přicházejících dat a nastavý fixed režim pro autoset
+
+  // Pošle do grafu logický kanál
+  QVector<QSharedPointer<QCPGraphDataContainer>> digitalChannels;
+  for (uint8_t bit = 0; bit < bits; bit++)
+    digitalChannels.append(QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer));
+  for (int i = 0; i < valuesDigital.length(); i++)
+    for (uint8_t bit = 0; bit < bits; bit++)
+      digitalChannels.at(bit)->add(QCPGraphData(times.at(i), ((bool)((valuesDigital.at(i)) & ((uint32_t)1 << (bit)))) + bit * 3));
+
+  for (uint8_t bit = 0; bit < bits; bit++)
+    emit addVectorToPlot(getLogicChannelID(LOGIC_GROUPS - 1, bit), digitalChannels.at(bit)); // Posláno jako poslední logické skupina
 }
 
 void PlotData::reset() {

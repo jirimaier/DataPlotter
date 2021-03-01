@@ -179,6 +179,9 @@
                    <pointsize>11</pointsize>
                   </font>
                  </property>
+                 <property name="toolTip">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Select channel to change it's settings&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
                  <property name="maxVisibleItems">
                   <number>1000</number>
                  </property>
@@ -238,7 +241,7 @@
                   </size>
                  </property>
                  <property name="toolTip">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Channel color&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Change color&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                  <property name="text">
                   <string/>
@@ -279,7 +282,7 @@
                   </size>
                  </property>
                  <property name="toolTip">
-                  <string>Scale channel (does not affect values shown by cursors)</string>
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Channel scale&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Only affects how channel is displayed in plot. Does &lt;span style=&quot; text-decoration: underline;&quot;&gt;not&lt;/span&gt; affect values read using cursors!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                  <property name="autoFillBackground">
                   <bool>false</bool>
@@ -321,6 +324,9 @@
                  </item>
                  <item>
                   <widget class="QCheckBox" name="checkBoxChInverted">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Invert channel (multiply values by -1)&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Only affects how channel is displayed in plot. Does &lt;span style=&quot; text-decoration: underline;&quot;&gt;not&lt;/span&gt; affect values read using cursors!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
                    <property name="text">
                     <string>Invert</string>
                    </property>
@@ -352,6 +358,9 @@
                   <font>
                    <pointsize>10</pointsize>
                   </font>
+                 </property>
+                 <property name="toolTip">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Channel scale&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Only affects how channel is displayed in plot. Does &lt;/span&gt;&lt;span style=&quot; font-size:8pt; text-decoration: underline;&quot;&gt;not&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt; affect values read using cursors!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -677,7 +686,7 @@
                 </size>
                </property>
                <property name="toolTip">
-                <string>Reset channel offset and scale</string>
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Reset (zero) channel offset and scale&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
                <property name="text">
                 <string/>
@@ -724,7 +733,7 @@
              <enum>QTabWidget::Rounded</enum>
             </property>
             <property name="currentIndex">
-             <number>4</number>
+             <number>3</number>
             </property>
             <property name="iconSize">
              <size>
@@ -812,7 +821,7 @@
                     <enum>QFrame::NoFrame</enum>
                    </property>
                    <property name="text">
-                    <string>Vertical</string>
+                    <string>Vertical grid</string>
                    </property>
                    <property name="scaledContents">
                     <bool>false</bool>
@@ -905,7 +914,7 @@
                 <property name="frameShadow">
                  <enum>QFrame::Sunken</enum>
                 </property>
-                <layout class="QVBoxLayout" name="verticalLayout" stretch="1,1,2,1,1">
+                <layout class="QVBoxLayout" name="verticalLayout" stretch="1,1,1,100">
                  <property name="leftMargin">
                   <number>6</number>
                  </property>
@@ -923,7 +932,10 @@
                    <item>
                     <widget class="QLabel" name="label_6">
                      <property name="text">
-                      <string>Vertical range</string>
+                      <string/>
+                     </property>
+                     <property name="pixmap">
+                      <pixmap resource="resources.qrc">:/images/icons/vrange.png</pixmap>
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -957,7 +969,7 @@
                       </size>
                      </property>
                      <property name="toolTip">
-                      <string/>
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Value range&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                      </property>
                      <property name="autoFillBackground">
                       <bool>false</bool>
@@ -972,7 +984,7 @@
                       <number>1</number>
                      </property>
                      <property name="value">
-                      <number>33</number>
+                      <number>30</number>
                      </property>
                      <property name="invertedControls">
                       <bool>false</bool>
@@ -1013,7 +1025,7 @@
                     </font>
                    </property>
                    <property name="toolTip">
-                    <string/>
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Value range&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                    </property>
                    <property name="alignment">
                     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1031,80 +1043,40 @@
                     <double>1000000.000000000000000</double>
                    </property>
                    <property name="value">
-                    <double>100.000000000000000</double>
+                    <double>10.000000000000000</double>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <spacer name="verticalSpacer_4">
+                  <widget class="Line" name="line_7">
                    <property name="orientation">
-                    <enum>Qt::Vertical</enum>
+                    <enum>Qt::Horizontal</enum>
                    </property>
-                   <property name="sizeType">
-                    <enum>QSizePolicy::Expanding</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>20</width>
-                     <height>0</height>
-                    </size>
-                   </property>
-                  </spacer>
+                  </widget>
                  </item>
                  <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_14">
-                   <item>
-                    <widget class="QLabel" name="label_17">
-                     <property name="text">
-                      <string>Vertical center</string>
-                     </property>
-                     <property name="wordWrap">
-                      <bool>true</bool>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QDial" name="dialVerticalCenter">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>16777215</width>
-                       <height>40</height>
-                      </size>
-                     </property>
+                  <layout class="QGridLayout" name="gridLayout_21" rowstretch="100,1,1" columnstretch="2,1">
+                   <item row="2" column="0">
+                    <widget class="QPushButton" name="pushButtonPositive">
                      <property name="toolTip">
+                      <string>Only positive</string>
+                     </property>
+                     <property name="text">
                       <string/>
                      </property>
-                     <property name="minimum">
-                      <number>-100</number>
+                     <property name="icon">
+                      <iconset resource="resources.qrc">
+                       <normaloff>:/images/icons/verticalPositive.png</normaloff>:/images/icons/verticalPositive.png</iconset>
                      </property>
-                     <property name="maximum">
-                      <number>100</number>
-                     </property>
-                     <property name="pageStep">
-                      <number>20</number>
-                     </property>
-                     <property name="orientation">
-                      <enum>Qt::Horizontal</enum>
-                     </property>
-                     <property name="notchTarget">
-                      <double>20.000000000000000</double>
-                     </property>
-                     <property name="notchesVisible">
-                      <bool>true</bool>
+                     <property name="iconSize">
+                      <size>
+                       <width>30</width>
+                       <height>20</height>
+                      </size>
                      </property>
                     </widget>
                    </item>
-                  </layout>
-                 </item>
-                 <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_40">
-                   <item>
+                   <item row="1" column="0">
                     <widget class="QPushButton" name="pushButtonCenter">
                      <property name="toolTip">
                       <string>Symetric positive and negative</string>
@@ -1124,17 +1096,48 @@
                      </property>
                     </widget>
                    </item>
-                   <item>
-                    <widget class="QPushButton" name="pushButtonPositive">
+                   <item row="0" column="1" rowspan="3">
+                    <widget class="QSlider" name="sliderVerticalCenter">
                      <property name="toolTip">
-                      <string>Only positive</string>
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zero value position in view&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     </property>
+                     <property name="minimum">
+                      <number>-100</number>
+                     </property>
+                     <property name="maximum">
+                      <number>100</number>
+                     </property>
+                     <property name="singleStep">
+                      <number>10</number>
+                     </property>
+                     <property name="orientation">
+                      <enum>Qt::Vertical</enum>
+                     </property>
+                     <property name="invertedAppearance">
+                      <bool>true</bool>
+                     </property>
+                     <property name="invertedControls">
+                      <bool>true</bool>
+                     </property>
+                     <property name="tickPosition">
+                      <enum>QSlider::TicksAbove</enum>
+                     </property>
+                     <property name="tickInterval">
+                      <number>20</number>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="0">
+                    <widget class="QPushButton" name="pushButtonNegative">
+                     <property name="toolTip">
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Only negative&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                      </property>
                      <property name="text">
                       <string/>
                      </property>
                      <property name="icon">
                       <iconset resource="resources.qrc">
-                       <normaloff>:/images/icons/verticalPositive.png</normaloff>:/images/icons/verticalPositive.png</iconset>
+                       <normaloff>:/images/icons/verticalNegative.png</normaloff>:/images/icons/verticalNegative.png</iconset>
                      </property>
                      <property name="iconSize">
                       <size>
@@ -1245,7 +1248,7 @@
                  <item>
                   <widget class="QLabel" name="hgridlabel">
                    <property name="text">
-                    <string>Horizontal</string>
+                    <string>Horizontal grid</string>
                    </property>
                    <property name="alignment">
                     <set>Qt::AlignHCenter|Qt::AlignTop</set>
@@ -1406,7 +1409,10 @@
                            </sizepolicy>
                           </property>
                           <property name="text">
-                           <string>Horizontal range</string>
+                           <string/>
+                          </property>
+                          <property name="pixmap">
+                           <pixmap resource="resources.qrc">:/images/icons/hrange.png</pixmap>
                           </property>
                           <property name="alignment">
                            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -1499,7 +1505,7 @@
                          </font>
                         </property>
                         <property name="toolTip">
-                         <string>Length of data shown</string>
+                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Length of data shown&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                         </property>
                         <property name="alignment">
                          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1565,7 +1571,7 @@
                    <property name="frameShadow">
                     <enum>QFrame::Sunken</enum>
                    </property>
-                   <layout class="QGridLayout" name="gridLayout_12">
+                   <layout class="QGridLayout" name="gridLayout_12" rowstretch="1,1" columnstretch="1,1,100">
                     <property name="leftMargin">
                      <number>6</number>
                     </property>
@@ -1578,25 +1584,6 @@
                     <property name="bottomMargin">
                      <number>6</number>
                     </property>
-                    <item row="0" column="0">
-                     <widget class="QLabel" name="label_5">
-                      <property name="sizePolicy">
-                       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                        <horstretch>0</horstretch>
-                        <verstretch>0</verstretch>
-                       </sizepolicy>
-                      </property>
-                      <property name="text">
-                       <string>Zoom</string>
-                      </property>
-                      <property name="alignment">
-                       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-                      </property>
-                      <property name="wordWrap">
-                       <bool>true</bool>
-                      </property>
-                     </widget>
-                    </item>
                     <item row="0" column="1">
                      <widget class="QDial" name="dialZoom">
                       <property name="enabled">
@@ -1658,7 +1645,42 @@
                       </property>
                      </widget>
                     </item>
-                    <item row="1" column="0" colspan="2">
+                    <item row="0" column="0">
+                     <widget class="QLabel" name="label_5">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="text">
+                       <string/>
+                      </property>
+                      <property name="pixmap">
+                       <pixmap resource="resources.qrc">:/images/icons/zoom.png</pixmap>
+                      </property>
+                      <property name="alignment">
+                       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                      </property>
+                      <property name="wordWrap">
+                       <bool>true</bool>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="2">
+                     <spacer name="horizontalSpacer_7">
+                      <property name="orientation">
+                       <enum>Qt::Horizontal</enum>
+                      </property>
+                      <property name="sizeHint" stdset="0">
+                       <size>
+                        <width>40</width>
+                        <height>20</height>
+                       </size>
+                      </property>
+                     </spacer>
+                    </item>
+                    <item row="1" column="0" colspan="3">
                      <widget class="QScrollBar" name="horizontalScrollBarHorizontal">
                       <property name="sizePolicy">
                        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -1968,6 +1990,19 @@
                      <verstretch>0</verstretch>
                     </sizepolicy>
                    </property>
+                   <property name="toolTip">
+                    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Set value cursor&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Unchecked: value cursor is not displayed&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Square-checked: value cursor is displayed and fixed to value of sample on which time cursor is.&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Checked: value cursor is independent of time cursor&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
                    <property name="icon">
                     <iconset resource="resources.qrc">
                      <normaloff>:/images/icons/valcur.png</normaloff>:/images/icons/valcur.png</iconset>
@@ -2005,6 +2040,9 @@
                      <pointsize>10</pointsize>
                     </font>
                    </property>
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Position of vertical cursor, relative to zero value of selected channel&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
                    <property name="frame">
                     <bool>true</bool>
                    </property>
@@ -2039,7 +2077,7 @@
                    <property name="sizeHint" stdset="0">
                     <size>
                      <width>20</width>
-                     <height>10</height>
+                     <height>1</height>
                     </size>
                    </property>
                   </spacer>
@@ -2123,7 +2161,7 @@
                  <item row="1" column="0">
                   <widget class="QLabel" name="label_11">
                    <property name="toolTip">
-                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Difference of value cursors.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Difference of value cursors&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                    </property>
                    <property name="text">
                     <string/>
@@ -2502,6 +2540,9 @@
                      <verstretch>0</verstretch>
                     </sizepolicy>
                    </property>
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set value cursor&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Unchecked: value cursor is not displayed&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Square-checked: value cursor is displayed and fixed to value of sample on which time cursor is.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Checked: value cursor is independent of time cursor&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
                    <property name="text">
                     <string/>
                    </property>
@@ -2542,6 +2583,9 @@
                      <pointsize>10</pointsize>
                     </font>
                    </property>
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Position of vertical cursor, relative to zero value of selected channel&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
                    <property name="frame">
                     <bool>true</bool>
                    </property>
@@ -2576,7 +2620,7 @@
                    <property name="sizeHint" stdset="0">
                     <size>
                      <width>20</width>
-                     <height>10</height>
+                     <height>1</height>
                     </size>
                    </property>
                   </spacer>
@@ -2611,6 +2655,12 @@
                <layout class="QGridLayout" name="gridLayout_15">
                 <item row="3" column="1">
                  <widget class="QLabel" name="labelSig1Min">
+                  <property name="minimumSize">
+                   <size>
+                    <width>70</width>
+                    <height>0</height>
+                   </size>
+                  </property>
                   <property name="font">
                    <font>
                     <pointsize>8</pointsize>
@@ -2630,7 +2680,7 @@
                  <widget class="QLabel" name="labelSig1Period">
                   <property name="minimumSize">
                    <size>
-                    <width>60</width>
+                    <width>70</width>
                     <height>0</height>
                    </size>
                   </property>
@@ -2663,7 +2713,7 @@
                  <widget class="QLabel" name="labelSig1Vrms">
                   <property name="minimumSize">
                    <size>
-                    <width>60</width>
+                    <width>70</width>
                     <height>0</height>
                    </size>
                   </property>
@@ -2706,7 +2756,7 @@
                  <widget class="QLabel" name="labelSig1Amp">
                   <property name="minimumSize">
                    <size>
-                    <width>60</width>
+                    <width>70</width>
                     <height>0</height>
                    </size>
                   </property>
@@ -2753,6 +2803,12 @@
                 </item>
                 <item row="3" column="2">
                  <widget class="QLabel" name="labelSig1Max">
+                  <property name="minimumSize">
+                   <size>
+                    <width>70</width>
+                    <height>0</height>
+                   </size>
+                  </property>
                   <property name="font">
                    <font>
                     <pointsize>8</pointsize>
@@ -2770,6 +2826,12 @@
                 </item>
                 <item row="3" column="4">
                  <widget class="QLabel" name="labelSig1rise">
+                  <property name="minimumSize">
+                   <size>
+                    <width>70</width>
+                    <height>0</height>
+                   </size>
+                  </property>
                   <property name="font">
                    <font>
                     <weight>75</weight>
@@ -2806,6 +2868,12 @@
                 </item>
                 <item row="3" column="3">
                  <widget class="QLabel" name="labelSig1Dc">
+                  <property name="minimumSize">
+                   <size>
+                    <width>70</width>
+                    <height>0</height>
+                   </size>
+                  </property>
                   <property name="font">
                    <font>
                     <pointsize>8</pointsize>
@@ -2845,7 +2913,7 @@
                  <widget class="QLabel" name="labelSig1Freq">
                   <property name="minimumSize">
                    <size>
-                    <width>60</width>
+                    <width>70</width>
                     <height>0</height>
                    </size>
                   </property>
@@ -2866,6 +2934,12 @@
                 </item>
                 <item row="3" column="5">
                  <widget class="QLabel" name="labelSig1fall">
+                  <property name="minimumSize">
+                   <size>
+                    <width>70</width>
+                    <height>0</height>
+                   </size>
+                  </property>
                   <property name="font">
                    <font>
                     <weight>75</weight>
@@ -2894,7 +2968,7 @@
                  <widget class="QLabel" name="labelSig1samples">
                   <property name="minimumSize">
                    <size>
-                    <width>60</width>
+                    <width>70</width>
                     <height>0</height>
                    </size>
                   </property>
@@ -3012,7 +3086,7 @@
                  <widget class="QLabel" name="labelSig2samples">
                   <property name="minimumSize">
                    <size>
-                    <width>60</width>
+                    <width>70</width>
                     <height>0</height>
                    </size>
                   </property>
@@ -3064,7 +3138,7 @@
                  <widget class="QLabel" name="labelSig2Freq">
                   <property name="minimumSize">
                    <size>
-                    <width>60</width>
+                    <width>70</width>
                     <height>0</height>
                    </size>
                   </property>
@@ -3085,6 +3159,12 @@
                 </item>
                 <item row="3" column="4">
                  <widget class="QLabel" name="labelSig2rise">
+                  <property name="minimumSize">
+                   <size>
+                    <width>70</width>
+                    <height>0</height>
+                   </size>
+                  </property>
                   <property name="font">
                    <font>
                     <weight>75</weight>
@@ -3113,7 +3193,7 @@
                  <widget class="QLabel" name="labelSig2Period">
                   <property name="minimumSize">
                    <size>
-                    <width>60</width>
+                    <width>70</width>
                     <height>0</height>
                    </size>
                   </property>
@@ -3146,7 +3226,7 @@
                  <widget class="QLabel" name="labelSig2Amp">
                   <property name="minimumSize">
                    <size>
-                    <width>60</width>
+                    <width>70</width>
                     <height>0</height>
                    </size>
                   </property>
@@ -3167,6 +3247,12 @@
                 </item>
                 <item row="3" column="3">
                  <widget class="QLabel" name="labelSig2Dc">
+                  <property name="minimumSize">
+                   <size>
+                    <width>70</width>
+                    <height>0</height>
+                   </size>
+                  </property>
                   <property name="font">
                    <font>
                     <pointsize>8</pointsize>
@@ -3184,6 +3270,12 @@
                 </item>
                 <item row="3" column="5">
                  <widget class="QLabel" name="labelSig2fall">
+                  <property name="minimumSize">
+                   <size>
+                    <width>70</width>
+                    <height>0</height>
+                   </size>
+                  </property>
                   <property name="font">
                    <font>
                     <weight>75</weight>
@@ -3210,6 +3302,12 @@
                 </item>
                 <item row="3" column="2">
                  <widget class="QLabel" name="labelSig2Max">
+                  <property name="minimumSize">
+                   <size>
+                    <width>70</width>
+                    <height>0</height>
+                   </size>
+                  </property>
                   <property name="font">
                    <font>
                     <pointsize>8</pointsize>
@@ -3227,6 +3325,12 @@
                 </item>
                 <item row="3" column="1">
                  <widget class="QLabel" name="labelSig2Min">
+                  <property name="minimumSize">
+                   <size>
+                    <width>70</width>
+                    <height>0</height>
+                   </size>
+                  </property>
                   <property name="font">
                    <font>
                     <pointsize>8</pointsize>
@@ -3282,7 +3386,7 @@
                  <widget class="QLabel" name="labelSig2Vrms">
                   <property name="minimumSize">
                    <size>
-                    <width>60</width>
+                    <width>70</width>
                     <height>0</height>
                    </size>
                   </property>
@@ -3396,71 +3500,16 @@
               </property>
               <item>
                <layout class="QGridLayout" name="gridLayout_10">
-                <item row="2" column="2">
-                 <widget class="QComboBox" name="comboBoxMath3Op">
+                <item row="6" column="1">
+                 <widget class="QSpinBox" name="spinBoxLog2source">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                     <horstretch>0</horstretch>
                     <verstretch>0</verstretch>
                    </sizepolicy>
                   </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>40</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="currentText">
-                   <string notr="true"/>
-                  </property>
-                  <item>
-                   <property name="text">
-                    <string/>
-                   </property>
-                   <property name="icon">
-                    <iconset resource="resources.qrc">
-                     <normaloff>:/images/icons/plus.png</normaloff>:/images/icons/plus.png</iconset>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string/>
-                   </property>
-                   <property name="icon">
-                    <iconset resource="resources.qrc">
-                     <normaloff>:/images/icons/minus.png</normaloff>:/images/icons/minus.png</iconset>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string/>
-                   </property>
-                   <property name="icon">
-                    <iconset resource="resources.qrc">
-                     <normaloff>:/images/icons/multiply.png</normaloff>:/images/icons/multiply.png</iconset>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string/>
-                   </property>
-                   <property name="icon">
-                    <iconset resource="resources.qrc">
-                     <normaloff>:/images/icons/divide.png</normaloff>:/images/icons/divide.png</iconset>
-                   </property>
-                  </item>
-                 </widget>
-                </item>
-                <item row="2" column="3">
-                 <widget class="QSpinBox" name="spinBoxMath3Second">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                    <horstretch>1</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
                   <property name="prefix">
-                   <string>CH </string>
+                   <string>Ch </string>
                   </property>
                   <property name="minimum">
                    <number>1</number>
@@ -3470,6 +3519,26 @@
                   </property>
                   <property name="value">
                    <number>2</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="0">
+                 <widget class="QPushButton" name="pushButtonMath1">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>Math 1</string>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="resources.qrc">
+                    <normaloff>:/images/icons/math.png</normaloff>:/images/icons/math.png</iconset>
+                  </property>
+                  <property name="checkable">
+                   <bool>true</bool>
                   </property>
                  </widget>
                 </item>
@@ -3528,6 +3597,269 @@
                   </item>
                  </widget>
                 </item>
+                <item row="1" column="0">
+                 <widget class="QPushButton" name="pushButtonMath2">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>Math 2</string>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="resources.qrc">
+                    <normaloff>:/images/icons/math.png</normaloff>:/images/icons/math.png</iconset>
+                  </property>
+                  <property name="checkable">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QPushButton" name="pushButtonMath3">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>Math 3</string>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="resources.qrc">
+                    <normaloff>:/images/icons/math.png</normaloff>:/images/icons/math.png</iconset>
+                  </property>
+                  <property name="checkable">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="0" colspan="4">
+                 <widget class="Line" name="line_5">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item row="6" column="2" colspan="2">
+                 <widget class="QSpinBox" name="spinBoxLog2bits">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of bits shown (from least significant), auto means same as data type (for example 16 bits for U2).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                  </property>
+                  <property name="specialValueText">
+                   <string>Bits: auto</string>
+                  </property>
+                  <property name="suffix">
+                   <string/>
+                  </property>
+                  <property name="prefix">
+                   <string>Bits: </string>
+                  </property>
+                  <property name="maximum">
+                   <number>32</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="QSpinBox" name="spinBoxMath3First">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <horstretch>1</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="prefix">
+                   <string>CH </string>
+                  </property>
+                  <property name="minimum">
+                   <number>1</number>
+                  </property>
+                  <property name="maximum">
+                   <number>16</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="2">
+                 <widget class="QComboBox" name="comboBoxMath3Op">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>40</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="currentText">
+                   <string notr="true"/>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="resources.qrc">
+                     <normaloff>:/images/icons/plus.png</normaloff>:/images/icons/plus.png</iconset>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="resources.qrc">
+                     <normaloff>:/images/icons/minus.png</normaloff>:/images/icons/minus.png</iconset>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="resources.qrc">
+                     <normaloff>:/images/icons/multiply.png</normaloff>:/images/icons/multiply.png</iconset>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="resources.qrc">
+                     <normaloff>:/images/icons/divide.png</normaloff>:/images/icons/divide.png</iconset>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+                <item row="5" column="0">
+                 <widget class="QPushButton" name="pushButtonLog1">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="layoutDirection">
+                   <enum>Qt::LeftToRight</enum>
+                  </property>
+                  <property name="text">
+                   <string>Logic 1</string>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="resources.qrc">
+                    <normaloff>:/images/icons/logic.png</normaloff>:/images/icons/logic.png</iconset>
+                  </property>
+                  <property name="checkable">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="5" column="2" colspan="2">
+                 <widget class="QSpinBox" name="spinBoxLog1bits">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of bits shown (from least significant), auto means same as data type (for example 16 bits for U2).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                  </property>
+                  <property name="specialValueText">
+                   <string>Bits: auto</string>
+                  </property>
+                  <property name="suffix">
+                   <string/>
+                  </property>
+                  <property name="prefix">
+                   <string>Bits: </string>
+                  </property>
+                  <property name="maximum">
+                   <number>32</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="3">
+                 <widget class="QSpinBox" name="spinBoxMath3Second">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <horstretch>1</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="prefix">
+                   <string>CH </string>
+                  </property>
+                  <property name="minimum">
+                   <number>1</number>
+                  </property>
+                  <property name="maximum">
+                   <number>16</number>
+                  </property>
+                  <property name="value">
+                   <number>2</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QSpinBox" name="spinBoxMath1First">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <horstretch>1</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="prefix">
+                   <string>CH </string>
+                  </property>
+                  <property name="minimum">
+                   <number>1</number>
+                  </property>
+                  <property name="maximum">
+                   <number>16</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="3">
+                 <widget class="QSpinBox" name="spinBoxMath1Second">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <horstretch>1</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="prefix">
+                   <string>CH </string>
+                  </property>
+                  <property name="minimum">
+                   <number>1</number>
+                  </property>
+                  <property name="maximum">
+                   <number>16</number>
+                  </property>
+                  <property name="value">
+                   <number>2</number>
+                  </property>
+                 </widget>
+                </item>
                 <item row="0" column="2">
                  <widget class="QComboBox" name="comboBoxMath1Op">
                   <property name="sizePolicy">
@@ -3583,70 +3915,6 @@
                   </item>
                  </widget>
                 </item>
-                <item row="2" column="0">
-                 <widget class="QPushButton" name="pushButtonMath3">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="text">
-                   <string>Math 3</string>
-                  </property>
-                  <property name="icon">
-                   <iconset resource="resources.qrc">
-                    <normaloff>:/images/icons/math.png</normaloff>:/images/icons/math.png</iconset>
-                  </property>
-                  <property name="checkable">
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="3">
-                 <widget class="QSpinBox" name="spinBoxMath1Second">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                    <horstretch>1</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="prefix">
-                   <string>CH </string>
-                  </property>
-                  <property name="minimum">
-                   <number>1</number>
-                  </property>
-                  <property name="maximum">
-                   <number>16</number>
-                  </property>
-                  <property name="value">
-                   <number>2</number>
-                  </property>
-                 </widget>
-                </item>
-                <item row="6" column="1">
-                 <widget class="QSpinBox" name="spinBoxLog3source">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="prefix">
-                   <string>Ch </string>
-                  </property>
-                  <property name="minimum">
-                   <number>1</number>
-                  </property>
-                  <property name="maximum">
-                   <number>16</number>
-                  </property>
-                  <property name="value">
-                   <number>3</number>
-                  </property>
-                 </widget>
-                </item>
                 <item row="1" column="3">
                  <widget class="QSpinBox" name="spinBoxMath2Second">
                   <property name="sizePolicy">
@@ -3669,124 +3937,7 @@
                   </property>
                  </widget>
                 </item>
-                <item row="2" column="1">
-                 <widget class="QSpinBox" name="spinBoxMath3First">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                    <horstretch>1</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="prefix">
-                   <string>CH </string>
-                  </property>
-                  <property name="minimum">
-                   <number>1</number>
-                  </property>
-                  <property name="maximum">
-                   <number>16</number>
-                  </property>
-                 </widget>
-                </item>
-                <item row="6" column="2" colspan="2">
-                 <widget class="QSpinBox" name="spinBoxLog3bits">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="toolTip">
-                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of bits shown (from least significant), auto means same as data type (for example 16 bits for U2).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                  </property>
-                  <property name="specialValueText">
-                   <string>Bits: auto</string>
-                  </property>
-                  <property name="suffix">
-                   <string/>
-                  </property>
-                  <property name="prefix">
-                   <string>Bits: </string>
-                  </property>
-                  <property name="maximum">
-                   <number>32</number>
-                  </property>
-                 </widget>
-                </item>
-                <item row="5" column="2" colspan="2">
-                 <widget class="QSpinBox" name="spinBoxLog2bits">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="toolTip">
-                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of bits shown (from least significant), auto means same as data type (for example 16 bits for U2).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                  </property>
-                  <property name="specialValueText">
-                   <string>Bits: auto</string>
-                  </property>
-                  <property name="suffix">
-                   <string/>
-                  </property>
-                  <property name="prefix">
-                   <string>Bits: </string>
-                  </property>
-                  <property name="maximum">
-                   <number>32</number>
-                  </property>
-                 </widget>
-                </item>
-                <item row="5" column="0">
-                 <widget class="QPushButton" name="pushButtonLog2">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="layoutDirection">
-                   <enum>Qt::LeftToRight</enum>
-                  </property>
-                  <property name="text">
-                   <string>Logic 2</string>
-                  </property>
-                  <property name="icon">
-                   <iconset resource="resources.qrc">
-                    <normaloff>:/images/icons/logic.png</normaloff>:/images/icons/logic.png</iconset>
-                  </property>
-                  <property name="checkable">
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="1">
-                 <widget class="QSpinBox" name="spinBoxMath1First">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                    <horstretch>1</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="prefix">
-                   <string>CH </string>
-                  </property>
-                  <property name="minimum">
-                   <number>1</number>
-                  </property>
-                  <property name="maximum">
-                   <number>16</number>
-                  </property>
-                 </widget>
-                </item>
-                <item row="4" column="1">
+                <item row="5" column="1">
                  <widget class="QSpinBox" name="spinBoxLog1source">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -3805,56 +3956,8 @@
                   </property>
                  </widget>
                 </item>
-                <item row="4" column="2" colspan="2">
-                 <widget class="QSpinBox" name="spinBoxLog1bits">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="toolTip">
-                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of bits shown (from least significant), auto means same as data type (for example 16 bits for U2).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                  </property>
-                  <property name="specialValueText">
-                   <string>Bits: auto</string>
-                  </property>
-                  <property name="suffix">
-                   <string/>
-                  </property>
-                  <property name="prefix">
-                   <string>Bits: </string>
-                  </property>
-                  <property name="maximum">
-                   <number>32</number>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="0">
-                 <widget class="QPushButton" name="pushButtonMath1">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="text">
-                   <string>Math 1</string>
-                  </property>
-                  <property name="icon">
-                   <iconset resource="resources.qrc">
-                    <normaloff>:/images/icons/math.png</normaloff>:/images/icons/math.png</iconset>
-                  </property>
-                  <property name="checkable">
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </item>
                 <item row="6" column="0">
-                 <widget class="QPushButton" name="pushButtonLog3">
+                 <widget class="QPushButton" name="pushButtonLog2">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                     <horstretch>0</horstretch>
@@ -3865,7 +3968,7 @@
                    <enum>Qt::LeftToRight</enum>
                   </property>
                   <property name="text">
-                   <string>Logic 3</string>
+                   <string>Logic 2</string>
                   </property>
                   <property name="icon">
                    <iconset resource="resources.qrc">
@@ -3895,75 +3998,13 @@
                   </property>
                  </widget>
                 </item>
-                <item row="4" column="0">
-                 <widget class="QPushButton" name="pushButtonLog1">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="layoutDirection">
-                   <enum>Qt::LeftToRight</enum>
-                  </property>
+                <item row="4" column="0" colspan="4">
+                 <widget class="QLabel" name="label_17">
                   <property name="text">
-                   <string>Logic 1</string>
+                   <string>Convert analog input to logic</string>
                   </property>
-                  <property name="icon">
-                   <iconset resource="resources.qrc">
-                    <normaloff>:/images/icons/logic.png</normaloff>:/images/icons/logic.png</iconset>
-                  </property>
-                  <property name="checkable">
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="0">
-                 <widget class="QPushButton" name="pushButtonMath2">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="text">
-                   <string>Math 2</string>
-                  </property>
-                  <property name="icon">
-                   <iconset resource="resources.qrc">
-                    <normaloff>:/images/icons/math.png</normaloff>:/images/icons/math.png</iconset>
-                  </property>
-                  <property name="checkable">
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item row="5" column="1">
-                 <widget class="QSpinBox" name="spinBoxLog2source">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="prefix">
-                   <string>Ch </string>
-                  </property>
-                  <property name="minimum">
-                   <number>1</number>
-                  </property>
-                  <property name="maximum">
-                   <number>16</number>
-                  </property>
-                  <property name="value">
-                   <number>2</number>
-                  </property>
-                 </widget>
-                </item>
-                <item row="3" column="0" colspan="4">
-                 <widget class="Line" name="line_5">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
+                  <property name="alignment">
+                   <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
                   </property>
                  </widget>
                 </item>
@@ -4112,6 +4153,9 @@
                  </item>
                  <item>
                   <widget class="QRadioButton" name="radioButtonXYFull">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate from:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
                    <property name="text">
                     <string>Whole signal</string>
                    </property>
@@ -4122,6 +4166,9 @@
                  </item>
                  <item>
                   <widget class="QRadioButton" name="radioButtonXYPart">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate from:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
                    <property name="text">
                     <string>Visible interval</string>
                    </property>
@@ -4220,7 +4267,7 @@
                     <number>1</number>
                    </property>
                    <property name="value">
-                    <number>-3</number>
+                    <number>-2</number>
                    </property>
                    <property name="orientation">
                     <enum>Qt::Horizontal</enum>
@@ -4479,7 +4526,7 @@
                    <property name="sizeHint" stdset="0">
                     <size>
                      <width>20</width>
-                     <height>40</height>
+                     <height>1</height>
                     </size>
                    </property>
                   </spacer>
@@ -4639,6 +4686,9 @@
                      </property>
                      <property name="pixmap">
                       <pixmap resource="resources.qrc">:/images/icons/xyphase.png</pixmap>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                      </property>
                     </widget>
                    </item>
@@ -4800,6 +4850,9 @@
                  </item>
                  <item>
                   <widget class="QRadioButton" name="radioButtonFFTFull">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate from:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
                    <property name="text">
                     <string>Whole signal</string>
                    </property>
@@ -4807,6 +4860,9 @@
                  </item>
                  <item>
                   <widget class="QRadioButton" name="radioButtonFFTPart">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate from:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
                    <property name="text">
                     <string>Visible interval</string>
                    </property>
@@ -5309,8 +5365,11 @@
                    <property name="pageStep">
                     <number>1</number>
                    </property>
+                   <property name="value">
+                    <number>-2</number>
+                   </property>
                    <property name="sliderPosition">
-                    <number>-3</number>
+                    <number>-2</number>
                    </property>
                    <property name="orientation">
                     <enum>Qt::Horizontal</enum>
@@ -5343,7 +5402,7 @@
                     <number>1</number>
                    </property>
                    <property name="value">
-                    <number>-3</number>
+                    <number>-2</number>
                    </property>
                    <property name="orientation">
                     <enum>Qt::Horizontal</enum>
@@ -5396,7 +5455,7 @@
              <attribute name="title">
               <string/>
              </attribute>
-             <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="1,1,100">
+             <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="0,0,0">
               <property name="leftMargin">
                <number>6</number>
               </property>
@@ -5414,7 +5473,7 @@
                 <property name="title">
                  <string>Export image</string>
                 </property>
-                <layout class="QVBoxLayout" name="verticalLayout_41">
+                <layout class="QVBoxLayout" name="verticalLayout_41" stretch="1,1,1,1">
                  <property name="leftMargin">
                   <number>6</number>
                  </property>
@@ -5489,10 +5548,13 @@
                    <property name="orientation">
                     <enum>Qt::Vertical</enum>
                    </property>
+                   <property name="sizeType">
+                    <enum>QSizePolicy::Preferred</enum>
+                   </property>
                    <property name="sizeHint" stdset="0">
                     <size>
-                     <width>20</width>
-                     <height>10</height>
+                     <width>10</width>
+                     <height>1</height>
                     </size>
                    </property>
                   </spacer>
@@ -5511,7 +5573,7 @@
                 <property name="title">
                  <string>Export CSV</string>
                 </property>
-                <layout class="QHBoxLayout" name="horizontalLayout_42" stretch="0,0">
+                <layout class="QHBoxLayout" name="horizontalLayout_42" stretch="0,0,0">
                  <property name="spacing">
                   <number>10</number>
                  </property>
@@ -5528,7 +5590,7 @@
                   <number>6</number>
                  </property>
                  <item>
-                  <layout class="QVBoxLayout" name="verticalLayout_36" stretch="1,1,1,0,0">
+                  <layout class="QVBoxLayout" name="verticalLayout_36" stretch="0,0,0,0">
                    <property name="spacing">
                     <number>6</number>
                    </property>
@@ -5612,20 +5674,14 @@
                      </property>
                     </widget>
                    </item>
-                   <item>
-                    <spacer name="verticalSpacer_3">
-                     <property name="orientation">
-                      <enum>Qt::Vertical</enum>
-                     </property>
-                     <property name="sizeHint" stdset="0">
-                      <size>
-                       <width>20</width>
-                       <height>0</height>
-                      </size>
-                     </property>
-                    </spacer>
-                   </item>
                   </layout>
+                 </item>
+                 <item>
+                  <widget class="Line" name="line_8">
+                   <property name="orientation">
+                    <enum>Qt::Vertical</enum>
+                   </property>
+                  </widget>
                  </item>
                  <item>
                   <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -5792,7 +5848,7 @@
            </size>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>3</number>
           </property>
           <property name="iconSize">
            <size>
@@ -7308,22 +7364,6 @@ gridline-color: rgb(255, 255, 255);</string>
                  </property>
                 </widget>
                </item>
-               <item row="2" column="1">
-                <widget class="QPushButton" name="pushButtonClearAll">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="toolTip">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Erase data in main plot&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                 <property name="text">
-                  <string>Clear graphs</string>
-                 </property>
-                </widget>
-               </item>
                <item row="0" column="0" colspan="2">
                 <layout class="QHBoxLayout" name="horizontalLayout_11">
                  <item>
@@ -7350,6 +7390,32 @@ gridline-color: rgb(255, 255, 255);</string>
                   </widget>
                  </item>
                 </layout>
+               </item>
+               <item row="3" column="0" colspan="2">
+                <widget class="QCheckBox" name="checkBoxSelUnused">
+                 <property name="toolTip">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Normaly, only nonempty channel are showen in channel selection, this allows to show all available channels.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                 <property name="text">
+                  <string>Allow selecting unused channels</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="QPushButton" name="pushButtonClearAll">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="toolTip">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Erase data in main plot&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                 <property name="text">
+                  <string>Clear graphs</string>
+                 </property>
+                </widget>
                </item>
                <item row="1" column="0">
                 <widget class="QFrame" name="frame_5">
@@ -7440,23 +7506,13 @@ gridline-color: rgb(255, 255, 255);</string>
                  </layout>
                 </widget>
                </item>
-               <item row="3" column="0" colspan="2">
-                <widget class="QCheckBox" name="checkBoxSelUnused">
-                 <property name="toolTip">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Normaly, only nonempty channel are showen in channel selection, this allows to show all available channels.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                 <property name="text">
-                  <string>Allow selecting unused channels</string>
-                 </property>
-                </widget>
-               </item>
                <item row="4" column="0" colspan="2">
                 <widget class="QCheckBox" name="checkBoxMouseControls">
                  <property name="toolTip">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show sample value when mouse cursor is near, move cursors by clicking on graph.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show sample value when mouse cursor is near,set cursors by clicking on graph, mouse-drag cursors a zero-lines of channels.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                  <property name="text">
-                  <string>Show values and move cursors by mouse</string>
+                  <string>Controll cursors by mouse</string>
                  </property>
                  <property name="checked">
                   <bool>true</bool>
@@ -7617,9 +7673,9 @@ gridline-color: rgb(255, 255, 255);</string>
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Quick tips:&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Clicking on graph will bring cursor to that position. Left click for cursor 1, right click for cursor 2)&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Channel offset can be moved by mouse dragging zero line (only if offset is different than zero)&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;To improve performance: Set console output to only warnings/errors/device, not info. Don't use color fill under graph for logic, if using fill, try enabling OpenGL.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Clicking on graph will bring cursor to that position. Left click for cursor 1, right click for cursor 2.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Channel offset can be moved by mouse dragging zero line (only if zero line is visible - if offset is different than zero)&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;To improve performance: Set console output to only warnings/errors/device, not info. If you use fill under graph (useful for logic), try enabling OpenGL.&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;In measurement page, rise time and fall time are calculated only from last period of signal/visible interval.&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Logic channel is calculated only from newly recieved data, it will not show when enabled during pause.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
@@ -8137,9 +8193,6 @@ p, li { white-space: pre-wrap; }
   <tabstop>dialVerticalRange</tabstop>
   <tabstop>frame_leftHalf</tabstop>
   <tabstop>doubleSpinBoxRangeVerticalRange</tabstop>
-  <tabstop>dialVerticalCenter</tabstop>
-  <tabstop>pushButtonCenter</tabstop>
-  <tabstop>pushButtonPositive</tabstop>
   <tabstop>radioButtonFreeRange</tabstop>
   <tabstop>radioButtonFixedRange</tabstop>
   <tabstop>radioButtonRollingRange</tabstop>
@@ -8413,8 +8466,8 @@ p, li { white-space: pre-wrap; }
    <slot>setAutoSize(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>281</x>
-     <y>475</y>
+     <x>220</x>
+     <y>484</y>
     </hint>
     <hint type="destinationlabel">
      <x>144</x>
@@ -8429,8 +8482,8 @@ p, li { white-space: pre-wrap; }
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>157</x>
-     <y>648</y>
+     <x>124</x>
+     <y>657</y>
     </hint>
     <hint type="destinationlabel">
      <x>57</x>
@@ -8477,8 +8530,8 @@ p, li { white-space: pre-wrap; }
    <slot>setStyle(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>232</x>
-     <y>647</y>
+     <x>220</x>
+     <y>615</y>
     </hint>
     <hint type="destinationlabel">
      <x>186</x>
@@ -8585,22 +8638,6 @@ p, li { white-space: pre-wrap; }
   <connection>
    <sender>radioButtonFreeRange</sender>
    <signal>toggled(bool)</signal>
-   <receiver>dialVerticalCenter</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>207</x>
-     <y>488</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>130</x>
-     <y>613</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>radioButtonFreeRange</sender>
-   <signal>toggled(bool)</signal>
    <receiver>pushButtonCenter</receiver>
    <slot>setDisabled(bool)</slot>
    <hints>
@@ -8609,8 +8646,8 @@ p, li { white-space: pre-wrap; }
      <y>488</y>
     </hint>
     <hint type="destinationlabel">
-     <x>78</x>
-     <y>647</y>
+     <x>104</x>
+     <y>619</y>
     </hint>
    </hints>
   </connection>
@@ -8625,8 +8662,8 @@ p, li { white-space: pre-wrap; }
      <y>488</y>
     </hint>
     <hint type="destinationlabel">
-     <x>130</x>
-     <y>647</y>
+     <x>104</x>
+     <y>653</y>
     </hint>
    </hints>
   </connection>
@@ -8689,8 +8726,8 @@ p, li { white-space: pre-wrap; }
      <y>488</y>
     </hint>
     <hint type="destinationlabel">
-     <x>468</x>
-     <y>602</y>
+     <x>404</x>
+     <y>611</y>
     </hint>
    </hints>
   </connection>
@@ -8755,6 +8792,38 @@ p, li { white-space: pre-wrap; }
     <hint type="destinationlabel">
      <x>125</x>
      <y>598</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radioButtonFreeRange</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>pushButtonNegative</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>191</x>
+     <y>479</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>82</x>
+     <y>580</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radioButtonFreeRange</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>sliderVerticalCenter</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>172</x>
+     <y>477</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>123</x>
+     <y>603</y>
     </hint>
    </hints>
   </connection>

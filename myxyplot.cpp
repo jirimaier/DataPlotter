@@ -97,7 +97,7 @@ void MyXYPlot::autoset() {
 void MyXYPlot::mouseMoved(QMouseEvent* event) {
   if (mouseDrag == MouseDrag::nothing) {
     // Nic není taženo myší
-    if ((unsigned int)graphXY->selectTest(event->pos(), false) < 20) {
+    if ((unsigned int)graphXY->selectTest(event->pos(), false) < TRACER_MOUSE_DISTANCE) {
       tracer->setVisible(true);
       tracer->setPoint(event->pos());
       tracerText->setVisible(true);
@@ -108,7 +108,7 @@ void MyXYPlot::mouseMoved(QMouseEvent* event) {
       tracerText->setText(tracerTextStr);
       checkIfTracerTextFits();
       tracerLayer->replot();
-      this->QWidget::setCursor(Qt::ArrowCursor); // Cursor myši, ne ten grafový
+      this->QWidget::setCursor(defaultMouseCursor); // Cursor myši, ne ten grafový
     } else {
       if (tracer->visible())
         hideTracer();
@@ -130,7 +130,7 @@ void MyXYPlot::mouseMoved(QMouseEvent* event) {
 }
 
 void MyXYPlot::mousePressed(QMouseEvent* event) {
-  if ((unsigned int)graphXY->selectTest(event->pos(), false) < 20) {
+  if ((unsigned int)graphXY->selectTest(event->pos(), false) < TRACER_MOUSE_DISTANCE) {
     tracer->setPoint(event->pos());
     tracer->updatePosition();
     if (event->button() == Qt::RightButton) {
@@ -150,12 +150,12 @@ void MyXYPlot::mousePressed(QMouseEvent* event) {
   if (cursorsKey.at(Cursors::Cursor2)->visible())
     cur2dist = (unsigned int)cursorsKey.at(Cursors::Cursor2)->selectTest(event->pos(), false);
   if (cur1dist <= cur2dist) {
-    if (cur1dist < 20) {
+    if (cur1dist < PLOT_ELEMENTS_MOUSE_DISTANCE) {
       mouseDrag = MouseDrag::cursorX1;
       this->setInteraction(QCP::iRangeDrag, false);
       return;
     }
-  } else if (cur2dist < 20) {
+  } else if (cur2dist < PLOT_ELEMENTS_MOUSE_DISTANCE) {
     mouseDrag = MouseDrag::cursorX2;
     this->setInteraction(QCP::iRangeDrag, false);
     return;
@@ -168,12 +168,12 @@ void MyXYPlot::mousePressed(QMouseEvent* event) {
   if (cursorsVal.at(Cursors::Cursor2)->visible())
     cur2dist = (unsigned int)cursorsVal.at(Cursors::Cursor2)->selectTest(event->pos(), false);
   if (cur1dist <= cur2dist) {
-    if (cur1dist < 20) {
+    if (cur1dist < PLOT_ELEMENTS_MOUSE_DISTANCE) {
       mouseDrag = MouseDrag::cursorY1;
       this->setInteraction(QCP::iRangeDrag, false);
       return;
     }
-  } else if (cur2dist < 20) {
+  } else if (cur2dist < PLOT_ELEMENTS_MOUSE_DISTANCE) {
     mouseDrag = MouseDrag::cursorY2;
     this->setInteraction(QCP::iRangeDrag, false);
     return;
@@ -187,7 +187,7 @@ void MyXYPlot::setMouseCursorStyle(QMouseEvent* event) {
     cur1dist = (unsigned int)cursorsKey.at(Cursors::Cursor1)->selectTest(event->pos(), false);
   if (cursorsKey.at(Cursors::Cursor2)->visible())
     cur2dist = (unsigned int)cursorsKey.at(Cursors::Cursor2)->selectTest(event->pos(), false);
-  if (cur1dist < 20 || cur2dist < 20) {
+  if (cur1dist < PLOT_ELEMENTS_MOUSE_DISTANCE || cur2dist < PLOT_ELEMENTS_MOUSE_DISTANCE) {
     this->QWidget::setCursor(Qt::SizeHorCursor); // Cursor myši, ne ten grafový
     return;
   }
@@ -198,11 +198,11 @@ void MyXYPlot::setMouseCursorStyle(QMouseEvent* event) {
     cur1dist = (unsigned int)cursorsVal.at(Cursors::Cursor1)->selectTest(event->pos(), false);
   if (cursorsVal.at(Cursors::Cursor2)->visible())
     cur2dist = (unsigned int)cursorsVal.at(Cursors::Cursor2)->selectTest(event->pos(), false);
-  if (cur1dist < 20 || cur2dist < 20) {
+  if (cur1dist < PLOT_ELEMENTS_MOUSE_DISTANCE || cur2dist < PLOT_ELEMENTS_MOUSE_DISTANCE) {
     this->QWidget::setCursor(Qt::SizeVerCursor); // Cursor myši, ne ten grafový
     return;
   }
 
   // Nic
-  this->QWidget::setCursor(Qt::ArrowCursor); // Cursor myši, ne ten grafový
+  this->QWidget::setCursor(defaultMouseCursor); // Cursor myši, ne ten grafový
 }

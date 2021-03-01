@@ -19,43 +19,7 @@ void MainWindow::initSetables() {
   // Range
   setables["vrange"] = ui->doubleSpinBoxRangeVerticalRange;
   setables["hrange"] = ui->doubleSpinBoxRangeHorizontal;
-  setables["vpos"] = ui->dialVerticalCenter;
-  setables["hdiv"] = ui->horizontalSliderHGrid;
-  setables["vdiv"] = ui->horizontalSliderVGrid;
-
-  // XY
-  setables["xyen"] = ui->pushButtonXY;
-  setables["xyxch"] = ui->comboBoxXYx;
-  setables["xyych"] = ui->comboBoxXYy;
-  setables["xygrid"] = ui->horizontalSliderXYGrid;
-  setables["xystyle"] = ui->comboBoxXYStyle;
-
-  // FFT
-  setables["fften"] = ui->pushButtonFFT;
-  setables["fftch1"] = ui->comboBoxFFTCh1;
-  setables["fftch2en"] = ui->checkBoxFFTCh2;
-  setables["fftch1en"] = ui->checkBoxFFTCh1;
-  setables["fftch2"] = ui->comboBoxFFTCh2;
-  setables["fftgridx"] = ui->horizontalSliderGridFFTH;
-  setables["fftgridy"] = ui->horizontalSliderGridFFTV;
-  setables["fftstyle1"] = ui->comboBoxFFTStyle1;
-  setables["fftwin1"] = ui->comboBoxFFTWindow1;
-  setables["fftstyle2"] = ui->comboBoxFFTStyle2;
-  setables["fftwin2"] = ui->comboBoxFFTWindow2;
-  setables["ffttype"] = ui->comboBoxFFTType;
-  setables["fftnodc1"] = ui->checkBoxFFTNoDC1;
-  setables["fftnodc2"] = ui->checkBoxFFTNoDC2;
-  setables["ffttwosided"] = ui->checkBoxFFTTwoSided;
-  setables["fftzerocenter"] = ui->checkBoxFFTZeroCenter;
-
-  // Measure
-  setables["meas1ch"] = ui->comboBoxMeasure1;
-  setables["meas2ch"] = ui->comboBoxMeasure2;
-
-  // Export
-  setables["csvprec"] = ui->spinBoxCSVPrecision;
-  setables["csvinchid"] = ui->checkBoxCSVIncludeHidden;
-  setables["csvvro"] = ui->checkBoxCSVVRO;
+  setables["vpos"] = ui->sliderVerticalCenter;
 
   // Plot settings
   setables["vaxis"] = ui->checkBoxVerticalValues;
@@ -63,14 +27,11 @@ void MainWindow::initSetables() {
   setables["hlabel"] = ui->lineEditHtitle;
   setables["vlabel"] = ui->lineEditVtitle;
   setables["vunit"] = ui->lineEditVUnit;
-  setables["selunused"] = ui->checkBoxSelUnused;
-  setables["mousecur"] = ui->checkBoxMouseControls;
   setables["opengl"] = ui->checkBoxOpenGL;
-  setables["rollstep"] = ui->spinBoxShiftStep;
 
   // Connection
   setables["baud"] = ui->comboBoxBaud;
-  setables["output"] = ui->comboBoxOutputLevel;
+  setables["debuglvl"] = ui->comboBoxOutputLevel;
 
   // Settings
   setables["clearonrec"] = ui->checkBoxClearOnReconnect;
@@ -80,33 +41,12 @@ void MainWindow::initSetables() {
   setables["rstcmd"] = ui->lineEditResetCmd;
 
   // Send
-  setables["lineending"] = ui->comboBoxLineEnding;
+  setables["sendend"] = ui->comboBoxLineEnding;
   setables["send1"] = ui->lineEditCommand;
   setables["send2"] = ui->lineEditCommand_2;
   setables["send3"] = ui->lineEditCommand_3;
   setables["send4"] = ui->lineEditCommand_4;
   setables["multisend"] = ui->pushButtonMultiplInputs;
-
-  // Math
-  for (int i = 0; i < MATH_COUNT; i++) {
-    setables[QString("math") + QString::number(i + 1) + QString("en")] = mathEn[i];
-    setables[QString("math") + QString::number(i + 1) + QString("first")] = mathFirst[i];
-    setables[QString("math") + QString::number(i + 1) + QString("sec")] = mathSecond[i];
-    setables[QString("math") + QString::number(i + 1) + QString("op")] = mathOp[i];
-  }
-
-  // Logic
-  setables["log1en"] = ui->pushButtonLog1;
-  setables["log2en"] = ui->pushButtonLog2;
-  setables["log3en"] = ui->pushButtonLog3;
-
-  setables["log1ch"] = ui->spinBoxLog1source;
-  setables["log2ch"] = ui->spinBoxLog2source;
-  setables["log3ch"] = ui->spinBoxLog3source;
-
-  setables["log1bits"] = ui->spinBoxLog1bits;
-  setables["log2bits"] = ui->spinBoxLog2bits;
-  setables["log3bits"] = ui->spinBoxLog3bits;
 }
 
 void MainWindow::applyGuiElementSettings(QWidget* target, QString value) {
@@ -165,67 +105,39 @@ QByteArray MainWindow::getSettings() {
   else if (ui->radioButtonRollingRange->isChecked())
     settings.append("plotrange:roll;\n");
 
+  if (ui->pushButtonTerminalClickToSend->isChecked())
+    settings.append("terminal:clicksend;\n");
+  else if (ui->pushButtonTerminalClickToSend->isChecked())
+    settings.append("terminal:select;\n");
+  else
+    settings.append("terminal:nointeract;\n");
+
   settings.append(ui->radioButtonEn->isChecked() ? "lang:en" : "lang:cz");
   settings.append(";\n");
   settings.append(ui->radioButtonCSVDot->isChecked() ? "csvsep:dc" : "csvsep:cs");
   settings.append(";\n");
-  settings.append(ui->radioButtonXYAutoSize->isChecked() ? "xyrange:fix" : "xyrange:free");
-  settings.append(";\n");
-  settings.append(ui->radioButtonFFTAutoSize->isChecked() ? "fftrange:fix" : "fftrange:free");
-  settings.append(";\n");
-  settings.append(ui->radioButtonXYFull->isChecked() ? "xydata:all" : "xydata:view");
-  settings.append(";\n");
-  settings.append(ui->radioButtonFFTFull->isChecked() ? "fftdata:all" : "fftdata:view");
-  settings.append(";\n");
-  settings.append(ui->radioButtonSigFull->isChecked() ? "measure:all" : "measure:view");
-  settings.append(";\n");
 
   QColor xyclr = ui->plotxy->graphXY->pen().color();
-  settings.append(QString("xycol:%1,%2,%3").arg(xyclr.red()).arg(xyclr.green()).arg(xyclr.blue()).toUtf8());
-  settings.append(";\n");
-
-  QColor fftclr = ui->plotFFT->graph(0)->pen().color();
-  settings.append(QString("fftcol:%1,%2,%3").arg(fftclr.red()).arg(fftclr.green()).arg(fftclr.blue()).toUtf8());
+  settings.append(QString("xyclr:%1,%2,%3").arg(xyclr.red()).arg(xyclr.green()).arg(xyclr.blue()).toUtf8());
   settings.append(";\n");
 
   for (int i = 0; i < ANALOG_COUNT + MATH_COUNT; i++) {
-    settings.append("ch:" + QString::number(i + 1).toUtf8());
-    settings.append(":off:" + QString::number(ui->plot->getChOffset(i)).toUtf8());
-    settings.append(";\n");
-    settings.append("ch:" + QString::number(i + 1).toUtf8());
-    settings.append(":sca:" + QString::number(ui->plot->getChScale(i)).toUtf8());
-    settings.append(";\n");
-    settings.append("ch:" + QString::number(i + 1).toUtf8());
-    settings.append(":inv:" + QString::number(ui->plot->isChInverted(i) ? 1 : 0).toUtf8());
-    settings.append(";\n");
-    settings.append("ch:" + QString::number(i + 1).toUtf8());
-    settings.append(":vis:" + QString::number(ui->plot->isChVisible(i) ? 1 : 0).toUtf8());
-    settings.append(";\n");
     settings.append("ch:" + QString::number(i + 1).toUtf8());
     settings.append(":sty:" + QString::number(ui->plot->getChStyle(i)).toUtf8());
     settings.append(";\n");
     settings.append("ch:" + QString::number(i + 1).toUtf8());
     QColor clr = ui->plot->getChColor(i);
-    settings.append(QString(":col:%1,%2,%3").arg(clr.red()).arg(clr.green()).arg(clr.blue()).toUtf8());
+    settings.append(QString(":clr:%1,%2,%3").arg(clr.red()).arg(clr.green()).arg(clr.blue()).toUtf8());
     settings.append(";\n");
   }
 
   for (int i = 0; i < LOGIC_GROUPS; i++) {
     settings.append("log:" + QString::number(i + 1).toUtf8());
-    settings.append(":off:" + QString::number(ui->plot->getLogicOffset(i)).toUtf8());
-    settings.append(";\n");
-    settings.append("log:" + QString::number(i + 1).toUtf8());
-    settings.append(":sca:" + QString::number(ui->plot->getLogicScale(i)).toUtf8());
-    settings.append(";\n");
-    settings.append("log:" + QString::number(i + 1).toUtf8());
-    settings.append(":vis:" + QString::number(ui->plot->isLogicVisible(i) ? 1 : 0).toUtf8());
-    settings.append(";\n");
-    settings.append("log:" + QString::number(i + 1).toUtf8());
     settings.append(":sty:" + QString::number(ui->plot->getLogicStyle(i)).toUtf8());
     settings.append(";\n");
     settings.append("log:" + QString::number(i + 1).toUtf8());
     QColor clr = ui->plot->getLogicColor(i);
-    settings.append(QString(":col:%1,%2,%3").arg(clr.red()).arg(clr.green()).arg(clr.blue()).toUtf8());
+    settings.append(QString(":clr:%1,%2,%3").arg(clr.red()).arg(clr.green()).arg(clr.blue()).toUtf8());
     settings.append(";\n");
   }
   return settings;
@@ -235,7 +147,8 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarg
   settings.replace('\n', "");
   settings.replace('\r', "");
   if (!settings.contains(':')) {
-    printMessage(tr("Invalid settings").toUtf8(), settings, MessageLevel::error, source);
+    if (source == MessageTarget::manual || ui->comboBoxOutputLevel->currentIndex() >= MessageLevel::error)
+      printMessage(tr("Invalid settings").toUtf8(), settings, MessageLevel::error, source);
     return;
   }
   QByteArray type = settings.left(settings.indexOf(':', 0));
@@ -250,6 +163,17 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarg
       ui->radioButtonEn->setChecked(true);
     if (value == "cz")
       ui->radioButtonCz->setChecked(true);
+  }
+
+  else if (type == "terminal") {
+    if (value == "clicksend")
+      ui->pushButtonTerminalClickToSend->setChecked(true);
+    if (value == "select")
+      ui->pushButtonTerminalSelect->setChecked(true);
+    if (value == "nointeract") {
+      ui->pushButtonTerminalClickToSend->setChecked(false);
+      ui->pushButtonTerminalSelect->setChecked(false);
+    }
   }
 
   else if (type == "csvsep") {
@@ -268,65 +192,22 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarg
       ui->radioButtonRollingRange->setChecked(true);
   }
 
-  else if (type == "xyrange") {
-    if (value == "fix")
-      ui->radioButtonXYAutoSize->setChecked(true);
-    if (value == "free")
-      ui->radioButtonXYFree->setChecked(true);
-  }
-
-  else if (type == "fftrange") {
-    if (value == "fix")
-      ui->radioButtonFFTAutoSize->setChecked(true);
-    if (value == "free")
-      ui->radioButtonFFTFree->setChecked(true);
-  }
-
-  else if (type == "fftdata") {
-    if (value == "all")
-      ui->radioButtonFFTFull->setChecked(true);
-    if (value == "view")
-      ui->radioButtonFFTPart->setChecked(true);
-  }
-
-  else if (type == "xydata") {
-    if (value == "all")
-      ui->radioButtonXYFull->setChecked(true);
-    if (value == "view")
-      ui->radioButtonXYPart->setChecked(true);
-  }
-
-  else if (type == "measure") {
-    if (value == "all")
-      ui->radioButtonSigFull->setChecked(true);
-    if (value == "view")
-      ui->radioButtonSigPart->setChecked(true);
-  }
-
-  else if (type == "xycol") {
+  else if (type == "xyclr") {
     QByteArrayList rgb = value.split(',');
     if (rgb.length() != 3) {
-      printMessage(tr("Invalid color: ").toUtf8(), settings, MessageLevel::error, source);
+      if (source == MessageTarget::manual || ui->comboBoxOutputLevel->currentIndex() >= MessageLevel::error)
+        printMessage(tr("Invalid color: ").toUtf8(), settings, MessageLevel::error, source);
       return;
     }
     QColor clr = QColor(rgb.at(0).toInt(), rgb.at(1).toInt(), rgb.at(2).toInt());
     ui->plotxy->graphXY->setPen(clr);
   }
 
-  else if (type == "fftcol") {
-    QByteArrayList rgb = value.split(',');
-    if (rgb.length() != 3) {
-      printMessage(tr("Invalid color: ").toUtf8(), settings, MessageLevel::error, source);
-      return;
-    }
-    QColor clr = QColor(rgb.at(0).toInt(), rgb.at(1).toInt(), rgb.at(2).toInt());
-    ui->plotFFT->graph(0)->setPen(clr);
-  }
-
   else if (type == "ch") {
     int ch = value.left(value.indexOf(':', 0)).toUInt();
     if (ch > ANALOG_COUNT + MATH_COUNT || ch == 0) {
-      printMessage(tr("Invalid channel in settings").toUtf8(), QString::number(ch).toUtf8(), MessageLevel::error, source);
+      if (source == MessageTarget::manual || ui->comboBoxOutputLevel->currentIndex() >= MessageLevel::error)
+        printMessage(tr("Invalid channel in settings").toUtf8(), QString::number(ch).toUtf8(), MessageLevel::error, source);
       return;
     }
     // V nastavení se čísluje od jedné, ale v příkazech od nuly
@@ -335,21 +216,13 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarg
     subtype = subtype.left(subtype.indexOf(':'));
     QByteArray subvalue = value.mid(value.lastIndexOf(':') + 1);
 
-    if (subtype == "off")
-      ui->plot->setChOffset(ch, subvalue.toDouble());
-    else if (subtype == "sca")
-      ui->plot->setChScale(ch, subvalue.toDouble());
-    else if (subtype == "inv")
-      ui->plot->setChInvert(ch, (bool)subvalue.toUInt());
-    else if (subtype == "vis")
-      ui->plot->setChVisible(ch, (bool)subvalue.toUInt());
-    else if (subtype == "sty")
+    if (subtype == "sty")
       ui->plot->setChStyle(ch, subvalue.toUInt());
-
-    else if (subtype == "col") {
+    else if (subtype == "clr") {
       QByteArrayList rgb = subvalue.mid(subvalue.indexOf(':')).split(',');
       if (rgb.length() != 3) {
-        printMessage(tr("Invalid color: ").toUtf8(), settings, MessageLevel::error, source);
+        if (source == MessageTarget::manual || ui->comboBoxOutputLevel->currentIndex() >= MessageLevel::error)
+          printMessage(tr("Invalid color: ").toUtf8(), settings, MessageLevel::error, source);
         return;
       }
       QColor clr = QColor(rgb.at(0).toInt(), rgb.at(1).toInt(), rgb.at(2).toInt());
@@ -363,7 +236,8 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarg
   else if (type == "log") {
     int group = value.left(value.indexOf(':', 0)).toUInt() - 1;
     if (group >= LOGIC_GROUPS) {
-      printMessage(tr("Invalid logic in settings").toUtf8(), QString::number(group).toUtf8(), MessageLevel::error, source);
+      if (source == MessageTarget::manual || ui->comboBoxOutputLevel->currentIndex() >= MessageLevel::error)
+        printMessage(tr("Invalid logic in settings").toUtf8(), QString::number(group).toUtf8(), MessageLevel::error, source);
       return;
     }
     QByteArray subtype = value.mid(value.indexOf(':', 0) + 1).toLower();
@@ -376,12 +250,11 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarg
       ui->plot->setLogicScale(group, subvalue.toDouble());
     else if (subtype == "sty")
       ui->plot->setLogicStyle(group, subvalue.toUInt());
-    else if (subtype == "vis")
-      ui->plot->setLogicVisibility(group, (bool)subvalue.toUInt());
-    else if (subtype == "col") {
+    else if (subtype == "clr") {
       QByteArrayList rgb = subvalue.mid(subvalue.indexOf(':')).split(',');
       if (rgb.length() != 3) {
-        printMessage(tr("Invalid color: ").toUtf8(), settings, MessageLevel::error, source);
+        if (source == MessageTarget::manual || ui->comboBoxOutputLevel->currentIndex() >= MessageLevel::error)
+          printMessage(tr("Invalid color: ").toUtf8(), settings, MessageLevel::error, source);
         return;
       }
       QColor clr = QColor(rgb.at(0).toInt(), rgb.at(1).toInt(), rgb.at(2).toInt());
@@ -394,10 +267,12 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarg
 
   // Error
   else {
-    printMessage(tr("Unknown setting").toUtf8(), type, MessageLevel::error, source);
+    if (source == MessageTarget::manual || ui->comboBoxOutputLevel->currentIndex() >= MessageLevel::error)
+      printMessage(tr("Unknown setting").toUtf8(), type, MessageLevel::error, source);
     return;
   }
-  printMessage(tr("Applied settings").toUtf8(), settings, MessageLevel::info, source);
+  if (source == MessageTarget::manual || ui->comboBoxOutputLevel->currentIndex() == MessageLevel::info)
+    printMessage(tr("Applied settings").toUtf8(), settings, MessageLevel::info, source);
 }
 
 void MainWindow::on_pushButtonLoadFile_clicked() {
