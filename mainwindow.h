@@ -85,6 +85,8 @@ class MainWindow : public QMainWindow {
   QTimer dataRateTimer;
   int dataUpdates = 0;
   bool lastUpdateWasPoint = false;
+  bool lastUpdateWasLogic = false;
+  bool autoAutosetPending = false;
   HAxisType::enumHAxisType recommandedAxisType = HAxisType::normal;
   void setCursorsVisibility(Cursors::enumCursors cursor, int graph, bool timeCurVisible, int valueCurState);
   void updateXYCursorsCalculations();
@@ -218,6 +220,7 @@ class MainWindow : public QMainWindow {
   void on_doubleSpinBoxXYCurY2_valueChanged(double arg1);
   void on_doubleSpinBoxXYCurX1_valueChanged(double arg1);
   void on_doubleSpinBoxXYCurX2_valueChanged(double arg1);
+  void on_pushButtonProtocolGuide_clicked();
 
  public slots:
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumMessageTarget target);
@@ -237,7 +240,7 @@ class MainWindow : public QMainWindow {
   void valueCursorMovedByMouse(Cursors::enumCursors cursor, double value);
   void cursorSetByMouse(int chid, Cursors::enumCursors cursor, int sample);
   void offsetChangedByMouse(int chid);
-  void ch1WasUpdated(bool wasPoint,   HAxisType::enumHAxisType recommandedTimeBase);
+  void ch1WasUpdated(bool wasPoint, bool wasLogic,  HAxisType::enumHAxisType recommandedTimeBase);
   void moveTimeCursorXY(Cursors::enumCursors cursor, double pos);
   void moveValueCursorXY(Cursors::enumCursors cursor, double pos);
   void setCursorPosXY(Cursors::enumCursors cursor, double x, double y);

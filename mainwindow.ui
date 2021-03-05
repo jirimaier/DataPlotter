@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Data Plotter</string>
   </property>
   <property name="windowIcon">
    <iconset resource="resources.qrc">
@@ -282,7 +282,7 @@
                   </size>
                  </property>
                  <property name="toolTip">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Channel scale&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Only affects how channel is displayed in plot. Does &lt;span style=&quot; text-decoration: underline;&quot;&gt;not&lt;/span&gt; affect values read using cursors!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Channel scale&lt;/p&gt;&lt;p&gt;Only affects how channel is displayed in plot. Does &lt;span style=&quot; text-decoration: underline;&quot;&gt;not&lt;/span&gt; affect values read using cursors!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                  <property name="autoFillBackground">
                   <bool>false</bool>
@@ -345,7 +345,7 @@
                  <property name="minimumSize">
                   <size>
                    <width>0</width>
-                   <height>0</height>
+                   <height>28</height>
                   </size>
                  </property>
                  <property name="maximumSize">
@@ -360,7 +360,7 @@
                   </font>
                  </property>
                  <property name="toolTip">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Channel scale&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Only affects how channel is displayed in plot. Does &lt;/span&gt;&lt;span style=&quot; font-size:8pt; text-decoration: underline;&quot;&gt;not&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt; affect values read using cursors!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Channel scale&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Only affects how channel is displayed in plot. Does &lt;/span&gt;&lt;span style=&quot; font-size:8pt; text-decoration: underline;&quot;&gt;not&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt; affect values read using cursors!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -390,7 +390,7 @@
                  <property name="minimumSize">
                   <size>
                    <width>0</width>
-                   <height>0</height>
+                   <height>28</height>
                   </size>
                  </property>
                  <property name="maximumSize">
@@ -403,6 +403,9 @@
                   <font>
                    <pointsize>10</pointsize>
                   </font>
+                 </property>
+                 <property name="toolTip">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Move graph verticaly&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -733,7 +736,7 @@
              <enum>QTabWidget::Rounded</enum>
             </property>
             <property name="currentIndex">
-             <number>3</number>
+             <number>6</number>
             </property>
             <property name="iconSize">
              <size>
@@ -4420,7 +4423,7 @@ p, li { white-space: pre-wrap; }
                       </size>
                      </property>
                      <property name="suffix">
-                      <string>V</string>
+                      <string notr="true">V</string>
                      </property>
                      <property name="decimals">
                       <number>6</number>
@@ -4449,7 +4452,7 @@ p, li { white-space: pre-wrap; }
                       </size>
                      </property>
                      <property name="suffix">
-                      <string>V</string>
+                      <string notr="true">V</string>
                      </property>
                      <property name="decimals">
                       <number>6</number>
@@ -4471,7 +4474,7 @@ p, li { white-space: pre-wrap; }
                       </size>
                      </property>
                      <property name="suffix">
-                      <string>V</string>
+                      <string notr="true">V</string>
                      </property>
                      <property name="decimals">
                       <number>6</number>
@@ -4503,7 +4506,7 @@ p, li { white-space: pre-wrap; }
                       </size>
                      </property>
                      <property name="suffix">
-                      <string>V</string>
+                      <string notr="true">V</string>
                      </property>
                      <property name="decimals">
                       <number>6</number>
@@ -4536,7 +4539,7 @@ p, li { white-space: pre-wrap; }
                    <item row="1" column="0">
                     <widget class="QLabel" name="label_53">
                      <property name="toolTip">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Difference of value cursors.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                      </property>
                      <property name="text">
                       <string/>
@@ -4552,7 +4555,7 @@ p, li { white-space: pre-wrap; }
                    <item row="0" column="0">
                     <widget class="QLabel" name="label_52">
                      <property name="toolTip">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Difference in time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                      </property>
                      <property name="text">
                       <string/>
@@ -4679,7 +4682,7 @@ p, li { white-space: pre-wrap; }
                    <item row="2" column="0" rowspan="2">
                     <widget class="QLabel" name="label_54">
                      <property name="toolTip">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Difference of value cursors.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Measure phase difference using cursors: arcsin(A/B)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                      </property>
                      <property name="text">
                       <string/>
@@ -5657,7 +5660,7 @@ p, li { white-space: pre-wrap; }
                    <item>
                     <widget class="QPushButton" name="pushButtonSelectedCSV">
                      <property name="toolTip">
-                      <string>Export selected</string>
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Export selected channel&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                      </property>
                      <property name="text">
                       <string/>
@@ -5711,6 +5714,9 @@ p, li { white-space: pre-wrap; }
                       </property>
                       <item>
                        <widget class="QRadioButton" name="radioButtonCSVComma">
+                        <property name="toolTip">
+                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Decimal comma, values separated by semicolumn&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                        </property>
                         <property name="text">
                          <string>Comma, Semicolon</string>
                         </property>
@@ -5718,6 +5724,9 @@ p, li { white-space: pre-wrap; }
                       </item>
                       <item>
                        <widget class="QRadioButton" name="radioButtonCSVDot">
+                        <property name="toolTip">
+                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Decimal dot, values separated by comma&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                        </property>
                         <property name="text">
                          <string>Dot, Comma</string>
                         </property>
@@ -5848,7 +5857,7 @@ p, li { white-space: pre-wrap; }
            </size>
           </property>
           <property name="currentIndex">
-           <number>3</number>
+           <number>0</number>
           </property>
           <property name="iconSize">
            <size>
@@ -5923,27 +5932,27 @@ p, li { white-space: pre-wrap; }
                      </sizepolicy>
                     </property>
                     <property name="currentText">
-                     <string notr="true">115200</string>
+                     <string notr="true">921600</string>
                     </property>
                     <property name="currentIndex">
-                     <number>3</number>
+                     <number>0</number>
                     </property>
                     <property name="insertPolicy">
                      <enum>QComboBox::NoInsert</enum>
                     </property>
                     <item>
                      <property name="text">
-                      <string>921600</string>
+                      <string notr="true">921600</string>
                      </property>
                     </item>
                     <item>
                      <property name="text">
-                      <string>460800</string>
+                      <string notr="true">460800</string>
                      </property>
                     </item>
                     <item>
                      <property name="text">
-                      <string>230400</string>
+                      <string notr="true">230400</string>
                      </property>
                     </item>
                     <item>
@@ -7187,7 +7196,7 @@ gridline-color: rgb(255, 255, 255);</string>
               <property name="title">
                <string>Connection</string>
               </property>
-              <layout class="QVBoxLayout" name="verticalLayout_27">
+              <layout class="QGridLayout" name="gridLayout_22">
                <property name="leftMargin">
                 <number>6</number>
                </property>
@@ -7200,8 +7209,68 @@ gridline-color: rgb(255, 255, 255);</string>
                <property name="bottomMargin">
                 <number>6</number>
                </property>
-               <item>
+               <item row="2" column="1">
+                <widget class="QLineEdit" name="lineEditResetCmd">
+                 <property name="placeholderText">
+                  <string>( reset command )</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="4" column="1">
+                <widget class="QCheckBox" name="checkBoxSerialMonitor">
+                 <property name="text">
+                  <string>SerialMonitor</string>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="0">
+                <widget class="QCheckBox" name="checkBoxResetCmdEn">
+                 <property name="text">
+                  <string>Send on connect:</string>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="4" column="0">
+                <widget class="QCheckBox" name="checkBoxShowManualInput">
+                 <property name="text">
+                  <string>Manual input</string>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QCheckBox" name="checkBoxAutoAutoSet">
+                 <property name="toolTip">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Do autoset function after first data for channel 1 is received&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                 <property name="text">
+                  <string>Auto autoset</string>
+                 </property>
+                 <property name="checked">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="0" colspan="2">
+                <widget class="Line" name="line_3">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="0">
                 <widget class="QCheckBox" name="checkBoxClearOnReconnect">
+                 <property name="toolTip">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clear graph after connecting&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
                  <property name="text">
                   <string>Clear on reconect</string>
                  </property>
@@ -7210,57 +7279,12 @@ gridline-color: rgb(255, 255, 255);</string>
                  </property>
                 </widget>
                </item>
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_30">
-                 <item>
-                  <widget class="QCheckBox" name="checkBoxResetCmdEn">
-                   <property name="text">
-                    <string>Send on connect:</string>
-                   </property>
-                   <property name="checked">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QLineEdit" name="lineEditResetCmd">
-                   <property name="placeholderText">
-                    <string>( reset command )</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </item>
-               <item>
-                <widget class="Line" name="line_3">
+               <item row="1" column="0" colspan="2">
+                <widget class="Line" name="line_10">
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
                  </property>
                 </widget>
-               </item>
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_29">
-                 <item>
-                  <widget class="QCheckBox" name="checkBoxShowManualInput">
-                   <property name="text">
-                    <string>Manual input</string>
-                   </property>
-                   <property name="checked">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QCheckBox" name="checkBoxSerialMonitor">
-                   <property name="text">
-                    <string>SerialMonitor</string>
-                   </property>
-                   <property name="checked">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
                </item>
               </layout>
              </widget>
@@ -7658,7 +7682,14 @@ gridline-color: rgb(255, 255, 255);</string>
             <item>
              <widget class="QPushButton" name="pushButtonOpenHelp">
               <property name="text">
-               <string>Open help file</string>
+               <string>Open user manual</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButtonProtocolGuide">
+              <property name="text">
+               <string>Open protocol guide</string>
               </property>
              </widget>
             </item>
@@ -7674,7 +7705,8 @@ p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Quick tips:&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Clicking on graph will bring cursor to that position. Left click for cursor 1, right click for cursor 2.&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Channel offset can be moved by mouse dragging zero line (only if zero line is visible - if offset is different than zero)&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Cursors can be dragged by mouse.&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Channel offset can be moved by mouse by dragging zero line.&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;To improve performance: Set console output to only warnings/errors/device, not info. If you use fill under graph (useful for logic), try enabling OpenGL.&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;In measurement page, rise time and fall time are calculated only from last period of signal/visible interval.&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Logic channel is calculated only from newly recieved data, it will not show when enabled during pause.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>

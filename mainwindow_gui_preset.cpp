@@ -181,13 +181,13 @@ void MainWindow::fillChannelSelect() {
   ui->comboBoxCursor1Channel->addItem(tr("Logic"));
   ui->comboBoxCursor2Channel->addItem(tr("Logic"));
 
-  ui->comboBoxCursor1Channel->addItem(tr("FFT 1"));
-  ui->comboBoxCursor1Channel->addItem(tr("FFT 2"));
-  ui->comboBoxCursor2Channel->addItem(tr("FFT 1"));
-  ui->comboBoxCursor2Channel->addItem(tr("FFT 2"));
+  ui->comboBoxCursor1Channel->addItem("FFT 1");
+  ui->comboBoxCursor1Channel->addItem("FFT 2");
+  ui->comboBoxCursor2Channel->addItem("FFT 1");
+  ui->comboBoxCursor2Channel->addItem("FFT 2");
 
-  ui->comboBoxMeasure1->addItem(iconCross, tr("Off"));
-  ui->comboBoxMeasure2->addItem(iconCross, tr("Off"));
+  ui->comboBoxMeasure1->addItem(iconCross, "Off");
+  ui->comboBoxMeasure2->addItem(iconCross, "Off");
   ui->comboBoxMeasure1->setCurrentIndex(ui->comboBoxMeasure1->count() - 1);
   ui->comboBoxMeasure2->setCurrentIndex(ui->comboBoxMeasure2->count() - 1);
 

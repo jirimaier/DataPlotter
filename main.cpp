@@ -124,6 +124,7 @@ int main(int argc, char* argv[]) {
   QObject::connect(serialParser1, &NewSerialParser::sendSettings, &mainWindow, &MainWindow::useSettings);
   QObject::connect(serialParser1, &NewSerialParser::sendTerminal, &mainWindow, &MainWindow::printToTerminal);
   QObject::connect(serialParser1, &NewSerialParser::sendPoint, plotData, &PlotData::addPoint);
+  QObject::connect(serialParser1, &NewSerialParser::sendLogicPoint, plotData, &PlotData::addLogicPoint);
   QObject::connect(serialParser1, &NewSerialParser::sendChannel, plotData, &PlotData::addChannel);
   QObject::connect(serialParser1, &NewSerialParser::sendLogicChannel, plotData, &PlotData::addLogicChannel);
   QObject::connect(serialParser1, &NewSerialParser::sendEcho, serial1, &SerialReader::write);
@@ -138,6 +139,7 @@ int main(int argc, char* argv[]) {
   QObject::connect(serialParserM, &NewSerialParser::sendSettings, &mainWindow, &MainWindow::useSettings);
   QObject::connect(serialParserM, &NewSerialParser::sendTerminal, &mainWindow, &MainWindow::printToTerminal);
   QObject::connect(serialParserM, &NewSerialParser::sendPoint, plotData, &PlotData::addPoint);
+  QObject::connect(serialParserM, &NewSerialParser::sendLogicPoint, plotData, &PlotData::addLogicPoint);
   QObject::connect(serialParserM, &NewSerialParser::sendChannel, plotData, &PlotData::addChannel);
   QObject::connect(serialParserM, &NewSerialParser::sendLogicChannel, plotData, &PlotData::addLogicChannel);
   QObject::connect(&mainWindow, &MainWindow::requestManualBufferClear, serialParserM, &NewSerialParser::clearBuffer);

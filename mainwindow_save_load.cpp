@@ -39,6 +39,7 @@ void MainWindow::initSetables() {
   setables["serialmon"] = ui->checkBoxSerialMonitor;
   setables["sendonrec"] = ui->checkBoxResetCmdEn;
   setables["rstcmd"] = ui->lineEditResetCmd;
+  setables["autoautoset"] = ui->checkBoxAutoAutoSet;
 
   // Send
   setables["sendend"] = ui->comboBoxLineEnding;

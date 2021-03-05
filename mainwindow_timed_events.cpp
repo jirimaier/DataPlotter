@@ -273,7 +273,11 @@ void MainWindow::updateSerialMonitor() {
 
 void MainWindow::updateDataRate() {
   if (dataUpdates > 0) {
-    ui->labelUpdateRate->setText("Ch1: " + QString::number(dataUpdates) + " " + (lastUpdateWasPoint ? tr("points") : tr("updates")) + " / s");
+    if (autoAutosetPending) {
+      on_pushButtonAutoset_clicked();
+      autoAutosetPending = false;
+    }
+    ui->labelUpdateRate->setText((lastUpdateWasLogic ? "Logic1: " : "Ch1: ") + QString::number(dataUpdates) + " " + (lastUpdateWasPoint ? tr("points") : tr("updates")) + " / s");
   } else
     ui->labelUpdateRate->clear();
   dataUpdates = 0;

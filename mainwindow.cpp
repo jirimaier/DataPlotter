@@ -71,9 +71,9 @@ void MainWindow::showPlotStatus(PlotStatus::enumPlotStatus type) {
 void MainWindow::updateChScale() {
   if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT) {
     double perDiv = ui->plot->getCHDiv(ui->comboBoxSelectedChannel->currentIndex());
-    ui->labelChScale->setText(floatToNiceString(perDiv, 3, true, false) + tr("V / Div"));
+    ui->labelChScale->setText(floatToNiceString(perDiv, 3, true, false) + ui->plot->getYUnit() + tr(" / Div"));
   } else
-    ui->labelChScale->setText(tr("---"));
+    ui->labelChScale->setText("---");
 }
 
 void MainWindow::serialConnectResult(bool connected, QString message) {
@@ -100,6 +100,7 @@ void MainWindow::serialConnectResult(bool connected, QString message) {
     data.replace("\\a", "\a");
     emit writeToSerial(ui->lineEditResetCmd->text().toLocal8Bit());
   }
+  autoAutosetPending = ui->checkBoxAutoAutoSet->isChecked();
 }
 
 void MainWindow::serialFinishedWriting() {
@@ -113,7 +114,7 @@ void MainWindow::updateDivs() {
     ui->labelHDiv->setText(floatToNiceString(ui->plot->getHDiv(), 1, false, false) + tr("s/Div"));
   else
     ui->labelHDiv->setText("---");
-  ui->labelVDiv->setText(floatToNiceString(ui->plot->getVDiv(), 1, false, false) + tr("V/Div"));
+  ui->labelVDiv->setText(floatToNiceString(ui->plot->getVDiv(), 1, false, false) + ui->plot->getYUnit() + tr("V/Div"));
 }
 
 void MainWindow::on_doubleSpinBoxRangeVerticalRange_valueChanged(double arg1) {
@@ -191,7 +192,12 @@ void MainWindow::printDeviceMessage(QByteArray message, bool warning, bool ended
   pendingDeviceMessage = !ended;
 }
 
-void MainWindow::ch1WasUpdated(bool wasPoint, HAxisType::enumHAxisType recommandedTimeBase) {lastUpdateWasPoint = wasPoint; dataUpdates++; recommandedAxisType = recommandedTimeBase;}
+void MainWindow::ch1WasUpdated(bool wasPoint, bool wasLogic, HAxisType::enumHAxisType recommandedTimeBase) {
+  lastUpdateWasPoint = wasPoint;
+  lastUpdateWasLogic = wasLogic;
+  dataUpdates++;
+  recommandedAxisType = recommandedTimeBase;
+}
 
 void MainWindow::updateMathNow(int number) {
   emit setMathFirst(number, mathEn[number - 1]->isChecked() ? mathFirst[number - 1]->value() : 0);
@@ -306,4 +312,15 @@ void MainWindow::on_checkBoxFFTCh2_toggled(bool checked) {
   item->setEnabled(checked && ui->pushButtonFFT->isChecked());
   view = qobject_cast<QListView*>(ui->comboBoxCursor2Channel->view());
   view->setRowHidden(FFTID(1), !(checked && ui->pushButtonFFT->isChecked()));
+}
+
+void MainWindow::on_pushButtonProtocolGuide_clicked() {
+  QString helpFile = QCoreApplication::applicationDirPath() + "/Protocol.pdf";
+  if (!QDesktopServices::openUrl(QUrl::fromLocalFile(helpFile))) {
+    QMessageBox msgBox;
+    msgBox.setText(tr("Cant open file."));
+    msgBox.setInformativeText(helpFile);
+    msgBox.setIcon(QMessageBox::Critical);
+    msgBox.exec();
+  }
 }

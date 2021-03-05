@@ -31,6 +31,7 @@ class MyXYPlot : public MyPlot {
   QSharedPointer<QCPCurveDataContainer> pauseBuffer;
   bool autoSize = true;
   void autoset();
+  void updateTracerText();
 
   void setMouseCursorStyle(QMouseEvent* event);
  private slots:

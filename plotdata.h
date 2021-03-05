@@ -46,7 +46,7 @@ class PlotData : public QObject {
   // unsigned int xyFirst, xySecond;
   double getValue(QPair<ValueType, QByteArray> value, bool& isok);
   OutputLevel::enumOutputLevel debugLevel = OutputLevel::info;
-  double lastTimes[ANALOG_COUNT];
+  double lastTime;
   double defaultTimestep = 1;
   void sendMessageIfAllowed(QString header, QByteArray message, MessageLevel::enumMessageLevel type);
   uint32_t getBits(QPair<ValueType, QByteArray> value);
@@ -56,6 +56,7 @@ class PlotData : public QObject {
 
  public slots:
   void addPoint(QList<QPair<ValueType, QByteArray>> data);
+  void addLogicPoint(QPair<ValueType, QByteArray> timeArray, QPair<ValueType, QByteArray> valueArray, unsigned int bits);
   void addChannel(QPair<ValueType, QByteArray> data, unsigned int ch, QPair<ValueType, QByteArray> timeRaw, int zeroIndex, int bits, QPair<ValueType, QByteArray> min, QPair<ValueType, QByteArray> max);
   void addLogicChannel(QPair<ValueType, QByteArray> data, QPair<ValueType, QByteArray> timeRaw, int bits, int zeroIndex);
 
@@ -86,7 +87,7 @@ class PlotData : public QObject {
 
   void addMathData(int mathNumber, bool isFirst, QSharedPointer<QCPGraphDataContainer> in, bool shouldIgnorePause = false);
 
-  void ch1dataUpdated(bool wasPoint,   HAxisType::enumHAxisType recommandedAxisType = HAxisType::normal);
+  void ch1dataUpdated(bool wasPoint, bool wasLogic, HAxisType::enumHAxisType recommandedAxisType = HAxisType::normal);
 };
 
 #endif // PLOTTING_H

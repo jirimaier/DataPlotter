@@ -21,9 +21,9 @@ void MainWindow::exportCSV(bool all, int ch) {
     name = tr("all");
   else {
     if (ch == EXPORT_FFT)
-      name = tr("fft");
+      name = "fft";
     else if (ch == EXPORT_XY)
-      name = tr("xy");
+      name = "xy";
     else if (ch >= ANALOG_COUNT + MATH_COUNT)
       name = tr("logic %1").arg(ch - ANALOG_COUNT - MATH_COUNT + 1);
     else {

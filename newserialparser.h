@@ -42,6 +42,8 @@ class NewSerialParser : public QObject {
   void sendSettings(QByteArray message, MessageTarget::enumMessageTarget source);
   /// Pošle bod ke zpracování
   void sendPoint(QList<QPair<ValueType, QByteArray>> data);
+  /// Pošle logický bod ke zpracování
+  void sendLogicPoint(QPair<ValueType, QByteArray> timeArray, QPair<ValueType, QByteArray> valueArray, unsigned int bits);
   /// Pošle kanál ke zpracování
   void sendChannel(QPair<ValueType, QByteArray> data, unsigned int ch, QPair<ValueType, QByteArray> timeRaw, int zeroIndex, int bits, QPair<ValueType, QByteArray> min, QPair<ValueType, QByteArray> max);
   /// Pošle logický kanál ke zpracování

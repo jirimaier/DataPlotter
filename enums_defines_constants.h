@@ -46,7 +46,7 @@ enum enumGraphStyle { line = 0, point = 1, linePoint = 2, filled = 3, square = 4
 }
 
 namespace DataMode {
-enum enumDataMode { unknown, terminal, info, warning, settings, point, channel, echo, logicChannel, logicPoints };
+enum enumDataMode { unknown, terminal, info, warning, settings, point, channel, echo, logicChannel, logicPoint };
 }
 
 namespace OutputLevel {
@@ -89,12 +89,12 @@ struct ValueType {
   double multiplier = 1.0;
 };
 
-inline ValueType readValuePrefix(QByteArray& buffer, int* detectedPrefixLength) {
+inline ValueType readValuePrefix(QByteArray& buffer, int& detectedPrefixLength) {
   ValueType valType;
   if (buffer.length() < 2)
     return valType; // Incomplete
   if (!isdigit(buffer.at(1))) {
-    *detectedPrefixLength = 3;
+    detectedPrefixLength = 3;
     if (buffer.length() < 3)
       return valType; // Incomplete
     switch (buffer.at(0)) {
@@ -145,24 +145,28 @@ inline ValueType readValuePrefix(QByteArray& buffer, int* detectedPrefixLength) 
         return valType; // Invalid
     }
   } else
-    *detectedPrefixLength = 2;
+    detectedPrefixLength = 2;
 
-  switch (tolower(buffer.at(0))) {
+#define unitPosition 0
+#define typePosition detectedPrefixLength-2
+#define bytesPosition detectedPrefixLength-1
+
+  switch (tolower(buffer.at(typePosition))) {
     case 'u':
       valType.type = ValueType::unsignedint;
-      valType.bytes = buffer.at(1) - '0';
+      valType.bytes = buffer.at(bytesPosition) - '0';
       if (valType.bytes != 1 && valType.bytes != 2 && valType.bytes != 3 && valType.bytes != 4)
         valType.type = ValueType::invalid;
       break;
     case 'i':
       valType.type = ValueType::integer;
-      valType.bytes = buffer.at(1) - '0';
+      valType.bytes = buffer.at(bytesPosition) - '0';
       if (valType.bytes != 1 && valType.bytes != 2 && valType.bytes != 4)
         valType.type = ValueType::invalid;
       break;
     case 'f':
       valType.type = ValueType::floatingpoint;
-      valType.bytes = buffer.at(1) - '0';
+      valType.bytes = buffer.at(bytesPosition) - '0';
       if (valType.bytes != 4 && valType.bytes != 8)
         valType.type = ValueType::invalid;
       break;
@@ -170,7 +174,7 @@ inline ValueType readValuePrefix(QByteArray& buffer, int* detectedPrefixLength) 
       valType.type = ValueType::invalid;
       return valType; // Invalid
   }
-  valType.bigEndian = (buffer.at(0) == toupper(buffer.at(0)));
+  valType.bigEndian = (buffer.at(typePosition) == toupper(buffer.at(typePosition)));
   return valType;
 }
 

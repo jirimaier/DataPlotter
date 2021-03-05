@@ -151,16 +151,17 @@ void MyMainPlot::updateTracerText(int index) {
   QString tracerTextStr;
   tracerTextStr.append(" " + getChName(index) + "\n");
   if (IS_LOGIC_CH(index)) {
-    tracerTextStr.append(tr("=%1, ").arg((uint32_t)1 << ChID_TO_LOGIC_GROUP_BIT(index)));
+    tracerTextStr.append("=%1, ").arg((uint32_t)1 << ChID_TO_LOGIC_GROUP_BIT(index));
     if ((int)tracer->position->value() % 3)
-      tracerTextStr.append(tr("HIGH"));
+      tracerTextStr.append("HIGH");
     else
-      tracerTextStr.append(tr("LOW"));
-    tracerTextStr.append(tr("\n"));
+      tracerTextStr.append("LOW");
+    tracerTextStr.append("\n");
   } else
     tracerTextStr.append(floatToNiceString(tracer->position->value(), 4, true, false) + getYUnit() + "\n");
   tracerTextStr.append(floatToNiceString(tracer->position->key(), 4, true, false) + getXUnit());
   tracerText->setText(tracerTextStr);
+  checkIfTracerTextFits();
   tracerLayer->replot();
 }
 
@@ -481,7 +482,7 @@ QByteArray MyMainPlot::exportLogicCSV(char separator, char decimal, int group, i
   int bits = getLogicBitsUsed(group);
   for (int i = bits - 1; i >= 0; i++) {
     output.append(separator);
-    output.append(tr("bit %1").arg(i).toUtf8());
+    output.append(QString("bit %1").arg(i).toUtf8());
   }
   output.append('\n');
   for (int i = 0; i < graph(getLogicChannelID(group, 0))->dataCount(); i++) {

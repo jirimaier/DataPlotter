@@ -153,10 +153,10 @@ void PlotData::addPoint(QList<QPair<ValueType, QByteArray>> data) {
   double time;
   lastRecommandedAxisType = HAxisType::normal;
   if (data.at(0).second.isEmpty() || data.at(0).second == "-sample") {
-    if (qIsInf(lastTimes[0]))
+    if (qIsInf(lastTime))
       time = 0;
     else
-      time = lastTimes[0] + defaultTimestep;
+      time = lastTime + defaultTimestep;
   } else if (data.at(0).second == "-tod") {
     time = qTime.currentTime().msecsSinceStartOfDay() / 1000.0;
     lastRecommandedAxisType = HAxisType::HMS;
@@ -168,7 +168,7 @@ void PlotData::addPoint(QList<QPair<ValueType, QByteArray>> data) {
   } else {
     time = getValue(data.at(0), isok);
     if (!isok) {
-      sendMessageIfAllowed(tr("Can not parse points time").toUtf8(), data.at(0).second, MessageLevel::error);
+      sendMessageIfAllowed(tr("Can not parse point time").toUtf8(), data.at(0).second, MessageLevel::error);
       return;
     }
   }
@@ -198,7 +198,7 @@ void PlotData::addPoint(QList<QPair<ValueType, QByteArray>> data) {
           if (logicBits[ch - 1] > 0 && logicBits[ch - 1] < bits)
             bits = logicBits[ch - 1];
           for (uint8_t bit = 0; bit < bits; bit++) {
-            emit addPointToPlot(getLogicChannelID(logicGroup, bit), time, digitalChannels.at(bit), time >= lastTimes[ch - 1]);
+            emit addPointToPlot(getLogicChannelID(logicGroup, bit), time, digitalChannels.at(bit), time >= lastTime);
           }
         }
       } else {
@@ -207,9 +207,9 @@ void PlotData::addPoint(QList<QPair<ValueType, QByteArray>> data) {
     }
 
     if (ch == 1)
-      emit ch1dataUpdated(true, lastRecommandedAxisType);
+      emit ch1dataUpdated(true, false, lastRecommandedAxisType);
 
-    emit addPointToPlot(ch - 1, time, value, time >= lastTimes[ch - 1]);
+    emit addPointToPlot(ch - 1, time, value, time >= lastTime);
     for (int math = 0; math < MATH_COUNT; math++) {
       if (mathFirsts[math] == ch) {
         auto point = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer());
@@ -222,10 +222,53 @@ void PlotData::addPoint(QList<QPair<ValueType, QByteArray>> data) {
         emit addMathData(math, false, point);
       }
     }
-    lastTimes[ch - 1] = time;
+
   }
+  lastTime = time;
   if (debugLevel == OutputLevel::info)
-    emit sendMessage(tr("Received point").toUtf8(), tr("%1 channels").arg(data.length() - 1).toUtf8(), MessageLevel::info);
+    emit sendMessage(tr("Received point").toUtf8(), tr("%n channel(s)", "", data.length() - 1).toUtf8(), MessageLevel::info);
+}
+
+void PlotData::addLogicPoint(QPair<ValueType, QByteArray> timeArray, QPair<ValueType, QByteArray> valueArray, unsigned int bits) {
+  bool isok;
+  double time;
+  lastRecommandedAxisType = HAxisType::normal;
+  if (timeArray.second.isEmpty() || timeArray.second == "-sample") {
+    if (qIsInf(lastTime))
+      time = 0;
+    else
+      time = lastTime + defaultTimestep;
+  } else if (timeArray.second == "-tod") {
+    time = qTime.currentTime().msecsSinceStartOfDay() / 1000.0;
+    lastRecommandedAxisType = HAxisType::HMS;
+  } else if (timeArray.second == "-auto") {
+    if (!timerRunning)
+      elapsedTime.start();
+    time = elapsedTime.nsecsElapsed() * 1e-9;
+    lastRecommandedAxisType = time >= 3600 ? HAxisType::HMS : HAxisType::MS;
+  } else {
+    time = getValue(timeArray, isok);
+    if (!isok) {
+      sendMessageIfAllowed(tr("Can not parse logic point time").toUtf8(), timeArray.second, MessageLevel::error);
+      return;
+    }
+  }
+
+  if (!valueArray.second.isEmpty()) {
+    QVector<double> digitalChannels;
+    uint32_t digitalValue = getBits(valueArray);
+    for (uint8_t bit = 0; bit < bits; bit++) {
+      double value = ((bool)((digitalValue) & ((uint32_t)1 << (bit)))) + bit * 3;
+      emit addPointToPlot(getLogicChannelID(2, bit), time, value, time >= lastTime);
+    }
+
+    emit ch1dataUpdated(true, true, lastRecommandedAxisType);
+  }
+
+  if (debugLevel == OutputLevel::info)
+    emit sendMessage(tr("Received logic point").toUtf8(),  tr("%n bit(s)", "", bits).toUtf8(), MessageLevel::info);
+
+  lastTime = time;
 }
 
 void PlotData::addChannel(QPair<ValueType, QByteArray> data, unsigned int ch, QPair<ValueType, QByteArray> timeRaw, int zeroIndex, int bits, QPair<ValueType, QByteArray> min, QPair<ValueType, QByteArray> max) {
@@ -267,7 +310,8 @@ void PlotData::addChannel(QPair<ValueType, QByteArray> data, unsigned int ch, QP
 
   // Informace o přijatém kanálu
   if (debugLevel == OutputLevel::info) {
-    QByteArray message = tr("%1 samples, sampling period %2s, %4 bits").arg(data.second.length() / data.first.bytes).arg(floatToNiceString(timeStep, 4, false, false)).arg(bits).toUtf8();
+    QByteArray message = tr("%1 samples, sampling period %2s").arg(data.second.length() / data.first.bytes).arg(floatToNiceString(timeStep, 4, false, false)).toUtf8();
+    message.append(tr(", %n bit(s)", "", bits).toUtf8());
     if (remap)
       message.append(tr(", from %1 to %2").arg(minimum).arg(maximum).toUtf8());
     if (zeroIndex > 0)
@@ -310,7 +354,7 @@ void PlotData::addChannel(QPair<ValueType, QByteArray> data, unsigned int ch, QP
   }
 
   if (ch == 1)
-    emit ch1dataUpdated(false, HAxisType::normal); // Aktualizuje počítadlo rychlosti přicházejících dat a nastavý fixed režim pro autoset
+    emit ch1dataUpdated(false, false, HAxisType::normal); // Aktualizuje počítadlo rychlosti přicházejících dat a nastavý fixed režim pro autoset
   emit addVectorToPlot(ch - 1, analogData);
 
   if (isLogic) {
@@ -345,7 +389,8 @@ void PlotData::addLogicChannel(QPair<ValueType, QByteArray> data, QPair<ValueTyp
 
   // Informace o přijatém kanálu
   if (debugLevel == OutputLevel::info) {
-    QByteArray message = tr("%1 samples, sampling period %2s, %4 bits").arg(data.second.length() / data.first.bytes).arg(floatToNiceString(timeStep, 4, false, false)).arg(bits).toUtf8();
+    QByteArray message = tr("%1 samples, sampling period %2s").arg(data.second.length() / data.first.bytes).arg(floatToNiceString(timeStep, 4, false, false)).toUtf8();
+    message.append(tr(", %n bit(s)", "", bits).toUtf8());
     if (zeroIndex > 0)
       message.append(tr(", zero time at sample index %3").arg(zeroIndex).toUtf8());
     emit sendMessage(tr("Received logic channel").toUtf8(), message, MessageLevel::info);
@@ -358,7 +403,7 @@ void PlotData::addLogicChannel(QPair<ValueType, QByteArray> data, QPair<ValueTyp
     valuesDigital.append(getBits(QPair<ValueType, QByteArray>(data.first, data.second.mid(i, data.first.bytes))));
   }
 
-  emit ch1dataUpdated(false, HAxisType::normal); // Aktualizuje počítadlo rychlosti přicházejících dat a nastavý fixed režim pro autoset
+  emit ch1dataUpdated(false, true, HAxisType::normal); // Aktualizuje počítadlo rychlosti přicházejících dat a nastavý fixed režim pro autoset
 
   // Pošle do grafu logický kanál
   QVector<QSharedPointer<QCPGraphDataContainer>> digitalChannels;
@@ -373,8 +418,7 @@ void PlotData::addLogicChannel(QPair<ValueType, QByteArray> data, QPair<ValueTyp
 }
 
 void PlotData::reset() {
-  for (int i = 0; i < ANALOG_COUNT; i++)
-    lastTimes[i] = INFINITY;
+  lastTime = INFINITY;
 }
 
 void PlotData::setDigitalChannel(int logicGroup, int ch) {

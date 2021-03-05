@@ -35,14 +35,8 @@ void MyXYPlot::newData(QSharedPointer<QCPCurveDataContainer> data) {
   this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
 
   // Přepsat text u traceru
-  if (tracer->visible()) {
-    QString tracerTextStr;
-    tracerTextStr.append("X: " + floatToNiceString(tracer->position->key(), 4, true, false) + getXUnit() + "\n");
-    tracerTextStr.append("Y: " + floatToNiceString(tracer->position->value(), 4, true, false) + getYUnit() + "\n");
-    tracerTextStr.append("t: " + floatToNiceString(graphXY->data().data()->at(tracer->sampleNumber())->t, 4, true, false) + tUnit);
-    tracerText->setText(tracerTextStr);
-    tracerLayer->replot();
-  }
+  if (tracer->visible())
+    updateTracerText();
 }
 
 void MyXYPlot::setAutoSize(bool en) {
@@ -94,6 +88,16 @@ void MyXYPlot::autoset() {
   yAxis->setRange(yRange);
 }
 
+void MyXYPlot::updateTracerText() {
+  QString tracerTextStr;
+  tracerTextStr.append("X: " + floatToNiceString(tracer->position->key(), 4, true, false) + getXUnit() + "\n");
+  tracerTextStr.append("Y: " + floatToNiceString(tracer->position->value(), 4, true, false) + getYUnit() + "\n");
+  tracerTextStr.append("t: " + floatToNiceString(graphXY->data().data()->at(tracer->sampleNumber())->t, 4, true, false) + tUnit);
+  tracerText->setText(tracerTextStr);
+  checkIfTracerTextFits();
+  tracerLayer->replot();
+}
+
 void MyXYPlot::mouseMoved(QMouseEvent* event) {
   if (mouseDrag == MouseDrag::nothing) {
     // Nic není taženo myší
@@ -101,13 +105,7 @@ void MyXYPlot::mouseMoved(QMouseEvent* event) {
       tracer->setVisible(true);
       tracer->setPoint(event->pos());
       tracerText->setVisible(true);
-      QString tracerTextStr;
-      tracerTextStr.append("X: " + floatToNiceString(tracer->position->key(), 4, true, false) + getXUnit() + "\n");
-      tracerTextStr.append("Y: " + floatToNiceString(tracer->position->value(), 4, true, false) + getYUnit() + "\n");
-      tracerTextStr.append("t: " + floatToNiceString(graphXY->data().data()->at(tracer->sampleNumber())->t, 4, true, false) + tUnit);
-      tracerText->setText(tracerTextStr);
-      checkIfTracerTextFits();
-      tracerLayer->replot();
+      updateTracerText();
       this->QWidget::setCursor(defaultMouseCursor); // Cursor myši, ne ten grafový
     } else {
       if (tracer->visible())

@@ -52,10 +52,12 @@ class MyPlot : public QCustomPlot {
   void setXUnit(QString unit) {
     xUnit = unit;
     unitTickerX->unit = unit;
+    replot();
   }
   void setYUnit(QString unit) {
     yUnit = unit;
     unitTickerY->unit = unit;
+    replot();
   }
   QString getXUnit() { return xUnit; }
   QString getYUnit() { return yUnit; }
