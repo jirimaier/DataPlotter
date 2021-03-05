@@ -5857,7 +5857,7 @@ p, li { white-space: pre-wrap; }
            </size>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
           <property name="iconSize">
            <size>
@@ -7586,6 +7586,9 @@ gridline-color: rgb(255, 255, 255);</string>
                <layout class="QHBoxLayout" name="horizontalLayout_16">
                 <item>
                  <widget class="QPushButton" name="pushButtonDefaults">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load user default setting from file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
                   <property name="text">
                    <string/>
                   </property>
@@ -7603,6 +7606,9 @@ gridline-color: rgb(255, 255, 255);</string>
                 </item>
                 <item>
                  <widget class="QPushButton" name="pushButtonReset">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load hard-coded defaults&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
                   <property name="text">
                    <string/>
                   </property>
@@ -7620,6 +7626,9 @@ gridline-color: rgb(255, 255, 255);</string>
                 </item>
                 <item>
                  <widget class="QPushButton" name="pushButtonLoadFile">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
                   <property name="text">
                    <string/>
                   </property>
@@ -7637,6 +7646,9 @@ gridline-color: rgb(255, 255, 255);</string>
                 </item>
                 <item>
                  <widget class="QPushButton" name="pushButtonSaveSettings">
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save settings&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
                   <property name="text">
                    <string/>
                   </property>

@@ -22,7 +22,7 @@
     <message>
         <location filename="../mainwindow.ui" line="4357"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Channel color&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>Chane graph color</translation>
+        <translation>Chane graph colour</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="436"/>
@@ -224,7 +224,7 @@
     <message>
         <location filename="../mainwindow.ui" line="469"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Channel style&lt;/p&gt;&lt;p&gt;Fill under channel (useful in logic channels) has high performance inpact, enable OpenGL in settings tab before use.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Channel style&lt;/p&gt;&lt;p&gt;Fill under channel (useful in logic channels) has high performance inpact, enable OpenGL in settings tab before use.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Channel style&lt;/p&gt;&lt;p&gt;Fill under channel (useful in logic channels) has high performance impact, enable OpenGL in settings tab before use.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="654"/>
@@ -260,7 +260,7 @@
     <message>
         <location filename="../mainwindow.ui" line="1085"/>
         <source>Symetric positive and negative</source>
-        <translation>Symetric positive and negative</translation>
+        <translation>Symmetric positive and negative</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1105"/>
@@ -589,7 +589,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mainwindow.ui" line="7275"/>
         <source>Clear on reconect</source>
-        <translation>Clear on reconect</translation>
+        <translation>Clear on reconnect</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="7371"/>
@@ -811,10 +811,10 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../mainwindow.ui" line="6509"/>
-        <location filename="../mainwindow.ui" line="7874"/>
-        <location filename="../mainwindow.ui" line="7927"/>
-        <location filename="../mainwindow.ui" line="7980"/>
-        <location filename="../mainwindow.ui" line="8033"/>
+        <location filename="../mainwindow.ui" line="7886"/>
+        <location filename="../mainwindow.ui" line="7939"/>
+        <location filename="../mainwindow.ui" line="7992"/>
+        <location filename="../mainwindow.ui" line="8045"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Send&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Send&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -856,12 +856,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mainwindow.ui" line="6969"/>
         <source>3?m Font color</source>
-        <translation>3?m Font color</translation>
+        <translation>3?m Font colour</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="6974"/>
         <source>4?m Back color</source>
-        <translation>4?m Back color</translation>
+        <translation>4?m Back colour</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="6979"/>
@@ -881,7 +881,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mainwindow.ui" line="6994"/>
         <source>7m Invert colors</source>
-        <translation>7m Invert colors</translation>
+        <translation>7m Invert colours</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="6999"/>
@@ -941,7 +941,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mainwindow.ui" line="7054"/>
         <source>s Save postition</source>
-        <translation>s Save postition</translation>
+        <translation>s Save position</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="7059"/>
@@ -1026,7 +1026,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mainwindow.ui" line="7421"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Normaly, only nonempty channel are showen in channel selection, this allows to show all available channels.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Normaly, only nonempty channel are showen in channel selection, this allows to show all available channels.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Normaly, only nonempty channel are shown in channel selection, this allows to show all available channels.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="7424"/>
@@ -1049,17 +1049,37 @@ p, li { white-space: pre-wrap; }
         <translation>Show</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7685"/>
+        <location filename="../mainwindow.ui" line="7590"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load user default setting from file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load user default setting from file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="7610"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load hard-coded defaults&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load hard-coded defaults&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="7630"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="7650"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save settings&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save settings&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="7697"/>
         <source>Open user manual</source>
         <translation>Open user manual</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7692"/>
+        <location filename="../mainwindow.ui" line="7704"/>
         <source>Open protocol guide</source>
         <translation>Open protocol guide</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7702"/>
+        <location filename="../mainwindow.ui" line="7714"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -1081,7 +1101,7 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Channel offset can be moved by mouse by dragging zero line.&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;To improve performance: Set console output to only warnings/errors/device, not info. If you use fill under graph (useful for logic), try enabling OpenGL.&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;In measurement page, rise time and fall time are calculated only from last period of signal/visible interval.&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Logic channel is calculated only from newly recieved data, it will not show when enabled during pause.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Logic channel is calculated only from newly received data, it will not show when enabled during pause.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="7334"/>
@@ -1131,7 +1151,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mainwindow.ui" line="7539"/>
         <source>Controll cursors by mouse</source>
-        <translation>Controll cursors by mouse</translation>
+        <translation>Control cursors by mouse</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="7569"/>
@@ -1146,63 +1166,63 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mainwindow.ui" line="7579"/>
         <source>Add semicolum to line</source>
-        <translation>Add semicolum to line</translation>
+        <translation>Add semicolon to line</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7750"/>
+        <location filename="../mainwindow.ui" line="7762"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This program comes with absolutely no warranty. This is free software, and you are welcome to redistribute it under certain conditions. See the &lt;a href=&quot;https://www.gnu.org/licenses/gpl-3.0.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#007af4;&quot;&gt;GNU General Public License&lt;/span&gt;&lt;/a&gt; for more details.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This program comes with absolutely no warranty. This is free software, and you are welcome to redistribute it under certain conditions. See the &lt;a href=&quot;https://www.gnu.org/licenses/gpl-3.0.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#007af4;&quot;&gt;GNU General Public License&lt;/span&gt;&lt;/a&gt; for more details.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7775"/>
+        <location filename="../mainwindow.ui" line="7787"/>
         <source>Translation: none</source>
-        <translation>Translation: EN_19122020</translation>
+        <translation>Translation: EN_05032021</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7795"/>
+        <location filename="../mainwindow.ui" line="7807"/>
         <source>maierjir@fel.cvut.cz</source>
         <translation>maierjir@fel.cvut.cz</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7849"/>
-        <location filename="../mainwindow.ui" line="7902"/>
-        <location filename="../mainwindow.ui" line="7955"/>
-        <location filename="../mainwindow.ui" line="8008"/>
+        <location filename="../mainwindow.ui" line="7861"/>
+        <location filename="../mainwindow.ui" line="7914"/>
+        <location filename="../mainwindow.ui" line="7967"/>
+        <location filename="../mainwindow.ui" line="8020"/>
         <source>send data to device</source>
         <translation>Send to device</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="8058"/>
+        <location filename="../mainwindow.ui" line="8070"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This will be added to the end of sent message.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This will be added to the end of sent message.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="8062"/>
+        <location filename="../mainwindow.ui" line="8074"/>
         <source>No line ending</source>
         <translation>Line ending: none</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="8067"/>
+        <location filename="../mainwindow.ui" line="8079"/>
         <source>New line</source>
         <translation>Line ending: LF</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="8072"/>
+        <location filename="../mainwindow.ui" line="8084"/>
         <source>Carriage return</source>
         <translation>Line ending: CR</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="8077"/>
+        <location filename="../mainwindow.ui" line="8089"/>
         <source>CR LF</source>
         <translation>Line ending: CR LF</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="8085"/>
+        <location filename="../mainwindow.ui" line="8097"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show multiple lines for sending message, this allows to have up to 4 commands prepared. Line will not be erased after send in this mode.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show multiple lines for sending message, this allows to have up to 4 commands prepared. Line will not be erased after send in this mode.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="8088"/>
+        <location filename="../mainwindow.ui" line="8100"/>
         <source>Multiple inputs</source>
         <translation>Multiple inputs</translation>
     </message>
@@ -1223,8 +1243,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="117"/>
-        <source>V/Div</source>
-        <translation>V/Div</translation>
+        <source>/Div</source>
+        <translation>/Div</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="183"/>
@@ -1331,7 +1351,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../mainwindow_save_load.cpp" line="226"/>
         <location filename="../mainwindow_save_load.cpp" line="258"/>
         <source>Invalid color: </source>
-        <translation>Invalid color: </translation>
+        <translation>Invalid colour: </translation>
     </message>
     <message>
         <location filename="../mainwindow_save_load.cpp" line="241"/>
@@ -1414,7 +1434,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../newserialparser.cpp" line="160"/>
         <location filename="../newserialparser.cpp" line="426"/>
         <source>Missing semicolumn ?</source>
-        <translation>Missing semicolumn ?</translation>
+        <translation>Missing semicolon ?</translation>
     </message>
     <message>
         <location filename="../newserialparser.cpp" line="74"/>
@@ -1428,25 +1448,25 @@ p, li { white-space: pre-wrap; }
         <location filename="../newserialparser.cpp" line="226"/>
         <location filename="../newserialparser.cpp" line="346"/>
         <source>No semicolum found</source>
-        <translation>No semicolum found</translation>
+        <translation>No semicolon found</translation>
     </message>
     <message>
         <location filename="../newserialparser.cpp" line="228"/>
         <location filename="../newserialparser.cpp" line="348"/>
         <source>There are semicolums %1 byte before and %2 after end.</source>
-        <translation>There are semicolums %1 byte before and %2 after end.</translation>
+        <translation>There are semicolons %1 byte before and %2 after end.</translation>
     </message>
     <message>
         <location filename="../newserialparser.cpp" line="231"/>
         <location filename="../newserialparser.cpp" line="351"/>
         <source>There is semicolum %1 bytes before end.</source>
-        <translation>There is semicolum %1 bytes before end.</translation>
+        <translation>There is semicolon %1 bytes before end.</translation>
     </message>
     <message>
         <location filename="../newserialparser.cpp" line="233"/>
         <location filename="../newserialparser.cpp" line="353"/>
         <source>There is semicolum %1 bytes after end.</source>
-        <translation>There is semicolum %1 bytes after end.</translation>
+        <translation>There is semicolon %1 bytes after end.</translation>
     </message>
     <message>
         <location filename="../newserialparser.cpp" line="235"/>
@@ -1507,7 +1527,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../newserialparser.cpp" line="149"/>
         <source>Invallid logic point: </source>
-        <translation>Invallid logic point: </translation>
+        <translation>Invalid logic point: </translation>
     </message>
     <message>
         <location filename="../newserialparser.cpp" line="149"/>
@@ -1534,7 +1554,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../newserialparser.cpp" line="291"/>
         <location filename="../newserialparser.cpp" line="294"/>
         <source>Invallid channel: </source>
-        <translation>Invallid channel: </translation>
+        <translation>Invalid channel: </translation>
     </message>
     <message>
         <location filename="../newserialparser.cpp" line="188"/>
@@ -1590,7 +1610,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../newserialparser.cpp" line="367"/>
         <location filename="../newserialparser.cpp" line="375"/>
         <source>Invallid logic channel: </source>
-        <translation>Invallid logic channel: </translation>
+        <translation>Invalid logic channel: </translation>
     </message>
     <message>
         <location filename="../newserialparser.cpp" line="339"/>
@@ -1760,12 +1780,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../plotdata.cpp" line="293"/>
         <source>Minumum value is stated, but maximum is not</source>
-        <translation>Minumum value is stated, but maximum is not</translation>
+        <translation>Minimum value is stated, but maximum is not</translation>
     </message>
     <message>
         <location filename="../plotdata.cpp" line="293"/>
         <source>Value will not be remaped!</source>
-        <translation>Value will not be remaped!</translation>
+        <translation>Value will not be remapped!</translation>
     </message>
     <message>
         <location filename="../plotdata.cpp" line="296"/>

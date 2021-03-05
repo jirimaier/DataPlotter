@@ -37,7 +37,7 @@
     <message>
         <location filename="../mainwindow.ui" line="1188"/>
         <source>Move and zoom plot by mouse</source>
-        <translation>Grav lze posouvat a zvětšovat myší</translation>
+        <translation>Graf lze posouvat a zvětšovat myší</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1191"/>
@@ -47,7 +47,7 @@
     <message>
         <location filename="../mainwindow.ui" line="1198"/>
         <source>Plot shows whole data</source>
-        <translation>Graf zobrazuje celý příjatý rozsah</translation>
+        <translation>Graf zobrazuje celý přijatý rozsah</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1201"/>
@@ -219,7 +219,7 @@
     <message>
         <location filename="../mainwindow.ui" line="328"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Invert channel (multiply values by -1)&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Only affects how channel is displayed in plot. Does &lt;span style=&quot; text-decoration: underline;&quot;&gt;not&lt;/span&gt; affect values read using cursors!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Převrácení kanálu&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Má vliv jen na vykreslení kanálu do grafu. &lt;span style=&quot; text-decoration: underline;&quot;&gt;Ne&lt;/span&gt;ovlivní hodnoty oděčtené pomocí kurzorů!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Převrácení kanálu&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Má vliv jen na vykreslení kanálu do grafu. &lt;span style=&quot; text-decoration: underline;&quot;&gt;Ne&lt;/span&gt;ovlivní hodnoty odečtené pomocí kurzorů!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="469"/>
@@ -307,7 +307,7 @@
         <location filename="../mainwindow.ui" line="1879"/>
         <location filename="../mainwindow.ui" line="2483"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sample on which cursor is&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>Vzorek na kterém je kurzor umístěn</translation>
+        <translation>Vzorek, na kterém je kurzor umístěn</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1997"/>
@@ -332,7 +332,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Čtvereček: kurzor je na hodnotě vzorku na které je umístěn časový kurzor&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Zaškrtnuté: nezávislý na časovém kurzoru&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Zaškrtlé: nezávislý na časovém kurzoru&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="2047"/>
@@ -378,7 +378,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Čtvereček: kurzor je na hodnotě vzorku na které je umístěn časový kurzor&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Zaškrtnuté: nezávislý na časovém kurzoru&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Zaškrtlé: nezávislý na časovém kurzoru&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="2741"/>
@@ -536,7 +536,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../mainwindow.ui" line="5003"/>
         <location filename="../mainwindow.ui" line="5204"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of segments for Welch&apos;s PSD estimate. (with 50% overlap)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>Počet segmentů pro Welchovu metodu (s 50% překrivem)</translation>
+        <translation>Počet segmentů pro Welchovu metodu (s 50% překryvem)</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="5009"/>
@@ -610,7 +610,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mainwindow.ui" line="7384"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable OpenGL hardware acceleration for drawing main plot (recommended for logic channels with fill under graph line)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>Povolit OpenGL pro hlavní graf (doporučeno při použití barevné výpně pod grafem pro logické kanály)</translation>
+        <translation>Povolit OpenGL pro hlavní graf (doporučeno při použití barevné výplně pod grafem pro logické kanály)</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="7387"/>
@@ -821,10 +821,10 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../mainwindow.ui" line="6509"/>
-        <location filename="../mainwindow.ui" line="7874"/>
-        <location filename="../mainwindow.ui" line="7927"/>
-        <location filename="../mainwindow.ui" line="7980"/>
-        <location filename="../mainwindow.ui" line="8033"/>
+        <location filename="../mainwindow.ui" line="7886"/>
+        <location filename="../mainwindow.ui" line="7939"/>
+        <location filename="../mainwindow.ui" line="7992"/>
+        <location filename="../mainwindow.ui" line="8045"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Send&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Odeslat</translation>
     </message>
@@ -1059,17 +1059,37 @@ p, li { white-space: pre-wrap; }
         <translation>Zobrazit</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7685"/>
+        <location filename="../mainwindow.ui" line="7590"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load user default setting from file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Načíst uživatelské výchozí nastavení ze souboru&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="7610"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load hard-coded defaults&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Načíst výchozí nastavení&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="7630"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Načíst soubor&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="7650"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save settings&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Uložit nastavení&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="7697"/>
         <source>Open user manual</source>
         <translation>Otevřít uživatelskou příručku</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7692"/>
+        <location filename="../mainwindow.ui" line="7704"/>
         <source>Open protocol guide</source>
         <translation>Otevřít přehled komunikačního protokolu</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7702"/>
+        <location filename="../mainwindow.ui" line="7714"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -1089,9 +1109,9 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Kliknutí na graf přesune kurzor na danou pozici, levé tlačítko pro kurzor 1, pravé pro kurzor 2.&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Kurzory lze tahat myší.&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Kanál lze svisle posunout tažením myší (za čáru označující nulu).&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Pro zlepšení výkonu omezte vípis na error/varování/zařízení (ne info). Při použití barevné výplně pod grafem (užitečné pro logické kanály), zkuste povolit OpenGL.&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Pro zlepšení výkonu omezte výpis na error/varování/zařízení (ne info). Při použití barevné výplně pod grafem (užitečné pro logické kanály), zkuste povolit OpenGL.&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Na stránce měření se vzestupná a sestupná hrana měří na poslední periodě sígnálu/zobrazeného úseku (ne průměrně).&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Převod analogového vstupu na logické kanáli se dělá jen pro nově příchozí data (ne spětně přo původní data), je-li převod zapnut při pauze, nezobrazí se.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Převod analogového vstupu na logické kanály se dělá jen pro nově příchozí data (ne zpětně pro původní data), je-li převod zapnut při pauze, nezobrazí se.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="7334"/>
@@ -1136,7 +1156,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mainwindow.ui" line="7536"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show sample value when mouse cursor is near,set cursors by clicking on graph, mouse-drag cursors a zero-lines of channels.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>Zobrazí hodnotu vzorku když je ukazatel myši poblíž grafu, kliknutím se na místo umístí kurzor (pravé tlačítko pro kurzor 2), také lze myší táhnout kurzory a offset (čáru nulové hodnoty)</translation>
+        <translation>Zobrazí hodnotu vzorku, když je ukazatel myši poblíž grafu, kliknutím se na místo umístí kurzor (pravé tlačítko pro kurzor 2), také lze myší táhnout kurzory a offset (čáru nulové hodnoty)</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="7539"/>
@@ -1159,62 +1179,62 @@ p, li { white-space: pre-wrap; }
         <translation>Přidat středníky</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7750"/>
+        <location filename="../mainwindow.ui" line="7762"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This program comes with absolutely no warranty. This is free software, and you are welcome to redistribute it under certain conditions. See the &lt;a href=&quot;https://www.gnu.org/licenses/gpl-3.0.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#007af4;&quot;&gt;GNU General Public License&lt;/span&gt;&lt;/a&gt; for more details.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tento program je absolutně bez záruky. Jde o svobodný software a jeho šíření je za určitých podmínek vítáno. Pro více informací: &lt;a href=&quot;https://www.gnu.org/licenses/gpl-3.0.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#007af4;&quot;&gt;GNU General Public License&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7775"/>
+        <location filename="../mainwindow.ui" line="7787"/>
         <source>Translation: none</source>
-        <translation>Překlad: CZ_19122020</translation>
+        <translation>Překlad: CZ_05032021</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7795"/>
+        <location filename="../mainwindow.ui" line="7807"/>
         <source>maierjir@fel.cvut.cz</source>
         <translation>maierjir@fel.cvut.cz</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7849"/>
-        <location filename="../mainwindow.ui" line="7902"/>
-        <location filename="../mainwindow.ui" line="7955"/>
-        <location filename="../mainwindow.ui" line="8008"/>
+        <location filename="../mainwindow.ui" line="7861"/>
+        <location filename="../mainwindow.ui" line="7914"/>
+        <location filename="../mainwindow.ui" line="7967"/>
+        <location filename="../mainwindow.ui" line="8020"/>
         <source>send data to device</source>
         <translation>Odeslat do zařízení</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="8058"/>
+        <location filename="../mainwindow.ui" line="8070"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This will be added to the end of sent message.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Toto bude přidáno na konec zprávy</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="8062"/>
+        <location filename="../mainwindow.ui" line="8074"/>
         <source>No line ending</source>
         <translation>Zakončení: žádné</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="8067"/>
+        <location filename="../mainwindow.ui" line="8079"/>
         <source>New line</source>
         <translation>Zakončení: LF</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="8072"/>
+        <location filename="../mainwindow.ui" line="8084"/>
         <source>Carriage return</source>
         <translation>Zakončení: CR</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="8077"/>
+        <location filename="../mainwindow.ui" line="8089"/>
         <source>CR LF</source>
         <translation>Zakončení: CR LF</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="8085"/>
+        <location filename="../mainwindow.ui" line="8097"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show multiple lines for sending message, this allows to have up to 4 commands prepared. Line will not be erased after send in this mode.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zobrazit více řádků pro příkaz, to umožní mít připraveny až 4 příkazy. Řádek nebude po odeslání smazán.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="8088"/>
+        <location filename="../mainwindow.ui" line="8100"/>
         <source>Multiple inputs</source>
-        <translation>Výce vstupů</translation>
+        <translation>Více řádků</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="64"/>
@@ -1233,8 +1253,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="117"/>
-        <source>V/Div</source>
-        <translation>V/Div</translation>
+        <source>/Div</source>
+        <translation>/Dílek</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="183"/>
@@ -1820,7 +1840,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../plotdata.cpp" line="205"/>
         <location filename="../plotdata.cpp" line="328"/>
         <source>Can not show channel %1 as logic</source>
-        <translation>Nelze zobrazi kanál %1 jako logický</translation>
+        <translation>Nelze zobrazí kanál %1 jako logický</translation>
     </message>
     <message>
         <location filename="../plotdata.cpp" line="171"/>
@@ -1831,7 +1851,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../plotdata.cpp" line="205"/>
         <location filename="../plotdata.cpp" line="328"/>
         <source>digital mode is only available for unsigned integer data type</source>
-        <translation>Logický rezim je dostupný jen pro celé číslo bez znaménka</translation>
+        <translation>Logický režim je dostupný jen pro celé číslo bez znaménka</translation>
     </message>
 </context>
 <context>

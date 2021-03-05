@@ -114,7 +114,7 @@ void MainWindow::updateDivs() {
     ui->labelHDiv->setText(floatToNiceString(ui->plot->getHDiv(), 1, false, false) + tr("s/Div"));
   else
     ui->labelHDiv->setText("---");
-  ui->labelVDiv->setText(floatToNiceString(ui->plot->getVDiv(), 1, false, false) + ui->plot->getYUnit() + tr("V/Div"));
+  ui->labelVDiv->setText(floatToNiceString(ui->plot->getVDiv(), 1, false, false) + ui->plot->getYUnit() + tr("/Div"));
 }
 
 void MainWindow::on_doubleSpinBoxRangeVerticalRange_valueChanged(double arg1) {
