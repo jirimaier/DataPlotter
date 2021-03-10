@@ -34,7 +34,7 @@ void MainWindow::connectSignals() {
   connect(ui->doubleSpinBoxRangeVerticalRange, SIGNAL(valueChanged(double)), ui->plot, SLOT(setVerticalRange(double)));
   connect(ui->doubleSpinBoxRangeHorizontal, SIGNAL(valueChanged(double)), ui->dialRollingRange, SLOT(updatePosition(double)));
   connect(ui->doubleSpinBoxRangeVerticalRange, SIGNAL(valueChanged(double)), ui->dialVerticalRange, SLOT(updatePosition(double)));
-  connect(ui->doubleSpinBoxChScale, SIGNAL(valueChanged(double)), ui->dialChScale, SLOT(updatePosition(double)));
+  //connect(ui->doubleSpinBoxChScale, SIGNAL(valueChanged(double)), ui->dialChScale, SLOT(updatePosition(double)));
   connect(ui->sliderVerticalCenter, &QSlider::valueChanged, ui->plot, &MyMainPlot::setVerticalCenter);
   connect(ui->horizontalScrollBarHorizontal, &QScrollBar::valueChanged, ui->plot, &MyMainPlot::setHorizontalPos);
   connect(ui->lineEditHtitle, &QLineEdit::textChanged, ui->plot, &MyPlot::setXTitle);
@@ -57,6 +57,7 @@ void MainWindow::connectSignals() {
   connect(&xyTimer, &QTimer::timeout, this, &::MainWindow::updateXY);
   connect(&serialMonitorTimer, &QTimer::timeout, this, &MainWindow::updateSerialMonitor);
   connect(&dataRateTimer, &QTimer::timeout, this, &MainWindow::updateDataRate);
+  connect(&interpolationTimer, &QTimer::timeout, this, &MainWindow::updateInterpolation);
 }
 
 void MainWindow::setAdaptiveSpinBoxes() {
@@ -79,11 +80,12 @@ void MainWindow::startTimers() {
   cursorRangeUpdateTimer.start(100);
   measureRefreshTimer1.start(200);
   measureRefreshTimer2.start(200);
-  fftTimer1.start(200);
-  fftTimer2.start(200);
-  xyTimer.start(200);
-  serialMonitorTimer.start(200);
+  fftTimer1.start(100);
+  fftTimer2.start(100);
+  xyTimer.start(100);
+  serialMonitorTimer.start(500);
   dataRateTimer.start(1000);
+  interpolationTimer.start(50);
 }
 
 void MainWindow::setGuiDefaults() {
@@ -128,6 +130,8 @@ void MainWindow::setGuiDefaults() {
   ui->plotxy->setGridHintY(ui->horizontalSliderXYGrid->value());
   ui->plotFFT->setGridHintX(ui->horizontalSliderGridFFTH->value());
   ui->plotFFT->setGridHintY(ui->horizontalSliderGridFFTV->value());
+
+  on_doubleSpinBoxRangeVerticalRange_valueChanged(ui->doubleSpinBoxRangeVerticalRange->value());
 }
 
 void MainWindow::setGuiArrays() {
@@ -192,19 +196,10 @@ void MainWindow::fillChannelSelect() {
   ui->comboBoxMeasure2->setCurrentIndex(ui->comboBoxMeasure2->count() - 1);
 
   // Skryje FFT kanály z nabýdky.
-  for (int i = 0; i < 2; i++) {
-    auto model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor1Channel->model());
-    auto item = model->item(FFTID(i));
-    item->setEnabled(false);
-    auto view = qobject_cast<QListView*>(ui->comboBoxCursor1Channel->view());
-    view->setRowHidden(FFTID(i), !false);
-
-    model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor2Channel->model());
-    item = model->item(FFTID(i));
-    item->setEnabled(false);
-    view = qobject_cast<QListView*>(ui->comboBoxCursor2Channel->view());
-    view->setRowHidden(FFTID(i), !false);
-  }
+  setComboboxItemVisible(*ui->comboBoxCursor1Channel, FFTID(0), false);
+  setComboboxItemVisible(*ui->comboBoxCursor2Channel, FFTID(0), false);
+  setComboboxItemVisible(*ui->comboBoxCursor1Channel, FFTID(1), false);
+  setComboboxItemVisible(*ui->comboBoxCursor2Channel, FFTID(1), false);
 
   ui->comboBoxSelectedChannel->blockSignals(false);
   ui->comboBoxCursor1Channel->blockSignals(false);

@@ -5,7 +5,7 @@
     <name>MainWindow</name>
     <message>
         <location filename="../mainwindow.ui" line="628"/>
-        <location filename="../mainwindow.cpp" line="67"/>
+        <location filename="../mainwindow.cpp" line="68"/>
         <source>Running (click to pause)</source>
         <translation>Running (click to pause)</translation>
     </message>
@@ -435,7 +435,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mainwindow.ui" line="4403"/>
         <source>Cursor1</source>
-        <translation>Cursor1</translation>
+        <translation>Cursor 1</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="4685"/>
@@ -448,7 +448,7 @@ p, li { white-space: pre-wrap; }
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Export selected channel&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7515"/>
+        <location filename="../mainwindow.ui" line="7544"/>
         <source>V</source>
         <translation>V</translation>
     </message>
@@ -562,53 +562,53 @@ p, li { white-space: pre-wrap; }
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grid Value&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="6775"/>
+        <location filename="../mainwindow.ui" line="6804"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Click to send mode (for interactive menu)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Click to send mode (for interactive menu)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7232"/>
+        <location filename="../mainwindow.ui" line="7261"/>
         <source>Send on connect:</source>
         <translation>Send on connect:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7252"/>
+        <location filename="../mainwindow.ui" line="7281"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Do autoset function after first data for channel 1 is received&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Do autoset function after first data for channel 1 is received&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7255"/>
+        <location filename="../mainwindow.ui" line="7284"/>
         <source>Auto autoset</source>
         <translation>Auto autoset</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7272"/>
+        <location filename="../mainwindow.ui" line="7301"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clear graph after connecting&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clear graph after connecting&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7275"/>
+        <location filename="../mainwindow.ui" line="7304"/>
         <source>Clear on reconect</source>
         <translation>Clear on reconnect</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7371"/>
-        <location filename="../mainwindow.ui" line="7502"/>
+        <location filename="../mainwindow.ui" line="7400"/>
+        <location filename="../mainwindow.ui" line="7531"/>
         <source>title</source>
         <translation>Axis title</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7384"/>
+        <location filename="../mainwindow.ui" line="7413"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable OpenGL hardware acceleration for drawing main plot (recommended for logic channels with fill under graph line)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7387"/>
+        <location filename="../mainwindow.ui" line="7416"/>
         <source>Use OpenGL</source>
         <translation>Use OpenGL</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7396"/>
+        <location filename="../mainwindow.ui" line="7425"/>
         <source>Rolling mode step</source>
         <translation>Rolling mode step</translation>
     </message>
@@ -775,316 +775,306 @@ p, li { white-space: pre-wrap; }
         <translation>Not connected</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="6126"/>
-        <location filename="../mainwindow.ui" line="6350"/>
-        <location filename="../mainwindow.ui" line="6570"/>
+        <location filename="../mainwindow.ui" line="6132"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Print double-dolar on new line&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Print double-dolar sign on new line&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="6155"/>
+        <location filename="../mainwindow.ui" line="6379"/>
+        <location filename="../mainwindow.ui" line="6599"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clear console&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clear console&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="6152"/>
-        <location filename="../mainwindow.ui" line="6376"/>
-        <location filename="../mainwindow.ui" line="6596"/>
+        <location filename="../mainwindow.ui" line="6181"/>
+        <location filename="../mainwindow.ui" line="6405"/>
+        <location filename="../mainwindow.ui" line="6625"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Autoscroll&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Scroll to bottom&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="6258"/>
+        <location filename="../mainwindow.ui" line="6287"/>
         <source>Message filter</source>
         <translation>Message filter</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="6310"/>
+        <location filename="../mainwindow.ui" line="6339"/>
         <source>Print buffer content</source>
         <translation>Print buffer content</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="6330"/>
+        <location filename="../mainwindow.ui" line="6359"/>
         <source>Clear buffer</source>
         <translation>Clear buffer</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="6484"/>
-        <location filename="../mainwindow.ui" line="7242"/>
+        <location filename="../mainwindow.ui" line="6513"/>
+        <location filename="../mainwindow.ui" line="7271"/>
         <source>Manual input</source>
         <translation>Manual input</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="6509"/>
-        <location filename="../mainwindow.ui" line="7886"/>
-        <location filename="../mainwindow.ui" line="7939"/>
-        <location filename="../mainwindow.ui" line="7992"/>
-        <location filename="../mainwindow.ui" line="8045"/>
+        <location filename="../mainwindow.ui" line="6538"/>
+        <location filename="../mainwindow.ui" line="7903"/>
+        <location filename="../mainwindow.ui" line="7956"/>
+        <location filename="../mainwindow.ui" line="8009"/>
+        <location filename="../mainwindow.ui" line="8062"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Send&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Send&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="6530"/>
+        <location filename="../mainwindow.ui" line="6559"/>
         <source>Print manual input buffer</source>
         <translation>Print manual input buffer</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="6550"/>
+        <location filename="../mainwindow.ui" line="6579"/>
         <source>Clear manual input buffer</source>
         <translation>Clear manual input buffer</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="6752"/>
+        <location filename="../mainwindow.ui" line="6781"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Debug mode&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Debug mode&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="6801"/>
+        <location filename="../mainwindow.ui" line="6830"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selection mode&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selection mode&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="6827"/>
+        <location filename="../mainwindow.ui" line="6856"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Copy selection to clipboard&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Copy selection to clipboard&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="6847"/>
+        <location filename="../mainwindow.ui" line="6876"/>
         <source>Clear terminal</source>
         <translation>Clear terminal</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="6964"/>
+        <location filename="../mainwindow.ui" line="6993"/>
         <source>2J Clear all</source>
         <translation>2J Clear all</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="6969"/>
+        <location filename="../mainwindow.ui" line="6998"/>
         <source>3?m Font color</source>
         <translation>3?m Font colour</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="6974"/>
+        <location filename="../mainwindow.ui" line="7003"/>
         <source>4?m Back color</source>
         <translation>4?m Back colour</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="6979"/>
+        <location filename="../mainwindow.ui" line="7008"/>
         <source>0m Reset style</source>
         <translation>0m Reset style</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="6984"/>
+        <location filename="../mainwindow.ui" line="7013"/>
         <source>1m Bold</source>
         <translation>1m Bold</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="6989"/>
+        <location filename="../mainwindow.ui" line="7018"/>
         <source>4m Underline</source>
         <translation>4m Underline</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="6994"/>
+        <location filename="../mainwindow.ui" line="7023"/>
         <source>7m Invert colors</source>
         <translation>7m Invert colours</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="6999"/>
+        <location filename="../mainwindow.ui" line="7028"/>
         <source>A Up</source>
         <translation>A Up</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7004"/>
+        <location filename="../mainwindow.ui" line="7033"/>
         <source>B Down</source>
         <translation>B Down</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7009"/>
+        <location filename="../mainwindow.ui" line="7038"/>
         <source>C Right</source>
         <translation>C Right</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7014"/>
+        <location filename="../mainwindow.ui" line="7043"/>
         <source>D Left</source>
         <translation>D Left</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7019"/>
+        <location filename="../mainwindow.ui" line="7048"/>
         <source>0J Clear down</source>
         <translation>0J Clear down</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7024"/>
+        <location filename="../mainwindow.ui" line="7053"/>
         <source>1J Clear up</source>
         <translation>1J Clear up</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7029"/>
+        <location filename="../mainwindow.ui" line="7058"/>
         <source>2K Clear line</source>
         <translation>2K Clear line</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7034"/>
+        <location filename="../mainwindow.ui" line="7063"/>
         <source>0K Clear line left</source>
         <translation>0K Clear line left</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7039"/>
+        <location filename="../mainwindow.ui" line="7068"/>
         <source>1K Clear line right</source>
         <translation>1K Clear line right</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7044"/>
+        <location filename="../mainwindow.ui" line="7073"/>
         <source>E Line up</source>
         <translation>E Line up</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7049"/>
+        <location filename="../mainwindow.ui" line="7078"/>
         <source>F Line down</source>
         <translation>F Line down</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7054"/>
+        <location filename="../mainwindow.ui" line="7083"/>
         <source>s Save postition</source>
         <translation>s Save position</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7059"/>
+        <location filename="../mainwindow.ui" line="7088"/>
         <source>u Load position</source>
         <translation>u Load position</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7064"/>
+        <location filename="../mainwindow.ui" line="7093"/>
         <source>\n New line</source>
         <translation>\n New line</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7069"/>
+        <location filename="../mainwindow.ui" line="7098"/>
         <source>\r Carriage return</source>
         <translation>\r Carriage return</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7074"/>
+        <location filename="../mainwindow.ui" line="7103"/>
         <source>\b Backspace</source>
         <translation>\b Backspace</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7079"/>
+        <location filename="../mainwindow.ui" line="7108"/>
         <source>\e Escape</source>
         <translation>\e Escape</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7084"/>
+        <location filename="../mainwindow.ui" line="7113"/>
         <source>\a Bell</source>
         <translation>\a Bell</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7089"/>
+        <location filename="../mainwindow.ui" line="7118"/>
         <source>\t Tabulator</source>
         <translation>\t Tabulator</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7139"/>
+        <location filename="../mainwindow.ui" line="7168"/>
         <source>Language</source>
         <translation>Language</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7157"/>
+        <location filename="../mainwindow.ui" line="7186"/>
         <source>english</source>
         <translation>English</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7177"/>
+        <location filename="../mainwindow.ui" line="7206"/>
         <source>czech</source>
         <translation>Czech</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7197"/>
+        <location filename="../mainwindow.ui" line="7226"/>
         <source>Connection</source>
         <translation>Connection</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7215"/>
+        <location filename="../mainwindow.ui" line="7244"/>
         <source>( reset command )</source>
         <translation>( reset command )</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7222"/>
+        <location filename="../mainwindow.ui" line="7251"/>
         <source>SerialMonitor</source>
         <translation>Serial monitor</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7295"/>
+        <location filename="../mainwindow.ui" line="7324"/>
         <source>Plot</source>
         <translation>Plot</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7403"/>
+        <location filename="../mainwindow.ui" line="7432"/>
         <source>Smooth</source>
         <translation>Smooth</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7406"/>
+        <location filename="../mainwindow.ui" line="7435"/>
         <source> %</source>
         <translation> %</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7421"/>
+        <location filename="../mainwindow.ui" line="7450"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Normaly, only nonempty channel are showen in channel selection, this allows to show all available channels.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Normaly, only nonempty channel are shown in channel selection, this allows to show all available channels.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7424"/>
+        <location filename="../mainwindow.ui" line="7453"/>
         <source>Allow selecting unused channels</source>
         <translation>Allow selecting unused channels</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7437"/>
+        <location filename="../mainwindow.ui" line="7466"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Erase data in main plot&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Erase data in main plot&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7468"/>
+        <location filename="../mainwindow.ui" line="7497"/>
         <source>Vertical axis</source>
         <translation>Vertical axis</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7481"/>
+        <location filename="../mainwindow.ui" line="7510"/>
         <source>Show</source>
         <translation>Show</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7590"/>
+        <location filename="../mainwindow.ui" line="7603"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load user default setting from file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load user default setting from file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7610"/>
+        <location filename="../mainwindow.ui" line="7623"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load hard-coded defaults&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load hard-coded defaults&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7630"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <location filename="../mainwindow.ui" line="7643"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load setting file or CSV&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load setting file or CSV&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7650"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save settings&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save settings&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="7697"/>
-        <source>Open user manual</source>
-        <translation>Open user manual</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="7704"/>
-        <source>Open protocol guide</source>
-        <translation>Open protocol guide</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="7714"/>
+        <location filename="../mainwindow.ui" line="7728"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Quick tips:&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Quick tips:&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Clicking on graph will bring cursor to that position. Left click for cursor 1, right click for cursor 2.&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Cursors can be dragged by mouse.&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Channel offset can be moved by mouse by dragging zero line.&lt;/span&gt;&lt;/p&gt;
@@ -1095,164 +1085,169 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Quick tips:&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Quick tips:&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Clicking on graph will bring cursor to that position. Left click for cursor 1, right click for cursor 2.&lt;/span&gt;&lt;/p&gt;
-&lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Cursors can be dragged by mouse.&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Cursors can be dragged by mouse.&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Channel offset can be moved by mouse by dragging zero line.&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;To improve performance: Set console output to only warnings/errors/device, not info. If you use fill under graph (useful for logic), try enabling OpenGL.&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;In measurement page, rise time and fall time are calculated only from last period of signal/visible interval.&lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Logic channel is calculated only from newly received data, it will not show when enabled during pause.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7334"/>
+        <location filename="../mainwindow.ui" line="7663"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save settings&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save settings&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="7708"/>
+        <source>Open user manual</source>
+        <translation>Open user manual</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="7715"/>
+        <source>Open protocol guide</source>
+        <translation>Open protocol guide</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="7363"/>
         <source>Horizontal axis</source>
         <translation>Horizontal axis</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7341"/>
+        <location filename="../mainwindow.ui" line="7370"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Style of time values&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Style of time values&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7348"/>
+        <location filename="../mainwindow.ui" line="7377"/>
         <source>Hidden</source>
         <translation>Hidden</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7353"/>
+        <location filename="../mainwindow.ui" line="7382"/>
         <source>Normal</source>
         <translation>Normal</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7358"/>
+        <location filename="../mainwindow.ui" line="7387"/>
         <source>MM:SS</source>
         <translation>MM:SS</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7363"/>
+        <location filename="../mainwindow.ui" line="7392"/>
         <source>HH:MM:SS</source>
         <translation>HH:MM:SS</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7440"/>
+        <location filename="../mainwindow.ui" line="7469"/>
         <source>Clear graphs</source>
         <translation>Clear graph</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7512"/>
+        <location filename="../mainwindow.ui" line="7541"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Unit of values. Use base unit without any prefix.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Unit of values. Use base unit without any prefix.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7536"/>
+        <location filename="../mainwindow.ui" line="7565"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show sample value when mouse cursor is near,set cursors by clicking on graph, mouse-drag cursors a zero-lines of channels.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show sample value when mouse cursor is near,set cursors by clicking on graph, mouse-drag cursors a zero-lines of channels.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7539"/>
+        <location filename="../mainwindow.ui" line="7568"/>
         <source>Controll cursors by mouse</source>
         <translation>Control cursors by mouse</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7569"/>
+        <location filename="../mainwindow.ui" line="7596"/>
         <source>Settings file</source>
         <translation>Settings file</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7576"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;End line by &apos;;&apos; instead of &apos;\n&apos;, this may allow inporting CSV (add &amp;quot;$$P&amp;quot; to file begin, remove header and load as settings file), because point syntax is same as CSV, just with semicolumn instead of newline.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;End line by &apos;;&apos; instead of &apos;\n&apos;, this may allow inporting CSV (add &amp;quot;$$P&amp;quot; to file begin, remove header and load as settings file), because point syntax is same as CSV, just with semicolumn instead of newline.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="7579"/>
-        <source>Add semicolum to line</source>
-        <translation>Add semicolon to line</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="7762"/>
+        <location filename="../mainwindow.ui" line="7776"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This program comes with absolutely no warranty. This is free software, and you are welcome to redistribute it under certain conditions. See the &lt;a href=&quot;https://www.gnu.org/licenses/gpl-3.0.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#007af4;&quot;&gt;GNU General Public License&lt;/span&gt;&lt;/a&gt; for more details.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This program comes with absolutely no warranty. This is free software, and you are welcome to redistribute it under certain conditions. See the &lt;a href=&quot;https://www.gnu.org/licenses/gpl-3.0.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#007af4;&quot;&gt;GNU General Public License&lt;/span&gt;&lt;/a&gt; for more details.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7787"/>
+        <location filename="../mainwindow.ui" line="7804"/>
         <source>Translation: none</source>
         <translation>Translation: EN_05032021</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7807"/>
+        <location filename="../mainwindow.ui" line="7824"/>
         <source>maierjir@fel.cvut.cz</source>
         <translation>maierjir@fel.cvut.cz</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7861"/>
-        <location filename="../mainwindow.ui" line="7914"/>
-        <location filename="../mainwindow.ui" line="7967"/>
-        <location filename="../mainwindow.ui" line="8020"/>
+        <location filename="../mainwindow.ui" line="7878"/>
+        <location filename="../mainwindow.ui" line="7931"/>
+        <location filename="../mainwindow.ui" line="7984"/>
+        <location filename="../mainwindow.ui" line="8037"/>
         <source>send data to device</source>
         <translation>Send to device</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="8070"/>
+        <location filename="../mainwindow.ui" line="8087"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This will be added to the end of sent message.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This will be added to the end of sent message.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="8074"/>
+        <location filename="../mainwindow.ui" line="8091"/>
         <source>No line ending</source>
         <translation>Line ending: none</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="8079"/>
+        <location filename="../mainwindow.ui" line="8096"/>
         <source>New line</source>
         <translation>Line ending: LF</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="8084"/>
+        <location filename="../mainwindow.ui" line="8101"/>
         <source>Carriage return</source>
         <translation>Line ending: CR</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="8089"/>
+        <location filename="../mainwindow.ui" line="8106"/>
         <source>CR LF</source>
         <translation>Line ending: CR LF</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="8097"/>
+        <location filename="../mainwindow.ui" line="8114"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show multiple lines for sending message, this allows to have up to 4 commands prepared. Line will not be erased after send in this mode.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show multiple lines for sending message, this allows to have up to 4 commands prepared. Line will not be erased after send in this mode.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="8100"/>
+        <location filename="../mainwindow.ui" line="8117"/>
         <source>Multiple inputs</source>
         <translation>Multiple inputs</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="64"/>
+        <location filename="../mainwindow.cpp" line="65"/>
         <source>Paused (click to resume)</source>
         <translation>Paused (click to resume)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="74"/>
+        <location filename="../mainwindow.cpp" line="75"/>
         <source> / Div</source>
         <translation> / Div</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="114"/>
+        <location filename="../mainwindow.cpp" line="115"/>
         <source>s/Div</source>
         <translation>s/Div</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="117"/>
+        <location filename="../mainwindow.cpp" line="118"/>
         <source>/Div</source>
         <translation>/Div</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="183"/>
+        <location filename="../mainwindow.cpp" line="153"/>
         <source>&lt;font color=darkred&gt;Device warning:&lt;/font color&gt; </source>
         <translation>&lt;font color=darkred&gt;Device warning:&lt;/font color&gt; </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="185"/>
+        <location filename="../mainwindow.cpp" line="155"/>
         <source>&lt;font color=darkgreen&gt;Device message:&lt;/font color&gt; </source>
         <translation>&lt;font color=darkgreen&gt;Device message:&lt;/font color&gt; </translation>
     </message>
@@ -1292,6 +1287,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../mainwindow_export.cpp" line="56"/>
+        <location filename="../mainwindow_save_load.cpp" line="345"/>
         <source>Cant write to file.</source>
         <translation>Can not write to file.</translation>
     </message>
@@ -1328,11 +1324,10 @@ p, li { white-space: pre-wrap; }
         <translation>Build: </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="321"/>
         <location filename="../mainwindow_gui_slots.cpp" line="209"/>
-        <location filename="../mainwindow_save_load.cpp" line="289"/>
-        <location filename="../mainwindow_save_load.cpp" line="302"/>
-        <location filename="../mainwindow_save_load.cpp" line="319"/>
+        <location filename="../mainwindow_gui_slots.cpp" line="590"/>
+        <location filename="../mainwindow_save_load.cpp" line="315"/>
+        <location filename="../mainwindow_save_load.cpp" line="328"/>
         <source>Cant open file.</source>
         <translation>Can not open file.</translation>
     </message>
@@ -1375,26 +1370,26 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../mainwindow_save_load.cpp" line="281"/>
-        <source>Text file (*.txt);;Any file (*.*)</source>
-        <translation>Text file (*.txt);;Any file (*.*)</translation>
+        <source>Settings file (*.cfg);;Comma separated values (*.csv);;Any file (*.*)</source>
+        <translation>Settings file (*.cfg);;Comma separated values (*.csv);;Any file (*.*)</translation>
     </message>
     <message>
-        <location filename="../mainwindow_save_load.cpp" line="311"/>
+        <location filename="../mainwindow_save_load.cpp" line="337"/>
+        <source>Settings file (.cfg)</source>
+        <translation>Settings file (.cfg)</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow_save_load.cpp" line="337"/>
         <source>Load settings</source>
         <translation>Save settings</translation>
     </message>
     <message>
-        <location filename="../mainwindow_save_load.cpp" line="311"/>
-        <source>Text file (*.txt)</source>
-        <translation>Text file (*.txt)</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow_timed_events.cpp" line="280"/>
+        <location filename="../mainwindow_timed_events.cpp" line="287"/>
         <source>points</source>
         <translation>points</translation>
     </message>
     <message>
-        <location filename="../mainwindow_timed_events.cpp" line="280"/>
+        <location filename="../mainwindow_timed_events.cpp" line="287"/>
         <source>updates</source>
         <translation>updates</translation>
     </message>
@@ -1430,286 +1425,281 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>NewSerialParser</name>
     <message>
-        <location filename="../newserialparser.cpp" line="117"/>
-        <location filename="../newserialparser.cpp" line="160"/>
-        <location filename="../newserialparser.cpp" line="426"/>
+        <location filename="../newserialparser.cpp" line="121"/>
+        <location filename="../newserialparser.cpp" line="164"/>
+        <location filename="../newserialparser.cpp" line="430"/>
         <source>Missing semicolumn ?</source>
         <translation>Missing semicolon ?</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="74"/>
-        <location filename="../newserialparser.cpp" line="171"/>
-        <location filename="../newserialparser.cpp" line="447"/>
-        <location filename="../newserialparser.cpp" line="594"/>
+        <location filename="../newserialparser.cpp" line="78"/>
+        <location filename="../newserialparser.cpp" line="175"/>
+        <location filename="../newserialparser.cpp" line="451"/>
+        <location filename="../newserialparser.cpp" line="598"/>
         <source>Unknown</source>
         <translation>Unknown</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="226"/>
-        <location filename="../newserialparser.cpp" line="346"/>
+        <location filename="../newserialparser.cpp" line="54"/>
+        <source>Buffer</source>
+        <translation>Buffer</translation>
+    </message>
+    <message>
+        <location filename="../newserialparser.cpp" line="230"/>
+        <location filename="../newserialparser.cpp" line="350"/>
         <source>No semicolum found</source>
         <translation>No semicolon found</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="228"/>
-        <location filename="../newserialparser.cpp" line="348"/>
+        <location filename="../newserialparser.cpp" line="232"/>
+        <location filename="../newserialparser.cpp" line="352"/>
         <source>There are semicolums %1 byte before and %2 after end.</source>
         <translation>There are semicolons %1 byte before and %2 after end.</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="231"/>
-        <location filename="../newserialparser.cpp" line="351"/>
+        <location filename="../newserialparser.cpp" line="235"/>
+        <location filename="../newserialparser.cpp" line="355"/>
         <source>There is semicolum %1 bytes before end.</source>
         <translation>There is semicolon %1 bytes before end.</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="233"/>
-        <location filename="../newserialparser.cpp" line="353"/>
+        <location filename="../newserialparser.cpp" line="237"/>
+        <location filename="../newserialparser.cpp" line="357"/>
         <source>There is semicolum %1 bytes after end.</source>
         <translation>There is semicolon %1 bytes after end.</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="235"/>
-        <location filename="../newserialparser.cpp" line="355"/>
+        <location filename="../newserialparser.cpp" line="239"/>
+        <location filename="../newserialparser.cpp" line="359"/>
         <source>Channel not ended with &apos;;&apos;</source>
         <translation>Channel not ended with &apos;;&apos;</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="102"/>
+        <location filename="../newserialparser.cpp" line="106"/>
         <source>Error reading point: </source>
         <translation>Error reading point: </translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="45"/>
-        <source>Buffer (string)</source>
-        <translation>Buffer (string)</translation>
-    </message>
-    <message>
-        <location filename="../newserialparser.cpp" line="47"/>
-        <source>Buffer (hex)</source>
-        <translation>Buffer (hex)</translation>
-    </message>
-    <message>
-        <location filename="../newserialparser.cpp" line="54"/>
+        <location filename="../newserialparser.cpp" line="58"/>
         <source>Point buffer content</source>
         <translation>Point buffer content</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="59"/>
+        <location filename="../newserialparser.cpp" line="63"/>
         <source>Buffer is empty</source>
         <translation>Buffer is empty</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="109"/>
+        <location filename="../newserialparser.cpp" line="113"/>
         <source>Point has no value</source>
         <translation>Point has no value</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="129"/>
+        <location filename="../newserialparser.cpp" line="133"/>
         <source>Error reading logic point: </source>
         <translation>Error reading logic point: </translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="136"/>
+        <location filename="../newserialparser.cpp" line="140"/>
         <source>Logic point has no value</source>
         <translation>Logic point has no value</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="139"/>
+        <location filename="../newserialparser.cpp" line="143"/>
         <source>Too many values in logic point</source>
         <translation>Too many values in logic point</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="142"/>
+        <location filename="../newserialparser.cpp" line="146"/>
         <source>Logic point value is not unsigned integer data type</source>
         <translation>Logic point value is not unsigned integer data type</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="149"/>
+        <location filename="../newserialparser.cpp" line="153"/>
         <source>Invallid logic point: </source>
         <translation>Invalid logic point: </translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="149"/>
-        <location filename="../newserialparser.cpp" line="266"/>
-        <location filename="../newserialparser.cpp" line="367"/>
+        <location filename="../newserialparser.cpp" line="153"/>
+        <location filename="../newserialparser.cpp" line="270"/>
+        <location filename="../newserialparser.cpp" line="371"/>
         <source>Invalid number of bits - </source>
         <translation>Invalid number of bits - </translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="186"/>
+        <location filename="../newserialparser.cpp" line="190"/>
         <source>out of range (1 - %1): %2</source>
         <translation>out of range (1 - %1): %2</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="188"/>
-        <location filename="../newserialparser.cpp" line="196"/>
-        <location filename="../newserialparser.cpp" line="206"/>
-        <location filename="../newserialparser.cpp" line="211"/>
-        <location filename="../newserialparser.cpp" line="248"/>
-        <location filename="../newserialparser.cpp" line="251"/>
-        <location filename="../newserialparser.cpp" line="259"/>
-        <location filename="../newserialparser.cpp" line="266"/>
-        <location filename="../newserialparser.cpp" line="280"/>
-        <location filename="../newserialparser.cpp" line="291"/>
-        <location filename="../newserialparser.cpp" line="294"/>
+        <location filename="../newserialparser.cpp" line="192"/>
+        <location filename="../newserialparser.cpp" line="200"/>
+        <location filename="../newserialparser.cpp" line="210"/>
+        <location filename="../newserialparser.cpp" line="215"/>
+        <location filename="../newserialparser.cpp" line="252"/>
+        <location filename="../newserialparser.cpp" line="255"/>
+        <location filename="../newserialparser.cpp" line="263"/>
+        <location filename="../newserialparser.cpp" line="270"/>
+        <location filename="../newserialparser.cpp" line="284"/>
+        <location filename="../newserialparser.cpp" line="295"/>
+        <location filename="../newserialparser.cpp" line="298"/>
         <source>Invallid channel: </source>
         <translation>Invalid channel: </translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="188"/>
+        <location filename="../newserialparser.cpp" line="192"/>
         <source>Invalid channel number - </source>
         <translation>Invalid channel number - </translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="196"/>
-        <location filename="../newserialparser.cpp" line="316"/>
+        <location filename="../newserialparser.cpp" line="200"/>
+        <location filename="../newserialparser.cpp" line="320"/>
         <source>Invalid channel length - </source>
         <translation>Invalid channel length - </translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="206"/>
-        <location filename="../newserialparser.cpp" line="326"/>
+        <location filename="../newserialparser.cpp" line="210"/>
+        <location filename="../newserialparser.cpp" line="330"/>
         <source>Wrong header length (%1 entries)</source>
         <translation>Wrong header length (%1 entries)</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="211"/>
-        <location filename="../newserialparser.cpp" line="331"/>
+        <location filename="../newserialparser.cpp" line="215"/>
+        <location filename="../newserialparser.cpp" line="335"/>
         <source>Header not properly ended</source>
         <translation>Header not properly ended</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="219"/>
+        <location filename="../newserialparser.cpp" line="223"/>
         <source>Error reading channel: </source>
         <translation>Error reading channel: </translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="248"/>
-        <location filename="../newserialparser.cpp" line="259"/>
-        <location filename="../newserialparser.cpp" line="280"/>
-        <location filename="../newserialparser.cpp" line="291"/>
-        <location filename="../newserialparser.cpp" line="375"/>
+        <location filename="../newserialparser.cpp" line="252"/>
+        <location filename="../newserialparser.cpp" line="263"/>
+        <location filename="../newserialparser.cpp" line="284"/>
+        <location filename="../newserialparser.cpp" line="295"/>
+        <location filename="../newserialparser.cpp" line="379"/>
         <source>Invalid zero position - </source>
         <translation>Invalid zero position - </translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="251"/>
+        <location filename="../newserialparser.cpp" line="255"/>
         <source>To many header entries for floating point type</source>
         <translation>To many header entries for floating point type</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="294"/>
+        <location filename="../newserialparser.cpp" line="298"/>
         <source>To many header entries for signed integer type</source>
         <translation>To many header entries for signed integer type</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="316"/>
-        <location filename="../newserialparser.cpp" line="326"/>
-        <location filename="../newserialparser.cpp" line="331"/>
-        <location filename="../newserialparser.cpp" line="367"/>
-        <location filename="../newserialparser.cpp" line="375"/>
+        <location filename="../newserialparser.cpp" line="320"/>
+        <location filename="../newserialparser.cpp" line="330"/>
+        <location filename="../newserialparser.cpp" line="335"/>
+        <location filename="../newserialparser.cpp" line="371"/>
+        <location filename="../newserialparser.cpp" line="379"/>
         <source>Invallid logic channel: </source>
         <translation>Invalid logic channel: </translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="339"/>
+        <location filename="../newserialparser.cpp" line="343"/>
         <source>Error reading logic channel: </source>
         <translation>Error reading logic channel: </translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="361"/>
+        <location filename="../newserialparser.cpp" line="365"/>
         <source>Logic channel warning</source>
         <translation>Logic channel warning</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="361"/>
+        <location filename="../newserialparser.cpp" line="365"/>
         <source>data are not designated as unsigned integer</source>
         <translation>data are not designated as unsigned integer</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="435"/>
+        <location filename="../newserialparser.cpp" line="439"/>
         <source>Parsing error</source>
         <translation>Parsing error</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="449"/>
+        <location filename="../newserialparser.cpp" line="453"/>
         <source>Fatal error</source>
         <translation>Fatal error</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="512"/>
-        <location filename="../newserialparser.cpp" line="663"/>
+        <location filename="../newserialparser.cpp" line="516"/>
+        <location filename="../newserialparser.cpp" line="667"/>
         <source>Invalid value type: %1</source>
         <translation>Invalid value type: %1</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="539"/>
+        <location filename="../newserialparser.cpp" line="543"/>
         <source>Value is not a valid integer: %1</source>
         <translation>Value is not a valid integer: %1</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="541"/>
+        <location filename="../newserialparser.cpp" line="545"/>
         <source>Value is negative: %1</source>
         <translation>Value is negative: %1</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="545"/>
+        <location filename="../newserialparser.cpp" line="549"/>
         <source>Value is not unsigned integer type</source>
         <translation>Value is not unsigned integer type</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="582"/>
+        <location filename="../newserialparser.cpp" line="586"/>
         <source>Points</source>
         <translation>Points</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="584"/>
+        <location filename="../newserialparser.cpp" line="588"/>
         <source>Terminal</source>
         <translation>Terminal</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="586"/>
+        <location filename="../newserialparser.cpp" line="590"/>
         <source>Info</source>
         <translation>Info</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="588"/>
+        <location filename="../newserialparser.cpp" line="592"/>
         <source>Warning</source>
         <translation>Warning</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="590"/>
+        <location filename="../newserialparser.cpp" line="594"/>
         <source>Channel</source>
         <translation>Channel</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="592"/>
+        <location filename="../newserialparser.cpp" line="596"/>
         <source>Settings</source>
         <translation>Settings</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="596"/>
+        <location filename="../newserialparser.cpp" line="600"/>
         <source>Echo</source>
         <translation>Echo</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="598"/>
+        <location filename="../newserialparser.cpp" line="602"/>
         <source>Logic channel</source>
         <translation>Logic channel</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="600"/>
+        <location filename="../newserialparser.cpp" line="604"/>
         <source>Logic points</source>
         <translation>Logic points</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="604"/>
+        <location filename="../newserialparser.cpp" line="608"/>
         <source>Unknown data type</source>
         <translation>Unknown data type</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="683"/>
+        <location filename="../newserialparser.cpp" line="687"/>
         <source>Type of data changed</source>
         <translation>Type of data changed</translation>
     </message>
@@ -1858,22 +1848,22 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../enums_defines_constants.h" line="287"/>
+        <location filename="../enumsDefinesConstants.h" line="289"/>
         <source>Logic bit %1</source>
         <translation>Logic bit %1</translation>
     </message>
     <message>
-        <location filename="../enums_defines_constants.h" line="289"/>
+        <location filename="../enumsDefinesConstants.h" line="291"/>
         <source>Logic %1 bit %2</source>
         <translation>Logic %1 bit %2</translation>
     </message>
     <message>
-        <location filename="../enums_defines_constants.h" line="291"/>
+        <location filename="../enumsDefinesConstants.h" line="293"/>
         <source>Math %1</source>
         <translation>Math %1</translation>
     </message>
     <message>
-        <location filename="../enums_defines_constants.h" line="292"/>
+        <location filename="../enumsDefinesConstants.h" line="294"/>
         <source>Ch %1</source>
         <translation>Ch %1</translation>
     </message>

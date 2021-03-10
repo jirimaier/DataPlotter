@@ -25,7 +25,7 @@
 #include <QTime>
 #include <QElapsedTimer>
 
-#include "enums_defines_constants.h"
+#include "enumsDefinesConstants.h"
 #include "qcustomplot.h"
 
 class PlotData : public QObject {
@@ -43,6 +43,7 @@ class PlotData : public QObject {
   unsigned int logicBits[LOGIC_GROUPS - 1];
   unsigned int mathFirsts[MATH_COUNT];
   unsigned int mathSeconds[MATH_COUNT];
+
   // unsigned int xyFirst, xySecond;
   double getValue(QPair<ValueType, QByteArray> value, bool& isok);
   OutputLevel::enumOutputLevel debugLevel = OutputLevel::info;
@@ -59,7 +60,6 @@ class PlotData : public QObject {
   void addLogicPoint(QPair<ValueType, QByteArray> timeArray, QPair<ValueType, QByteArray> valueArray, unsigned int bits);
   void addChannel(QPair<ValueType, QByteArray> data, unsigned int ch, QPair<ValueType, QByteArray> timeRaw, int zeroIndex, int bits, QPair<ValueType, QByteArray> min, QPair<ValueType, QByteArray> max);
   void addLogicChannel(QPair<ValueType, QByteArray> data, QPair<ValueType, QByteArray> timeRaw, int bits, int zeroIndex);
-
 
   void reset();
 

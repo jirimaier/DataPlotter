@@ -21,6 +21,17 @@
 #include <QVector>
 #include <cmath>
 
+#define ANALOG_COUNT 16
+#define MATH_COUNT 3
+#define LOGIC_BITS 32
+#define LOGIC_GROUPS 3
+#define INTERPOLATION_COUNT 2
+
+#define INTERPOLATION_UPSAMPLING 8
+
+// Program předvybere zařízení co má v popisu tento text
+#define DEFAULT_PORT_STRING "ST"
+
 namespace PlotStatus {
 enum enumPlotStatus { run, pause };
 }
@@ -42,7 +53,11 @@ enum enumPlotRange { freeMove = 0, fixedRange = 1, rolling = 2 };
 }
 
 namespace GraphStyle {
-enum enumGraphStyle { line = 0, point = 1, linePoint = 2, filled = 3, square = 4, squareFilled = 5 };
+enum enumGraphStyle { line = 0, point = 1, linePoint = 2, logic = 3, logicFilled = 4, logicpoints = 5, logicSquare = 6, logicSquareFilled = 7};
+}
+
+namespace GraphType {
+enum enumGraphType { analog, math, logic };
 }
 
 namespace DataMode {
@@ -210,16 +225,12 @@ inline QString valueTypeToString(ValueType val) {
 
 #define IS_NUMERIC_CHAR(a) (isdigit(a) || a == '-' || a == ',')
 
-#define ANALOG_COUNT 16
-#define MATH_COUNT 3
-#define LOGIC_BITS 32
-#define LOGIC_GROUPS 3
 #define LOGIC_COUNT LOGIC_BITS *LOGIC_GROUPS
+
+// Počet kanálů v grafu (každý logický bit počítá jako samostatný kanál, nezahrnuje interpolační kanály
 #define ALL_COUNT (ANALOG_COUNT + MATH_COUNT + LOGIC_COUNT)
 
 #define XY_AND_FFT_ALLWAYS_TOGETHER
-
-#define PORT_NUCLEO_DESCRIPTION_IDENTIFIER "ST"
 
 #define POINT_STYLE QCPScatterStyle::ssDisc
 
@@ -231,6 +242,8 @@ inline QString valueTypeToString(ValueType val) {
 #define FFTID(a) (ANALOG_COUNT + MATH_COUNT + LOGIC_GROUPS +a)
 #define IS_FFT(chID) (chID>=FFTID(0))
 #define CHID_TO_FFT_CHID(chID)(chID-FFTID(0))
+
+#define INTERPOLATION_CHID(a) (ALL_COUNT + a)
 
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))
@@ -410,6 +423,7 @@ struct ChannelSettings_t {
   double scale = 1;
   bool inverted = false;
   bool visible = true;
+  bool interpolate = false;
 };
 
 #endif // SETTINGS_H

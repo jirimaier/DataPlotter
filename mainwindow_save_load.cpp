@@ -278,12 +278,38 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarg
 
 void MainWindow::on_pushButtonLoadFile_clicked() {
   QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/settings/");
-  QString fileName = QFileDialog::getOpenFileName(this, tr("Load file"), defaultName, tr("Text file (*.txt);;Any file (*.*)"));
+  QString fileName = QFileDialog::getOpenFileName(this, tr("Load file"), defaultName, tr("Settings file (*.cfg);;Comma separated values (*.csv);;Any file (*.*)"));
   if (fileName.isEmpty())
     return;
   QFile file(fileName);
   if (file.open(QFile::ReadOnly | QFile::Text)) {
-    sendFileToParser(file.readAll(), false, ui->checkBoxAddSemicolum->isChecked());
+    QByteArray text = file.readAll();
+    if (fileName.right(4) == ".cfg") {
+      if (text.contains(';'))
+        text.replace("\n", "");
+      else
+        text.replace("\n", ";");
+      text.push_front("$$S");
+      text.push_back("$$U");
+    }
+    if (fileName.right(4) == ".csv") {
+      QByteArray firstline = text.left(text.indexOf('\n'));
+      foreach (char ch, firstline) {
+        // Zjistí jestli je první řádek záhlaví (obsahuje jiný text než čísla) a odebere ho.
+        if (!isdigit(ch) && ch != '.' && ch != ',' && ch != ';' && ch != '-' && ch != '+' && ch != 'e' && ch != 'E') {
+          text = text.mid(text.indexOf('\n') + 1); break;
+        }
+      }
+      if (text.contains(';')) {
+        // Variantu 1,2;1,3; předělá na 1.2,1.3,
+        text.replace(',', '.');
+        text.replace(';', ',');
+      }
+      text.replace('\n', ';');
+      text.push_front("$$P");
+      text.push_back("$$U");
+    }
+    emit sendManualInput(text);
   } else {
     QMessageBox msgBox;
     msgBox.setText(tr("Cant open file."));
@@ -293,10 +319,10 @@ void MainWindow::on_pushButtonLoadFile_clicked() {
 }
 
 void MainWindow::on_pushButtonDefaults_clicked() {
-  QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/settings/default.txt");
+  QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/settings/default.cfg");
   QFile file(defaultName);
   if (file.open(QFile::ReadOnly | QFile::Text)) {
-    sendFileToParser(file.readAll(), true);
+    emit sendManualInput("$$S" + file.readAll().replace("\n", "") + "$$U");
   } else {
     QMessageBox msgBox;
     msgBox.setText(tr("Cant open file."));
@@ -308,35 +334,35 @@ void MainWindow::on_pushButtonDefaults_clicked() {
 
 void MainWindow::on_pushButtonSaveSettings_clicked() {
   QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/settings/");
-  QString fileName = QFileDialog::getSaveFileName(this, tr("Load settings"), defaultName, tr("Text file (*.txt)"));
+  QString fileName = QFileDialog::getSaveFileName(this, tr("Load settings"), defaultName, tr("Settings file (.cfg)"));
   if (fileName.isEmpty())
     return;
   QFile file(fileName);
   if (file.open(QFile::WriteOnly | QFile::Truncate)) {
-    file.write("$$S\n" + getSettings() + "$$U");
+    file.write(getSettings());
   } else {
     QMessageBox msgBox;
-    msgBox.setText(tr("Cant open file."));
+    msgBox.setText(tr("Cant write to file."));
     msgBox.setIcon(QMessageBox::Critical);
     msgBox.exec();
   }
 }
 
 void MainWindow::on_pushButtonReset_clicked() {
-  QFile defaults(":/text/settings/default.txt");
+  QFile defaults(":/text/settings/default.cfg");
   if (defaults.open(QFile::ReadOnly | QFile::Text))
-    sendFileToParser(defaults.readAll(), true);
+    emit sendManualInput("$$S" + defaults.readAll().replace("\n", "") + "$$U");
 }
 
 void MainWindow::setUp() {
-  QString userDefaults = QString(QCoreApplication::applicationDirPath()) + QString("/settings/default.txt");
+  QString userDefaults = QString(QCoreApplication::applicationDirPath()) + QString("/settings/default.cfg");
   QFile userDefaultsFile(userDefaults);
   if (userDefaultsFile.open(QFile::ReadOnly | QFile::Text))
-    sendFileToParser(userDefaultsFile.readAll(), true);
+    emit sendManualInput("$$S" + userDefaultsFile.readAll().replace("\n", "") + "$$U");
   else {
-    QFile defaults(":/text/settings/default.txt");
+    QFile defaults(":/text/settings/default.cfg");
     if (defaults.open(QFile::ReadOnly | QFile::Text))
-      sendFileToParser(defaults.readAll(), true);
+      emit sendManualInput("$$S" + defaults.readAll().replace("\n", "") + "$$U");
   }
 
   QString style = "";
@@ -357,10 +383,3 @@ void MainWindow::setUp() {
   }
 }
 
-void MainWindow::sendFileToParser(QByteArray text, bool removeLastNewline, bool addSemicolums) {
-  if (removeLastNewline && text.right(1) == "\n")
-    text.remove(text.length() - 1, 1);
-  if (addSemicolums)
-    text.replace("\n", ";");
-  emit sendManualInput(text);
-}

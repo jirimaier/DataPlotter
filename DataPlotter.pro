@@ -9,6 +9,7 @@ DEFINES += QT_DEPRECATED_WARNINGS QCUSTOMPLOT_USE_OPENGL
 CONFIG += c++11
 
 SOURCES += \
+    interpolator.cpp \
     main.cpp \
     mainwindow.cpp \
     mainwindow_autoset.cpp \
@@ -38,7 +39,8 @@ SOURCES += \
     signalprocessing.cpp
 
 HEADERS += \
-    enums_defines_constants.h \
+    enumsDefinesConstants.h \
+    interpolator.h \
     mainwindow.h \
     myaxistickerwithunit.h \
     mycursorslider.h \

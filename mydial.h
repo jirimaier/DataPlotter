@@ -20,7 +20,7 @@
 #include <QDial>
 #include <QObject>
 
-#include "enums_defines_constants.h"
+#include "enumsDefinesConstants.h"
 
 class myDial : public QDial {
   Q_OBJECT

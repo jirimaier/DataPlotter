@@ -26,11 +26,12 @@
 #include <QTranslator>
 #include <QtCore>
 
-#include "enums_defines_constants.h"
+#include "enumsDefinesConstants.h"
 #include "plotdata.h"
 #include "plotmath.h"
 #include "serialreader.h"
 #include "signalprocessing.h"
+#include "interpolator.h"
 #include "ui_mainwindow.h"
 #include "myplot.h"
 
@@ -51,45 +52,64 @@ class MainWindow : public QMainWindow {
  private:
   Ui::MainWindow* ui;
   QTranslator* translator;
-  QTimer portsRefreshTimer, activeChRefreshTimer, xyTimer, cursorRangeUpdateTimer, measureRefreshTimer1, measureRefreshTimer2, fftTimer1, fftTimer2, serialMonitorTimer;
+  QTimer portsRefreshTimer, activeChRefreshTimer, xyTimer, cursorRangeUpdateTimer, measureRefreshTimer1, measureRefreshTimer2, fftTimer1, fftTimer2, serialMonitorTimer, interpolationTimer;
   QList<QSerialPortInfo> portList;
-  void connectSignals();
-  void updateChScale();
-  void changeLanguage(QString code = "en");
-  void exportCSV(bool all = false, int ch = 1);
+
+  void setComboboxItemVisible(QComboBox& comboBox, int index, bool visible);
+  void setChStyleSelection(GraphType::enumGraphType type);
+
   int lastSelectedChannel = 1;
-  void initSetables();
-  QByteArray getSettings();
-  void setUp();
-  void startTimers();
-  void setGuiDefaults();
-  void setGuiArrays();
+
   QPushButton* mathEn[4];
-  QSpinBox* mathFirst[4], *mathSecond[4];
+  QSpinBox* mathFirst[4];
+  QSpinBox* mathSecond[4];
   QComboBox* mathOp[4];
-  QMap<QString, QWidget*> setables;
-  bool pendingDeviceMessage = false;
-  void applyGuiElementSettings(QWidget*, QString value);
-  QByteArray readGuiElementSettings(QWidget* target);
-  void updateSelectedChannel(int arg1);
-  void sendFileToParser(QByteArray text, bool removeLastNewline = false, bool addSemicolums = false);
-  void fillChannelSelect();
-  void updateUsedChannels();
-  void updateChannelComboBox(QComboBox& combobox, bool includeLogic, bool leaveAtLeastOne);
-  bool colorUpdateNeeded = true;
-  void updateMathNow(int number);
-  void updateXY();
-  QIcon iconRun, iconPause, iconHidden, iconVisible, iconConnected, iconNotConnected, iconCross;
-  void insertInTerminalDebug(QString text, QColor textColor);
-  QByteArray serialMonitor;
+
   QTimer dataRateTimer;
   int dataUpdates = 0;
   bool lastUpdateWasPoint = false;
   bool lastUpdateWasLogic = false;
   bool autoAutosetPending = false;
   HAxisType::enumHAxisType recommandedAxisType = HAxisType::normal;
+
+  QMap<QString, QWidget*> setables;
+  void initSetables();
+  QByteArray getSettings();
+  void applyGuiElementSettings(QWidget*, QString value);
+  QByteArray readGuiElementSettings(QWidget* target);
+
+  void connectSignals();
+  void setUp();
+  void startTimers();
+  void setGuiDefaults();
+  void setGuiArrays();
+
+  void updateChScale();
+  void changeLanguage(QString code = "en");
+
+  void exportCSV(bool all = false, int ch = 1);
+
+  void insertInTerminalDebug(QString text, QColor textColor);
+
+  bool colorUpdateNeeded = true;
+  void fillChannelSelect();
+  void updateChannelComboBox(QComboBox& combobox, bool includeLogic, bool leaveAtLeastOne);
+  void updateUsedChannels();
+  void updateSelectedChannel(int arg1);
+
+  bool pendingDeviceMessage = false;
+
+  void updateMathNow(int number);
+  void updateXY();
+
+  QIcon iconRun, iconPause, iconHidden, iconVisible, iconConnected, iconNotConnected, iconCross;
+
+  QByteArray serialMonitor;
+
   void setCursorsVisibility(Cursors::enumCursors cursor, int graph, bool timeCurVisible, int valueCurState);
   void updateXYCursorsCalculations();
+
+  int interpolationsRunning = 0;
 
  private slots:
   void updateCursors();
@@ -103,6 +123,7 @@ class MainWindow : public QMainWindow {
   void updateMeasurements2();
   void updateFFT1();
   void updateFFT2();
+  void updateInterpolation();
   void updateSerialMonitor();
   void updateDataRate();
 
@@ -117,7 +138,7 @@ class MainWindow : public QMainWindow {
   void on_pushButtonSendCommand_3_clicked() { on_lineEditCommand_3_returnPressed(); }
   void on_pushButtonSendCommand_4_clicked() { on_lineEditCommand_4_returnPressed(); }
   void on_doubleSpinBoxChScale_valueChanged(double arg1);
-  void on_dialChScale_realValueChanged(double value) { ui->doubleSpinBoxChScale->setValue(value); }
+  //void on_dialChScale_realValueChanged(double value) { ui->doubleSpinBoxChScale->setValue(value); }
   void on_pushButtonSelectedCSV_clicked() { exportCSV(false, ui->comboBoxSelectedChannel->currentIndex()); }
   void on_dialZoom_valueChanged(int value);
   void on_radioButtonEn_toggled(bool checked);
@@ -164,7 +185,7 @@ class MainWindow : public QMainWindow {
   void on_checkBoxCur2Visible_toggled(bool checked);
   void on_pushButtonChangeChColor_clicked();
   void on_pushButtonClearAll_clicked();
-  void on_checkBoxChInverted_toggled(bool checked);
+  void on_pushButtonInvert_toggled(bool checked);
   void on_pushButtonHideCh_toggled(bool checked);
   void on_pushButtonMath1_toggled(bool) { updateMathNow(1); }
   void on_pushButtonMath2_toggled(bool) { updateMathNow(2); }
@@ -182,7 +203,6 @@ class MainWindow : public QMainWindow {
   void on_pushButtonXY_toggled(bool checked);
   void on_comboBoxCursor1Channel_currentIndexChanged(int index);
   void on_comboBoxCursor2Channel_currentIndexChanged(int index);
-  void on_labelLicense_linkActivated(const QString& link) { QDesktopServices::openUrl(link); }
   void on_pushButtonPositive_clicked();
   void on_pushButtonNegative_clicked();
   void on_spinBoxCur1Sample_valueChanged(int arg1);
@@ -221,6 +241,8 @@ class MainWindow : public QMainWindow {
   void on_doubleSpinBoxXYCurX1_valueChanged(double arg1);
   void on_doubleSpinBoxXYCurX2_valueChanged(double arg1);
   void on_pushButtonProtocolGuide_clicked();
+  void on_pushButtonDolarNewline_toggled(bool checked);
+  void on_pushButtonInterpolate_toggled(bool checked);
 
  public slots:
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumMessageTarget target);
@@ -244,6 +266,7 @@ class MainWindow : public QMainWindow {
   void moveTimeCursorXY(Cursors::enumCursors cursor, double pos);
   void moveValueCursorXY(Cursors::enumCursors cursor, double pos);
   void setCursorPosXY(Cursors::enumCursors cursor, double x, double y);
+  void interpolationResult(int chID, QSharedPointer<QCPGraphDataContainer> dataOriginal, QSharedPointer<QCPGraphDataContainer> dataInterpolated, bool dataIsFromInterpolationBuffer);
 
  signals:
   void setChDigital(int chid, int target);
@@ -270,5 +293,7 @@ class MainWindow : public QMainWindow {
   void requstMeasurements2(QSharedPointer<QCPGraphDataContainer> data);
   void requestFFT1(QSharedPointer<QCPGraphDataContainer> data, FFTType::enumFFTType type, FFTWindow::enumFFTWindow window, bool removeDC, int pWelchtimeDivisions, bool twosided, bool zerocenter, int minNFFT);
   void requestFFT2(QSharedPointer<QCPGraphDataContainer> data, FFTType::enumFFTType type, FFTWindow::enumFFTWindow window, bool removeDC, int pWelchtimeDivisions, bool twosided, bool zerocenter, int minNFFT);
+  void setInterpolation(int chID, bool enabled);
+  void interpolate(int chID, const QSharedPointer<QCPGraphDataContainer> data, QCPRange visibleRange, bool dataIsFromInterpolationBuffer);
 };
 #endif // MAINWINDOW_H

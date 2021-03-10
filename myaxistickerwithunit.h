@@ -16,7 +16,7 @@
 #ifndef MYAXISTICKERWITHUNIT_H
 #define MYAXISTICKERWITHUNIT_H
 
-#include "enums_defines_constants.h"
+#include "enumsDefinesConstants.h"
 #include "qcustomplot.h"
 
 class MyAxisTickerWithUnit : public QCPAxisTickerFixed {

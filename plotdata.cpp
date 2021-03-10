@@ -355,6 +355,7 @@ void PlotData::addChannel(QPair<ValueType, QByteArray> data, unsigned int ch, QP
 
   if (ch == 1)
     emit ch1dataUpdated(false, false, HAxisType::normal); // Aktualizuje počítadlo rychlosti přicházejících dat a nastavý fixed režim pro autoset
+
   emit addVectorToPlot(ch - 1, analogData);
 
   if (isLogic) {

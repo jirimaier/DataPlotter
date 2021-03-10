@@ -46,13 +46,14 @@
 #include <QTimer>
 #include <QTranslator>
 
-#include "enums_defines_constants.h"
+#include "enumsDefinesConstants.h"
 #include "mainwindow.h"
 #include "newserialparser.h"
 #include "plotdata.h"
 #include "plotmath.h"
 #include "serialreader.h"
 #include "signalprocessing.h"
+#include "interpolator.h"
 
 Q_DECLARE_METATYPE(ChannelSettings_t)
 Q_DECLARE_METATYPE(DataMode::enumDataMode)
@@ -69,6 +70,7 @@ Q_DECLARE_METATYPE(FFTType::enumFFTType);
 Q_DECLARE_METATYPE(HAxisType::enumHAxisType);
 Q_DECLARE_METATYPE(Cursors::enumCursors);
 Q_DECLARE_METATYPE(ValueType);
+Q_DECLARE_METATYPE(QCPRange);
 
 int main(int argc, char* argv[]) {
   QApplication application(argc, argv);
@@ -91,6 +93,7 @@ int main(int argc, char* argv[]) {
   qRegisterMetaType<Cursors::enumCursors>();
   qRegisterMetaType<QPair<ValueType, QByteArray>>();
   qRegisterMetaType<QList<QPair<ValueType, QByteArray>>>();
+  qRegisterMetaType<QCPRange>();
 
   // Vytvoří instance hlavních objektů
   MainWindow mainWindow;
@@ -104,6 +107,7 @@ int main(int argc, char* argv[]) {
   SignalProcessing* signalProcessing2 = new SignalProcessing();
   SignalProcessing* signalProcessingFFT1 = new SignalProcessing();
   SignalProcessing* signalProcessingFFT2 = new SignalProcessing();
+  Interpolator* interpolator = new Interpolator();
 
   // Vytvoří vlákna
   QThread plotDataThread;
@@ -112,6 +116,7 @@ int main(int argc, char* argv[]) {
   QThread plotMathThread;
   QThread serialReader1Thread;
   QThread signalProcessing1Thread, signalProcessing2Thread, signalProcessingFFT1Thread, signalProcessingFFT2Thread;
+  QThread interpolatorThread;
 
   // Propojí signály
   QObject::connect(serial1, &SerialReader::sendData, serialParser1, &NewSerialParser::parse);
@@ -170,6 +175,8 @@ int main(int argc, char* argv[]) {
   QObject::connect(signalProcessingFFT1, &SignalProcessing::fftResult, &mainWindow, &MainWindow::fftResult1);
   QObject::connect(signalProcessingFFT2, &SignalProcessing::fftResult, &mainWindow, &MainWindow::fftResult2);
   QObject::connect(plotMath, &PlotMath::sendResultXY, &mainWindow, &MainWindow::xyResult);
+  QObject::connect(&mainWindow, &MainWindow::interpolate, interpolator, &Interpolator::interpolate);
+  QObject::connect(interpolator, &Interpolator::interpolationResult, &mainWindow, &MainWindow::interpolationResult);
 
   // Funkce init je zavolána až z nového vlákna
   QObject::connect(&serialReader1Thread, &QThread::started, serial1, &SerialReader::init);
@@ -184,6 +191,7 @@ int main(int argc, char* argv[]) {
   signalProcessing2->moveToThread(&signalProcessing2Thread);
   signalProcessingFFT1->moveToThread(&signalProcessingFFT1Thread);
   signalProcessingFFT2->moveToThread(&signalProcessingFFT2Thread);
+  interpolator->moveToThread(&interpolatorThread);
 
   // Zahájí vlákna
   serialReader1Thread.start();
@@ -195,6 +203,7 @@ int main(int argc, char* argv[]) {
   signalProcessing2Thread.start();
   signalProcessingFFT1Thread.start();
   signalProcessingFFT2Thread.start();
+  interpolatorThread.start();
 
   // Zobrazí okno a čeká na ukončení
   mainWindow.init(&translator, plotData, plotMath, serial1);
@@ -211,6 +220,7 @@ int main(int argc, char* argv[]) {
   signalProcessing2->deleteLater();
   signalProcessingFFT1->deleteLater();
   signalProcessingFFT2->deleteLater();
+  interpolator->deleteLater();
 
   // Vyžádá ukončení event loopu
   serialParser1Thread.quit();
@@ -222,6 +232,7 @@ int main(int argc, char* argv[]) {
   signalProcessing2Thread.quit();
   signalProcessingFFT1Thread.quit();
   signalProcessingFFT2Thread.quit();
+  interpolatorThread.quit();
 
   // Čeká na ukončení procesů
   serialParser1Thread.wait();
@@ -233,6 +244,7 @@ int main(int argc, char* argv[]) {
   signalProcessing2Thread.wait();
   signalProcessingFFT1Thread.wait();
   signalProcessingFFT2Thread.wait();
+  interpolatorThread.wait();
 
   return returnValue;
 }

@@ -16,7 +16,7 @@
 #ifndef SERIALREADER_H
 #define SERIALREADER_H
 
-#include "enums_defines_constants.h"
+#include "enumsDefinesConstants.h"
 #include <QDebug>
 #include <QObject>
 #include <QSerialPort>

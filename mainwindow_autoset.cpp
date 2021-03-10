@@ -25,6 +25,7 @@ void MainWindow::on_pushButtonAutoset_clicked() {
       activeLogic.append(i);
 
   if (activeAnalogs.count() + activeLogic.count() > 1) {
+    // multiple channels
     double recentOffset = 0;
 
     for (int i = LOGIC_GROUPS - 1; i >= 0; i--) {
@@ -41,6 +42,12 @@ void MainWindow::on_pushButtonAutoset_clicked() {
         QCPRange range = ui->plot->graph(i)->data()->valueRange(foundRange);
         range.lower = ceilToNiceValue(range.lower) * ui->plot->getChScale(i);
         range.upper = ceilToNiceValue(range.upper) * ui->plot->getChScale(i);
+        if (ui->plot->isChInverted(i)) {
+          // Pokud je kanál invertovaný, prohodí vršek a spodek a změní znaménko
+          double a = range.upper;
+          range.upper = -range.lower;
+          range.lower = -a;
+        }
         recentOffset -= range.lower;
         ui->plot->setChOffset(i, recentOffset);
         recentOffset += range.upper;
@@ -52,25 +59,36 @@ void MainWindow::on_pushButtonAutoset_clicked() {
       ui->doubleSpinBoxRangeVerticalRange->setValue(recentOffset);
     }
   } else {
+    // Only one channel
+    on_pushButtonResetChannels_clicked();
     if (!activeAnalogs.isEmpty()) {
-      on_pushButtonResetChannels_clicked();
       bool foundrange;
       QCPRange range = ui->plot->graph(activeAnalogs.at(0))->data()->valueRange(foundrange);
+      if (ui->plot->isChInverted(activeAnalogs.at(0))) {
+        // Pokud je kanál invertovaný, změní znaménko a prohodí
+        range.upper *= -1;
+        range.lower *= -1;
+        range.normalize();
+      }
       if (range.lower >= 0) {
         on_pushButtonPositive_clicked();
         ui->doubleSpinBoxRangeVerticalRange->setValue(ceilToNiceValue(range.upper));
+      } else if (range.upper <= 0) {
+        on_pushButtonNegative_clicked();
+        ui->doubleSpinBoxRangeVerticalRange->setValue(ceilToNiceValue(abs(range.lower)));
       } else {
         on_pushButtonCenter_clicked();
         ui->doubleSpinBoxRangeVerticalRange->setValue(2 * ceilToNiceValue(MAX(std::abs(range.upper), std::abs(range.lower))));
       }
       ui->checkBoxVerticalValues->setChecked(true);
+      ui->comboBoxSelectedChannel->setCurrentIndex(activeAnalogs.at(0));
     } else if (!activeLogic.isEmpty()) {
-      on_pushButtonResetChannels_clicked();
       int bitsUsed = ui->plot->getLogicBitsUsed(activeLogic.at(0));
-      // Skupina logických kanálů má spodek na 0 a vršek je 3*počet kanálů (bitů)
+      // Skupina logických kanálů má spodek na 0 a vršek je 3*počet pod-kanálů (bitů)
       ui->doubleSpinBoxRangeVerticalRange->setValue(bitsUsed * 3 * ui->plot->getLogicScale(activeLogic.at(0)));
       ui->checkBoxVerticalValues->setChecked(false);
       on_pushButtonPositive_clicked();
+      ui->comboBoxSelectedChannel->setCurrentIndex(LOGIC_GROUP_TO_CH_LIST_INDEX(activeLogic.at(0)));
     }
   }
   on_comboBoxSelectedChannel_currentIndexChanged(ui->comboBoxSelectedChannel->currentIndex());

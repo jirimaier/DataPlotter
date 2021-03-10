@@ -15,7 +15,9 @@
 
 #include "signalprocessing.h"
 
-SignalProcessing::SignalProcessing(QObject* parent) : QObject(parent) {}
+SignalProcessing::SignalProcessing(QObject* parent) : QObject(parent) {
+
+}
 
 void SignalProcessing::resizeHamming(int length) {
   if (hamming.size() != length) {
@@ -64,6 +66,33 @@ QVector<std::complex<float>> SignalProcessing::fft(QVector<std::complex<float>> 
     std::complex<float> Wi = std::pow(Wn, k);
     X[k] = Xe[k] + Wi * Xo[k];
     X[k + N / 2] = Xe[k] - Wi * Xo[k];
+  }
+  return X;
+}
+
+QVector<std::complex<float>> SignalProcessing::ifft(QVector<std::complex<float>> x) {
+  int N = x.size(); // Velikost x musí být mocnina 2.
+
+  if (N == 1)
+    return x; // Konec rekurze
+
+  // exp(2*Pi*i/N)
+  auto Wn = std::exp(std::complex<float>(0, -2.0 * M_PI / (float)N));
+
+  QVector<std::complex<float>> Pe, Po; // Sudé a liché koeficienty
+  for (int n = 1; n < N; n += 2) {
+    Pe.append(x.at(n - 1)); // Sudé
+    Po.append(x.at(n));     // Liché
+  }
+
+  QVector<std::complex<float>> Xe = fft(Pe), Xo = fft(Po); // Rekurze
+
+  QVector<std::complex<float>> X;
+  X.resize(N);
+  for (int k = 0; k < N / 2; k++) {
+    std::complex<float> Wi = std::pow(Wn, k) ;
+    X[k] = (Xe[k] + Wi * Xo[k]) / std::complex<float>(N, 0);
+    X[k + N / 2] = (Xe[k] - Wi * Xo[k]) / std::complex<float>(N, 0);
   }
   return X;
 }
@@ -187,7 +216,7 @@ void SignalProcessing::process(QSharedPointer<QCPGraphDataContainer> data) {
   float max = data->valueRange(rangefound).upper;
   float min = data->valueRange(rangefound).lower;
 
-  float fs = data->size() / (data->at(data->size() - 1)->key - data->at(0)->key);
+  float fs = (data->size() - 1) / (data->at(data->size() - 1)->key - data->at(0)->key);
 
   // Stejnosměrná složka
   float dc = 0;
@@ -338,3 +367,4 @@ QPair<float, float> SignalProcessing::getRiseFall(QSharedPointer<QCPGraphDataCon
   }
   return risefall;
 }
+

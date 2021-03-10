@@ -42,12 +42,16 @@ void NewSerialParser::sendMessageIfAllowed(QString header, QString message, Mess
 
 void NewSerialParser::showBuffer() {
   if ((!buffer.isEmpty()) || (!pendingDataBuffer.isEmpty())) {
-    emit sendMessage(tr("Buffer (string)"), pendingDataBuffer + buffer, MessageLevel::info, target);
-#if QT_VERSION >= 0x050C00
-    emit sendMessage(tr("Buffer (hex)"), pendingDataBuffer + buffer.toHex(' '), MessageLevel::info, target);
-#else
-    emit sendMessage("Buffer (hex)", pendingDataBuffer + buffer.toHex(), MessageLevel::info, target);
-#endif
+    QByteArray bufferToPrint = pendingDataBuffer + buffer;
+    // nahradí netisknutelné znaky hex číslem
+    for (unsigned char ch = 0;; ch++) {
+      if (ch == 32)
+        ch = 127;
+      bufferToPrint.replace(ch, " 0x" + QString::number((unsigned int)ch, 16).toLocal8Bit() + " ");
+      if (ch == 255)
+        break;
+    }
+    emit sendMessage(tr("Buffer"), bufferToPrint, MessageLevel::info, target);
   }
   if (!pendingPointBuffer.isEmpty()) {
     QByteArray pointBuffer;

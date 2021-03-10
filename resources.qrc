@@ -42,7 +42,6 @@
         <file>icons/about.png</file>
         <file>icons/logic.png</file>
         <file>icons/math.png</file>
-        <file>icons/lineFilled.png</file>
         <file>icons/square.png</file>
         <file>icons/squareFilled.png</file>
         <file>icons/visible.png</file>
@@ -70,15 +69,24 @@
         <file>icons/vrange.png</file>
         <file>icons/zoom.png</file>
         <file>icons/hrange.png</file>
+        <file>icons/dollarsNewline.png</file>
+        <file>icons/wordWrap.png</file>
+        <file>icons/interpolate.png</file>
+        <file>icons/logicFilled.png</file>
+        <file>icons/invert.png</file>
+        <file>icons/logicNotfilled.png</file>
+        <file>icons/logicPoints.png</file>
+        <file>icons/hrangeStep.png</file>
     </qresource>
     <qresource prefix="/translations">
         <file>translations/translation_cz.qm</file>
         <file>translations/translation_en.qm</file>
     </qresource>
     <qresource prefix="/text">
-        <file>settings/default.txt</file>
+        <file>settings/default.cfg</file>
         <file>stylesheets/styleSheetLinux.txt</file>
         <file>stylesheets/styleSheetWindows.txt</file>
         <file>stylesheets/styleSheetWindows10.txt</file>
+        <file>interpolationFIR.csv</file>
     </qresource>
 </RCC>

@@ -22,7 +22,7 @@
 #include <QObject>
 #include <complex>
 
-#include "enums_defines_constants.h"
+#include "enumsDefinesConstants.h"
 #include "qcustomplot.h"
 
 class SignalProcessing : public QObject {
@@ -36,6 +36,7 @@ class SignalProcessing : public QObject {
   void resizeBlackman(int length);
   QVector<float> hamming, hann, blackman;
   QVector<std::complex<float>> fft(QVector<std::complex<float>> signal);
+  QVector<std::complex<float>> ifft(QVector<std::complex<float>> signal);
   inline float getStrongestFreq(QSharedPointer<QCPGraphDataContainer> data, float dc, float fs);
   inline QPair<float, float> getRiseFall(QSharedPointer<QCPGraphDataContainer> data);
 

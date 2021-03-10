@@ -19,7 +19,7 @@
 #include <QObject>
 #include <QSlider>
 
-#include "enums_defines_constants.h"
+#include "enumsDefinesConstants.h"
 
 class myCursorSlider : public QSlider {
   Q_OBJECT

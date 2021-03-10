@@ -51,7 +51,14 @@ MyMainPlot::MyMainPlot(QWidget* parent) : MyPlot(parent) {
     logicGroupAxis.last()->setTickLength(0, 0);
   }
 
+  // Interpolační kanály
+  for (int i = 0; i < ANALOG_COUNT + MATH_COUNT; i++) {
+    addGraph(xAxis, analogAxis.at(i));
+  }
+
   initZeroLines();
+
+  dataToBeInterpolated.resize(ANALOG_COUNT + MATH_COUNT);
 
   // Propojení musí být až po skončení inicializace!
   connect(this->yAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(verticalAxisRangeChanged(void)));
@@ -151,7 +158,7 @@ void MyMainPlot::updateTracerText(int index) {
   QString tracerTextStr;
   tracerTextStr.append(" " + getChName(index) + "\n");
   if (IS_LOGIC_CH(index)) {
-    tracerTextStr.append("=%1, ").arg((uint32_t)1 << ChID_TO_LOGIC_GROUP_BIT(index));
+    tracerTextStr.append(QString("=%1, ").arg((uint32_t)(1 << ChID_TO_LOGIC_GROUP_BIT(index))));
     if ((int)tracer->position->value() % 3)
       tracerTextStr.append("HIGH");
     else
@@ -181,30 +188,26 @@ void MyMainPlot::setLogicStyle(int group, int style) {
   logicSettings[group].style = style;
   for (int bit = 0; bit < LOGIC_BITS; bit++) {
     int chID = getLogicChannelID(group, bit);
-    if (style == GraphStyle::linePoint) {
-      this->graph(chID)->setScatterStyle(POINT_STYLE);
-      this->graph(chID)->setLineStyle(QCPGraph::lsLine);
-      this->graph(chID)->setBrush(Qt::NoBrush);
-    } else if (style == GraphStyle::line) {
-      this->graph(chID)->setScatterStyle(QCPScatterStyle::ssNone);
-      this->graph(chID)->setLineStyle(QCPGraph::lsLine);
-      this->graph(chID)->setBrush(Qt::NoBrush);
-    } else if (style == GraphStyle::point) {
+    if (style == GraphStyle::logicpoints) {
       this->graph(chID)->setScatterStyle(POINT_STYLE);
       this->graph(chID)->setLineStyle(QCPGraph::lsNone);
       this->graph(chID)->setBrush(Qt::NoBrush);
-    } else if (style == GraphStyle::filled) {
+    } else if (style == GraphStyle::logicFilled) {
       this->graph(chID)->setScatterStyle(QCPScatterStyle::ssNone);
       this->graph(chID)->setLineStyle(QCPGraph::lsLine);
       this->graph(chID)->setBrush(logicSettings.at(group).color);
-    } else if (style == GraphStyle::square) {
+    } else if (style == GraphStyle::logicSquare) {
       this->graph(chID)->setScatterStyle(QCPScatterStyle::ssNone);
       this->graph(chID)->setLineStyle(QCPGraph::lsStepCenter);
       this->graph(chID)->setBrush(Qt::NoBrush);
-    } else if (style == GraphStyle::squareFilled) {
+    } else if (style == GraphStyle::logicSquareFilled) {
       this->graph(chID)->setScatterStyle(QCPScatterStyle::ssNone);
       this->graph(chID)->setLineStyle(QCPGraph::lsStepCenter);
       this->graph(chID)->setBrush(logicSettings.at(group).color);
+    } else { // Logic line no-fill
+      this->graph(chID)->setScatterStyle(QCPScatterStyle::ssNone);
+      this->graph(chID)->setLineStyle(QCPGraph::lsLine);
+      this->graph(chID)->setBrush(Qt::NoBrush);
     }
   }
   this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
@@ -214,7 +217,7 @@ void MyMainPlot::setLogicColor(int group, QColor color) {
   logicSettings[group].color = color;
   for (int bit = 0; bit < LOGIC_BITS; bit++) {
     this->graph(getLogicChannelID(group, bit))->setPen(QPen(color));
-    if (logicSettings.at(group).style == GraphStyle::filled || logicSettings.at(group).style == GraphStyle::squareFilled) {
+    if (logicSettings.at(group).style == GraphStyle::logicFilled || logicSettings.at(group).style == GraphStyle::logicSquareFilled) {
       this->graph(getLogicChannelID(group, bit))->setBrush(color);
     }
   }
@@ -248,27 +251,15 @@ void MyMainPlot::setChStyle(int chID, int style) {
   if (style == GraphStyle::linePoint) {
     this->graph(chID)->setScatterStyle(POINT_STYLE);
     this->graph(chID)->setLineStyle(QCPGraph::lsLine);
-    this->graph(chID)->setBrush(Qt::NoBrush);
-  } else if (style == GraphStyle::line) {
-    this->graph(chID)->setScatterStyle(QCPScatterStyle::ssNone);
-    this->graph(chID)->setLineStyle(QCPGraph::lsLine);
-    this->graph(chID)->setBrush(Qt::NoBrush);
   } else if (style == GraphStyle::point) {
     this->graph(chID)->setScatterStyle(POINT_STYLE);
     this->graph(chID)->setLineStyle(QCPGraph::lsNone);
-    this->graph(chID)->setBrush(Qt::NoBrush);
-  } else if (style == GraphStyle::filled) {
+  } else { // Line
     this->graph(chID)->setScatterStyle(QCPScatterStyle::ssNone);
-    this->graph(chID)->setLineStyle(QCPGraph::lsLine);
-    this->graph(chID)->setBrush(channelSettings.at(chID).color);
-  } else if (style == GraphStyle::square) {
-    this->graph(chID)->setScatterStyle(QCPScatterStyle::ssNone);
-    this->graph(chID)->setLineStyle(QCPGraph::lsStepCenter);
-    this->graph(chID)->setBrush(Qt::NoBrush);
-  } else if (style == GraphStyle::squareFilled) {
-    this->graph(chID)->setScatterStyle(QCPScatterStyle::ssNone);
-    this->graph(chID)->setLineStyle(QCPGraph::lsStepCenter);
-    this->graph(chID)->setBrush(channelSettings.at(chID).color);
+    if (channelSettings.at(chID).interpolate)
+      this->graph(chID)->setLineStyle(QCPGraph::lsNone);
+    else
+      this->graph(chID)->setLineStyle(QCPGraph::lsLine);
   }
   this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
 }
@@ -277,7 +268,8 @@ void MyMainPlot::setChColor(int chID, QColor color) {
   channelSettings[chID].color = color;
   zeroLines.at(chID)->setPen(QPen(color, 1, Qt::DashLine));
   this->graph(chID)->setPen(QPen(color));
-  if (channelSettings.at(chID).style == GraphStyle::filled || channelSettings.at(chID).style == GraphStyle::squareFilled)
+  this->graph(INTERPOLATION_CHID(chID))->setPen(QPen(color));
+  if (channelSettings.at(chID).style == GraphStyle::logicFilled || channelSettings.at(chID).style == GraphStyle::logicSquareFilled)
     this->graph(chID)->setBrush(color);
   this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
 }
@@ -304,8 +296,15 @@ void MyMainPlot::setChInvert(int chID, bool inverted) {
   this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
 }
 
+void MyMainPlot::setChInterpolate(int chID, bool enabled) {
+  channelSettings[chID].interpolate = enabled;
+  graph(INTERPOLATION_CHID(chID))->setVisible(enabled && channelSettings.at(chID).visible);
+  setChStyle(chID, channelSettings.at(chID).style); //Updatuje styl čáry
+}
+
 void MyMainPlot::setChVisible(int chID, bool visible) {
   channelSettings[chID].visible = visible;
+  graph(INTERPOLATION_CHID(chID))->setVisible(visible && channelSettings.at(chID).interpolate);
   zeroLines.at(chID)->setVisible(visible && channelSettings.at(chID).offset != 0);
   this->graph(chID)->setVisible(visible);
   this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
@@ -383,6 +382,8 @@ void MyMainPlot::clearLogicGroup(int number, int fromBit) {
 
 void MyMainPlot::clearCh(int chID) {
   this->graph(chID)->data().data()->clear(); // Odstraní kanál
+  if (chID < ANALOG_COUNT + MATH_COUNT)
+    this->graph(INTERPOLATION_CHID(chID))->data().data()->clear(); // Odstraní graf interpolace
   if (plottingStatus == PlotStatus::pause)
     pauseBuffer.at(chID)->clear(); // Vymaže i z paměti pro pauzu (jinak by se po ukončení pauzy načetl zpět)
   newData = true;                  // Aby se překreslil graf
@@ -394,6 +395,7 @@ void MyMainPlot::resetChannels() {
     if (plottingStatus == PlotStatus::pause)
       pauseBuffer.at(i)->clear();
   }
+
   updateMinMaxTimes();
   redraw();
 }
@@ -404,9 +406,23 @@ void MyMainPlot::newDataVector(int chID, QSharedPointer<QCPGraphDataContainer> d
     return;
   }
   if (plottingStatus != PlotStatus::pause || ignorePause) {
+    if (!IS_LOGIC_CH(chID)) {
+      // Pokud má být interpolován, nedá data do grafu, ale připravý do bufferu odkud si je odebere interpolátor
+      if (channelSettings.at(chID).interpolate) {
+        dataToBeInterpolated[chID] = data;
+        return;
+      }
+    }
     this->graph(chID)->setData(data);
     newData = true;
   }
+}
+
+void MyMainPlot::newInterpolatedVector(int chID, QSharedPointer<QCPGraphDataContainer> dataOriginal, QSharedPointer<QCPGraphDataContainer> dataInterpolated, bool dataIsFromInterpolationBuffer) {
+  if (dataIsFromInterpolationBuffer)
+    this->graph(chID)->setData(dataOriginal);
+  this->graph(INTERPOLATION_CHID(chID))->setData(dataInterpolated);
+  newData = true;
 }
 
 void MyMainPlot::setRollingRange(double value) {
@@ -452,8 +468,10 @@ void MyMainPlot::setShiftStep(int step) {
 
 void MyMainPlot::newDataPoint(int chID, double time, double value, bool append) {
   if (plottingStatus != PlotStatus::pause) {
-    if (!append)
+    if (!append) {
       this->graph(chID)->data()->clear();
+      this->graph(INTERPOLATION_CHID(chID))->data()->clear();
+    }
     this->graph(chID)->addData(time, value);
     newData = true;
   } else {
@@ -550,12 +568,26 @@ void MyMainPlot::mouseMoved(QMouseEvent* event) {
     // Najde nejbližší kanál k myši, pokud žádný není blíž než 20 pixelů, vůbec se nezobrazí
     int nearestIndex = -1;
     unsigned int nearestDistance = TRACER_MOUSE_DISTANCE;
-    for (int i = 0; i < graphCount(); i++) {
+    for (int i = 0; i < ALL_COUNT; i++) {
       if (graph(i)->visible()) {
         unsigned int distance = (unsigned int)graph(i)->selectTest(event->pos(), false);
         if (distance < nearestDistance) {
           nearestIndex = i;
           nearestDistance = distance;
+        }
+      }
+    }
+
+    // Aby fungovalo i na interpolovaný graf
+    if (nearestIndex == -1) {
+      nearestDistance = TRACER_MOUSE_DISTANCE;
+      for (int i = 0; i < ANALOG_COUNT + MATH_COUNT; i++) {
+        if (graph(INTERPOLATION_CHID(i))->visible()) {
+          unsigned int distance = (unsigned int)graph(INTERPOLATION_CHID(i))->selectTest(event->pos(), false);
+          if (distance < nearestDistance) {
+            nearestIndex = i;
+            nearestDistance = distance;
+          }
         }
       }
     }
@@ -596,12 +628,26 @@ void MyMainPlot::mousePressed(QMouseEvent* event) {
   // Kanál
   int nearestIndex = -1;
   unsigned int nearestDistance = TRACER_MOUSE_DISTANCE;
-  for (int i = 0; i < graphCount(); i++) {
+  for (int i = 0; i < ALL_COUNT; i++) {
     if (graph(i)->visible()) {
       unsigned int distance = (unsigned int)graph(i)->selectTest(event->pos(), false);
       if (distance < nearestDistance) {
         nearestIndex = i;
         nearestDistance = distance;
+      }
+    }
+  }
+
+  // Aby fungovalo kliknutí na interpolovaný graf
+  if (nearestIndex == -1) {
+    nearestDistance = PLOT_ELEMENTS_MOUSE_DISTANCE;
+    for (int i = 0; i < ANALOG_COUNT + MATH_COUNT; i++) {
+      if (graph(INTERPOLATION_CHID(i))->visible()) {
+        unsigned int distance = (unsigned int)graph(INTERPOLATION_CHID(i))->selectTest(event->pos(), false);
+        if (distance < nearestDistance) {
+          nearestIndex = i;
+          nearestDistance = distance;
+        }
       }
     }
   }

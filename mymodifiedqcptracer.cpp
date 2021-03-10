@@ -38,10 +38,8 @@ void MyModifiedQCPTracer::updatePosition() {
         }
         position->setCoords(nearest->key, nearest->value);
         posIndex = nearest - mGraph->data()->begin();
-      } else
-        qDebug() << Q_FUNC_INFO << "graph has no data";
-    } else
-      qDebug() << Q_FUNC_INFO << "graph not contained in QCustomPlot instance (anymore)";
+      }
+    }
   }
 
   // Verze pro křivku (XY graf)
@@ -62,9 +60,7 @@ void MyModifiedQCPTracer::updatePosition() {
         }
         position->setCoords(nearest->key, nearest->value);
         posIndex = nearest - mCurve->data()->begin();
-      } else
-        qDebug() << Q_FUNC_INFO << "curve has no data";
-    } else
-      qDebug() << Q_FUNC_INFO << "curve not contained in QCustomPlot instance (anymore)";
+      }
+    }
   }
 }

@@ -15,12 +15,6 @@
 
 #include "mainwindow.h"
 
-void MainWindow::on_pushButtonConnect_clicked() {
-  if (ui->comboBoxCom->currentIndex() >= 0) {
-    emit toggleSerialConnection(portList.at(ui->comboBoxCom->currentIndex()).portName(), ui->comboBoxBaud->currentText().toInt());
-  }
-}
-
 void MainWindow::rangeTypeChanged() {
   if (ui->radioButtonFixedRange->isChecked()) {
     ui->plot->setRangeType(PlotRange::fixedRange);
@@ -35,6 +29,12 @@ void MainWindow::rangeTypeChanged() {
   }
 }
 
+void MainWindow::on_pushButtonConnect_clicked() {
+  if (ui->comboBoxCom->currentIndex() >= 0) {
+    emit toggleSerialConnection(portList.at(ui->comboBoxCom->currentIndex()).portName(), ui->comboBoxBaud->currentText().toInt());
+  }
+}
+
 void MainWindow::on_doubleSpinBoxChOffset_valueChanged(double arg1) {
   if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT)
     ui->plot->setChOffset(ui->comboBoxSelectedChannel->currentIndex(), arg1);
@@ -43,9 +43,9 @@ void MainWindow::on_doubleSpinBoxChOffset_valueChanged(double arg1) {
 }
 
 void MainWindow::on_comboBoxGraphStyle_currentIndexChanged(int index) {
-  if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT)
+  if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT) {
     ui->plot->setChStyle(ui->comboBoxSelectedChannel->currentIndex(), index);
-  else
+  } else
     ui->plot->setLogicStyle(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT, index);
 }
 void MainWindow::on_doubleSpinBoxChScale_valueChanged(double arg1) {
@@ -136,31 +136,32 @@ void MainWindow::on_comboBoxSelectedChannel_currentIndexChanged(int index) {
   // Zablokuje signáli, aby se po nastavení sočasných rovnou neposlali současné hodnoty jako změna.
   ui->doubleSpinBoxChOffset->blockSignals(true);
   ui->doubleSpinBoxChScale->blockSignals(true);
-  ui->dialChScale->blockSignals(true);
+  //ui->dialChScale->blockSignals(true);
   ui->pushButtonHideCh->blockSignals(true);
   ui->comboBoxGraphStyle->blockSignals(true);
-  ui->checkBoxChInverted->blockSignals(true);
+  ui->pushButtonInvert->blockSignals(true);
 
-  if (index >= ANALOG_COUNT + MATH_COUNT) {
-    ui->checkBoxChInverted->setEnabled(false);
-    int group = index - ANALOG_COUNT - MATH_COUNT;
+  if (IS_LOGIC_CH(index)) {
+    setChStyleSelection(GraphType::logic);
+    int group = CH_LIST_INDEX_TO_LOGIC_GROUP(index);
     ui->comboBoxGraphStyle->setCurrentIndex(ui->plot->getLogicStyle(group));
     double offset = ui->plot->getLogicOffset(group);
     double scale = ui->plot->getLogicScale(group);
     ui->doubleSpinBoxChOffset->setValue(offset);
     ui->doubleSpinBoxChScale->setValue(scale);
-    ui->dialChScale->updatePosition(scale);
+    //ui->dialChScale->updatePosition(scale);
     ui->pushButtonHideCh->setChecked(!ui->plot->isLogicVisible(group));
   } else {
-    ui->checkBoxChInverted->setEnabled(true);
+    setChStyleSelection(index >= ANALOG_COUNT ? GraphType::math : GraphType::analog);
     ui->comboBoxGraphStyle->setCurrentIndex(ui->plot->getChStyle(index));
     double offset = ui->plot->getChOffset(index);
     double scale = ui->plot->getChScale(index);
     ui->doubleSpinBoxChOffset->setValue(offset);
     ui->doubleSpinBoxChScale->setValue(scale);
-    ui->dialChScale->updatePosition(scale);
-    ui->checkBoxChInverted->setChecked(ui->plot->isChInverted(index));
+    //ui->dialChScale->updatePosition(scale);
+    ui->pushButtonInvert->setChecked(ui->plot->isChInverted(index));
     ui->pushButtonHideCh->setChecked(!ui->plot->isChVisible(index));
+    ui->pushButtonInterpolate->setChecked(ui->plot->isChInterpolated(index));
   }
   updateChScale();
 
@@ -170,15 +171,18 @@ void MainWindow::on_comboBoxSelectedChannel_currentIndexChanged(int index) {
   else
     ui->pushButtonHideCh->setIcon(iconVisible);
 
+  ui->pushButtonInterpolate->setEnabled(index < ANALOG_COUNT + MATH_COUNT);
+  ui->pushButtonInvert->setDisabled(IS_LOGIC_CH(index));
+
   ui->doubleSpinBoxChOffset->blockSignals(false);
   ui->doubleSpinBoxChScale->blockSignals(false);
-  ui->dialChScale->blockSignals(false);
+  //ui->dialChScale->blockSignals(false);
   ui->pushButtonHideCh->blockSignals(false);
   ui->comboBoxGraphStyle->blockSignals(false);
-  ui->checkBoxChInverted->blockSignals(false);
+  ui->pushButtonInvert->blockSignals(false);
 }
 
-void MainWindow::on_checkBoxChInverted_toggled(bool checked) {
+void MainWindow::on_pushButtonInvert_toggled(bool checked) {
   if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT)
     ui->plot->setChInvert(ui->comboBoxSelectedChannel->currentIndex(), checked);
 }
@@ -187,7 +191,6 @@ void MainWindow::on_pushButtonResetChannels_clicked() {
   for (int i = 0; i < ANALOG_COUNT + MATH_COUNT; i++) {
     ui->plot->setChOffset(i, 0);
     ui->plot->setChScale(i, 1);
-    ui->plot->setChStyle(i, GraphStyle::line);
   }
   for (int i = 0; i < LOGIC_GROUPS; i++) {
     ui->plot->setLogicOffset(i, 0);
@@ -448,4 +451,148 @@ void MainWindow::on_pushButtonFFT_toggled(bool checked) {
 #else
   ui->plotFFT->setVisible(checked);
 #endif
+}
+
+void MainWindow::on_doubleSpinBoxRangeVerticalRange_valueChanged(double arg1) {
+  ui->doubleSpinBoxChOffset->setSingleStep(pow(10.0, log10(arg1) - 2));
+  ui->doubleSpinBoxYCur1->setSingleStep(pow(10.0, floor(log10(arg1)) - 2));
+  ui->doubleSpinBoxYCur2->setSingleStep(pow(10.0, floor(log10(arg1)) - 2));
+}
+
+void MainWindow::on_pushButtonCenter_clicked() {
+  if (ui->sliderVerticalCenter->value() != 0)
+    ui->sliderVerticalCenter->setValue(0);
+  else
+    ui->plot->setVerticalCenter(0);
+}
+
+void MainWindow::on_pushButtonClearAll_clicked() {
+  ui->plot->resetChannels();
+  // emit resetChannels();
+}
+
+void MainWindow::on_pushButtonTerminalInputCopy_clicked() {
+  QByteArray bytes = ui->textEditTerminalDebug->toPlainText().replace('\n', "\\r\\n").toUtf8();
+  for (unsigned char ch = 0;; ch++) {
+    if (ch == 32)
+      ch = 127;
+    bytes.replace(ch, ("\\x" + QString::number(ch, 16)).toLocal8Bit() + "\"\"");
+    if (ch == 255)
+      break;
+  }
+
+  QGuiApplication::clipboard()->setText(bytes);
+}
+
+void MainWindow::on_pushButtonChangeXYColor_clicked() {
+  QColor color = QColorDialog::getColor(ui->plotxy->graphXY->pen().color());
+  if (color.isValid())
+    ui->plotxy->graphXY->setPen(QColor(color));
+}
+
+void MainWindow::on_pushButtonTerminalDebugSend_clicked() {
+  QByteArray data = ui->textEditTerminalDebug->toPlainText().toUtf8();
+  data.replace("\n", "\r\n"); // Odřádkování v textovém poli
+
+  data.replace("\\n", "\n");
+  data.replace("\\e", "\u001b");
+  data.replace("\\r", "\r");
+  data.replace("\\t", "\t");
+  data.replace("\\b", "\b");
+  data.replace("\\a", "\a");
+
+  ui->myTerminal->printToTerminal(data);
+}
+
+void MainWindow::on_textEditTerminalDebug_cursorPositionChanged() {
+  if (ui->textEditTerminalDebug->textCursor().selectedText().isEmpty())
+    ui->textEditTerminalDebug->setTextColor(Qt::black);
+}
+
+void MainWindow::on_myTerminal_cellClicked(int row, int column) {
+  if (ui->pushButtonTerminalDebug->isChecked())
+    insertInTerminalDebug(QString("\\e[%1;%2H").arg(row + 1).arg(column + 1), Qt::red);
+}
+
+void MainWindow::on_comboBoxFFTType_currentIndexChanged(int index) {
+  if (index != FFTType::spectrum) {
+    ui->plotFFT->setYUnit("dB");
+    if (IS_FFT(ui->comboBoxCursor1Channel->currentIndex()))
+      ui->doubleSpinBoxYCur1->setSuffix("dB");
+    if (IS_FFT(ui->comboBoxCursor2Channel->currentIndex()))
+      ui->doubleSpinBoxYCur2->setSuffix("dB");
+  } else {
+    ui->plotFFT->setYUnit("");
+    if (IS_FFT(ui->comboBoxCursor1Channel->currentIndex()))
+      ui->doubleSpinBoxYCur1->setSuffix("");
+    if (IS_FFT(ui->comboBoxCursor2Channel->currentIndex()))
+      ui->doubleSpinBoxYCur2->setSuffix("");
+  } ui->spinBoxFFTSegments1->setVisible(index == FFTType::pwelch);
+  ui->spinBoxFFTSegments2->setVisible(index == FFTType::pwelch);
+}
+
+void MainWindow::on_lineEditVUnit_textChanged(const QString& arg1) {
+  ui->plot->setYUnit(arg1);
+  ui->plotxy->setYUnit(arg1);
+  ui->plotxy->setXUnit(arg1);
+  ui->doubleSpinBoxRangeVerticalRange->setSuffix(arg1);
+  ui->doubleSpinBoxChOffset->setSuffix(arg1);
+  if (IS_ANALOG_OR_MATH(ui->comboBoxCursor1Channel->currentIndex()))
+    ui->doubleSpinBoxYCur1->setSuffix(arg1);
+  if (IS_ANALOG_OR_MATH(ui->comboBoxCursor1Channel->currentIndex()))
+    ui->doubleSpinBoxYCur2->setSuffix(arg1);
+  ui->doubleSpinBoxXYCurX1->setSuffix(arg1);
+  ui->doubleSpinBoxXYCurX2->setSuffix(arg1);
+  ui->doubleSpinBoxXYCurY1->setSuffix(arg1);
+  ui->doubleSpinBoxXYCurY2->setSuffix(arg1);
+
+  updateDivs(); // Aby se aktualizovala jednotka u kroku mřížky
+  updateChScale(); // Aby se aktualizovala jednotka u měřítka
+}
+
+void MainWindow::on_checkBoxOpenGL_toggled(bool checked) {
+  ui->plot->setOpenGl(checked);
+  ui->plot->redraw();
+}
+
+void MainWindow::on_checkBoxMouseControls_toggled(bool checked) {
+  ui->plot->enableMouseCursorControll(checked);
+  ui->plotxy->enableMouseCursorControll(checked);
+  ui->plotFFT->enableMouseCursorControll(checked);
+}
+
+void MainWindow::on_checkBoxFFTCh1_toggled(bool checked) {
+  setComboboxItemVisible(*ui->comboBoxCursor1Channel, FFTID(0), checked && ui->pushButtonFFT->isChecked());
+  setComboboxItemVisible(*ui->comboBoxCursor2Channel, FFTID(0), checked && ui->pushButtonFFT->isChecked());
+}
+
+void MainWindow::on_checkBoxFFTCh2_toggled(bool checked) {
+  setComboboxItemVisible(*ui->comboBoxCursor1Channel, FFTID(1), checked && ui->pushButtonFFT->isChecked());
+  setComboboxItemVisible(*ui->comboBoxCursor2Channel, FFTID(1), checked && ui->pushButtonFFT->isChecked());
+}
+
+void MainWindow::on_pushButtonProtocolGuide_clicked() {
+  QString helpFile = QCoreApplication::applicationDirPath() + (ui->radioButtonEn->isChecked() ? "/Data protocol guide en.pdf" : "/Data protocol guide cz.pdf");
+  if (!QDesktopServices::openUrl(QUrl::fromLocalFile(helpFile))) {
+    QMessageBox msgBox;
+    msgBox.setText(tr("Cant open file."));
+    msgBox.setInformativeText(helpFile);
+    msgBox.setIcon(QMessageBox::Critical);
+    msgBox.exec();
+  }
+}
+
+void MainWindow::on_pushButtonDolarNewline_toggled(bool checked) {
+  ui->plainTextEditConsole_3->setLineWrapMode(checked ? QPlainTextEdit::LineWrapMode::NoWrap : QPlainTextEdit::LineWrapMode::WidgetWidth);
+}
+
+void MainWindow::on_pushButtonInterpolate_toggled(bool checked) {
+  int chid = ui->comboBoxSelectedChannel->currentIndex();
+
+  if (chid < ANALOG_COUNT + MATH_COUNT) { //Když není vybrán analogový, nemělo by být možné zaškrtnout, ale pro jistotu...
+    if (checked && ui->comboBoxGraphStyle->currentIndex() == GraphStyle::linePoint)
+      ui->comboBoxGraphStyle->setCurrentIndex(GraphStyle::point); // Radši přepne na styl point, aby nebyl zmatek, že v linepoint se pořád spojují body
+    ui->plot->setChInterpolate(chid, checked);
+    emit setInterpolation(chid, checked);
+  }
 }

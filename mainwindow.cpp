@@ -15,19 +15,42 @@
 
 #include "mainwindow.h"
 
-MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWindow) { ui->setupUi(this); }
+MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
+  ui->setupUi(this);
+}
 
 MainWindow::~MainWindow() { delete ui; }
+
+void MainWindow::setComboboxItemVisible(QComboBox& comboBox, int index, bool visible) {
+  auto* model = qobject_cast<QStandardItemModel*>(comboBox.model());
+  auto* item = model->item(index);
+  item->setEnabled(visible);
+  QListView* view = qobject_cast<QListView*>(comboBox.view());
+  view->setRowHidden(index, !visible);
+}
+
+void MainWindow::setChStyleSelection(GraphType::enumGraphType type) {
+  setComboboxItemVisible(*ui->comboBoxGraphStyle, GraphStyle::line, type == GraphType::analog || type == GraphType::math);
+  setComboboxItemVisible(*ui->comboBoxGraphStyle, GraphStyle::point, type == GraphType::analog || type == GraphType::math);
+  setComboboxItemVisible(*ui->comboBoxGraphStyle, GraphStyle::linePoint, type == GraphType::analog || type == GraphType::math);
+  setComboboxItemVisible(*ui->comboBoxGraphStyle, GraphStyle::logic, type == GraphType::logic);
+  setComboboxItemVisible(*ui->comboBoxGraphStyle, GraphStyle::logicFilled, type == GraphType::logic);
+  setComboboxItemVisible(*ui->comboBoxGraphStyle, GraphStyle::logicpoints, type == GraphType::logic);
+  setComboboxItemVisible(*ui->comboBoxGraphStyle, GraphStyle::logicSquare, type == GraphType::logic);
+  setComboboxItemVisible(*ui->comboBoxGraphStyle, GraphStyle::logicSquareFilled, type == GraphType::logic);
+
+}
 
 void MainWindow::init(QTranslator* translator, const PlotData* plotData, const PlotMath* plotMath, const SerialReader* serialReader) {
   // Načte ikony které se mění za běhu
   iconRun = QIcon(":/images/icons/run.png");
   iconPause = QIcon(":/images/icons/pause.png");
+  iconCross = QIcon(":/images/icons/cross.png");
   iconHidden = QIcon(":/images/icons/hidden.png");
   iconVisible = QIcon(":/images/icons/visible.png");
   iconConnected = QIcon(":/images/icons/connected.png");
   iconNotConnected = QIcon(":/images/icons/disconnected.png");
-  iconCross = QIcon(":/images/icons/cross.png");
+
 
   fillChannelSelect(); // Vytvoří seznam kanálů pro výběr
 
@@ -93,11 +116,7 @@ void MainWindow::serialConnectResult(bool connected, QString message) {
     // Poslat reset příkaz
     QByteArray data = ui->textEditTerminalDebug->toPlainText().toLocal8Bit();
     data.replace("\\n", "\n");
-    data.replace("\\e", "\u001b");
     data.replace("\\r", "\r");
-    data.replace("\\t", "\t");
-    data.replace("\\b", "\b");
-    data.replace("\\a", "\a");
     emit writeToSerial(ui->lineEditResetCmd->text().toLocal8Bit());
   }
   autoAutosetPending = ui->checkBoxAutoAutoSet->isChecked();
@@ -115,37 +134,6 @@ void MainWindow::updateDivs() {
   else
     ui->labelHDiv->setText("---");
   ui->labelVDiv->setText(floatToNiceString(ui->plot->getVDiv(), 1, false, false) + ui->plot->getYUnit() + tr("/Div"));
-}
-
-void MainWindow::on_doubleSpinBoxRangeVerticalRange_valueChanged(double arg1) {
-  ui->doubleSpinBoxChOffset->setSingleStep(pow(10, floor(log10(arg1)) - 2));
-  ui->doubleSpinBoxYCur1->setSingleStep(pow(10, floor(log10(arg1)) - 2));
-  ui->doubleSpinBoxYCur2->setSingleStep(pow(10, floor(log10(arg1)) - 2));
-}
-
-void MainWindow::on_pushButtonCenter_clicked() {
-  if (ui->sliderVerticalCenter->value() != 0)
-    ui->sliderVerticalCenter->setValue(0);
-  else
-    ui->plot->setVerticalCenter(0);
-}
-
-void MainWindow::on_pushButtonClearAll_clicked() {
-  ui->plot->resetChannels();
-  // emit resetChannels();
-}
-
-void MainWindow::on_pushButtonTerminalInputCopy_clicked() {
-  QByteArray bytes = ui->textEditTerminalDebug->toPlainText().replace('\n', "\\r\\n").toUtf8();
-  for (unsigned char ch = 0;; ch++) {
-    if (ch == 32)
-      ch = 127;
-    bytes.replace(ch, ("\\x" + QString::number(ch, 16)).toLocal8Bit() + "\"\"");
-    if (ch == 255)
-      break;
-  }
-
-  QGuiApplication::clipboard()->setText(bytes);
 }
 
 void MainWindow::printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumMessageTarget target) {
@@ -184,6 +172,7 @@ void MainWindow::printDeviceMessage(QByteArray message, bool warning, bool ended
     else
       ui->plainTextEditConsole->appendHtml(tr("<font color=darkgreen>Device message:</font color> "));
   }
+
   ui->plainTextEditConsole->moveCursor(QTextCursor::End);
   ui->plainTextEditConsole->insertPlainText(message);
   ui->plainTextEditConsole->moveCursor(QTextCursor::End);
@@ -212,115 +201,9 @@ void MainWindow::updateMathNow(int number) {
   }
 }
 
-void MainWindow::on_pushButtonChangeXYColor_clicked() {
-  QColor color = QColorDialog::getColor(ui->plotxy->graphXY->pen().color());
-  if (color.isValid())
-    ui->plotxy->graphXY->setPen(QColor(color));
-}
-
-void MainWindow::on_pushButtonTerminalDebugSend_clicked() {
-  QByteArray data = ui->textEditTerminalDebug->toPlainText().toUtf8();
-  data.replace("\n", "\r\n"); // Odřádkování v textovém poli
-
-  data.replace("\\n", "\n");
-  data.replace("\\e", "\u001b");
-  data.replace("\\r", "\r");
-  data.replace("\\t", "\t");
-  data.replace("\\b", "\b");
-  data.replace("\\a", "\a");
-
-  ui->myTerminal->printToTerminal(data);
-}
-
-void MainWindow::on_textEditTerminalDebug_cursorPositionChanged() {
-  if (ui->textEditTerminalDebug->textCursor().selectedText().isEmpty())
-    ui->textEditTerminalDebug->setTextColor(Qt::black);
-}
-
-void MainWindow::on_myTerminal_cellClicked(int row, int column) {
-  if (ui->pushButtonTerminalDebug->isChecked())
-    insertInTerminalDebug(QString("\\e[%1;%2H").arg(row + 1).arg(column + 1), Qt::red);
-}
-
-void MainWindow::on_comboBoxFFTType_currentIndexChanged(int index) {
-  if (index != FFTType::spectrum) {
-    ui->plotFFT->setYUnit("dB");
-    if (IS_FFT(ui->comboBoxCursor1Channel->currentIndex()))
-      ui->doubleSpinBoxYCur1->setSuffix("dB");
-    if (IS_FFT(ui->comboBoxCursor2Channel->currentIndex()))
-      ui->doubleSpinBoxYCur2->setSuffix("dB");
-  } else {
-    ui->plotFFT->setYUnit("");
-    if (IS_FFT(ui->comboBoxCursor1Channel->currentIndex()))
-      ui->doubleSpinBoxYCur1->setSuffix("");
-    if (IS_FFT(ui->comboBoxCursor2Channel->currentIndex()))
-      ui->doubleSpinBoxYCur2->setSuffix("");
-  } ui->spinBoxFFTSegments1->setVisible(index == FFTType::pwelch);
-  ui->spinBoxFFTSegments2->setVisible(index == FFTType::pwelch);
-}
-
-void MainWindow::on_lineEditVUnit_textChanged(const QString& arg1) {
-  ui->plot->setYUnit(arg1);
-  ui->plotxy->setYUnit(arg1);
-  ui->plotxy->setXUnit(arg1);
-  ui->doubleSpinBoxRangeVerticalRange->setSuffix(arg1);
-  ui->doubleSpinBoxChOffset->setSuffix(arg1);
-  if (IS_ANALOG_OR_MATH(ui->comboBoxCursor1Channel->currentIndex()))
-    ui->doubleSpinBoxYCur1->setSuffix(arg1);
-  if (IS_ANALOG_OR_MATH(ui->comboBoxCursor1Channel->currentIndex()))
-    ui->doubleSpinBoxYCur2->setSuffix(arg1);
-  ui->doubleSpinBoxXYCurX1->setSuffix(arg1);
-  ui->doubleSpinBoxXYCurX2->setSuffix(arg1);
-  ui->doubleSpinBoxXYCurY1->setSuffix(arg1);
-  ui->doubleSpinBoxXYCurY2->setSuffix(arg1);
-}
-
-void MainWindow::on_checkBoxOpenGL_toggled(bool checked) {
-  ui->plot->setOpenGl(checked);
-  ui->plot->redraw();
-}
-
-void MainWindow::on_checkBoxMouseControls_toggled(bool checked) {
-  ui->plot->enableMouseCursorControll(checked);
-  ui->plotxy->enableMouseCursorControll(checked);
-  ui->plotFFT->enableMouseCursorControll(checked);
-}
-
-void MainWindow::on_checkBoxFFTCh1_toggled(bool checked) {
-  auto* model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor1Channel->model());
-  auto* item = model->item(FFTID(0));
-  item->setEnabled(checked && ui->pushButtonFFT->isChecked());
-  QListView* view = qobject_cast<QListView*>(ui->comboBoxCursor1Channel->view());
-  view->setRowHidden(FFTID(0), !(checked && ui->pushButtonFFT->isChecked()));
-
-  model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor2Channel->model());
-  item = model->item(FFTID(0));
-  item->setEnabled(checked && ui->pushButtonFFT->isChecked());
-  view = qobject_cast<QListView*>(ui->comboBoxCursor2Channel->view());
-  view->setRowHidden(FFTID(0), !(checked && ui->pushButtonFFT->isChecked()));
-}
-
-void MainWindow::on_checkBoxFFTCh2_toggled(bool checked) {
-  auto* model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor1Channel->model());
-  auto* item = model->item(FFTID(1));
-  item->setEnabled(checked && ui->pushButtonFFT->isChecked());
-  QListView* view = qobject_cast<QListView*>(ui->comboBoxCursor1Channel->view());
-  view->setRowHidden(FFTID(1), !(checked && ui->pushButtonFFT->isChecked()));
-
-  model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor2Channel->model());
-  item = model->item(FFTID(1));
-  item->setEnabled(checked && ui->pushButtonFFT->isChecked());
-  view = qobject_cast<QListView*>(ui->comboBoxCursor2Channel->view());
-  view->setRowHidden(FFTID(1), !(checked && ui->pushButtonFFT->isChecked()));
-}
-
-void MainWindow::on_pushButtonProtocolGuide_clicked() {
-  QString helpFile = QCoreApplication::applicationDirPath() + "/Protocol.pdf";
-  if (!QDesktopServices::openUrl(QUrl::fromLocalFile(helpFile))) {
-    QMessageBox msgBox;
-    msgBox.setText(tr("Cant open file."));
-    msgBox.setInformativeText(helpFile);
-    msgBox.setIcon(QMessageBox::Critical);
-    msgBox.exec();
-  }
+void MainWindow::interpolationResult(int chID, QSharedPointer<QCPGraphDataContainer> dataOriginal, QSharedPointer<QCPGraphDataContainer> dataInterpolated, bool dataIsFromInterpolationBuffer) {
+  ui->plot->newInterpolatedVector(chID, dataOriginal, dataInterpolated, dataIsFromInterpolationBuffer);
+  interpolationsRunning--;
+  if (interpolationsRunning == 0)
+    interpolationTimer.start();
 }

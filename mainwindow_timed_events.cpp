@@ -41,7 +41,7 @@ void MainWindow::comRefresh() {
     for (int i = 0; i < portList.length(); i++) {
       QSerialPortInfo port = portList.at(i);
       ui->comboBoxCom->addItem(port.portName() + " - " + port.description());
-      if (port.description().contains(PORT_NUCLEO_DESCRIPTION_IDENTIFIER))
+      if (port.description().contains(DEFAULT_PORT_STRING))
         portWithStName = i;
     }
 
@@ -184,7 +184,8 @@ void MainWindow::updateFFT1() {
     }
 
     if (ui->comboBoxFFTType->currentIndex() == FFTType::pwelch) {
-      if (ui->spinBoxFFTSegments1->value() > data->size()) {
+      if (ui->spinBoxFFTSegments1->value() * 2 > data->size()) {
+        // Není dostatek vzorků na tento počet segmentů (alespoň 2 na segment)
         ui->plotFFT->clear(0);
         return;
       }
@@ -227,7 +228,8 @@ void MainWindow::updateFFT2() {
     }
 
     if (ui->comboBoxFFTType->currentIndex() == FFTType::pwelch) {
-      if (ui->spinBoxFFTSegments2->value() > data->size()) {
+      if (ui->spinBoxFFTSegments2->value() * 2 > data->size()) {
+        // Není dostatek vzorků na tento počet segmentů (alespoň 2 na segment)
         ui->plotFFT->clear(1);
         return;
       }
@@ -250,25 +252,52 @@ void MainWindow::updateFFT2() {
     ui->plotFFT->clear(1);
 }
 
-void MainWindow::updateSerialMonitor() {
-  if (ui->checkBoxSerialMonitor->isChecked()) {
-    if (!serialMonitor.isEmpty()) {
-      QScrollBar* scroll = ui->plainTextEditConsole_3->verticalScrollBar();
-      int lastVal = -1;
-      if (scroll->value() != scroll->maximum())
-        lastVal = scroll->value();
-
-      auto cursor = ui->plainTextEditConsole_3->textCursor();
-      cursor.movePosition(QTextCursor::End);
-      cursor.insertText(serialMonitor);
-      serialMonitor.clear();
-
-      if (lastVal == -1)
-        scroll->setValue(scroll->maximum());
-      else
-        scroll->setValue(lastVal);
+void MainWindow::updateInterpolation() {
+  for (int chid = 0; chid < ANALOG_COUNT + MATH_COUNT; chid++) {
+    if (ui->plot->isChInterpolated(chid)) {
+      bool dataIsFromInterpolationBuffer;
+      QSharedPointer<QCPGraphDataContainer> data;
+      if (ui->plot->dataToBeInterpolated.at(chid).isNull()) {
+        data = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer(*ui->plot->graph(chid)->data()));
+        dataIsFromInterpolationBuffer = false;
+      } else {
+        data = ui->plot->dataToBeInterpolated.at(chid);
+        ui->plot->dataToBeInterpolated[chid].clear(); //Vymaže pointer ze seznamu, pozor, ne jeho obsah;
+        dataIsFromInterpolationBuffer = true;
+      }
+      interpolationsRunning++;
+      emit interpolate(chid, data, ui->plot->xAxis->range(), dataIsFromInterpolationBuffer);
     }
   }
+
+  if (interpolationsRunning > 0)
+    interpolationTimer.stop();
+}
+
+void MainWindow::updateSerialMonitor() {
+  if (serialMonitor.isEmpty() || !ui->checkBoxSerialMonitor->isChecked())
+    return;
+
+  if (ui->pushButtonDolarNewline->isChecked()) {
+    serialMonitor.replace("\n", "");
+    serialMonitor.replace((char)0, "");
+    serialMonitor.replace("$$", "\n$$");
+  }
+
+  QScrollBar* scroll = ui->plainTextEditConsole_3->verticalScrollBar();
+  int lastVal = -1;
+  if (scroll->value() != scroll->maximum())
+    lastVal = scroll->value();
+
+  auto cursor = ui->plainTextEditConsole_3->textCursor();
+  cursor.movePosition(QTextCursor::End);
+  cursor.insertText(serialMonitor);
+  serialMonitor.clear();
+
+  if (lastVal == -1)
+    scroll->setValue(scroll->maximum());
+  else
+    scroll->setValue(lastVal);
 }
 
 void MainWindow::updateDataRate() {

@@ -36,6 +36,7 @@ class MyMainPlot : public MyPlot {
   double getCHDiv(int chID) { return (getVDiv() / channelSettings.at(chID).scale); }
   double getChScale(int chID) { return std::abs(channelSettings.at(chID).scale); }
   bool isChInverted(int chID) { return channelSettings.at(chID).inverted; }
+  bool isChInterpolated(int chID) { return channelSettings.at(chID).interpolate; }
   double getChOffset(int chID) { return channelSettings.at(chID).offset; }
   int getChStyle(int chID) { return channelSettings.at(chID).style; }
   QColor getChColor(int chID) { return channelSettings.at(chID).color; }
@@ -46,6 +47,7 @@ class MyMainPlot : public MyPlot {
   void setChOffset(int chID, double offset);
   void setChScale(int chID, double scale);
   void setChInvert(int chID, bool inverted);
+  void setChInterpolate(int chID, bool enabled);;
   void setChVisible(int chID, bool visible);
 
   void setLogicOffset(int group, double offset);
@@ -67,6 +69,8 @@ class MyMainPlot : public MyPlot {
   void redraw();
 
   QCPAxis* getAnalogAxis(int chID)const {return analogAxis.at(chID);}
+
+  QVector<QSharedPointer<QCPGraphDataContainer>> dataToBeInterpolated;
 
  private:
   QTimer plotUpdateTimer;
@@ -123,6 +127,9 @@ class MyMainPlot : public MyPlot {
 
   void newDataPoint(int chID, double time, double value, bool append);
   void newDataVector(int chID, QSharedPointer<QCPGraphDataContainer> data, bool ignorePause = false);
+  void newInterpolatedVector(int chID, QSharedPointer<QCPGraphDataContainer> dataOriginal, QSharedPointer<QCPGraphDataContainer> dataInterpolated, bool dataIsFromInterpolationBuffer);
+
+  void clearInterpolation(int interpolationID) {graph(INTERPOLATION_CHID(interpolationID))->data()->clear();}
 
  signals:
   void updateHPosSlider(double min, double max, int step);
