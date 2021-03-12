@@ -29,8 +29,13 @@
 
 #define INTERPOLATION_UPSAMPLING 8
 
+#define SHOW_OPENGL_RECOMMENDATION_WHEN_SWITCHED_TO_FILLED true
+
 // Program předvybere zařízení co má v popisu tento text
 #define DEFAULT_PORT_STRING "ST"
+
+
+//**********************************************
 
 namespace PlotStatus {
 enum enumPlotStatus { run, pause };
@@ -61,7 +66,7 @@ enum enumGraphType { analog, math, logic };
 }
 
 namespace DataMode {
-enum enumDataMode { unknown, terminal, info, warning, settings, point, channel, echo, logicChannel, logicPoint };
+enum enumDataMode { unknown, terminal, info, warning, settings, point, channel, echo, logicChannel, logicPoint, deviceerror };
 }
 
 namespace OutputLevel {
@@ -227,7 +232,7 @@ inline QString valueTypeToString(ValueType val) {
 
 #define LOGIC_COUNT LOGIC_BITS *LOGIC_GROUPS
 
-// Počet kanálů v grafu (každý logický bit počítá jako samostatný kanál, nezahrnuje interpolační kanály
+/// Počet kanálů v grafu (každý logický bit počítá jako samostatný kanál, nezahrnuje interpolační kanály
 #define ALL_COUNT (ANALOG_COUNT + MATH_COUNT + LOGIC_COUNT)
 
 #define XY_AND_FFT_ALLWAYS_TOGETHER
@@ -239,9 +244,10 @@ inline QString valueTypeToString(ValueType val) {
 #define PLOT_ELEMENTS_MOUSE_DISTANCE 10
 #define TRACER_MOUSE_DISTANCE 20
 
-#define FFTID(a) (ANALOG_COUNT + MATH_COUNT + LOGIC_GROUPS +a)
-#define IS_FFT(chID) (chID>=FFTID(0))
-#define CHID_TO_FFT_CHID(chID)(chID-FFTID(0))
+#define FFT_INDEX(a) (ANALOG_COUNT + MATH_COUNT + LOGIC_GROUPS +a)
+#define IS_LOGIC_INDEX(index) ((index>=ANALOG_COUNT + MATH_COUNT)&&!IS_FFT_INDEX(index))
+#define IS_FFT_INDEX(chID) (chID>=FFT_INDEX(0))
+#define INDEX_TO_FFT_CHID(chID)(chID-FFT_INDEX(0))
 
 #define INTERPOLATION_CHID(a) (ALL_COUNT + a)
 
@@ -305,7 +311,15 @@ inline QString getChName(int chid) {
   return (QObject::tr("Ch %1").arg(chid + 1));
 }
 
-static int fastLog10(double x) {
+static int intLog10(double x) {
+  if (x == 0) // - nekonečno
+    return -324; // Tohle by vyšlo, tak to vrátím rovnou, ať se to nezdržuje v tom for cyklu
+  if (x == 1) // Mezní případ co by ve for loopech mohl dělat problém
+    return 0;
+  if (x == INFINITY || x == -INFINITY)
+    return 100;
+  if (x == NAN)
+    return 0;
   x = abs(x);
   int result = 0;
   if (x > 1)
@@ -331,23 +345,32 @@ inline int nextPow2(int number) {
       return (pow(2, i));
 }
 
-static QString toSignificantDigits(double x, double prec, bool noDecimalsIfInteger = false) {
+static QString toSignificantDigits(double x, double prec, bool trimZeroes = false) {
   if (x == 0) {
+    if (trimZeroes)
+      return "0";
     QString zero = "0.0000000000";
     return zero.left(prec + 1);
   }
-  if (noDecimalsIfInteger)
-    if (round(x) == x)
-      return QString::number((int)round(x));
-  int log10ofX = fastLog10(x);
+
+  int log10ofX = intLog10(x * 1.0000001); // Někdy je trošku menší než má být, trochu zvýšit, aby vyšla požadované hodnota
   if (log10ofX >= prec - 1) {
     return QString::number((int)round(x));
   } else {
     QString result = QString::number((int)round(x * (fastPow10(prec - log10ofX - 1))));
     int decimalPoint = result.length() - prec + log10ofX + 1;
-    if (decimalPoint > 0)
+    if (decimalPoint > 0) {
       result.insert(decimalPoint, '.');
-    else {
+      if (trimZeroes) {
+        // Odřízne nuly z desetinných míst
+        for (int i = result.length() - 1; i >= decimalPoint; i--) {
+          if (result.at(i) == '0' || result.at(i) == '.')
+            result.remove(i, 1);
+          else
+            break;
+        }
+      }
+    } else {
       for (; decimalPoint < 0; decimalPoint++)
         result.push_front('0');
       result.push_front('.');
@@ -365,7 +388,7 @@ inline QString floatToNiceString(double d, int significantDigits, bool justify, 
   else if (qIsNaN(d))
     text = "--- ";
   else {
-    int order = fastLog10(d);
+    int order = intLog10(d * 1.0000001); // Někdy je trošku menší než má být, trochu zvýšit, aby vyšla požadované hodnota
 
     if (order >= 18) {
       postfix = " E";

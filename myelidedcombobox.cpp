@@ -13,26 +13,24 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef MYDOUBLESPINBOXWITHUNITS_H
-#define MYDOUBLESPINBOXWITHUNITS_H
+#include "myelidedcombobox.h"
 
-#include "enumsDefinesConstants.h"
-#include <QDoubleSpinBox>
-#include <QWidget>
+MyElidedComboBox::MyElidedComboBox(QWidget* parent) : QComboBox(parent) {
 
-class MyDoubleSpinBoxWithUnits : public QDoubleSpinBox {
-  Q_OBJECT
- public:
-  explicit MyDoubleSpinBoxWithUnits(QWidget* parent = nullptr);
-  bool trimDecimalZeroes = false;
-  double emptyDefaultValue = 0;
+}
 
- private:
-  QValidator::State validate(QString& input, int& pos) const;
-  QString textFromValue(double val) const;
-  double valueFromText(const QString& text) const;
-  QString validchars = "Mkmu";
- signals:
-};
+void MyElidedComboBox::paintEvent(QPaintEvent* event) {
+  Q_UNUSED(event)
 
-#endif // MYDOUBLESPINBOXWITHUNITS_H
+  // https://stackoverflow.com/questions/41360618/qcombobox-elided-text-on-selected-item
+
+  QStyleOptionComboBox opt;
+  initStyleOption(&opt);
+
+  QStylePainter p(this);
+  p.drawComplexControl(QStyle::CC_ComboBox, opt);
+
+  QRect textRect = style()->subControlRect(QStyle::CC_ComboBox, &opt, QStyle::SC_ComboBoxEditField, this);
+  opt.currentText = p.fontMetrics().elidedText(opt.currentText, Qt::ElideRight, textRect.width());
+  p.drawControl(QStyle::CE_ComboBoxLabel, opt);
+}

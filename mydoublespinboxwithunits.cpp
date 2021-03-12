@@ -49,11 +49,14 @@ QValidator::State MyDoubleSpinBoxWithUnits::validate(QString& input, int& pos) c
 
 QString MyDoubleSpinBoxWithUnits::textFromValue(double val) const {
   // Zobrazení hodnoty
-  return (floatToNiceString(val, 4, false, false, true));
+  return (floatToNiceString(val, 4, false, false, trimDecimalZeroes));
 }
 
 double MyDoubleSpinBoxWithUnits::valueFromText(const QString& text) const {
   // Zpracování hodnoty napsané uživatelem
+  if (text.isEmpty())
+    return emptyDefaultValue;
+
   bool isok = false;
   double val;
   if (text.contains('k'))
@@ -67,6 +70,6 @@ double MyDoubleSpinBoxWithUnits::valueFromText(const QString& text) const {
   else
     val = text.leftRef(text.indexOf(suffix())).toDouble(&isok);
   if (!isok)
-    return 1;
+    return emptyDefaultValue;
   return val;
 }

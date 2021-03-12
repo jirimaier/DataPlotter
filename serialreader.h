@@ -24,20 +24,20 @@
 
 class SerialReader : public QObject {
   Q_OBJECT
-public:
-  explicit SerialReader(QObject *parent = nullptr);
+ public:
+  explicit SerialReader(QObject* parent = nullptr);
   ~SerialReader();
 
-private:
-  QSerialPort *serial;
+ private:
+  QSerialPort* serial;
   bool serialMonitor;
 
-private slots:
+ private slots:
   void read();
   void errorOccurred();
-signals:
+ signals:
   /// Pošle informaci jestli je port připojen
-  void connectionResult(bool, QString);
+  void connectionResult(bool connected, QString caption, QString details);
   /// Oznámý dokončení zápisu dat do portu
   void finishedWriting();
   /// Počle přečtená data
@@ -46,13 +46,13 @@ signals:
   void started();
   /// Přeposílá data
   void monitor(QByteArray data);
-public slots:
+ public slots:
   /// Vytvoří instanci QSerialPortu
   void init();
   /// Připojí nebo odpojí port
-  void toggle(QString portName, int baudRate);
+  void toggle(QString portName, int baudRate, QSerialPort::DataBits dataBits, QSerialPort::Parity parity, QSerialPort::StopBits stopBits, QSerialPort::FlowControl flowControll);
   /// Pokusí se otevřít port
-  void begin(QString portName, int baudRate);
+  void begin(QString portName, int baudRate, QSerialPort::DataBits dataBits, QSerialPort::Parity parity, QSerialPort::StopBits stopBits, QSerialPort::FlowControl flowControll);
   /// Zavře port
   void end();
   /// Zapíše data do portu

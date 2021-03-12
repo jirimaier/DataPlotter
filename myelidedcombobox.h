@@ -13,26 +13,24 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef MYDOUBLESPINBOXWITHUNITS_H
-#define MYDOUBLESPINBOXWITHUNITS_H
+#ifndef MYELIDEDCOMBOBOX_H
+#define MYELIDEDCOMBOBOX_H
 
-#include "enumsDefinesConstants.h"
-#include <QDoubleSpinBox>
+#include <QObject>
 #include <QWidget>
+#include <QComboBox>
+#include <QStylePainter>
 
-class MyDoubleSpinBoxWithUnits : public QDoubleSpinBox {
+class MyElidedComboBox : public QComboBox {
   Q_OBJECT
- public:
-  explicit MyDoubleSpinBoxWithUnits(QWidget* parent = nullptr);
-  bool trimDecimalZeroes = false;
-  double emptyDefaultValue = 0;
 
- private:
-  QValidator::State validate(QString& input, int& pos) const;
-  QString textFromValue(double val) const;
-  double valueFromText(const QString& text) const;
-  QString validchars = "Mkmu";
+  void paintEvent(QPaintEvent* event);
+
+ public:
+  explicit MyElidedComboBox(QWidget* parent = nullptr);
+
  signals:
+
 };
 
-#endif // MYDOUBLESPINBOXWITHUNITS_H
+#endif // MYELIDEDCOMBOBOX_H

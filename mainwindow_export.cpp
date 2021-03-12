@@ -24,6 +24,8 @@ void MainWindow::exportCSV(bool all, int ch) {
       name = "fft";
     else if (ch == EXPORT_XY)
       name = "xy";
+    else if (ch == ANALOG_COUNT + MATH_COUNT + LOGIC_GROUPS - 1)
+      name = tr("logic");
     else if (ch >= ANALOG_COUNT + MATH_COUNT)
       name = tr("logic %1").arg(ch - ANALOG_COUNT - MATH_COUNT + 1);
     else {
@@ -52,7 +54,7 @@ void MainWindow::exportCSV(bool all, int ch) {
     }
     file.close();
   } else {
-    QMessageBox msgBox;
+    QMessageBox msgBox(this);
     msgBox.setText(tr("Cant write to file."));
     msgBox.setInformativeText(tr("This may be because file is opened in another program."));
     msgBox.setIcon(QMessageBox::Critical);

@@ -15,7 +15,7 @@
 
 #include "mycursorslider.h"
 
-myCursorSlider::myCursorSlider(QWidget *parent) : QSlider(parent) {
+myCursorSlider::myCursorSlider(QWidget* parent) : QSlider(parent) {
   realPos = value();
   connect(this, &QAbstractSlider::valueChanged, this, &myCursorSlider::positionChanged);
 }
@@ -23,6 +23,7 @@ myCursorSlider::myCursorSlider(QWidget *parent) : QSlider(parent) {
 void myCursorSlider::positionChanged(int newpos) {
   realPos = newpos;
   setStyleSheet("");
+  emit realValueChanged(realPos);
 }
 
 void myCursorSlider::updateRange(int min, int max) {
@@ -39,7 +40,7 @@ void myCursorSlider::updateRange(int min, int max) {
   blockSignals(false);
 }
 
-void myCursorSlider::setRealVaule(int newValue) {
+void myCursorSlider::setRealValue(int newValue) {
   if (newValue < 0)
     return;
   blockSignals(true);
@@ -49,6 +50,7 @@ void myCursorSlider::setRealVaule(int newValue) {
     setStyleSheet("");
   }
   setValue(newValue);
-  realPos = newValue;
   blockSignals(false);
+  realPos = newValue;
+  emit realValueChanged(realPos);
 }

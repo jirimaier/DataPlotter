@@ -435,6 +435,17 @@ void NewSerialParser::parse(QByteArray newData) {
         break;
       }
 
+      if (currentMode == DataMode::deviceerror) {
+        readResult result = bufferPullBeforeSemicolumn(pendingDataBuffer, true);
+        if (result == incomplete)
+          break;
+        if (result == notProperlyEnded)
+          sendMessageIfAllowed(tr("Missing semicolumn ?"), pendingDataBuffer, MessageLevel::warning);
+        emit deviceError(pendingDataBuffer, target);
+        pendingDataBuffer.clear();
+        continue;
+      }
+
     } catch (QString message) {
       sendMessageIfAllowed(tr("Parsing error"), message, MessageLevel::error);
       if (!buffer.isEmpty()) {
@@ -602,6 +613,8 @@ void NewSerialParser::parseMode(QChar modeChar) {
     changeMode(DataMode::logicChannel, previousMode, tr("Logic channel").toUtf8());
   else if (modeIdent == 'B')
     changeMode(DataMode::logicPoint, previousMode, tr("Logic points").toUtf8());
+  else if (modeIdent == 'X')
+    changeMode(DataMode::deviceerror, previousMode, tr("Device error").toUtf8());
   else {
     currentMode = DataMode::unknown;
     QByteArray character = QString(modeChar).toLocal8Bit();

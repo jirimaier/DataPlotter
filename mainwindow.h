@@ -34,6 +34,8 @@
 #include "interpolator.h"
 #include "ui_mainwindow.h"
 #include "myplot.h"
+#include "serialsettingsdialog.h"
+#include "mycursorslider.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -51,6 +53,7 @@ class MainWindow : public QMainWindow {
 
  private:
   Ui::MainWindow* ui;
+  SerialSettingsDialog* serialSettingsDialog;
   QTranslator* translator;
   QTimer portsRefreshTimer, activeChRefreshTimer, xyTimer, cursorRangeUpdateTimer, measureRefreshTimer1, measureRefreshTimer2, fftTimer1, fftTimer2, serialMonitorTimer, interpolationTimer;
   QList<QSerialPortInfo> portList;
@@ -106,10 +109,13 @@ class MainWindow : public QMainWindow {
 
   QByteArray serialMonitor;
 
-  void setCursorsVisibility(Cursors::enumCursors cursor, int graph, bool timeCurVisible, int valueCurState);
+  void setCursorsVisibility(Cursors::enumCursors cursor, int graph, int timeCurState, int valueCurState);
   void updateXYCursorsCalculations();
+  void updateCursorMeasurementsText();
 
   int interpolationsRunning = 0;
+
+  bool recommendOpenGL = true;
 
  private slots:
   void updateCursors();
@@ -126,6 +132,8 @@ class MainWindow : public QMainWindow {
   void updateInterpolation();
   void updateSerialMonitor();
   void updateDataRate();
+  void horizontalSliderTimeCur1_realValueChanged(int arg1);
+  void horizontalSliderTimeCur2_realValueChanged(int arg1);
 
  private slots: // Autoconnect slots
   void on_dialRollingRange_realValueChanged(double value) { ui->doubleSpinBoxRangeHorizontal->setValue(value); }
@@ -181,8 +189,8 @@ class MainWindow : public QMainWindow {
   void on_spinBoxLog2source_valueChanged(int arg1) { emit setChDigital(2, ui->pushButtonLog2->isChecked() ? arg1 : 0); }
   void on_pushButtonPlotImage_clicked();
   void on_pushButtonXYImage_clicked();
-  void on_checkBoxCur1Visible_toggled(bool checked);
-  void on_checkBoxCur2Visible_toggled(bool checked);
+  void on_checkBoxCur1Visible_stateChanged(int arg1);
+  void on_checkBoxCur2Visible_stateChanged(int arg1);
   void on_pushButtonChangeChColor_clicked();
   void on_pushButtonClearAll_clicked();
   void on_pushButtonInvert_toggled(bool checked);
@@ -205,8 +213,6 @@ class MainWindow : public QMainWindow {
   void on_comboBoxCursor2Channel_currentIndexChanged(int index);
   void on_pushButtonPositive_clicked();
   void on_pushButtonNegative_clicked();
-  void on_spinBoxCur1Sample_valueChanged(int arg1);
-  void on_spinBoxCur2Sample_valueChanged(int arg1);
   void on_pushButtonTerminalDebug_toggled(bool checked);
   void on_pushButtonTerminalClickToSend_toggled(bool checked);
   void on_pushButtonTerminalSelect_toggled(bool checked);
@@ -230,6 +236,8 @@ class MainWindow : public QMainWindow {
   void on_checkBoxYCur2_stateChanged(int arg1);
   void on_doubleSpinBoxYCur2_valueChanged(double arg1);
   void on_doubleSpinBoxYCur1_valueChanged(double arg1);
+  void on_doubleSpinBoxXCur2_valueChanged(double arg1);
+  void on_doubleSpinBoxXCur1_valueChanged(double arg1);
   void on_checkBoxFFTCh1_toggled(bool checked);
   void on_checkBoxFFTCh2_toggled(bool checked);
   void on_comboBoxFFTStyle1_currentIndexChanged(int index) {ui->plotFFT->setStyle(0, index);}
@@ -243,11 +251,16 @@ class MainWindow : public QMainWindow {
   void on_pushButtonProtocolGuide_clicked();
   void on_pushButtonDolarNewline_toggled(bool checked);
   void on_pushButtonInterpolate_toggled(bool checked);
+  void on_pushButtonSerialSetting_clicked();
+  void on_pushButtonSerialMoreInfo_clicked();
+  void on_comboBoxBaud_editTextChanged(const QString& arg1);
+  void on_pushButtonHideCur1_clicked();
+  void on_pushButtonHideCur2_clicked();
 
  public slots:
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumMessageTarget target);
   void showPlotStatus(PlotStatus::enumPlotStatus type);
-  void serialConnectResult(bool connected, QString message);
+  void serialConnectResult(bool connected, QString message, QString details);
   void printToTerminal(QByteArray data) { ui->myTerminal->printToTerminal(data); }
   void serialFinishedWriting();
   void useSettings(QByteArray settings, MessageTarget::enumMessageTarget source);
@@ -258,7 +271,7 @@ class MainWindow : public QMainWindow {
   void fftResult1(QSharedPointer<QCPGraphDataContainer> data);
   void fftResult2(QSharedPointer<QCPGraphDataContainer> data);
   void xyResult(QSharedPointer<QCPCurveDataContainer> data);
-  void timeCursorMovedByMouse(Cursors::enumCursors cursor, int sample);
+  void timeCursorMovedByMouse(Cursors::enumCursors cursor, int sample, double value);
   void valueCursorMovedByMouse(Cursors::enumCursors cursor, double value);
   void cursorSetByMouse(int chid, Cursors::enumCursors cursor, int sample);
   void offsetChangedByMouse(int chid);
@@ -267,6 +280,7 @@ class MainWindow : public QMainWindow {
   void moveValueCursorXY(Cursors::enumCursors cursor, double pos);
   void setCursorPosXY(Cursors::enumCursors cursor, double x, double y);
   void interpolationResult(int chID, QSharedPointer<QCPGraphDataContainer> dataOriginal, QSharedPointer<QCPGraphDataContainer> dataInterpolated, bool dataIsFromInterpolationBuffer);
+  void deviceError(QByteArray message, MessageTarget::enumMessageTarget source);
 
  signals:
   void setChDigital(int chid, int target);
@@ -275,7 +289,7 @@ class MainWindow : public QMainWindow {
   void requestSerialBufferShow();
   void requestManualBufferClear();
   void requestManualBufferShow();
-  void toggleSerialConnection(QString port, int baud);
+  void toggleSerialConnection(QString port, int baud, QSerialPort::DataBits dataBits, QSerialPort::Parity parity, QSerialPort::StopBits stopBits, QSerialPort::FlowControl flowControll);
   void writeToSerial(QByteArray data);
   void resetChannels();
   void disconnectSerial();

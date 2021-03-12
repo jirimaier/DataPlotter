@@ -30,7 +30,7 @@ void MainWindow::initSetables() {
   setables["opengl"] = ui->checkBoxOpenGL;
 
   // Connection
-  setables["baud"] = ui->comboBoxBaud;
+  //setables["baud"] = ui->comboBoxBaud;
   setables["debuglvl"] = ui->comboBoxOutputLevel;
 
   // Settings
@@ -99,6 +99,8 @@ QByteArray MainWindow::getSettings() {
   for (QMap<QString, QWidget*>::iterator it = setables.begin(); it != setables.end(); it++)
     settings.append(QString(it.key() + ':' + readGuiElementSettings(it.value()) + ";\n").toUtf8());
 
+  settings.append(QString("baud:%1;\n").arg(ui->comboBoxBaud->currentText().toUInt()).toLocal8Bit());
+
   if (ui->radioButtonFixedRange->isChecked())
     settings.append("plotrange:fix;\n");
   else if (ui->radioButtonFreeRange->isChecked())
@@ -141,136 +143,156 @@ QByteArray MainWindow::getSettings() {
     settings.append(QString(":clr:%1,%2,%3").arg(clr.red()).arg(clr.green()).arg(clr.blue()).toUtf8());
     settings.append(";\n");
   }
+
   return settings;
 }
 
 void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarget source = MessageTarget::manual) {
   settings.replace('\n', "");
   settings.replace('\r', "");
-  if (!settings.contains(':')) {
-    if (source == MessageTarget::manual || ui->comboBoxOutputLevel->currentIndex() >= MessageLevel::error)
-      printMessage(tr("Invalid settings").toUtf8(), settings, MessageLevel::error, source);
-    return;
-  }
-  QByteArray type = settings.left(settings.indexOf(':', 0));
-  QByteArray value = settings.mid(settings.indexOf(':', 0) + 1);
-  type = type.simplified().toLower();
-
-  if (setables.contains(type))
-    applyGuiElementSettings(setables[type], value);
-
-  else if (type == "lang") {
-    if (value == "en")
-      ui->radioButtonEn->setChecked(true);
-    if (value == "cz")
-      ui->radioButtonCz->setChecked(true);
-  }
-
-  else if (type == "terminal") {
-    if (value == "clicksend")
-      ui->pushButtonTerminalClickToSend->setChecked(true);
-    if (value == "select")
-      ui->pushButtonTerminalSelect->setChecked(true);
-    if (value == "nointeract") {
-      ui->pushButtonTerminalClickToSend->setChecked(false);
-      ui->pushButtonTerminalSelect->setChecked(false);
-    }
-  }
-
-  else if (type == "csvsep") {
-    if (value == "cs")
-      ui->radioButtonCSVComma->setChecked(true);
-    if (value == "dc")
-      ui->radioButtonCSVDot->setChecked(true);
-  }
-
-  else if (type == "plotrange") {
-    if (value == "fix")
-      ui->radioButtonFixedRange->setChecked(true);
-    if (value == "free")
-      ui->radioButtonFreeRange->setChecked(true);
-    if (value == "roll")
-      ui->radioButtonRollingRange->setChecked(true);
-  }
-
-  else if (type == "xyclr") {
-    QByteArrayList rgb = value.split(',');
-    if (rgb.length() != 3) {
-      if (source == MessageTarget::manual || ui->comboBoxOutputLevel->currentIndex() >= MessageLevel::error)
-        printMessage(tr("Invalid color: ").toUtf8(), settings, MessageLevel::error, source);
-      return;
-    }
-    QColor clr = QColor(rgb.at(0).toInt(), rgb.at(1).toInt(), rgb.at(2).toInt());
-    ui->plotxy->graphXY->setPen(clr);
-  }
-
-  else if (type == "ch") {
-    int ch = value.left(value.indexOf(':', 0)).toUInt();
-    if (ch > ANALOG_COUNT + MATH_COUNT || ch == 0) {
-      if (source == MessageTarget::manual || ui->comboBoxOutputLevel->currentIndex() >= MessageLevel::error)
-        printMessage(tr("Invalid channel in settings").toUtf8(), QString::number(ch).toUtf8(), MessageLevel::error, source);
-      return;
-    }
-    // V nastavení se čísluje od jedné, ale v příkazech od nuly
-    ch = ch - 1;
-    QByteArray subtype = value.mid(value.indexOf(':', 0) + 1).toLower();
-    subtype = subtype.left(subtype.indexOf(':'));
-    QByteArray subvalue = value.mid(value.lastIndexOf(':') + 1);
-
-    if (subtype == "sty")
-      ui->plot->setChStyle(ch, subvalue.toUInt());
-    else if (subtype == "clr") {
-      QByteArrayList rgb = subvalue.mid(subvalue.indexOf(':')).split(',');
-      if (rgb.length() != 3) {
-        if (source == MessageTarget::manual || ui->comboBoxOutputLevel->currentIndex() >= MessageLevel::error)
-          printMessage(tr("Invalid color: ").toUtf8(), settings, MessageLevel::error, source);
-        return;
-      }
-      QColor clr = QColor(rgb.at(0).toInt(), rgb.at(1).toInt(), rgb.at(2).toInt());
-      ui->plot->setChColor(ch, clr);
-      colorUpdateNeeded = true;
-    }
-    if (ui->comboBoxSelectedChannel->currentIndex() == ch)
-      on_comboBoxSelectedChannel_currentIndexChanged(ui->comboBoxSelectedChannel->currentIndex());
-  }
-
-  else if (type == "log") {
-    int group = value.left(value.indexOf(':', 0)).toUInt() - 1;
-    if (group >= LOGIC_GROUPS) {
-      if (source == MessageTarget::manual || ui->comboBoxOutputLevel->currentIndex() >= MessageLevel::error)
-        printMessage(tr("Invalid logic in settings").toUtf8(), QString::number(group).toUtf8(), MessageLevel::error, source);
-      return;
-    }
-    QByteArray subtype = value.mid(value.indexOf(':', 0) + 1).toLower();
-    subtype = subtype.left(subtype.indexOf(':'));
-    QByteArray subvalue = value.mid(value.lastIndexOf(':') + 1);
-
-    if (subtype == "off")
-      ui->plot->setLogicOffset(group, subvalue.toDouble());
-    else if (subtype == "sca")
-      ui->plot->setLogicScale(group, subvalue.toDouble());
-    else if (subtype == "sty")
-      ui->plot->setLogicStyle(group, subvalue.toUInt());
-    else if (subtype == "clr") {
-      QByteArrayList rgb = subvalue.mid(subvalue.indexOf(':')).split(',');
-      if (rgb.length() != 3) {
-        if (source == MessageTarget::manual || ui->comboBoxOutputLevel->currentIndex() >= MessageLevel::error)
-          printMessage(tr("Invalid color: ").toUtf8(), settings, MessageLevel::error, source);
-        return;
-      }
-      QColor clr = QColor(rgb.at(0).toInt(), rgb.at(1).toInt(), rgb.at(2).toInt());
-      ui->plot->setLogicColor(group, clr);
-      colorUpdateNeeded = true;
-    }
-    if (ui->comboBoxSelectedChannel->currentIndex() == group + ANALOG_COUNT + MATH_COUNT)
-      on_comboBoxSelectedChannel_currentIndexChanged(ui->comboBoxSelectedChannel->currentIndex());
-  }
-
-  // Error
+  if (settings == "autoset")
+    on_pushButtonAutoset_clicked();
+  else if (settings == "resetgraphs")
+    on_pushButtonResetChannels_clicked();
+  else if (settings == "valuespositive")
+    on_pushButtonPositive_clicked();
+  else if (settings == "valuesnegative")
+    on_pushButtonPositive_clicked();
+  else if (settings == "valuessymetric")
+    on_pushButtonPositive_clicked();
+  else if (settings == "noopengldialog")
+    recommendOpenGL = false;
   else {
-    if (source == MessageTarget::manual || ui->comboBoxOutputLevel->currentIndex() >= MessageLevel::error)
-      printMessage(tr("Unknown setting").toUtf8(), type, MessageLevel::error, source);
-    return;
+
+    if (!settings.contains(':')) {
+      if (source == MessageTarget::manual || ui->comboBoxOutputLevel->currentIndex() >= MessageLevel::error)
+        printMessage(tr("Invalid settings").toUtf8(), settings, MessageLevel::error, source);
+      return;
+    }
+    QByteArray type = settings.left(settings.indexOf(':', 0));
+    QByteArray value = settings.mid(settings.indexOf(':', 0) + 1);
+    type = type.simplified().toLower();
+
+    if (setables.contains(type))
+      applyGuiElementSettings(setables[type], value);
+
+    else if (type == "baud") {
+      ui->comboBoxBaud->setEditText(QString::number(value.toUInt()));
+    }
+
+    else if (type == "lang") {
+      if (value == "en")
+        ui->radioButtonEn->setChecked(true);
+      if (value == "cz")
+        ui->radioButtonCz->setChecked(true);
+    }
+
+    else if (type == "terminal") {
+      if (value == "clicksend")
+        ui->pushButtonTerminalClickToSend->setChecked(true);
+      if (value == "select")
+        ui->pushButtonTerminalSelect->setChecked(true);
+      if (value == "nointeract") {
+        ui->pushButtonTerminalClickToSend->setChecked(false);
+        ui->pushButtonTerminalSelect->setChecked(false);
+      }
+    }
+
+    else if (type == "csvsep") {
+      if (value == "cs")
+        ui->radioButtonCSVComma->setChecked(true);
+      if (value == "dc")
+        ui->radioButtonCSVDot->setChecked(true);
+    }
+
+    else if (type == "plotrange") {
+      if (value == "fix")
+        ui->radioButtonFixedRange->setChecked(true);
+      if (value == "free")
+        ui->radioButtonFreeRange->setChecked(true);
+      if (value == "roll")
+        ui->radioButtonRollingRange->setChecked(true);
+    }
+
+    else if (type == "xyclr") {
+      QByteArrayList rgb = value.split(',');
+      if (rgb.length() != 3) {
+        if (source == MessageTarget::manual || ui->comboBoxOutputLevel->currentIndex() >= MessageLevel::error)
+          printMessage(tr("Invalid color: ").toUtf8(), settings, MessageLevel::error, source);
+        return;
+      }
+      QColor clr = QColor(rgb.at(0).toInt(), rgb.at(1).toInt(), rgb.at(2).toInt());
+      ui->plotxy->graphXY->setPen(clr);
+    }
+
+    else if (type == "ch") {
+      int ch = value.left(value.indexOf(':', 0)).toUInt();
+      if (ch > ANALOG_COUNT + MATH_COUNT || ch == 0) {
+        if (source == MessageTarget::manual || ui->comboBoxOutputLevel->currentIndex() >= MessageLevel::error)
+          printMessage(tr("Invalid channel in settings").toUtf8(), QString::number(ch).toUtf8(), MessageLevel::error, source);
+        return;
+      }
+      // V nastavení se čísluje od jedné, ale v příkazech od nuly
+      ch = ch - 1;
+      QByteArray subtype = value.mid(value.indexOf(':', 0) + 1).toLower();
+      subtype = subtype.left(subtype.indexOf(':'));
+      QByteArray subvalue = value.mid(value.lastIndexOf(':') + 1);
+
+      if (subtype == "sty")
+        ui->plot->setChStyle(ch, subvalue.toUInt());
+      else if (subtype == "clr") {
+        QByteArrayList rgb = subvalue.mid(subvalue.indexOf(':')).split(',');
+        if (rgb.length() != 3) {
+          if (source == MessageTarget::manual || ui->comboBoxOutputLevel->currentIndex() >= MessageLevel::error)
+            printMessage(tr("Invalid color: ").toUtf8(), settings, MessageLevel::error, source);
+          return;
+        }
+        QColor clr = QColor(rgb.at(0).toInt(), rgb.at(1).toInt(), rgb.at(2).toInt());
+        ui->plot->setChColor(ch, clr);
+        colorUpdateNeeded = true;
+      }
+      if (ui->comboBoxSelectedChannel->currentIndex() == ch)
+        on_comboBoxSelectedChannel_currentIndexChanged(ui->comboBoxSelectedChannel->currentIndex());
+    }
+
+    else if (type == "log") {
+      int group = value.left(value.indexOf(':', 0)).toUInt() - 1;
+      if (group >= LOGIC_GROUPS) {
+        if (source == MessageTarget::manual || ui->comboBoxOutputLevel->currentIndex() >= MessageLevel::error)
+          printMessage(tr("Invalid logic in settings").toUtf8(), QString::number(group).toUtf8(), MessageLevel::error, source);
+        return;
+      }
+      QByteArray subtype = value.mid(value.indexOf(':', 0) + 1).toLower();
+      subtype = subtype.left(subtype.indexOf(':'));
+      QByteArray subvalue = value.mid(value.lastIndexOf(':') + 1);
+
+      if (subtype == "off")
+        ui->plot->setLogicOffset(group, subvalue.toDouble());
+      else if (subtype == "sca")
+        ui->plot->setLogicScale(group, subvalue.toDouble());
+      else if (subtype == "sty")
+        ui->plot->setLogicStyle(group, subvalue.toUInt());
+      else if (subtype == "clr") {
+        QByteArrayList rgb = subvalue.mid(subvalue.indexOf(':')).split(',');
+        if (rgb.length() != 3) {
+          if (source == MessageTarget::manual || ui->comboBoxOutputLevel->currentIndex() >= MessageLevel::error)
+            printMessage(tr("Invalid color: ").toUtf8(), settings, MessageLevel::error, source);
+          return;
+        }
+        QColor clr = QColor(rgb.at(0).toInt(), rgb.at(1).toInt(), rgb.at(2).toInt());
+        ui->plot->setLogicColor(group, clr);
+        colorUpdateNeeded = true;
+      }
+      if (ui->comboBoxSelectedChannel->currentIndex() == group + ANALOG_COUNT + MATH_COUNT)
+        on_comboBoxSelectedChannel_currentIndexChanged(ui->comboBoxSelectedChannel->currentIndex());
+    }
+
+    // Error
+    else {
+      if (source == MessageTarget::manual || ui->comboBoxOutputLevel->currentIndex() >= MessageLevel::error)
+        printMessage(tr("Unknown setting").toUtf8(), type, MessageLevel::error, source);
+      return;
+    }
   }
   if (source == MessageTarget::manual || ui->comboBoxOutputLevel->currentIndex() == MessageLevel::info)
     printMessage(tr("Applied settings").toUtf8(), settings, MessageLevel::info, source);
@@ -284,6 +306,7 @@ void MainWindow::on_pushButtonLoadFile_clicked() {
   QFile file(fileName);
   if (file.open(QFile::ReadOnly | QFile::Text)) {
     QByteArray text = file.readAll();
+    file.close();
     if (fileName.right(4) == ".cfg") {
       if (text.contains(';'))
         text.replace("\n", "");
@@ -323,8 +346,9 @@ void MainWindow::on_pushButtonDefaults_clicked() {
   QFile file(defaultName);
   if (file.open(QFile::ReadOnly | QFile::Text)) {
     emit sendManualInput("$$S" + file.readAll().replace("\n", "") + "$$U");
+    file.close();
   } else {
-    QMessageBox msgBox;
+    QMessageBox msgBox(this);
     msgBox.setText(tr("Cant open file."));
     msgBox.setInformativeText(defaultName);
     msgBox.setIcon(QMessageBox::Critical);
@@ -333,15 +357,16 @@ void MainWindow::on_pushButtonDefaults_clicked() {
 }
 
 void MainWindow::on_pushButtonSaveSettings_clicked() {
-  QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/settings/");
-  QString fileName = QFileDialog::getSaveFileName(this, tr("Load settings"), defaultName, tr("Settings file (.cfg)"));
+  QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/settings/default.cfg");
+  QString fileName = QFileDialog::getSaveFileName(this, tr("Load settings"), defaultName, tr("Settings file (*.cfg)"));
   if (fileName.isEmpty())
     return;
   QFile file(fileName);
   if (file.open(QFile::WriteOnly | QFile::Truncate)) {
     file.write(getSettings());
+    file.close();
   } else {
-    QMessageBox msgBox;
+    QMessageBox msgBox(this);
     msgBox.setText(tr("Cant write to file."));
     msgBox.setIcon(QMessageBox::Critical);
     msgBox.exec();
@@ -350,19 +375,57 @@ void MainWindow::on_pushButtonSaveSettings_clicked() {
 
 void MainWindow::on_pushButtonReset_clicked() {
   QFile defaults(":/text/settings/default.cfg");
-  if (defaults.open(QFile::ReadOnly | QFile::Text))
+  if (defaults.open(QFile::ReadOnly | QFile::Text)) {
     emit sendManualInput("$$S" + defaults.readAll().replace("\n", "") + "$$U");
+    defaults.close();
+  }
+  QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/settings/default.cfg");
+  QFile file(defaultName);
+  if (!QDir(QCoreApplication::applicationDirPath() + "/settings").exists())
+    QDir().mkdir((QCoreApplication::applicationDirPath() + "/settings"));
+  if (file.open(QFile::WriteOnly | QFile::Truncate)) {
+    QFile defaults(":/text/settings/default.cfg");
+    if (defaults.open(QFile::ReadOnly | QFile::Text)) {
+      QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/settings/default.cfg");
+      QFile file(defaultName);
+      if (file.open(QFile::WriteOnly | QFile::Truncate)) {
+        file.write(defaults.readAll());
+        file.close();
+      }
+      defaults.close();
+    }
+  } else {
+    QMessageBox msgBox(this);
+    msgBox.setText(tr("Can not create default settings file"));
+    msgBox.setDetailedText(defaultName);
+    msgBox.setIcon(QMessageBox::Critical);
+    msgBox.exec();
+  }
 }
 
 void MainWindow::setUp() {
   QString userDefaults = QString(QCoreApplication::applicationDirPath()) + QString("/settings/default.cfg");
   QFile userDefaultsFile(userDefaults);
-  if (userDefaultsFile.open(QFile::ReadOnly | QFile::Text))
+  if (userDefaultsFile.open(QFile::ReadOnly | QFile::Text)) {
     emit sendManualInput("$$S" + userDefaultsFile.readAll().replace("\n", "") + "$$U");
-  else {
+    userDefaultsFile.close();
+  } else {
     QFile defaults(":/text/settings/default.cfg");
-    if (defaults.open(QFile::ReadOnly | QFile::Text))
-      emit sendManualInput("$$S" + defaults.readAll().replace("\n", "") + "$$U");
+    if (defaults.open(QFile::ReadOnly | QFile::Text)) {
+      QByteArray defaultSettings = defaults.readAll();
+      defaults.close();
+
+      QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/settings/default.cfg");
+      QFile file(defaultName);
+      if (!QDir(QCoreApplication::applicationDirPath() + "/settings").exists())
+        QDir().mkdir((QCoreApplication::applicationDirPath() + "/settings"));
+      if (file.open(QFile::WriteOnly | QFile::Truncate)) {
+        file.write(defaultSettings);
+        file.close();
+      }
+
+      emit sendManualInput("$$S" + defaultSettings.replace("\n", "") + "$$U");
+    }
   }
 
   QString style = "";
@@ -379,6 +442,7 @@ void MainWindow::setUp() {
 
   if (styleSheet.open(QFile::ReadOnly | QFile::Text)) {
     qApp->setStyleSheet(styleSheet.readAll());
+    styleSheet.close();
     qDebug() << "Using stylesheet: " << style;
   }
 }

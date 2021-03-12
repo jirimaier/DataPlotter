@@ -23,18 +23,22 @@
 
 class myCursorSlider : public QSlider {
   Q_OBJECT
-public:
-  explicit myCursorSlider(QWidget *parent = nullptr);
+ public:
+  explicit myCursorSlider(QWidget* parent = nullptr);
   void updateRange(int min, int max);
+  int getRealValue() { return realPos;};
 
-private slots:
+ private slots:
   void positionChanged(int newpos);
 
-private:
+ private:
   int realPos = 0;
 
-public slots:
-  void setRealVaule(int newValue);
+ public slots:
+  void setRealValue(int newValue);
+
+ signals:
+  void realValueChanged(int);
 };
 
 #endif // MYCURSORSLIDER_H

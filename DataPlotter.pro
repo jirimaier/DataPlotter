@@ -24,11 +24,13 @@ SOURCES += \
     mycursorslider.cpp \
     mydial.cpp \
     mydoublespinboxwithunits.cpp \
+    myelidedcombobox.cpp \
     myfftplot.cpp \
     mymainplot.cpp \
     mymodifiedqcptracer.cpp \
     myplot.cpp \
     mypow2spinbox.cpp \
+    myscaledoublespinbox.cpp \
     myterminal.cpp \
     myxyplot.cpp \
     newserialparser.cpp \
@@ -36,6 +38,7 @@ SOURCES += \
     plotmath.cpp \
     qcustomplot.cpp \
     serialreader.cpp \
+    serialsettingsdialog.cpp \
     signalprocessing.cpp
 
 HEADERS += \
@@ -46,11 +49,13 @@ HEADERS += \
     mycursorslider.h \
     mydial.h \
     mydoublespinboxwithunits.h \
+    myelidedcombobox.h \
     myfftplot.h \
     mymainplot.h \
     mymodifiedqcptracer.h \
     myplot.h \
     mypow2spinbox.h \
+    myscaledoublespinbox.h \
     myterminal.h \
     myxyplot.h \
     newserialparser.h \
@@ -58,9 +63,11 @@ HEADERS += \
     plotmath.h \
     qcustomplot.h \
     serialreader.h \
+    serialsettingsdialog.h \
     signalprocessing.h
 
-FORMS += mainwindow.ui
+FORMS += mainwindow.ui \
+    serialsettingsdialog.ui
 
 TRANSLATIONS += \
     translations/translation_en.ts \

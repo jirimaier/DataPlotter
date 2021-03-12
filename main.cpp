@@ -71,6 +71,10 @@ Q_DECLARE_METATYPE(HAxisType::enumHAxisType);
 Q_DECLARE_METATYPE(Cursors::enumCursors);
 Q_DECLARE_METATYPE(ValueType);
 Q_DECLARE_METATYPE(QCPRange);
+Q_DECLARE_METATYPE(QSerialPort::DataBits);
+Q_DECLARE_METATYPE(QSerialPort::StopBits);
+Q_DECLARE_METATYPE(QSerialPort::Parity);
+Q_DECLARE_METATYPE(QSerialPort::FlowControl);
 
 int main(int argc, char* argv[]) {
   QApplication application(argc, argv);
@@ -94,6 +98,10 @@ int main(int argc, char* argv[]) {
   qRegisterMetaType<QPair<ValueType, QByteArray>>();
   qRegisterMetaType<QList<QPair<ValueType, QByteArray>>>();
   qRegisterMetaType<QCPRange>();
+  qRegisterMetaType<QSerialPort::DataBits>();
+  qRegisterMetaType<QSerialPort::StopBits>();
+  qRegisterMetaType<QSerialPort::Parity>();
+  qRegisterMetaType<QSerialPort::FlowControl>();
 
   // Vytvoří instance hlavních objektů
   MainWindow mainWindow;
@@ -127,6 +135,7 @@ int main(int argc, char* argv[]) {
   QObject::connect(serialParser1, &NewSerialParser::sendMessage, &mainWindow, &MainWindow::printMessage);
   QObject::connect(serialParser1, &NewSerialParser::sendDeviceMessage, &mainWindow, &MainWindow::printDeviceMessage);
   QObject::connect(serialParser1, &NewSerialParser::sendSettings, &mainWindow, &MainWindow::useSettings);
+  QObject::connect(serialParser1, &NewSerialParser::deviceError, &mainWindow, &MainWindow::deviceError);
   QObject::connect(serialParser1, &NewSerialParser::sendTerminal, &mainWindow, &MainWindow::printToTerminal);
   QObject::connect(serialParser1, &NewSerialParser::sendPoint, plotData, &PlotData::addPoint);
   QObject::connect(serialParser1, &NewSerialParser::sendLogicPoint, plotData, &PlotData::addLogicPoint);
@@ -142,6 +151,7 @@ int main(int argc, char* argv[]) {
   QObject::connect(serialParserM, &NewSerialParser::sendMessage, &mainWindow, &MainWindow::printMessage);
   QObject::connect(serialParserM, &NewSerialParser::sendDeviceMessage, &mainWindow, &MainWindow::printDeviceMessage);
   QObject::connect(serialParserM, &NewSerialParser::sendSettings, &mainWindow, &MainWindow::useSettings);
+  QObject::connect(serialParserM, &NewSerialParser::deviceError, &mainWindow, &MainWindow::deviceError);
   QObject::connect(serialParserM, &NewSerialParser::sendTerminal, &mainWindow, &MainWindow::printToTerminal);
   QObject::connect(serialParserM, &NewSerialParser::sendPoint, plotData, &PlotData::addPoint);
   QObject::connect(serialParserM, &NewSerialParser::sendLogicPoint, plotData, &PlotData::addLogicPoint);

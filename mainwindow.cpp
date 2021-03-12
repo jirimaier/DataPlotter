@@ -15,11 +15,15 @@
 
 #include "mainwindow.h"
 
-MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
+MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWindow),   serialSettingsDialog(new SerialSettingsDialog) {
   ui->setupUi(this);
+  ui->doubleSpinBoxRangeVerticalRange->trimDecimalZeroes = true;
+  ui->doubleSpinBoxRangeVerticalRange->emptyDefaultValue = 1;
+  ui->doubleSpinBoxRangeHorizontal->trimDecimalZeroes = true;
+  ui->doubleSpinBoxRangeHorizontal->emptyDefaultValue = 1;
 }
 
-MainWindow::~MainWindow() { delete ui; }
+MainWindow::~MainWindow() { delete ui; delete serialSettingsDialog; }
 
 void MainWindow::setComboboxItemVisible(QComboBox& comboBox, int index, bool visible) {
   auto* model = qobject_cast<QStandardItemModel*>(comboBox.model());
@@ -60,6 +64,9 @@ void MainWindow::init(QTranslator* translator, const PlotData* plotData, const P
   QObject::connect(plotData, &PlotData::clearLogic, ui->plot, &MyMainPlot::clearLogicGroup);
   QObject::connect(ui->myTerminal, &MyTerminal::writeToSerial, serialReader, &SerialReader::write);
 
+  // Odpojit port když se změní pokročilá nastavení
+  QObject::connect(serialSettingsDialog, &SerialSettingsDialog::settingChanged, serialReader, &SerialReader::end);
+
   this->translator = translator;
   setGuiArrays();
   initSetables();
@@ -79,6 +86,7 @@ void MainWindow::changeLanguage(QString code) {
   }
   qApp->installTranslator(translator);
   ui->retranslateUi(this);
+  serialSettingsDialog->retranslate();
 }
 
 void MainWindow::showPlotStatus(PlotStatus::enumPlotStatus type) {
@@ -99,9 +107,10 @@ void MainWindow::updateChScale() {
     ui->labelChScale->setText("---");
 }
 
-void MainWindow::serialConnectResult(bool connected, QString message) {
+void MainWindow::serialConnectResult(bool connected, QString message, QString details) {
   ui->pushButtonConnect->setIcon(connected ? iconConnected : iconNotConnected);
   ui->labelPortInfo->setText(message);
+  ui->labelPortInfo->setToolTip(details);
   if (connected && ui->checkBoxClearOnReconnect->isChecked()) {
     ui->plot->resetChannels();
     ui->plotxy->clear();
@@ -206,4 +215,68 @@ void MainWindow::interpolationResult(int chID, QSharedPointer<QCPGraphDataContai
   interpolationsRunning--;
   if (interpolationsRunning == 0)
     interpolationTimer.start();
+}
+
+void MainWindow::deviceError(QByteArray message, MessageTarget::enumMessageTarget source) {
+  if (source == MessageTarget::manual) {
+    QMessageBox msgBox(this);
+    msgBox.setInformativeText(message);
+    msgBox.setWindowTitle(tr("Device error"));
+    msgBox.setText(tr("Error message sent from manual input"));
+    msgBox.setStandardButtons(QMessageBox::Ok);
+    msgBox.exec();
+  } else {
+    emit disconnectSerial();
+    QMessageBox msgBox(this);
+    msgBox.setInformativeText("Message: " + message);
+    msgBox.setWindowTitle(tr("Device error"));
+    msgBox.setText(tr("Device reported error (port disconnected)"));
+    msgBox.setStandardButtons(QMessageBox::Ok);
+    msgBox.setIcon(QMessageBox::Critical);
+    msgBox.exec();
+  }
+}
+
+
+void MainWindow::on_pushButtonSerialSetting_clicked() {
+  serialSettingsDialog->show();
+}
+
+void MainWindow::on_pushButtonSerialMoreInfo_clicked() {
+  QString portinfo;
+
+  auto portlist = QSerialPortInfo::availablePorts();
+  auto port = portlist.at(ui->comboBoxCom->currentIndex());
+
+  portinfo.append(tr("Description: %1\n").arg(port.description()));
+  portinfo.append(tr("Manufacturer: %1\n").arg(port.manufacturer()));
+  portinfo.append(tr("Serial number: %1\n").arg(port.serialNumber()));
+  portinfo.append(tr("Location: %1\n").arg(port.systemLocation()));
+  portinfo.append(tr("Vendor Identifier: %1\n").arg(port.vendorIdentifier()));
+  portinfo.append(tr("Product Identifier: %1").arg(port.productIdentifier()));
+
+  QMessageBox msgBox(this);
+  msgBox.setWindowTitle(port.portName());
+  msgBox.setText(portinfo);
+  msgBox.setStandardButtons(QMessageBox::Ok);
+  msgBox.exec();
+}
+
+void MainWindow::on_comboBoxBaud_editTextChanged(const QString& arg1) {
+  for (int i = 0; i < arg1.length(); i++) {
+    if (!arg1.at(i).isDigit()) {
+      ui->comboBoxBaud->setEditText(arg1.left(i));
+      return;
+    }
+  }
+}
+
+void MainWindow::on_pushButtonHideCur1_clicked() {
+  ui->checkBoxCur1Visible->setCheckState(Qt::CheckState::Unchecked);
+  ui->checkBoxYCur1->setCheckState(Qt::CheckState::Unchecked);
+}
+
+void MainWindow::on_pushButtonHideCur2_clicked() {
+  ui->checkBoxCur2Visible->setCheckState(Qt::CheckState::Unchecked);
+  ui->checkBoxYCur2->setCheckState(Qt::CheckState::Unchecked);
 }

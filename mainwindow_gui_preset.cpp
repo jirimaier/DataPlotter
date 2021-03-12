@@ -58,12 +58,14 @@ void MainWindow::connectSignals() {
   connect(&serialMonitorTimer, &QTimer::timeout, this, &MainWindow::updateSerialMonitor);
   connect(&dataRateTimer, &QTimer::timeout, this, &MainWindow::updateDataRate);
   connect(&interpolationTimer, &QTimer::timeout, this, &MainWindow::updateInterpolation);
+
+  connect(ui->horizontalSliderTimeCur1, &myCursorSlider::realValueChanged, this, &MainWindow::horizontalSliderTimeCur1_realValueChanged);
+  connect(ui->horizontalSliderTimeCur2, &myCursorSlider::realValueChanged, this, &MainWindow::horizontalSliderTimeCur2_realValueChanged);
 }
 
 void MainWindow::setAdaptiveSpinBoxes() {
 // Adaptivní krok není v starším Qt (Win XP)
 #if QT_VERSION >= 0x050C00
-  ui->doubleSpinBoxChScale->setStepType(QAbstractSpinBox::AdaptiveDecimalStepType);
   ui->doubleSpinBoxRangeHorizontal->setStepType(QAbstractSpinBox::AdaptiveDecimalStepType);
   ui->doubleSpinBoxRangeVerticalRange->setStepType(QAbstractSpinBox::AdaptiveDecimalStepType);
 
@@ -89,6 +91,8 @@ void MainWindow::startTimers() {
 }
 
 void MainWindow::setGuiDefaults() {
+  ui->checkBoxSerialMonitor->setChecked(false);
+  ui->checkBoxShowManualInput->setChecked(false);
   ui->tabs_right->setCurrentIndex(0);
   ui->tabsControll->setCurrentIndex(0);
   ui->comboBoxOutputLevel->setCurrentIndex((int)OutputLevel::info);
@@ -109,8 +113,6 @@ void MainWindow::setGuiDefaults() {
 
   on_comboBoxFFTType_currentIndexChanged(ui->comboBoxFFTType->currentIndex());
 
-  ui->checkBoxYCur1->setCheckState(Qt::CheckState::PartiallyChecked);
-  ui->checkBoxYCur2->setCheckState(Qt::CheckState::PartiallyChecked);
   ui->spinBoxFFTSegments1->setVisible(ui->comboBoxFFTType->currentIndex() == FFTType::pwelch);
   ui->spinBoxFFTSegments2->setVisible(ui->comboBoxFFTType->currentIndex() == FFTType::pwelch);
   ui->checkBoxFFTCh1->setChecked(true);
@@ -124,6 +126,8 @@ void MainWindow::setGuiDefaults() {
 
   ui->comboBoxFFTType->setCurrentIndex(1);
 
+  ui->comboBoxBaud->setCurrentIndex(1);
+
   ui->plot->setGridHintX(ui->horizontalSliderHGrid->value());
   ui->plot->setGridHintY(ui->horizontalSliderVGrid->value());
   ui->plotxy->setGridHintX(ui->horizontalSliderXYGrid->value());
@@ -132,6 +136,11 @@ void MainWindow::setGuiDefaults() {
   ui->plotFFT->setGridHintY(ui->horizontalSliderGridFFTV->value());
 
   on_doubleSpinBoxRangeVerticalRange_valueChanged(ui->doubleSpinBoxRangeVerticalRange->value());
+
+  ui->doubleSpinBoxXCur1->setVisible(false);
+  ui->doubleSpinBoxXCur2->setVisible(false);
+  ui->doubleSpinBoxYCur1->setVisible(false);
+  ui->doubleSpinBoxYCur2->setVisible(false);
 }
 
 void MainWindow::setGuiArrays() {
@@ -196,10 +205,10 @@ void MainWindow::fillChannelSelect() {
   ui->comboBoxMeasure2->setCurrentIndex(ui->comboBoxMeasure2->count() - 1);
 
   // Skryje FFT kanály z nabýdky.
-  setComboboxItemVisible(*ui->comboBoxCursor1Channel, FFTID(0), false);
-  setComboboxItemVisible(*ui->comboBoxCursor2Channel, FFTID(0), false);
-  setComboboxItemVisible(*ui->comboBoxCursor1Channel, FFTID(1), false);
-  setComboboxItemVisible(*ui->comboBoxCursor2Channel, FFTID(1), false);
+  setComboboxItemVisible(*ui->comboBoxCursor1Channel, FFT_INDEX(0), false);
+  setComboboxItemVisible(*ui->comboBoxCursor2Channel, FFT_INDEX(0), false);
+  setComboboxItemVisible(*ui->comboBoxCursor1Channel, FFT_INDEX(1), false);
+  setComboboxItemVisible(*ui->comboBoxCursor2Channel, FFT_INDEX(1), false);
 
   ui->comboBoxSelectedChannel->blockSignals(false);
   ui->comboBoxCursor1Channel->blockSignals(false);

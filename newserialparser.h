@@ -52,6 +52,8 @@ class NewSerialParser : public QObject {
   void ready();
   /// Pošle data která mají být poslána zpět do portu
   void sendEcho(QByteArray);
+  /// Pošle chabovou zprávu od zařízení
+  void deviceError(QByteArray, MessageTarget::enumMessageTarget source);
 
  private:
   MessageTarget::enumMessageTarget target;

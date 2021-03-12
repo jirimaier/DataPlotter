@@ -31,7 +31,8 @@ void MainWindow::rangeTypeChanged() {
 
 void MainWindow::on_pushButtonConnect_clicked() {
   if (ui->comboBoxCom->currentIndex() >= 0) {
-    emit toggleSerialConnection(portList.at(ui->comboBoxCom->currentIndex()).portName(), ui->comboBoxBaud->currentText().toInt());
+    SerialSettingsDialog::Settings settings = serialSettingsDialog->settings();
+    emit toggleSerialConnection(portList.at(ui->comboBoxCom->currentIndex()).portName(), ui->comboBoxBaud->currentText().toInt(), settings.dataBits, settings.parity, settings.stopBits, settings.flowControl);
   }
 }
 
@@ -45,8 +46,39 @@ void MainWindow::on_doubleSpinBoxChOffset_valueChanged(double arg1) {
 void MainWindow::on_comboBoxGraphStyle_currentIndexChanged(int index) {
   if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT) {
     ui->plot->setChStyle(ui->comboBoxSelectedChannel->currentIndex(), index);
-  } else
+  } else {
+    if (recommendOpenGL && (index == GraphStyle::logicFilled || index == GraphStyle::logicSquareFilled) && !ui->checkBoxOpenGL->isChecked()) {
+      QMessageBox msgBox(this);
+      msgBox.setText(tr("It is recommended to enable OpenGL when using fill under graph."));
+      msgBox.setInformativeText(tr("Enable OpenGL? (enabling may take a second or two)"));
+      msgBox.setIcon(QMessageBox::Information);
+      msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+      msgBox.setDefaultButton(QMessageBox::Yes);
+      msgBox.setButtonText(QMessageBox::Yes, tr("Yes"));
+      msgBox.setButtonText(QMessageBox::No, tr("No"));
+      auto checkBox = new QCheckBox(&msgBox);
+      checkBox->setText(tr("Dont show again"));
+      msgBox.setCheckBox(checkBox);
+      int returnValue = msgBox.exec();
+      if (returnValue == QMessageBox::Yes)
+        ui->checkBoxOpenGL->setChecked(true);
+      if (checkBox->isChecked()) {
+        recommendOpenGL = false;
+        QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/settings/default.cfg");
+        QFile file(defaultName);
+        if (file.open(QFile::WriteOnly | QFile::Append)) {
+          file.write("noopengldialog;\n");
+        } else {
+          QMessageBox msgBox(this);
+          msgBox.setText(tr("Can not write to default settings file"));
+          msgBox.setDetailedText(defaultName);
+          msgBox.setIcon(QMessageBox::Critical);
+          msgBox.exec();
+        }
+      }
+    }
     ui->plot->setLogicStyle(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT, index);
+  }
 }
 void MainWindow::on_doubleSpinBoxChScale_valueChanged(double arg1) {
   if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT)
@@ -208,7 +240,7 @@ void MainWindow::on_comboBoxHAxisType_currentIndexChanged(int index) {
 void MainWindow::on_pushButtonOpenHelp_clicked() {
   QString helpFile = QCoreApplication::applicationDirPath() + "/Manual.pdf";
   if (!QDesktopServices::openUrl(QUrl::fromLocalFile(helpFile))) {
-    QMessageBox msgBox;
+    QMessageBox msgBox(this);
     msgBox.setText(tr("Cant open file."));
     msgBox.setInformativeText(helpFile);
     msgBox.setIcon(QMessageBox::Critical);
@@ -517,15 +549,15 @@ void MainWindow::on_myTerminal_cellClicked(int row, int column) {
 void MainWindow::on_comboBoxFFTType_currentIndexChanged(int index) {
   if (index != FFTType::spectrum) {
     ui->plotFFT->setYUnit("dB");
-    if (IS_FFT(ui->comboBoxCursor1Channel->currentIndex()))
+    if (IS_FFT_INDEX(ui->comboBoxCursor1Channel->currentIndex()))
       ui->doubleSpinBoxYCur1->setSuffix("dB");
-    if (IS_FFT(ui->comboBoxCursor2Channel->currentIndex()))
+    if (IS_FFT_INDEX(ui->comboBoxCursor2Channel->currentIndex()))
       ui->doubleSpinBoxYCur2->setSuffix("dB");
   } else {
     ui->plotFFT->setYUnit("");
-    if (IS_FFT(ui->comboBoxCursor1Channel->currentIndex()))
+    if (IS_FFT_INDEX(ui->comboBoxCursor1Channel->currentIndex()))
       ui->doubleSpinBoxYCur1->setSuffix("");
-    if (IS_FFT(ui->comboBoxCursor2Channel->currentIndex()))
+    if (IS_FFT_INDEX(ui->comboBoxCursor2Channel->currentIndex()))
       ui->doubleSpinBoxYCur2->setSuffix("");
   } ui->spinBoxFFTSegments1->setVisible(index == FFTType::pwelch);
   ui->spinBoxFFTSegments2->setVisible(index == FFTType::pwelch);
@@ -562,19 +594,19 @@ void MainWindow::on_checkBoxMouseControls_toggled(bool checked) {
 }
 
 void MainWindow::on_checkBoxFFTCh1_toggled(bool checked) {
-  setComboboxItemVisible(*ui->comboBoxCursor1Channel, FFTID(0), checked && ui->pushButtonFFT->isChecked());
-  setComboboxItemVisible(*ui->comboBoxCursor2Channel, FFTID(0), checked && ui->pushButtonFFT->isChecked());
+  setComboboxItemVisible(*ui->comboBoxCursor1Channel, FFT_INDEX(0), checked && ui->pushButtonFFT->isChecked());
+  setComboboxItemVisible(*ui->comboBoxCursor2Channel, FFT_INDEX(0), checked && ui->pushButtonFFT->isChecked());
 }
 
 void MainWindow::on_checkBoxFFTCh2_toggled(bool checked) {
-  setComboboxItemVisible(*ui->comboBoxCursor1Channel, FFTID(1), checked && ui->pushButtonFFT->isChecked());
-  setComboboxItemVisible(*ui->comboBoxCursor2Channel, FFTID(1), checked && ui->pushButtonFFT->isChecked());
+  setComboboxItemVisible(*ui->comboBoxCursor1Channel, FFT_INDEX(1), checked && ui->pushButtonFFT->isChecked());
+  setComboboxItemVisible(*ui->comboBoxCursor2Channel, FFT_INDEX(1), checked && ui->pushButtonFFT->isChecked());
 }
 
 void MainWindow::on_pushButtonProtocolGuide_clicked() {
   QString helpFile = QCoreApplication::applicationDirPath() + (ui->radioButtonEn->isChecked() ? "/Data protocol guide en.pdf" : "/Data protocol guide cz.pdf");
   if (!QDesktopServices::openUrl(QUrl::fromLocalFile(helpFile))) {
-    QMessageBox msgBox;
+    QMessageBox msgBox(this);
     msgBox.setText(tr("Cant open file."));
     msgBox.setInformativeText(helpFile);
     msgBox.setIcon(QMessageBox::Critical);

@@ -195,11 +195,11 @@ void MainWindow::updateFFT1() {
       QPixmap color(12, 12);
       color.fill(ui->plot->getChColor(chid));
       auto* model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor1Channel->model());
-      auto* item = model->item(FFTID(0));
+      auto* item = model->item(FFT_INDEX(0));
       item->setIcon(QIcon(color));
 
       model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor2Channel->model());
-      item = model->item(FFTID(0));
+      item = model->item(FFT_INDEX(0));
       item->setIcon(QIcon(color));
     }
 
@@ -239,11 +239,11 @@ void MainWindow::updateFFT2() {
       QPixmap color(12, 12);
       color.fill(ui->plot->getChColor(chid));
       auto* model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor1Channel->model());
-      auto* item = model->item(FFTID(1));
+      auto* item = model->item(FFT_INDEX(1));
       item->setIcon(QIcon(color));
 
       model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor2Channel->model());
-      item = model->item(FFTID(1));
+      item = model->item(FFT_INDEX(1));
       item->setIcon(QIcon(color));
     }
     fftTimer2.stop();

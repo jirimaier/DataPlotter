@@ -62,6 +62,8 @@ class MyPlot : public QCustomPlot {
   QString getXUnit() { return xUnit; }
   QString getYUnit() { return yUnit; }
   double getValueCursorPosition(Cursors::enumCursors cursor) {return cursorsVal.at(cursor)->start->coords().y();}
+  double getTimeCursorPosition(Cursors::enumCursors cursor) {return cursorsKey.at(cursor)->start->coords().x();}
+  int keyToNearestSample(QCPGraph* graph, double keyCoord);
 
  protected:
   QCPLayer* cursorLayer;
@@ -75,7 +77,6 @@ class MyPlot : public QCustomPlot {
   void setMouseControlls(bool enabled);
   void checkIfTracerTextFits();
   enum MouseDrag { cursorX1, cursorX2, cursorY1, cursorY2, nothing, zeroline } mouseDrag = nothing; // Vyšší čísla jsou číslo kanálu pro nulo
-  int keyToNearestSample(QCPGraph* graph, double keyCoord);
   QCPGraph* cur1Graph = 0, *cur2Graph = 0;
   QCPAxis* cur1YAxis = yAxis, *cur2YAxis = yAxis;
   QCursor defaultMouseCursor = Qt::ArrowCursor;
@@ -101,7 +102,7 @@ class MyPlot : public QCustomPlot {
 
  signals:
   void gridChanged();
-  void moveTimeCursor(Cursors::enumCursors cursor, int sample);
+  void moveTimeCursor(Cursors::enumCursors cursor, int sample, double value);
   void moveValueCursor(Cursors::enumCursors cursor, double value);
   void setCursorPos(int chid, Cursors::enumCursors cursor, int sample);
 };

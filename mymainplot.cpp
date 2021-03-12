@@ -242,7 +242,7 @@ QPair<unsigned int, unsigned int> MyMainPlot::getChVisibleSamplesRange(int chID)
   if (graph(chID)->data()->isEmpty())
     return (QPair<unsigned int, unsigned int>(0, 0));
   unsigned int min = graph(chID)->findBegin(xAxis->range().lower, false);
-  unsigned int max = graph(chID)->findBegin(xAxis->range().upper, false);
+  unsigned int max = graph(chID)->findEnd(xAxis->range().upper, false);
   return (QPair<unsigned int, unsigned int>(min, max));
 }
 
@@ -618,9 +618,9 @@ void MyMainPlot::mouseMoved(QMouseEvent* event) {
     else if (mouseDrag == MouseDrag::cursorY2)
       emit moveValueCursor(Cursors::Cursor2, cur2YAxis->pixelToCoord(event->pos().y()));
     else if (mouseDrag == MouseDrag::cursorX1)
-      emit moveTimeCursor(Cursors::Cursor1, keyToNearestSample(cur1Graph, xAxis->pixelToCoord(event->pos().x())));
+      emit moveTimeCursor(Cursors::Cursor1, keyToNearestSample(cur1Graph, xAxis->pixelToCoord(event->pos().x())), xAxis->pixelToCoord(event->pos().x()));
     else if (mouseDrag == MouseDrag::cursorX2)
-      emit moveTimeCursor(Cursors::Cursor2, keyToNearestSample(cur2Graph, xAxis->pixelToCoord(event->pos().x())));
+      emit moveTimeCursor(Cursors::Cursor2, keyToNearestSample(cur2Graph, xAxis->pixelToCoord(event->pos().x())), xAxis->pixelToCoord(event->pos().x()));
   }
 }
 

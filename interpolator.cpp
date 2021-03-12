@@ -2,10 +2,14 @@
 
 Interpolator::Interpolator(QObject* parent) : QObject(parent) {
   QFile firFile(":/text/interpolationFIR.csv");
-  firFile.open(QFile::ReadOnly | QFile::Text);
-  QByteArrayList fir = firFile.readAll().split(',');
-  foreach (QByteArray value, fir)
-    interpolationFIR.append(value.toDouble());
+  if (firFile.open(QFile::ReadOnly | QFile::Text)) {
+    QByteArrayList fir = firFile.readAll().split(',');
+    foreach (QByteArray value, fir)
+      FIRfilter.append(value.toDouble());
+    firFile.close();
+  } else {
+    qDebug() << "Can not load FIR filter coeficients!";
+  }
 }
 
 void Interpolator::interpolate(int chID, const QSharedPointer<QCPGraphDataContainer> data, QCPRange visibleRange, bool dataIsFromInterpolationBuffer) {
@@ -17,7 +21,7 @@ void Interpolator::interpolate(int chID, const QSharedPointer<QCPGraphDataContai
   auto dataBegin = data->begin(); // Při volání této funkce se změní adresy v data!!!
   auto dataEnd = data->end();
 
-  int samplePaddings = (interpolationFIR.size() - 1) / 2 / INTERPOLATION_UPSAMPLING;
+  int samplePaddings = (FIRfilter.size() - 1) / 2 / INTERPOLATION_UPSAMPLING;
   int timePaddings = visibleRange.size() / 2;
 
   const QCPGraphData* begin = data->findBegin(visibleRange.lower - timePaddings) - samplePaddings;
@@ -34,23 +38,23 @@ void Interpolator::interpolate(int chID, const QSharedPointer<QCPGraphDataContai
       values.append(0);
   }
 
-  if (values.length() < interpolationFIR.size()) {
+  if (values.length() < FIRfilter.size()) {
     // Moc málo vzorků, nemá to cenu
     auto result = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer(*data));
     emit interpolationResult(chID, data, result, dataIsFromInterpolationBuffer);
     return;
   }
 
-  if (values.length() > 10000) {
+  if (values.length() > 2000 * INTERPOLATION_UPSAMPLING) {
     // Hodně vzorků, nemá cenu interpolovat
     auto result = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer(*data));
     emit interpolationResult(chID, data, result, dataIsFromInterpolationBuffer);
     return;
   }
 
-  values = convolute(values, interpolationFIR);
+  values = convolute(values, FIRfilter);
 
-  values.remove(0, (interpolationFIR.length() - 1) / 2);
+  values.remove(0, (FIRfilter.length() - 1) / 2);
 
   auto result = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer);
   for (int i = 0; i < values.size(); i++) {

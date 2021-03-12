@@ -33,21 +33,30 @@ void SerialReader::init() {
 #endif
 }
 
-void SerialReader::begin(QString portName, int baudRate) {
+void SerialReader::begin(QString portName, int baudRate, QSerialPort::DataBits dataBits, QSerialPort::Parity parity, QSerialPort::StopBits stopBits, QSerialPort::FlowControl flowControll) {
   if (serial->isOpen())
     end(); // Pokud je port otevřen, tak ho zavře
   serial->setPortName(portName);
   serial->setBaudRate(baudRate);
-  serial->setDataBits(QSerialPort::Data8);
-  serial->setParity(QSerialPort::NoParity);
-  serial->setStopBits(QSerialPort::OneStop);
-  serial->setFlowControl(QSerialPort::NoFlowControl);
+  serial->setDataBits(dataBits);
+  serial->setParity(parity);
+  serial->setStopBits(stopBits);
+  serial->setFlowControl(flowControll);
   if (serial->open(QIODevice::ReadWrite)) {
-    emit connectionResult(true, tr("Connected"));
+    emit connectionResult(true, tr("Connected"), "");
   } else if (serial->open(QIODevice::ReadOnly)) {
-    emit connectionResult(true, tr("Connected (read only)"));
-  } else
-    emit connectionResult(false, tr("Error: ") + serial->errorString());
+    emit connectionResult(true, tr("Read only"), tr("Connected as read only"));
+  } else {
+    auto error = serial->error();
+
+    QString errorText;
+    if (error == QSerialPort::PermissionError)
+      errorText = tr("Access denied");
+    else
+      errorText = tr("Error");
+
+    emit connectionResult(false, errorText, serial->errorString());
+  }
   if (serial->isOpen()) {
     serial->clear();
     emit started(); // Parser si vymaže buffer a odpoví že je připraven, teprve po odpovědi se začnou číst data.
@@ -63,28 +72,36 @@ void SerialReader::parserReady() { connect(serial, &QSerialPort::readyRead, this
 
 void SerialReader::end() {
   disconnect(serial, &QSerialPort::readyRead, this, &SerialReader::read);
-  emit connectionResult(false, tr("Not connected"));
+  emit connectionResult(false, tr("Not connected"), "");
   if (!serial->isOpen())
     return;
   serial->close();
 }
 
 void SerialReader::errorOccurred() {
-  if (serial->error() == QSerialPort::NoError)
+  auto error = serial->error();
+
+  if (error == QSerialPort::NoError)
     return;
-  QString error = serial->errorString();
-  if (serial->error() == QSerialPort::PermissionError)
-    error = tr("Access denied.");
+
+  QString errorText;
+  if (error == QSerialPort::PermissionError)
+    errorText = tr("Access denied");
+  else
+    errorText = tr("Error");
+
   disconnect(serial, &QSerialPort::readyRead, this, &SerialReader::read);
+
   if (serial->isOpen()) {
     serial->close();
   }
-  emit connectionResult(false, tr("Error: ") + error);
+
+  emit connectionResult(false, errorText, serial->errorString());
 }
 
-void SerialReader::toggle(QString portName, int baudRate) {
+void SerialReader::toggle(QString portName, int baudRate, QSerialPort::DataBits dataBits, QSerialPort::Parity parity, QSerialPort::StopBits stopBits, QSerialPort::FlowControl flowControll) {
   if (!serial->isOpen())
-    begin(portName, baudRate);
+    begin(portName, baudRate, dataBits, parity, stopBits, flowControll);
   else
     end();
 }

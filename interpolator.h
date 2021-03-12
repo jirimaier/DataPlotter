@@ -9,7 +9,7 @@
 class Interpolator : public QObject {
   Q_OBJECT
  public:
-  QVector<float> interpolationFIR;
+  QVector<float> FIRfilter;
   explicit Interpolator(QObject* parent = nullptr);
 
  private:

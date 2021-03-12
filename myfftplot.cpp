@@ -88,9 +88,9 @@ void MyFFTPlot::newData(int ch, QSharedPointer<QCPGraphDataContainer> data) {
     graph(ch)->setData(data);
 
     if (cursorsKey[Cursors::Cursor1]->visible() && cur1Graph == graph(ch))
-      emit moveTimeCursor(Cursors::Cursor1, keyToNearestSample(cur1Graph, cur1ShouldBeAtKey));
+      emit moveTimeCursor(Cursors::Cursor1, keyToNearestSample(cur1Graph, cur1ShouldBeAtKey), cur1ShouldBeAtKey);
     if (cursorsKey[Cursors::Cursor2]->visible() && cur2Graph == graph(ch))
-      emit moveTimeCursor(Cursors::Cursor2, keyToNearestSample(cur2Graph, cur2ShouldBeAtKey));
+      emit moveTimeCursor(Cursors::Cursor2, keyToNearestSample(cur2Graph, cur2ShouldBeAtKey), cur1ShouldBeAtKey);
 
   } else {
     graph(ch)->setData(data);
@@ -244,9 +244,9 @@ void MyFFTPlot::mouseMoved(QMouseEvent* event) {
     else if (mouseDrag == MouseDrag::cursorY2)
       emit moveValueCursor(Cursors::Cursor2, yAxis->pixelToCoord(event->pos().y()));
     if (mouseDrag == MouseDrag::cursorX1)
-      emit moveTimeCursor(Cursors::Cursor1, keyToNearestSample(cur1Graph, xAxis->pixelToCoord(event->pos().x())));
+      emit moveTimeCursor(Cursors::Cursor1, keyToNearestSample(cur1Graph, xAxis->pixelToCoord(event->pos().x())), xAxis->pixelToCoord(event->pos().x()));
     if (mouseDrag == MouseDrag::cursorX2)
-      emit moveTimeCursor(Cursors::Cursor2, keyToNearestSample(cur2Graph, xAxis->pixelToCoord(event->pos().x())));
+      emit moveTimeCursor(Cursors::Cursor2, keyToNearestSample(cur2Graph, xAxis->pixelToCoord(event->pos().x())), xAxis->pixelToCoord(event->pos().x()));
   }
 }
 
@@ -271,11 +271,11 @@ void MyFFTPlot::mousePressed(QMouseEvent* event) {
     if (event->button() == Qt::RightButton) {
       mouseDrag = MouseDrag::cursorX2;
       this->setInteraction(QCP::iRangeDrag, false);
-      emit setCursorPos(FFTID(nearestIndex), Cursors::Cursor2, tracer->sampleNumber());
+      emit setCursorPos(FFT_INDEX(nearestIndex), Cursors::Cursor2, tracer->sampleNumber());
     } else {
       mouseDrag = MouseDrag::cursorX1;
       this->setInteraction(QCP::iRangeDrag, false);
-      emit setCursorPos(FFTID(nearestIndex), Cursors::Cursor1, tracer->sampleNumber());
+      emit setCursorPos(FFT_INDEX(nearestIndex), Cursors::Cursor1, tracer->sampleNumber());
     }
     return;
   }
