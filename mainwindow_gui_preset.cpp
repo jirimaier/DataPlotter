@@ -208,6 +208,11 @@ void MainWindow::fillChannelSelect() {
   ui->comboBoxMeasure1->setCurrentIndex(ui->comboBoxMeasure1->count() - 1);
   ui->comboBoxMeasure2->setCurrentIndex(ui->comboBoxMeasure2->count() - 1);
 
+  ui->comboBoxCursor1Channel->addItem(iconAbsoluteCursor, "Absolute");
+  ui->comboBoxCursor2Channel->addItem(iconAbsoluteCursor, "Absolute");
+  ui->comboBoxCursor1Channel->setCurrentIndex(ui->comboBoxCursor1Channel->count() - 1);
+  ui->comboBoxCursor2Channel->setCurrentIndex(ui->comboBoxCursor2Channel->count() - 1);
+
   // Skryje FFT kanály z nabýdky.
   setComboboxItemVisible(*ui->comboBoxCursor1Channel, FFT_INDEX(0), false);
   setComboboxItemVisible(*ui->comboBoxCursor2Channel, FFT_INDEX(0), false);

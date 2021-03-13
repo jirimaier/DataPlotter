@@ -124,10 +124,9 @@ void MyTerminal::highLightField(QTableWidgetItem* field) {
 }
 
 QByteArray MyTerminal::nearestColorCode(QColor color) {
-  foreach (QColor clr, colorCodes.values()) {
+  foreach (QColor clr, colorCodes.values())
     if (color == clr)
       return colorCodes.key(color).toLocal8Bit();
-  }
 
   int nearestIndex = 0;
   int nearestDistance = INT_MAX;

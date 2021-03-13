@@ -106,7 +106,7 @@ class MainWindow : public QMainWindow {
   void updateMathNow(int number);
   void updateXY();
 
-  QIcon iconRun, iconPause, iconHidden, iconVisible, iconConnected, iconNotConnected, iconCross;
+  QIcon iconRun, iconPause, iconHidden, iconVisible, iconConnected, iconNotConnected, iconCross, iconAbsoluteCursor;
 
   QByteArray serialMonitor;
 

@@ -21,7 +21,7 @@ void MainWindow::on_checkBoxXYCur1_toggled(bool checked) {
   ui->plotxy->setValueCursorVisible(Cursor1, checked);
   ui->plotxy->setTimeCursorVisible(Cursor1, checked);
   ui->plotxy->updateValueCursor(Cursor1, ui->doubleSpinBoxXYCurY1->value(), ui->doubleSpinBoxXYCurY1->text(), ui->plotxy->yAxis);
-  ui->plotxy->updateTimeCursor(Cursor1, ui->doubleSpinBoxXYCurX1->value(), ui->doubleSpinBoxXYCurX1->text(), NULL);
+  ui->plotxy->updateTimeCursor(Cursor1, ui->doubleSpinBoxXYCurX1->value(), ui->doubleSpinBoxXYCurX1->text(), -1);
   updateXYCursorsCalculations();
 }
 
@@ -29,7 +29,7 @@ void MainWindow::on_checkBoxXYCur2_toggled(bool checked) {
   ui->plotxy->setValueCursorVisible(Cursor2, checked);
   ui->plotxy->setTimeCursorVisible(Cursor2, checked);
   ui->plotxy->updateValueCursor(Cursor2, ui->doubleSpinBoxXYCurY2->value(), ui->doubleSpinBoxXYCurY2->text(), ui->plotxy->yAxis);
-  ui->plotxy->updateTimeCursor(Cursor2, ui->doubleSpinBoxXYCurX2->value(), ui->doubleSpinBoxXYCurX2->text(), NULL);
+  ui->plotxy->updateTimeCursor(Cursor2, ui->doubleSpinBoxXYCurX2->value(), ui->doubleSpinBoxXYCurX2->text(), -1);
   updateXYCursorsCalculations();
 }
 
@@ -39,7 +39,7 @@ void MainWindow::on_doubleSpinBoxXYCurY1_valueChanged(double arg1) {
 }
 
 void MainWindow::on_doubleSpinBoxXYCurX1_valueChanged(double arg1) {
-  ui->plotxy->updateTimeCursor(Cursor1, arg1, ui->doubleSpinBoxXYCurX1->text(), NULL);
+  ui->plotxy->updateTimeCursor(Cursor1, arg1, ui->doubleSpinBoxXYCurX1->text(), -1);
   updateXYCursorsCalculations();
 }
 
@@ -49,7 +49,7 @@ void MainWindow::on_doubleSpinBoxXYCurY2_valueChanged(double arg1) {
 }
 
 void MainWindow::on_doubleSpinBoxXYCurX2_valueChanged(double arg1) {
-  ui->plotxy->updateTimeCursor(Cursor2, arg1, ui->doubleSpinBoxXYCurX2->text(), NULL);
+  ui->plotxy->updateTimeCursor(Cursor2, arg1, ui->doubleSpinBoxXYCurX2->text(), -1);
   updateXYCursorsCalculations();
 }
 

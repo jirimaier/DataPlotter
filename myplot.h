@@ -42,7 +42,7 @@ class MyPlot : public QCustomPlot {
 
  public:
   explicit MyPlot(QWidget* parent = nullptr);
-  void updateTimeCursor(Cursors::enumCursors cursor, double cursorPosition, QString label, QCPGraph* graph);
+  void updateTimeCursor(Cursors::enumCursors cursor, double cursorPosition, QString label, int graphIndex);
   void updateValueCursor(Cursors::enumCursors cursor, double cursorPosition, QString label, QCPAxis* relativeToAxis);
   void setValueCursorVisible(Cursors::enumCursors cursor, bool visible);
   void setTimeCursorVisible(Cursors::enumCursors cursor, bool visible);
@@ -78,7 +78,7 @@ class MyPlot : public QCustomPlot {
   void setMouseControlls(bool enabled);
   void checkIfTracerTextFits();
   enum MouseDrag { cursorX1, cursorX2, cursorY1, cursorY2, nothing, zeroline } mouseDrag = nothing; // Vyšší čísla jsou číslo kanálu pro nulo
-  QCPGraph* cur1Graph = 0, *cur2Graph = 0;
+  int cur1Graph = -1, cur2Graph = -1;
   QCPAxis* cur1YAxis = yAxis, *cur2YAxis = yAxis;
   QCursor defaultMouseCursor = Qt::ArrowCursor;
 

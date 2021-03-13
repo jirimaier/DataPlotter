@@ -18,57 +18,65 @@
 using namespace Cursors;
 
 void MainWindow::updateCursorRange() {
-  int ch = ui->comboBoxCursor1Channel->currentIndex();
-  QPair<long, long> range;
-  bool empty;
-  if (IS_ANALOG_OR_MATH(ch)) {
-    range = ui->plot->getChVisibleSamplesRange(ch);
-    empty = ui->plot->graph(ch)->data()->isEmpty();
-    ui->doubleSpinBoxXCur1->setSingleStep(ui->plot->xAxis->range().size() / 100);
-  } else if (IS_FFT_INDEX(ch)) {
-    range = ui->plotFFT->getVisibleSamplesRange(INDEX_TO_FFT_CHID(ch));
-    empty = ui->plotFFT->graph(INDEX_TO_FFT_CHID(ch))->data()->isEmpty();
-    ui->doubleSpinBoxXCur1->setSingleStep(ui->plotFFT->xAxis->range().size() / 100);
-  } else {
-    range = ui->plot->getChVisibleSamplesRange(getLogicChannelID(CH_LIST_INDEX_TO_LOGIC_GROUP(ch), 0));
-    empty = ui->plot->graph(getLogicChannelID(CH_LIST_INDEX_TO_LOGIC_GROUP(ch), 0))->data()->isEmpty();
-    ui->doubleSpinBoxXCur1->setSingleStep(ui->plot->xAxis->range().size() / 100);
-  }
-  ui->horizontalSliderTimeCur1->updateRange(range.first, range.second);
-
-  if (empty && ui->checkBoxCur1Visible->checkState() == Qt::CheckState::PartiallyChecked) {
+  if (ui->horizontalSliderTimeCur1->isEnabled()) {
+    int ch = ui->comboBoxCursor1Channel->currentIndex();
+    QPair<long, long> range;
+    bool empty;
     if (IS_ANALOG_OR_MATH(ch)) {
-      ui->plot->setTimeCursorVisible(Cursor1, false);
-      ui->plot->setValueCursorVisible(Cursor1, false);
+      range = ui->plot->getChVisibleSamplesRange(ch);
+      empty = ui->plot->graph(ch)->data()->isEmpty();
+      ui->doubleSpinBoxXCur1->setSingleStep(ui->plot->xAxis->range().size() / 100);
+    } else if (IS_FFT_INDEX(ch)) {
+      range = ui->plotFFT->getVisibleSamplesRange(INDEX_TO_FFT_CHID(ch));
+      empty = ui->plotFFT->graph(INDEX_TO_FFT_CHID(ch))->data()->isEmpty();
+      ui->doubleSpinBoxXCur1->setSingleStep(ui->plotFFT->xAxis->range().size() / 100);
     } else {
-      ui->plotFFT->setTimeCursorVisible(Cursor1, false);
-      ui->plotFFT->setValueCursorVisible(Cursor1, false);
+      range = ui->plot->getChVisibleSamplesRange(getLogicChannelID(CH_LIST_INDEX_TO_LOGIC_GROUP(ch), 0));
+      empty = ui->plot->graph(getLogicChannelID(CH_LIST_INDEX_TO_LOGIC_GROUP(ch), 0))->data()->isEmpty();
+      ui->doubleSpinBoxXCur1->setSingleStep(ui->plot->xAxis->range().size() / 100);
+    }
+    ui->horizontalSliderTimeCur1->updateRange(range.first, range.second);
+
+    if (empty) {
+      ui->checkBoxCur1Visible->setCheckState(Qt::Unchecked);
+      if (IS_ANALOG_OR_MATH(ch)) {
+        ui->plot->setTimeCursorVisible(Cursor1, false);
+        ui->plot->setValueCursorVisible(Cursor1, false);
+      } else {
+        ui->plotFFT->setTimeCursorVisible(Cursor1, false);
+        ui->plotFFT->setValueCursorVisible(Cursor1, false);
+      }
     }
   }
 
-  ch = ui->comboBoxCursor2Channel->currentIndex();
-  if (IS_ANALOG_OR_MATH(ch)) {
-    range = ui->plot->getChVisibleSamplesRange(ch);
-    empty = ui->plot->graph(ch)->data()->isEmpty();
-    ui->doubleSpinBoxXCur2->setSingleStep(ui->plot->xAxis->range().size() / 100);
-  } else if (IS_FFT_INDEX(ch)) {
-    range = ui->plotFFT->getVisibleSamplesRange(INDEX_TO_FFT_CHID(ch));
-    empty = ui->plotFFT->graph(INDEX_TO_FFT_CHID(ch))->data()->isEmpty();
-    ui->doubleSpinBoxXCur2->setSingleStep(ui->plotFFT->xAxis->range().size() / 100);
-  } else {
-    range = ui->plot->getChVisibleSamplesRange(getLogicChannelID(CH_LIST_INDEX_TO_LOGIC_GROUP(ch), 0));
-    empty = ui->plot->graph(getLogicChannelID(CH_LIST_INDEX_TO_LOGIC_GROUP(ch), 0))->data()->isEmpty();
-    ui->doubleSpinBoxXCur2->setSingleStep(ui->plot->xAxis->range().size() / 100);
-  }
-  ui->horizontalSliderTimeCur2->updateRange(range.first, range.second);
-
-  if (empty && ui->checkBoxCur2Visible->checkState() == Qt::CheckState::PartiallyChecked) {
+  if (ui->horizontalSliderTimeCur2->isEnabled()) {
+    int ch = ui->comboBoxCursor2Channel->currentIndex();
+    QPair<long, long> range;
+    bool empty;
     if (IS_ANALOG_OR_MATH(ch)) {
-      ui->plot->setTimeCursorVisible(Cursor2, false);
-      ui->plot->setValueCursorVisible(Cursor2, false);
+      range = ui->plot->getChVisibleSamplesRange(ch);
+      empty = ui->plot->graph(ch)->data()->isEmpty();
+      ui->doubleSpinBoxXCur2->setSingleStep(ui->plot->xAxis->range().size() / 100);
+    } else if (IS_FFT_INDEX(ch)) {
+      range = ui->plotFFT->getVisibleSamplesRange(INDEX_TO_FFT_CHID(ch));
+      empty = ui->plotFFT->graph(INDEX_TO_FFT_CHID(ch))->data()->isEmpty();
+      ui->doubleSpinBoxXCur2->setSingleStep(ui->plotFFT->xAxis->range().size() / 100);
     } else {
-      ui->plotFFT->setTimeCursorVisible(Cursor2, false);
-      ui->plotFFT->setValueCursorVisible(Cursor2, false);
+      range = ui->plot->getChVisibleSamplesRange(getLogicChannelID(CH_LIST_INDEX_TO_LOGIC_GROUP(ch), 0));
+      empty = ui->plot->graph(getLogicChannelID(CH_LIST_INDEX_TO_LOGIC_GROUP(ch), 0))->data()->isEmpty();
+      ui->doubleSpinBoxXCur2->setSingleStep(ui->plot->xAxis->range().size() / 100);
+    }
+    ui->horizontalSliderTimeCur2->updateRange(range.first, range.second);
+
+    if (empty) {
+      ui->checkBoxCur2Visible->setCheckState(Qt::Unchecked);
+      if (IS_ANALOG_OR_MATH(ch)) {
+        ui->plot->setTimeCursorVisible(Cursor2, false);
+        ui->plot->setValueCursorVisible(Cursor2, false);
+      } else {
+        ui->plotFFT->setTimeCursorVisible(Cursor2, false);
+        ui->plotFFT->setValueCursorVisible(Cursor2, false);
+      }
     }
   }
 }
@@ -170,7 +178,7 @@ void MainWindow::updateCursor(Cursors::enumCursors cursor, int selectedChannel, 
     if (useValueCursor) {
       ui->plot->updateValueCursor(cursor, value, valueStr, ui->plot->getAnalogAxis(selectedChannel));
     }
-    ui->plot->updateTimeCursor(cursor, time, timeStr, ui->plot->graph(selectedChannel));
+    ui->plot->updateTimeCursor(cursor, time, timeStr, selectedChannel);
 
   } else if (IS_FFT_INDEX(selectedChannel)) {
     // FFT
@@ -183,7 +191,7 @@ void MainWindow::updateCursor(Cursors::enumCursors cursor, int selectedChannel, 
     if (useValueCursor) {
       ui->plotFFT->updateValueCursor(cursor, value, valueStr, ui->plotFFT->yAxis);
     }
-    ui->plotFFT->updateTimeCursor(cursor, freq, timeStr, ui->plotFFT->graph(INDEX_TO_FFT_CHID(selectedChannel)));
+    ui->plotFFT->updateTimeCursor(cursor, freq, timeStr, INDEX_TO_FFT_CHID(selectedChannel));
 
   } else {
     // Logický kanál
@@ -210,39 +218,54 @@ void MainWindow::updateCursor(Cursors::enumCursors cursor, int selectedChannel, 
     if (bits.left(1) == " ")
       bits = bits.mid(1);
     timeStr = QString(floatToNiceString(time, 5, true, false) + ui->plot->getXUnit()).toUtf8();
-    valueStr = "0x" + QString::number((uint32_t)value, 16).toUpper().rightJustified(ceil(bitsUsed / 4.0), '0').toLocal8Bit();
+    valueStr = "0x" + QString::number((uint32_t)value, 16).toUpper().rightJustified(ceil(bitsUsed / 8.0) * 2, '0').toLocal8Bit();
     valueStr.append("\n" + bits);
-    ui->plot->updateTimeCursor(cursor, time, valueStr + "\n" + timeStr, ui->plot->graph(getLogicChannelID(group, 0)));
+    ui->plot->updateTimeCursor(cursor, time, valueStr + "\n" + timeStr, getLogicChannelID(group, 0));
   }
 }
 
 void MainWindow::on_checkBoxCur1Visible_stateChanged(int arg1) {
-  if (!IS_ANALOG_OR_MATH(ui->comboBoxCursor1Channel->currentIndex()) && arg1 == Qt::CheckState::Checked) {
+  int selectedChannel = ui->comboBoxCursor1Channel->currentIndex();
+
+  if (!IS_ANALOG_OR_MATH(selectedChannel) && selectedChannel != CURSOR_ABSOLUTE && arg1 == Qt::CheckState::Checked) {
     ui->checkBoxCur1Visible->setCheckState(Qt::CheckState::Unchecked);
     return;
   }
+
+  if (selectedChannel == CURSOR_ABSOLUTE && arg1 == Qt::PartiallyChecked) {
+    ui->checkBoxCur1Visible->setCheckState(Qt::CheckState::Checked);
+    return;
+  }
+
   if (ui->checkBoxYCur1->checkState() == Qt::PartiallyChecked && arg1 == Qt::Unchecked)
     ui->checkBoxYCur1->setCheckState(Qt::Unchecked);
 
   ui->doubleSpinBoxXCur1->setVisible(arg1 == Qt::CheckState::Checked);
-  ui->horizontalSliderTimeCur1->setDisabled(arg1 == Qt::CheckState::Checked);
+  ui->horizontalSliderTimeCur1->setDisabled(arg1 == Qt::CheckState::Checked || selectedChannel == CURSOR_ABSOLUTE);
   ui->labelCur1Time->setHidden(arg1 == Qt::CheckState::Checked);
   ui->labelCur1Sample->setText("---");
-  setCursorsVisibility(Cursor1, ui->comboBoxCursor1Channel->currentIndex(), arg1 != Qt::CheckState::Unchecked, ui->checkBoxYCur1->checkState());
+  setCursorsVisibility(Cursor1, selectedChannel, arg1 != Qt::CheckState::Unchecked, ui->checkBoxYCur1->checkState());
   if (arg1 == Qt::CheckState::Checked) {
     if (ui->checkBoxYCur1->checkState() == Qt::CheckState::PartiallyChecked)
       ui->checkBoxYCur1->setCheckState(Qt::CheckState::Checked);
-    if (IS_FFT_INDEX(ui->comboBoxCursor1Channel->currentIndex()))
+    if (IS_FFT_INDEX(selectedChannel))
       ui->doubleSpinBoxXCur1->setValue(ui->plotFFT->getTimeCursorPosition(Cursor1));
-    else if (IS_ANALOG_OR_MATH(ui->comboBoxCursor1Channel->currentIndex()))
+    else if (IS_ANALOG_OR_MATH(selectedChannel))
       ui->doubleSpinBoxXCur1->setValue(ui->plot->getTimeCursorPosition(Cursor1));
   } else if (arg1 == Qt::CheckState::PartiallyChecked)
     updateCursors();
 }
 
 void MainWindow::on_checkBoxCur2Visible_stateChanged(int arg1) {
-  if (!IS_ANALOG_OR_MATH(ui->comboBoxCursor2Channel->currentIndex()) && arg1 == Qt::CheckState::Checked) {
+  int selectedChannel = ui->comboBoxCursor1Channel->currentIndex();
+
+  if (!IS_ANALOG_OR_MATH(selectedChannel) && selectedChannel != CURSOR_ABSOLUTE && arg1 == Qt::CheckState::Checked) {
     ui->checkBoxCur2Visible->setCheckState(Qt::CheckState::Unchecked);
+    return;
+  }
+
+  if (selectedChannel == CURSOR_ABSOLUTE && arg1 == Qt::PartiallyChecked) {
+    ui->checkBoxCur2Visible->setCheckState(Qt::CheckState::Checked);
     return;
   }
 
@@ -250,22 +273,27 @@ void MainWindow::on_checkBoxCur2Visible_stateChanged(int arg1) {
     ui->checkBoxYCur2->setCheckState(Qt::Unchecked);
 
   ui->doubleSpinBoxXCur2->setVisible(arg1 == Qt::CheckState::Checked);
-  ui->horizontalSliderTimeCur2->setDisabled(arg1 == Qt::CheckState::Checked);
+  ui->horizontalSliderTimeCur2->setDisabled(arg1 == Qt::CheckState::Checked || selectedChannel == CURSOR_ABSOLUTE);
   ui->labelCur2Time->setHidden(arg1 == Qt::CheckState::Checked);
   ui->labelCur2Sample->setText("---");
-  setCursorsVisibility(Cursor2, ui->comboBoxCursor2Channel->currentIndex(), arg1 != Qt::CheckState::Unchecked, ui->checkBoxYCur2->checkState());
+  setCursorsVisibility(Cursor2, selectedChannel, arg1 != Qt::CheckState::Unchecked, ui->checkBoxYCur2->checkState());
   if (arg1 == Qt::CheckState::Checked) {
     if (ui->checkBoxYCur2->checkState() == Qt::CheckState::PartiallyChecked)
       ui->checkBoxYCur2->setCheckState(Qt::CheckState::Checked);
-    if (IS_FFT_INDEX(ui->comboBoxCursor2Channel->currentIndex()))
+    if (IS_FFT_INDEX(selectedChannel))
       ui->doubleSpinBoxXCur2->setValue(ui->plotFFT->getTimeCursorPosition(Cursor2));
-    else if (IS_ANALOG_OR_MATH(ui->comboBoxCursor2Channel->currentIndex()))
+    else if (IS_ANALOG_OR_MATH(selectedChannel))
       ui->doubleSpinBoxXCur2->setValue(ui->plot->getTimeCursorPosition(Cursor2));
   } else if (arg1 == Qt::CheckState::PartiallyChecked)
     updateCursors();
 }
 
 void MainWindow::on_comboBoxCursor1Channel_currentIndexChanged(int index) {
+  ui->horizontalSliderTimeCur1->setEnabled(ui->checkBoxCur1Visible->checkState() != Qt::Checked && index != CURSOR_ABSOLUTE);
+
+  if (index == CURSOR_ABSOLUTE && ui->checkBoxCur1Visible->checkState() == Qt::PartiallyChecked)
+    ui->checkBoxCur1Visible->setCheckState(Qt::CheckState::Checked);
+
   setCursorsVisibility(Cursor1, index, ui->checkBoxCur1Visible->checkState() != Qt::CheckState::Unchecked, ui->checkBoxYCur1->checkState());
   if (IS_FFT_INDEX(index)) {
     ui->doubleSpinBoxXCur1->setSuffix(tr("Hz"));
@@ -289,6 +317,11 @@ void MainWindow::on_comboBoxCursor1Channel_currentIndexChanged(int index) {
 }
 
 void MainWindow::on_comboBoxCursor2Channel_currentIndexChanged(int index) {
+  ui->horizontalSliderTimeCur2->setEnabled(ui->checkBoxCur2Visible->checkState() != Qt::Checked && index != CURSOR_ABSOLUTE);
+
+  if (index == CURSOR_ABSOLUTE && ui->checkBoxCur2Visible->checkState() == Qt::PartiallyChecked)
+    ui->checkBoxCur2Visible->setCheckState(Qt::CheckState::Checked);
+
   setCursorsVisibility(Cursor2, index, ui->checkBoxCur2Visible->checkState() != Qt::CheckState::Unchecked, ui->checkBoxYCur2->checkState());
   if (IS_FFT_INDEX(index)) {
     ui->doubleSpinBoxXCur2->setSuffix(tr("Hz"));
@@ -350,17 +383,29 @@ void MainWindow::valueCursorMovedByMouse(enumCursors cursor, double value) {
 
 void MainWindow::cursorSetByMouse(int chid, Cursors::enumCursors cursor, int sample) {
   if (cursor == Cursor1) {
+    // Zvolený kanál se změní tady, aby se nastavení checkboxů řídilo pravidly pro typ nově zvoleného kanálu
+    // Ale funkce vyvolaná změnou kanálu je vyvolána až na konec
+    ui->comboBoxCursor1Channel->blockSignals(true);
+    ui->comboBoxCursor1Channel->setCurrentIndex(chid);
+    ui->comboBoxCursor1Channel->blockSignals(false);
+
     ui->checkBoxCur1Visible->setCheckState(Qt::CheckState::PartiallyChecked);
     ui->checkBoxYCur1->setCheckState(Qt::CheckState::PartiallyChecked);
-    ui->comboBoxCursor1Channel->setCurrentIndex(chid);
-    on_comboBoxCursor1Channel_currentIndexChanged(chid); // Pokud byl předtím stejný, neaktualizovala by se viditelnost.
     ui->horizontalSliderTimeCur1->setRealValue(sample);
+
+    on_comboBoxCursor1Channel_currentIndexChanged(chid);
   } else {
+    // Zvolený kanál se změní tady, aby se nastavení checkboxů řídilo pravidly pro typ nově zvoleného kanálu
+    // Ale funkce vyvolaná změnou kanálu je vyvolána až na konec
+    ui->comboBoxCursor2Channel->blockSignals(true);
+    ui->comboBoxCursor2Channel->setCurrentIndex(chid);
+    ui->comboBoxCursor2Channel->blockSignals(false);
+
     ui->checkBoxCur2Visible->setCheckState(Qt::CheckState::PartiallyChecked);
     ui->checkBoxYCur2->setCheckState(Qt::CheckState::PartiallyChecked);
-    ui->comboBoxCursor2Channel->setCurrentIndex(chid);
-    on_comboBoxCursor2Channel_currentIndexChanged(chid); // Pokud byl předtím stejný, neaktualizovala by se viditelnost.
     ui->horizontalSliderTimeCur2->setRealValue(sample);
+
+    on_comboBoxCursor2Channel_currentIndexChanged(chid);
   }
 }
 
@@ -370,6 +415,8 @@ void MainWindow::offsetChangedByMouse(int chid) {
 }
 
 void MainWindow::on_checkBoxYCur1_stateChanged(int arg1) {
+  int selectedChannel = ui->comboBoxCursor1Channel->currentIndex();
+
   if ((ui->checkBoxCur1Visible->checkState() != Qt::PartiallyChecked) && ui->checkBoxYCur1->checkState() == Qt::PartiallyChecked) {
     ui->checkBoxYCur1->setCheckState(Qt::Checked);
     return;
@@ -377,11 +424,11 @@ void MainWindow::on_checkBoxYCur1_stateChanged(int arg1) {
 
   ui->doubleSpinBoxYCur1->setVisible(arg1 == Qt::CheckState::Checked);
   ui->labelCur1Val->setHidden(arg1 == Qt::CheckState::Checked);
-  setCursorsVisibility(Cursor1, ui->comboBoxCursor1Channel->currentIndex(), ui->checkBoxCur1Visible->checkState(), arg1);
+  setCursorsVisibility(Cursor1, selectedChannel, ui->checkBoxCur1Visible->checkState(), arg1);
   if (arg1 == Qt::CheckState::Checked) {
-    if (IS_FFT_INDEX(ui->comboBoxCursor1Channel->currentIndex()))
+    if (IS_FFT_INDEX(selectedChannel))
       ui->doubleSpinBoxYCur1->setValue(ui->plotFFT->getValueCursorPosition(Cursor1));
-    else if (IS_ANALOG_OR_MATH(ui->comboBoxCursor1Channel->currentIndex()))
+    else if (IS_ANALOG_OR_MATH(selectedChannel) || selectedChannel == CURSOR_ABSOLUTE)
       ui->doubleSpinBoxYCur1->setValue(ui->plot->getValueCursorPosition(Cursor1));
     else
       ui->checkBoxYCur1->setCheckState(Qt::CheckState::Unchecked);
@@ -390,17 +437,19 @@ void MainWindow::on_checkBoxYCur1_stateChanged(int arg1) {
 }
 
 void MainWindow::on_checkBoxYCur2_stateChanged(int arg1) {
+  int selectedChannel = ui->comboBoxCursor2Channel->currentIndex();
+
   if (ui->checkBoxCur2Visible->checkState() != Qt::PartiallyChecked && ui->checkBoxYCur2->checkState() == Qt::PartiallyChecked) {
     ui->checkBoxYCur2->setCheckState(Qt::Checked);
     return;
   }
   ui->doubleSpinBoxYCur2->setVisible(arg1 == Qt::CheckState::Checked);
   ui->labelCur2Val->setHidden(arg1 == Qt::CheckState::Checked);
-  setCursorsVisibility(Cursor2, ui->comboBoxCursor2Channel->currentIndex(), ui->checkBoxCur2Visible->checkState(), arg1);
+  setCursorsVisibility(Cursor2, selectedChannel, ui->checkBoxCur2Visible->checkState(), arg1);
   if (arg1 == Qt::CheckState::Checked) {
-    if (IS_FFT_INDEX(ui->comboBoxCursor2Channel->currentIndex()))
+    if (IS_FFT_INDEX(selectedChannel))
       ui->doubleSpinBoxYCur2->setValue(ui->plotFFT->getValueCursorPosition(Cursor2));
-    else if (IS_ANALOG_OR_MATH(ui->comboBoxCursor2Channel->currentIndex()))
+    else if (IS_ANALOG_OR_MATH(selectedChannel) || selectedChannel == CURSOR_ABSOLUTE)
       ui->doubleSpinBoxYCur2->setValue(ui->plot->getValueCursorPosition(Cursor2));
     else
       ui->checkBoxYCur2->setCheckState(Qt::CheckState::Unchecked);
@@ -414,7 +463,7 @@ void MainWindow::setCursorsVisibility(Cursors::enumCursors cursor, int graph, in
     ui->plot->setValueCursorVisible(cursor, false);
     ui->plotFFT->setTimeCursorVisible(cursor, timeCurState);
     ui->plotFFT->setValueCursorVisible(cursor, valueCurState);
-  } else if (IS_ANALOG_OR_MATH(graph)) {
+  } else if (IS_ANALOG_OR_MATH(graph) || graph == CURSOR_ABSOLUTE) {
     ui->plot->setTimeCursorVisible(cursor, timeCurState);
     ui->plot->setValueCursorVisible(cursor, valueCurState);
     ui->plotFFT->setTimeCursorVisible(cursor, false);
@@ -433,7 +482,7 @@ void MainWindow::on_doubleSpinBoxYCur1_valueChanged(double arg1) {
   if (IS_FFT_INDEX(chID))
     ui->plotFFT->updateValueCursor(Cursor1, arg1, ui->doubleSpinBoxYCur1->text(), ui->plotFFT->yAxis);
   else
-    ui->plot->updateValueCursor(Cursor1, arg1, ui->doubleSpinBoxYCur1->text(), ui->plot->getAnalogAxis(chID));
+    ui->plot->updateValueCursor(Cursor1, arg1, ui->doubleSpinBoxYCur1->text(), chID == CURSOR_ABSOLUTE ? ui->plot->yAxis : ui->plot->getAnalogAxis(chID));
   updateCursors();
 }
 
@@ -442,25 +491,29 @@ void MainWindow::on_doubleSpinBoxYCur2_valueChanged(double arg1) {
   if (IS_FFT_INDEX(chID))
     ui->plotFFT->updateValueCursor(Cursor2, arg1, ui->doubleSpinBoxYCur2->text(), ui->plotFFT->yAxis);
   else
-    ui->plot->updateValueCursor(Cursor2, arg1, ui->doubleSpinBoxYCur2->text(), ui->plot->getAnalogAxis(chID));
+    ui->plot->updateValueCursor(Cursor2, arg1, ui->doubleSpinBoxYCur2->text(), chID == CURSOR_ABSOLUTE ? ui->plot->yAxis : ui->plot->getAnalogAxis(chID));
   updateCursors();
 }
 
 void MainWindow::on_doubleSpinBoxXCur1_valueChanged(double arg1) {
   int chID = ui->comboBoxCursor1Channel->currentIndex();
   if (IS_FFT_INDEX(chID))
-    ui->plotFFT->updateTimeCursor(Cursor1, arg1, ui->doubleSpinBoxYCur1->text(), ui->plotFFT->graph(INDEX_TO_FFT_CHID(chID)));
+    ui->plotFFT->updateTimeCursor(Cursor1, arg1, ui->doubleSpinBoxYCur1->text(), INDEX_TO_FFT_CHID(chID));
+  else if (chID == CURSOR_ABSOLUTE)
+    ui->plot->updateTimeCursor(Cursor1, arg1, ui->doubleSpinBoxYCur1->text(), -1);
   else
-    ui->plot->updateTimeCursor(Cursor1, arg1, ui->doubleSpinBoxYCur1->text(), ui->plot->graph(chID));
+    ui->plot->updateTimeCursor(Cursor1, arg1, ui->doubleSpinBoxYCur1->text(), chID);
   updateCursors();
 }
 
 void MainWindow::on_doubleSpinBoxXCur2_valueChanged(double arg1) {
   int chID = ui->comboBoxCursor2Channel->currentIndex();
   if (IS_FFT_INDEX(chID))
-    ui->plotFFT->updateTimeCursor(Cursor2, arg1, ui->doubleSpinBoxYCur2->text(), ui->plotFFT->graph(INDEX_TO_FFT_CHID(chID)));
+    ui->plotFFT->updateTimeCursor(Cursor2, arg1, ui->doubleSpinBoxYCur2->text(), INDEX_TO_FFT_CHID(chID));
+  else if (chID == CURSOR_ABSOLUTE)
+    ui->plot->updateTimeCursor(Cursor2, arg1, ui->doubleSpinBoxYCur2->text(), -1);
   else
-    ui->plot->updateTimeCursor(Cursor2, arg1, ui->doubleSpinBoxYCur2->text(), ui->plot->graph(chID));
+    ui->plot->updateTimeCursor(Cursor2, arg1, ui->doubleSpinBoxYCur2->text(), chID);
   updateCursors();
 }
 

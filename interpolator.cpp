@@ -35,11 +35,11 @@ void Interpolator::interpolate(int chID, const QSharedPointer<QCPGraphDataContai
 
   QVector<float> values;
 
-  auto dataBegin = data->begin(); // Při volání této funkce se změní adresy v data!!!
-  auto dataEnd = data->end();
+  auto dataBegin = data->constBegin(); // Při volání této funkce se změní adresy v data!!!
+  auto dataEnd = data->constEnd();
 
   int samplePaddings = M / 2 / INTERPOLATION_UPSAMPLING;
-  int timePaddings = visibleRange.size() / 2;
+  double timePaddings = visibleRange.size() / 2;
 
   const QCPGraphData* begin = data->findBegin(visibleRange.lower - timePaddings) - samplePaddings;
   const QCPGraphData* end = data->findEnd(visibleRange.upper + timePaddings) + samplePaddings;

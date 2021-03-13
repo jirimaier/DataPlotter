@@ -34,6 +34,7 @@
 // Program předvybere zařízení co má v popisu tento text
 #define DEFAULT_PORT_STRING "ST"
 
+#define TERMINAL_CLICK_BLINK_TIME 100
 
 //**********************************************
 
@@ -244,9 +245,10 @@ inline QString valueTypeToString(ValueType val) {
 #define PLOT_ELEMENTS_MOUSE_DISTANCE 10
 #define TRACER_MOUSE_DISTANCE 20
 
+#define CURSOR_ABSOLUTE ANALOG_COUNT+MATH_COUNT+LOGIC_GROUPS+2
 #define FFT_INDEX(a) (ANALOG_COUNT + MATH_COUNT + LOGIC_GROUPS +a)
-#define IS_LOGIC_INDEX(index) ((index>=ANALOG_COUNT + MATH_COUNT)&&!IS_FFT_INDEX(index))
-#define IS_FFT_INDEX(chID) (chID>=FFT_INDEX(0))
+#define IS_LOGIC_INDEX(index) ((index>=ANALOG_COUNT + MATH_COUNT)&&!IS_FFT_INDEX(index)&&index!=CURSOR_ABSOLUTE)
+#define IS_FFT_INDEX(chID) (chID==FFT_INDEX(0)||chID==FFT_INDEX(1))
 #define INDEX_TO_FFT_CHID(chID)(chID-FFT_INDEX(0))
 
 #define INTERPOLATION_CHID(a) (ALL_COUNT + a)
@@ -265,6 +267,8 @@ inline QString valueTypeToString(ValueType val) {
 
 #define ChID_TO_LOGIC_GROUP(ch) ((ch - ANALOG_COUNT - MATH_COUNT) / LOGIC_BITS)
 #define ChID_TO_LOGIC_GROUP_BIT(ch) ((ch - ANALOG_COUNT - MATH_COUNT) % LOGIC_BITS)
+
+
 
 const static QString lineEndings[4] = {"", "\n", "\r", "\r\n"};
 

@@ -54,6 +54,7 @@ void MainWindow::init(QTranslator* translator, const PlotData* plotData, const P
   iconVisible = QIcon(":/images/icons/visible.png");
   iconConnected = QIcon(":/images/icons/connected.png");
   iconNotConnected = QIcon(":/images/icons/disconnected.png");
+  iconAbsoluteCursor = QIcon(":/images/icons/rangeTab.png");
 
 
   fillChannelSelect(); // Vytvoří seznam kanálů pro výběr

@@ -97,13 +97,15 @@ void MyPlot::onYRangeChanged(QCPRange range) {
   updateGridY();
 }
 
-void MyPlot::updateTimeCursor(Cursors::enumCursors cursor, double cursorPosition, QString label, QCPGraph* graph) {
+void MyPlot::updateTimeCursor(Cursors::enumCursors cursor, double cursorPosition, QString label, int graphIndex) {
+  Q_ASSERT((graphIndex >= 0 && graphIndex < graphCount()) || graphIndex == -1);
+
   cursorsKey.at(cursor)->start->setCoords(cursorPosition, 0);
   cursorsKey.at(cursor)->end->setCoords(cursorPosition, 1);
   curKeys.at(cursor)->setText(label);
   cursorLayer->replot();
   if (cursor == Cursors::Cursor1)
-    cur1Graph = graph; else cur2Graph = graph;
+    cur1Graph = graphIndex; else cur2Graph = graphIndex;
 }
 
 void MyPlot::updateValueCursor(Cursors::enumCursors cursor, double cursorPosition, QString label, QCPAxis* relativeToAxis) {
@@ -283,25 +285,22 @@ void MyPlot::checkIfTracerTextFits() {
 int MyPlot::keyToNearestSample(QCPGraph* mGraph, double keyCoord) {
   // Převzato z funkce pro originální tracer v QCustomPlot a upraveno
 
-  auto begin =  mGraph->data()->begin();
+  auto begin =  mGraph->data()->constBegin();
+  auto end = mGraph->data()->constEnd();
 
   QCPGraphDataContainer::const_iterator it = mGraph->data()->findBegin(keyCoord);
-  if (it != mGraph->data()->constEnd()) // mGraphKey is not exactly on last iterator,
-    // but somewhere between iterators
-  {
-    QCPGraphDataContainer::const_iterator prevIt = it;
-    ++it; // won't advance to constEnd because we handled that case
-    // (mGraphKey >= last->key) before
+  if (it == --end)
+    return mGraph->data()->size() - 1;
 
-    // find iterator with key closest to mGraphKey:
-    if (keyCoord < (prevIt->key + it->key) * 0.5)
-      return prevIt - begin; // Vrátí index vzorku
-    else
-      return it -  begin; // Vrátí index vzorku
-  } else // mGraphKey is exactly on last iterator (should actually be
-    // caught when comparing first/last keys, but this is a
-    // failsafe for fp uncertainty)
-    return it - begin;  // Vrátí index vzorku
+  QCPGraphDataContainer::const_iterator prevIt = it;
+  ++it; // won't advance to constEnd because we handled that case
+  // (mGraphKey >= last->key) before
+
+  // find iterator with key closest to mGraphKey:
+  if (keyCoord < (prevIt->key + it->key) * 0.5)
+    return prevIt - begin; // Vrátí index vzorku
+  else
+    return it -  begin; // Vrátí index vzorku
 }
 
 void MyPlot::mouseReleased(QMouseEvent* event) {

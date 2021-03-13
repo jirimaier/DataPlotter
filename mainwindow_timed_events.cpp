@@ -52,8 +52,8 @@ void MainWindow::comRefresh() {
 }
 
 void MainWindow::updateUsedChannels() {
-  updateChannelComboBox(*ui->comboBoxCursor1Channel, true, true);
-  updateChannelComboBox(*ui->comboBoxCursor2Channel, true, true);
+  updateChannelComboBox(*ui->comboBoxCursor1Channel, true, false);
+  updateChannelComboBox(*ui->comboBoxCursor2Channel, true, false);
   updateChannelComboBox(*ui->comboBoxSelectedChannel, true, true);
   updateChannelComboBox(*ui->comboBoxMeasure1, false, false);
   updateChannelComboBox(*ui->comboBoxMeasure2, false, false);
