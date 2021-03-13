@@ -500,7 +500,10 @@ void MainWindow::on_pushButtonCenter_clicked() {
 
 void MainWindow::on_pushButtonClearAll_clicked() {
   ui->plot->resetChannels();
-  // emit resetChannels();
+  emit resetChannels();
+  emit resetAverager1(ui->spinBoxAvg1Ch->value(), ui->pushButtonAvg1->isChecked());
+  emit resetAverager2(ui->spinBoxAvg2Ch->value(), ui->pushButtonAvg2->isChecked());
+  emit resetAverager3(ui->spinBoxAvg3Ch->value(), ui->pushButtonAvg3->isChecked());
 }
 
 void MainWindow::on_pushButtonTerminalInputCopy_clicked() {

@@ -255,7 +255,6 @@ void PlotData::addLogicPoint(QPair<ValueType, QByteArray> timeArray, QPair<Value
   }
 
   if (!valueArray.second.isEmpty()) {
-    QVector<double> digitalChannels;
     uint32_t digitalValue = getBits(valueArray);
     for (uint8_t bit = 0; bit < bits; bit++) {
       double value = ((bool)((digitalValue) & ((uint32_t)1 << (bit)))) + bit * 3;
@@ -356,7 +355,14 @@ void PlotData::addChannel(QPair<ValueType, QByteArray> data, unsigned int ch, QP
   if (ch == 1)
     emit ch1dataUpdated(false, false, HAxisType::normal); // Aktualizuje počítadlo rychlosti přicházejících dat a nastavý fixed režim pro autoset
 
-  emit addVectorToPlot(ch - 1, analogData);
+  if (averager1Ch == ch)
+    emit addDataToAverager1(analogData);
+  else if (averager2Ch == ch)
+    emit addDataToAverager2(analogData);
+  else if (averager3Ch == ch)
+    emit addDataToAverager3(analogData);
+  else
+    emit addVectorToPlot(ch - 1, analogData);
 
   if (isLogic) {
     // Pošle do grafu logický kanál

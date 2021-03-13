@@ -61,7 +61,7 @@ MyMainPlot::MyMainPlot(QWidget* parent) : MyPlot(parent) {
   dataToBeInterpolated.resize(ANALOG_COUNT + MATH_COUNT);
 
   // Propojení musí být až po skončení inicializace!
-  connect(this->yAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(verticalAxisRangeChanged(void)));
+  connect(this->yAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(verticalAxisRangeChanged()));
   connect(&plotUpdateTimer, &QTimer::timeout, this, &MyMainPlot::update);
   plotUpdateTimer.start(50);
   replot();

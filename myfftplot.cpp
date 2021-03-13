@@ -1,3 +1,18 @@
+//  Copyright (C) 2020-2021  Jiří Maier
+
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+
+//  You should have received a copy of the GNU General Public License
+//  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 #include "myfftplot.h"
 
 MyFFTPlot::MyFFTPlot(QWidget* parent) : MyPlot(parent) {
@@ -79,7 +94,7 @@ void MyFFTPlot::newData(int ch, QSharedPointer<QCPGraphDataContainer> data) {
   // Pokud se změní počet vzorků, kursor by se posunul mimo původní pozici (z hlediska polohy na ose), protože se drží
   // indexu vzorku, v případě změny se tedy kursor přesune na nový vzorek, který je nejblíže původní poloze
   if (data->size() != graph(ch)->data()->size()) {
-    double cur1ShouldBeAtKey, cur2ShouldBeAtKey;
+    double cur1ShouldBeAtKey = 0, cur2ShouldBeAtKey = 0;
     if (cursorsKey[Cursors::Cursor1]->visible() && cur1Graph == graph(ch))
       cur1ShouldBeAtKey = cursorsKey[Cursors::Cursor1]->start->coords().x();
     if (cursorsKey[Cursors::Cursor2]->visible() && cur2Graph == graph(ch))

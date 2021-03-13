@@ -44,6 +44,10 @@ class PlotData : public QObject {
   unsigned int mathFirsts[MATH_COUNT];
   unsigned int mathSeconds[MATH_COUNT];
 
+  unsigned  int averager1Ch = 0;
+  unsigned  int averager2Ch = 0;
+  unsigned int averager3Ch = 0;
+
   // unsigned int xyFirst, xySecond;
   double getValue(QPair<ValueType, QByteArray> value, bool& isok);
   OutputLevel::enumOutputLevel debugLevel = OutputLevel::info;
@@ -73,6 +77,10 @@ class PlotData : public QObject {
   void setMathFirst(int math, int ch) { mathFirsts[math - 1] = ch; }
   void setMathSecond(int math, int ch) { mathSeconds[math - 1] = ch; }
 
+  void setAverager1(int ch, bool enabled) {averager1Ch = enabled ? ch : 0;}
+  void setAverager2(int ch, bool enabled) {averager2Ch = enabled ? ch : 0;}
+  void setAverager3(int ch, bool enabled) {averager3Ch = enabled ? ch : 0;}
+
  signals:
   /// Pošle zprávu do výpisu
   void sendMessage(QString header, QByteArray message, MessageLevel::enumMessageLevel type, MessageTarget::enumMessageTarget target = MessageTarget::serial1);
@@ -88,6 +96,10 @@ class PlotData : public QObject {
   void addMathData(int mathNumber, bool isFirst, QSharedPointer<QCPGraphDataContainer> in, bool shouldIgnorePause = false);
 
   void ch1dataUpdated(bool wasPoint, bool wasLogic, HAxisType::enumHAxisType recommandedAxisType = HAxisType::normal);
+
+  void addDataToAverager1(QSharedPointer<QCPGraphDataContainer> data);
+  void addDataToAverager2(QSharedPointer<QCPGraphDataContainer> data);
+  void addDataToAverager3(QSharedPointer<QCPGraphDataContainer> data);
 };
 
 #endif // PLOTTING_H

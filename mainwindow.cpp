@@ -45,7 +45,7 @@ void MainWindow::setChStyleSelection(GraphType::enumGraphType type) {
 
 }
 
-void MainWindow::init(QTranslator* translator, const PlotData* plotData, const PlotMath* plotMath, const SerialReader* serialReader) {
+void MainWindow::init(QTranslator* translator, const PlotData* plotData, const PlotMath* plotMath, const SerialReader* serialReader, const Averager* avg1, const Averager* avg2, const Averager* avg3) {
   // Načte ikony které se mění za běhu
   iconRun = QIcon(":/images/icons/run.png");
   iconPause = QIcon(":/images/icons/pause.png");
@@ -63,6 +63,10 @@ void MainWindow::init(QTranslator* translator, const PlotData* plotData, const P
   QObject::connect(plotData, &PlotData::addPointToPlot, ui->plot, &MyMainPlot::newDataPoint);
   QObject::connect(plotData, &PlotData::clearLogic, ui->plot, &MyMainPlot::clearLogicGroup);
   QObject::connect(ui->myTerminal, &MyTerminal::writeToSerial, serialReader, &SerialReader::write);
+
+  QObject::connect(avg1, &Averager::addVectorToPlot, ui->plot, &MyMainPlot::newDataVector);
+  QObject::connect(avg2, &Averager::addVectorToPlot, ui->plot, &MyMainPlot::newDataVector);
+  QObject::connect(avg3, &Averager::addVectorToPlot, ui->plot, &MyMainPlot::newDataVector);
 
   // Odpojit port když se změní pokročilá nastavení
   QObject::connect(serialSettingsDialog, &SerialSettingsDialog::settingChanged, serialReader, &SerialReader::end);
@@ -120,6 +124,9 @@ void MainWindow::serialConnectResult(bool connected, QString message, QString de
     ui->plainTextEditConsole->clear();
     ui->plainTextEditConsole_3->clear();
     emit resetChannels();
+    emit resetAverager1(ui->spinBoxAvg1Ch->value(), ui->pushButtonAvg1->isChecked());
+    emit resetAverager2(ui->spinBoxAvg2Ch->value(), ui->pushButtonAvg2->isChecked());
+    emit resetAverager3(ui->spinBoxAvg3Ch->value(), ui->pushButtonAvg3->isChecked());
   }
   if (connected && ui->checkBoxResetCmdEn->isChecked() && (!ui->lineEditResetCmd->text().isEmpty())) {
     // Poslat reset příkaz

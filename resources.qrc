@@ -77,6 +77,7 @@
         <file>icons/logicNotfilled.png</file>
         <file>icons/logicPoints.png</file>
         <file>icons/hrangeStep.png</file>
+        <file>icons/average.png</file>
     </qresource>
     <qresource prefix="/translations">
         <file>translations/translation_cz.qm</file>

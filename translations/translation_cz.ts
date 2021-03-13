@@ -5,179 +5,182 @@
     <name>MainWindow</name>
     <message>
         <location filename="../mainwindow.ui" line="184"/>
-        <location filename="../mainwindow.cpp" line="96"/>
+        <location filename="../mainwindow.cpp" line="102"/>
         <source>Running (click to pause)</source>
         <translation>Běží (kliknout pro pauzu)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="4001"/>
+        <location filename="../mainwindow.ui" line="5205"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Channel color&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Změnit barvu grafu</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="5774"/>
+        <location filename="../mainwindow.ui" line="589"/>
         <source>Scale:</source>
         <translation>Zvětšení:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="744"/>
+        <location filename="../mainwindow.ui" line="1796"/>
         <source>Move and zoom plot by mouse</source>
         <translation>Graf lze posouvat a zvětšovat myší</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="747"/>
+        <location filename="../mainwindow.ui" line="1799"/>
         <source>Free</source>
         <translation>Volný</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="754"/>
+        <location filename="../mainwindow.ui" line="1806"/>
         <source>Plot shows whole data</source>
         <translation>Graf zobrazuje celý přijatý rozsah</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="757"/>
+        <location filename="../mainwindow.ui" line="1809"/>
         <source>Fixed</source>
         <translation>Pevný</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="383"/>
+        <location filename="../mainwindow.ui" line="1693"/>
         <source>Vertical grid</source>
         <translation>Mřížka hodnot</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1222"/>
+        <location filename="../mainwindow.ui" line="1130"/>
         <source>Zoom</source>
         <translation>Zoom</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1315"/>
+        <location filename="../mainwindow.ui" line="1223"/>
         <source>Move zoomed plot</source>
         <translation>Posunout přiblížený graf</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1471"/>
-        <location filename="../mainwindow.ui" line="1490"/>
-        <location filename="../mainwindow.ui" line="1530"/>
-        <location filename="../mainwindow.ui" line="2063"/>
-        <location filename="../mainwindow.ui" line="2087"/>
-        <location filename="../mainwindow.ui" line="2106"/>
-        <location filename="../mainwindow.ui" line="2295"/>
-        <location filename="../mainwindow.ui" line="2351"/>
-        <location filename="../mainwindow.ui" line="2394"/>
-        <location filename="../mainwindow.ui" line="2420"/>
-        <location filename="../mainwindow.ui" line="2443"/>
-        <location filename="../mainwindow.ui" line="2465"/>
-        <location filename="../mainwindow.ui" line="2508"/>
-        <location filename="../mainwindow.ui" line="2573"/>
-        <location filename="../mainwindow.ui" line="2605"/>
-        <location filename="../mainwindow.ui" line="2681"/>
-        <location filename="../mainwindow.ui" line="2723"/>
-        <location filename="../mainwindow.ui" line="2776"/>
-        <location filename="../mainwindow.ui" line="2798"/>
-        <location filename="../mainwindow.ui" line="2864"/>
-        <location filename="../mainwindow.ui" line="2887"/>
-        <location filename="../mainwindow.ui" line="2909"/>
-        <location filename="../mainwindow.ui" line="2942"/>
-        <location filename="../mainwindow.ui" line="2965"/>
-        <location filename="../mainwindow.ui" line="3024"/>
+        <location filename="../mainwindow.ui" line="1988"/>
+        <location filename="../mainwindow.ui" line="2111"/>
+        <location filename="../mainwindow.ui" line="2217"/>
+        <location filename="../mainwindow.ui" line="2746"/>
+        <location filename="../mainwindow.ui" line="2869"/>
+        <location filename="../mainwindow.ui" line="2988"/>
+        <location filename="../mainwindow.ui" line="3190"/>
+        <location filename="../mainwindow.ui" line="3246"/>
+        <location filename="../mainwindow.ui" line="3289"/>
+        <location filename="../mainwindow.ui" line="3315"/>
+        <location filename="../mainwindow.ui" line="3338"/>
+        <location filename="../mainwindow.ui" line="3360"/>
+        <location filename="../mainwindow.ui" line="3403"/>
+        <location filename="../mainwindow.ui" line="3468"/>
+        <location filename="../mainwindow.ui" line="3500"/>
+        <location filename="../mainwindow.ui" line="3576"/>
+        <location filename="../mainwindow.ui" line="3618"/>
+        <location filename="../mainwindow.ui" line="3671"/>
+        <location filename="../mainwindow.ui" line="3693"/>
+        <location filename="../mainwindow.ui" line="3759"/>
+        <location filename="../mainwindow.ui" line="3782"/>
+        <location filename="../mainwindow.ui" line="3804"/>
+        <location filename="../mainwindow.ui" line="3837"/>
+        <location filename="../mainwindow.ui" line="3860"/>
+        <location filename="../mainwindow.ui" line="3919"/>
         <source>---</source>
         <translation>---</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1550"/>
-        <location filename="../mainwindow.ui" line="2013"/>
+        <location filename="../mainwindow.ui" line="2081"/>
+        <location filename="../mainwindow.ui" line="2839"/>
         <source>Sample</source>
         <translation>Vzorek</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1540"/>
-        <location filename="../mainwindow.ui" line="2023"/>
-        <location filename="../mainwindow_cursors.cpp" line="226"/>
-        <location filename="../mainwindow_cursors.cpp" line="243"/>
+        <location filename="../mainwindow.ui" line="2175"/>
+        <location filename="../mainwindow.ui" line="2946"/>
+        <location filename="../mainwindow_cursors.cpp" line="278"/>
+        <location filename="../mainwindow_cursors.cpp" line="301"/>
         <source>Time</source>
         <translation>Čas</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="3328"/>
-        <location filename="../mainwindow.ui" line="3453"/>
-        <location filename="../mainwindow.ui" line="3475"/>
-        <location filename="../mainwindow.ui" line="3494"/>
-        <location filename="../mainwindow.ui" line="3571"/>
-        <location filename="../mainwindow.ui" line="3635"/>
+        <location filename="../mainwindow.ui" line="4236"/>
+        <location filename="../mainwindow.ui" line="4369"/>
+        <location filename="../mainwindow.ui" line="4396"/>
+        <location filename="../mainwindow.ui" line="4420"/>
+        <location filename="../mainwindow.ui" line="4502"/>
+        <location filename="../mainwindow.ui" line="4576"/>
+        <location filename="../mainwindow.ui" line="4671"/>
+        <location filename="../mainwindow.ui" line="4750"/>
+        <location filename="../mainwindow.ui" line="4832"/>
         <source>CH </source>
         <translation>Kanál </translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="3253"/>
+        <location filename="../mainwindow.ui" line="4156"/>
         <source>Math 2</source>
         <translation>Výpočet 2</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="3156"/>
-        <location filename="../mainwindow.ui" line="3593"/>
+        <location filename="../mainwindow.ui" line="4056"/>
+        <location filename="../mainwindow.ui" line="4529"/>
         <source>Ch </source>
         <translation>Kanál </translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="3405"/>
+        <location filename="../mainwindow.ui" line="4316"/>
         <source>Logic 1</source>
         <translation>Logika 1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="3273"/>
+        <location filename="../mainwindow.ui" line="4176"/>
         <source>Math 3</source>
         <translation>Výpočet 3</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="3178"/>
+        <location filename="../mainwindow.ui" line="4078"/>
         <source>Math 1</source>
         <translation>Výpočet 1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="3615"/>
+        <location filename="../mainwindow.ui" line="4551"/>
         <source>Logic 2</source>
         <translation>Logika 2</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="3306"/>
-        <location filename="../mainwindow.ui" line="3431"/>
+        <location filename="../mainwindow.ui" line="4209"/>
+        <location filename="../mainwindow.ui" line="4342"/>
         <source>Bits: auto</source>
         <oldsource>Bits:  auto</oldsource>
         <translation>Bity: automaticky</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="3312"/>
-        <location filename="../mainwindow.ui" line="3437"/>
+        <location filename="../mainwindow.ui" line="4215"/>
+        <location filename="../mainwindow.ui" line="4348"/>
         <source>Bits: </source>
         <translation>Bity: </translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="3723"/>
-        <location filename="../mainwindow.ui" line="4410"/>
+        <location filename="../mainwindow.ui" line="4927"/>
+        <location filename="../mainwindow.ui" line="5614"/>
         <source>Show plot</source>
         <translation>Zobrazit graf</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="3874"/>
-        <location filename="../mainwindow.ui" line="4969"/>
+        <location filename="../mainwindow.ui" line="5078"/>
+        <location filename="../mainwindow.ui" line="6173"/>
         <source>Fixed size</source>
         <translation>Pevný rozsah</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="3887"/>
-        <location filename="../mainwindow.ui" line="4982"/>
+        <location filename="../mainwindow.ui" line="5091"/>
+        <location filename="../mainwindow.ui" line="6186"/>
         <source>Free move</source>
         <translation>Volný rozsah</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="3901"/>
+        <location filename="../mainwindow.ui" line="5105"/>
         <source>Grid</source>
         <translation>Mřížka</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="3075"/>
-        <location filename="../mainwindow.ui" line="3807"/>
-        <location filename="../mainwindow.ui" line="4507"/>
+        <location filename="../mainwindow.ui" line="3970"/>
+        <location filename="../mainwindow.ui" line="5011"/>
+        <location filename="../mainwindow.ui" line="5711"/>
         <source>Whole signal</source>
         <translation>Celý signál</translation>
     </message>
@@ -187,22 +190,22 @@
         <translation>Data Plotter</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="5511"/>
+        <location filename="../mainwindow.ui" line="326"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Select channel to change it&apos;s settings&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Vybrat kanál pro změnu nastavení&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="5530"/>
+        <location filename="../mainwindow.ui" line="345"/>
         <source>Show/hide channel</source>
         <translation>Zobrazit/skrýt kanál</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="5568"/>
+        <location filename="../mainwindow.ui" line="383"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Change color&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Změnit barvu&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="5611"/>
+        <location filename="../mainwindow.ui" line="426"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Channel style&lt;/p&gt;&lt;p&gt;Fill under channel (useful in logic channels) has high performance inpact, enable OpenGL in settings tab before use.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Styl kanálu&lt;/p&gt;&lt;p&gt;Výplň plochy pod grafem (užitečná pro logické kanály) má výrazný vliv na výpočetní náročnost, před použitím zkuste povolit OpenGL.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -217,849 +220,851 @@
         <translation>Vynulovat offset a vyjedničkovat zvětšení</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="399"/>
-        <location filename="../mainwindow.ui" line="823"/>
+        <location filename="../mainwindow.ui" line="1576"/>
+        <location filename="../mainwindow.ui" line="1709"/>
         <source>Grid resolution</source>
         <translation>Krok mřížky</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="531"/>
+        <location filename="../mainwindow.ui" line="1338"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Value range&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Rozsah hodnot</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="587"/>
+        <location filename="../mainwindow.ui" line="1394"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Value range&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Rozsah hodnot</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="621"/>
+        <location filename="../mainwindow.ui" line="1485"/>
         <source>Only positive</source>
         <translation>Jen kladné</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="641"/>
+        <location filename="../mainwindow.ui" line="1428"/>
         <source>Symetric positive and negative</source>
         <translation>Symetricky kladné i záporné</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="661"/>
+        <location filename="../mainwindow.ui" line="1454"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zero value position in view&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Pozice nulové hodnoty v zobrazení</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="692"/>
+        <location filename="../mainwindow.ui" line="1505"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Only negative&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Jen záporné</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="764"/>
+        <location filename="../mainwindow.ui" line="1816"/>
         <source>Plot shows newest part of data</source>
         <translation>Graf zobrazuje nejnovější úsek dat</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="767"/>
+        <location filename="../mainwindow.ui" line="1819"/>
         <source>Rolling</source>
         <translation>Posuvný</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="810"/>
+        <location filename="../mainwindow.ui" line="1563"/>
         <source>Horizontal grid</source>
         <translation>Mřížka času</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1006"/>
+        <location filename="../mainwindow.ui" line="914"/>
         <source>Length of data shown</source>
         <translation>Délka zobrazeného úseku</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1083"/>
+        <location filename="../mainwindow.ui" line="991"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Length of data shown&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Délka zobrazeného úseku</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1420"/>
-        <location filename="../mainwindow.ui" line="1970"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show cursor&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>Zobrazit kurzor</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="1487"/>
-        <location filename="../mainwindow.ui" line="2103"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sample on which cursor is&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>Vzorek, na kterém je kurzor umístěn</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="1611"/>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Set value cursor&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Unchecked: value cursor is not displayed&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Square-checked: value cursor is displayed and fixed to value of sample on which time cursor is.&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Checked: value cursor is independent of time cursor&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Nastavení kurzoru hodnot&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Nezaškrtlé: kurzor není zobrazen&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Čtvereček: kurzor je na hodnotě vzorku na které je umístěn časový kurzor&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Zaškrtlé: nezávislý na časovém kurzoru&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="1661"/>
-        <location filename="../mainwindow.ui" line="2210"/>
+        <location filename="../mainwindow.ui" line="2021"/>
+        <location filename="../mainwindow.ui" line="2779"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Position of vertical cursor, relative to zero value of selected channel&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Pozice kurzoru, relativně k nule zvoleného kanálu</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1738"/>
+        <location filename="../mainwindow.ui" line="2420"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Difference in time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Rozdíl časů</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1781"/>
+        <location filename="../mainwindow.ui" line="2463"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Difference of value cursors&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Rozdíl hodnot (vodorovných kurzorů)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1821"/>
+        <location filename="../mainwindow.ui" line="2503"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ratio (cursor1 / cursor2)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Podíl (kurzor1/kurzor2)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1861"/>
+        <location filename="../mainwindow.ui" line="2543"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slope between cursor intersections&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Sklon mezi kurzory</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1901"/>
+        <location filename="../mainwindow.ui" line="2583"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Reciprocal of time interval between cursors&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Převrácená hodnota rozdílu časů</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="2167"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set value cursor&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Unchecked: value cursor is not displayed&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Square-checked: value cursor is displayed and fixed to value of sample on which time cursor is.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Checked: value cursor is independent of time cursor&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Nastavení kurzoru hodnot&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Nezaškrtlé: kurzor není zobrazen&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Čtvereček: kurzor je na hodnotě vzorku na které je umístěn časový kurzor&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Zaškrtlé: nezávislý na časovém kurzoru&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="2361"/>
-        <location filename="../mainwindow.ui" line="2743"/>
+        <location filename="../mainwindow.ui" line="3256"/>
+        <location filename="../mainwindow.ui" line="3638"/>
         <source>Sampling freq</source>
         <translation>Vzorkovací freq</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="2371"/>
-        <location filename="../mainwindow.ui" line="2691"/>
+        <location filename="../mainwindow.ui" line="3266"/>
+        <location filename="../mainwindow.ui" line="3586"/>
         <source>Fall</source>
         <translation>Sestup</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="2475"/>
-        <location filename="../mainwindow.ui" line="2919"/>
+        <location filename="../mainwindow.ui" line="3370"/>
+        <location filename="../mainwindow.ui" line="3814"/>
         <source>Rise</source>
         <translation>Náběh</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="2485"/>
-        <location filename="../mainwindow.ui" line="2841"/>
+        <location filename="../mainwindow.ui" line="3380"/>
+        <location filename="../mainwindow.ui" line="3736"/>
         <source>Samples</source>
         <translation>Vzorky</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="3068"/>
-        <location filename="../mainwindow.ui" line="3804"/>
-        <location filename="../mainwindow.ui" line="3817"/>
-        <location filename="../mainwindow.ui" line="4504"/>
-        <location filename="../mainwindow.ui" line="4514"/>
+        <location filename="../mainwindow.ui" line="3963"/>
+        <location filename="../mainwindow.ui" line="5008"/>
+        <location filename="../mainwindow.ui" line="5021"/>
+        <location filename="../mainwindow.ui" line="5708"/>
+        <location filename="../mainwindow.ui" line="5718"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate from:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Rozsah pro výpočet:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="3082"/>
-        <location filename="../mainwindow.ui" line="3820"/>
-        <location filename="../mainwindow.ui" line="4517"/>
+        <location filename="../mainwindow.ui" line="3977"/>
+        <location filename="../mainwindow.ui" line="5024"/>
+        <location filename="../mainwindow.ui" line="5721"/>
         <source>Visible interval</source>
         <translation>Zobrazený úsek</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="3300"/>
-        <location filename="../mainwindow.ui" line="3425"/>
+        <location filename="../mainwindow.ui" line="4203"/>
+        <location filename="../mainwindow.ui" line="4336"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of bits shown (from least significant), auto means same as data type (for example 16 bits for U2).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Počet bitů k zobrazení (od LSB), auto znamená maximum pro datový typ (např. 16 bitů pro U2)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="3648"/>
+        <location filename="../mainwindow.ui" line="4589"/>
         <source>Convert analog input to logic</source>
         <translation>Převézt analogový vstup na logické kanály</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="3871"/>
+        <location filename="../mainwindow.ui" line="5075"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Automatic range&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Automatický rozsah</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="3884"/>
-        <location filename="../mainwindow.ui" line="4979"/>
+        <location filename="../mainwindow.ui" line="5088"/>
+        <location filename="../mainwindow.ui" line="6183"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Move and zoom plot by mouse&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Posouvat a zoomovat graf myší</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="4047"/>
+        <location filename="../mainwindow.ui" line="5251"/>
         <source>Cursor1</source>
         <translation>Kurzor 1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="4329"/>
+        <location filename="../mainwindow.ui" line="5533"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Measure phase difference using cursors: arcsin(A/B)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Měření rozdílu fáze pomocí kurzorů: arcsin(A/B)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="5310"/>
+        <location filename="../mainwindow.ui" line="6514"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Export selected channel&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Exportovat vybraný kanál&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="5702"/>
+        <location filename="../mainwindow.ui" line="517"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Interpolate&lt;/p&gt;&lt;p&gt;Signal is interpolated by factor of 8.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Proložit&lt;/p&gt;&lt;p&gt;Signál je převzorkován 8 krát.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7616"/>
+        <location filename="../mainwindow.ui" line="8385"/>
         <source>V</source>
         <translation>V</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="4086"/>
+        <location filename="../mainwindow.ui" line="5290"/>
         <source>Cursor2</source>
         <translation>Kurzor 2</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="4186"/>
-        <location filename="../mainwindow.ui" line="4202"/>
+        <location filename="../mainwindow.ui" line="5390"/>
+        <location filename="../mainwindow.ui" line="5406"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="4430"/>
+        <location filename="../mainwindow.ui" line="5634"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Type of graph shown&lt;/p&gt;&lt;p&gt;Spectrum: module of DFT result in linear scale&lt;/p&gt;&lt;p&gt;Periodogram: (|X|^2)/N in decibel&lt;/p&gt;&lt;p&gt;Welch PSD: power spectral density estimate using Welch&apos;s method. Unit should be dB/(rad/sample)).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Typ grafu&lt;/p&gt;&lt;p&gt;Spectrum: modul výsledku DFT v lineárním měřítku&lt;/p&gt;&lt;p&gt;Periodogram: (|X|^2)/N v decibelech&lt;/p&gt;&lt;p&gt;Welch PSD: odhad spektrální výkonové hustoty Welchovou metodou. Jednotkou by měl být dB/(rad/vzorek)).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="4447"/>
+        <location filename="../mainwindow.ui" line="5651"/>
         <source>Welch PSD</source>
         <translation>Welch PSD</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="4468"/>
+        <location filename="../mainwindow.ui" line="5672"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show from 0 to f&lt;span style=&quot; vertical-align:sub;&quot;&gt;s &lt;/span&gt; instead of only f&lt;span style=&quot; vertical-align:sub;&quot;&gt;s&lt;/span&gt;/2&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zobrazit od 0 to f&lt;span style=&quot; vertical-align:sub;&quot;&gt;s &lt;/span&gt;namísto jen do f&lt;span style=&quot; vertical-align:sub;&quot;&gt;s&lt;/span&gt;/2&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="4471"/>
+        <location filename="../mainwindow.ui" line="5675"/>
         <source>Two-sided</source>
         <translation>Oboustranné</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="4484"/>
+        <location filename="../mainwindow.ui" line="5688"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show from -f&lt;span style=&quot; vertical-align:sub;&quot;&gt;s&lt;/span&gt;/2 to f&lt;span style=&quot; vertical-align:sub;&quot;&gt;s&lt;/span&gt;/2&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zobrazit od -f&lt;span style=&quot; vertical-align:sub;&quot;&gt;s&lt;/span&gt;/2 to f&lt;span style=&quot; vertical-align:sub;&quot;&gt;s&lt;/span&gt;/2&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="4487"/>
+        <location filename="../mainwindow.ui" line="5691"/>
         <source>Zero-centered</source>
         <translation>Kolem nuly</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="4578"/>
-        <location filename="../mainwindow.ui" line="4782"/>
+        <location filename="../mainwindow.ui" line="5782"/>
+        <location filename="../mainwindow.ui" line="5986"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Window&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Váhovací okno</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="4585"/>
-        <location filename="../mainwindow.ui" line="4789"/>
+        <location filename="../mainwindow.ui" line="5789"/>
+        <location filename="../mainwindow.ui" line="5993"/>
         <source>Rectangular</source>
         <translation>Obdélníkové</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="4590"/>
-        <location filename="../mainwindow.ui" line="4794"/>
+        <location filename="../mainwindow.ui" line="5794"/>
+        <location filename="../mainwindow.ui" line="5998"/>
         <source>Hamming</source>
         <translation>Hammingovo</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="4610"/>
-        <location filename="../mainwindow.ui" line="4814"/>
+        <location filename="../mainwindow.ui" line="5814"/>
+        <location filename="../mainwindow.ui" line="6018"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;NFFT&lt;span style=&quot; vertical-align:sub;&quot;&gt;min&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;NFFT&lt;span style=&quot; vertical-align:sub;&quot;&gt;min&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="4617"/>
+        <location filename="../mainwindow.ui" line="5821"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum number of samples for spectrum computation (signal is zero-padded to this length).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Minimální počet vzorků pro výpočet spektra (signál je doplněn nulami na tuto délku)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="4650"/>
-        <location filename="../mainwindow.ui" line="4851"/>
+        <location filename="../mainwindow.ui" line="5854"/>
+        <location filename="../mainwindow.ui" line="6055"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of segments for Welch&apos;s PSD estimate. (with 50% overlap)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Počet segmentů pro Welchovu metodu (s 50% překryvem)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="4656"/>
-        <location filename="../mainwindow.ui" line="4857"/>
+        <location filename="../mainwindow.ui" line="5860"/>
+        <location filename="../mainwindow.ui" line="6061"/>
         <source> segments</source>
         <translation> segmentů</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="4672"/>
-        <location filename="../mainwindow.ui" line="4873"/>
+        <location filename="../mainwindow.ui" line="5876"/>
+        <location filename="../mainwindow.ui" line="6077"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove DC component from signal before calculating DFT.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Odstranit DC složku před výpočtem</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="4675"/>
-        <location filename="../mainwindow.ui" line="4876"/>
+        <location filename="../mainwindow.ui" line="5879"/>
+        <location filename="../mainwindow.ui" line="6080"/>
         <source>Remove DC</source>
         <translation>Odstranit DC</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="4966"/>
+        <location filename="../mainwindow.ui" line="6170"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show whole spectrum. If values are in dB, bottom is at -50 dB, top is automatic.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Zobrazit celé spektrum, pokud je v dB, spodek je na -50 dB, vršek automaticky</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="4998"/>
+        <location filename="../mainwindow.ui" line="6202"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grid Frequency&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Mřížka frequence&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="5034"/>
+        <location filename="../mainwindow.ui" line="6238"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grid Value&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Mřížka hodnot&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="6929"/>
+        <location filename="../mainwindow.ui" line="7698"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Click to send mode (for interactive menu)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Režim odeslání znaku kliknutím (pro interaktivní menu)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7386"/>
+        <location filename="../mainwindow.ui" line="8155"/>
         <source>Send on connect:</source>
         <translation>Po připojení poslat:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7406"/>
+        <location filename="../mainwindow.ui" line="8175"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Do autoset function after first data for channel 1 is received&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Provede autoset po připojení (jakmile jsou přijata data pro kanál 1)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7409"/>
+        <location filename="../mainwindow.ui" line="8178"/>
         <source>Auto autoset</source>
         <translation>Auto-autoset</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7426"/>
+        <location filename="../mainwindow.ui" line="8195"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clear graph after connecting&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Vymaže graf po připojení</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7429"/>
+        <location filename="../mainwindow.ui" line="8198"/>
         <source>Clear on reconect</source>
         <translation>Auto-clear</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7535"/>
-        <location filename="../mainwindow.ui" line="7603"/>
+        <location filename="../mainwindow.ui" line="8304"/>
+        <location filename="../mainwindow.ui" line="8372"/>
         <source>title</source>
         <translation>Název osy</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7637"/>
+        <location filename="../mainwindow.ui" line="8406"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable OpenGL hardware acceleration for drawing main plot (recommended for logic channels with fill under graph line)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Povolit OpenGL pro hlavní graf (doporučeno při použití barevné výplně pod grafem pro logické kanály)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7640"/>
+        <location filename="../mainwindow.ui" line="8409"/>
         <source>Use OpenGL</source>
         <translation>Použít OpenGL</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="2615"/>
-        <location filename="../mainwindow.ui" line="2733"/>
+        <location filename="../mainwindow.ui" line="3510"/>
+        <location filename="../mainwindow.ui" line="3628"/>
         <source>min</source>
         <translation>Min</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="2328"/>
-        <location filename="../mainwindow.ui" line="2985"/>
+        <location filename="../mainwindow.ui" line="3223"/>
+        <location filename="../mainwindow.ui" line="3880"/>
         <source>Period</source>
         <translation>Perioda</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="2583"/>
-        <location filename="../mainwindow.ui" line="2808"/>
+        <location filename="../mainwindow.ui" line="3478"/>
+        <location filename="../mainwindow.ui" line="3703"/>
         <source>dc</source>
         <translation>DC</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="2518"/>
-        <location filename="../mainwindow.ui" line="2701"/>
+        <location filename="../mainwindow.ui" line="3413"/>
+        <location filename="../mainwindow.ui" line="3596"/>
         <source>Amplitude</source>
         <translation>Amplituda</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="2528"/>
-        <location filename="../mainwindow.ui" line="2753"/>
+        <location filename="../mainwindow.ui" line="3423"/>
+        <location filename="../mainwindow.ui" line="3648"/>
         <source>Vrms</source>
         <translation>Vrms</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="2404"/>
-        <location filename="../mainwindow.ui" line="3034"/>
-        <location filename="../mainwindow_cursors.cpp" line="220"/>
-        <location filename="../mainwindow_cursors.cpp" line="237"/>
+        <location filename="../mainwindow.ui" line="3299"/>
+        <location filename="../mainwindow.ui" line="3929"/>
+        <location filename="../mainwindow_cursors.cpp" line="272"/>
+        <location filename="../mainwindow_cursors.cpp" line="295"/>
         <source>Frequency</source>
         <translation>Frekvence</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="5804"/>
+        <location filename="../mainwindow.ui" line="619"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Channel scale&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Only affects how channel is displayed in plot. Does &lt;/span&gt;&lt;span style=&quot; font-size:8pt; text-decoration: underline;&quot;&gt;not&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt; affect values read using cursors!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zvětšení kanálu&lt;/p&gt;&lt;p&gt;Ovlivňuje jen zobrazení v grafu, &lt;span style=&quot; text-decoration: underline;&quot;&gt;ne&lt;/span&gt;ovlivňuje hodnoty přečtené s pomocí kurzorů!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="5878"/>
+        <location filename="../mainwindow.ui" line="693"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Move graph verticaly&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Svisle posunout graf</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="2625"/>
-        <location filename="../mainwindow.ui" line="2975"/>
+        <location filename="../mainwindow.ui" line="3520"/>
+        <location filename="../mainwindow.ui" line="3870"/>
         <source>max</source>
         <translation>Max</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="3843"/>
-        <location filename="../mainwindow.ui" line="5078"/>
+        <location filename="../mainwindow.ui" line="5047"/>
+        <location filename="../mainwindow.ui" line="6282"/>
         <source>Clear plot</source>
         <translation>Vymazat graf</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="4437"/>
+        <location filename="../mainwindow.ui" line="5641"/>
         <source>Spectrum</source>
         <translation>Spektrum</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="4442"/>
+        <location filename="../mainwindow.ui" line="5646"/>
         <source>Periodogram</source>
         <translation>Periodogram</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="4595"/>
-        <location filename="../mainwindow.ui" line="4799"/>
+        <location filename="../mainwindow.ui" line="5799"/>
+        <location filename="../mainwindow.ui" line="6003"/>
         <source>Hann</source>
         <translation>Hannovo</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="4600"/>
-        <location filename="../mainwindow.ui" line="4804"/>
+        <location filename="../mainwindow.ui" line="5804"/>
+        <location filename="../mainwindow.ui" line="6008"/>
         <source>Blackman</source>
         <translation>Blackmanovo</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="5124"/>
+        <location filename="../mainwindow.ui" line="6328"/>
         <source>Export image</source>
         <translation>Export obrázku</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="5142"/>
+        <location filename="../mainwindow.ui" line="6346"/>
         <source>Main plot</source>
         <translation>Hlavní graf</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="5162"/>
+        <location filename="../mainwindow.ui" line="6366"/>
         <source>XY plot</source>
         <translation>XY graf</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="5224"/>
+        <location filename="../mainwindow.ui" line="6428"/>
         <source>Export CSV</source>
         <translation>Exportovat CSV</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="5250"/>
+        <location filename="../mainwindow.ui" line="6454"/>
         <source>Export all</source>
         <translation>Vše</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="5273"/>
+        <location filename="../mainwindow.ui" line="6477"/>
         <source>Export XY</source>
         <translation>XY</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="5344"/>
+        <location filename="../mainwindow.ui" line="6548"/>
         <source>Separators</source>
         <translation>Oddělovače</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="5365"/>
+        <location filename="../mainwindow.ui" line="6569"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Decimal comma, values separated by semicolumn&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Desetinná čárka, hodnoty odděleny středníkem&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="5368"/>
+        <location filename="../mainwindow.ui" line="6572"/>
         <source>Comma, Semicolon</source>
         <translation>Čárka, středník</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="5375"/>
+        <location filename="../mainwindow.ui" line="6579"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Decimal dot, values separated by comma&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Desetinná tečka, hodnoty oddělené čárkou&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="5378"/>
+        <location filename="../mainwindow.ui" line="6582"/>
         <source>Dot, Comma</source>
         <translation>Tečka, čárka</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="5404"/>
+        <location filename="../mainwindow.ui" line="6608"/>
         <source> decimal places</source>
         <translation> desetinných míst</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="5420"/>
+        <location filename="../mainwindow.ui" line="6624"/>
         <source>Include hidden</source>
         <translation>Včetně skrytých</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="5427"/>
+        <location filename="../mainwindow.ui" line="6631"/>
         <source>Only viewed area</source>
         <translation>Jen zobrazený rozsah</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="5747"/>
+        <location filename="../mainwindow.ui" line="562"/>
         <source>Offset:</source>
         <translation>Posuv:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="5832"/>
+        <location filename="../mainwindow.ui" line="647"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Invert&lt;/p&gt;&lt;p&gt;Only affects how channel is displayed in plot. Does &lt;span style=&quot; text-decoration: underline;&quot;&gt;not&lt;/span&gt; affect values read using cursors!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Invertovat&lt;/p&gt;&lt;p&gt;Ovlivňuje jen zobrazení v grafu, &lt;span style=&quot; text-decoration: underline;&quot;&gt;ne&lt;/span&gt;ovlivňuje hodnoty přečtené s pomocí kurzorů!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="6076"/>
+        <location filename="../mainwindow.ui" line="1940"/>
+        <location filename="../mainwindow.ui" line="2172"/>
+        <location filename="../mainwindow.ui" line="2698"/>
+        <location filename="../mainwindow.ui" line="2943"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cursor mode&lt;/p&gt;&lt;p&gt;Not checked: cursor in not displayed&lt;/p&gt;&lt;p&gt;Square: cursor is placed on selected sample&lt;/p&gt;&lt;p&gt;Checked: cursor can be set to any value&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Režim kurzoru&lt;/p&gt;&lt;p&gt;Nezaškrtnuté: kurzor není zobrazen&lt;/p&gt;&lt;p&gt;Čtvereček: kurzor je posazený na vzorku&lt;/p&gt;&lt;p&gt;Zaškrtnutý: kurzor lze nastavit na libovolnou hodnotu&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="1943"/>
+        <location filename="../mainwindow.ui" line="2701"/>
+        <source>Value</source>
+        <translation>Hodnota</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="2334"/>
+        <location filename="../mainwindow.ui" line="3102"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hide cursor&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Skrýt kurzor&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="4641"/>
+        <location filename="../mainwindow.ui" line="4720"/>
+        <location filename="../mainwindow.ui" line="4802"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Average channel values (only for whole channel added by $$C message type)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Průměrovat hodnoty kanálu (jen pro celé kanály přidané zprávou typu $$C)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="4644"/>
+        <source>Average 1</source>
+        <translation>Průměrování 1</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="4695"/>
+        <location filename="../mainwindow.ui" line="4777"/>
+        <location filename="../mainwindow.ui" line="4859"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Average from this number of last received channels&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Průměrovat z tohoto počtu nejnovějších přijatých hodnot kanálu&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="4723"/>
+        <source>Average 2</source>
+        <translation>Průměrování 2</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="4805"/>
+        <source>Average 3</source>
+        <translation>Průměrování 3</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="6837"/>
         <source>Not connected</source>
         <translation>Není připojeno</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="6257"/>
+        <location filename="../mainwindow.ui" line="6924"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Aditional settings&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Další nastavení&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="7026"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Print double-dolar on new line&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vypsat dvojitý znak dolar na nový řádek&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="6280"/>
-        <location filename="../mainwindow.ui" line="6504"/>
-        <location filename="../mainwindow.ui" line="6724"/>
+        <location filename="../mainwindow.ui" line="7049"/>
+        <location filename="../mainwindow.ui" line="7273"/>
+        <location filename="../mainwindow.ui" line="7493"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clear console&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Vymazat konzoli</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="6306"/>
-        <location filename="../mainwindow.ui" line="6530"/>
-        <location filename="../mainwindow.ui" line="6750"/>
+        <location filename="../mainwindow.ui" line="7075"/>
+        <location filename="../mainwindow.ui" line="7299"/>
+        <location filename="../mainwindow.ui" line="7519"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Autoscroll&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Posunout dolů</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="6412"/>
+        <location filename="../mainwindow.ui" line="7181"/>
         <source>Message filter</source>
         <translation>Filtr zpráv</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="6464"/>
+        <location filename="../mainwindow.ui" line="7233"/>
         <source>Print buffer content</source>
         <translation>Vypsat obsah bufferu</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="6484"/>
+        <location filename="../mainwindow.ui" line="7253"/>
         <source>Clear buffer</source>
         <translation>Vymazat buffer</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="6638"/>
-        <location filename="../mainwindow.ui" line="7396"/>
+        <location filename="../mainwindow.ui" line="7407"/>
+        <location filename="../mainwindow.ui" line="8165"/>
         <source>Manual input</source>
         <translation>Ruční vstup</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="6663"/>
-        <location filename="../mainwindow.ui" line="8001"/>
-        <location filename="../mainwindow.ui" line="8054"/>
-        <location filename="../mainwindow.ui" line="8107"/>
-        <location filename="../mainwindow.ui" line="8160"/>
+        <location filename="../mainwindow.ui" line="7432"/>
+        <location filename="../mainwindow.ui" line="8770"/>
+        <location filename="../mainwindow.ui" line="8823"/>
+        <location filename="../mainwindow.ui" line="8876"/>
+        <location filename="../mainwindow.ui" line="8929"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Send&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Odeslat</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="6684"/>
+        <location filename="../mainwindow.ui" line="7453"/>
         <source>Print manual input buffer</source>
         <translation>Vypsat obsah bufferu</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="6704"/>
+        <location filename="../mainwindow.ui" line="7473"/>
         <source>Clear manual input buffer</source>
         <translation>Vymazat buffer</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="6906"/>
+        <location filename="../mainwindow.ui" line="7675"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Debug mode&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Debug režim&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="6955"/>
+        <location filename="../mainwindow.ui" line="7724"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selection mode&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Režim výběru&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="6981"/>
+        <location filename="../mainwindow.ui" line="7750"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Copy selection to clipboard&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zpopírovat výběr do schránky&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7001"/>
+        <location filename="../mainwindow.ui" line="7770"/>
         <source>Clear terminal</source>
         <translation>Vymazat terminál</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7118"/>
+        <location filename="../mainwindow.ui" line="7887"/>
         <source>2J Clear all</source>
         <translation>2J Clear all</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7123"/>
+        <location filename="../mainwindow.ui" line="7892"/>
         <source>3?m Font color</source>
         <translation>3?m Font color</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7128"/>
+        <location filename="../mainwindow.ui" line="7897"/>
         <source>4?m Back color</source>
         <translation>4?m Back color</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7133"/>
+        <location filename="../mainwindow.ui" line="7902"/>
         <source>0m Reset style</source>
         <translation>0m Reset style</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7138"/>
+        <location filename="../mainwindow.ui" line="7907"/>
         <source>1m Bold</source>
         <translation>1m Bold</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7143"/>
+        <location filename="../mainwindow.ui" line="7912"/>
         <source>4m Underline</source>
         <translation>4m Underline</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7148"/>
+        <location filename="../mainwindow.ui" line="7917"/>
         <source>7m Invert colors</source>
         <translation>7m Invert colors</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7153"/>
+        <location filename="../mainwindow.ui" line="7922"/>
         <source>A Up</source>
         <translation>A Up</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7158"/>
+        <location filename="../mainwindow.ui" line="7927"/>
         <source>B Down</source>
         <translation>B Down</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7163"/>
+        <location filename="../mainwindow.ui" line="7932"/>
         <source>C Right</source>
         <translation>C Right</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7168"/>
+        <location filename="../mainwindow.ui" line="7937"/>
         <source>D Left</source>
         <translation>D Left</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7173"/>
+        <location filename="../mainwindow.ui" line="7942"/>
         <source>0J Clear down</source>
         <translation>0J Clear down</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7178"/>
+        <location filename="../mainwindow.ui" line="7947"/>
         <source>1J Clear up</source>
         <translation>1J Clear up</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7183"/>
+        <location filename="../mainwindow.ui" line="7952"/>
         <source>2K Clear line</source>
         <translation>2K Clear line</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7188"/>
+        <location filename="../mainwindow.ui" line="7957"/>
         <source>0K Clear line left</source>
         <translation>0K Clear line left</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7193"/>
+        <location filename="../mainwindow.ui" line="7962"/>
         <source>1K Clear line right</source>
         <translation>1K Clear line right</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7198"/>
+        <location filename="../mainwindow.ui" line="7967"/>
         <source>E Line up</source>
         <translation>E Line up</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7203"/>
+        <location filename="../mainwindow.ui" line="7972"/>
         <source>F Line down</source>
         <translation>F Line down</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7208"/>
+        <location filename="../mainwindow.ui" line="7977"/>
         <source>s Save postition</source>
         <translation>s Save postition</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7213"/>
+        <location filename="../mainwindow.ui" line="7982"/>
         <source>u Load position</source>
         <translation>u Load position</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7218"/>
+        <location filename="../mainwindow.ui" line="7987"/>
         <source>\n New line</source>
         <translation>\n New line</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7223"/>
+        <location filename="../mainwindow.ui" line="7992"/>
         <source>\r Carriage return</source>
         <translation>\r Carriage return</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7228"/>
+        <location filename="../mainwindow.ui" line="7997"/>
         <source>\b Backspace</source>
         <translation>\b Backspace</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7233"/>
+        <location filename="../mainwindow.ui" line="8002"/>
         <source>\e Escape</source>
         <translation>\e Escape</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7238"/>
+        <location filename="../mainwindow.ui" line="8007"/>
         <source>\a Bell</source>
         <translation>\a Bell</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7243"/>
+        <location filename="../mainwindow.ui" line="8012"/>
         <source>\t Tabulator</source>
         <translation>\t Tabulator</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7293"/>
+        <location filename="../mainwindow.ui" line="8062"/>
         <source>Language</source>
         <translation>Jazyk</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7311"/>
+        <location filename="../mainwindow.ui" line="8080"/>
         <source>english</source>
         <translation>Anglicky</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7331"/>
+        <location filename="../mainwindow.ui" line="8100"/>
         <source>czech</source>
         <translation>Česky</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7351"/>
+        <location filename="../mainwindow.ui" line="8120"/>
         <source>Connection</source>
         <translation>Připojení</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7369"/>
+        <location filename="../mainwindow.ui" line="8138"/>
         <source>( reset command )</source>
         <translation>(příkaz pro reset)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7376"/>
+        <location filename="../mainwindow.ui" line="8145"/>
         <source>SerialMonitor</source>
         <translation>Výpis přijatých dat</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7449"/>
+        <location filename="../mainwindow.ui" line="8218"/>
         <source>Plot</source>
         <translation>Graf</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1128"/>
+        <location filename="../mainwindow.ui" line="1036"/>
         <source>Smooth</source>
         <translation>Plynulý</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1131"/>
+        <location filename="../mainwindow.ui" line="1039"/>
         <source> %</source>
         <translation> %</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7467"/>
+        <location filename="../mainwindow.ui" line="8236"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Normaly, only nonempty channel are showen in channel selection, this allows to show all available channels.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Normálně lze v seznamu kanálů zvolit jen používané kanály. Toto umožní zvolit kterýkoliv.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7470"/>
+        <location filename="../mainwindow.ui" line="8239"/>
         <source>Allow selecting unused channels</source>
         <translation>Povolit výběr prázdných kanálů</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7653"/>
+        <location filename="../mainwindow.ui" line="8422"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Erase data in main plot&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Vymazat data v hlavním grafu</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7569"/>
+        <location filename="../mainwindow.ui" line="8338"/>
         <source>Vertical axis</source>
         <translation>Svislá osa</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7582"/>
+        <location filename="../mainwindow.ui" line="8351"/>
         <source>Show</source>
         <translation>Zobrazit</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7701"/>
+        <location filename="../mainwindow.ui" line="8470"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load user default setting from file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Načíst uživatelské výchozí nastavení ze souboru&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7741"/>
+        <location filename="../mainwindow.ui" line="8510"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load setting file or CSV&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Načíst nastavení nebo CSV&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7826"/>
+        <location filename="../mainwindow.ui" line="8595"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -1084,221 +1089,221 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;justify&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Převod analogového vstupu na logické kanály se dělá jen pro nově příchozí data (ne zpětně pro původní data), je-li převod zapnut při pauze, nezobrazí se.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7761"/>
+        <location filename="../mainwindow.ui" line="8530"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save settings&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Uložit nastavení&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7806"/>
+        <location filename="../mainwindow.ui" line="8575"/>
         <source>Open user manual</source>
         <translation>Otevřít uživatelskou příručku</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7813"/>
+        <location filename="../mainwindow.ui" line="8582"/>
         <source>Open protocol guide</source>
         <translation>Otevřít přehled komunikačního protokolu</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7498"/>
+        <location filename="../mainwindow.ui" line="8267"/>
         <source>Horizontal axis</source>
         <translation>Vodorovná osa</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7505"/>
+        <location filename="../mainwindow.ui" line="8274"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Style of time values&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Styl časové osy</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7512"/>
+        <location filename="../mainwindow.ui" line="8281"/>
         <source>Hidden</source>
         <translation>Skrytá</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7517"/>
+        <location filename="../mainwindow.ui" line="8286"/>
         <source>Normal</source>
         <translation>Normální</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7522"/>
+        <location filename="../mainwindow.ui" line="8291"/>
         <source>MM:SS</source>
         <translation>MM:SS</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7527"/>
+        <location filename="../mainwindow.ui" line="8296"/>
         <source>HH:MM:SS</source>
         <translation>HH:MM:SS</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7656"/>
+        <location filename="../mainwindow.ui" line="8425"/>
         <source>Clear graphs</source>
         <translation>Vymazat graf</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7613"/>
+        <location filename="../mainwindow.ui" line="8382"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Unit of values. Use base unit without any prefix.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Jednotka (použijte základní jednotku bez předpony!)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7663"/>
+        <location filename="../mainwindow.ui" line="8432"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show sample value when mouse cursor is near,set cursors by clicking on graph, mouse-drag cursors a zero-lines of channels.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Zobrazí hodnotu vzorku, když je ukazatel myši poblíž grafu, kliknutím se na místo umístí kurzor (pravé tlačítko pro kurzor 2), také lze myší táhnout kurzory a offset (čáru nulové hodnoty)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7666"/>
+        <location filename="../mainwindow.ui" line="8435"/>
         <source>Controll cursors by mouse</source>
         <translation>Ovládat kurzory myší</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7694"/>
+        <location filename="../mainwindow.ui" line="8463"/>
         <source>Settings file</source>
         <translation>Načíst nastavení</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7721"/>
+        <location filename="../mainwindow.ui" line="8490"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load hard-coded defaults&lt;/p&gt;&lt;p&gt;This will also override default setting file (./settings/defaults.cfg)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Načíst výchozí nastavení&lt;/p&gt;&lt;p&gt;Také přepíše soubor s uživatelským výchozím nastavením (./settings/defaults.cfg)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7874"/>
+        <location filename="../mainwindow.ui" line="8643"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This program comes with absolutely no warranty. This is free software, and you are welcome to redistribute it under certain conditions. See the &lt;a href=&quot;https://www.gnu.org/licenses/gpl-3.0.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#007af4;&quot;&gt;GNU General Public License&lt;/span&gt;&lt;/a&gt; for more details.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tento program je absolutně bez záruky. Jde o svobodný software a jeho šíření je za určitých podmínek vítáno. Pro více informací: &lt;a href=&quot;https://www.gnu.org/licenses/gpl-3.0.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#007af4;&quot;&gt;GNU General Public License&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7902"/>
+        <location filename="../mainwindow.ui" line="8671"/>
         <source>Translation: none</source>
-        <translation>Překlad: CZ_05032021</translation>
+        <translation>Překlad: CZ_12032021</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7922"/>
+        <location filename="../mainwindow.ui" line="8691"/>
         <source>maierjir@fel.cvut.cz</source>
         <translation>maierjir@fel.cvut.cz</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="7976"/>
-        <location filename="../mainwindow.ui" line="8029"/>
-        <location filename="../mainwindow.ui" line="8082"/>
-        <location filename="../mainwindow.ui" line="8135"/>
+        <location filename="../mainwindow.ui" line="8745"/>
+        <location filename="../mainwindow.ui" line="8798"/>
+        <location filename="../mainwindow.ui" line="8851"/>
+        <location filename="../mainwindow.ui" line="8904"/>
         <source>send data to device</source>
         <translation>Odeslat do zařízení</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="8185"/>
+        <location filename="../mainwindow.ui" line="8954"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This will be added to the end of sent message.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Toto bude přidáno na konec zprávy</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="8189"/>
+        <location filename="../mainwindow.ui" line="8958"/>
         <source>No line ending</source>
         <translation>Zakončení: žádné</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="8194"/>
+        <location filename="../mainwindow.ui" line="8963"/>
         <source>New line</source>
         <translation>Zakončení: LF</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="8199"/>
+        <location filename="../mainwindow.ui" line="8968"/>
         <source>Carriage return</source>
         <translation>Zakončení: CR</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="8204"/>
+        <location filename="../mainwindow.ui" line="8973"/>
         <source>CR LF</source>
         <translation>Zakončení: CR LF</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="8212"/>
+        <location filename="../mainwindow.ui" line="8981"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show multiple lines for sending message, this allows to have up to 4 commands prepared. Line will not be erased after send in this mode.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zobrazit více řádků pro příkaz, to umožní mít připraveny až 4 příkazy. Řádek nebude po odeslání smazán.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="8215"/>
+        <location filename="../mainwindow.ui" line="8984"/>
         <source>Multiple inputs</source>
         <translation>Více řádků</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="93"/>
+        <location filename="../mainwindow.cpp" line="99"/>
         <source>Paused (click to resume)</source>
         <translation>Pauza (kliknout pro pokračování)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="103"/>
+        <location filename="../mainwindow.cpp" line="109"/>
         <source> / Div</source>
         <translation> / Dílek</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="140"/>
+        <location filename="../mainwindow.cpp" line="149"/>
         <source>s/Div</source>
         <translation>s/Div</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="143"/>
+        <location filename="../mainwindow.cpp" line="152"/>
         <source>/Div</source>
         <translation>/Dílek</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="178"/>
+        <location filename="../mainwindow.cpp" line="187"/>
         <source>&lt;font color=darkred&gt;Device warning:&lt;/font color&gt; </source>
         <translation>&lt;font color=darkred&gt;Varování ze zařízení:&lt;/font color&gt; </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="180"/>
+        <location filename="../mainwindow.cpp" line="189"/>
         <source>&lt;font color=darkgreen&gt;Device message:&lt;/font color&gt; </source>
         <translation>&lt;font color=darkgreen&gt;Zpráva ze zařízení:&lt;/font color&gt; </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="222"/>
-        <location filename="../mainwindow.cpp" line="230"/>
+        <location filename="../mainwindow.cpp" line="231"/>
+        <location filename="../mainwindow.cpp" line="239"/>
         <source>Device error</source>
         <translation>Chyba zařízení</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="223"/>
+        <location filename="../mainwindow.cpp" line="232"/>
         <source>Error message sent from manual input</source>
         <translation>Chybová zpráva poslaná z ručního vstupu</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="231"/>
+        <location filename="../mainwindow.cpp" line="240"/>
         <source>Device reported error (port disconnected)</source>
         <translation>Zařízení ohlásilo chybu (spojení ukončeno)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="249"/>
+        <location filename="../mainwindow.cpp" line="258"/>
         <source>Description: %1
 </source>
         <translation>Popis: %1
 </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="250"/>
+        <location filename="../mainwindow.cpp" line="259"/>
         <source>Manufacturer: %1
 </source>
         <translation>Výrobce: %1
 </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="251"/>
+        <location filename="../mainwindow.cpp" line="260"/>
         <source>Serial number: %1
 </source>
         <translation>Sériové číslo: %1
 </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="252"/>
+        <location filename="../mainwindow.cpp" line="261"/>
         <source>Location: %1
 </source>
         <translation>Umístění: %1
 </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="253"/>
+        <location filename="../mainwindow.cpp" line="262"/>
         <source>Vendor Identifier: %1
 </source>
         <translation>Označení prodejce: %1
 </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="254"/>
+        <location filename="../mainwindow.cpp" line="263"/>
         <source>Product Identifier: %1</source>
         <translation>Označení produktu: %1</translation>
     </message>
@@ -1308,16 +1313,16 @@ p, li { white-space: pre-wrap; }
         <translation>všechno</translation>
     </message>
     <message>
-        <location filename="../mainwindow_gui_preset.cpp" line="179"/>
-        <location filename="../mainwindow_gui_preset.cpp" line="180"/>
-        <location filename="../mainwindow_gui_preset.cpp" line="181"/>
+        <location filename="../mainwindow_gui_preset.cpp" line="191"/>
+        <location filename="../mainwindow_gui_preset.cpp" line="192"/>
+        <location filename="../mainwindow_gui_preset.cpp" line="193"/>
         <source>Logic %1</source>
         <translation>Logika %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow_gui_preset.cpp" line="185"/>
-        <location filename="../mainwindow_gui_preset.cpp" line="186"/>
-        <location filename="../mainwindow_gui_preset.cpp" line="187"/>
+        <location filename="../mainwindow_gui_preset.cpp" line="197"/>
+        <location filename="../mainwindow_gui_preset.cpp" line="198"/>
+        <location filename="../mainwindow_gui_preset.cpp" line="199"/>
         <source>Logic</source>
         <translation>Logika</translation>
     </message>
@@ -1343,7 +1348,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../mainwindow_export.cpp" line="58"/>
-        <location filename="../mainwindow_save_load.cpp" line="366"/>
+        <location filename="../mainwindow_save_load.cpp" line="370"/>
         <source>Cant write to file.</source>
         <translation>Nelze zapsat do souboru.</translation>
     </message>
@@ -1375,7 +1380,7 @@ p, li { white-space: pre-wrap; }
         <translation>Exportovat graf FFT jako obrázek</translation>
     </message>
     <message>
-        <location filename="../mainwindow_gui_preset.cpp" line="100"/>
+        <location filename="../mainwindow_gui_preset.cpp" line="103"/>
         <source>Build: </source>
         <translation>Sestaveno: </translation>
     </message>
@@ -1411,66 +1416,66 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../mainwindow_gui_slots.cpp" line="244"/>
-        <location filename="../mainwindow_gui_slots.cpp" line="610"/>
-        <location filename="../mainwindow_save_load.cpp" line="334"/>
-        <location filename="../mainwindow_save_load.cpp" line="348"/>
+        <location filename="../mainwindow_gui_slots.cpp" line="613"/>
+        <location filename="../mainwindow_save_load.cpp" line="338"/>
+        <location filename="../mainwindow_save_load.cpp" line="352"/>
         <source>Cant open file.</source>
         <translation>Nelze otevřít soubor.</translation>
     </message>
     <message>
-        <location filename="../mainwindow_save_load.cpp" line="167"/>
+        <location filename="../mainwindow_save_load.cpp" line="169"/>
         <source>Invalid settings</source>
         <translation>Neplatné nastavení</translation>
     </message>
     <message>
-        <location filename="../mainwindow_save_load.cpp" line="228"/>
+        <location filename="../mainwindow_save_load.cpp" line="232"/>
         <source>Invalid channel in settings</source>
         <translation>Neexistující kanál v nastavení</translation>
     </message>
     <message>
-        <location filename="../mainwindow_save_load.cpp" line="217"/>
-        <location filename="../mainwindow_save_load.cpp" line="243"/>
-        <location filename="../mainwindow_save_load.cpp" line="275"/>
+        <location filename="../mainwindow_save_load.cpp" line="221"/>
+        <location filename="../mainwindow_save_load.cpp" line="247"/>
+        <location filename="../mainwindow_save_load.cpp" line="279"/>
         <source>Invalid color: </source>
         <translation>Neplatná barva: </translation>
     </message>
     <message>
-        <location filename="../mainwindow_save_load.cpp" line="258"/>
+        <location filename="../mainwindow_save_load.cpp" line="262"/>
         <source>Invalid logic in settings</source>
         <translation>Neexistující logický kanál v nastavení</translation>
     </message>
     <message>
-        <location filename="../mainwindow_save_load.cpp" line="289"/>
+        <location filename="../mainwindow_save_load.cpp" line="293"/>
         <source>Unknown setting</source>
         <translation>Neznámé nastavení</translation>
     </message>
     <message>
-        <location filename="../mainwindow_save_load.cpp" line="294"/>
+        <location filename="../mainwindow_save_load.cpp" line="298"/>
         <source>Applied settings</source>
         <translation>Použito nastavení</translation>
     </message>
     <message>
-        <location filename="../mainwindow_save_load.cpp" line="299"/>
+        <location filename="../mainwindow_save_load.cpp" line="303"/>
         <source>Load file</source>
         <translation>Načíst soubor</translation>
     </message>
     <message>
-        <location filename="../mainwindow_save_load.cpp" line="299"/>
+        <location filename="../mainwindow_save_load.cpp" line="303"/>
         <source>Settings file (*.cfg);;Comma separated values (*.csv);;Any file (*.*)</source>
         <translation>Nastavení (*.cfg);;Comma separated values (*.csv);;Jakýkoliv soubory (*.*)</translation>
     </message>
     <message>
-        <location filename="../mainwindow_save_load.cpp" line="357"/>
+        <location filename="../mainwindow_save_load.cpp" line="361"/>
         <source>Settings file (*.cfg)</source>
         <translation>Soubor s nastavením (*.cfg)</translation>
     </message>
     <message>
-        <location filename="../mainwindow_save_load.cpp" line="395"/>
+        <location filename="../mainwindow_save_load.cpp" line="399"/>
         <source>Can not create default settings file</source>
         <translation>Nelze vytvořit soubor s uživatelským výchozím nastavením</translation>
     </message>
     <message>
-        <location filename="../mainwindow_save_load.cpp" line="357"/>
+        <location filename="../mainwindow_save_load.cpp" line="361"/>
         <source>Load settings</source>
         <translation>Uložit nastavení</translation>
     </message>
@@ -1484,11 +1489,23 @@ p, li { white-space: pre-wrap; }
         <source>updates</source>
         <translation>aktualizací</translation>
     </message>
+    <message>
+        <location filename="../mainwindow_cursors.cpp" line="271"/>
+        <location filename="../mainwindow_cursors.cpp" line="294"/>
+        <source>Hz</source>
+        <translation>Hz</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow_cursors.cpp" line="279"/>
+        <location filename="../mainwindow_cursors.cpp" line="302"/>
+        <source>s</source>
+        <translation>s</translation>
+    </message>
 </context>
 <context>
     <name>MyFFTPlot</name>
     <message>
-        <location filename="../myfftplot.cpp" line="30"/>
+        <location filename="../myfftplot.cpp" line="45"/>
         <source>frequency</source>
         <translation>frekvence</translation>
     </message>
@@ -1839,13 +1856,13 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../plotdata.cpp" line="313"/>
-        <location filename="../plotdata.cpp" line="393"/>
+        <location filename="../plotdata.cpp" line="400"/>
         <source>%1 samples, sampling period %2s</source>
         <translation>%1 vzorků, perioda vzorkování %2s</translation>
     </message>
     <message numerus="yes">
         <location filename="../plotdata.cpp" line="314"/>
-        <location filename="../plotdata.cpp" line="394"/>
+        <location filename="../plotdata.cpp" line="401"/>
         <source>, %n bit(s)</source>
         <translation>
             <numerusform>, %n bit</numerusform>
@@ -1894,7 +1911,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../plotdata.cpp" line="318"/>
-        <location filename="../plotdata.cpp" line="396"/>
+        <location filename="../plotdata.cpp" line="403"/>
         <source>, zero time at sample index %3</source>
         <translation>, nula na vzorku s indexem %3</translation>
     </message>
@@ -1904,12 +1921,12 @@ p, li { white-space: pre-wrap; }
         <translation>Přijatý kanál %1</translation>
     </message>
     <message>
-        <location filename="../plotdata.cpp" line="387"/>
+        <location filename="../plotdata.cpp" line="394"/>
         <source>Can not parse logic channel time step</source>
         <translation>Nelze přečíst časový krok mezi vzorky logického kanálu</translation>
     </message>
     <message>
-        <location filename="../plotdata.cpp" line="397"/>
+        <location filename="../plotdata.cpp" line="404"/>
         <source>Received logic channel</source>
         <translation>Přijat logický kanál</translation>
     </message>
@@ -1948,22 +1965,22 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../enumsDefinesConstants.h" line="305"/>
+        <location filename="../enumsDefinesConstants.h" line="306"/>
         <source>Logic bit %1</source>
         <translation>Logický bit %1</translation>
     </message>
     <message>
-        <location filename="../enumsDefinesConstants.h" line="307"/>
+        <location filename="../enumsDefinesConstants.h" line="308"/>
         <source>Logic %1 bit %2</source>
         <translation>Logika %1 bit %2</translation>
     </message>
     <message>
-        <location filename="../enumsDefinesConstants.h" line="309"/>
+        <location filename="../enumsDefinesConstants.h" line="310"/>
         <source>Math %1</source>
         <translation>Výpočet %1</translation>
     </message>
     <message>
-        <location filename="../enumsDefinesConstants.h" line="310"/>
+        <location filename="../enumsDefinesConstants.h" line="311"/>
         <source>Ch %1</source>
         <translation>Kanál %1</translation>
     </message>
@@ -2041,43 +2058,43 @@ p, li { white-space: pre-wrap; }
         <translation>Použít</translation>
     </message>
     <message>
-        <location filename="../serialsettingsdialog.cpp" line="17"/>
-        <location filename="../serialsettingsdialog.cpp" line="29"/>
+        <location filename="../serialsettingsdialog.cpp" line="32"/>
+        <location filename="../serialsettingsdialog.cpp" line="44"/>
         <source>None</source>
         <translation>Žádná</translation>
     </message>
     <message>
-        <location filename="../serialsettingsdialog.cpp" line="18"/>
+        <location filename="../serialsettingsdialog.cpp" line="33"/>
         <source>Even</source>
         <translation>Sudá</translation>
     </message>
     <message>
-        <location filename="../serialsettingsdialog.cpp" line="19"/>
+        <location filename="../serialsettingsdialog.cpp" line="34"/>
         <source>Odd</source>
         <translation>Lichá</translation>
     </message>
     <message>
-        <location filename="../serialsettingsdialog.cpp" line="20"/>
+        <location filename="../serialsettingsdialog.cpp" line="35"/>
         <source>Mark</source>
         <translation>Mark</translation>
     </message>
     <message>
-        <location filename="../serialsettingsdialog.cpp" line="21"/>
+        <location filename="../serialsettingsdialog.cpp" line="36"/>
         <source>Space</source>
         <translation>Space</translation>
     </message>
     <message>
-        <location filename="../serialsettingsdialog.cpp" line="25"/>
+        <location filename="../serialsettingsdialog.cpp" line="40"/>
         <source>1.5</source>
         <translation>1.5</translation>
     </message>
     <message>
-        <location filename="../serialsettingsdialog.cpp" line="30"/>
+        <location filename="../serialsettingsdialog.cpp" line="45"/>
         <source>RTS/CTS</source>
         <translation>RTS/CTS</translation>
     </message>
     <message>
-        <location filename="../serialsettingsdialog.cpp" line="31"/>
+        <location filename="../serialsettingsdialog.cpp" line="46"/>
         <source>XON/XOFF</source>
         <translation>XON/XOFF</translation>
     </message>

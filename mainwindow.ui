@@ -744,7 +744,7 @@
              <enum>QTabWidget::Rounded</enum>
             </property>
             <property name="currentIndex">
-             <number>1</number>
+             <number>0</number>
             </property>
             <property name="iconSize">
              <size>
@@ -1421,7 +1421,7 @@
                   </widget>
                  </item>
                  <item>
-                  <layout class="QGridLayout" name="gridLayout_21" rowstretch="1,1,1,0" columnstretch="2,1">
+                  <layout class="QGridLayout" name="gridLayout_21" rowstretch="1,1,1" columnstretch="2,1">
                    <item row="1" column="0">
                     <widget class="QPushButton" name="pushButtonCenter">
                      <property name="toolTip">
@@ -1931,7 +1931,7 @@
                     <item>
                      <widget class="QCheckBox" name="checkBoxYCur1">
                       <property name="sizePolicy">
-                       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                         <horstretch>0</horstretch>
                         <verstretch>0</verstretch>
                        </sizepolicy>
@@ -2163,7 +2163,7 @@
                     <item>
                      <widget class="QCheckBox" name="checkBoxCur1Visible">
                       <property name="sizePolicy">
-                       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                         <horstretch>0</horstretch>
                         <verstretch>0</verstretch>
                        </sizepolicy>
@@ -2296,45 +2296,81 @@
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="pushButtonHideCur1">
+                    <widget class="QFrame" name="frame_22">
                      <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                        <horstretch>0</horstretch>
                        <verstretch>0</verstretch>
                       </sizepolicy>
                      </property>
-                     <property name="toolTip">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hide cursor&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     <property name="frameShape">
+                      <enum>QFrame::NoFrame</enum>
                      </property>
-                     <property name="text">
-                      <string/>
+                     <property name="frameShadow">
+                      <enum>QFrame::Raised</enum>
                      </property>
-                     <property name="icon">
-                      <iconset resource="resources.qrc">
-                       <normaloff>:/images/icons/multiply.png</normaloff>:/images/icons/multiply.png</iconset>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QComboBox" name="comboBoxCursor1Channel">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>0</width>
-                       <height>0</height>
-                      </size>
-                     </property>
-                     <property name="maxVisibleItems">
-                      <number>1000</number>
-                     </property>
-                     <property name="sizeAdjustPolicy">
-                      <enum>QComboBox::AdjustToContents</enum>
-                     </property>
+                     <layout class="QHBoxLayout" name="horizontalLayout_16">
+                      <property name="leftMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="topMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="rightMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="bottomMargin">
+                       <number>0</number>
+                      </property>
+                      <item>
+                       <widget class="QPushButton" name="pushButtonHideCur1">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="toolTip">
+                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hide cursor&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                        </property>
+                        <property name="text">
+                         <string/>
+                        </property>
+                        <property name="icon">
+                         <iconset resource="resources.qrc">
+                          <normaloff>:/images/icons/multiply.png</normaloff>:/images/icons/multiply.png</iconset>
+                        </property>
+                        <property name="iconSize">
+                         <size>
+                          <width>16</width>
+                          <height>16</height>
+                         </size>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QComboBox" name="comboBoxCursor1Channel">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="minimumSize">
+                         <size>
+                          <width>0</width>
+                          <height>0</height>
+                         </size>
+                        </property>
+                        <property name="maxVisibleItems">
+                         <number>1000</number>
+                        </property>
+                        <property name="sizeAdjustPolicy">
+                         <enum>QComboBox::AdjustToContents</enum>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
                     </widget>
                    </item>
                   </layout>
@@ -2344,9 +2380,15 @@
               </item>
               <item row="0" column="1" rowspan="2">
                <widget class="QFrame" name="frame">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
                 <property name="minimumSize">
                  <size>
-                  <width>0</width>
+                  <width>135</width>
                   <height>0</height>
                  </size>
                 </property>
@@ -2647,7 +2689,7 @@
                     <item>
                      <widget class="QCheckBox" name="checkBoxYCur2">
                       <property name="sizePolicy">
-                       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                         <horstretch>0</horstretch>
                         <verstretch>0</verstretch>
                        </sizepolicy>
@@ -2892,7 +2934,7 @@
                     <item>
                      <widget class="QCheckBox" name="checkBoxCur2Visible">
                       <property name="sizePolicy">
-                       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                         <horstretch>0</horstretch>
                         <verstretch>0</verstretch>
                        </sizepolicy>
@@ -3028,45 +3070,75 @@
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="pushButtonHideCur2">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
+                    <widget class="QFrame" name="frame_23">
+                     <property name="frameShape">
+                      <enum>QFrame::NoFrame</enum>
                      </property>
-                     <property name="toolTip">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hide cursor&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     <property name="frameShadow">
+                      <enum>QFrame::Raised</enum>
                      </property>
-                     <property name="text">
-                      <string/>
-                     </property>
-                     <property name="icon">
-                      <iconset resource="resources.qrc">
-                       <normaloff>:/images/icons/multiply.png</normaloff>:/images/icons/multiply.png</iconset>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QComboBox" name="comboBoxCursor2Channel">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>0</width>
-                       <height>0</height>
-                      </size>
-                     </property>
-                     <property name="maxVisibleItems">
-                      <number>1000</number>
-                     </property>
-                     <property name="sizeAdjustPolicy">
-                      <enum>QComboBox::AdjustToContents</enum>
-                     </property>
+                     <layout class="QHBoxLayout" name="horizontalLayout_19">
+                      <property name="leftMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="topMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="rightMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="bottomMargin">
+                       <number>0</number>
+                      </property>
+                      <item>
+                       <widget class="QPushButton" name="pushButtonHideCur2">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="toolTip">
+                         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hide cursor&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                        </property>
+                        <property name="text">
+                         <string/>
+                        </property>
+                        <property name="icon">
+                         <iconset resource="resources.qrc">
+                          <normaloff>:/images/icons/multiply.png</normaloff>:/images/icons/multiply.png</iconset>
+                        </property>
+                        <property name="iconSize">
+                         <size>
+                          <width>16</width>
+                          <height>16</height>
+                         </size>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QComboBox" name="comboBoxCursor2Channel">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="minimumSize">
+                         <size>
+                          <width>0</width>
+                          <height>0</height>
+                         </size>
+                        </property>
+                        <property name="maxVisibleItems">
+                         <number>1000</number>
+                        </property>
+                        <property name="sizeAdjustPolicy">
+                         <enum>QComboBox::AdjustToContents</enum>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
                     </widget>
                    </item>
                   </layout>
@@ -3931,7 +4003,7 @@
              <attribute name="title">
               <string/>
              </attribute>
-             <layout class="QHBoxLayout" name="horizontalLayout_26" stretch="1,1000">
+             <layout class="QHBoxLayout" name="horizontalLayout_26" stretch="1,100,1">
               <property name="leftMargin">
                <number>6</number>
               </property>
@@ -3950,7 +4022,7 @@
                  <enum>QFrame::StyledPanel</enum>
                 </property>
                 <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
+                 <enum>QFrame::Plain</enum>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_11">
                  <property name="leftMargin">
@@ -3974,6 +4046,11 @@
                        <horstretch>0</horstretch>
                        <verstretch>0</verstretch>
                       </sizepolicy>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>10</pointsize>
+                      </font>
                      </property>
                      <property name="prefix">
                       <string>Ch </string>
@@ -4025,6 +4102,9 @@
                      </property>
                      <property name="currentText">
                       <string notr="true"/>
+                     </property>
+                     <property name="currentIndex">
+                      <number>1</number>
                      </property>
                      <item>
                       <property name="text">
@@ -4147,6 +4227,11 @@
                        <verstretch>0</verstretch>
                       </sizepolicy>
                      </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>10</pointsize>
+                      </font>
+                     </property>
                      <property name="prefix">
                       <string>CH </string>
                      </property>
@@ -4174,6 +4259,9 @@
                      </property>
                      <property name="currentText">
                       <string notr="true"/>
+                     </property>
+                     <property name="currentIndex">
+                      <number>2</number>
                      </property>
                      <item>
                       <property name="text">
@@ -4272,6 +4360,11 @@
                        <verstretch>0</verstretch>
                       </sizepolicy>
                      </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>10</pointsize>
+                      </font>
+                     </property>
                      <property name="prefix">
                       <string>CH </string>
                      </property>
@@ -4294,6 +4387,11 @@
                        <verstretch>0</verstretch>
                       </sizepolicy>
                      </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>10</pointsize>
+                      </font>
+                     </property>
                      <property name="prefix">
                       <string>CH </string>
                      </property>
@@ -4312,6 +4410,11 @@
                        <horstretch>1</horstretch>
                        <verstretch>0</verstretch>
                       </sizepolicy>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>10</pointsize>
+                      </font>
                      </property>
                      <property name="prefix">
                       <string>CH </string>
@@ -4390,6 +4493,11 @@
                        <verstretch>0</verstretch>
                       </sizepolicy>
                      </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>10</pointsize>
+                      </font>
+                     </property>
                      <property name="prefix">
                       <string>CH </string>
                      </property>
@@ -4411,6 +4519,11 @@
                        <horstretch>0</horstretch>
                        <verstretch>0</verstretch>
                       </sizepolicy>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>10</pointsize>
+                      </font>
                      </property>
                      <property name="prefix">
                       <string>Ch </string>
@@ -4454,6 +4567,11 @@
                        <verstretch>0</verstretch>
                       </sizepolicy>
                      </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>10</pointsize>
+                      </font>
+                     </property>
                      <property name="prefix">
                       <string>CH </string>
                      </property>
@@ -4492,6 +4610,269 @@
                  </size>
                 </property>
                </spacer>
+              </item>
+              <item>
+               <widget class="QFrame" name="frame_24">
+                <property name="frameShape">
+                 <enum>QFrame::StyledPanel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Plain</enum>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_21" stretch="1,1,1,1,1,1,1,1">
+                 <property name="spacing">
+                  <number>3</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>6</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>6</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>6</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>6</number>
+                 </property>
+                 <item>
+                  <widget class="QPushButton" name="pushButtonAvg1">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Average channel values (only for whole channel added by $$C message type)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                   <property name="text">
+                    <string>Average 1</string>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="resources.qrc">
+                     <normaloff>:/images/icons/average.png</normaloff>:/images/icons/average.png</iconset>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_20">
+                   <item>
+                    <widget class="QSpinBox" name="spinBoxAvg1Ch">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                       <horstretch>1</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>10</pointsize>
+                      </font>
+                     </property>
+                     <property name="prefix">
+                      <string>CH </string>
+                     </property>
+                     <property name="minimum">
+                      <number>1</number>
+                     </property>
+                     <property name="maximum">
+                      <number>16</number>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QSpinBox" name="spinBoxAvg1count">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>10</pointsize>
+                      </font>
+                     </property>
+                     <property name="toolTip">
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Average from this number of last received channels&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     </property>
+                     <property name="minimum">
+                      <number>2</number>
+                     </property>
+                     <property name="maximum">
+                      <number>999</number>
+                     </property>
+                     <property name="value">
+                      <number>5</number>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <widget class="Line" name="line_12">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="pushButtonAvg2">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Average channel values (only for whole channel added by $$C message type)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                   <property name="text">
+                    <string>Average 2</string>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="resources.qrc">
+                     <normaloff>:/images/icons/average.png</normaloff>:/images/icons/average.png</iconset>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_21">
+                   <item>
+                    <widget class="QSpinBox" name="spinBoxAvg2Ch">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                       <horstretch>1</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>10</pointsize>
+                      </font>
+                     </property>
+                     <property name="prefix">
+                      <string>CH </string>
+                     </property>
+                     <property name="minimum">
+                      <number>1</number>
+                     </property>
+                     <property name="maximum">
+                      <number>16</number>
+                     </property>
+                     <property name="value">
+                      <number>2</number>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QSpinBox" name="spinBoxAvg2count">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>10</pointsize>
+                      </font>
+                     </property>
+                     <property name="toolTip">
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Average from this number of last received channels&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     </property>
+                     <property name="minimum">
+                      <number>2</number>
+                     </property>
+                     <property name="maximum">
+                      <number>999</number>
+                     </property>
+                     <property name="value">
+                      <number>5</number>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <widget class="Line" name="line_13">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="pushButtonAvg3">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Average channel values (only for whole channel added by $$C message type)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                   <property name="text">
+                    <string>Average 3</string>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="resources.qrc">
+                     <normaloff>:/images/icons/average.png</normaloff>:/images/icons/average.png</iconset>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_23">
+                   <item>
+                    <widget class="QSpinBox" name="spinBoxAvg3Ch">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                       <horstretch>1</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>10</pointsize>
+                      </font>
+                     </property>
+                     <property name="prefix">
+                      <string>CH </string>
+                     </property>
+                     <property name="minimum">
+                      <number>1</number>
+                     </property>
+                     <property name="maximum">
+                      <number>16</number>
+                     </property>
+                     <property name="value">
+                      <number>3</number>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QSpinBox" name="spinBoxAvg3count">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <pointsize>10</pointsize>
+                      </font>
+                     </property>
+                     <property name="toolTip">
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Average from this number of last received channels&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     </property>
+                     <property name="minimum">
+                      <number>2</number>
+                     </property>
+                     <property name="maximum">
+                      <number>999</number>
+                     </property>
+                     <property name="value">
+                      <number>5</number>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </widget>
               </item>
              </layout>
             </widget>
@@ -5928,7 +6309,7 @@
              <attribute name="title">
               <string/>
              </attribute>
-             <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="0,0,0">
+             <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="1,1,1000">
               <property name="leftMargin">
                <number>6</number>
               </property>
@@ -6538,6 +6919,9 @@
                   <horstretch>0</horstretch>
                   <verstretch>0</verstretch>
                  </sizepolicy>
+                </property>
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Aditional settings&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="text">
                  <string/>
@@ -8780,8 +9164,8 @@ p, li { white-space: pre-wrap; }
      <y>227</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1008</x>
-     <y>590</y>
+     <x>974</x>
+     <y>554</y>
     </hint>
    </hints>
   </connection>
@@ -8808,8 +9192,8 @@ p, li { white-space: pre-wrap; }
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>911</x>
-     <y>255</y>
+     <x>891</x>
+     <y>252</y>
     </hint>
     <hint type="destinationlabel">
      <x>904</x>
@@ -8840,12 +9224,12 @@ p, li { white-space: pre-wrap; }
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>945</x>
-     <y>589</y>
+     <x>911</x>
+     <y>553</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1008</x>
-     <y>522</y>
+     <x>974</x>
+     <y>486</y>
     </hint>
    </hints>
   </connection>
@@ -8856,12 +9240,12 @@ p, li { white-space: pre-wrap; }
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1015</x>
-     <y>736</y>
+     <x>981</x>
+     <y>700</y>
     </hint>
     <hint type="destinationlabel">
-     <x>985</x>
-     <y>630</y>
+     <x>951</x>
+     <y>594</y>
     </hint>
    </hints>
   </connection>
@@ -8872,12 +9256,12 @@ p, li { white-space: pre-wrap; }
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1015</x>
-     <y>736</y>
+     <x>981</x>
+     <y>700</y>
     </hint>
     <hint type="destinationlabel">
-     <x>985</x>
-     <y>657</y>
+     <x>951</x>
+     <y>621</y>
     </hint>
    </hints>
   </connection>
@@ -8888,12 +9272,12 @@ p, li { white-space: pre-wrap; }
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1015</x>
-     <y>736</y>
+     <x>981</x>
+     <y>700</y>
     </hint>
     <hint type="destinationlabel">
-     <x>985</x>
-     <y>684</y>
+     <x>951</x>
+     <y>648</y>
     </hint>
    </hints>
   </connection>
@@ -8904,12 +9288,12 @@ p, li { white-space: pre-wrap; }
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1015</x>
-     <y>736</y>
+     <x>981</x>
+     <y>700</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1016</x>
-     <y>630</y>
+     <x>982</x>
+     <y>594</y>
     </hint>
    </hints>
   </connection>
@@ -8920,12 +9304,12 @@ p, li { white-space: pre-wrap; }
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1015</x>
-     <y>736</y>
+     <x>981</x>
+     <y>700</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1016</x>
-     <y>657</y>
+     <x>982</x>
+     <y>621</y>
     </hint>
    </hints>
   </connection>
@@ -8936,12 +9320,12 @@ p, li { white-space: pre-wrap; }
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1015</x>
-     <y>736</y>
+     <x>981</x>
+     <y>700</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1016</x>
-     <y>684</y>
+     <x>982</x>
+     <y>648</y>
     </hint>
    </hints>
   </connection>
@@ -8952,8 +9336,8 @@ p, li { white-space: pre-wrap; }
    <slot>resetTerminal()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1008</x>
-     <y>467</y>
+     <x>974</x>
+     <y>431</y>
     </hint>
     <hint type="destinationlabel">
      <x>846</x>
@@ -8969,7 +9353,7 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>207</x>
-     <y>528</y>
+     <y>492</y>
     </hint>
     <hint type="destinationlabel">
      <x>385</x>
@@ -8985,7 +9369,7 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>207</x>
-     <y>555</y>
+     <y>519</y>
     </hint>
     <hint type="destinationlabel">
      <x>507</x>
@@ -9001,7 +9385,7 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>207</x>
-     <y>582</y>
+     <y>546</y>
     </hint>
     <hint type="destinationlabel">
      <x>630</x>
@@ -9017,7 +9401,7 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>220</x>
-     <y>526</y>
+     <y>490</y>
     </hint>
     <hint type="destinationlabel">
      <x>144</x>
@@ -9033,7 +9417,7 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>124</x>
-     <y>693</y>
+     <y>657</y>
     </hint>
     <hint type="destinationlabel">
      <x>57</x>
@@ -9049,7 +9433,7 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>220</x>
-     <y>651</y>
+     <y>615</y>
     </hint>
     <hint type="destinationlabel">
      <x>186</x>
@@ -9064,8 +9448,8 @@ p, li { white-space: pre-wrap; }
    <slot>copyToClipboard()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>958</x>
-     <y>467</y>
+     <x>924</x>
+     <y>431</y>
     </hint>
     <hint type="destinationlabel">
      <x>846</x>
@@ -9081,7 +9465,7 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>457</x>
-     <y>693</y>
+     <y>657</y>
     </hint>
     <hint type="destinationlabel">
      <x>333</x>
@@ -9097,7 +9481,7 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>457</x>
-     <y>526</y>
+     <y>490</y>
     </hint>
     <hint type="destinationlabel">
      <x>322</x>
@@ -9112,12 +9496,12 @@ p, li { white-space: pre-wrap; }
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>800</x>
-     <y>590</y>
+     <x>766</x>
+     <y>554</y>
     </hint>
     <hint type="destinationlabel">
-     <x>884</x>
-     <y>562</y>
+     <x>850</x>
+     <y>526</y>
     </hint>
    </hints>
   </connection>
@@ -9129,11 +9513,11 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>207</x>
-     <y>528</y>
+     <y>492</y>
     </hint>
     <hint type="destinationlabel">
      <x>130</x>
-     <y>548</y>
+     <y>512</y>
     </hint>
    </hints>
   </connection>
@@ -9145,11 +9529,11 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>207</x>
-     <y>528</y>
+     <y>492</y>
     </hint>
     <hint type="destinationlabel">
      <x>131</x>
-     <y>583</y>
+     <y>547</y>
     </hint>
    </hints>
   </connection>
@@ -9161,11 +9545,11 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>207</x>
-     <y>528</y>
+     <y>492</y>
     </hint>
     <hint type="destinationlabel">
-     <x>104</x>
-     <y>657</y>
+     <x>93</x>
+     <y>621</y>
     </hint>
    </hints>
   </connection>
@@ -9177,11 +9561,11 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>207</x>
-     <y>528</y>
+     <y>492</y>
     </hint>
     <hint type="destinationlabel">
-     <x>104</x>
-     <y>689</y>
+     <x>93</x>
+     <y>589</y>
     </hint>
    </hints>
   </connection>
@@ -9193,11 +9577,11 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>207</x>
-     <y>528</y>
+     <y>492</y>
     </hint>
     <hint type="destinationlabel">
-     <x>276</x>
-     <y>648</y>
+     <x>240</x>
+     <y>612</y>
     </hint>
    </hints>
   </connection>
@@ -9209,11 +9593,11 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>207</x>
-     <y>528</y>
+     <y>492</y>
     </hint>
     <hint type="destinationlabel">
-     <x>276</x>
-     <y>692</y>
+     <x>240</x>
+     <y>656</y>
     </hint>
    </hints>
   </connection>
@@ -9225,11 +9609,11 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>207</x>
-     <y>528</y>
+     <y>492</y>
     </hint>
     <hint type="destinationlabel">
-     <x>524</x>
-     <y>693</y>
+     <x>490</x>
+     <y>657</y>
     </hint>
    </hints>
   </connection>
@@ -9241,11 +9625,11 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>207</x>
-     <y>528</y>
+     <y>492</y>
     </hint>
     <hint type="destinationlabel">
-     <x>518</x>
-     <y>647</y>
+     <x>424</x>
+     <y>611</y>
     </hint>
    </hints>
   </connection>
@@ -9257,7 +9641,7 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>457</x>
-     <y>602</y>
+     <y>566</y>
     </hint>
     <hint type="destinationlabel">
      <x>387</x>
@@ -9273,7 +9657,7 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>457</x>
-     <y>644</y>
+     <y>608</y>
     </hint>
     <hint type="destinationlabel">
      <x>529</x>
@@ -9305,11 +9689,11 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>125</x>
-     <y>609</y>
+     <y>573</y>
     </hint>
     <hint type="destinationlabel">
      <x>125</x>
-     <y>634</y>
+     <y>598</y>
     </hint>
    </hints>
   </connection>
@@ -9321,11 +9705,11 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>207</x>
-     <y>528</y>
+     <y>492</y>
     </hint>
     <hint type="destinationlabel">
-     <x>104</x>
-     <y>625</y>
+     <x>93</x>
+     <y>653</y>
     </hint>
    </hints>
   </connection>
@@ -9337,11 +9721,27 @@ p, li { white-space: pre-wrap; }
    <hints>
     <hint type="sourcelabel">
      <x>207</x>
-     <y>528</y>
+     <y>492</y>
     </hint>
     <hint type="destinationlabel">
      <x>123</x>
      <y>603</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radioButtonFreeRange</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>spinBoxShiftStep</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>176</x>
+     <y>478</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>292</x>
+     <y>631</y>
     </hint>
    </hints>
   </connection>

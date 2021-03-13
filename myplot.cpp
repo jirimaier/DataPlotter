@@ -283,6 +283,8 @@ void MyPlot::checkIfTracerTextFits() {
 int MyPlot::keyToNearestSample(QCPGraph* mGraph, double keyCoord) {
   // Převzato z funkce pro originální tracer v QCustomPlot a upraveno
 
+  auto begin =  mGraph->data()->begin();
+
   QCPGraphDataContainer::const_iterator it = mGraph->data()->findBegin(keyCoord);
   if (it != mGraph->data()->constEnd()) // mGraphKey is not exactly on last iterator,
     // but somewhere between iterators
@@ -293,13 +295,13 @@ int MyPlot::keyToNearestSample(QCPGraph* mGraph, double keyCoord) {
 
     // find iterator with key closest to mGraphKey:
     if (keyCoord < (prevIt->key + it->key) * 0.5)
-      return prevIt - mGraph->data()->begin(); // Vrátí index vzorku
+      return prevIt - begin; // Vrátí index vzorku
     else
-      return it - mGraph->data()->begin();  // Vrátí index vzorku
+      return it -  begin; // Vrátí index vzorku
   } else // mGraphKey is exactly on last iterator (should actually be
     // caught when comparing first/last keys, but this is a
     // failsafe for fp uncertainty)
-    return it - mGraph->data()->begin();  // Vrátí index vzorku
+    return it - begin;  // Vrátí index vzorku
 }
 
 void MyPlot::mouseReleased(QMouseEvent* event) {

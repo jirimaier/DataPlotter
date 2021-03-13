@@ -36,6 +36,7 @@
 #include "myplot.h"
 #include "serialsettingsdialog.h"
 #include "mycursorslider.h"
+#include "averager.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -48,7 +49,7 @@ class MainWindow : public QMainWindow {
 
  public:
   explicit MainWindow(QWidget* parent = nullptr);
-  void init(QTranslator* translator, const PlotData* plotData, const PlotMath* plotMath, const SerialReader* serialReader);
+  void init(QTranslator* translator, const PlotData* plotData, const PlotMath* plotMath, const SerialReader* serialReader, const Averager* avg1, const Averager* avg2, const Averager* avg3);
   ~MainWindow();
 
  private:
@@ -257,6 +258,18 @@ class MainWindow : public QMainWindow {
   void on_pushButtonHideCur1_clicked();
   void on_pushButtonHideCur2_clicked();
 
+  void on_pushButtonAvg1_toggled(bool checked) {emit resetAverager1(ui->spinBoxAvg1Ch->value(), checked);}
+  void on_pushButtonAvg2_toggled(bool checked) {emit resetAverager2(ui->spinBoxAvg2Ch->value(), checked);}
+  void on_pushButtonAvg3_toggled(bool checked) {emit resetAverager3(ui->spinBoxAvg3Ch->value(), checked);}
+
+  void on_spinBoxAvg1Ch_valueChanged(int arg1) {emit resetAverager1(arg1, ui->pushButtonAvg1->isChecked());}
+  void on_spinBoxAvg2Ch_valueChanged(int arg1) {emit resetAverager2(arg1, ui->pushButtonAvg2->isChecked());}
+  void on_spinBoxAvg3Ch_valueChanged(int arg1) {emit resetAverager3(arg1, ui->pushButtonAvg3->isChecked());}
+
+  void on_spinBoxAvg1count_valueChanged(int arg1) {emit setAveragerCount1(arg1);}
+  void on_spinBoxAvg2count_valueChanged(int arg1) {emit setAveragerCount2(arg1);}
+  void on_spinBoxAvg3count_valueChanged(int arg1) {emit setAveragerCount3(arg1);}
+
  public slots:
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumMessageTarget target);
   void showPlotStatus(PlotStatus::enumPlotStatus type);
@@ -309,5 +322,11 @@ class MainWindow : public QMainWindow {
   void requestFFT2(QSharedPointer<QCPGraphDataContainer> data, FFTType::enumFFTType type, FFTWindow::enumFFTWindow window, bool removeDC, int pWelchtimeDivisions, bool twosided, bool zerocenter, int minNFFT);
   void setInterpolation(int chID, bool enabled);
   void interpolate(int chID, const QSharedPointer<QCPGraphDataContainer> data, QCPRange visibleRange, bool dataIsFromInterpolationBuffer);
+  void resetAverager1(int chID, bool enabled);
+  void resetAverager2(int chID, bool enabled);
+  void resetAverager3(int chID, bool enabled);
+  void setAveragerCount1(int count);
+  void setAveragerCount2(int count);
+  void setAveragerCount3(int count);
 };
 #endif // MAINWINDOW_H

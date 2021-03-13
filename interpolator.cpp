@@ -1,3 +1,18 @@
+//  Copyright (C) 2020-2021  Jiří Maier
+
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+
+//  You should have received a copy of the GNU General Public License
+//  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 #include "interpolator.h"
 
 Interpolator::Interpolator(QObject* parent) : QObject(parent) {
@@ -13,6 +28,8 @@ Interpolator::Interpolator(QObject* parent) : QObject(parent) {
 }
 
 void Interpolator::interpolate(int chID, const QSharedPointer<QCPGraphDataContainer> data, QCPRange visibleRange, bool dataIsFromInterpolationBuffer) {
+  int M = FIRfilter.size() - 1;
+
   double fs = (data->size() - 1) / (data->at(data->size() - 1)->key - data->at(0)->key);
   double resultSamplingPeriod = 1.0 / INTERPOLATION_UPSAMPLING / fs;
 
@@ -21,7 +38,7 @@ void Interpolator::interpolate(int chID, const QSharedPointer<QCPGraphDataContai
   auto dataBegin = data->begin(); // Při volání této funkce se změní adresy v data!!!
   auto dataEnd = data->end();
 
-  int samplePaddings = (FIRfilter.size() - 1) / 2 / INTERPOLATION_UPSAMPLING;
+  int samplePaddings = M / 2 / INTERPOLATION_UPSAMPLING;
   int timePaddings = visibleRange.size() / 2;
 
   const QCPGraphData* begin = data->findBegin(visibleRange.lower - timePaddings) - samplePaddings;
@@ -52,31 +69,29 @@ void Interpolator::interpolate(int chID, const QSharedPointer<QCPGraphDataContai
     return;
   }
 
-  values = convolute(values, FIRfilter);
-
-  values.remove(0, (FIRfilter.length() - 1) / 2);
+  values = filter(values, FIRfilter);
 
   auto result = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer);
-  for (int i = 0; i < values.size(); i++) {
-    result->add(QCPGraphData((begin + i / INTERPOLATION_UPSAMPLING)->key + (i % INTERPOLATION_UPSAMPLING)*resultSamplingPeriod, values.at(i)*INTERPOLATION_UPSAMPLING));
-  }
+  for (int i = 0; i < values.size(); i++)
+    result->add(QCPGraphData((begin + (i + M / 2) / INTERPOLATION_UPSAMPLING)->key + ((i + M / 2) % INTERPOLATION_UPSAMPLING)*resultSamplingPeriod, values.at(i)*INTERPOLATION_UPSAMPLING));
 
   emit interpolationResult(chID, data, result, dataIsFromInterpolationBuffer);
   emit finished(chID);
 }
 
-QVector<float> Interpolator::convolute(QVector<float> x, QVector<float> h) {
+QVector<float> Interpolator::filter(QVector<float> x, QVector<float> h) {
+  // Provede konvoluci s odezvou (koeficienty) FIR filtru prvních M/2 a posledních M/2 vzorků je vynecháno (přechodné jevy)
+  // Výstup se tedy předbíhá o M/2 oproti vstupu (filtrovaný signál by se o M/2 zpožďoval, ale na začátku je vynecháno M vzorků)
   QVector<float> y;
 
-  int N = x.length();
-  int M = h.length();
+  int N = x.length();     // Délka signálu
+  int M = h.length(); // Délka odezvy filtru
 
-  y.resize(N);
+  y.resize(N - M + 1);
 
-  for (int n = 0; n < N; n++) {
+  for (int n = M - 1; n < N; n++) {
     for (int k = 0; k < M; k++) {
-      if (n - k >= 0)
-        y[n] += x[n - k] * h[k];
+      y[n - M + 1] += x[n - k] * h[k];
     }
   }
 

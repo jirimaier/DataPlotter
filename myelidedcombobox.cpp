@@ -22,6 +22,9 @@ MyElidedComboBox::MyElidedComboBox(QWidget* parent) : QComboBox(parent) {
 void MyElidedComboBox::paintEvent(QPaintEvent* event) {
   Q_UNUSED(event)
 
+  // Pokud je text delší než pole, je oříznut a zakončen třemi tečkami
+
+  // Kód je založen na tomto:
   // https://stackoverflow.com/questions/41360618/qcombobox-elided-text-on-selected-item
 
   QStyleOptionComboBox opt;

@@ -13,31 +13,31 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef MYSCALEDOUBLESPINBOX_H
-#define MYSCALEDOUBLESPINBOX_H
+#ifndef AVERAGER_H
+#define AVERAGER_H
 
-#include "enumsDefinesConstants.h"
-#include <QDoubleSpinBox>
-#include <QWidget>
+#include <QObject>
+#include "qcustomplot.h"
 
-#define MULTIPLY QChar((uint16_t)0x00D7)
-#define DIVIDE QChar((uint16_t)0x00F7)
-
-class MyScaleDoubleSpinBox : public QDoubleSpinBox {
+class Averager : public QObject {
   Q_OBJECT
  public:
-  explicit MyScaleDoubleSpinBox(QWidget* parent = nullptr);
-
- public slots:
-  void stepBy(int steps);
+  explicit Averager(QObject* parent = nullptr);
 
  private:
-  QValidator::State validate(QString& input, int& pos) const;
-  QString textFromValue(double val) const;
-  double valueFromText(const QString& text) const;
+  QList<QCPGraphDataContainer> list;
+  int count = 5;
+  int channel;
+
+ public slots:
+  void reset(int chID, bool enabled);
+  void setCount(int count);
+  void newDataVector(QSharedPointer<QCPGraphDataContainer> data);
 
  signals:
+  /// Předá data do grafu
+  void addVectorToPlot(int ch, QSharedPointer<QCPGraphDataContainer>, bool isMath = false);
 
 };
 
-#endif // MYSCALEDOUBLESPINBOX_H
+#endif // AVERAGER_H

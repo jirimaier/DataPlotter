@@ -306,7 +306,7 @@ void MainWindow::updateDataRate() {
       on_pushButtonAutoset_clicked();
       autoAutosetPending = false;
     }
-    ui->labelUpdateRate->setText((lastUpdateWasLogic ? "Logic1: " : "Ch1: ") + QString::number(dataUpdates) + " " + (lastUpdateWasPoint ? tr("points") : tr("updates")) + " / s");
+    ui->labelUpdateRate->setText((lastUpdateWasLogic ? "Logic: " : "Ch1: ") + QString::number(dataUpdates) + " " + (lastUpdateWasPoint ? tr("points") : tr("updates")) + " / s");
   } else
     ui->labelUpdateRate->clear();
   dataUpdates = 0;

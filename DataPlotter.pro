@@ -9,6 +9,7 @@ DEFINES += QT_DEPRECATED_WARNINGS QCUSTOMPLOT_USE_OPENGL
 CONFIG += c++11
 
 SOURCES += \
+    averager.cpp \
     interpolator.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -42,6 +43,7 @@ SOURCES += \
     signalprocessing.cpp
 
 HEADERS += \
+    averager.h \
     enumsDefinesConstants.h \
     interpolator.h \
     mainwindow.h \

@@ -141,6 +141,10 @@ void MainWindow::setGuiDefaults() {
   ui->doubleSpinBoxXCur2->setVisible(false);
   ui->doubleSpinBoxYCur1->setVisible(false);
   ui->doubleSpinBoxYCur2->setVisible(false);
+
+  emit setAveragerCount1(ui->spinBoxAvg1count->value());
+  emit setAveragerCount2(ui->spinBoxAvg2count->value());
+  emit setAveragerCount3(ui->spinBoxAvg3count->value());
 }
 
 void MainWindow::setGuiArrays() {

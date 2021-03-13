@@ -136,11 +136,15 @@ void MainWindow::updateCursorMeasurementsText() {
     // Time
     else if (IS_ANALOG_OR_MATH_OR_LOGIC(ch1) && IS_ANALOG_OR_MATH_OR_LOGIC(ch2)) {
       if (IS_ANALOG_OR_MATH(ch1) && IS_ANALOG_OR_MATH(ch2)) {
+
         // Both analog
         ui->labelCurDeltaTime->setText(floatToNiceString(dt, 4, true, true) + ui->plot->getXUnit());
-        ui->labelCurDeltaValue->setText(floatToNiceString(dy, 4, true, true) + ui->plot->getYUnit());
-        ui->labelCurRatio->setText(floatToNiceString(value1 / value2, 4, true, true) + ui->plot->getYUnit() + "/" + ui->plot->getYUnit());
-        ui->labelCurSlope->setText(floatToNiceString(dy / dt, 4, true, true) + ui->plot->getYUnit() + "/" + ui->plot->getXUnit());
+
+        if (ui->plot->getValueCursorVisible(Cursor1) || ui->plot->getValueCursorVisible(Cursor2)) {
+          ui->labelCurDeltaValue->setText(floatToNiceString(dy, 4, true, true) + ui->plot->getYUnit());
+          ui->labelCurRatio->setText(floatToNiceString(value1 / value2, 4, true, true) + ui->plot->getYUnit() + "/" + ui->plot->getYUnit());
+          ui->labelCurSlope->setText(floatToNiceString(dy / dt, 4, true, true) + ui->plot->getYUnit() + "/" + ui->plot->getXUnit());
+        }
         ui->labelCurFreq->setText(floatToNiceString(1.0 / dt, 4, true, true) + ui->plotFFT->getXUnit());
       } else if (IS_ANALOG_OR_MATH(ch1) || IS_ANALOG_OR_MATH(ch2)) {
         // Analog and Logic
@@ -213,10 +217,13 @@ void MainWindow::updateCursor(Cursors::enumCursors cursor, int selectedChannel, 
 }
 
 void MainWindow::on_checkBoxCur1Visible_stateChanged(int arg1) {
-  if (IS_LOGIC_INDEX(ui->comboBoxCursor1Channel->currentIndex()) && arg1 == Qt::CheckState::Checked) {
+  if (!IS_ANALOG_OR_MATH(ui->comboBoxCursor1Channel->currentIndex()) && arg1 == Qt::CheckState::Checked) {
     ui->checkBoxCur1Visible->setCheckState(Qt::CheckState::Unchecked);
     return;
   }
+  if (ui->checkBoxYCur1->checkState() == Qt::PartiallyChecked && arg1 == Qt::Unchecked)
+    ui->checkBoxYCur1->setCheckState(Qt::Unchecked);
+
   ui->doubleSpinBoxXCur1->setVisible(arg1 == Qt::CheckState::Checked);
   ui->horizontalSliderTimeCur1->setDisabled(arg1 == Qt::CheckState::Checked);
   ui->labelCur1Time->setHidden(arg1 == Qt::CheckState::Checked);
@@ -234,10 +241,13 @@ void MainWindow::on_checkBoxCur1Visible_stateChanged(int arg1) {
 }
 
 void MainWindow::on_checkBoxCur2Visible_stateChanged(int arg1) {
-  if (IS_LOGIC_INDEX(ui->comboBoxCursor2Channel->currentIndex()) && arg1 == Qt::CheckState::Checked) {
-    ui->checkBoxCur2Visible->setCheckState(Qt::CheckState::PartiallyChecked);
+  if (!IS_ANALOG_OR_MATH(ui->comboBoxCursor2Channel->currentIndex()) && arg1 == Qt::CheckState::Checked) {
+    ui->checkBoxCur2Visible->setCheckState(Qt::CheckState::Unchecked);
     return;
   }
+
+  if (ui->checkBoxYCur2->checkState() == Qt::PartiallyChecked && arg1 == Qt::Unchecked)
+    ui->checkBoxYCur2->setCheckState(Qt::Unchecked);
 
   ui->doubleSpinBoxXCur2->setVisible(arg1 == Qt::CheckState::Checked);
   ui->horizontalSliderTimeCur2->setDisabled(arg1 == Qt::CheckState::Checked);
@@ -259,11 +269,13 @@ void MainWindow::on_comboBoxCursor1Channel_currentIndexChanged(int index) {
   setCursorsVisibility(Cursor1, index, ui->checkBoxCur1Visible->checkState() != Qt::CheckState::Unchecked, ui->checkBoxYCur1->checkState());
   if (IS_FFT_INDEX(index)) {
     ui->doubleSpinBoxXCur1->setSuffix(tr("Hz"));
+    ui->checkBoxCur1Visible->setText(tr("Frequency"));
     if (ui->comboBoxFFTType->currentIndex() == FFTType::spectrum)
       ui->doubleSpinBoxYCur1->setSuffix("");
     else
       ui->doubleSpinBoxYCur1->setSuffix("dB");
   } else {
+    ui->checkBoxCur1Visible->setText(tr("Time"));
     ui->doubleSpinBoxXCur1->setSuffix(tr("s"));
     ui->doubleSpinBoxYCur1->setSuffix(ui->lineEditVUnit->text());
   }
@@ -280,11 +292,13 @@ void MainWindow::on_comboBoxCursor2Channel_currentIndexChanged(int index) {
   setCursorsVisibility(Cursor2, index, ui->checkBoxCur2Visible->checkState() != Qt::CheckState::Unchecked, ui->checkBoxYCur2->checkState());
   if (IS_FFT_INDEX(index)) {
     ui->doubleSpinBoxXCur2->setSuffix(tr("Hz"));
+    ui->checkBoxCur2Visible->setText(tr("Frequency"));
     if (ui->comboBoxFFTType->currentIndex() == FFTType::spectrum)
       ui->doubleSpinBoxYCur2->setSuffix("");
     else
       ui->doubleSpinBoxYCur2->setSuffix("dB");
   } else {
+    ui->checkBoxCur2Visible->setText(tr("Time"));
     ui->doubleSpinBoxXCur2->setSuffix(tr("s"));
     ui->doubleSpinBoxYCur2->setSuffix(ui->lineEditVUnit->text());
   }
@@ -357,7 +371,7 @@ void MainWindow::offsetChangedByMouse(int chid) {
 
 void MainWindow::on_checkBoxYCur1_stateChanged(int arg1) {
   if ((ui->checkBoxCur1Visible->checkState() != Qt::PartiallyChecked) && ui->checkBoxYCur1->checkState() == Qt::PartiallyChecked) {
-    ui->checkBoxYCur1->setChecked(Qt::Checked);
+    ui->checkBoxYCur1->setCheckState(Qt::Checked);
     return;
   }
 
@@ -377,7 +391,7 @@ void MainWindow::on_checkBoxYCur1_stateChanged(int arg1) {
 
 void MainWindow::on_checkBoxYCur2_stateChanged(int arg1) {
   if (ui->checkBoxCur2Visible->checkState() != Qt::PartiallyChecked && ui->checkBoxYCur2->checkState() == Qt::PartiallyChecked) {
-    ui->checkBoxYCur2->setChecked(Qt::Checked);
+    ui->checkBoxYCur2->setCheckState(Qt::Checked);
     return;
   }
   ui->doubleSpinBoxYCur2->setVisible(arg1 == Qt::CheckState::Checked);

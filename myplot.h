@@ -62,6 +62,7 @@ class MyPlot : public QCustomPlot {
   QString getXUnit() { return xUnit; }
   QString getYUnit() { return yUnit; }
   double getValueCursorPosition(Cursors::enumCursors cursor) {return cursorsVal.at(cursor)->start->coords().y();}
+  bool getValueCursorVisible(Cursors::enumCursors cursor) {return cursorsVal.at(cursor)->visible();}
   double getTimeCursorPosition(Cursors::enumCursors cursor) {return cursorsKey.at(cursor)->start->coords().x();}
   int keyToNearestSample(QCPGraph* graph, double keyCoord);
 
