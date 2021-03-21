@@ -443,7 +443,7 @@ void MyMainPlot::setVerticalRange(double value) {
   }
 }
 
-void MyMainPlot::setZoomRange(int value) {
+void MyMainPlot::setZoom(int value) {
   zoom = value;
   redraw();
 }

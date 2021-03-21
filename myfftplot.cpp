@@ -35,6 +35,9 @@ QPair<QVector<double>, QVector<double>> MyFFTPlot::getDataVector(int chID) {
 }
 
 QByteArray MyFFTPlot::exportCSV(char separator, char decimal, int precision) {
+  // Stejné jako export všech kanálů v hlavním grafu.
+  // označením "time" se zde myslí frekvence (prostě souřadnice X)
+
   QByteArray output = "";
   QVector<QPair<QVector<double>, QVector<double>>> channels;
   bool firstNonEmpty = true;
@@ -72,11 +75,11 @@ QByteArray MyFFTPlot::exportCSV(char separator, char decimal, int precision) {
   return output;
 }
 
-QPair<unsigned int, unsigned int> MyFFTPlot::getVisibleSamplesRange(int ch) {
-  if (graph(ch)->data()->isEmpty())
+QPair<unsigned int, unsigned int> MyFFTPlot::getVisibleSamplesRange(int chID) {
+  if (graph(chID)->data()->isEmpty())
     return (QPair<unsigned int, unsigned int>(0, 0));
-  unsigned int min = graph(ch)->findBegin(xAxis->range().lower, false);
-  unsigned int max = graph(ch)->findEnd(xAxis->range().upper, false) - 1; // end je za posledním, snížit o 1
+  unsigned int min = graph(chID)->findBegin(xAxis->range().lower, false);
+  unsigned int max = graph(chID)->findEnd(xAxis->range().upper, false) - 1; // end je za posledním, snížit o 1
   return (QPair<unsigned int, unsigned int>(min, max));
 }
 
@@ -90,25 +93,25 @@ bool MyFFTPlot::setChSorce(int ch, int sourceChannel, QColor color) {
   return false;
 }
 
-void MyFFTPlot::newData(int ch, QSharedPointer<QCPGraphDataContainer> data) {
+void MyFFTPlot::newData(int chID, QSharedPointer<QCPGraphDataContainer> data) {
   // Pokud se změní počet vzorků, kursor by se posunul mimo původní pozici (z hlediska polohy na ose), protože se drží
   // indexu vzorku, v případě změny se tedy kursor přesune na nový vzorek, který je nejblíže původní poloze
-  if (data->size() != graph(ch)->data()->size()) {
+  if (data->size() != graph(chID)->data()->size()) {
     double cur1ShouldBeAtKey = 0, cur2ShouldBeAtKey = 0;
-    if (cursorsKey[Cursors::Cursor1]->visible() && cur1Graph == ch)
+    if (cursorsKey[Cursors::Cursor1]->visible() && cur1Graph == chID)
       cur1ShouldBeAtKey = cursorsKey[Cursors::Cursor1]->start->coords().x();
-    if (cursorsKey[Cursors::Cursor2]->visible() && cur2Graph == ch)
+    if (cursorsKey[Cursors::Cursor2]->visible() && cur2Graph == chID)
       cur2ShouldBeAtKey = cursorsKey[Cursors::Cursor2]->start->coords().x();
 
-    graph(ch)->setData(data);
+    graph(chID)->setData(data);
 
-    if (cursorsKey[Cursors::Cursor1]->visible() && cur1Graph == ch)
+    if (cursorsKey[Cursors::Cursor1]->visible() && cur1Graph == chID)
       emit moveTimeCursor(Cursors::Cursor1, cur1Graph == -1 ? 0 : keyToNearestSample(graph(cur1Graph), cur1ShouldBeAtKey), cur1ShouldBeAtKey);
-    if (cursorsKey[Cursors::Cursor2]->visible() && cur2Graph == ch)
+    if (cursorsKey[Cursors::Cursor2]->visible() && cur2Graph == chID)
       emit moveTimeCursor(Cursors::Cursor2, cur2Graph == -1 ? 0 : keyToNearestSample(graph(cur2Graph), cur2ShouldBeAtKey), cur1ShouldBeAtKey);
 
   } else {
-    graph(ch)->setData(data);
+    graph(chID)->setData(data);
   }
 
   if (autoSize)
@@ -116,7 +119,7 @@ void MyFFTPlot::newData(int ch, QSharedPointer<QCPGraphDataContainer> data) {
   this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
 
   // Přepsat text u traceru
-  if (tracer->visible() && currentTracerIndex == ch) {
+  if (tracer->visible() && currentTracerIndex == chID) {
     updateTracerText(currentTracerIndex);
   }
 }
@@ -132,19 +135,19 @@ void MyFFTPlot::clear() {
   this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
 }
 
-void MyFFTPlot::setStyle(int ch, int style) {
+void MyFFTPlot::setStyle(int chID, int style) {
   if (style == GraphStyle::line) {
-    graph(ch)->setScatterStyle(QCPScatterStyle::ssNone);
-    graph(ch)->setLineStyle(QCPGraph::lsLine);
-    graph(ch)->setBrush(Qt::NoBrush);
+    graph(chID)->setScatterStyle(QCPScatterStyle::ssNone);
+    graph(chID)->setLineStyle(QCPGraph::lsLine);
+    graph(chID)->setBrush(Qt::NoBrush);
   } else if (style == GraphStyle::point) {
-    graph(ch)->setScatterStyle(POINT_STYLE);
-    graph(ch)->setLineStyle(QCPGraph::lsNone);
-    graph(ch)->setBrush(Qt::NoBrush);
+    graph(chID)->setScatterStyle(POINT_STYLE);
+    graph(chID)->setLineStyle(QCPGraph::lsNone);
+    graph(chID)->setBrush(Qt::NoBrush);
   } else if (style == GraphStyle::linePoint) {
-    graph(ch)->setScatterStyle(POINT_STYLE);
-    graph(ch)->setLineStyle(QCPGraph::lsLine);
-    graph(ch)->setBrush(Qt::NoBrush);
+    graph(chID)->setScatterStyle(POINT_STYLE);
+    graph(chID)->setLineStyle(QCPGraph::lsLine);
+    graph(chID)->setBrush(Qt::NoBrush);
   }
   this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
 }

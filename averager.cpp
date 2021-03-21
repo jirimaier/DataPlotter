@@ -16,46 +16,65 @@
 #include "averager.h"
 
 Averager::Averager(QObject* parent) : QObject(parent) {
-
+  for (int i = 0; i < ANALOG_COUNT; i++)
+    count[i] = 8;
+  lists.resize(ANALOG_COUNT);
+  results.resize(ANALOG_COUNT);
 }
 
-void Averager::reset(int ch, bool enabled) {
-  Q_UNUSED(enabled)
-  list.clear();
-  channel = ch;
+void Averager::reset() {
+  for (int i = 0; i < ANALOG_COUNT; i++) {
+    lists[i].clear();
+    results[i].clear();
+  }
 }
 
-void Averager::setCount(int count) {
-  this->count = count;
+void Averager::setCount(int chID, int count) {
+  this->count[chID] = count;
 
-  while (list.length() > count)
-    list.removeLast();
+  while (lists.at(chID).length() > count) {
+    for (int i = 0; i < results[chID].size(); i++) {
+      results[chID][i] -= lists[chID].first().at(i);
+    }
+    lists[chID].removeFirst();
+  }
 }
 
-void Averager::newDataVector(QSharedPointer<QCPGraphDataContainer> data) {
-
-  if (!list.isEmpty()) {
-    if (list.first().size() != data->size())
-      list.clear();
+void Averager::newDataVector(int chID, double timeStep, QSharedPointer<QCPGraphDataContainer> data) {
+  if (data->size() != results.at(chID).size() || timeStep != lastTimeStep[chID]) {
+    results[chID].clear();
+    lists[chID].clear();
   }
 
-  list.push_front(*data);
+  lastTimeStep[chID] = timeStep;
 
-  if (list.length() > count)
-    list.removeLast();
-
-  QVector<double> values;
-  values.resize(data->size());
-
-  for (auto it = list.begin(); it != list.end(); it++) {
-    for (int i = 0; i < data->size(); i++)
-      values[i] += it->at(i)->value;
+  if (results.at(chID).isEmpty()) {
+    results[chID].resize(data->size());
   }
 
-  auto result = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer());
+  lists[chID].append(QVector<double>());
 
-  for (int i = 0; i < data->size(); i++)
-    result->add(QCPGraphData(data->at(i)->key, values.at(i) / list.size()));
+  for (auto it = data->begin(); it != data->end(); it++) {
+    lists[chID].last().append(it->value);
+  }
 
-  emit addVectorToPlot(channel - 1, result, false);
+  if (lists[chID].size() == count[chID] + 1) {
+    for (int i = 0; i < data->size(); i++) {
+      results[chID][i] -= lists[chID].first().at(i);
+    }
+    lists[chID].removeFirst();
+  }
+
+  Q_ASSERT(lists[chID].size() <= count[chID]);
+
+  for (int i = 0; i < data->size(); i++) {
+    results[chID][i] += data->at(i)->value;
+  }
+
+  for (auto it = data->begin(); it != data->end(); it++) {
+    it->value = results[chID][it - data->begin()];
+    it->value /= lists[chID].size();
+  }
+
+  emit addVectorToPlot(chID, data);
 }

@@ -24,17 +24,28 @@
 class Interpolator : public QObject {
   Q_OBJECT
  public:
-  QVector<float> FIRfilter;
   explicit Interpolator(QObject* parent = nullptr);
 
  private:
+  /// Filtr pro filterování při interpolaci
+  QVector<float> lowPassFIR;
+
+  /// Konvoluce signálu x s odezvou filtru h
   QVector<float> filter(QVector<float> x, QVector<float> h);
 
  public slots:
+  /// Interpoluje signál a výsledek odešle signálem interpolationResult, pokud data pochází z bufferu (přidávání po celých kanálech, jsou
+  /// v grafu prepsány i původní vzorky, aby odpovídali průběhu z kterého je vypočtena interpolace. Pokud byla data vzata přímo z grafu,
+  /// původní vzorky už v něm jsou a není potřeba je přepisovat.
   void interpolate(int chID, const QSharedPointer<QCPGraphDataContainer> data, QCPRange visibleRange, bool dataIsFromInterpolationBuffer);
 
  signals:
+  /// Odešle interpolovaný průběh, pokud data z kterých byla interpolace počítána pochází z bufferu (přidávání po celých kanálech, jsou
+  /// v grafu prepsány i původní vzorky, aby odpovídali průběhu z kterého je vypočtena interpolace. Pokud byla data vzata přímo z grafu,
+  /// původní vzorky už v něm jsou a není potřeba je přepisovat.
   void interpolationResult(int chID, QSharedPointer<QCPGraphDataContainer> dataOriginal, QSharedPointer<QCPGraphDataContainer> dataInterpolated, bool dataIsFromInterpolationBuffer);
+
+  /// Oznámí, že interpolace je hotová a tedy je možné zpracovat další průběh
   void finished(int chID);
 };
 

@@ -744,7 +744,7 @@
              <enum>QTabWidget::Rounded</enum>
             </property>
             <property name="currentIndex">
-             <number>6</number>
+             <number>3</number>
             </property>
             <property name="iconSize">
              <size>
@@ -4684,7 +4684,7 @@
                 <property name="frameShadow">
                  <enum>QFrame::Plain</enum>
                 </property>
-                <layout class="QVBoxLayout" name="verticalLayout_21" stretch="1,1,1,1,1,1,1,1">
+                <layout class="QVBoxLayout" name="verticalLayout_21" stretch="1,0,0">
                  <property name="spacing">
                   <number>3</number>
                  </property>
@@ -4701,12 +4701,12 @@
                   <number>6</number>
                  </property>
                  <item>
-                  <widget class="QPushButton" name="pushButtonAvg1">
+                  <widget class="QPushButton" name="pushButtonAvg">
                    <property name="toolTip">
                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Average channel values (only for whole channel added by $$C message type)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                    </property>
                    <property name="text">
-                    <string>Average 1</string>
+                    <string>Average</string>
                    </property>
                    <property name="icon">
                     <iconset resource="resources.qrc">
@@ -4718,223 +4718,44 @@
                   </widget>
                  </item>
                  <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_20">
-                   <item>
-                    <widget class="QSpinBox" name="spinBoxAvg1Ch">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                       <horstretch>1</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="font">
-                      <font>
-                       <pointsize>10</pointsize>
-                      </font>
-                     </property>
-                     <property name="prefix">
-                      <string>CH </string>
-                     </property>
-                     <property name="minimum">
-                      <number>1</number>
-                     </property>
-                     <property name="maximum">
-                      <number>16</number>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QSpinBox" name="spinBoxAvg1count">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="font">
-                      <font>
-                       <pointsize>10</pointsize>
-                      </font>
-                     </property>
-                     <property name="toolTip">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Average from this number of last received channels&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                     </property>
-                     <property name="minimum">
-                      <number>2</number>
-                     </property>
-                     <property name="maximum">
-                      <number>999</number>
-                     </property>
-                     <property name="value">
-                      <number>5</number>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
+                  <widget class="QSpinBox" name="spinBoxAvg">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>10</pointsize>
+                    </font>
+                   </property>
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Average from this number of last received channels&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                   <property name="minimum">
+                    <number>2</number>
+                   </property>
+                   <property name="maximum">
+                    <number>999</number>
+                   </property>
+                   <property name="value">
+                    <number>8</number>
+                   </property>
+                  </widget>
                  </item>
                  <item>
-                  <widget class="Line" name="line_12">
+                  <spacer name="verticalSpacer_8">
                    <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
+                    <enum>Qt::Vertical</enum>
                    </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="pushButtonAvg2">
-                   <property name="toolTip">
-                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Average channel values (only for whole channel added by $$C message type)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>20</width>
+                     <height>40</height>
+                    </size>
                    </property>
-                   <property name="text">
-                    <string>Average 2</string>
-                   </property>
-                   <property name="icon">
-                    <iconset resource="resources.qrc">
-                     <normaloff>:/images/icons/average.png</normaloff>:/images/icons/average.png</iconset>
-                   </property>
-                   <property name="checkable">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_21">
-                   <item>
-                    <widget class="QSpinBox" name="spinBoxAvg2Ch">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                       <horstretch>1</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="font">
-                      <font>
-                       <pointsize>10</pointsize>
-                      </font>
-                     </property>
-                     <property name="prefix">
-                      <string>CH </string>
-                     </property>
-                     <property name="minimum">
-                      <number>1</number>
-                     </property>
-                     <property name="maximum">
-                      <number>16</number>
-                     </property>
-                     <property name="value">
-                      <number>2</number>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QSpinBox" name="spinBoxAvg2count">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="font">
-                      <font>
-                       <pointsize>10</pointsize>
-                      </font>
-                     </property>
-                     <property name="toolTip">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Average from this number of last received channels&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                     </property>
-                     <property name="minimum">
-                      <number>2</number>
-                     </property>
-                     <property name="maximum">
-                      <number>999</number>
-                     </property>
-                     <property name="value">
-                      <number>5</number>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </item>
-                 <item>
-                  <widget class="Line" name="line_13">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="pushButtonAvg3">
-                   <property name="toolTip">
-                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Average channel values (only for whole channel added by $$C message type)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                   </property>
-                   <property name="text">
-                    <string>Average 3</string>
-                   </property>
-                   <property name="icon">
-                    <iconset resource="resources.qrc">
-                     <normaloff>:/images/icons/average.png</normaloff>:/images/icons/average.png</iconset>
-                   </property>
-                   <property name="checkable">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_23">
-                   <item>
-                    <widget class="QSpinBox" name="spinBoxAvg3Ch">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                       <horstretch>1</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="font">
-                      <font>
-                       <pointsize>10</pointsize>
-                      </font>
-                     </property>
-                     <property name="prefix">
-                      <string>CH </string>
-                     </property>
-                     <property name="minimum">
-                      <number>1</number>
-                     </property>
-                     <property name="maximum">
-                      <number>16</number>
-                     </property>
-                     <property name="value">
-                      <number>3</number>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QSpinBox" name="spinBoxAvg3count">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="font">
-                      <font>
-                       <pointsize>10</pointsize>
-                      </font>
-                     </property>
-                     <property name="toolTip">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Average from this number of last received channels&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                     </property>
-                     <property name="minimum">
-                      <number>2</number>
-                     </property>
-                     <property name="maximum">
-                      <number>999</number>
-                     </property>
-                     <property name="value">
-                      <number>5</number>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
+                  </spacer>
                  </item>
                 </layout>
                </widget>
@@ -5094,17 +4915,14 @@
                   </widget>
                  </item>
                  <item>
-                  <spacer name="verticalSpacer_5">
-                   <property name="orientation">
-                    <enum>Qt::Vertical</enum>
+                  <widget class="QCheckBox" name="checkBoxXYNoDC">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove DC component from signal before calculating DFT.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                    </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>20</width>
-                     <height>0</height>
-                    </size>
+                   <property name="text">
+                    <string>Remove DC</string>
                    </property>
-                  </spacer>
+                  </widget>
                  </item>
                  <item>
                   <widget class="QPushButton" name="pushButtonXYClear">
@@ -5295,7 +5113,7 @@
                 <property name="frameShadow">
                  <enum>QFrame::Plain</enum>
                 </property>
-                <layout class="QVBoxLayout" name="verticalLayout_34" stretch="0,100,1">
+                <layout class="QVBoxLayout" name="verticalLayout_34" stretch="0,1">
                  <property name="leftMargin">
                   <number>6</number>
                  </property>
@@ -5435,20 +5253,23 @@
                   </layout>
                  </item>
                  <item>
-                  <spacer name="verticalSpacer_14">
-                   <property name="orientation">
-                    <enum>Qt::Vertical</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>20</width>
-                     <height>1</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                 <item>
-                  <layout class="QGridLayout" name="gridLayout_18" rowstretch="1,1,1,1" columnstretch="1,1000">
+                  <layout class="QGridLayout" name="gridLayout_18" rowstretch="1,1,1,1,0" columnstretch="1,1000">
+                   <item row="3" column="0" rowspan="2">
+                    <widget class="QLabel" name="label_54">
+                     <property name="toolTip">
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Measure phase difference using cursors: arcsin(A/B)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="pixmap">
+                      <pixmap resource="resources.qrc">:/images/icons/xyphase.png</pixmap>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                     </property>
+                    </widget>
+                   </item>
                    <item row="1" column="0">
                     <widget class="QLabel" name="label_53">
                      <property name="toolTip">
@@ -5484,33 +5305,6 @@
                      </property>
                     </widget>
                    </item>
-                   <item row="2" column="1">
-                    <widget class="QLabel" name="labelXYPhaseDeg">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="font">
-                      <font>
-                       <family>Courier New</family>
-                       <pointsize>10</pointsize>
-                       <weight>75</weight>
-                       <bold>true</bold>
-                      </font>
-                     </property>
-                     <property name="text">
-                      <string notr="true">---</string>
-                     </property>
-                     <property name="textFormat">
-                      <enum>Qt::PlainText</enum>
-                     </property>
-                     <property name="alignment">
-                      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                     </property>
-                    </widget>
-                   </item>
                    <item row="0" column="1">
                     <widget class="QLabel" name="labelXYDeltaY">
                      <property name="sizePolicy">
@@ -5538,8 +5332,35 @@
                      </property>
                     </widget>
                    </item>
-                   <item row="3" column="1">
+                   <item row="4" column="1">
                     <widget class="QLabel" name="labelXYPhaseRad">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="font">
+                      <font>
+                       <family>Courier New</family>
+                       <pointsize>10</pointsize>
+                       <weight>75</weight>
+                       <bold>true</bold>
+                      </font>
+                     </property>
+                     <property name="text">
+                      <string notr="true">---</string>
+                     </property>
+                     <property name="textFormat">
+                      <enum>Qt::PlainText</enum>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="3" column="1">
+                    <widget class="QLabel" name="labelXYPhaseDeg">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                        <horstretch>0</horstretch>
@@ -5592,21 +5413,18 @@
                      </property>
                     </widget>
                    </item>
-                   <item row="2" column="0" rowspan="2">
-                    <widget class="QLabel" name="label_54">
-                     <property name="toolTip">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Measure phase difference using cursors: arcsin(A/B)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   <item row="2" column="1">
+                    <spacer name="verticalSpacer_5">
+                     <property name="orientation">
+                      <enum>Qt::Vertical</enum>
                      </property>
-                     <property name="text">
-                      <string/>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>20</width>
+                       <height>0</height>
+                      </size>
                      </property>
-                     <property name="pixmap">
-                      <pixmap resource="resources.qrc">:/images/icons/xyphase.png</pixmap>
-                     </property>
-                     <property name="alignment">
-                      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                     </property>
-                    </widget>
+                    </spacer>
                    </item>
                   </layout>
                  </item>
@@ -5775,6 +5593,9 @@
                    <property name="text">
                     <string>Whole signal</string>
                    </property>
+                   <property name="checked">
+                    <bool>true</bool>
+                   </property>
                   </widget>
                  </item>
                  <item>
@@ -5786,7 +5607,7 @@
                     <string>Visible interval</string>
                    </property>
                    <property name="checked">
-                    <bool>true</bool>
+                    <bool>false</bool>
                    </property>
                   </widget>
                  </item>
@@ -7644,7 +7465,7 @@
               </property>
               <property name="minimumSize">
                <size>
-                <width>0</width>
+                <width>258</width>
                 <height>0</height>
                </size>
               </property>
@@ -7663,7 +7484,14 @@
               <property name="styleSheet">
                <string notr="true">background-color: rgb(0, 0, 0);
 alternate-background-color: rgb(170, 0, 0);
-gridline-color: rgb(255, 255, 255);</string>
+gridline-color: rgb(255, 255, 255);
+padding:2px</string>
+              </property>
+              <property name="verticalScrollBarPolicy">
+               <enum>Qt::ScrollBarAlwaysOff</enum>
+              </property>
+              <property name="horizontalScrollBarPolicy">
+               <enum>Qt::ScrollBarAlwaysOff</enum>
               </property>
               <property name="autoScroll">
                <bool>false</bool>

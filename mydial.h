@@ -22,23 +22,26 @@
 
 #include "enumsDefinesConstants.h"
 
+/// Dial který skáče po hodnotách ze seznamu (1,2,5,10,20,50,100 ...)
 class myDial : public QDial {
   Q_OBJECT
-public:
-  explicit myDial(QWidget *parent = nullptr);
+ public:
+  explicit myDial(QWidget* parent = nullptr);
 
-private:
+ private:
   int lastPosition;
   bool var = false;
   int roundToStandardValue(double value);
 
-private slots:
+ private slots:
   void positionChanged(int position);
 
-public slots:
+ public slots:
+  /// Dial se pohne tak, aby poloha byla co nejblýže zvolené hodnotě (zaokrouhluje nahoru)
   void updatePosition(double value);
 
-signals:
+ signals:
+  /// Hodnota byla zněněna uživatelem
   void realValueChanged(double);
 };
 

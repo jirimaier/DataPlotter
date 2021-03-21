@@ -20,18 +20,26 @@
 #include <QDoubleSpinBox>
 #include <QWidget>
 
+/// Double spin box, který zobrazuje předpony jednotek (milli, mikro ...). Samotná jednotka se nastaví jako suffix.
 class MyDoubleSpinBoxWithUnits : public QDoubleSpinBox {
   Q_OBJECT
  public:
   explicit MyDoubleSpinBoxWithUnits(QWidget* parent = nullptr);
+
+  /// Pokud jsou v počtu zobrazených cifer na konci jen nuly (např. 5.100), je zobrazeno (5.1)
   bool trimDecimalZeroes = false;
+
+  /// Výchozí hodnota pokud uživatel pole vymaže nebo zadá neplatnou hodnotu
   double emptyDefaultValue = 0;
 
  private:
   QValidator::State validate(QString& input, int& pos) const;
   QString textFromValue(double val) const;
   double valueFromText(const QString& text) const;
+
+  /// písmena (předpony jednotky), která se smí v poli objevit
   QString validchars = "Mkmu";
+
  signals:
 };
 

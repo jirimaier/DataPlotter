@@ -21,23 +21,35 @@
 
 #include "enumsDefinesConstants.h"
 
+/// Slide může mít hodnotu (real value) mimo rozsah pohybu posuvníku
+/// Posuvníkem se mění hodnota v rozsahu min max (zobrazený interval v grafu)
+/// ale pokud si min max změní tak, že původní hodnota je mimo rozsah, tak hodnota zůstane zachována,
+/// dokud není sliderem prhnuto na nové místo. Když je nastavená hodnota vně rozsahu posuvníku, je posuvník šedý.
 class myCursorSlider : public QSlider {
   Q_OBJECT
  public:
   explicit myCursorSlider(QWidget* parent = nullptr);
+
+  /// Nastaví rozsah v kterém lze posuvník tahat
   void updateRange(int min, int max);
+
+  /// Vrátí nastavenou hodnotu (která může být mimo rozsah pohybu
   int getRealValue() { return realPos;};
 
  private slots:
+  /// Změnila se poloha posuvníku
   void positionChanged(int newpos);
 
  private:
+  /// Nastavená hodnota (může být mimo rozsah, tedy jiná než value() ).
   int realPos = 0;
 
  public slots:
+  /// Nastavý hodnotu, která může být mimo rozsah pohybu
   void setRealValue(int newValue);
 
  signals:
+  /// Změnila se nastavená hodnota
   void realValueChanged(int);
 };
 

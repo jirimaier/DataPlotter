@@ -63,8 +63,8 @@ void MyScaleDoubleSpinBox::stepBy(int steps) {
       setValue(1.0 / 1.1); return;
     }
   } else {
-    if (value() <= 1.0 && value() > 1.0 / 1.1) {
-      setValue(1.1); return;
+    if (value() < 1.0 && value() >= 1.0 / 1.1) {
+      setValue(1.0); return;
     }
   }
 

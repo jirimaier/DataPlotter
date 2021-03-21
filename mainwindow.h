@@ -49,7 +49,7 @@ class MainWindow : public QMainWindow {
 
  public:
   explicit MainWindow(QWidget* parent = nullptr);
-  void init(QTranslator* translator, const PlotData* plotData, const PlotMath* plotMath, const SerialReader* serialReader, const Averager* avg1, const Averager* avg2, const Averager* avg3);
+  void init(QTranslator* translator, const PlotData* plotData, const PlotMath* plotMath, const SerialReader* serialReader, const Averager* avg);
   ~MainWindow();
 
  private:
@@ -97,8 +97,7 @@ class MainWindow : public QMainWindow {
 
   bool colorUpdateNeeded = true;
   void fillChannelSelect();
-  void updateChannelComboBox(QComboBox& combobox, bool includeLogic, bool leaveAtLeastOne);
-  void updateUsedChannels();
+  void updateChannelComboBox(QComboBox& combobox, int numberOfExcludedAtEnd);
   void updateSelectedChannel(int arg1);
 
   bool pendingDeviceMessage = false;
@@ -135,6 +134,7 @@ class MainWindow : public QMainWindow {
   void updateDataRate();
   void horizontalSliderTimeCur1_realValueChanged(int arg1);
   void horizontalSliderTimeCur2_realValueChanged(int arg1);
+  void updateUsedChannels();
 
  private slots: // Autoconnect slots
   void on_dialRollingRange_realValueChanged(double value) { ui->doubleSpinBoxRangeHorizontal->setValue(value); }
@@ -257,18 +257,9 @@ class MainWindow : public QMainWindow {
   void on_comboBoxBaud_editTextChanged(const QString& arg1);
   void on_pushButtonHideCur1_clicked();
   void on_pushButtonHideCur2_clicked();
+  void on_pushButtonAvg_toggled(bool checked);
 
-  void on_pushButtonAvg1_toggled(bool checked) {emit resetAverager1(ui->spinBoxAvg1Ch->value(), checked);}
-  void on_pushButtonAvg2_toggled(bool checked) {emit resetAverager2(ui->spinBoxAvg2Ch->value(), checked);}
-  void on_pushButtonAvg3_toggled(bool checked) {emit resetAverager3(ui->spinBoxAvg3Ch->value(), checked);}
-
-  void on_spinBoxAvg1Ch_valueChanged(int arg1) {emit resetAverager1(arg1, ui->pushButtonAvg1->isChecked());}
-  void on_spinBoxAvg2Ch_valueChanged(int arg1) {emit resetAverager2(arg1, ui->pushButtonAvg2->isChecked());}
-  void on_spinBoxAvg3Ch_valueChanged(int arg1) {emit resetAverager3(arg1, ui->pushButtonAvg3->isChecked());}
-
-  void on_spinBoxAvg1count_valueChanged(int arg1) {emit setAveragerCount1(arg1);}
-  void on_spinBoxAvg2count_valueChanged(int arg1) {emit setAveragerCount2(arg1);}
-  void on_spinBoxAvg3count_valueChanged(int arg1) {emit setAveragerCount3(arg1);}
+  void on_spinBoxAvg_valueChanged(int arg1);
 
  public slots:
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumMessageTarget target);
@@ -315,18 +306,15 @@ class MainWindow : public QMainWindow {
   void setMathSecond(int math, int ch);
   void clearMath(int math);
   void resetMath(int mathNumber, MathOperations::enumMathOperations mode, QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2, bool shouldIgnorePause = false);
-  void requestXY(QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2);
+  void requestXY(QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2, bool removeDC);
   void requstMeasurements1(QSharedPointer<QCPGraphDataContainer> data);
   void requstMeasurements2(QSharedPointer<QCPGraphDataContainer> data);
   void requestFFT1(QSharedPointer<QCPGraphDataContainer> data, FFTType::enumFFTType type, FFTWindow::enumFFTWindow window, bool removeDC, int pWelchtimeDivisions, bool twosided, bool zerocenter, int minNFFT);
   void requestFFT2(QSharedPointer<QCPGraphDataContainer> data, FFTType::enumFFTType type, FFTWindow::enumFFTWindow window, bool removeDC, int pWelchtimeDivisions, bool twosided, bool zerocenter, int minNFFT);
   void setInterpolation(int chID, bool enabled);
   void interpolate(int chID, const QSharedPointer<QCPGraphDataContainer> data, QCPRange visibleRange, bool dataIsFromInterpolationBuffer);
-  void resetAverager1(int chID, bool enabled);
-  void resetAverager2(int chID, bool enabled);
-  void resetAverager3(int chID, bool enabled);
-  void setAveragerCount1(int count);
-  void setAveragerCount2(int count);
-  void setAveragerCount3(int count);
+  void resetAverager();
+  void setAverager(int chID, bool enabled);
+  void setAveragerCount(int chID, int count);
 };
 #endif // MAINWINDOW_H

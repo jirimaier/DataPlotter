@@ -117,9 +117,7 @@ int main(int argc, char* argv[]) {
   SignalProcessing* signalProcessingFFT1 = new SignalProcessing();
   SignalProcessing* signalProcessingFFT2 = new SignalProcessing();
   Interpolator* interpolator = new Interpolator();
-  Averager* averager1 = new Averager();
-  Averager* averager2 = new Averager();
-  Averager* averager3 = new Averager();
+  Averager* averager = new Averager();
 
   // Vytvoří vlákna
   QThread plotDataThread;
@@ -129,7 +127,7 @@ int main(int argc, char* argv[]) {
   QThread serialReader1Thread;
   QThread signalProcessing1Thread, signalProcessing2Thread, signalProcessingFFT1Thread, signalProcessingFFT2Thread;
   QThread interpolatorThread;
-  QThread averagerThread1, averagerThread2, averagerThread3;
+  QThread averagerThread;
 
   // Propojí signály
   QObject::connect(serial1, &SerialReader::sendData, serialParser1, &NewSerialParser::parse);
@@ -192,18 +190,10 @@ int main(int argc, char* argv[]) {
   QObject::connect(plotMath, &PlotMath::sendResultXY, &mainWindow, &MainWindow::xyResult);
   QObject::connect(&mainWindow, &MainWindow::interpolate, interpolator, &Interpolator::interpolate);
   QObject::connect(interpolator, &Interpolator::interpolationResult, &mainWindow, &MainWindow::interpolationResult);
-  QObject::connect(&mainWindow, &MainWindow::resetAverager1, plotData, &PlotData::setAverager1);
-  QObject::connect(&mainWindow, &MainWindow::resetAverager2, plotData, &PlotData::setAverager2);
-  QObject::connect(&mainWindow, &MainWindow::resetAverager3, plotData, &PlotData::setAverager3);
-  QObject::connect(&mainWindow, &MainWindow::resetAverager1, averager1, &Averager::reset);
-  QObject::connect(&mainWindow, &MainWindow::resetAverager2, averager2, &Averager::reset);
-  QObject::connect(&mainWindow, &MainWindow::resetAverager3, averager3, &Averager::reset);
-  QObject::connect(&mainWindow, &MainWindow::setAveragerCount1, averager1, &Averager::setCount);
-  QObject::connect(&mainWindow, &MainWindow::setAveragerCount2, averager2, &Averager::setCount);
-  QObject::connect(&mainWindow, &MainWindow::setAveragerCount3, averager3, &Averager::setCount);
-  QObject::connect(plotData, &PlotData::addDataToAverager1, averager1, &Averager::newDataVector);
-  QObject::connect(plotData, &PlotData::addDataToAverager2, averager2, &Averager::newDataVector);
-  QObject::connect(plotData, &PlotData::addDataToAverager3, averager3, &Averager::newDataVector);
+  QObject::connect(&mainWindow, &MainWindow::setAverager, plotData, &PlotData::setAverager);
+  QObject::connect(&mainWindow, &MainWindow::resetAverager, averager, &Averager::reset);
+  QObject::connect(&mainWindow, &MainWindow::setAveragerCount, averager, &Averager::setCount);
+  QObject::connect(plotData, &PlotData::addDataToAverager, averager, &Averager::newDataVector);
 
   // Funkce init je zavolána až z nového vlákna
   QObject::connect(&serialReader1Thread, &QThread::started, serial1, &SerialReader::init);
@@ -219,9 +209,7 @@ int main(int argc, char* argv[]) {
   signalProcessingFFT1->moveToThread(&signalProcessingFFT1Thread);
   signalProcessingFFT2->moveToThread(&signalProcessingFFT2Thread);
   interpolator->moveToThread(&interpolatorThread);
-  averager1->moveToThread(&averagerThread1);
-  averager2->moveToThread(&averagerThread2);
-  averager3->moveToThread(&averagerThread3);
+  averager->moveToThread(&averagerThread);
 
   // Zahájí vlákna
   serialReader1Thread.start();
@@ -234,12 +222,10 @@ int main(int argc, char* argv[]) {
   signalProcessingFFT1Thread.start();
   signalProcessingFFT2Thread.start();
   interpolatorThread.start();
-  averagerThread1.start();
-  averagerThread2.start();
-  averagerThread3.start();
+  averagerThread.start();
 
   // Zobrazí okno a čeká na ukončení
-  mainWindow.init(&translator, plotData, plotMath, serial1, averager1, averager2, averager3);
+  mainWindow.init(&translator, plotData, plotMath, serial1, averager);
   mainWindow.show();
   int returnValue = application.exec();
 
@@ -254,9 +240,7 @@ int main(int argc, char* argv[]) {
   signalProcessingFFT1->deleteLater();
   signalProcessingFFT2->deleteLater();
   interpolator->deleteLater();
-  averager1->deleteLater();
-  averager2->deleteLater();
-  averager3->deleteLater();
+  averager->deleteLater();
 
   // Vyžádá ukončení event loopu
   serialParser1Thread.quit();
@@ -269,9 +253,7 @@ int main(int argc, char* argv[]) {
   signalProcessingFFT1Thread.quit();
   signalProcessingFFT2Thread.quit();
   interpolatorThread.quit();
-  averagerThread1.quit();
-  averagerThread2.quit();
-  averagerThread3.quit();
+  averagerThread.quit();
 
   // Čeká na ukončení procesů
   serialParser1Thread.wait();
@@ -284,9 +266,7 @@ int main(int argc, char* argv[]) {
   signalProcessingFFT1Thread.wait();
   signalProcessingFFT2Thread.wait();
   interpolatorThread.wait();
-  averagerThread1.wait();
-  averagerThread2.wait();
-  averagerThread3.wait();
+  averagerThread.wait();
 
   return returnValue;
 }

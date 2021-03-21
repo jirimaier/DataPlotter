@@ -38,8 +38,14 @@ class MyTerminal : public QTableWidget {
   ~MyTerminal();
 
  private:
+  struct BlinkedItem {
+    bool blinkInProggres = false;
+    QColor originalBack;
+    QColor originalFront;
+    int r, c;
+  } blinkedItem;
+
   QTimer clickBlinkTimer;
-  bool blickInProgress = false;
   TerminalMode::enumTerminalMode mode = clicksend;
   QByteArray buffer;
   QMap<QString, QColor> colorCodes;
@@ -71,6 +77,8 @@ class MyTerminal : public QTableWidget {
 
   void clearCell(int x, int y);
  private slots:
+  void resetBlinkedItem();
+
   void characterClicked(int r, int c);
 
   // Aby se dvojité kliknutí chovalo jako dvě kliknutí

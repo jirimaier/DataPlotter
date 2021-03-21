@@ -141,10 +141,6 @@ void MainWindow::setGuiDefaults() {
   ui->doubleSpinBoxXCur2->setVisible(false);
   ui->doubleSpinBoxYCur1->setVisible(false);
   ui->doubleSpinBoxYCur2->setVisible(false);
-
-  emit setAveragerCount1(ui->spinBoxAvg1count->value());
-  emit setAveragerCount2(ui->spinBoxAvg2count->value());
-  emit setAveragerCount3(ui->spinBoxAvg3count->value());
 }
 
 void MainWindow::setGuiArrays() {
@@ -208,8 +204,8 @@ void MainWindow::fillChannelSelect() {
   ui->comboBoxMeasure1->setCurrentIndex(ui->comboBoxMeasure1->count() - 1);
   ui->comboBoxMeasure2->setCurrentIndex(ui->comboBoxMeasure2->count() - 1);
 
-  ui->comboBoxCursor1Channel->addItem(iconAbsoluteCursor, "Absolute");
-  ui->comboBoxCursor2Channel->addItem(iconAbsoluteCursor, "Absolute");
+  ui->comboBoxCursor1Channel->addItem(iconAbsoluteCursor, tr("Absolute"));
+  ui->comboBoxCursor2Channel->addItem(iconAbsoluteCursor, tr("Absolute"));
   ui->comboBoxCursor1Channel->setCurrentIndex(ui->comboBoxCursor1Channel->count() - 1);
   ui->comboBoxCursor2Channel->setCurrentIndex(ui->comboBoxCursor2Channel->count() - 1);
 

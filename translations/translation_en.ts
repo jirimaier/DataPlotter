@@ -1332,6 +1332,12 @@ p, li { white-space: pre-wrap; }
         <translation>Logic</translation>
     </message>
     <message>
+        <location filename="../mainwindow_gui_preset.cpp" line="211"/>
+        <location filename="../mainwindow_gui_preset.cpp" line="212"/>
+        <source>Absolute</source>
+        <translation>Absolute</translation>
+    </message>
+    <message>
         <location filename="../mainwindow_export.cpp" line="28"/>
         <source>logic</source>
         <translation>logic</translation>

@@ -24,8 +24,12 @@ class MyFFTPlot : public MyPlot {
   Q_OBJECT
  public:
   explicit MyFFTPlot(QWidget* parent = nullptr);
+
+  /// Exportuje oba kanály (nebo jeden, když nejsou oba využité)
   QByteArray exportCSV(char separator, char decimal, int precision);
-  QPair<unsigned int, unsigned int> getVisibleSamplesRange(int ch);
+
+  /// Vrátí rozsah vzorků v daném kanálu, které jsou ve viditelném rozsahu osy X
+  QPair<unsigned int, unsigned int> getVisibleSamplesRange(int chID);
 
   /// Přizpůsobý barvu a popis, vrátí true, pokud se barva změnila
   bool setChSorce(int ch, int sourceChannel, QColor color);
@@ -41,10 +45,19 @@ class MyFFTPlot : public MyPlot {
   QPair<QVector<double>, QVector<double> > getDataVector(int chID);
 
  public slots:
-  void newData(int ch, QSharedPointer<QCPGraphDataContainer> data);
-  void clear(int ch);
+  /// Přidá data (přepíše stará)
+  void newData(int chID, QSharedPointer<QCPGraphDataContainer> data);
+
+  /// Vymaže kanál
+  void clear(int chID);
+
+  /// Vymaže celý graf
   void clear();
-  void setStyle(int ch, int style);
+
+  /// Nastaví styl kanálu
+  void setStyle(int chID, int style);
+
+  /// Zapne/vypne automatický rozsah
   void setAutoSize(bool en);
 
  private slots:

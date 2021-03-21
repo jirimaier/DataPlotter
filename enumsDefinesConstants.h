@@ -240,7 +240,7 @@ inline QString valueTypeToString(ValueType val) {
 
 #define POINT_STYLE QCPScatterStyle::ssDisc
 
-#define MAX_PLOT_ZOOMOUT 1000000
+#define MAX_PLOT_ZOOMOUT 10000000000
 
 #define PLOT_ELEMENTS_MOUSE_DISTANCE 10
 #define TRACER_MOUSE_DISTANCE 20
@@ -272,10 +272,12 @@ inline QString valueTypeToString(ValueType val) {
 
 const static QString lineEndings[4] = {"", "\n", "\r", "\r\n"};
 
-#define LOG_SET_SIZE 48 //                              0     1     2     3     4     5     6     7     8     9     10    11    12    13    14    15    16    17    18    19    20    21    22    23
+#define LOG_SET_SIZE 61 //                              0     1     2     3     4     5     6     7     8     9     10    11    12    13    14    15    16    17    18    19    20    21    22    23
 const static double logaritmicSettings[LOG_SET_SIZE] = {1e-9, 2e-9, 5e-9, 1e-8, 2e-8, 5e-8, 1e-7, 2e-7, 5e-7, 1e-6, 2e-6, 5e-6, 1e-5, 2e-5, 5e-5, 1e-4, 2e-4, 5e-4, 1e-3, 2e-3, 5e-3, 1e-2, 2e-2, 5e-2,
-                                                        // 24 25    26    27   28   29   30   31   32   33   34   35   36   37   38   39   40   41   42   43   44   45   46   47
-                                                        1e-1, 2e-1, 5e-1, 1e0, 2e0, 5e0, 1e1, 2e1, 5e1, 1e2, 2e2, 5e2, 1e3, 2e3, 5e3, 1e4, 2e4, 5e4, 1e5, 2e5, 5e5, 1e6, 2e6, 5e6
+                                                        // 24 25    26    27   28   29   30   31   32   33   34   35   36   37   38   39   40   41   42   43   44   45   46   47   48   49   50   51
+                                                        1e-1, 2e-1, 5e-1, 1e0, 2e0, 5e0, 1e1, 2e1, 5e1, 1e2, 2e2, 5e2, 1e3, 2e3, 5e3, 1e4, 2e4, 5e4, 1e5, 2e5, 5e5, 1e6, 2e6, 5e6, 1e7, 2e7, 5e7, 1e7,
+                                                        // 52 53  54   55   56   57   58   59   60
+                                                        2e7, 5e7, 1e8, 2e8, 5e8, 1e9, 2e9, 5e9, 1e10
                                                        };
 
 inline int indexOfStandardValuesCeil(double value) {

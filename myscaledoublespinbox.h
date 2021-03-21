@@ -28,7 +28,7 @@ class MyScaleDoubleSpinBox : public QDoubleSpinBox {
  public:
   explicit MyScaleDoubleSpinBox(QWidget* parent = nullptr);
 
- public slots:
+ private slots:
   void stepBy(int steps);
 
  private:

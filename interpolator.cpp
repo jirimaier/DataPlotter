@@ -20,7 +20,7 @@ Interpolator::Interpolator(QObject* parent) : QObject(parent) {
   if (firFile.open(QFile::ReadOnly | QFile::Text)) {
     QByteArrayList fir = firFile.readAll().split(',');
     foreach (QByteArray value, fir)
-      FIRfilter.append(value.toDouble());
+      lowPassFIR.append(value.toDouble());
     firFile.close();
   } else {
     qDebug() << "Can not load FIR filter coeficients!";
@@ -28,7 +28,7 @@ Interpolator::Interpolator(QObject* parent) : QObject(parent) {
 }
 
 void Interpolator::interpolate(int chID, const QSharedPointer<QCPGraphDataContainer> data, QCPRange visibleRange, bool dataIsFromInterpolationBuffer) {
-  int M = FIRfilter.size() - 1;
+  int M = lowPassFIR.size() - 1;
 
   double fs = (data->size() - 1) / (data->at(data->size() - 1)->key - data->at(0)->key);
   double resultSamplingPeriod = 1.0 / INTERPOLATION_UPSAMPLING / fs;
@@ -55,7 +55,7 @@ void Interpolator::interpolate(int chID, const QSharedPointer<QCPGraphDataContai
       values.append(0);
   }
 
-  if (values.length() < FIRfilter.size()) {
+  if (values.length() < lowPassFIR.size()) {
     // Moc málo vzorků, nemá to cenu
     auto result = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer(*data));
     emit interpolationResult(chID, data, result, dataIsFromInterpolationBuffer);
@@ -69,7 +69,7 @@ void Interpolator::interpolate(int chID, const QSharedPointer<QCPGraphDataContai
     return;
   }
 
-  values = filter(values, FIRfilter);
+  values = filter(values, lowPassFIR);
 
   auto result = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer);
   for (int i = 0; i < values.size(); i++)
@@ -79,9 +79,9 @@ void Interpolator::interpolate(int chID, const QSharedPointer<QCPGraphDataContai
   emit finished(chID);
 }
 
+/// Provede konvoluci s odezvou (koeficienty) FIR filtru prvních M/2 a posledních M/2 vzorků je vynecháno (přechodné jevy).
+/// Výstup se tedy předbíhá o M/2 oproti vstupu (filtrovaný signál by se o M/2 zpožďoval, ale na začátku je vynecháno M vzorků)
 QVector<float> Interpolator::filter(QVector<float> x, QVector<float> h) {
-  // Provede konvoluci s odezvou (koeficienty) FIR filtru prvních M/2 a posledních M/2 vzorků je vynecháno (přechodné jevy)
-  // Výstup se tedy předbíhá o M/2 oproti vstupu (filtrovaný signál by se o M/2 zpožďoval, ale na začátku je vynecháno M vzorků)
   QVector<float> y;
 
   int N = x.length();     // Délka signálu

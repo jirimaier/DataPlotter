@@ -18,27 +18,35 @@
 
 #include "qcustomplot.h"
 
+/// Tracer, který hledá nejbližší vrorek podle (dX^2 + dY^2), ne jen podle X. Funguje i pro křivku (XY graf)
 class MyModifiedQCPTracer : public QCPItemTracer {
   Q_OBJECT
-public:
-  explicit MyModifiedQCPTracer(QCustomPlot *parentPlot) : QCPItemTracer(parentPlot) { verticalAxis = parentPlot->yAxis; }
+ public:
+  explicit MyModifiedQCPTracer(QCustomPlot* parentPlot) : QCPItemTracer(parentPlot) { verticalAxis = parentPlot->yAxis; }
 
-  void setCurve(QCPCurve *curve) { mCurve = curve; }
-  void setYAxis(QCPAxis *vAxis) { verticalAxis = vAxis; }
+  /// Nastavý XY graf
+  void setCurve(QCPCurve* curve) { mCurve = curve; }
+
+  /// Nastavý osu hodnot kanálu
+  void setYAxis(QCPAxis* vAxis) { verticalAxis = vAxis; }
+
+  /// Nastavý bod, k němuž má být vzorek nejblíž
   void setPoint(QPoint point) {
     mPoint = point;
     setGraphKey(point.x());
   }
 
+  /// Vypočítá pozici (vzorek nejblýže k bodu kde má být)
   void updatePosition();
 
+  /// Vzorek, na kterém tracer je
   int sampleNumber() { return posIndex; }
 
-protected:
-  QCPCurve *mCurve;
+ protected:
+  QCPCurve* mCurve;
   QPoint mPoint;
   int posIndex = 0;
-  QCPAxis *verticalAxis;
+  QCPAxis* verticalAxis;
 };
 
 #endif // MYMODIFIEDQCPTRACER_H

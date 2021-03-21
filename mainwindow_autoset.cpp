@@ -17,10 +17,10 @@
 
 void MainWindow::on_pushButtonAutoset_clicked() {
   QVector<int> activeAnalogs, activeLogic;
-  for (int i = ANALOG_COUNT + MATH_COUNT - 1; i >= 0; i--)
+  for (int i =  0; i < ANALOG_COUNT + MATH_COUNT; i++)
     if (ui->plot->isChUsed(i) && ui->plot->isChVisible(i))
       activeAnalogs.append(i);
-  for (int i = LOGIC_GROUPS - 1; i >= 0; i--)
+  for (int i = 0; i < LOGIC_GROUPS; i++)
     if (ui->plot->getLogicBitsUsed(i) > 0)
       activeLogic.append(i);
 
@@ -28,30 +28,30 @@ void MainWindow::on_pushButtonAutoset_clicked() {
     // multiple channels
     double recentOffset = 0;
 
-    for (int i = LOGIC_GROUPS - 1; i >= 0; i--) {
-      int bitsUsed = ui->plot->getLogicBitsUsed(i);
-      if (bitsUsed > 0 && ui->plot->isLogicVisible(i)) {
-        // Skupina logických kanálů má spodek na 0 a vršek je 3*počet kanálů (bitů)
-        ui->plot->setLogicOffset(i, recentOffset);
-        recentOffset += bitsUsed * 3 * ui->plot->getLogicScale(i);
-      }
+    for (int i = activeLogic.size() - 1; i >= 0; i--) {
+      int bitsUsed = ui->plot->getLogicBitsUsed(activeLogic.at(i));
+      // Skupina logických kanálů má spodek na 0 a vršek je 3*počet kanálů (bitů)
+      ui->plot->setLogicOffset(activeLogic.at(i), recentOffset);
+      recentOffset += bitsUsed * 3 * ui->plot->getLogicScale(activeLogic.at(i));
     }
-    for (int i = ANALOG_COUNT + MATH_COUNT - 1; i >= 0; i--) {
-      if (ui->plot->isChUsed(i) && ui->plot->isChVisible(i)) {
-        bool foundRange; // Zbytečné, ale ta funkce to potřebuje.
-        QCPRange range = ui->plot->graph(i)->data()->valueRange(foundRange);
-        range.lower = ceilToNiceValue(range.lower) * ui->plot->getChScale(i);
-        range.upper = ceilToNiceValue(range.upper) * ui->plot->getChScale(i);
-        if (ui->plot->isChInverted(i)) {
-          // Pokud je kanál invertovaný, prohodí vršek a spodek a změní znaménko
-          double a = range.upper;
-          range.upper = -range.lower;
-          range.lower = -a;
-        }
-        recentOffset -= range.lower;
-        ui->plot->setChOffset(i, recentOffset);
-        recentOffset += range.upper;
+    for (int i = activeAnalogs.size() - 1; i >= 0; i--) {
+      bool foundRange; // Zbytečné, ale ta funkce to potřebuje.
+      QCPRange range = ui->plot->graph(activeAnalogs.at(i))->data()->valueRange(foundRange);
+      range.lower = ceilToNiceValue(range.lower) * ui->plot->getChScale(activeAnalogs.at(i));
+      if (range.lower > 0)
+        range.lower = 0;
+      range.upper = ceilToNiceValue(range.upper) * ui->plot->getChScale(activeAnalogs.at(i));
+      if (range.upper < 0)
+        range.upper = 0;
+      if (ui->plot->isChInverted(activeAnalogs.at(i))) {
+        // Pokud je kanál invertovaný, změní znaménko a prohodí
+        range.upper *= -1;
+        range.lower *= -1;
+        range.normalize();
       }
+      recentOffset -= range.lower;
+      ui->plot->setChOffset(activeAnalogs.at(i), recentOffset);
+      recentOffset += range.upper;
     }
     if (recentOffset != 0) {
       on_pushButtonPositive_clicked();

@@ -21,6 +21,7 @@
 #include <QComboBox>
 #include <QStylePainter>
 
+/// Pokud je text v comboboxu delší než co se vejde, je oříznut a zakončen třemi tečkami
 class MyElidedComboBox : public QComboBox {
   Q_OBJECT
 

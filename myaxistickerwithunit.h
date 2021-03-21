@@ -19,6 +19,7 @@
 #include "enumsDefinesConstants.h"
 #include "qcustomplot.h"
 
+/// Verze axisTickeru která zobrazuje jednotky s předponami (milli, mikro...)
 class MyAxisTickerWithUnit : public QCPAxisTickerFixed {
  private:
   int tickStepOrder = 0;

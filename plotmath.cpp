@@ -15,7 +15,7 @@
 
 #include "plotmath.h"
 
-PlotMath::PlotMath(QObject *parent) : QObject(parent) {
+PlotMath::PlotMath(QObject* parent) : QObject(parent) {
   firsts.resize(MATH_COUNT);
   seconds.resize(MATH_COUNT);
   for (int i = 0; i < MATH_COUNT; i++)
@@ -25,8 +25,8 @@ PlotMath::PlotMath(QObject *parent) : QObject(parent) {
 PlotMath::~PlotMath() {}
 
 void PlotMath::addMathData(int mathNumber, bool isFirst, QSharedPointer<QCPGraphDataContainer> in, bool shouldIgnorePause) {
-  QSharedPointer<QCPGraphDataContainer> &first = firsts[mathNumber];
-  QSharedPointer<QCPGraphDataContainer> &second = seconds[mathNumber];
+  QSharedPointer<QCPGraphDataContainer>& first = firsts[mathNumber];
+  QSharedPointer<QCPGraphDataContainer>& second = seconds[mathNumber];
   if (isFirst)
     first = in;
   else
@@ -70,7 +70,7 @@ void PlotMath::resetMath(int mathNumber, MathOperations::enumMathOperations mode
   addMathData(mathNumber - 1, false, in2, true); // Vloží druhá data, spočítá a pošle do grafu
 }
 
-void PlotMath::calculateXY(QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2) {
+void PlotMath::calculateXY(QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2, bool removeDC) {
   if (in1->size() != in2->size()) {                                                  // Mají kanály stejný počet vzorků? Když ne, budou ustřihnut začátk nebo konec.
     double mint = MAX(in1->at(0)->key, in2->at(0)->key);                             // Nejnižší společný čas
     double maxt = MIN(in1->at(in1->size() - 1)->key, in2->at(in2->size() - 1)->key); // Nejvyšší společný čas
@@ -79,9 +79,21 @@ void PlotMath::calculateXY(QSharedPointer<QCPGraphDataContainer> in1, QSharedPoi
     in1->removeAfter(maxt);
     in2->removeAfter(maxt);
   }
+
+  double dc1 = 0, dc2 = 0;
+
+  if (removeDC) {
+    for (int i = 0; i < in1->size(); i++) {
+      dc1 += in1->at(i)->value;
+      dc2 += in2->at(i)->value;
+    }
+    dc1 /= in1->size();
+    dc2 /= in2->size();
+  }
+
   auto result = QSharedPointer<QCPCurveDataContainer>(new QCPCurveDataContainer());
   for (int i = 0; i < in1->size(); i++) {
-    result->add(QCPCurveData(in1->at(i)->key, in1->at(i)->value, in2->at(i)->value));
+    result->add(QCPCurveData(in1->at(i)->key, in1->at(i)->value - dc1, in2->at(i)->value - dc2));
   }
   emit sendResultXY(result);
 }

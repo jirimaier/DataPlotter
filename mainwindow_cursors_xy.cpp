@@ -81,13 +81,13 @@ void MainWindow::setCursorPosXY(enumCursors cursor, double x, double y) {
 
 void MainWindow::updateXYCursorsCalculations() {
   if (ui->checkBoxXYCur1->isChecked() && ui->checkBoxXYCur2->isChecked()) {
-    double dx = ui->doubleSpinBoxXYCurX2->value() - ui->doubleSpinBoxXYCurX1->value();
-    double dy = ui->doubleSpinBoxXYCurY1->value() - ui->doubleSpinBoxXYCurY2->value();
+    double dx = abs(ui->doubleSpinBoxXYCurX2->value() - ui->doubleSpinBoxXYCurX1->value());
+    double dy = abs(ui->doubleSpinBoxXYCurY1->value() - ui->doubleSpinBoxXYCurY2->value());
     ui->labelXYDeltaX->setText(floatToNiceString(dx, 4, true, true) + ui->plotxy->getYUnit());
     ui->labelXYDeltaY->setText(floatToNiceString(dy, 4, true, true) + ui->plotxy->getYUnit());
     double phase = abs(asin(MIN(dx, dy) / MAX(dx, dy)));
-    ui->labelXYPhaseDeg->setText(" " + QString::number((int)round(qRadiansToDegrees(phase))) + "°");
-    ui->labelXYPhaseRad->setText(" " + QString::number(phase / M_PI, 'f', 3) + " \xCF\x80"); // Pi
+    ui->labelXYPhaseDeg->setText(" " + QString::number(qRadiansToDegrees(phase), 'f', 1) + "°");
+    ui->labelXYPhaseRad->setText(" " + QString::number(phase / M_PI, 'f', 3) + "\xCF\x80"); // Pi
   } else {
     ui->labelXYDeltaX->setText("---");
     ui->labelXYDeltaY->setText("---");

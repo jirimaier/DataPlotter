@@ -24,6 +24,10 @@ PlotData::PlotData(QObject* parent) : QObject(parent) {
     mathFirsts[i] = 0;
     mathSeconds[i] = 0;
   }
+  for (int i = 0; i < ANALOG_COUNT; i++) {
+    averagerEnabled[i] = false;
+  }
+
   reset();
 }
 
@@ -355,12 +359,8 @@ void PlotData::addChannel(QPair<ValueType, QByteArray> data, unsigned int ch, QP
   if (ch == 1)
     emit ch1dataUpdated(false, false, HAxisType::normal); // Aktualizuje počítadlo rychlosti přicházejících dat a nastavý fixed režim pro autoset
 
-  if (averager1Ch == ch)
-    emit addDataToAverager1(analogData);
-  else if (averager2Ch == ch)
-    emit addDataToAverager2(analogData);
-  else if (averager3Ch == ch)
-    emit addDataToAverager3(analogData);
+  if (averagerEnabled[ch - 1])
+    emit addDataToAverager(ch - 1, timeStep, analogData);
   else
     emit addVectorToPlot(ch - 1, analogData);
 

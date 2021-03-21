@@ -52,56 +52,55 @@ void MainWindow::comRefresh() {
 }
 
 void MainWindow::updateUsedChannels() {
-  updateChannelComboBox(*ui->comboBoxCursor1Channel, true, false);
-  updateChannelComboBox(*ui->comboBoxCursor2Channel, true, false);
-  updateChannelComboBox(*ui->comboBoxSelectedChannel, true, true);
-  updateChannelComboBox(*ui->comboBoxMeasure1, false, false);
-  updateChannelComboBox(*ui->comboBoxMeasure2, false, false);
-  updateChannelComboBox(*ui->comboBoxFFTCh1, false, true);
-  updateChannelComboBox(*ui->comboBoxFFTCh2, false, true);
-  updateChannelComboBox(*ui->comboBoxXYx, false, true);
-  updateChannelComboBox(*ui->comboBoxXYy, false, true);
+  updateChannelComboBox(*ui->comboBoxCursor1Channel,  3);
+  updateChannelComboBox(*ui->comboBoxCursor2Channel,  3);
+  updateChannelComboBox(*ui->comboBoxSelectedChannel,  0);
+  updateChannelComboBox(*ui->comboBoxMeasure1,  1);
+  updateChannelComboBox(*ui->comboBoxMeasure2,  1);
+  updateChannelComboBox(*ui->comboBoxFFTCh1, 0);
+  updateChannelComboBox(*ui->comboBoxFFTCh2, 0);
+  updateChannelComboBox(*ui->comboBoxXYx,  0);
+  updateChannelComboBox(*ui->comboBoxXYy,  0);
   colorUpdateNeeded = false;
 }
 
-void MainWindow::updateChannelComboBox(QComboBox& combobox, bool includeLogic, bool leaveAtLeastOne) {
+void MainWindow::updateChannelComboBox(QComboBox& combobox, int numberOfExcludedAtEnd) {
   // Nechá ve výběru kanálu jen ty kanály, které jsou používány
   // Pokud není používán žádný, nechá alespoň CH1 (protože vypadá blbě když v nabídce není nic)
   // Pokud je leaveAtLeastOne false (u měření, kde je v nabídce vždy ještě off), tak ten CH1 nenechá
-  bool atLeastOneVisible = !leaveAtLeastOne;
-  if (includeLogic) {
-    for (int i = 0; i < LOGIC_GROUPS; i++) {
-      auto* model = qobject_cast<QStandardItemModel*>(combobox.model());
-      auto* item = model->item(i + ANALOG_COUNT + MATH_COUNT);
-      bool willBeVisible = ui->checkBoxSelUnused->isChecked() || ui->plot->isChUsed(getLogicChannelID(i, 1));
-      if (willBeVisible)
-        atLeastOneVisible = true;
-      item->setEnabled(willBeVisible);
-      QListView* view = qobject_cast<QListView*>(combobox.view());
-      view->setRowHidden(i + ANALOG_COUNT + MATH_COUNT, !willBeVisible);
-      if (colorUpdateNeeded) {
-        QPixmap color(12, 12);
-        color.fill(ui->plot->getLogicColor(i));
-        item->setIcon(QIcon(color));
-      }
-    }
-  }
-  for (int i = ANALOG_COUNT + MATH_COUNT - 1; i >= 0; i--) {
+  bool atLeastOneVisible = false;
+
+  for (int i = 0; i < combobox.count() - numberOfExcludedAtEnd; i++) {
     auto* model = qobject_cast<QStandardItemModel*>(combobox.model());
     auto* item = model->item(i);
-    bool willBeVisible = ui->checkBoxSelUnused->isChecked() || ui->plot->isChUsed(i);
+    bool willBeVisible;
+    if (i < ANALOG_COUNT + MATH_COUNT)
+      willBeVisible = ui->checkBoxSelUnused->isChecked() || ui->plot->isChUsed(i);
+    else
+      willBeVisible = ui->checkBoxSelUnused->isChecked() || ui->plot->isChUsed(getLogicChannelID(i - ANALOG_COUNT - MATH_COUNT, 1));
     if (willBeVisible)
       atLeastOneVisible = true;
-    if (i == 0 && !atLeastOneVisible && !ui->pushButtonXY->isChecked())
-      willBeVisible = true;
+
     item->setEnabled(willBeVisible);
     QListView* view = qobject_cast<QListView*>(combobox.view());
     view->setRowHidden(i, !willBeVisible);
+
     if (colorUpdateNeeded) {
       QPixmap color(12, 12);
-      color.fill(ui->plot->getChColor(i));
+      if (i < ANALOG_COUNT + MATH_COUNT)
+        color.fill(ui->plot->getChColor(i));
+      else
+        color.fill(ui->plot->getLogicColor(i - ANALOG_COUNT - MATH_COUNT));
       item->setIcon(QIcon(color));
     }
+  }
+
+  if (numberOfExcludedAtEnd == 0 && (atLeastOneVisible == false)) {
+    auto* model = qobject_cast<QStandardItemModel*>(combobox.model());
+    auto* item = model->item(0);
+    item->setEnabled(true);
+    QListView* view = qobject_cast<QListView*>(combobox.view());
+    view->setRowHidden(0, false);
   }
 }
 
@@ -328,6 +327,6 @@ void MainWindow::updateXY() {
     }
 
     xyTimer.stop();
-    emit requestXY(in1, in2);
+    emit requestXY(in1, in2, ui->checkBoxXYNoDC->isChecked());
   }
 }

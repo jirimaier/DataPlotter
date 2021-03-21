@@ -36,8 +36,10 @@ MyTerminal::MyTerminal(QWidget* parent) : QTableWidget(parent) {
 
   connect(this, &QTableWidget::cellClicked, this, &MyTerminal::characterClicked);
   connect(this, &QTableWidget::cellDoubleClicked, this, &MyTerminal::characterDoubleClicked);
+  connect(&clickBlinkTimer, &QTimer::timeout, this, &MyTerminal::resetBlinkedItem);
   setMode(mode);
   clickBlinkTimer.setSingleShot(true);
+  clickBlinkTimer.setInterval(TERMINAL_CLICK_BLINK_TIME);
 }
 
 MyTerminal::~MyTerminal() {
@@ -79,6 +81,11 @@ void MyTerminal::printText(QByteArray bytes) {
 }
 
 void MyTerminal::printChar(QChar letter) {
+  if (blinkedItem.blinkInProggres) {
+    if (blinkedItem.r == cursorY && blinkedItem.c == cursorX)
+      resetBlinkedItem();
+  }
+
   clearCell(cursorX, cursorY);
   this->setItem(cursorY, cursorX, new QTableWidgetItem(letter));
   this->item(cursorY, cursorX)->setBackground(backColor);
@@ -110,6 +117,10 @@ void MyTerminal::clearTerminal() {
   this->setColumnCount(1);
   resetFont();
   moveCursorAbsolute(0, 0);
+  if (mode == debug) {
+    setRowCount(100);
+    setColumnCount(200);
+  }
 }
 
 void MyTerminal::highLightField(QTableWidgetItem* field) {
@@ -322,11 +333,13 @@ void MyTerminal::setMode(TerminalMode::enumTerminalMode mode) {
   if (mode == TerminalMode::debug) {
     this->setSelectionMode(QAbstractItemView::SelectionMode::NoSelection);
     this->setCurrentCell(cursorY, cursorX, QItemSelectionModel::Select);
-    this->setRowCount(MAX(10, rowCount()));
-    this->setColumnCount(MAX(10, columnCount()));
+    this->setRowCount(MAX(100, rowCount()));
+    this->setColumnCount(MAX(200, columnCount()));
   } else if (mode == TerminalMode::select) {
     this->setSelectionMode(QAbstractItemView::SelectionMode::ContiguousSelection);
   } else if (mode == TerminalMode::clicksend) {
+    this->setSelectionMode(QAbstractItemView::SelectionMode::NoSelection);
+  } else if (mode == TerminalMode::none) {
     this->setSelectionMode(QAbstractItemView::SelectionMode::NoSelection);
   }
   this->setShowGrid(mode == TerminalMode::debug);
@@ -407,27 +420,33 @@ void MyTerminal::clearCell(int x, int y) {
     delete this->item(y, x);
 }
 
+void MyTerminal::resetBlinkedItem() {
+  clickBlinkTimer.stop();
+  if (blinkedItem.blinkInProggres) {
+    auto field = item(blinkedItem.r, blinkedItem.c);
+    if (field) {
+      field->setBackground(blinkedItem.originalBack);
+      field->setForeground(blinkedItem.originalFront);
+    }
+  }
+
+  blinkedItem.blinkInProggres = false;
+}
+
 void MyTerminal::characterClicked(int r, int c) {
   if (mode == clicksend) {
     QTableWidgetItem* it = item(r, c);
     if (it) {
       emit writeToSerial(it->text().toUtf8());
-      if (!blickInProgress) {
-        blickInProgress = true;
-        QColor origBack = it->background().color();
-        QColor origFont = it->foreground().color();
-        highLightField(it);
-        connect(&clickBlinkTimer, &QTimer::timeout, this, [r, c, this, origBack, origFont] {
-          QTableWidgetItem* it = this->item(r, c);
-          if (it) {
-            it->setBackground(origBack);
-            it->setForeground(origFont);
-            blickInProgress = false;
-          }
-        });
-        clickBlinkTimer.start(100);
-      } else
-        clickBlinkTimer.setInterval(50);
+      if (blinkedItem.blinkInProggres)
+        resetBlinkedItem();
+      blinkedItem.blinkInProggres = true;
+      blinkedItem.originalBack = it->background().color();
+      blinkedItem.originalFront = it->foreground().color();
+      blinkedItem.r = r;
+      blinkedItem.c = c;
+      highLightField(it);
+      clickBlinkTimer.start();
     }
   } else if (mode == debug) {
     moveCursorAbsolute(c, r);

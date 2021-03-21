@@ -18,6 +18,7 @@
 
 #include <QObject>
 #include "qcustomplot.h"
+#include "enumsDefinesConstants.h"
 
 class Averager : public QObject {
   Q_OBJECT
@@ -25,14 +26,15 @@ class Averager : public QObject {
   explicit Averager(QObject* parent = nullptr);
 
  private:
-  QList<QCPGraphDataContainer> list;
-  int count = 5;
-  int channel;
+  QVector<QList<QVector<double>>> lists;
+  QVector<QVector<double>> results;
+  int count[ANALOG_COUNT];
+  double lastTimeStep[ANALOG_COUNT];
 
  public slots:
-  void reset(int chID, bool enabled);
-  void setCount(int count);
-  void newDataVector(QSharedPointer<QCPGraphDataContainer> data);
+  void reset();
+  void setCount(int chID, int count);
+  void newDataVector(int chID, double timeStep, QSharedPointer<QCPGraphDataContainer> data);
 
  signals:
   /// Předá data do grafu

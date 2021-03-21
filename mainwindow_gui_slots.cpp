@@ -89,7 +89,7 @@ void MainWindow::on_doubleSpinBoxChScale_valueChanged(double arg1) {
 }
 
 void MainWindow::on_dialZoom_valueChanged(int value) {
-  ui->plot->setZoomRange(value);
+  ui->plot->setZoom(value);
   ui->horizontalScrollBarHorizontal->setMinimum(value / 2);
   ui->horizontalScrollBarHorizontal->setMaximum(1000 - value / 2);
   ui->horizontalScrollBarHorizontal->setPageStep(value);
@@ -501,9 +501,7 @@ void MainWindow::on_pushButtonCenter_clicked() {
 void MainWindow::on_pushButtonClearAll_clicked() {
   ui->plot->resetChannels();
   emit resetChannels();
-  emit resetAverager1(ui->spinBoxAvg1Ch->value(), ui->pushButtonAvg1->isChecked());
-  emit resetAverager2(ui->spinBoxAvg2Ch->value(), ui->pushButtonAvg2->isChecked());
-  emit resetAverager3(ui->spinBoxAvg3Ch->value(), ui->pushButtonAvg3->isChecked());
+  emit resetAverager();
 }
 
 void MainWindow::on_pushButtonTerminalInputCopy_clicked() {
@@ -587,7 +585,6 @@ void MainWindow::on_lineEditVUnit_textChanged(const QString& arg1) {
 
 void MainWindow::on_checkBoxOpenGL_toggled(bool checked) {
   ui->plot->setOpenGl(checked);
-  ui->plot->redraw();
 }
 
 void MainWindow::on_checkBoxMouseControls_toggled(bool checked) {
