@@ -26,19 +26,24 @@ class Averager : public QObject {
   explicit Averager(QObject* parent = nullptr);
 
  private:
-  QVector<QList<QVector<double>>> lists;
-  QVector<QVector<double>> results;
-  int count[ANALOG_COUNT];
-  double lastTimeStep[ANALOG_COUNT];
+  QVector<QList<QVector<double>>> listsChannels;
+  QVector<QVector<double>> channelsResults;
+  int averageCount[ANALOG_COUNT];
+  double lastChannelSamplingPeriod[ANALOG_COUNT];
+  QVector<QList<QPair<double, double>>> points;
+  double pointResults[ANALOG_COUNT];
 
  public slots:
   void reset();
   void setCount(int chID, int count);
   void newDataVector(int chID, double timeStep, QSharedPointer<QCPGraphDataContainer> data);
+  void newDataPoint(int chID, double time, double value, bool append);
 
  signals:
   /// Předá data do grafu
   void addVectorToPlot(int ch, QSharedPointer<QCPGraphDataContainer>, bool isMath = false);
+  /// Předá data do grafu
+  void addPointToPlot(int ch, double time, double value, bool append);
 
 };
 

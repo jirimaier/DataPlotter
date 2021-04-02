@@ -30,7 +30,6 @@ void MainWindow::initSetables() {
   setables["opengl"] = ui->checkBoxOpenGL;
 
   // Connection
-  //setables["baud"] = ui->comboBoxBaud;
   setables["debuglvl"] = ui->comboBoxOutputLevel;
 
   // Settings
@@ -40,6 +39,7 @@ void MainWindow::initSetables() {
   setables["sendonrec"] = ui->checkBoxResetCmdEn;
   setables["rstcmd"] = ui->lineEditResetCmd;
   setables["autoautoset"] = ui->checkBoxAutoAutoSet;
+  setables["termnoclickblack"] = ui->checkBoxTerminalClicksendNoBackground;
 
   // Send
   setables["sendend"] = ui->comboBoxLineEnding;
@@ -107,6 +107,22 @@ QByteArray MainWindow::getSettings() {
     settings.append("plotrange:free;\n");
   else if (ui->radioButtonRollingRange->isChecked())
     settings.append("plotrange:roll;\n");
+
+  if (ui->radioButtonLayoutAll->isChecked())
+    settings.append("layout:all;\n");
+  else if (ui->radioButtonLayoutFFT->isChecked())
+    settings.append("layout:fft;\n");
+  else if (ui->radioButtonLayoutTime->isChecked())
+    settings.append("layout:time;\n");
+  else if (ui->radioButtonLayoutXY->isChecked())
+    settings.append("layout:xy;\n");
+
+  if (ui->checkBoxTriggerLineEn->checkState() == Qt::Checked)
+    settings.append("trigline:on;\n");
+  else if (ui->checkBoxTriggerLineEn->checkState() == Qt::Unchecked)
+    settings.append("trigline:off;\n");
+  else if (ui->checkBoxTriggerLineEn->checkState() == Qt::PartiallyChecked)
+    settings.append("trigline:auto;\n");
 
   if (ui->pushButtonTerminalClickToSend->isChecked())
     settings.append("terminal:clicksend;\n");
@@ -180,6 +196,43 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarg
       ui->comboBoxBaud->setEditText(QString::number(value.toUInt()));
     }
 
+    else if (type == "presetport") {
+      preselectPortHint = value;
+      ui->comboBoxCom->clear();
+      portList.clear();
+      comRefresh();
+    }
+
+    else if (type == "trigline") {
+      if (value == "on")
+        ui->checkBoxTriggerLineEn->setCheckState(Qt::Checked);
+      if (value == "off")
+        ui->checkBoxTriggerLineEn->setCheckState(Qt::Unchecked);
+      if (value == "auto")
+        ui->checkBoxTriggerLineEn->setCheckState(Qt::PartiallyChecked);
+    }
+
+    else if (type == "trigch") {
+      int chid = value.toUInt() - 1;
+      if (chid < 0)
+        chid = 0;
+      if (chid >= ANALOG_COUNT)
+        chid = ANALOG_COUNT - 1;
+      ui->plot->setTriggerLineChannel(chid);
+      if (ui->checkBoxTriggerLineEn->checkState() == Qt::PartiallyChecked) {
+        ui->plot->setTriggerLineVisible(true);
+        triggerLineTimer.start();
+      }
+    }
+
+    else if (type == "trigpos") {
+      ui->plot->setTriggerLineValue(value.toDouble());
+      if (ui->checkBoxTriggerLineEn->checkState() == Qt::PartiallyChecked) {
+        ui->plot->setTriggerLineVisible(true);
+        triggerLineTimer.start();
+      }
+    }
+
     else if (type == "lang") {
       if (value == "en")
         ui->radioButtonEn->setChecked(true);
@@ -214,6 +267,17 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarg
         ui->radioButtonRollingRange->setChecked(true);
     }
 
+    else if (type == "layout") {
+      if (value == "all")
+        ui->radioButtonLayoutAll->setChecked(true);
+      if (value == "time")
+        ui->radioButtonLayoutTime->setChecked(true);
+      if (value == "fft")
+        ui->radioButtonLayoutFFT->setChecked(true);
+      if (value == "xy")
+        ui->radioButtonLayoutXY->setChecked(true);
+    }
+
     else if (type == "xyclr") {
       QByteArrayList rgb = value.split(',');
       if (rgb.length() != 3) {
@@ -238,6 +302,8 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarg
       subtype = subtype.left(subtype.indexOf(':'));
       QByteArray subvalue = value.mid(value.lastIndexOf(':') + 1);
 
+      if (subtype == "clear")
+        ui->plot->clearCh(ch);
       if (subtype == "sty")
         ui->plot->setChStyle(ch, subvalue.toUInt());
       else if (subtype == "clr") {
@@ -266,12 +332,10 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarg
       subtype = subtype.left(subtype.indexOf(':'));
       QByteArray subvalue = value.mid(value.lastIndexOf(':') + 1);
 
-      if (subtype == "off")
-        ui->plot->setLogicOffset(group, subvalue.toDouble());
-      else if (subtype == "sca")
-        ui->plot->setLogicScale(group, subvalue.toDouble());
-      else if (subtype == "sty")
+      if (subtype == "sty")
         ui->plot->setLogicStyle(group, subvalue.toUInt());
+      if (subtype == "clear")
+        ui->plot->clearLogicGroup(group, 0);
       else if (subtype == "clr") {
         QByteArrayList rgb = subvalue.mid(subvalue.indexOf(':')).split(',');
         if (rgb.length() != 3) {
@@ -358,7 +422,7 @@ void MainWindow::on_pushButtonDefaults_clicked() {
 
 void MainWindow::on_pushButtonSaveSettings_clicked() {
   QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/settings/default.cfg");
-  QString fileName = QFileDialog::getSaveFileName(this, tr("Load settings"), defaultName, tr("Settings file (*.cfg)"));
+  QString fileName = QFileDialog::getSaveFileName(this, tr("Save settings"), defaultName, tr("Settings file (*.cfg)"));
   if (fileName.isEmpty())
     return;
   QFile file(fileName);

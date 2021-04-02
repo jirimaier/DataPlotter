@@ -58,6 +58,7 @@ void MainWindow::connectSignals() {
   connect(&serialMonitorTimer, &QTimer::timeout, this, &MainWindow::updateSerialMonitor);
   connect(&dataRateTimer, &QTimer::timeout, this, &MainWindow::updateDataRate);
   connect(&interpolationTimer, &QTimer::timeout, this, &MainWindow::updateInterpolation);
+  connect(&triggerLineTimer, &QTimer::timeout, this, &MainWindow::turnOffTriggerLine);
 
   connect(ui->horizontalSliderTimeCur1, &myCursorSlider::realValueChanged, this, &MainWindow::horizontalSliderTimeCur1_realValueChanged);
   connect(ui->horizontalSliderTimeCur2, &myCursorSlider::realValueChanged, this, &MainWindow::horizontalSliderTimeCur2_realValueChanged);
@@ -97,19 +98,14 @@ void MainWindow::setGuiDefaults() {
   ui->tabsControll->setCurrentIndex(0);
   ui->comboBoxOutputLevel->setCurrentIndex((int)OutputLevel::info);
   ui->radioButtonFixedRange->setChecked(true);
-  ui->plotxy->setHidden(true);
-  ui->plotFFT->setHidden(true);
+  plotLayoutChanged();
   ui->frameTermanalDebug->setVisible(ui->pushButtonTerminalDebug->isChecked());
   ui->labelBuildDate->setText(tr("Build: ") + QString(__DATE__) + " " + QString(__TIME__));
   ui->pushButtonPause->setIcon(iconRun);
   ui->pushButtonMultiplInputs->setChecked(false);
 
-  ui->plot->setXUnit("s");
-  ui->plotxy->tUnit = "s";
-  ui->plotFFT->setXUnit("Hz");
-  ui->plot->setYUnit("V");
-  ui->plotxy->setYUnit("V");
-  ui->plotxy->setYUnit("V");
+  on_lineEditHUnit_textChanged(ui->lineEditHUnit->text());
+  on_lineEditVUnit_textChanged(ui->lineEditVUnit->text());
 
   on_comboBoxFFTType_currentIndexChanged(ui->comboBoxFFTType->currentIndex());
 
@@ -123,6 +119,16 @@ void MainWindow::setGuiDefaults() {
 
   ui->comboBoxMeasure1->setCurrentIndex(0);
   ui->comboBoxMeasure2->setCurrentIndex(1);
+
+  ui->comboBoxMathFirst1->setCurrentIndex(0);
+  ui->comboBoxMathSecond1->setCurrentIndex(1);
+  ui->comboBoxMathFirst2->setCurrentIndex(0);
+  ui->comboBoxMathSecond2->setCurrentIndex(1);
+  ui->comboBoxMathFirst3->setCurrentIndex(0);
+  ui->comboBoxMathSecond3->setCurrentIndex(1);
+
+  ui->comboBoxLogic1->setCurrentIndex(0);
+  ui->comboBoxLogic2->setCurrentIndex(1);
 
   ui->comboBoxFFTType->setCurrentIndex(1);
 
@@ -141,6 +147,13 @@ void MainWindow::setGuiDefaults() {
   ui->doubleSpinBoxXCur2->setVisible(false);
   ui->doubleSpinBoxYCur1->setVisible(false);
   ui->doubleSpinBoxYCur2->setVisible(false);
+
+  ui->radioButtonAverageAll->setChecked(true);
+
+  triggerLineTimer.setSingleShot(true);
+  triggerLineTimer.setInterval(2000);
+
+  ui->checkBoxTriggerLineEn->setCheckState(Qt::PartiallyChecked);
 }
 
 void MainWindow::setGuiArrays() {
@@ -148,13 +161,13 @@ void MainWindow::setGuiArrays() {
   mathEn[1] = ui->pushButtonMath2;
   mathEn[2] = ui->pushButtonMath3;
 
-  mathFirst[0] = ui->spinBoxMath1First;
-  mathFirst[1] = ui->spinBoxMath2First;
-  mathFirst[2] = ui->spinBoxMath3First;
+  mathFirst[0] = ui->comboBoxMathFirst1;
+  mathFirst[1] = ui->comboBoxMathFirst2;
+  mathFirst[2] = ui->comboBoxMathFirst3;
 
-  mathSecond[0] = ui->spinBoxMath1Second;
-  mathSecond[1] = ui->spinBoxMath2Second;
-  mathSecond[2] = ui->spinBoxMath3Second;
+  mathSecond[0] = ui->comboBoxMathSecond1;
+  mathSecond[1] = ui->comboBoxMathSecond2;
+  mathSecond[2] = ui->comboBoxMathSecond3;
 
   mathOp[0] = ui->comboBoxMath1Op;
   mathOp[1] = ui->comboBoxMath2Op;
@@ -171,6 +184,29 @@ void MainWindow::fillChannelSelect() {
   ui->comboBoxFFTCh2->blockSignals(true);
   ui->comboBoxXYx->blockSignals(true);
   ui->comboBoxXYy->blockSignals(true);
+  ui->comboBoxMathFirst1->blockSignals(true);
+  ui->comboBoxMathFirst2->blockSignals(true);
+  ui->comboBoxMathFirst3->blockSignals(true);
+  ui->comboBoxMathSecond1->blockSignals(true);
+  ui->comboBoxMathSecond2->blockSignals(true);
+  ui->comboBoxMathSecond3->blockSignals(true);
+  ui->comboBoxLogic1->blockSignals(true);
+  ui->comboBoxLogic2->blockSignals(true);
+  ui->comboBoxAvgIndividualCh->blockSignals(true);
+  ui->comboBoxChClear->blockSignals(true);
+
+  for (int i = 0; i < ANALOG_COUNT; i++) {
+    ui->comboBoxMathFirst1->addItem(getChName(i));
+    ui->comboBoxMathFirst2->addItem(getChName(i));
+    ui->comboBoxMathFirst3->addItem(getChName(i));
+    ui->comboBoxMathSecond1->addItem(getChName(i));
+    ui->comboBoxMathSecond2->addItem(getChName(i));
+    ui->comboBoxMathSecond3->addItem(getChName(i));
+    ui->comboBoxLogic1->addItem(getChName(i));
+    ui->comboBoxLogic2->addItem(getChName(i));
+    ui->comboBoxAvgIndividualCh->addItem(getChName(i));
+
+  }
 
   for (int i = 0; i < ANALOG_COUNT + MATH_COUNT; i++) {
     ui->comboBoxSelectedChannel->addItem(getChName(i));
@@ -182,17 +218,20 @@ void MainWindow::fillChannelSelect() {
     ui->comboBoxFFTCh2->addItem(getChName(i));
     ui->comboBoxXYx->addItem(getChName(i));
     ui->comboBoxXYy->addItem(getChName(i));
+    ui->comboBoxChClear->addItem(getChName(i));
   }
   for (int i = 1; i <= LOGIC_GROUPS - 1; i++) {
     ui->comboBoxSelectedChannel->addItem(tr("Logic %1").arg(i));
     ui->comboBoxCursor1Channel->addItem(tr("Logic %1").arg(i));
     ui->comboBoxCursor2Channel->addItem(tr("Logic %1").arg(i));
+    ui->comboBoxChClear->addItem(tr("Logic %1").arg(i));
   }
 
   // Poslední logický kanál (pro přímý zápis) je bez čísla
   ui->comboBoxSelectedChannel->addItem(tr("Logic"));
   ui->comboBoxCursor1Channel->addItem(tr("Logic"));
   ui->comboBoxCursor2Channel->addItem(tr("Logic"));
+  ui->comboBoxChClear->addItem(tr("Logic"));
 
   ui->comboBoxCursor1Channel->addItem("FFT 1");
   ui->comboBoxCursor1Channel->addItem("FFT 2");
@@ -224,4 +263,14 @@ void MainWindow::fillChannelSelect() {
   ui->comboBoxFFTCh2->blockSignals(false);
   ui->comboBoxXYx->blockSignals(false);
   ui->comboBoxXYy->blockSignals(false);
+  ui->comboBoxMathFirst1->blockSignals(false);
+  ui->comboBoxMathFirst2->blockSignals(false);
+  ui->comboBoxMathFirst3->blockSignals(false);
+  ui->comboBoxMathSecond1->blockSignals(false);
+  ui->comboBoxMathSecond2->blockSignals(false);
+  ui->comboBoxMathSecond3->blockSignals(false);
+  ui->comboBoxLogic1->blockSignals(false);
+  ui->comboBoxLogic2->blockSignals(false);
+  ui->comboBoxAvgIndividualCh->blockSignals(false);
+  ui->comboBoxChClear->blockSignals(false);
 }

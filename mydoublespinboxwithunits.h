@@ -32,13 +32,19 @@ class MyDoubleSpinBoxWithUnits : public QDoubleSpinBox {
   /// Výchozí hodnota pokud uživatel pole vymaže nebo zadá neplatnou hodnotu
   double emptyDefaultValue = 0;
 
+  /// Nastaví jednotku
+  void setUnit(QString suffix, bool useUnitPrefix);
+
  private:
   QValidator::State validate(QString& input, int& pos) const;
   QString textFromValue(double val) const;
   double valueFromText(const QString& text) const;
+  bool useUnitPrefix = true;
 
   /// písmena (předpony jednotky), která se smí v poli objevit
   QString validchars = "Mkmu";
+
+
 
  signals:
 };

@@ -10,6 +10,7 @@ CONFIG += c++11
 
 SOURCES += \
     averager.cpp \
+    clickablelabel.cpp \
     interpolator.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -44,6 +45,7 @@ SOURCES += \
 
 HEADERS += \
     averager.h \
+    clickablelabel.h \
     enumsDefinesConstants.h \
     interpolator.h \
     mainwindow.h \

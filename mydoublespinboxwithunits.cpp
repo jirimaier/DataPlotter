@@ -49,6 +49,13 @@ QValidator::State MyDoubleSpinBoxWithUnits::validate(QString& input, int& pos) c
 
 QString MyDoubleSpinBoxWithUnits::textFromValue(double val) const {
   // Zobrazení hodnoty
+  if (suffix().length() == 0)
+    return (QString::number(val, 'g', 3));
+  if (suffix().length() >= 2) {
+    if (suffix().left(2) == "dB")
+      return (QString::number(val, 'g', 3) + " ");
+  }
+
   return (floatToNiceString(val, 4, false, false, trimDecimalZeroes));
 }
 
@@ -72,4 +79,9 @@ double MyDoubleSpinBoxWithUnits::valueFromText(const QString& text) const {
   if (!isok)
     return emptyDefaultValue;
   return val;
+}
+
+void MyDoubleSpinBoxWithUnits::setUnit(QString suffix, bool useUnitPrefix) {
+  QDoubleSpinBox::setSuffix(suffix);
+  this->useUnitPrefix = useUnitPrefix;
 }

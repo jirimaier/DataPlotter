@@ -66,6 +66,8 @@ void MyXYPlot::setStyle(int style) {
 }
 
 QByteArray MyXYPlot::exportCSV(char separator, char decimal, int precision) {
+  if (graphXY->data()->isEmpty())
+    return "";
   QByteArray output = (QString("X%1Y\n").arg(separator)).toUtf8();
   for (QCPCurveDataContainer::iterator it = graphXY->data()->begin(); it != graphXY->data()->end(); it++) {
     output.append(QString::number(it->key, 'f', precision).replace('.', decimal).toUtf8());

@@ -194,6 +194,7 @@ int main(int argc, char* argv[]) {
   QObject::connect(&mainWindow, &MainWindow::resetAverager, averager, &Averager::reset);
   QObject::connect(&mainWindow, &MainWindow::setAveragerCount, averager, &Averager::setCount);
   QObject::connect(plotData, &PlotData::addDataToAverager, averager, &Averager::newDataVector);
+  QObject::connect(plotData, &PlotData::addPointToAverager, averager, &Averager::newDataPoint);
 
   // Funkce init je zavolána až z nového vlákna
   QObject::connect(&serialReader1Thread, &QThread::started, serial1, &SerialReader::init);

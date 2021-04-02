@@ -25,7 +25,7 @@ NewSerialParser::~NewSerialParser() {}
 void NewSerialParser::resetChHeader() {
   channelHeaderRead = false;
   channelLength = 0;
-  channelNumber = 0;
+  channelNumber.clear();
   channelTime.second.clear();
   aditionalHeaderParameters.clear();
 }
@@ -185,9 +185,20 @@ void NewSerialParser::parse(QByteArray newData) {
             if (pendingPointBuffer.length() >= 3 && pendingPointBuffer.length() <= 7) {
               channelHeaderRead = true;
               try {
-                channelNumber = arrayToUint(pendingPointBuffer.at(0));
-                if (channelNumber == 0 || channelNumber > ANALOG_COUNT)
-                  throw(tr("out of range (1 - %1): %2").arg(ANALOG_COUNT).arg(channelNumber));
+                if (pendingPointBuffer.at(0).first.isBinary || !pendingPointBuffer.at(0).second.contains('+')) {
+                  // Jen jeden kanál
+                  channelNumber.append(arrayToUint(pendingPointBuffer.at(0)));
+                  if (channelNumber.at(0) == 0 || channelNumber.at(0) > ANALOG_COUNT)
+                    throw(tr("out of range (1 - %1): %2").arg(ANALOG_COUNT).arg(channelNumber.at(0)));
+                } else {
+                  // Vícero kanálů na přeskáčku
+                  QByteArrayList values = pendingPointBuffer.at(0).second.split('+');
+                  for (int i = 0; i < values.size(); i++) {
+                    channelNumber.append(values.at(i).toUInt());
+                    if (channelNumber.at(i) == 0 || channelNumber.at(0) > ANALOG_COUNT)
+                      throw(tr("out of range (1 - %1): %2").arg(ANALOG_COUNT).arg(channelNumber.at(0)));
+                  }
+                }
               } catch (QString msg) {
                 throw (tr("Invallid channel: ") + tr("Invalid channel number - ") + msg);
               }
@@ -227,14 +238,17 @@ void NewSerialParser::parse(QByteArray newData) {
             break;
 
           if (result == notProperlyEnded && debugLevel >= OutputLevel::warning) {
-            QByteArray semicolumPositionMessage = tr("No semicolum found").toUtf8();
-            if (buffer.contains(';') && channel.second.contains(';'))
-              semicolumPositionMessage = tr("There are semicolums %1 byte before and %2 after end.").arg(buffer.indexOf(';')).arg(channel.second.length() - channel.second.lastIndexOf(';')).toUtf8();
-            else {
-              if (channel.second.contains(';'))
-                semicolumPositionMessage = tr("There is semicolum %1 bytes before end.").arg(channel.second.length() - channel.second.lastIndexOf(';')).toUtf8();
-              if (buffer.contains(';'))
-                semicolumPositionMessage = tr("There is semicolum %1 bytes after end.").arg(buffer.indexOf(';')).toUtf8();
+            QByteArray semicolumPositionMessage = tr("(enable info messages to show nearest semicolum position)").toUtf8();
+            if (debugLevel == OutputLevel::info) {
+              semicolumPositionMessage = tr("No semicolum found").toUtf8();
+              if (buffer.contains(';') && channel.second.contains(';'))
+                semicolumPositionMessage = tr("There are semicolums %1 byte before and %2 after end.").arg(buffer.indexOf(';')).arg(channel.second.length() - channel.second.lastIndexOf(';')).toUtf8();
+              else {
+                if (channel.second.contains(';'))
+                  semicolumPositionMessage = tr("There is semicolum %1 bytes before end.").arg(channel.second.length() - channel.second.lastIndexOf(';')).toUtf8();
+                if (buffer.contains(';'))
+                  semicolumPositionMessage = tr("There is semicolum %1 bytes after end.").arg(buffer.indexOf(';')).toUtf8();
+              }
             }
             emit sendMessage(tr("Channel not ended with ';'"), semicolumPositionMessage, MessageLevel::warning, target);
           }
@@ -298,8 +312,17 @@ void NewSerialParser::parse(QByteArray newData) {
                 throw (tr("Invallid channel: ") + tr("To many header entries for signed integer type"));
             }
           }
-          emit sendChannel(channel, channelNumber, channelTime, zeroIndex, channelBits, channelMin, channelMax);
-
+          if (channelNumber.size() == 1)
+            emit sendChannel(channel, channelNumber.first(), channelTime, zeroIndex, channelBits, channelMin, channelMax);
+          else {
+            int N = channelNumber.size();
+            QVector<QByteArray> subChannels;
+            subChannels.resize(N);
+            for (int i = 0; i < channel.second.size(); i++)
+              subChannels[(i / channel.first.bytes) % N].append(channel.second.at(i));
+            for (int i = 0; i < N; i++)
+              emit sendChannel(QPair<ValueType, QByteArray>(channel.first, subChannels.at(i)), channelNumber.at(i), channelTime, zeroIndex, channelBits, channelMin, channelMax);
+          }
           resetChHeader();
           continue;
         }
@@ -347,16 +370,19 @@ void NewSerialParser::parse(QByteArray newData) {
             break;
 
           if (result == notProperlyEnded && debugLevel >= OutputLevel::warning) {
-            QByteArray semicolumPositionMessage = tr("No semicolum found").toUtf8();
-            if (buffer.contains(';') && channel.second.contains(';'))
-              semicolumPositionMessage = tr("There are semicolums %1 byte before and %2 after end.").arg(buffer.indexOf(';')).arg(channel.second.length() - channel.second.lastIndexOf(';')).toUtf8();
-            else {
-              if (channel.second.contains(';'))
-                semicolumPositionMessage = tr("There is semicolum %1 bytes before end.").arg(channel.second.length() - channel.second.lastIndexOf(';')).toUtf8();
-              if (buffer.contains(';'))
-                semicolumPositionMessage = tr("There is semicolum %1 bytes after end.").arg(buffer.indexOf(';')).toUtf8();
+            QByteArray semicolumPositionMessage = tr("(enable info messages to show nearest semicolum position)").toUtf8();
+            if (debugLevel == OutputLevel::info) {
+              semicolumPositionMessage = tr("No semicolum found").toUtf8();
+              if (buffer.contains(';') && channel.second.contains(';'))
+                semicolumPositionMessage = tr("There are semicolums %1 byte before and %2 after end.").arg(buffer.indexOf(';')).arg(channel.second.length() - channel.second.lastIndexOf(';')).toUtf8();
+              else {
+                if (channel.second.contains(';'))
+                  semicolumPositionMessage = tr("There is semicolum %1 bytes before end.").arg(channel.second.length() - channel.second.lastIndexOf(';')).toUtf8();
+                if (buffer.contains(';'))
+                  semicolumPositionMessage = tr("There is semicolum %1 bytes after end.").arg(buffer.indexOf(';')).toUtf8();
+              }
             }
-            emit sendMessage(tr("Channel not ended with ';'"), semicolumPositionMessage, MessageLevel::warning, target);
+            emit sendMessage(tr("Logic channel not ended with ';'"), semicolumPositionMessage, MessageLevel::warning, target);
           }
 
           int zeroIndex = 0, channelBits = channel.first.bytes * 8;
@@ -469,7 +495,7 @@ void NewSerialParser::parse(QByteArray newData) {
 NewSerialParser::readResult NewSerialParser::bufferReadPoint(QList<QPair<ValueType, QByteArray>>& result) {
   while (!buffer.isEmpty()) {
     // Textové číslo
-    if (buffer.at(0) == ',') {
+    if (buffer.at(0) == ',' || buffer.at(0) == ' ') {
       buffer.remove(0, 1);
       continue;
     }
@@ -523,8 +549,9 @@ NewSerialParser::readResult NewSerialParser::bufferReadPoint(QList<QPair<ValueTy
 
       int prefixLength = 0;
       ValueType valType = readValuePrefix(buffer, prefixLength);
-      if (valType.type == ValueType::Type::invalid)
-        throw(tr("Invalid value type: %1").arg(QString(buffer.left(prefixLength))));
+      if (valType.type == ValueType::Type::invalid) {
+        throw (tr("Expected value, but \"%1\" found.").arg(QString(buffer.left(prefixLength))));
+      }
       if (buffer.length() < valType.bytes + prefixLength || valType.type == ValueType::Type::incomplete)
         return incomplete;
       buffer.remove(0, prefixLength);
@@ -551,7 +578,7 @@ uint32_t NewSerialParser::arrayToUint(QPair<ValueType, QByteArray> value) {
     bool isok = true;
     double val = value.second.toUInt(&isok);
     if (!isok)
-      throw(tr("Value is not a valid integer: %1").arg(QString(value.second)));
+      throw(tr("Value \"%1\" is not a valid integer.").arg(QString(value.second)));
     if (val < 0)
       throw(tr("Value is negative: %1").arg(QString(value.second)));
     return val;

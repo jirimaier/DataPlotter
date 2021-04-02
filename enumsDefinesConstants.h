@@ -13,8 +13,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef SETTINGS_H
-#define SETTINGS_H
+#ifndef GLOBAL_H
+#define GLOBAL_H
 
 #include <QColor>
 #include <QObject>
@@ -30,9 +30,6 @@
 #define INTERPOLATION_UPSAMPLING 8
 
 #define SHOW_OPENGL_RECOMMENDATION_WHEN_SWITCHED_TO_FILLED true
-
-// Program předvybere zařízení co má v popisu tento text
-#define DEFAULT_PORT_STRING "ST"
 
 #define TERMINAL_CLICK_BLINK_TIME 100
 
@@ -236,8 +233,6 @@ inline QString valueTypeToString(ValueType val) {
 /// Počet kanálů v grafu (každý logický bit počítá jako samostatný kanál, nezahrnuje interpolační kanály
 #define ALL_COUNT (ANALOG_COUNT + MATH_COUNT + LOGIC_COUNT)
 
-#define XY_AND_FFT_ALLWAYS_TOGETHER
-
 #define POINT_STYLE QCPScatterStyle::ssDisc
 
 #define MAX_PLOT_ZOOMOUT 10000000000
@@ -258,6 +253,7 @@ inline QString valueTypeToString(ValueType val) {
 
 #define EXPORT_XY -1
 #define EXPORT_FFT -2
+#define EXPORT_ALL -3
 
 #define IS_ANALOG_OR_MATH(ch) (ch < ANALOG_COUNT + MATH_COUNT)
 #define IS_ANALOG_OR_MATH_OR_LOGIC(ch) (ch < ANALOG_COUNT + MATH_COUNT+LOGIC_GROUPS)
@@ -267,8 +263,6 @@ inline QString valueTypeToString(ValueType val) {
 
 #define ChID_TO_LOGIC_GROUP(ch) ((ch - ANALOG_COUNT - MATH_COUNT) / LOGIC_BITS)
 #define ChID_TO_LOGIC_GROUP_BIT(ch) ((ch - ANALOG_COUNT - MATH_COUNT) % LOGIC_BITS)
-
-
 
 const static QString lineEndings[4] = {"", "\n", "\r", "\r\n"};
 
@@ -308,10 +302,10 @@ inline int getLogicChannelID(int group, int bit) { return (ANALOG_COUNT + MATH_C
 
 /// Chid od 0
 inline QString getChName(int chid) {
-  if (chid == ANALOG_COUNT + MATH_COUNT + LOGIC_GROUPS - 1)
-    return (QObject::tr("Logic bit %1").arg(ChID_TO_LOGIC_GROUP_BIT(chid) + 1));
+  if (ChID_TO_LOGIC_GROUP(chid) == LOGIC_GROUPS - 1)
+    return (QObject::tr("Logic bit %1").arg(ChID_TO_LOGIC_GROUP_BIT(chid)));
   if (chid >= ANALOG_COUNT + MATH_COUNT)
-    return (QObject::tr("Logic %1 bit %2").arg(ChID_TO_LOGIC_GROUP(chid) + 1).arg(ChID_TO_LOGIC_GROUP_BIT(chid) + 1));
+    return (QObject::tr("Logic %1 bit %2").arg(ChID_TO_LOGIC_GROUP(chid) + 1).arg(ChID_TO_LOGIC_GROUP_BIT(chid)));
   if (chid >= ANALOG_COUNT)
     return (QObject::tr("Math %1").arg(chid - ANALOG_COUNT + 1));
   return (QObject::tr("Ch %1").arg(chid + 1));
@@ -346,7 +340,7 @@ static int fastPow10(int n) {
 
 /// Nejbližší vyšší (nebo rovná) mocnina 2
 inline int nextPow2(int number) {
-  for (int i = 1;; i++)
+  for (int i = 0;; i++)
     if (pow(2, i) >= number)
       return (pow(2, i));
 }
@@ -455,4 +449,4 @@ struct ChannelSettings_t {
   bool interpolate = false;
 };
 
-#endif // SETTINGS_H
+#endif // GLOBAL_H

@@ -437,6 +437,10 @@ void MyTerminal::characterClicked(int r, int c) {
   if (mode == clicksend) {
     QTableWidgetItem* it = item(r, c);
     if (it) {
+      if (disableSendingBlackBackgnd) {
+        if (it->background().color() == Qt::black)
+          return;
+      }
       emit writeToSerial(it->text().toUtf8());
       if (blinkedItem.blinkInProggres)
         resetBlinkedItem();

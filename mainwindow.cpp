@@ -21,6 +21,9 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
   ui->doubleSpinBoxRangeVerticalRange->emptyDefaultValue = 1;
   ui->doubleSpinBoxRangeHorizontal->trimDecimalZeroes = true;
   ui->doubleSpinBoxRangeHorizontal->emptyDefaultValue = 1;
+
+  for (int i = 0; i < ANALOG_COUNT; i++)
+    averagerCounts[i] = 8;
 }
 
 MainWindow::~MainWindow() { delete ui; delete serialSettingsDialog; }
@@ -66,6 +69,7 @@ void MainWindow::init(QTranslator* translator, const PlotData* plotData, const P
   QObject::connect(ui->myTerminal, &MyTerminal::writeToSerial, serialReader, &SerialReader::write);
 
   QObject::connect(avg, &Averager::addVectorToPlot, ui->plot, &MyMainPlot::newDataVector);
+  QObject::connect(avg, &Averager::addPointToPlot, ui->plot, &MyMainPlot::newDataPoint);
 
   // Odpojit port když se změní pokročilá nastavení
   QObject::connect(serialSettingsDialog, &SerialSettingsDialog::settingChanged, serialReader, &SerialReader::end);
@@ -105,7 +109,10 @@ void MainWindow::showPlotStatus(PlotStatus::enumPlotStatus type) {
 void MainWindow::updateChScale() {
   if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT) {
     double perDiv = ui->plot->getCHDiv(ui->comboBoxSelectedChannel->currentIndex());
-    ui->labelChScale->setText(floatToNiceString(perDiv, 3, true, false) + ui->plot->getYUnit() + tr(" / Div"));
+    if (valuesUseUnits)
+      ui->labelChScale->setText(floatToNiceString(perDiv, 3, true, false) + ui->plot->getYUnit() + tr(" / Div"));
+    else
+      ui->labelChScale->setText(QString::number(perDiv, 'g', 3) + ui->plot->getYUnit() + tr(" / Div"));
   } else
     ui->labelChScale->setText("---");
 }
@@ -133,6 +140,8 @@ void MainWindow::serialConnectResult(bool connected, QString message, QString de
     data.replace("\\r", "\r");
     emit writeToSerial(ui->lineEditResetCmd->text().toLocal8Bit());
   }
+
+  dataRateTimer.start();
   autoAutosetPending = ui->checkBoxAutoAutoSet->isChecked();
 }
 
@@ -143,11 +152,21 @@ void MainWindow::serialFinishedWriting() {
 
 void MainWindow::updateDivs() {
   updateChScale();
-  if (ui->labelHDiv->isEnabled())
-    ui->labelHDiv->setText(floatToNiceString(ui->plot->getHDiv(), 1, false, false) + tr("s/Div"));
-  else
+  if (ui->labelHDiv->isEnabled()) {
+    QString unit = ui->plot->getXUnit();
+    if (timeUseUnits)
+      ui->labelHDiv->setText(floatToNiceString(ui->plot->getHDiv(), 1, false, false) + unit + tr("/Div"));
+    else
+      ui->labelHDiv->setText(QString::number(ui->plot->getHDiv(), 'g', 3) + tr("/Div"));
+
+  } else
     ui->labelHDiv->setText("---");
-  ui->labelVDiv->setText(floatToNiceString(ui->plot->getVDiv(), 1, false, false) + ui->plot->getYUnit() + tr("/Div"));
+
+  QString unit = ui->plot->getYUnit();
+  if (valuesUseUnits)
+    ui->labelVDiv->setText(floatToNiceString(ui->plot->getVDiv(), 1, false, false) + unit + tr("/Div"));
+  else
+    ui->labelVDiv->setText(QString::number(ui->plot->getVDiv(), 'g', 3) + unit + tr("/Div"));
 }
 
 void MainWindow::printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumMessageTarget target) {
@@ -168,6 +187,7 @@ void MainWindow::printMessage(QString messageHeader, QByteArray messageBody, int
 
   QString stringMessage;
   stringMessage = messageBody;
+
   if (target == MessageTarget::serial1)
     ui->plainTextEditConsole->appendHtml(color + QString(messageHeader) + "</font color>" + (stringMessage.isEmpty() ? "" : ": ") + stringMessage);
   else
@@ -203,14 +223,14 @@ void MainWindow::ch1WasUpdated(bool wasPoint, bool wasLogic, HAxisType::enumHAxi
 }
 
 void MainWindow::updateMathNow(int number) {
-  emit setMathFirst(number, mathEn[number - 1]->isChecked() ? mathFirst[number - 1]->value() : 0);
-  emit setMathSecond(number, mathEn[number - 1]->isChecked() ? mathSecond[number - 1]->value() : 0);
+  emit setMathFirst(number, mathEn[number - 1]->isChecked() ? mathFirst[number - 1]->currentIndex() + 1 : 0);
+  emit setMathSecond(number, mathEn[number - 1]->isChecked() ? mathSecond[number - 1]->currentIndex() + 1 : 0);
   emit clearMath(number);
   ui->plot->clearCh(getAnalogChId(number, ChannelType::math));
   if (mathEn[number - 1]->isChecked()) {
     MathOperations::enumMathOperations operation = (MathOperations::enumMathOperations)mathOp[number - 1]->currentIndex();
-    QSharedPointer<QCPGraphDataContainer> in1 = ui->plot->graph(getAnalogChId(mathFirst[number - 1]->value(), ChannelType::analog))->data();
-    QSharedPointer<QCPGraphDataContainer> in2 = ui->plot->graph(getAnalogChId(mathSecond[number - 1]->value(), ChannelType::analog))->data();
+    QSharedPointer<QCPGraphDataContainer> in1 = ui->plot->graph(getAnalogChId(mathFirst[number - 1]->currentIndex() + 1, ChannelType::analog))->data();
+    QSharedPointer<QCPGraphDataContainer> in2 = ui->plot->graph(getAnalogChId(mathSecond[number - 1]->currentIndex() + 1, ChannelType::analog))->data();
     emit resetMath(number, operation, in1, in2);
   }
 }
@@ -287,12 +307,110 @@ void MainWindow::on_pushButtonHideCur2_clicked() {
 }
 
 void MainWindow::on_pushButtonAvg_toggled(bool checked) {
-  for (int chID = 0; chID < ANALOG_COUNT; chID++)
-    emit setAverager(chID, checked);
   emit resetAverager();
+  emit setAverager(checked);
 }
 
 void MainWindow::on_spinBoxAvg_valueChanged(int arg1) {
-  for (int i = 0; i < ANALOG_COUNT; i++)
-    emit setAveragerCount(i, arg1);
+  if (ui->radioButtonAverageAll->isChecked()) {
+    for (int i = 0; i < ANALOG_COUNT; i++) {
+      averagerCounts[i] = arg1;
+      emit setAveragerCount(i, arg1);
+    }
+  } else {
+    averagerCounts[ui->comboBoxAvgIndividualCh->currentIndex()] = arg1;
+    emit setAveragerCount(ui->comboBoxAvgIndividualCh->currentIndex(), arg1);
+  }
+}
+
+void MainWindow::on_radioButtonAverageIndividual_toggled(bool checked) {
+  if (checked) {
+    ui->comboBoxAvgIndividualCh->setCurrentIndex(0);
+  } else {
+    for (int i = 0; i < ANALOG_COUNT; i++) {
+      averagerCounts[i] = ui->spinBoxAvg->value();
+      emit setAveragerCount(i, ui->spinBoxAvg->value());
+    }
+  }
+}
+
+void MainWindow::on_comboBoxAvgIndividualCh_currentIndexChanged(int arg1) {
+  ui->spinBoxAvg->blockSignals(true);
+  ui->spinBoxAvg->setValue(averagerCounts[arg1]);
+  ui->spinBoxAvg->blockSignals(false);
+}
+
+void MainWindow::on_checkBoxTriggerLineEn_stateChanged(int arg1) {
+  ui->plot->setTriggerLineVisible(arg1 == Qt::Checked);
+}
+
+void MainWindow::on_pushButtonClearGraph_clicked() {
+  int chid = ui->comboBoxChClear->currentIndex();
+
+  if (IS_LOGIC_INDEX(chid))
+    ui->plot->clearLogicGroup(CH_LIST_INDEX_TO_LOGIC_GROUP(chid), 0);
+  else
+    ui->plot->clearCh(chid);
+}
+
+void MainWindow::on_lineEditHUnit_textChanged(const QString& arg1) {
+  QString unit = arg1.simplified();
+
+  QString prefixChars = "munkMG";
+  timeUseUnits = true;
+  if (unit.isEmpty())
+    timeUseUnits = false;
+  if (unit.length() >= 2) {
+    if (prefixChars.contains(unit.at(0))) {
+      timeUseUnits = false;
+      unit.push_front(' ');
+    }
+  }
+
+  ui->plot->setXUnit(unit, timeUseUnits);
+  ui->doubleSpinBoxRangeHorizontal->setUnit(unit, timeUseUnits);
+  ui->doubleSpinBoxXCur1->setUnit(unit, timeUseUnits);
+  ui->doubleSpinBoxXCur2->setUnit(unit, timeUseUnits);
+
+  freqUseUnits = (unit == "s");
+
+  ui->plotFFT->setXUnit(freqUseUnits ? "Hz" : "", freqUseUnits);
+
+  if (unit != "s") {
+    if (ui->comboBoxHAxisType->currentIndex() > HAxisType::normal) {
+      ui->comboBoxHAxisType->setCurrentIndex(HAxisType::normal);
+    }
+  }
+
+  updateDivs(); // Aby se aktualizovala jednotka u kroku mřížky
+}
+
+void MainWindow::on_pushButtonProtocolGuideCZ_clicked() {
+  QString helpFile = QCoreApplication::applicationDirPath() + ("/Data protocol guide cz.pdf");
+  if (!QDesktopServices::openUrl(QUrl::fromLocalFile(helpFile))) {
+    QMessageBox msgBox(this);
+    msgBox.setText(tr("Cant open file."));
+    msgBox.setInformativeText(helpFile);
+    msgBox.setIcon(QMessageBox::Critical);
+    msgBox.exec();
+  }
+}
+
+void MainWindow::on_pushButtonProtocolGuideEN_clicked() {
+  QString helpFile = QCoreApplication::applicationDirPath() + ("/Data protocol guide en.pdf");
+  if (!QDesktopServices::openUrl(QUrl::fromLocalFile(helpFile))) {
+    QMessageBox msgBox(this);
+    msgBox.setText(tr("Cant open file."));
+    msgBox.setInformativeText(helpFile);
+    msgBox.setIcon(QMessageBox::Critical);
+    msgBox.exec();
+  }
+}
+
+void MainWindow::on_pushButtonIntroVideoCZ_clicked() {
+  QDesktopServices::openUrl(QUrl("https://www.youtube.com/watch?v=TpJgz6kfPvA"));
+}
+
+void MainWindow::on_labelLogo_clicked() {
+  QDesktopServices::openUrl(QUrl("https://embedded.fel.cvut.cz/platformy"));
 }

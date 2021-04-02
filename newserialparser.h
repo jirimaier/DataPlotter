@@ -62,7 +62,7 @@ class NewSerialParser : public QObject {
   QPair<ValueType, QByteArray> channelTime;
   QList<QPair<ValueType, QByteArray>> aditionalHeaderParameters;
   uint32_t channelLength;
-  int channelNumber;
+  QList<int> channelNumber;
   void fatalError(QString header, QByteArray message);
   enum readResult { incomplete = 0, complete = 1, notProperlyEnded = 2 };
   enum delimiter { comma, semicolon, dollar, none };

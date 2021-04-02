@@ -44,7 +44,7 @@ class PlotData : public QObject {
   unsigned int mathFirsts[MATH_COUNT];
   unsigned int mathSeconds[MATH_COUNT];
 
-  bool averagerEnabled[ANALOG_COUNT];
+  bool averagerEnabled = false;
 
   // unsigned int xyFirst, xySecond;
   double getValue(QPair<ValueType, QByteArray> value, bool& isok);
@@ -75,7 +75,7 @@ class PlotData : public QObject {
   void setMathFirst(int math, int ch) { mathFirsts[math - 1] = ch; }
   void setMathSecond(int math, int ch) { mathSeconds[math - 1] = ch; }
 
-  void setAverager(int chID, bool enabled) {averagerEnabled[chID] = enabled;  }
+  void setAverager(bool enabled) {averagerEnabled = enabled;  }
 
  signals:
   /// Pošle zprávu do výpisu
@@ -94,6 +94,8 @@ class PlotData : public QObject {
   void ch1dataUpdated(bool wasPoint, bool wasLogic, HAxisType::enumHAxisType recommandedAxisType = HAxisType::normal);
 
   void addDataToAverager(int chID, double samplingRate, QSharedPointer<QCPGraphDataContainer> data);
+
+  void addPointToAverager(int ch, double time, double value, bool append);
 };
 
 #endif // PLOTTING_H

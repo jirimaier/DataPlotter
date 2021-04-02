@@ -78,6 +78,13 @@
         <file>icons/logicPoints.png</file>
         <file>icons/hrangeStep.png</file>
         <file>icons/average.png</file>
+        <file>icons/logicConvert.png</file>
+        <file>icons/settingsLighter.png</file>
+        <file>icons/deltaXLighter.png</file>
+        <file>icons/viewAll.png</file>
+        <file>icons/viewfft.png</file>
+        <file>icons/viewtime.png</file>
+        <file>icons/viewxy.png</file>
     </qresource>
     <qresource prefix="/translations">
         <file>translations/translation_cz.qm</file>

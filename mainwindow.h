@@ -56,7 +56,7 @@ class MainWindow : public QMainWindow {
   Ui::MainWindow* ui;
   SerialSettingsDialog* serialSettingsDialog;
   QTranslator* translator;
-  QTimer portsRefreshTimer, activeChRefreshTimer, xyTimer, cursorRangeUpdateTimer, measureRefreshTimer1, measureRefreshTimer2, fftTimer1, fftTimer2, serialMonitorTimer, interpolationTimer;
+  QTimer portsRefreshTimer, activeChRefreshTimer, xyTimer, cursorRangeUpdateTimer, measureRefreshTimer1, measureRefreshTimer2, fftTimer1, fftTimer2, serialMonitorTimer, interpolationTimer, triggerLineTimer;
   QList<QSerialPortInfo> portList;
 
   void setComboboxItemVisible(QComboBox& comboBox, int index, bool visible);
@@ -65,8 +65,8 @@ class MainWindow : public QMainWindow {
   int lastSelectedChannel = 1;
 
   QPushButton* mathEn[4];
-  QSpinBox* mathFirst[4];
-  QSpinBox* mathSecond[4];
+  QComboBox* mathFirst[4];
+  QComboBox* mathSecond[4];
   QComboBox* mathOp[4];
 
   QTimer dataRateTimer;
@@ -91,7 +91,7 @@ class MainWindow : public QMainWindow {
   void updateChScale();
   void changeLanguage(QString code = "en");
 
-  void exportCSV(bool all = false, int ch = 1);
+  void exportCSV(int ch);
 
   void insertInTerminalDebug(QString text, QColor textColor);
 
@@ -117,12 +117,19 @@ class MainWindow : public QMainWindow {
 
   bool recommendOpenGL = true;
 
+  int averagerCounts[ANALOG_COUNT];
+
+  bool timeUseUnits = true, valuesUseUnits = true, freqUseUnits = true;
+
+  QString preselectPortHint = "ST";
+
  private slots:
   void updateCursors();
   void setAdaptiveSpinBoxes();
   void updateDivs();
   void comRefresh();
   void rangeTypeChanged();
+  void plotLayoutChanged();
   void updateCursor(Cursors::enumCursors cursor, int selectedChannel, unsigned int sample, double& time, double& value, QByteArray& timeStr, QByteArray& valueStr, bool useValueCursor);
   void updateCursorRange();
   void updateMeasurements1();
@@ -135,6 +142,7 @@ class MainWindow : public QMainWindow {
   void horizontalSliderTimeCur1_realValueChanged(int arg1);
   void horizontalSliderTimeCur2_realValueChanged(int arg1);
   void updateUsedChannels();
+  void turnOffTriggerLine() {ui->plot->setTriggerLineVisible(false);}
 
  private slots: // Autoconnect slots
   void on_dialRollingRange_realValueChanged(double value) { ui->doubleSpinBoxRangeHorizontal->setValue(value); }
@@ -147,12 +155,11 @@ class MainWindow : public QMainWindow {
   void on_pushButtonSendCommand_3_clicked() { on_lineEditCommand_3_returnPressed(); }
   void on_pushButtonSendCommand_4_clicked() { on_lineEditCommand_4_returnPressed(); }
   void on_doubleSpinBoxChScale_valueChanged(double arg1);
-  //void on_dialChScale_realValueChanged(double value) { ui->doubleSpinBoxChScale->setValue(value); }
-  void on_pushButtonSelectedCSV_clicked() { exportCSV(false, ui->comboBoxSelectedChannel->currentIndex()); }
+  void on_pushButtonSelectedCSV_clicked() { exportCSV(ui->comboBoxSelectedChannel->currentIndex()); }
   void on_dialZoom_valueChanged(int value);
   void on_radioButtonEn_toggled(bool checked);
   void on_radioButtonCz_toggled(bool checked);
-  void on_pushButtonAllCSV_clicked() { exportCSV(true); }
+  void on_pushButtonAllCSV_clicked() { exportCSV(EXPORT_ALL); }
   void on_doubleSpinBoxRangeVerticalRange_valueChanged(double arg1);
   void on_lineEditManualInput_returnPressed();
   void on_pushButtonLoadFile_clicked();
@@ -160,10 +167,10 @@ class MainWindow : public QMainWindow {
   void on_pushButtonSaveSettings_clicked();
   void on_pushButtonReset_clicked();
   void on_pushButtonAutoset_clicked();
-  void on_pushButtonCSVXY_clicked() { exportCSV(false, EXPORT_XY); }
-  void on_pushButtonCSVFFT_clicked() { exportCSV(false, EXPORT_FFT); }
+  void on_pushButtonCSVXY_clicked() { exportCSV(EXPORT_XY); }
+  void on_pushButtonCSVFFT_clicked() { exportCSV(EXPORT_FFT); }
   void on_comboBoxHAxisType_currentIndexChanged(int index);
-  void on_pushButtonOpenHelp_clicked();
+  void on_pushButtonOpenHelpCZ_clicked();
   void on_pushButtonCenter_clicked();
   void on_pushButtonScrollDown_clicked();
   void on_pushButtonSendManual_clicked() { on_lineEditManualInput_returnPressed(); }
@@ -182,12 +189,12 @@ class MainWindow : public QMainWindow {
   void on_checkBoxSerialMonitor_toggled(bool checked);
   void on_comboBoxSelectedChannel_currentIndexChanged(int index);
   void on_pushButtonResetChannels_clicked();
-  void on_pushButtonLog1_toggled(bool checked) { emit setChDigital(1, checked ? ui->spinBoxLog1source->value() : 0); }
-  void on_pushButtonLog2_toggled(bool checked) { emit setChDigital(2, checked ? ui->spinBoxLog2source->value() : 0); }
+  void on_pushButtonLog1_toggled(bool checked) { emit setChDigital(1, checked ? ui->comboBoxLogic1->currentIndex() + 1 : 0); }
+  void on_pushButtonLog2_toggled(bool checked) { emit setChDigital(2, checked ? ui->comboBoxLogic2->currentIndex() + 1 : 0); }
   void on_spinBoxLog1bits_valueChanged(int arg1) { emit setLogicBits(1, arg1); }
   void on_spinBoxLog2bits_valueChanged(int arg1) { emit setLogicBits(2, arg1); }
-  void on_spinBoxLog1source_valueChanged(int arg1) { emit setChDigital(1, ui->pushButtonLog1->isChecked() ? arg1 : 0); }
-  void on_spinBoxLog2source_valueChanged(int arg1) { emit setChDigital(2, ui->pushButtonLog2->isChecked() ? arg1 : 0); }
+  void on_comboBoxLogic1_currentIndexChanged(int index) { emit setChDigital(1, ui->pushButtonLog1->isChecked() ? index + 1 : 0); }
+  void on_comboBoxLogic2_currentIndexChanged(int index) { emit setChDigital(2, ui->pushButtonLog2->isChecked() ? index + 1 : 0); }
   void on_pushButtonPlotImage_clicked();
   void on_pushButtonXYImage_clicked();
   void on_checkBoxCur1Visible_stateChanged(int arg1);
@@ -202,12 +209,12 @@ class MainWindow : public QMainWindow {
   void on_comboBoxMath1Op_currentIndexChanged(int) { updateMathNow(1); }
   void on_comboBoxMath2Op_currentIndexChanged(int) { updateMathNow(2); }
   void on_comboBoxMath3Op_currentIndexChanged(int) { updateMathNow(3); }
-  void on_spinBoxMath1First_valueChanged(int) { updateMathNow(1); };
-  void on_spinBoxMath2First_valueChanged(int) { updateMathNow(2); };
-  void on_spinBoxMath3First_valueChanged(int) { updateMathNow(3); };
-  void on_spinBoxMath1Second_valueChanged(int) { updateMathNow(1); };
-  void on_spinBoxMath2Second_valueChanged(int) { updateMathNow(2); };
-  void on_spinBoxMath3Second_valueChanged(int) { updateMathNow(3); };
+  void on_comboBoxMathFirst1_currentIndexChanged(int) { updateMathNow(1); };
+  void on_comboBoxMathFirst2_currentIndexChanged(int) { updateMathNow(2); };
+  void on_comboBoxMathFirst3_currentIndexChanged(int) { updateMathNow(3); };
+  void on_comboBoxMathSecond1_currentIndexChanged(int) { updateMathNow(1); };
+  void on_comboBoxMathSecond2_currentIndexChanged(int) { updateMathNow(2); };
+  void on_comboBoxMathSecond3_currentIndexChanged(int) { updateMathNow(3); };
   void on_horizontalSliderXYGrid_valueChanged(int value);
   void on_pushButtonXY_toggled(bool checked);
   void on_comboBoxCursor1Channel_currentIndexChanged(int index);
@@ -249,7 +256,6 @@ class MainWindow : public QMainWindow {
   void on_doubleSpinBoxXYCurY2_valueChanged(double arg1);
   void on_doubleSpinBoxXYCurX1_valueChanged(double arg1);
   void on_doubleSpinBoxXYCurX2_valueChanged(double arg1);
-  void on_pushButtonProtocolGuide_clicked();
   void on_pushButtonDolarNewline_toggled(bool checked);
   void on_pushButtonInterpolate_toggled(bool checked);
   void on_pushButtonSerialSetting_clicked();
@@ -258,8 +264,17 @@ class MainWindow : public QMainWindow {
   void on_pushButtonHideCur1_clicked();
   void on_pushButtonHideCur2_clicked();
   void on_pushButtonAvg_toggled(bool checked);
-
   void on_spinBoxAvg_valueChanged(int arg1);
+  void on_radioButtonAverageIndividual_toggled(bool checked);
+  void on_comboBoxAvgIndividualCh_currentIndexChanged(int arg1);
+  void on_checkBoxTriggerLineEn_stateChanged(int arg1);
+  void on_pushButtonClearGraph_clicked();
+  void on_lineEditHUnit_textChanged(const QString& arg1);
+  void on_pushButtonProtocolGuideCZ_clicked();
+  void on_pushButtonProtocolGuideEN_clicked();
+  void on_pushButtonIntroVideoCZ_clicked();
+
+  void on_labelLogo_clicked();
 
  public slots:
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumMessageTarget target);
@@ -314,7 +329,7 @@ class MainWindow : public QMainWindow {
   void setInterpolation(int chID, bool enabled);
   void interpolate(int chID, const QSharedPointer<QCPGraphDataContainer> data, QCPRange visibleRange, bool dataIsFromInterpolationBuffer);
   void resetAverager();
-  void setAverager(int chID, bool enabled);
+  void setAverager(bool enabled);
   void setAveragerCount(int chID, int count);
 };
 #endif // MAINWINDOW_H

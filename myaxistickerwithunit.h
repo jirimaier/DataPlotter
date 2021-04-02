@@ -27,6 +27,7 @@ class MyAxisTickerWithUnit : public QCPAxisTickerFixed {
 
  public:
   QString unit = "";
+  bool usePrefix = false;
   QString getTickLabel(double tick, const QLocale& locale, QChar formatChar, int precision);
   void setTickStep(double value);
 };

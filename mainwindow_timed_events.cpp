@@ -35,18 +35,18 @@ void MainWindow::comRefresh() {
     ui->comboBoxCom->blockSignals(true);
     ui->comboBoxCom->clear();
     portList = newPorts;
-    int portWithStName = -1;
+    int presetPort = -1;
 
-    // Nandá nové porty do comboboxu, pokusí se najít port jehož popis poukazuje na Nucleo
+    // Nandá nové porty do comboboxu, pokusí se najít port jehož popis nebo název odpovídá přednastavenému výchozímu názvu
     for (int i = 0; i < portList.length(); i++) {
       QSerialPortInfo port = portList.at(i);
       ui->comboBoxCom->addItem(port.portName() + " - " + port.description());
-      if (port.description().contains(DEFAULT_PORT_STRING))
-        portWithStName = i;
+      if (port.description().contains(preselectPortHint, Qt::CaseInsensitive) || port.portName().contains(preselectPortHint, Qt::CaseInsensitive))
+        presetPort = i;
     }
 
     // Znovu vypere původní port; pokud neexistuje, vybere port který je asi Nucleo, pokud žádný popisem neodpovídá, vybere ten první.
-    ui->comboBoxCom->setCurrentIndex(ui->comboBoxCom->findText(current) == -1 ? MAX(portWithStName, 0) : ui->comboBoxCom->findText(current));
+    ui->comboBoxCom->setCurrentIndex(ui->comboBoxCom->findText(current) == -1 ? MAX(presetPort, 0) : ui->comboBoxCom->findText(current));
     ui->comboBoxCom->blockSignals(false);
   }
 }
@@ -61,6 +61,15 @@ void MainWindow::updateUsedChannels() {
   updateChannelComboBox(*ui->comboBoxFFTCh2, 0);
   updateChannelComboBox(*ui->comboBoxXYx,  0);
   updateChannelComboBox(*ui->comboBoxXYy,  0);
+  updateChannelComboBox(*ui->comboBoxMathFirst1,  0);
+  updateChannelComboBox(*ui->comboBoxMathFirst2,  0);
+  updateChannelComboBox(*ui->comboBoxMathFirst3,  0);
+  updateChannelComboBox(*ui->comboBoxMathSecond1,  0);
+  updateChannelComboBox(*ui->comboBoxMathSecond2,  0);
+  updateChannelComboBox(*ui->comboBoxMathSecond3,  0);
+  updateChannelComboBox(*ui->comboBoxLogic1,  0);
+  updateChannelComboBox(*ui->comboBoxLogic2,  0);
+  updateChannelComboBox(*ui->comboBoxAvgIndividualCh,  0);
   colorUpdateNeeded = false;
 }
 
@@ -274,6 +283,7 @@ void MainWindow::updateInterpolation() {
 }
 
 void MainWindow::updateSerialMonitor() {
+  //serialMonitorTimer.stop();
   if (serialMonitor.isEmpty() || !ui->checkBoxSerialMonitor->isChecked())
     return;
 
@@ -297,6 +307,8 @@ void MainWindow::updateSerialMonitor() {
     scroll->setValue(scroll->maximum());
   else
     scroll->setValue(lastVal);
+
+  //serialMonitorTimer.start();
 }
 
 void MainWindow::updateDataRate() {

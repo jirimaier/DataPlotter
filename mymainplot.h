@@ -99,6 +99,14 @@ class MyMainPlot : public MyPlot {
   /// Nastaví zobrazení/skrytí
   void setLogicVisibility(int group, bool visible);
 
+  /// Zobrazí/sryje čáru označující trigger
+  void setTriggerLineVisible(bool visible);
+
+/// Nastaví pozici čáry označující trigger
+  void setTriggerLineValue(double value);
+
+/// Nastaví kanál čáry označující trigger
+  void setTriggerLineChannel(int chid);
 
 
   /// Vrátí zvětšení
@@ -142,6 +150,7 @@ class MyMainPlot : public MyPlot {
   void resume();
   void pause();
   void initZeroLines();
+  void initTriggerLine();
   void updateMinMaxTimes();
   void reOffsetAndRescaleCH(int chID);
   void reOffsetAndRescaleLogic(int chID);
@@ -167,6 +176,10 @@ class MyMainPlot : public MyPlot {
   QVector<QCPItemLine*> zeroLines;
   PlotStatus::enumPlotStatus plottingStatus = PlotStatus::run;
   PlotRange::enumPlotRange plotRangeType = PlotRange::fixedRange;
+  QCPItemLine* triggerLine;
+  QCPGraph* triggerLineCh;
+  bool triggerLineEnabled = false;
+  QCPItemText* triggerLabel;
 
  private slots:
   void update();

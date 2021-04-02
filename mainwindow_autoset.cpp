@@ -34,24 +34,29 @@ void MainWindow::on_pushButtonAutoset_clicked() {
       ui->plot->setLogicOffset(activeLogic.at(i), recentOffset);
       recentOffset += bitsUsed * 3 * ui->plot->getLogicScale(activeLogic.at(i));
     }
+    QCPRange maxRange;
+    maxRange.upper = 0;
+    maxRange.lower = 0;
     for (int i = activeAnalogs.size() - 1; i >= 0; i--) {
       bool foundRange; // Zbytečné, ale ta funkce to potřebuje.
       QCPRange range = ui->plot->graph(activeAnalogs.at(i))->data()->valueRange(foundRange);
       range.lower = ceilToNiceValue(range.lower) * ui->plot->getChScale(activeAnalogs.at(i));
-      if (range.lower > 0)
-        range.lower = 0;
       range.upper = ceilToNiceValue(range.upper) * ui->plot->getChScale(activeAnalogs.at(i));
-      if (range.upper < 0)
-        range.upper = 0;
       if (ui->plot->isChInverted(activeAnalogs.at(i))) {
         // Pokud je kanál invertovaný, změní znaménko a prohodí
         range.upper *= -1;
         range.lower *= -1;
         range.normalize();
       }
-      recentOffset -= range.lower;
+      if (range.upper > maxRange.upper)
+        maxRange.upper = range.upper;
+      if (range.lower < maxRange.lower)
+        maxRange.lower = range.lower;
+    }
+    for (int i = activeAnalogs.size() - 1; i >= 0; i--) {
+      recentOffset -= maxRange.lower;
       ui->plot->setChOffset(activeAnalogs.at(i), recentOffset);
-      recentOffset += range.upper;
+      recentOffset += maxRange.upper;
     }
     if (recentOffset != 0) {
       on_pushButtonPositive_clicked();

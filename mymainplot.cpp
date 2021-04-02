@@ -57,6 +57,7 @@ MyMainPlot::MyMainPlot(QWidget* parent) : MyPlot(parent) {
   }
 
   initZeroLines();
+  initTriggerLine();
 
   dataToBeInterpolated.resize(ANALOG_COUNT + MATH_COUNT);
 
@@ -87,6 +88,36 @@ void MyMainPlot::initZeroLines() {
     zeroLine.end->setCoords(1, 0);
     zeroLine.setVisible(channelSettings.at(i).offset != 0);
   }
+}
+
+void MyMainPlot::initTriggerLine() {
+  triggerLine = new QCPItemLine(this);
+  triggerLineCh = graph(0);
+  QPen triggerLinePen;
+  triggerLinePen.setWidth(1);
+  triggerLinePen.setStyle(Qt::DashLine);
+  triggerLinePen.setColor(Qt::black);
+  triggerLine->setPen(triggerLinePen);
+  triggerLine->start->setTypeY(QCPItemPosition::ptPlotCoords);
+  triggerLine->start->setTypeX(QCPItemPosition::ptViewportRatio);
+  triggerLine->end->setTypeY(QCPItemPosition::ptPlotCoords);
+  triggerLine->end->setTypeX(QCPItemPosition::ptViewportRatio);
+  triggerLine->start->setAxes(xAxis, graph(0)->valueAxis());
+  triggerLine->end->setAxes(xAxis, graph(0)->valueAxis());
+  triggerLine->start->setCoords(0, 0);
+  triggerLine->end->setCoords(1, 0);
+
+  triggerLabel = new QCPItemText(this);
+  triggerLabel->setLayer(cursorLayer);
+  triggerLabel->setTextAlignment(Qt::AlignRight);
+  triggerLabel->setPositionAlignment(Qt::AlignBottom | Qt::AlignRight);
+  triggerLabel->position->setParentAnchorY(triggerLine->start);
+  triggerLabel->position->setTypeX(QCPItemPosition::ptAxisRectRatio);
+  triggerLabel->position->setCoords(1, -2);
+  triggerLabel->setVisible(false);
+  triggerLabel->setBrush(transparentWhite);
+  triggerLabel->setPadding(QMargins(2, 2, 2, 2));
+  triggerLabel->setText(tr("Trigger"));
 }
 
 void MyMainPlot::updateMinMaxTimes() {
@@ -148,7 +179,10 @@ QPair<QVector<double>, QVector<double>> MyMainPlot::getDataVector(int chID, bool
   for (QCPGraphDataContainer::iterator it = graph(chID)->data()->begin(); it != graph(chID)->data()->end(); it++) {
     if (!onlyInView || (it->key >= this->xAxis->range().lower && it->key <= this->xAxis->range().upper)) {
       keys.append(it->key);
-      values.append(it->value);
+      if (IS_LOGIC_CH(chID))
+        values.append((int)round(it->value) % 3);
+      else
+        values.append(it->value);
     }
   }
   return QPair<QVector<double>, QVector<double>>(keys, values);
@@ -231,6 +265,32 @@ void MyMainPlot::setLogicVisibility(int group, bool visible) {
   this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
 }
 
+void MyMainPlot::setTriggerLineVisible(bool visible) {
+  if (!visible) {
+    triggerLine->setVisible(false);
+    triggerLabel->setVisible(false);
+  } else {
+    triggerLine->setVisible(triggerLineCh->visible());
+    triggerLabel->setVisible(triggerLineCh->visible());
+  }
+  triggerLineEnabled = triggerLine->visible();
+  this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
+}
+
+void MyMainPlot::setTriggerLineValue(double value) {
+  triggerLine->start->setCoords(0, value);
+  triggerLine->end->setCoords(1, value);
+  this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
+}
+
+void MyMainPlot::setTriggerLineChannel(int chid) {
+  triggerLineCh = graph(chid);
+  triggerLine->start->setAxes(xAxis, triggerLineCh->valueAxis());
+  triggerLine->end->setAxes(xAxis, triggerLineCh->valueAxis());
+  setTriggerLineVisible(triggerLineEnabled);
+  //this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot); Zavoláno z setTriggerLineVisible
+}
+
 int MyMainPlot::getLogicBitsUsed(int group) {
   for (int i = 0; i < LOGIC_BITS; i++)
     if (!isChUsed(getLogicChannelID(group, i)))
@@ -308,6 +368,8 @@ void MyMainPlot::setChVisible(int chID, bool visible) {
   zeroLines.at(chID)->setVisible(visible && channelSettings.at(chID).offset != 0);
   this->graph(chID)->setVisible(visible);
   this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
+  if (triggerLineCh == graph(chID))
+    setTriggerLineVisible(triggerLineEnabled);
 }
 
 void MyMainPlot::resume() {
@@ -331,14 +393,18 @@ void MyMainPlot::update() {
 
 void MyMainPlot::redraw() {
   if (plotRangeType != PlotRange::freeMove) {
+    double dataLenght = maxT - minT;
     if (plotRangeType == PlotRange::fixedRange) {
-      double dataLenght = maxT - minT;
       this->xAxis->setRange(minT + dataLenght * 0.001 * (horizontalPos - zoom / 2), minT + dataLenght * 0.001 * (horizontalPos + zoom / 2));
     } else if (plotRangeType == PlotRange::rolling) {
-      double maxTnew = maxT;
-      if (shiftStep > 0)
-        maxTnew = ceil(maxT / (rollingRange * shiftStep / 100.0)) * (rollingRange * shiftStep / 100.0);
-      this->xAxis->setRange(maxTnew - rollingRange, maxTnew);
+      if (dataLenght < rollingRange) {
+        this->xAxis->setRange(minT, minT + rollingRange);
+      } else {
+        double maxTnew = maxT;
+        if (shiftStep > 0)
+          maxTnew = ceil(maxT / (rollingRange * shiftStep / 100.0)) * (rollingRange * shiftStep / 100.0);
+        this->xAxis->setRange(maxTnew - rollingRange, maxTnew);
+      }
     }
   }
   emit requestCursorUpdate();
@@ -395,7 +461,8 @@ void MyMainPlot::resetChannels() {
     if (plottingStatus == PlotStatus::pause)
       pauseBuffer.at(i)->clear();
   }
-
+  setTriggerLineChannel(0);
+  setTriggerLineValue(0);
   updateMinMaxTimes();
   redraw();
 }
@@ -482,6 +549,8 @@ void MyMainPlot::newDataPoint(int chID, double time, double value, bool append) 
 }
 
 QByteArray MyMainPlot::exportChannelCSV(char separator, char decimal, int chID, int precision, bool onlyInView) {
+  if (graph(chID)->data()->isEmpty())
+    return "";
   QByteArray output = (QString("time%1%2\n").arg(separator).arg(getChName(chID))).toUtf8();
   for (QCPGraphDataContainer::iterator it = graph(chID)->data()->begin(); it != graph(chID)->data()->end(); it++) {
     if (!onlyInView || (it->key >= this->xAxis->range().lower && it->key <= this->xAxis->range().upper)) {
@@ -495,10 +564,13 @@ QByteArray MyMainPlot::exportChannelCSV(char separator, char decimal, int chID, 
 }
 
 QByteArray MyMainPlot::exportLogicCSV(char separator, char decimal, int group, int precision, bool onlyInView) {
+  int bits = getLogicBitsUsed(group);
+  if (bits == 0)
+    return "";
+
   QByteArray output = tr("time").toUtf8();
 
-  int bits = getLogicBitsUsed(group);
-  for (int i = bits - 1; i >= 0; i++) {
+  for (int i = 0; i < bits; i++) {
     output.append(separator);
     output.append(QString("bit %1").arg(i).toUtf8());
   }
@@ -507,10 +579,10 @@ QByteArray MyMainPlot::exportLogicCSV(char separator, char decimal, int group, i
     double time = graph(getLogicChannelID(group, 0))->data()->at(i)->key;
     if (!onlyInView || (time >= this->xAxis->range().lower && time <= this->xAxis->range().upper)) {
       output.append(QString::number(time, 'f', precision).toUtf8());
-      for (int bit = bits - 1; bit >= 0; bit++) {
+      for (int bit = 0; bit < bits; bit++) {
         output.append(separator);
         int chID = getLogicChannelID(group, bit);
-        output.append(QString((((int)graph(chID)->data()->at(i)->value) % 3) ? "0" : "1").replace('.', decimal).toUtf8());
+        output.append(QString((((int)round(graph(chID)->data()->at(i)->value)) % 3) ? "1" : "0").replace('.', decimal).toUtf8());
       }
       output.append('\n');
     }
@@ -523,12 +595,7 @@ QByteArray MyMainPlot::exportAllCSV(char separator, char decimal, int precision,
   QVector<QPair<QVector<double>, QVector<double>>> channels;
   bool firstNonEmpty = true;
   for (int i = 0; i < ALL_COUNT; i++) {
-    bool isVisible;
-    if (i < ANALOG_COUNT + MATH_COUNT)
-      isVisible = channelSettings.at(i).visible;
-    else
-      isVisible = logicSettings.at(i - ANALOG_COUNT - MATH_COUNT).visible;
-    if (!graph(i)->data()->isEmpty() && (isVisible || includeHidden)) {
+    if (!graph(i)->data()->isEmpty() && (graph(i)->visible() || includeHidden)) {
       if (firstNonEmpty) {
         firstNonEmpty = false;
         output.append(tr("time").toUtf8());

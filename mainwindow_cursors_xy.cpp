@@ -83,8 +83,15 @@ void MainWindow::updateXYCursorsCalculations() {
   if (ui->checkBoxXYCur1->isChecked() && ui->checkBoxXYCur2->isChecked()) {
     double dx = abs(ui->doubleSpinBoxXYCurX2->value() - ui->doubleSpinBoxXYCurX1->value());
     double dy = abs(ui->doubleSpinBoxXYCurY1->value() - ui->doubleSpinBoxXYCurY2->value());
-    ui->labelXYDeltaX->setText(floatToNiceString(dx, 4, true, true) + ui->plotxy->getYUnit());
-    ui->labelXYDeltaY->setText(floatToNiceString(dy, 4, true, true) + ui->plotxy->getYUnit());
+
+    QString unit = ui->plotxy->getYUnit();
+    if (valuesUseUnits) {
+      ui->labelXYDeltaX->setText(floatToNiceString(dx, 4, true, true) + ui->plotxy->getYUnit());
+      ui->labelXYDeltaY->setText(floatToNiceString(dy, 4, true, true) + ui->plotxy->getYUnit());
+    } else {
+      ui->labelXYDeltaX->setText(QString::number(dx, 'g', 3) + unit);
+      ui->labelXYDeltaY->setText(QString::number(dy, 'g', 3) + unit);
+    }
     double phase = abs(asin(MIN(dx, dy) / MAX(dx, dy)));
     ui->labelXYPhaseDeg->setText(" " + QString::number(qRadiansToDegrees(phase), 'f', 1) + "°");
     ui->labelXYPhaseRad->setText(" " + QString::number(phase / M_PI, 'f', 3) + "\xCF\x80"); // Pi

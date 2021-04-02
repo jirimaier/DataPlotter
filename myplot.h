@@ -37,7 +37,6 @@ class MyPlot : public QCustomPlot {
   bool isFreeMove = false;
   enum TracerTextPos { TR, TL, BR, BL } tracerTextPos;
   void changeTracerTextPosition(TracerTextPos pos);
-  QColor transparentWhite = QColor::fromRgbF(1, 1, 1, 0.8);
   QString xUnit, yUnit;
 
  public:
@@ -49,14 +48,16 @@ class MyPlot : public QCustomPlot {
   double getVDiv() { return unitTickerY->tickStep(); }
   double getHDiv() { return unitTickerX->tickStep(); }
   QImage toPNG() { return (this->toPixmap().toImage()); };
-  void setXUnit(QString unit) {
+  void setXUnit(QString unit, bool usePrefix) {
     xUnit = unit;
     unitTickerX->unit = unit;
+    unitTickerX->usePrefix = usePrefix;
     replot();
   }
-  void setYUnit(QString unit) {
+  void setYUnit(QString unit, bool usePrefix) {
     yUnit = unit;
     unitTickerY->unit = unit;
+    unitTickerY->usePrefix = usePrefix;
     replot();
   }
   QString getXUnit() { return xUnit; }
@@ -81,6 +82,8 @@ class MyPlot : public QCustomPlot {
   int cur1Graph = -1, cur2Graph = -1;
   QCPAxis* cur1YAxis = yAxis, *cur2YAxis = yAxis;
   QCursor defaultMouseCursor = Qt::ArrowCursor;
+
+  QColor transparentWhite = QColor::fromRgbF(1, 1, 1, 0.8);
 
  protected slots:
   virtual void mouseMoved(QMouseEvent* event) = 0;

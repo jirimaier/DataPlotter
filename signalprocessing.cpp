@@ -39,7 +39,7 @@ void SignalProcessing::resizeBlackman(int length) {
   if (blackman.size() != length) {
     blackman.resize(length);
     for (int n = 0; n < length; n++)
-      blackman[n] = 0.42 - 0.5 * cos(2 * M_PI * n / (length - 1)) + 0.08 * cos(4 * M_PI * n / (length - 1));
+      blackman[n] = 0.42 - 0.5 * cos(2 * M_PI * n / length) + 0.08 * cos(4 * M_PI * n / length);
   }
 }
 
@@ -246,59 +246,16 @@ void SignalProcessing::process(QSharedPointer<QCPGraphDataContainer> data) {
 }
 
 float SignalProcessing::getStrongestFreq(QSharedPointer<QCPGraphDataContainer> data, float dc, float fs) {
-  //    // Výpočet frekvence - pro krátký signál (do 4096 vzorků) udělám autokorelaci
-  //    // a z ní FFT; pro delší signál jen FFT přímo ze signálu (rychlé, ale méně přesné)
-  //    if (data->size() <= 4096) {
-  //      QVector<float> acValues;
-  //      for (QCPGraphDataContainer::iterator it = data->begin(); it != data->end(); it++)
-  //        acValues.append(it->value - dc);
 
-  //      int N = acValues.size();
-
-  //      QVector<std::complex<float>> xCorr;
-  //      xCorr.resize(2 * N - 1);
-  //      for (int m = N - 1; m >= 0; m--) {
-  //        float val = 0;
-  //        for (int n = 0; n < N - m; n++)
-  //          val += acValues.at(n + m) * acValues.at(n);
-  //        float unBiassedValue = val / (N - m);
-  //        xCorr[N + m - 1] = unBiassedValue;
-  //        xCorr[N - m - 1] = unBiassedValue;
-  //      }
-
-  //      int nfft = 4096;         // Pro FFT doplním nulami na 4096
-  //      if (xCorr.size() > nfft) // xCorr je delší než původní signál, může být delší než 4096, tedy doplním na nejbližší vyšší pow2.
-  //        nfft = nextPow2(nfft);
-
-  //      resizeHamming(xCorr.size());
-
-  //      for (int i = 0; i <= xCorr.size(); i++)
-  //        xCorr[i] *= hamming[i];
-
-  //      xCorr.resize(nfft);
-  //      QVector<std::complex<float>> xCorrFFT = fft(xCorr);
-
-  //      int maxindex = 0;
-  //      float maxVal = 0;
-  //      for (int i = 0; i < nfft / 2; i++) {
-  //        float value = std::abs(xCorrFFT.at(i));
-  //        if (value > maxVal) {
-  //          maxVal = value;
-  //          maxindex = i;
-  //        }
-  //      }
-  //      freq = maxindex * fs / nfft;
-  //    } else {
 
   // Prostě udělám FFT (po odečtení DC) a najdu globální maximum
   QVector<std::complex<float>> acValues;
   for (int i = 0; i < data->size(); i++)
     acValues.append((data->at(i)->value - dc));
 
-  int nfft = nextPow2(acValues.size());
+  int nfft = acValues.size() * 5;
 
-  if (nfft < 4096)
-    nfft = 4096;
+  nfft = nextPow2(nfft);
 
   acValues.resize(nfft);
   QVector<std::complex<float>> acSigFFT = fft(acValues);
@@ -312,7 +269,37 @@ float SignalProcessing::getStrongestFreq(QSharedPointer<QCPGraphDataContainer> d
       maxindex = i;
     }
   }
-  return (maxindex * fs / nfft);
+
+  float freq = maxindex * fs / nfft;
+
+  if (freq < fs * (1 + sqrt(4 * nfft + 1)) / (2 * nfft)) {
+    int aproxIndex = fs / freq;
+    int aproxMin = (aproxIndex * 90) / 100;
+    int aproxMax = (aproxIndex * 110) / 100;
+    acValues.resize(data->size()); //Odstranění doplněných nul
+
+    int N = acValues.size();
+
+    if (aproxMin < 0)
+      aproxMin = 0;
+    if (aproxMax >= N)
+      aproxMax = N - 1;
+
+    float highestValue = -Q_INFINITY;
+    int highestIndex = 0;
+
+    for (int k = aproxMin; k <= aproxMax; k++) {
+      float val = 0;
+      for (int n = 0; n < N - k; n++)
+        val += acValues.at(n + k).real() * acValues.at(n).real();
+      if (val > highestValue) {
+        highestIndex = k;
+        highestValue = val;
+      }
+    }
+    freq = fs / highestIndex;
+  }
+  return (freq);
 }
 
 QPair<float, float> SignalProcessing::getRiseFall(QSharedPointer<QCPGraphDataContainer> data) {

@@ -29,6 +29,27 @@ void MainWindow::rangeTypeChanged() {
   }
 }
 
+void MainWindow::plotLayoutChanged() {
+  if (ui->radioButtonLayoutAll->isChecked()) {
+    ui->plot->setVisible(true);
+    ui->plotxy->setVisible(true);
+    ui->plotFFT->setVisible(true);
+  } else if (ui->radioButtonLayoutTime->isChecked()) {
+    ui->plot->setVisible(true);
+    ui->plotxy->setVisible(false);
+    ui->plotFFT->setVisible(false);
+  } else if (ui->radioButtonLayoutFFT->isChecked()) {
+    ui->plot->setVisible(false);
+    ui->plotxy->setVisible(false);
+    ui->plotFFT->setVisible(true);
+  } else { /*if (ui->radioButtonLayoutAll->isChecked())*/
+    ui->plot->setVisible(false);
+    ui->plotxy->setVisible(true);
+    ui->plotFFT->setVisible(false);
+  }
+
+}
+
 void MainWindow::on_pushButtonConnect_clicked() {
   if (ui->comboBoxCom->currentIndex() >= 0) {
     SerialSettingsDialog::Settings settings = serialSettingsDialog->settings();
@@ -233,11 +254,14 @@ void MainWindow::on_pushButtonResetChannels_clicked() {
 
 void MainWindow::on_comboBoxHAxisType_currentIndexChanged(int index) {
   ui->labelHDiv->setEnabled(index <= 1);
+  if (index > HAxisType::normal) {
+    ui->lineEditHUnit->setText("s");
+  }
   updateDivs();
   ui->plot->setShowHorizontalValues(index);
 }
 
-void MainWindow::on_pushButtonOpenHelp_clicked() {
+void MainWindow::on_pushButtonOpenHelpCZ_clicked() {
   QString helpFile = QCoreApplication::applicationDirPath() + "/Manual.pdf";
   if (!QDesktopServices::openUrl(QUrl::fromLocalFile(helpFile))) {
     QMessageBox msgBox(this);
@@ -276,17 +300,10 @@ void MainWindow::on_pushButtonXY_toggled(bool checked) {
   else
     updateXY();
 
-#ifdef XY_AND_FFT_ALLWAYS_TOGETHER
-  if (checked) {
-    ui->plotFFT->setVisible(true);
-    ui->plotxy->setVisible(true);
-  } else if (!ui->pushButtonFFT->isChecked()) {
-    ui->plotFFT->setVisible(false);
-    ui->plotxy->setVisible(false);
-  }
-#else
-  ui->plotxy->setVisible(checked);
-#endif
+  if (checked && ui->radioButtonLayoutTime->isChecked())
+    ui->radioButtonLayoutAll->setChecked(true);
+  else if (!ui->pushButtonFFT->isChecked() && ui->radioButtonLayoutAll->isChecked())
+    ui->radioButtonLayoutTime->setChecked(true);
 }
 
 void MainWindow::on_pushButtonHideCh_toggled(bool checked) {
@@ -372,32 +389,78 @@ void MainWindow::insertInTerminalDebug(QString text, QColor textColor) {
 }
 
 void MainWindow::signalMeasurementsResult1(float period, float freq, float amp, float min, float max, float vrms, float dc, float fs, float rise, float fall, int samples) {
-  ui->labelSig1Amp->setText(floatToNiceString(amp, 4, false, false) + ui->plot->getYUnit() + "pp");
-  ui->labelSig1Freq->setText(floatToNiceString(freq, 4, false, false) + ui->plotFFT->getXUnit());
-  ui->labelSig1Period->setText(floatToNiceString(period, 4, false, false) + ui->plot->getXUnit());
-  ui->labelSig1Vrms->setText(floatToNiceString(vrms, 4, false, false) + ui->plot->getYUnit());
-  ui->labelSig1Min->setText(floatToNiceString(min, 4, false, false) + ui->plot->getYUnit());
-  ui->labelSig1Max->setText(floatToNiceString(max, 4, false, false) + ui->plot->getYUnit());
-  ui->labelSig1Dc->setText(floatToNiceString(dc, 4, false, false) + ui->plot->getYUnit());
-  ui->labelSig1fs->setText(floatToNiceString(fs, 4, false, false) + ui->plotFFT->getXUnit());
-  // Pokud je falltime nabo risetime menší než 2 periody vzorkování, je považován za nepřesný (znaménko menší než)
-  ui->labelSig1rise->setText((rise < 2.0 / fs ? "<" : "") + floatToNiceString(rise, 4, false, false) + ui->plot->getXUnit());
-  ui->labelSig1fall->setText((fall < 2.0 / fs ? "<" : "") + floatToNiceString(fall, 4, false, false) + ui->plot->getXUnit());
+  if (valuesUseUnits) {
+    ui->labelSig1Vrms->setText(floatToNiceString(vrms, 4, false, false) + ui->plot->getYUnit());
+    ui->labelSig1Min->setText(floatToNiceString(min, 4, false, false) + ui->plot->getYUnit());
+    ui->labelSig1Max->setText(floatToNiceString(max, 4, false, false) + ui->plot->getYUnit());
+    ui->labelSig1Dc->setText(floatToNiceString(dc, 4, false, false) + ui->plot->getYUnit());
+    ui->labelSig1Amp->setText(floatToNiceString(amp, 4, false, false) + (ui->plot->getYUnit() == "V" ? "Vpp" : ui->plot->getYUnit()));
+  } else {
+    ui->labelSig1Vrms->setText(QString::number(vrms, 'g', 4) + ui->plot->getYUnit());
+    ui->labelSig1Min->setText(QString::number(min, 'g', 4) + ui->plot->getYUnit());
+    ui->labelSig1Max->setText(QString::number(max, 'g', 4) + ui->plot->getYUnit());
+    ui->labelSig1Dc->setText(QString::number(dc, 'g', 4) + ui->plot->getYUnit());
+    ui->labelSig1Amp->setText(QString::number(amp, 'g', 4) + ui->plot->getYUnit());
+  }
+
+  if (timeUseUnits) {
+    ui->labelSig1Period->setText(floatToNiceString(period, 4, false, false) + ui->plot->getXUnit());
+// Pokud je falltime nabo risetime menší než 2 periody vzorkování, je považován za nepřesný (znaménko menší než)
+    ui->labelSig1rise->setText((rise < 2.0 / fs ? "<" : "") + floatToNiceString(rise, 4, false, false) + ui->plot->getXUnit());
+    ui->labelSig1fall->setText((fall < 2.0 / fs ? "<" : "") + floatToNiceString(fall, 4, false, false) + ui->plot->getXUnit());
+  } else {
+    ui->labelSig1Period->setText(floatToNiceString(period, 4, false, false) + ui->plot->getXUnit());
+// Pokud je falltime nabo risetime menší než 2 periody vzorkování, je považován za nepřesný (znaménko menší než)
+    ui->labelSig1rise->setText((rise < 2.0 / fs ? "<" : "") + QString::number(rise, 'g', 4) + ui->plot->getXUnit());
+    ui->labelSig1fall->setText((fall < 2.0 / fs ? "<" : "") + QString::number(fall, 'g', 4) + ui->plot->getXUnit());
+  }
+
+  if (freqUseUnits) {
+    ui->labelSig1Freq->setText(floatToNiceString(freq, 4, false, false) + ui->plotFFT->getXUnit());
+    ui->labelSig1fs->setText(floatToNiceString(fs, 4, false, false) + ui->plotFFT->getXUnit());
+  } else {
+    ui->labelSig1Freq->setText(QString::number(freq, 'g', 4) + ui->plotFFT->getXUnit());
+    ui->labelSig1fs->setText(QString::number(fs, 'g', 4) + ui->plotFFT->getXUnit());
+  }
+
   ui->labelSig1samples->setText(QString::number(samples));
   measureRefreshTimer1.start(250);
 }
 void MainWindow::signalMeasurementsResult2(float period, float freq, float amp, float min, float max, float vrms, float dc, float fs, float rise, float fall, int samples) {
-  ui->labelSig2Amp->setText(floatToNiceString(amp, 4, false, false) + ui->plot->getYUnit() + "pp");
-  ui->labelSig2Freq->setText(floatToNiceString(freq, 4, false, false) + ui->plotFFT->getXUnit());
-  ui->labelSig2Period->setText(floatToNiceString(period, 4, false, false) + ui->plot->getXUnit());
-  ui->labelSig2Vrms->setText(floatToNiceString(vrms, 4, false, false) + ui->plot->getYUnit());
-  ui->labelSig2Min->setText(floatToNiceString(min, 4, false, false) + ui->plot->getYUnit());
-  ui->labelSig2Max->setText(floatToNiceString(max, 4, false, false) + ui->plot->getYUnit());
-  ui->labelSig2Dc->setText(floatToNiceString(dc, 4, false, false) + ui->plot->getYUnit());
-  ui->labelSig2fs->setText(floatToNiceString(fs, 4, false, false) + ui->plotFFT->getXUnit());
-  // Pokud je falltime nabo risetime menší než 2 periody vzorkování, je považován za nepřesný (znaménko menší než)
-  ui->labelSig2rise->setText((rise < 2.0 / fs ? "<" : "") + floatToNiceString(rise, 4, false, false) + ui->plot->getXUnit());
-  ui->labelSig2fall->setText((fall < 2.0 / fs ? "<" : "") + floatToNiceString(fall, 4, false, false) + ui->plot->getXUnit());
+  if (valuesUseUnits) {
+    ui->labelSig2Vrms->setText(floatToNiceString(vrms, 4, false, false) + ui->plot->getYUnit());
+    ui->labelSig2Min->setText(floatToNiceString(min, 4, false, false) + ui->plot->getYUnit());
+    ui->labelSig2Max->setText(floatToNiceString(max, 4, false, false) + ui->plot->getYUnit());
+    ui->labelSig2Dc->setText(floatToNiceString(dc, 4, false, false) + ui->plot->getYUnit());
+    ui->labelSig2Amp->setText(floatToNiceString(amp, 4, false, false) + (ui->plot->getYUnit() == "V" ? "Vpp" : ui->plot->getYUnit()));
+  } else {
+    ui->labelSig2Vrms->setText(QString::number(vrms, 'g', 4) + ui->plot->getYUnit());
+    ui->labelSig2Min->setText(QString::number(min, 'g', 4) + ui->plot->getYUnit());
+    ui->labelSig2Max->setText(QString::number(max, 'g', 4) + ui->plot->getYUnit());
+    ui->labelSig2Dc->setText(QString::number(dc, 'g', 4) + ui->plot->getYUnit());
+    ui->labelSig2Amp->setText(QString::number(amp, 'g', 4) + ui->plot->getYUnit());
+  }
+
+  if (timeUseUnits) {
+    ui->labelSig2Period->setText(floatToNiceString(period, 4, false, false) + ui->plot->getXUnit());
+    // Pokud je falltime nabo risetime menší než 2 periody vzorkování, je považován za nepřesný (znaménko menší než)
+    ui->labelSig2rise->setText((rise < 2.0 / fs ? "<" : "") + floatToNiceString(rise, 4, false, false) + ui->plot->getXUnit());
+    ui->labelSig2fall->setText((fall < 2.0 / fs ? "<" : "") + floatToNiceString(fall, 4, false, false) + ui->plot->getXUnit());
+  } else {
+    ui->labelSig2Period->setText(floatToNiceString(period, 4, false, false) + ui->plot->getXUnit());
+    // Pokud je falltime nabo risetime menší než 2 periody vzorkování, je považován za nepřesný (znaménko menší než)
+    ui->labelSig2rise->setText((rise < 2.0 / fs ? "<" : "") + QString::number(rise, 'g', 4) + ui->plot->getXUnit());
+    ui->labelSig2fall->setText((fall < 2.0 / fs ? "<" : "") + QString::number(fall, 'g', 4) + ui->plot->getXUnit());
+  }
+
+  if (freqUseUnits) {
+    ui->labelSig2Freq->setText(floatToNiceString(freq, 4, false, false) + ui->plotFFT->getXUnit());
+    ui->labelSig2fs->setText(floatToNiceString(fs, 4, false, false) + ui->plotFFT->getXUnit());
+  } else {
+    ui->labelSig2Freq->setText(QString::number(freq, 'g', 4) + ui->plotFFT->getXUnit());
+    ui->labelSig2fs->setText(QString::number(fs, 'g', 4) + ui->plotFFT->getXUnit());
+  }
+
   ui->labelSig2samples->setText(QString::number(samples));
   measureRefreshTimer2.start(250);
 }
@@ -472,17 +535,10 @@ void MainWindow::on_pushButtonFFT_toggled(bool checked) {
     updateFFT2();
   }
 
-#ifdef XY_AND_FFT_ALLWAYS_TOGETHER
-  if (checked) {
-    ui->plotFFT->setVisible(true);
-    ui->plotxy->setVisible(true);
-  } else if (!ui->pushButtonXY->isChecked()) {
-    ui->plotFFT->setVisible(false);
-    ui->plotxy->setVisible(false);
-  }
-#else
-  ui->plotFFT->setVisible(checked);
-#endif
+  if (checked && ui->radioButtonLayoutTime->isChecked())
+    ui->radioButtonLayoutAll->setChecked(true);
+  else if (!ui->pushButtonXY->isChecked() && ui->radioButtonLayoutAll->isChecked())
+    ui->radioButtonLayoutTime->setChecked(true);
 }
 
 void MainWindow::on_doubleSpinBoxRangeVerticalRange_valueChanged(double arg1) {
@@ -549,13 +605,13 @@ void MainWindow::on_myTerminal_cellClicked(int row, int column) {
 
 void MainWindow::on_comboBoxFFTType_currentIndexChanged(int index) {
   if (index != FFTType::spectrum) {
-    ui->plotFFT->setYUnit("dB");
+    ui->plotFFT->setYUnit("dB", false);
     if (IS_FFT_INDEX(ui->comboBoxCursor1Channel->currentIndex()))
       ui->doubleSpinBoxYCur1->setSuffix("dB");
     if (IS_FFT_INDEX(ui->comboBoxCursor2Channel->currentIndex()))
       ui->doubleSpinBoxYCur2->setSuffix("dB");
   } else {
-    ui->plotFFT->setYUnit("");
+    ui->plotFFT->setYUnit("", false);
     if (IS_FFT_INDEX(ui->comboBoxCursor1Channel->currentIndex()))
       ui->doubleSpinBoxYCur1->setSuffix("");
     if (IS_FFT_INDEX(ui->comboBoxCursor2Channel->currentIndex()))
@@ -565,19 +621,31 @@ void MainWindow::on_comboBoxFFTType_currentIndexChanged(int index) {
 }
 
 void MainWindow::on_lineEditVUnit_textChanged(const QString& arg1) {
-  ui->plot->setYUnit(arg1);
-  ui->plotxy->setYUnit(arg1);
-  ui->plotxy->setXUnit(arg1);
-  ui->doubleSpinBoxRangeVerticalRange->setSuffix(arg1);
-  ui->doubleSpinBoxChOffset->setSuffix(arg1);
-  if (IS_ANALOG_OR_MATH(ui->comboBoxCursor1Channel->currentIndex()))
-    ui->doubleSpinBoxYCur1->setSuffix(arg1);
-  if (IS_ANALOG_OR_MATH(ui->comboBoxCursor1Channel->currentIndex()))
-    ui->doubleSpinBoxYCur2->setSuffix(arg1);
-  ui->doubleSpinBoxXYCurX1->setSuffix(arg1);
-  ui->doubleSpinBoxXYCurX2->setSuffix(arg1);
-  ui->doubleSpinBoxXYCurY1->setSuffix(arg1);
-  ui->doubleSpinBoxXYCurY2->setSuffix(arg1);
+  QString unit = arg1.simplified();
+
+  QString prefixChars = "munkMG";
+
+  valuesUseUnits = true;
+  if (unit.isEmpty())
+    valuesUseUnits = false;
+  if (unit.length() >= 2) {
+    if (unit.left(2) == "dB" || prefixChars.contains(unit.at(0))) {
+      valuesUseUnits = false;
+      unit.push_front(' ');
+    }
+  }
+
+  ui->plot->setYUnit(unit, valuesUseUnits);
+  ui->plotxy->setYUnit(unit, valuesUseUnits);
+  ui->plotxy->setXUnit(unit, valuesUseUnits);
+  ui->doubleSpinBoxRangeVerticalRange->setUnit(unit, valuesUseUnits);
+  ui->doubleSpinBoxChOffset->setUnit(unit, valuesUseUnits);
+  ui->doubleSpinBoxYCur1->setUnit(unit, valuesUseUnits);
+  ui->doubleSpinBoxYCur2->setUnit(unit, valuesUseUnits);
+  ui->doubleSpinBoxXYCurX1->setUnit(unit, valuesUseUnits);
+  ui->doubleSpinBoxXYCurX2->setUnit(unit, valuesUseUnits);
+  ui->doubleSpinBoxXYCurY1->setUnit(unit, valuesUseUnits);
+  ui->doubleSpinBoxXYCurY2->setUnit(unit, valuesUseUnits);
 
   updateDivs(); // Aby se aktualizovala jednotka u kroku mřížky
   updateChScale(); // Aby se aktualizovala jednotka u měřítka
@@ -601,17 +669,6 @@ void MainWindow::on_checkBoxFFTCh1_toggled(bool checked) {
 void MainWindow::on_checkBoxFFTCh2_toggled(bool checked) {
   setComboboxItemVisible(*ui->comboBoxCursor1Channel, FFT_INDEX(1), checked && ui->pushButtonFFT->isChecked());
   setComboboxItemVisible(*ui->comboBoxCursor2Channel, FFT_INDEX(1), checked && ui->pushButtonFFT->isChecked());
-}
-
-void MainWindow::on_pushButtonProtocolGuide_clicked() {
-  QString helpFile = QCoreApplication::applicationDirPath() + (ui->radioButtonEn->isChecked() ? "/Data protocol guide en.pdf" : "/Data protocol guide cz.pdf");
-  if (!QDesktopServices::openUrl(QUrl::fromLocalFile(helpFile))) {
-    QMessageBox msgBox(this);
-    msgBox.setText(tr("Cant open file."));
-    msgBox.setInformativeText(helpFile);
-    msgBox.setIcon(QMessageBox::Critical);
-    msgBox.exec();
-  }
 }
 
 void MainWindow::on_pushButtonDolarNewline_toggled(bool checked) {

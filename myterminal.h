@@ -49,6 +49,7 @@ class MyTerminal : public QTableWidget {
   TerminalMode::enumTerminalMode mode = clicksend;
   QByteArray buffer;
   QMap<QString, QColor> colorCodes;
+  bool disableSendingBlackBackgnd = false;
   void printChar(QChar text);
   void moveCursorAbsolute(int16_t x, int16_t y);
   void moveCursorRelative(int16_t x, int16_t y) { moveCursorAbsolute(cursorX + x, cursorY + y); }
@@ -89,6 +90,7 @@ class MyTerminal : public QTableWidget {
   void setMode(TerminalMode::enumTerminalMode mode);
   void resetTerminal();
   void copyToClipboard();
+  void setDisableSendingBlackBackgnd(bool en) {disableSendingBlackBackgnd = en;}
 
  signals:
   /// Pošle zprávu do výpisu

@@ -24,10 +24,6 @@ PlotData::PlotData(QObject* parent) : QObject(parent) {
     mathFirsts[i] = 0;
     mathSeconds[i] = 0;
   }
-  for (int i = 0; i < ANALOG_COUNT; i++) {
-    averagerEnabled[i] = false;
-  }
-
   reset();
 }
 
@@ -213,7 +209,11 @@ void PlotData::addPoint(QList<QPair<ValueType, QByteArray>> data) {
     if (ch == 1)
       emit ch1dataUpdated(true, false, lastRecommandedAxisType);
 
-    emit addPointToPlot(ch - 1, time, value, time >= lastTime);
+    if (averagerEnabled)
+      emit addPointToAverager(ch - 1, time, value, time >= lastTime);
+    else
+      emit addPointToPlot(ch - 1, time, value, time >= lastTime);
+
     for (int math = 0; math < MATH_COUNT; math++) {
       if (mathFirsts[math] == ch) {
         auto point = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer());
@@ -332,7 +332,7 @@ void PlotData::addChannel(QPair<ValueType, QByteArray> data, unsigned int ch, QP
   }
 
   if (remap)
-    data.first.multiplier *= (maximum - minimum) / ((1 << bits) - 1);
+    data.first.multiplier *= (maximum - minimum) / (1 << bits);
 
   // Vektory se pošlou jako pointer, graf je po zpracování smaže.
   auto analogData = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer);
@@ -359,7 +359,7 @@ void PlotData::addChannel(QPair<ValueType, QByteArray> data, unsigned int ch, QP
   if (ch == 1)
     emit ch1dataUpdated(false, false, HAxisType::normal); // Aktualizuje počítadlo rychlosti přicházejících dat a nastavý fixed režim pro autoset
 
-  if (averagerEnabled[ch - 1])
+  if (averagerEnabled)
     emit addDataToAverager(ch - 1, timeStep, analogData);
   else
     emit addVectorToPlot(ch - 1, analogData);

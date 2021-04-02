@@ -21,9 +21,9 @@ MyPow2Spinbox::MyPow2Spinbox(QWidget* parent): QSpinBox(parent) {
 
 void MyPow2Spinbox::stepBy(int steps) {
   if (steps > 0)
-    setValue(value() * 2);
+    this->QSpinBox::setValue(value() * 2);
   else if (steps < 0)
-    setValue(value() / 2);
+    this->QSpinBox::setValue(value() / 2);
 }
 
 int MyPow2Spinbox::valueFromText(const QString& text) const {
