@@ -25,9 +25,12 @@ void MainWindow::initSetables() {
   setables["vaxis"] = ui->checkBoxVerticalValues;
   setables["haxis"] = ui->comboBoxHAxisType;
   setables["hlabel"] = ui->lineEditHtitle;
+  setables["hunit"] = ui->lineEditHUnit;
   setables["vlabel"] = ui->lineEditVtitle;
   setables["vunit"] = ui->lineEditVUnit;
   setables["opengl"] = ui->checkBoxOpenGL;
+
+  setables["filter"] = ui->comboBoxFIR;
 
   // Connection
   setables["debuglvl"] = ui->comboBoxOutputLevel;
@@ -39,7 +42,7 @@ void MainWindow::initSetables() {
   setables["sendonrec"] = ui->checkBoxResetCmdEn;
   setables["rstcmd"] = ui->lineEditResetCmd;
   setables["autoautoset"] = ui->checkBoxAutoAutoSet;
-  setables["termnoclickblack"] = ui->checkBoxTerminalClicksendNoBackground;
+  setables["termnosendblack"] = ui->checkBoxTerminalClicksendNoBackground;
 
   // Send
   setables["sendend"] = ui->comboBoxLineEnding;

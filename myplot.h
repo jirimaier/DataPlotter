@@ -16,7 +16,7 @@
 #ifndef MYPLOT_H
 #define MYPLOT_H
 
-#include "enumsDefinesConstants.h"
+#include "global.h"
 #include "myaxistickerwithunit.h"
 #include "mymodifiedqcptracer.h"
 #include "qcustomplot.h"

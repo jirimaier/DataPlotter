@@ -26,7 +26,7 @@
 #include <QTranslator>
 #include <QtCore>
 
-#include "enumsDefinesConstants.h"
+#include "global.h"
 #include "plotdata.h"
 #include "plotmath.h"
 #include "serialreader.h"
@@ -122,6 +122,8 @@ class MainWindow : public QMainWindow {
   bool timeUseUnits = true, valuesUseUnits = true, freqUseUnits = true;
 
   QString preselectPortHint = "ST";
+
+  ChannelExpectedRange channelExpectedRanges[ANALOG_COUNT + MATH_COUNT];
 
  private slots:
   void updateCursors();
@@ -276,17 +278,18 @@ class MainWindow : public QMainWindow {
 
   void on_labelLogo_clicked();
 
+  void on_comboBoxFIR_currentIndexChanged(int index);
+
  public slots:
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumMessageTarget target);
   void showPlotStatus(PlotStatus::enumPlotStatus type);
   void serialConnectResult(bool connected, QString message, QString details);
   void printToTerminal(QByteArray data) { ui->myTerminal->printToTerminal(data); }
-  void serialFinishedWriting();
   void useSettings(QByteArray settings, MessageTarget::enumMessageTarget source);
   void printDeviceMessage(QByteArray message, bool warning, bool ended);
   void printSerialMonitor(QByteArray data) { serialMonitor.append(data); }
-  void signalMeasurementsResult1(float period, float freq, float amp, float min, float max, float vrms, float dc, float fs, float rise, float fall, int samples);
-  void signalMeasurementsResult2(float period, float freq, float amp, float min, float max, float vrms, float dc, float fs, float rise, float fall, int samples);
+  void signalMeasurementsResult1(double period, double freq, double amp, double min, double max, double vrms, double dc, double fs, double rise, double fall, int samples);
+  void signalMeasurementsResult2(double period, double freq, double amp, double min, double max, double vrms, double dc, double fs, double rise, double fall, int samples);
   void fftResult1(QSharedPointer<QCPGraphDataContainer> data);
   void fftResult2(QSharedPointer<QCPGraphDataContainer> data);
   void xyResult(QSharedPointer<QCPCurveDataContainer> data);
@@ -300,6 +303,7 @@ class MainWindow : public QMainWindow {
   void setCursorPosXY(Cursors::enumCursors cursor, double x, double y);
   void interpolationResult(int chID, QSharedPointer<QCPGraphDataContainer> dataOriginal, QSharedPointer<QCPGraphDataContainer> dataInterpolated, bool dataIsFromInterpolationBuffer);
   void deviceError(QByteArray message, MessageTarget::enumMessageTarget source);
+  void setExpectedRange(int chID, bool known, double min, double max) {channelExpectedRanges[chID].maximum = max; channelExpectedRanges[chID].minimum = min; channelExpectedRanges[chID].unknown = !known;}
 
  signals:
   void setChDigital(int chid, int target);
@@ -331,5 +335,6 @@ class MainWindow : public QMainWindow {
   void resetAverager();
   void setAverager(bool enabled);
   void setAveragerCount(int chID, int count);
+  void setInterpolationFilter(QString filename, int upsampling);
 };
 #endif // MAINWINDOW_H

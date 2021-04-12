@@ -16,14 +16,13 @@
 #ifndef MYAXISTICKERWITHUNIT_H
 #define MYAXISTICKERWITHUNIT_H
 
-#include "enumsDefinesConstants.h"
+#include "global.h"
 #include "qcustomplot.h"
 
 /// Verze axisTickeru která zobrazuje jednotky s předponami (milli, mikro...)
 class MyAxisTickerWithUnit : public QCPAxisTickerFixed {
  private:
   int tickStepOrder = 0;
-  bool stepIsMultipleOfTen = false;
 
  public:
   QString unit = "";

@@ -19,7 +19,7 @@
 #include <QObject>
 #include <QSpinBox>
 
-#include "enumsDefinesConstants.h"
+#include "global.h"
 
 class MyPow2Spinbox : public QSpinBox {
   Q_OBJECT

@@ -18,7 +18,7 @@
 
 #include <QObject>
 #include "qcustomplot.h"
-#include "enumsDefinesConstants.h"
+#include "global.h"
 
 class Averager : public QObject {
   Q_OBJECT

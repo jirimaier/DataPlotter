@@ -724,5 +724,5 @@ void NewSerialParser::changeMode(DataMode::enumDataMode mode, DataMode::enumData
   if (mode == previousMode)
     return;
   currentMode = mode;
-  sendMessageIfAllowed(tr("Type of data changed"), modeName, MessageLevel::info);
+  sendMessageIfAllowed(tr("New data"), modeName, MessageLevel::info);
 }

@@ -18,7 +18,7 @@
 
 #include <QObject>
 
-#include "enumsDefinesConstants.h"
+#include "global.h"
 #include "qcustomplot.h"
 
 class Interpolator : public QObject {
@@ -33,11 +33,15 @@ class Interpolator : public QObject {
   /// Konvoluce signálu x s odezvou filtru h
   QVector<float> filter(QVector<float> x, QVector<float> h);
 
+  int upsampling = 8;
+
  public slots:
   /// Interpoluje signál a výsledek odešle signálem interpolationResult, pokud data pochází z bufferu (přidávání po celých kanálech, jsou
   /// v grafu prepsány i původní vzorky, aby odpovídali průběhu z kterého je vypočtena interpolace. Pokud byla data vzata přímo z grafu,
   /// původní vzorky už v něm jsou a není potřeba je přepisovat.
   void interpolate(int chID, const QSharedPointer<QCPGraphDataContainer> data, QCPRange visibleRange, bool dataIsFromInterpolationBuffer);
+
+  void loadFilterFromFile(QString filename, int upsampling);
 
  signals:
   /// Odešle interpolovaný průběh, pokud data z kterých byla interpolace počítána pochází z bufferu (přidávání po celých kanálech, jsou

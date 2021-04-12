@@ -20,7 +20,7 @@
 #include <QDial>
 #include <QObject>
 
-#include "enumsDefinesConstants.h"
+#include "global.h"
 
 /// Dial který skáče po hodnotách ze seznamu (1,2,5,10,20,50,100 ...)
 class myDial : public QDial {

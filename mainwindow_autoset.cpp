@@ -37,11 +37,18 @@ void MainWindow::on_pushButtonAutoset_clicked() {
     QCPRange maxRange;
     maxRange.upper = 0;
     maxRange.lower = 0;
-    for (int i = activeAnalogs.size() - 1; i >= 0; i--) {
-      bool foundRange; // Zbytečné, ale ta funkce to potřebuje.
-      QCPRange range = ui->plot->graph(activeAnalogs.at(i))->data()->valueRange(foundRange);
-      range.lower = ceilToNiceValue(range.lower) * ui->plot->getChScale(activeAnalogs.at(i));
-      range.upper = ceilToNiceValue(range.upper) * ui->plot->getChScale(activeAnalogs.at(i));
+    for (int i = 0; i < activeAnalogs.size(); i++) {
+      QCPRange range;
+      if (channelExpectedRanges[activeAnalogs.at(i)].unknown) {
+        bool foundRange;
+        range = ui->plot->graph(activeAnalogs.at(i))->data()->valueRange(foundRange);
+        if (foundRange) {
+          range.lower = ceilToNiceValue(range.lower) * ui->plot->getChScale(activeAnalogs.at(i));
+          range.upper = ceilToNiceValue(range.upper) * ui->plot->getChScale(activeAnalogs.at(i));
+        } else
+          range = QCPRange(0, 0);
+      } else
+        range = QCPRange(channelExpectedRanges[activeAnalogs.at(i)].minimum, channelExpectedRanges[activeAnalogs.at(i)].maximum * 1.1);
       if (ui->plot->isChInverted(activeAnalogs.at(i))) {
         // Pokud je kanál invertovaný, změní znaménko a prohodí
         range.upper *= -1;
@@ -55,20 +62,30 @@ void MainWindow::on_pushButtonAutoset_clicked() {
     }
     for (int i = activeAnalogs.size() - 1; i >= 0; i--) {
       recentOffset -= maxRange.lower;
+      recentOffset = ceilToMultipleOf(recentOffset, ui->plot->getVDiv());
       ui->plot->setChOffset(activeAnalogs.at(i), recentOffset);
       recentOffset += maxRange.upper;
     }
     if (recentOffset != 0) {
       on_pushButtonPositive_clicked();
       ui->checkBoxVerticalValues->setChecked(false);
-      ui->doubleSpinBoxRangeVerticalRange->setValue(recentOffset);
+      ui->doubleSpinBoxRangeVerticalRange->setValue(ceilToMultipleOf(recentOffset, ui->plot->getVDiv()));
     }
   } else {
     // Only one channel
     on_pushButtonResetChannels_clicked();
     if (!activeAnalogs.isEmpty()) {
-      bool foundrange;
-      QCPRange range = ui->plot->graph(activeAnalogs.at(0))->data()->valueRange(foundrange);
+      QCPRange range;
+      if (channelExpectedRanges[activeAnalogs.first()].unknown) {
+        bool foundRange;
+        range = ui->plot->graph(activeAnalogs.at(activeAnalogs.first()))->data()->valueRange(foundRange);
+        if (foundRange) {
+          range.lower = ceilToNiceValue(range.lower) * ui->plot->getChScale(activeAnalogs.at(activeAnalogs.first()));
+          range.upper = ceilToNiceValue(range.upper) * ui->plot->getChScale(activeAnalogs.at(activeAnalogs.first()));
+        } else
+          range = QCPRange(0, 0);
+      } else
+        range = QCPRange(channelExpectedRanges[activeAnalogs.first()].minimum, channelExpectedRanges[activeAnalogs.first()].maximum);
       if (ui->plot->isChInverted(activeAnalogs.at(0))) {
         // Pokud je kanál invertovaný, změní znaménko a prohodí
         range.upper *= -1;
@@ -77,13 +94,13 @@ void MainWindow::on_pushButtonAutoset_clicked() {
       }
       if (range.lower >= 0) {
         on_pushButtonPositive_clicked();
-        ui->doubleSpinBoxRangeVerticalRange->setValue(ceilToNiceValue(range.upper));
+        ui->doubleSpinBoxRangeVerticalRange->setValue(range.upper);
       } else if (range.upper <= 0) {
         on_pushButtonNegative_clicked();
-        ui->doubleSpinBoxRangeVerticalRange->setValue(ceilToNiceValue(abs(range.lower)));
+        ui->doubleSpinBoxRangeVerticalRange->setValue(abs(range.lower));
       } else {
         on_pushButtonCenter_clicked();
-        ui->doubleSpinBoxRangeVerticalRange->setValue(2 * ceilToNiceValue(MAX(std::abs(range.upper), std::abs(range.lower))));
+        ui->doubleSpinBoxRangeVerticalRange->setValue(2 * MAX(std::abs(range.upper), std::abs(range.lower)));
       }
       ui->checkBoxVerticalValues->setChecked(true);
       ui->comboBoxSelectedChannel->setCurrentIndex(activeAnalogs.at(0));
@@ -97,6 +114,79 @@ void MainWindow::on_pushButtonAutoset_clicked() {
     }
   }
   on_comboBoxSelectedChannel_currentIndexChanged(ui->comboBoxSelectedChannel->currentIndex());
+  if (lastUpdateWasPoint) {
+    ui->radioButtonRollingRange->setChecked(true);
+    if (dataUpdates > 10)
+      ui->doubleSpinBoxRangeHorizontal->setValue(10);
+    else
+      ui->doubleSpinBoxRangeHorizontal->setValue(100);
+  } else {
+    // Pevný režim
+    ui->dialZoom->setValue(ui->dialZoom->maximum());// Zoom žádný
+    ui->radioButtonFixedRange->setChecked(true);
+  }
+}
+
+void MainWindow::on_pushButtonResetChannels_clicked() {
+  for (int i = 0; i < ANALOG_COUNT + MATH_COUNT; i++) {
+    ui->plot->setChOffset(i, 0);
+    ui->plot->setChScale(i, 1);
+  }
+  for (int i = 0; i < LOGIC_GROUPS; i++) {
+    ui->plot->setLogicOffset(i, 0);
+    ui->plot->setLogicScale(i, 1);
+  }
+
+  QCPRange valueRange(0, 5);
+  bool nominmaxfoundyet = true;
+
+  for (int i =  0; i < ANALOG_COUNT + MATH_COUNT; i++)
+    if (ui->plot->isChUsed(i) && ui->plot->isChVisible(i)) {
+      QCPRange chRange;
+      if (channelExpectedRanges[i].unknown) {
+        bool zbytrecnaPromena;
+        chRange = ui->plot->graph(i)->getValueRange(zbytrecnaPromena);
+      } else {
+        chRange.lower = channelExpectedRanges[i].minimum;
+        chRange.upper = channelExpectedRanges[i].maximum;
+      }
+      if (ui->plot->isChInverted(i)) {
+        // Pokud je kanál invertovaný, změní znaménko a prohodí
+        chRange.upper *= -1;
+        chRange.lower *= -1;
+        chRange.normalize();
+      }
+      if (chRange.upper > valueRange.upper || nominmaxfoundyet)
+        valueRange.upper = chRange.upper;
+      if (chRange.lower < valueRange.lower || nominmaxfoundyet)
+        valueRange.lower = chRange.lower;
+      nominmaxfoundyet = false;
+    }
+  for (int i = 0; i < LOGIC_GROUPS; i++)
+    if (ui->plot->getLogicBitsUsed(i) > 0) {
+      QCPRange chRange(0, 3);
+      chRange.upper = ui->plot->getLogicBitsUsed(i) * 3;
+      if (chRange.upper > valueRange.upper || nominmaxfoundyet)
+        valueRange.upper = chRange.upper;
+      if (chRange.lower < valueRange.lower || nominmaxfoundyet)
+        valueRange.lower = chRange.lower;
+      nominmaxfoundyet = false;
+    }
+
+  if (valueRange.lower >= 0) {
+    on_pushButtonPositive_clicked();
+    ui->doubleSpinBoxRangeVerticalRange->setValue(valueRange.upper);
+  } else if (valueRange.upper <= 0) {
+    on_pushButtonNegative_clicked();
+    ui->doubleSpinBoxRangeVerticalRange->setValue(abs(valueRange.lower));
+  } else {
+    on_pushButtonCenter_clicked();
+    ui->doubleSpinBoxRangeVerticalRange->setValue(2 * MAX(std::abs(valueRange.upper), std::abs(valueRange.lower)));
+  }
+  ui->checkBoxVerticalValues->setChecked(true);
+
+  on_comboBoxSelectedChannel_currentIndexChanged(ui->comboBoxSelectedChannel->currentIndex());
+
   if (lastUpdateWasPoint) {
     ui->radioButtonRollingRange->setChecked(true);
     if (dataUpdates > 10)

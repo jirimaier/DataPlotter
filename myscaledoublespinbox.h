@@ -16,7 +16,7 @@
 #ifndef MYSCALEDOUBLESPINBOX_H
 #define MYSCALEDOUBLESPINBOX_H
 
-#include "enumsDefinesConstants.h"
+#include "global.h"
 #include <QDoubleSpinBox>
 #include <QWidget>
 

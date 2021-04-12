@@ -236,11 +236,9 @@ void MyPlot::setMouseControlls(bool enabled) {
   if (enabled) {
     this->setInteraction(QCP::iRangeDrag, true);
     this->setInteraction(QCP::iRangeZoom, true);
-    //defaultMouseCursor = Qt::SizeAllCursor;
   } else {
     this->setInteraction(QCP::iRangeDrag, false);
     this->setInteraction(QCP::iRangeZoom, false);
-    //defaultMouseCursor = Qt::ArrowCursor;
   }
   isFreeMove = enabled;
 }

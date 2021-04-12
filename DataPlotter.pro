@@ -46,7 +46,7 @@ SOURCES += \
 HEADERS += \
     averager.h \
     clickablelabel.h \
-    enumsDefinesConstants.h \
+    global.h \
     interpolator.h \
     mainwindow.h \
     myaxistickerwithunit.h \

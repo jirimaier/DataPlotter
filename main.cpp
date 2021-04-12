@@ -46,7 +46,7 @@
 #include <QTimer>
 #include <QTranslator>
 
-#include "enumsDefinesConstants.h"
+#include "global.h"
 #include "mainwindow.h"
 #include "newserialparser.h"
 #include "plotdata.h"
@@ -133,7 +133,6 @@ int main(int argc, char* argv[]) {
   QObject::connect(serial1, &SerialReader::sendData, serialParser1, &NewSerialParser::parse);
   QObject::connect(serial1, &SerialReader::started, serialParser1, &NewSerialParser::getReady);
   QObject::connect(serialParser1, &NewSerialParser::ready, serial1, &SerialReader::parserReady);
-  QObject::connect(serial1, &SerialReader::finishedWriting, &mainWindow, &MainWindow::serialFinishedWriting);
   QObject::connect(serial1, &SerialReader::connectionResult, &mainWindow, &MainWindow::serialConnectResult);
   QObject::connect(serialParser1, &NewSerialParser::sendMessage, &mainWindow, &MainWindow::printMessage);
   QObject::connect(serialParser1, &NewSerialParser::sendDeviceMessage, &mainWindow, &MainWindow::printDeviceMessage);
@@ -170,6 +169,7 @@ int main(int argc, char* argv[]) {
   QObject::connect(&mainWindow, &MainWindow::sendManualInput, serialParserM, &NewSerialParser::parse);
   QObject::connect(plotData, &PlotData::sendMessage, &mainWindow, &MainWindow::printMessage);
   QObject::connect(plotData, &PlotData::ch1dataUpdated, &mainWindow, &MainWindow::ch1WasUpdated);
+  QObject::connect(plotData, &PlotData::setExpectedRange, &mainWindow, &MainWindow::setExpectedRange);
   QObject::connect(plotMath, &PlotMath::sendMessage, &mainWindow, &MainWindow::printMessage);
   QObject::connect(&mainWindow, &MainWindow::setChDigital, plotData, &PlotData::setDigitalChannel);
   QObject::connect(&mainWindow, &MainWindow::setLogicBits, plotData, &PlotData::setLogicBits);
@@ -195,6 +195,7 @@ int main(int argc, char* argv[]) {
   QObject::connect(&mainWindow, &MainWindow::setAveragerCount, averager, &Averager::setCount);
   QObject::connect(plotData, &PlotData::addDataToAverager, averager, &Averager::newDataVector);
   QObject::connect(plotData, &PlotData::addPointToAverager, averager, &Averager::newDataPoint);
+  QObject::connect(&mainWindow, &MainWindow::setInterpolationFilter, interpolator, &Interpolator::loadFilterFromFile);
 
   // Funkce init je zavolána až z nového vlákna
   QObject::connect(&serialReader1Thread, &QThread::started, serial1, &SerialReader::init);

@@ -144,6 +144,8 @@ void MainWindow::on_pushButtonScrollDown_clicked() {
 void MainWindow::on_lineEditCommand_returnPressed() {
   QString text = ui->lineEditCommand->text() + lineEndings[ui->comboBoxLineEnding->currentIndex()];
   emit writeToSerial(text.toLocal8Bit());
+  if (!ui->pushButtonMultiplInputs->isChecked())
+    ui->lineEditCommand->clear();
 }
 
 void MainWindow::on_lineEditCommand_2_returnPressed() {
@@ -238,18 +240,6 @@ void MainWindow::on_comboBoxSelectedChannel_currentIndexChanged(int index) {
 void MainWindow::on_pushButtonInvert_toggled(bool checked) {
   if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT)
     ui->plot->setChInvert(ui->comboBoxSelectedChannel->currentIndex(), checked);
-}
-
-void MainWindow::on_pushButtonResetChannels_clicked() {
-  for (int i = 0; i < ANALOG_COUNT + MATH_COUNT; i++) {
-    ui->plot->setChOffset(i, 0);
-    ui->plot->setChScale(i, 1);
-  }
-  for (int i = 0; i < LOGIC_GROUPS; i++) {
-    ui->plot->setLogicOffset(i, 0);
-    ui->plot->setLogicScale(i, 1);
-  }
-  on_comboBoxSelectedChannel_currentIndexChanged(ui->comboBoxSelectedChannel->currentIndex());
 }
 
 void MainWindow::on_comboBoxHAxisType_currentIndexChanged(int index) {
@@ -388,7 +378,7 @@ void MainWindow::insertInTerminalDebug(QString text, QColor textColor) {
   ui->textEditTerminalDebug->setTextColor(Qt::black);
 }
 
-void MainWindow::signalMeasurementsResult1(float period, float freq, float amp, float min, float max, float vrms, float dc, float fs, float rise, float fall, int samples) {
+void MainWindow::signalMeasurementsResult1(double period, double freq, double amp, double min, double max, double vrms, double dc, double fs, double rise, double fall, int samples) {
   if (valuesUseUnits) {
     ui->labelSig1Vrms->setText(floatToNiceString(vrms, 4, false, false) + ui->plot->getYUnit());
     ui->labelSig1Min->setText(floatToNiceString(min, 4, false, false) + ui->plot->getYUnit());
@@ -426,7 +416,7 @@ void MainWindow::signalMeasurementsResult1(float period, float freq, float amp, 
   ui->labelSig1samples->setText(QString::number(samples));
   measureRefreshTimer1.start(250);
 }
-void MainWindow::signalMeasurementsResult2(float period, float freq, float amp, float min, float max, float vrms, float dc, float fs, float rise, float fall, int samples) {
+void MainWindow::signalMeasurementsResult2(double period, double freq, double amp, double min, double max, double vrms, double dc, double fs, double rise, double fall, int samples) {
   if (valuesUseUnits) {
     ui->labelSig2Vrms->setText(floatToNiceString(vrms, 4, false, false) + ui->plot->getYUnit());
     ui->labelSig2Min->setText(floatToNiceString(min, 4, false, false) + ui->plot->getYUnit());

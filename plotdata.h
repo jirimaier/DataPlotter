@@ -25,7 +25,7 @@
 #include <QTime>
 #include <QElapsedTimer>
 
-#include "enumsDefinesConstants.h"
+#include "global.h"
 #include "qcustomplot.h"
 
 class PlotData : public QObject {
@@ -96,6 +96,8 @@ class PlotData : public QObject {
   void addDataToAverager(int chID, double samplingRate, QSharedPointer<QCPGraphDataContainer> data);
 
   void addPointToAverager(int ch, double time, double value, bool append);
+
+  void setExpectedRange(int chID, bool known, double min, double max);
 };
 
 #endif // PLOTTING_H

@@ -19,7 +19,7 @@
 #include <QObject>
 #include <QSlider>
 
-#include "enumsDefinesConstants.h"
+#include "global.h"
 
 /// Slide může mít hodnotu (real value) mimo rozsah pohybu posuvníku
 /// Posuvníkem se mění hodnota v rozsahu min max (zobrazený interval v grafu)

@@ -16,7 +16,7 @@
 #include "plotdata.h"
 
 PlotData::PlotData(QObject* parent) : QObject(parent) {
-  for (int i = 0; i < LOGIC_GROUPS; i++) {
+  for (int i = 0; i < LOGIC_GROUPS - 1; i++) {
     logicTargets[i] = -1;
     logicBits[i] = 0;
   }
@@ -144,6 +144,7 @@ uint32_t PlotData::getBits(QPair<ValueType, QByteArray> value) {
 }
 
 void PlotData::addPoint(QList<QPair<ValueType, QByteArray>> data) {
+  QString message;
   if (data.length() > ANALOG_COUNT) {
     QByteArray message = QString::number(data.length() - 1).toUtf8();
     sendMessageIfAllowed(tr("Too many channels in point (missing ';' ?)").toUtf8(), message, MessageLevel::error);
@@ -152,25 +153,34 @@ void PlotData::addPoint(QList<QPair<ValueType, QByteArray>> data) {
   bool isok;
   double time;
   lastRecommandedAxisType = HAxisType::normal;
-  if (data.at(0).second.isEmpty() || data.at(0).second == "-sample") {
+  if (data.at(0).second.isEmpty()) {
     if (qIsInf(lastTime))
       time = 0;
     else
       time = lastTime + defaultTimestep;
+
+    if (debugLevel == OutputLevel::info)
+      message.append(tr("Index (time): %1, ").arg(QString::number(time, 'g', 5)));
   } else if (data.at(0).second == "-tod") {
     time = qTime.currentTime().msecsSinceStartOfDay() / 1000.0;
     lastRecommandedAxisType = HAxisType::HMS;
+    if (debugLevel == OutputLevel::info)
+      message.append(tr("Time (time of day): %1 s, ").arg(QString::number(time, 'g', 5)));
   } else if (data.at(0).second == "-auto") {
     if (!timerRunning)
       elapsedTime.start();
     time = elapsedTime.nsecsElapsed() * 1e-9;
     lastRecommandedAxisType = time >= 3600 ? HAxisType::HMS : HAxisType::MS;
+    if (debugLevel == OutputLevel::info)
+      message.append(tr("Time (automatic): %1 s, ").arg(QString::number(time, 'g', 5)));
   } else {
     time = getValue(data.at(0), isok);
     if (!isok) {
       sendMessageIfAllowed(tr("Can not parse point time").toUtf8(), data.at(0).second, MessageLevel::error);
       return;
     }
+    if (debugLevel == OutputLevel::info)
+      message.append(tr("Time: %1 s, ").arg(QString::number(time, 'g', 5)));
   }
   for (unsigned int ch = 1; (int)ch < data.length(); ch++) {
     if (data.at(ch).second.isEmpty())
@@ -209,10 +219,15 @@ void PlotData::addPoint(QList<QPair<ValueType, QByteArray>> data) {
     if (ch == 1)
       emit ch1dataUpdated(true, false, lastRecommandedAxisType);
 
+    emit setExpectedRange(ch - 1, false, 0, 0);
+
     if (averagerEnabled)
       emit addPointToAverager(ch - 1, time, value, time >= lastTime);
     else
       emit addPointToPlot(ch - 1, time, value, time >= lastTime);
+
+    if (debugLevel == OutputLevel::info)
+      message.append(tr("Ch%1: %2, ").arg(ch).arg(QString::number(value, 'g', 5)));
 
     for (int math = 0; math < MATH_COUNT; math++) {
       if (mathFirsts[math] == ch) {
@@ -229,15 +244,17 @@ void PlotData::addPoint(QList<QPair<ValueType, QByteArray>> data) {
 
   }
   lastTime = time;
-  if (debugLevel == OutputLevel::info)
-    emit sendMessage(tr("Received point").toUtf8(), tr("%n channel(s)", "", data.length() - 1).toUtf8(), MessageLevel::info);
+  if (debugLevel == OutputLevel::info) {
+    message.remove(message.length() - 2, 2); // Odstraní ", " na konci
+    emit sendMessage(tr("Received point").toUtf8(), message.toUtf8(), MessageLevel::info);
+  }
 }
 
 void PlotData::addLogicPoint(QPair<ValueType, QByteArray> timeArray, QPair<ValueType, QByteArray> valueArray, unsigned int bits) {
   bool isok;
   double time;
   lastRecommandedAxisType = HAxisType::normal;
-  if (timeArray.second.isEmpty() || timeArray.second == "-sample") {
+  if (timeArray.second.isEmpty()) {
     if (qIsInf(lastTime))
       time = 0;
     else
@@ -355,6 +372,11 @@ void PlotData::addChannel(QPair<ValueType, QByteArray> data, unsigned int ch, QP
     if (mathSeconds[math] == ch)
       emit addMathData(math, false, analogData);
   }
+
+  if (remap)
+    emit setExpectedRange(ch - 1, true, minimum, maximum);
+  else
+    emit setExpectedRange(ch - 1, false, 0, 0);
 
   if (ch == 1)
     emit ch1dataUpdated(false, false, HAxisType::normal); // Aktualizuje počítadlo rychlosti přicházejících dat a nastavý fixed režim pro autoset

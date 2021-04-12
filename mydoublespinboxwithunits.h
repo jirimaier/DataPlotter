@@ -16,7 +16,7 @@
 #ifndef MYDOUBLESPINBOXWITHUNITS_H
 #define MYDOUBLESPINBOXWITHUNITS_H
 
-#include "enumsDefinesConstants.h"
+#include "global.h"
 #include <QDoubleSpinBox>
 #include <QWidget>
 

@@ -21,8 +21,9 @@
 #include <QDebug>
 #include <QObject>
 #include <complex>
+#include <QElapsedTimer>
 
-#include "enumsDefinesConstants.h"
+#include "global.h"
 #include "qcustomplot.h"
 
 class SignalProcessing : public QObject {
@@ -34,20 +35,20 @@ class SignalProcessing : public QObject {
   void resizeHamming(int length);
   void resizeHann(int length);
   void resizeBlackman(int length);
-  QVector<float> hamming, hann, blackman;
-  QVector<std::complex<float>> fft(QVector<std::complex<float>> signal);
-  QVector<std::complex<float>> ifft(QVector<std::complex<float>> signal);
-  inline float getStrongestFreq(QSharedPointer<QCPGraphDataContainer> data, float dc, float fs);
-  inline QPair<float, float> getRiseFall(QSharedPointer<QCPGraphDataContainer> data);
+  void calculateLookupTable(int NxK);
+  QVector<double> hamming, hann, blackman;
+  QVector<std::complex<double>> fft(QVector<std::complex<double>> signal);
+  inline double getStrongestFreq(QSharedPointer<QCPGraphDataContainer> data, double dc, double fs);
+  inline QPair<double, double> getRiseFall(QSharedPointer<QCPGraphDataContainer> data);
 
  public slots:
   void getFFTPlot(QSharedPointer<QCPGraphDataContainer> data, FFTType::enumFFTType type, FFTWindow::enumFFTWindow window, bool removeDC, int segmentCount, bool twosided, bool zerocenter, int minNFFT);
-  QVector<std::complex<float> > calculateSpectrum(QVector<std::complex<float>> data, FFTWindow::enumFFTWindow window, int minNFFT);
+  QVector<std::complex<double> > calculateSpectrum(QVector<std::complex<double>> data, FFTWindow::enumFFTWindow window, int minNFFT);
   void process(QSharedPointer<QCPGraphDataContainer> data);
 
  signals:
   void fftResult(QSharedPointer<QCPGraphDataContainer> data);
-  void result(float period, float freq, float amp, float min, float max, float vrms, float dc, float fs, float rise, float fall, int samples);
+  void result(double period, double freq, double amp, double min, double max, double vrms, double dc, double fs, double rise, double fall, int samples);
 };
 
 #endif // SIGNALPROCESSING_H

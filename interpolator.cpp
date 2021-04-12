@@ -16,29 +16,21 @@
 #include "interpolator.h"
 
 Interpolator::Interpolator(QObject* parent) : QObject(parent) {
-  QFile firFile(":/text/interpolationFIR.csv");
-  if (firFile.open(QFile::ReadOnly | QFile::Text)) {
-    QByteArrayList fir = firFile.readAll().split(',');
-    foreach (QByteArray value, fir)
-      lowPassFIR.append(value.toDouble());
-    firFile.close();
-  } else {
-    qDebug() << "Can not load FIR filter coeficients!";
-  }
+
 }
 
 void Interpolator::interpolate(int chID, const QSharedPointer<QCPGraphDataContainer> data, QCPRange visibleRange, bool dataIsFromInterpolationBuffer) {
   int M = lowPassFIR.size() - 1;
 
   double fs = (data->size() - 1) / (data->at(data->size() - 1)->key - data->at(0)->key);
-  double resultSamplingPeriod = 1.0 / INTERPOLATION_UPSAMPLING / fs;
+  double resultSamplingPeriod = 1.0 / upsampling / fs;
 
   QVector<float> values;
 
   auto dataBegin = data->constBegin(); // Při volání této funkce se změní adresy v data!!!
   auto dataEnd = data->constEnd();
 
-  int samplePaddings = M / 2 / INTERPOLATION_UPSAMPLING;
+  int samplePaddings = M / 2 / upsampling;
   double timePaddings = visibleRange.size() / 2;
 
   const QCPGraphData* begin = data->findBegin(visibleRange.lower - timePaddings) - samplePaddings;
@@ -51,7 +43,7 @@ void Interpolator::interpolate(int chID, const QSharedPointer<QCPGraphDataContai
 
   for (auto it = begin; it != end; it++) {
     values.append(it->value);
-    for (int i = 1; i < INTERPOLATION_UPSAMPLING; i++)
+    for (int i = 1; i < upsampling; i++)
       values.append(0);
   }
 
@@ -62,7 +54,7 @@ void Interpolator::interpolate(int chID, const QSharedPointer<QCPGraphDataContai
     return;
   }
 
-  if (values.length() > 2000 * INTERPOLATION_UPSAMPLING) {
+  if (values.length() > 2000 * upsampling) {
     // Hodně vzorků, nemá cenu interpolovat
     auto result = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer(*data));
     emit interpolationResult(chID, data, result, dataIsFromInterpolationBuffer);
@@ -73,10 +65,31 @@ void Interpolator::interpolate(int chID, const QSharedPointer<QCPGraphDataContai
 
   auto result = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer);
   for (int i = 0; i < values.size(); i++)
-    result->add(QCPGraphData((begin + (i + M / 2) / INTERPOLATION_UPSAMPLING)->key + ((i + M / 2) % INTERPOLATION_UPSAMPLING)*resultSamplingPeriod, values.at(i)*INTERPOLATION_UPSAMPLING));
+    result->add(QCPGraphData((begin + (i + M / 2) / upsampling)->key + ((i + M / 2) % upsampling)*resultSamplingPeriod, values.at(i)*upsampling));
 
   emit interpolationResult(chID, data, result, dataIsFromInterpolationBuffer);
   emit finished(chID);
+}
+
+void Interpolator::loadFilterFromFile(QString filename, int upsampling) {
+  this->upsampling = upsampling;
+
+  lowPassFIR.clear();
+
+  if (!filename.contains('.'))
+    filename.append(".csv");
+
+  filename.push_front(":/text/fir/");
+
+  QFile firFile(filename);
+  if (firFile.open(QFile::ReadOnly | QFile::Text)) {
+    QByteArrayList fir = firFile.readAll().split(',');
+    foreach (QByteArray value, fir)
+      lowPassFIR.append(value.toDouble());
+    firFile.close();
+  } else {
+    qDebug() << "Failed to load " << filename;
+  }
 }
 
 /// Provede konvoluci s odezvou (koeficienty) FIR filtru prvních M/2 a posledních M/2 vzorků je vynecháno (přechodné jevy).
@@ -85,7 +98,7 @@ QVector<float> Interpolator::filter(QVector<float> x, QVector<float> h) {
   QVector<float> y;
 
   int N = x.length();     // Délka signálu
-  int M = h.length(); // Délka odezvy filtru
+  int M = h.length();     // Délka odezvy filtru
 
   y.resize(N - M + 1);
 

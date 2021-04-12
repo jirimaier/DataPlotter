@@ -23,14 +23,21 @@ QString MyAxisTickerWithUnit::getTickLabel(double tick, const QLocale& locale, Q
     return (locale.toString(tick, formatChar.toLatin1(), precision) + " " + unit);
   }
 
-  QString text = "";
-  QString postfix = "";
+  QString text = "", postfix = "";
   int unitOrder = tickStepOrder;
   bool showTenths = true;
+
+  // Předpona jednotky vychází z řádu o jedna větší, než řád kroku mřížky,
+  // například 100 se zobrazí jako 0.1 kilo.
+  unitOrder++;
+
+  // Pokud je řád o jedna menší než násobek 3 (desetiny, stovky),
+  // je nutné zobrazit desetiny (0.1,0.2kilo), jindy ne (100, 100kilo)
+  // +33 je kvůli tomu aby to nebylo záporné číslo
   if (((tickStepOrder + 33) % 3) != 2)
     showTenths = false;
 
-  unitOrder++;
+
   if (unitOrder >= 18) {
     postfix = " E";
     tick /= 1e18;
@@ -83,9 +90,7 @@ QString MyAxisTickerWithUnit::getTickLabel(double tick, const QLocale& locale, Q
 void MyAxisTickerWithUnit::setTickStep(double value) {
   double log10OfStep = log10(value);
 
-  // True pro hodnuty jako 1, 10, 0.1, false pro 2, 5, 0.2, 0.5 ...
-  stepIsMultipleOfTen = (((int)round(log10OfStep * 10)) % 10 == 0);
-
   tickStepOrder = floor(log10OfStep);
+
   this->QCPAxisTickerFixed::setTickStep(value);
 }

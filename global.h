@@ -27,8 +27,6 @@
 #define LOGIC_GROUPS 3
 #define INTERPOLATION_COUNT 2
 
-#define INTERPOLATION_UPSAMPLING 8
-
 #define SHOW_OPENGL_RECOMMENDATION_WHEN_SWITCHED_TO_FILLED true
 
 #define TERMINAL_CLICK_BLINK_TIME 100
@@ -329,13 +327,13 @@ static int intLog10(double x) {
   return result;
 }
 
-static int fastPow10(int n) {
+static int myPow10(int n) {
   if (n == 0)
     return 1;
   if (n > 0)
-    return 10 * fastPow10(n - 1);
+    return 10 * myPow10(n - 1);
   else
-    return fastPow10(n + 1) / 10;
+    return myPow10(n + 1) / 10;
 }
 
 /// Nejbližší vyšší (nebo rovná) mocnina 2
@@ -345,6 +343,9 @@ inline int nextPow2(int number) {
       return (pow(2, i));
 }
 
+/// Převede číslo na text s (prec) platnými ciframi
+/// TrimZeroes odstraní nuly na konci desetinych míst
+/// (např. namísto 1.200 zobrazí jako 1.2)
 static QString toSignificantDigits(double x, double prec, bool trimZeroes = false) {
   if (x == 0) {
     if (trimZeroes)
@@ -353,11 +354,18 @@ static QString toSignificantDigits(double x, double prec, bool trimZeroes = fals
     return zero.left(prec + 1);
   }
 
-  int log10ofX = intLog10(x * 1.0000001); // Někdy je trošku menší než má být, trochu zvýšit, aby vyšla požadované hodnota
+  // Vlivem zaokrouhlní může hodnota být trochu menší než měla být,
+  // například 1.000000 se může změnit na 0.99999999, proto je číslo mírně
+  // zvětšeno, aby se zajistilo, že rád nevfijde o jedna mensí než měl být.
+  int log10ofX = intLog10(x * 1.0000001);
+
   if (log10ofX >= prec - 1) {
     return QString::number((int)round(x));
   } else {
-    QString result = QString::number((int)round(x * (fastPow10(prec - log10ofX - 1))));
+    // Převedu na text jako celé číslo
+    QString result = QString::number((int)round(x * (myPow10(prec - log10ofX - 1))));
+
+    // Na příslušné místo vloží desetinnou tečku
     int decimalPoint = result.length() - prec + log10ofX + 1;
     if (decimalPoint > 0) {
       result.insert(decimalPoint, '.');
@@ -371,6 +379,8 @@ static QString toSignificantDigits(double x, double prec, bool trimZeroes = fals
         }
       }
     } else {
+      // Pokud číslo nemá celou část, je před něj přidána nula s desettinou tečkou
+      // Případně další nuly za tečkou
       for (; decimalPoint < 0; decimalPoint++)
         result.push_front('0');
       result.push_front('.');
@@ -439,6 +449,10 @@ inline QString floatToNiceString(double d, int significantDigits, bool justify, 
     return text;
 }
 
+inline double ceilToMultipleOf(double value, double multipleOf) {
+  return (std::ceil(value / multipleOf) * multipleOf);
+}
+
 struct ChannelSettings_t {
   QColor color = QColor(Qt::black);
   int style = GraphStyle::line;
@@ -447,6 +461,12 @@ struct ChannelSettings_t {
   bool inverted = false;
   bool visible = true;
   bool interpolate = false;
+};
+
+struct ChannelExpectedRange {
+  double maximum = 0;
+  double minimum = 0;
+  bool unknown = true;
 };
 
 #endif // GLOBAL_H

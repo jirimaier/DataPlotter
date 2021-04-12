@@ -131,6 +131,8 @@ void MainWindow::serialConnectResult(bool connected, QString message, QString de
     ui->plainTextEditConsole_3->clear();
     emit resetChannels();
     emit resetAverager();
+    for (int i = 0; i < ANALOG_COUNT; i++)
+      channelExpectedRanges[i].unknown = true;
     pendingDeviceMessage = false;
   }
   if (connected && ui->checkBoxResetCmdEn->isChecked() && (!ui->lineEditResetCmd->text().isEmpty())) {
@@ -143,11 +145,6 @@ void MainWindow::serialConnectResult(bool connected, QString message, QString de
 
   dataRateTimer.start();
   autoAutosetPending = ui->checkBoxAutoAutoSet->isChecked();
-}
-
-void MainWindow::serialFinishedWriting() {
-  if (!ui->pushButtonMultiplInputs->isChecked())
-    ui->lineEditCommand->clear();
 }
 
 void MainWindow::updateDivs() {
@@ -413,4 +410,21 @@ void MainWindow::on_pushButtonIntroVideoCZ_clicked() {
 
 void MainWindow::on_labelLogo_clicked() {
   QDesktopServices::openUrl(QUrl("https://embedded.fel.cvut.cz/platformy"));
+}
+
+void MainWindow::on_comboBoxFIR_currentIndexChanged(int index) {
+  switch (index) {
+    case 0:
+      emit setInterpolationFilter("hamm_x8", 8);
+      break;
+    case 1:
+      emit setInterpolationFilter("kaiser_x8", 8);
+      break;
+    case 2:
+      emit setInterpolationFilter("kaiser_x16", 16);
+      break;
+    case 3:
+      emit setInterpolationFilter("kaiser_x32", 32);
+      break;
+  }
 }

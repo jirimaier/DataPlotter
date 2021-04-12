@@ -26,7 +26,7 @@
 #include <QTableWidgetItem>
 #include <QTimer>
 
-#include "enumsDefinesConstants.h"
+#include "global.h"
 
 using namespace TerminalMode;
 

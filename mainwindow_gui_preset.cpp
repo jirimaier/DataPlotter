@@ -81,8 +81,8 @@ void MainWindow::startTimers() {
   portsRefreshTimer.start(500);
   activeChRefreshTimer.start(500);
   cursorRangeUpdateTimer.start(100);
-  measureRefreshTimer1.start(200);
-  measureRefreshTimer2.start(200);
+  measureRefreshTimer1.start(250);
+  measureRefreshTimer2.start(250);
   fftTimer1.start(100);
   fftTimer2.start(100);
   xyTimer.start(100);
@@ -154,6 +154,9 @@ void MainWindow::setGuiDefaults() {
   triggerLineTimer.setInterval(2000);
 
   ui->checkBoxTriggerLineEn->setCheckState(Qt::PartiallyChecked);
+
+  ui->comboBoxFIR->setCurrentIndex(0);
+  on_comboBoxFIR_currentIndexChanged(0); // Interpolátor načte filtr
 }
 
 void MainWindow::setGuiArrays() {

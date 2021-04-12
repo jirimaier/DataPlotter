@@ -43,56 +43,30 @@ void SignalProcessing::resizeBlackman(int length) {
   }
 }
 
-QVector<std::complex<float>> SignalProcessing::fft(QVector<std::complex<float>> x) {
+QVector<std::complex<double>> SignalProcessing::fft(QVector<std::complex<double>> x) {
   int N = x.size(); // Velikost x musí být mocnina 2.
 
   if (N == 1)
     return x; // Konec rekurze
 
-  // exp(2*Pi*i/N)
-  auto Wn = std::exp(std::complex<float>(0, 2.0 * M_PI / (float)N));
-
-  QVector<std::complex<float>> Pe, Po; // Sudé a liché koeficienty
+  QVector<std::complex<double>> Pe, Po; // Sudé a liché koeficienty
   for (int n = 1; n < N; n += 2) {
     Pe.append(x.at(n - 1)); // Sudé
     Po.append(x.at(n));     // Liché
   }
 
-  QVector<std::complex<float>> Xe = fft(Pe), Xo = fft(Po); // Rekurze
+  QVector<std::complex<double>> Xe = fft(Pe), Xo = fft(Po); // Rekurze
 
-  QVector<std::complex<float>> X;
+  QVector<std::complex<double>> X;
   X.resize(N);
   for (int k = 0; k < N / 2; k++) {
-    std::complex<float> Wi = std::pow(Wn, k);
-    X[k] = Xe[k] + Wi * Xo[k];
-    X[k + N / 2] = Xe[k] - Wi * Xo[k];
-  }
-  return X;
-}
 
-QVector<std::complex<float>> SignalProcessing::ifft(QVector<std::complex<float>> x) {
-  int N = x.size(); // Velikost x musí být mocnina 2.
+    // exp(i*2*Pi*k/N)
+    double arg = M_PI * 2 * k / N;
+    std::complex<double> WNk(cos(arg), sin(arg));
 
-  if (N == 1)
-    return x; // Konec rekurze
-
-  // exp(2*Pi*i/N)
-  auto Wn = std::exp(std::complex<float>(0, -2.0 * M_PI / (float)N));
-
-  QVector<std::complex<float>> Pe, Po; // Sudé a liché koeficienty
-  for (int n = 1; n < N; n += 2) {
-    Pe.append(x.at(n - 1)); // Sudé
-    Po.append(x.at(n));     // Liché
-  }
-
-  QVector<std::complex<float>> Xe = fft(Pe), Xo = fft(Po); // Rekurze
-
-  QVector<std::complex<float>> X;
-  X.resize(N);
-  for (int k = 0; k < N / 2; k++) {
-    std::complex<float> Wi = std::pow(Wn, k) ;
-    X[k] = (Xe[k] + Wi * Xo[k]) / std::complex<float>(N, 0);
-    X[k + N / 2] = (Xe[k] - Wi * Xo[k]) / std::complex<float>(N, 0);
+    X[k] = Xe[k] + WNk * Xo[k];
+    X[k + N / 2] = Xe[k] - WNk * Xo[k];
   }
   return X;
 }
@@ -100,7 +74,7 @@ QVector<std::complex<float>> SignalProcessing::ifft(QVector<std::complex<float>>
 void SignalProcessing::getFFTPlot(QSharedPointer<QCPGraphDataContainer> data, FFTType::enumFFTType type, FFTWindow::enumFFTWindow window, bool removeDC, int segmentCount, bool twosided, bool zerocenter, int minNFFT) {
   if (removeDC) {
     // Stejnosměrná složka
-    float dc = 0;
+    double dc = 0;
     for (QCPGraphDataContainer::iterator it = data->begin(); it != data->end(); it++)
       dc += it->value;
     dc /= data->size();
@@ -110,26 +84,31 @@ void SignalProcessing::getFFTPlot(QSharedPointer<QCPGraphDataContainer> data, FF
       it->value -= dc;
   }
 
-  float fs = data->size() / (data->at(data->size() - 1)->key - data->at(0)->key);
+  double fs = data->size() / (data->at(data->size() - 1)->key - data->at(0)->key);
 
   if (type == FFTType::spectrum || type == FFTType::periodogram) {
-    QVector<std::complex<float>> values;
+    QVector<std::complex<double>> values;
     for (int i = 0; i < data->size(); i++)
-      values.append(std::complex<float>(data->at(i)->value, 0));
+      values.append(std::complex<double>(data->at(i)->value, 0));
 
-    QVector<std::complex<float>> resultValues = calculateSpectrum(values, window, minNFFT);
+    QElapsedTimer timer;
+    timer.start();
+
+    QVector<std::complex<double>> resultValues = calculateSpectrum(values, window, minNFFT);
     int nfft = resultValues.size();
+
+    qDebug() << nfft << " point FFT took " << timer.nsecsElapsed() << "nanoseconds";
 
     auto result = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer);
     double freqStep = fs / nfft;
     for (int i = 0; (twosided ? (i < nfft) : (i <= nfft / 2)); i++) {
-      float freq = i * freqStep;
+      double freq = i * freqStep;
       if (zerocenter && i > nfft / 2)
         freq -= nfft * freqStep;
       if (type == FFTType::periodogram) {
         // Výpočet |x|^2 jako x * komplexně sdružené x;
-        float absSquared = (resultValues.at(i) * std::complex<float>(resultValues.at(i).real(), -resultValues.at(i).imag())).real();
-        // float absSquared = abs(resultValues.at(i)) * abs(resultValues.at(i));
+        double absSquared = (resultValues.at(i) * std::complex<double>(resultValues.at(i).real(), -resultValues.at(i).imag())).real();
+        // double absSquared = abs(resultValues.at(i)) * abs(resultValues.at(i));
         result->add(QCPGraphData(freq, 10 * log10(absSquared / nfft)));
       } else
         result->add(QCPGraphData(freq, std::abs(resultValues.at(i))));
@@ -155,11 +134,11 @@ void SignalProcessing::getFFTPlot(QSharedPointer<QCPGraphDataContainer> data, FF
       segmentCount--;
 
     // Rozdělení na segmenty
-    QVector<QVector<std::complex<float>>> segments;
+    QVector<QVector<std::complex<double>>> segments;
     segments.resize(segmentCount);
     for (int i = 0; i < segments.size(); i++) {
       for (int j = i * halfSegmentLength; j < (i + 2)*halfSegmentLength; j++)
-        segments[i].append(std::complex<float>(data->at(j)->value, 0));
+        segments[i].append(std::complex<double>(data->at(j)->value, 0));
     }
 
     // Výpočet spektra pro jednotlivé segmenty
@@ -174,13 +153,13 @@ void SignalProcessing::getFFTPlot(QSharedPointer<QCPGraphDataContainer> data, FF
     auto result = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer);
     double freqStep = fs / nfft;
     for (int i = 0; (twosided ? (i < nfft) : (i <= nfft / 2)); i++) {
-      float value = 0;
-      float freq = i * freqStep;
+      double value = 0;
+      double freq = i * freqStep;
       if (zerocenter && i > nfft / 2)
         freq -= nfft * freqStep;
       for (int j = 0; j < segments.size(); j++)
         // Přičte k value |x|^2, Výpočet |x|^2 jako x * komplexně sdružené x;
-        value += (segments.at(j).at(i) * std::complex<float>(segments.at(j).at(i).real(), -segments.at(j).at(i).imag())).real();
+        value += (segments.at(j).at(i) * std::complex<double>(segments.at(j).at(i).real(), -segments.at(j).at(i).imag())).real();
       //Přidá do výsledku bod - součet hodnot ze segmentů dělený nfft a počtem segmentů. V dB.
       result->add(QCPGraphData(freq, 10 * log10(value / nfft / segments.size())));
     }
@@ -188,7 +167,7 @@ void SignalProcessing::getFFTPlot(QSharedPointer<QCPGraphDataContainer> data, FF
   }
 }
 
-QVector<std::complex<float>> SignalProcessing::calculateSpectrum(QVector<std::complex<float>> data, FFTWindow::enumFFTWindow window, int minNFFT) {
+QVector<std::complex<double>> SignalProcessing::calculateSpectrum(QVector<std::complex<double>> data, FFTWindow::enumFFTWindow window, int minNFFT) {
   if (window == FFTWindow::hamming) {
     resizeHamming(data.size());
     for (int i = 0; i < data.size(); i++)
@@ -213,27 +192,27 @@ QVector<std::complex<float>> SignalProcessing::calculateSpectrum(QVector<std::co
 
 void SignalProcessing::process(QSharedPointer<QCPGraphDataContainer> data) {
   bool rangefound = false; // Nevyužité, ale je potřeba do funkcí co hledají max/min
-  float max = data->valueRange(rangefound).upper;
-  float min = data->valueRange(rangefound).lower;
+  double max = data->valueRange(rangefound).upper;
+  double min = data->valueRange(rangefound).lower;
 
-  float fs = (data->size() - 1) / (data->at(data->size() - 1)->key - data->at(0)->key);
+  double fs = (data->size() - 1) / (data->at(data->size() - 1)->key - data->at(0)->key);
 
   // Stejnosměrná složka
-  float dc = 0;
+  double dc = 0;
   for (QCPGraphDataContainer::iterator it = data->begin(); it != data->end(); it++)
     dc += it->value;
   dc /= data->size();
 
   // Efektivní hodnota
-  float vrms = 0;
+  double vrms = 0;
   for (QCPGraphDataContainer::iterator it = data->begin(); it != data->end(); it++)
     vrms += (it->value * it->value);
   vrms /= data->size();
   vrms = sqrt(vrms);
 
-  float freq = getStrongestFreq(data, dc, fs);
+  double freq = getStrongestFreq(data, dc, fs);
 
-  float period = 1.0 / freq;
+  double period = 1.0 / freq;
 
   int samples = data->size();
 
@@ -245,11 +224,11 @@ void SignalProcessing::process(QSharedPointer<QCPGraphDataContainer> data) {
   emit result(period, freq, (max - min), min, max, vrms, dc, fs, risefall.first, risefall.second, samples);
 }
 
-float SignalProcessing::getStrongestFreq(QSharedPointer<QCPGraphDataContainer> data, float dc, float fs) {
+double SignalProcessing::getStrongestFreq(QSharedPointer<QCPGraphDataContainer> data, double dc, double fs) {
 
 
   // Prostě udělám FFT (po odečtení DC) a najdu globální maximum
-  QVector<std::complex<float>> acValues;
+  QVector<std::complex<double>> acValues;
   for (int i = 0; i < data->size(); i++)
     acValues.append((data->at(i)->value - dc));
 
@@ -258,19 +237,19 @@ float SignalProcessing::getStrongestFreq(QSharedPointer<QCPGraphDataContainer> d
   nfft = nextPow2(nfft);
 
   acValues.resize(nfft);
-  QVector<std::complex<float>> acSigFFT = fft(acValues);
+  QVector<std::complex<double>> acSigFFT = fft(acValues);
 
   int maxindex = 0;
-  float maxVal = 0;
+  double maxVal = 0;
   for (int i = 0; i <= nfft / 2; i++) {
-    float value = std::abs(acSigFFT.at(i));
+    double value = std::abs(acSigFFT.at(i));
     if (value > maxVal) {
       maxVal = value;
       maxindex = i;
     }
   }
 
-  float freq = maxindex * fs / nfft;
+  double freq = maxindex * fs / nfft;
 
   if (freq < fs * (1 + sqrt(4 * nfft + 1)) / (2 * nfft)) {
     int aproxIndex = fs / freq;
@@ -285,11 +264,11 @@ float SignalProcessing::getStrongestFreq(QSharedPointer<QCPGraphDataContainer> d
     if (aproxMax >= N)
       aproxMax = N - 1;
 
-    float highestValue = -Q_INFINITY;
+    double highestValue = -Q_INFINITY;
     int highestIndex = 0;
 
     for (int k = aproxMin; k <= aproxMax; k++) {
-      float val = 0;
+      double val = 0;
       for (int n = 0; n < N - k; n++)
         val += acValues.at(n + k).real() * acValues.at(n).real();
       if (val > highestValue) {
@@ -302,16 +281,16 @@ float SignalProcessing::getStrongestFreq(QSharedPointer<QCPGraphDataContainer> d
   return (freq);
 }
 
-QPair<float, float> SignalProcessing::getRiseFall(QSharedPointer<QCPGraphDataContainer> data) {
-  auto risefall = QPair<float, float>(Q_QNAN, Q_QNAN);
+QPair<double, double> SignalProcessing::getRiseFall(QSharedPointer<QCPGraphDataContainer> data) {
+  auto risefall = QPair<double, double>(Q_QNAN, Q_QNAN);
 
   // Zde se počítá je s posledními dvěma periodami (aby se zamezil vliv náhodných špiček na min/max)
   bool rangefound = false; // Nevyužité, ale je potřeba do funkcí co hledají max/min
-  float max = data->valueRange(rangefound).upper;
-  float min = data->valueRange(rangefound).lower;
+  double max = data->valueRange(rangefound).upper;
+  double min = data->valueRange(rangefound).lower;
 
-  float top = min + 0.9 * (max - min);    // 90 %
-  float bottom = min + 0.1 * (max - min); // 10 %
+  double top = min + 0.9 * (max - min);    // 90 %
+  double bottom = min + 0.1 * (max - min); // 10 %
 
   int riseEnd = -1;
   int fallEnd = -1;
@@ -325,11 +304,11 @@ QPair<float, float> SignalProcessing::getRiseFall(QSharedPointer<QCPGraphDataCon
       // Konec už mám, tohle může být začátek, pokud je pod 10 %
       if (data->at(i)->value <= bottom) {
         // Je to začátek (první před koncem co je pod 10 %)
-        // Aby to fungovalo i pro malo vzorků, tak to podle začátku a konce
+        // Aby to fungovalo i pro málo vzorků, tak to podle začátku a konce
         // nahradím přímkou a spočítám za jak dlouho naroste z min na max
         QCPGraphData end = *data->at(riseEnd);
         QCPGraphData begin = *data->at(i);
-        float slope = (end.value - begin.value) / (end.key - begin.key);
+        double slope = (end.value - begin.value) / (end.key - begin.key);
         risefall.first = (max - min) / slope * 0.8;
         // Risetime je definován jako čas mezi 10 % a 90 %, toto je od min do max, tedy 0 - 100 %,
         // tedy hodnotu násobím 0.8, aby to odpovídalo.
@@ -346,7 +325,7 @@ QPair<float, float> SignalProcessing::getRiseFall(QSharedPointer<QCPGraphDataCon
       if (data->at(i)->value >= top) {
         QCPGraphData end = *data->at(fallEnd);
         QCPGraphData begin = *data->at(i);
-        float slope = (end.value - begin.value) / (end.key - begin.key);
+        double slope = (end.value - begin.value) / (end.key - begin.key);
         risefall.second = (min - max) / slope * 0.8; // min a max je prohozeno, aby výsledek nebyl záporný
         break;
       }

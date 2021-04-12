@@ -20,7 +20,7 @@
 #include <QObject>
 #include <QThread>
 
-#include "enumsDefinesConstants.h"
+#include "global.h"
 
 class NewSerialParser : public QObject {
   Q_OBJECT
