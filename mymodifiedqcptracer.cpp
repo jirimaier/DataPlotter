@@ -20,7 +20,7 @@ void MyModifiedQCPTracer::updatePosition() {
   if (mGraph) {
     if (mParentPlot->hasPlottable(mGraph)) {
       if (!mGraph->data()->isEmpty()) {
-        QCPGraphDataContainer::const_iterator nearest;
+        QCPGraphDataContainer::const_iterator nearest = mGraph->data()->at(0);
         double nearestDist = Q_INFINITY;
         double dist, difx, dify;
         // Má smysl zjišťovat jen pro zobrazený rozsah, ne pro celý průběh.
@@ -46,7 +46,7 @@ void MyModifiedQCPTracer::updatePosition() {
   else if (mCurve) {
     if (mParentPlot->hasPlottable(mCurve)) {
       if (!mCurve->data()->isEmpty()) {
-        QCPCurveDataContainer::iterator nearest;
+        QCPCurveDataContainer::const_iterator nearest = mCurve->data()->at(0);
         double nearestDist = Q_INFINITY;
         double dist, difx, dify;
         for (auto it = mCurve->data()->begin(); it != mCurve->data()->end(); it++) {

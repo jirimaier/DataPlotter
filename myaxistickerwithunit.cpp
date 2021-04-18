@@ -88,9 +88,7 @@ QString MyAxisTickerWithUnit::getTickLabel(double tick, const QLocale& locale, Q
 }
 
 void MyAxisTickerWithUnit::setTickStep(double value) {
-  double log10OfStep = log10(value);
-
-  tickStepOrder = floor(log10OfStep);
+  tickStepOrder = intLog10(value * 1.0000001);
 
   this->QCPAxisTickerFixed::setTickStep(value);
 }

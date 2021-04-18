@@ -435,7 +435,8 @@ void NewSerialParser::parse(QByteArray newData) {
       if (currentMode == DataMode::echo) {
         QByteArray data;
         readResult result = bufferPullFull(data);
-        emit sendEcho(data);
+        if (replyToEcho)
+          emit sendEcho(data);
         if (result == complete)
           continue;
         break;

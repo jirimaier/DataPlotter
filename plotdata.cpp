@@ -42,7 +42,7 @@ double PlotData::getValue(QPair<ValueType, QByteArray> value, bool& isok) {
       } else if (value.first.bytes == 2) { // unsigned int 16
         char bytes[2] = {value.second.at(1), value.second.at(0)};
         return (double) * ((uint16_t*)bytes) * value.first.multiplier;
-      } else if (value.first.bytes == 3) { // unsigned int 32
+      } else if (value.first.bytes == 3) { // unsigned int 24
         char bytes[4] = {value.second.at(2), value.second.at(1), value.second.at(0), 0};
         return (double) * ((uint32_t*)bytes) * value.first.multiplier;
       } else if (value.first.bytes == 4) { // unsigned int 32

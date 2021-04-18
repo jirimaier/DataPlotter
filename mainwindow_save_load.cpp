@@ -134,6 +134,8 @@ QByteArray MainWindow::getSettings() {
   else
     settings.append("terminal:nointeract;\n");
 
+  settings.append(QString("openglwarning:%1;").arg(recommendOpenGL ? "1" : "0").toUtf8());
+
   settings.append(ui->radioButtonEn->isChecked() ? "lang:en" : "lang:cz");
   settings.append(";\n");
   settings.append(ui->radioButtonCSVDot->isChecked() ? "csvsep:dc" : "csvsep:cs");
@@ -169,20 +171,16 @@ QByteArray MainWindow::getSettings() {
 void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarget source = MessageTarget::manual) {
   settings.replace('\n', "");
   settings.replace('\r', "");
-  if (settings == "autoset")
-    on_pushButtonAutoset_clicked();
-  else if (settings == "resetgraphs")
-    on_pushButtonResetChannels_clicked();
-  else if (settings == "valuespositive")
-    on_pushButtonPositive_clicked();
-  else if (settings == "valuesnegative")
-    on_pushButtonPositive_clicked();
-  else if (settings == "valuessymetric")
-    on_pushButtonPositive_clicked();
-  else if (settings == "noopengldialog")
-    recommendOpenGL = false;
-  else {
 
+  if (settings == "clearlog") {
+    ui->plot->clearLogicGroup(2, 0);
+  }
+
+  if (settings == "noopengldialog") {
+    recommendOpenGL = false;
+  }
+
+  else {
     if (!settings.contains(':')) {
       if (source == MessageTarget::manual || ui->comboBoxOutputLevel->currentIndex() >= MessageLevel::error)
         printMessage(tr("Invalid settings").toUtf8(), settings, MessageLevel::error, source);
@@ -281,6 +279,10 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarg
         ui->radioButtonLayoutXY->setChecked(true);
     }
 
+    else if (type == "clearch") {
+      ui->plot->clearCh(value.toUInt() - 1);
+    }
+
     else if (type == "xyclr") {
       QByteArrayList rgb = value.split(',');
       if (rgb.length() != 3) {
@@ -305,8 +307,6 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarg
       subtype = subtype.left(subtype.indexOf(':'));
       QByteArray subvalue = value.mid(value.lastIndexOf(':') + 1);
 
-      if (subtype == "clear")
-        ui->plot->clearCh(ch);
       if (subtype == "sty")
         ui->plot->setChStyle(ch, subvalue.toUInt());
       else if (subtype == "clr") {
@@ -337,8 +337,6 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarg
 
       if (subtype == "sty")
         ui->plot->setLogicStyle(group, subvalue.toUInt());
-      if (subtype == "clear")
-        ui->plot->clearLogicGroup(group, 0);
       else if (subtype == "clr") {
         QByteArrayList rgb = subvalue.mid(subvalue.indexOf(':')).split(',');
         if (rgb.length() != 3) {

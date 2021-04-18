@@ -280,6 +280,8 @@ class MainWindow : public QMainWindow {
 
   void on_comboBoxFIR_currentIndexChanged(int index);
 
+  void on_checkBoxEchoReply_toggled(bool checked);
+
  public slots:
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumMessageTarget target);
   void showPlotStatus(PlotStatus::enumPlotStatus type);
@@ -336,5 +338,6 @@ class MainWindow : public QMainWindow {
   void setAverager(bool enabled);
   void setAveragerCount(int chID, int count);
   void setInterpolationFilter(QString filename, int upsampling);
+  void replyEcho(bool enabled);
 };
 #endif // MAINWINDOW_H

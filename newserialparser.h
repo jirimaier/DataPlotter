@@ -80,6 +80,7 @@ class NewSerialParser : public QObject {
   readResult bufferReadPoint(QList<QPair<ValueType, QByteArray>>& result);
   uint32_t arrayToUint(QPair<ValueType, QByteArray> value);
   readResult bufferPullChannel(QPair<ValueType, QByteArray>& result);
+  bool replyToEcho = true;
 
  public slots:
   /// Zpracuje data
@@ -92,6 +93,8 @@ class NewSerialParser : public QObject {
   void setMsgLevel(OutputLevel::enumOutputLevel level) { debugLevel = level; }
   /// Vymaže buffer a potvrdí připravenost
   void getReady();
+  /// Nastaví jestli se má posílad odpověď na echo
+  void replyEcho(bool enabled) {replyToEcho = enabled;}
 };
 
 #endif // NEWSERIALPARSER_H

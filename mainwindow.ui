@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>990</width>
-    <height>715</height>
+    <height>740</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -744,7 +744,7 @@
              <enum>QTabWidget::Rounded</enum>
             </property>
             <property name="currentIndex">
-             <number>3</number>
+             <number>0</number>
             </property>
             <property name="iconSize">
              <size>
@@ -1684,11 +1684,6 @@
                  </property>
                  <item>
                   <widget class="QLabel" name="vgridlabel">
-                   <property name="font">
-                    <font>
-                     <pointsize>8</pointsize>
-                    </font>
-                   </property>
                    <property name="frameShape">
                     <enum>QFrame::NoFrame</enum>
                    </property>
@@ -7122,7 +7117,7 @@
            </size>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
           <property name="iconSize">
            <size>
@@ -8605,6 +8600,16 @@ padding:2px</string>
                 </widget>
                </item>
                <item>
+                <widget class="QCheckBox" name="checkBoxEchoReply">
+                 <property name="text">
+                  <string>Reply to echo command</string>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
                 <widget class="QCheckBox" name="checkBoxResetCmdEn">
                  <property name="text">
                   <string>Send reset command on reconnect</string>
@@ -8617,7 +8622,7 @@ padding:2px</string>
                <item>
                 <widget class="QLineEdit" name="lineEditResetCmd">
                  <property name="placeholderText">
-                  <string>( reset command )</string>
+                  <string>( reset command is empty, nothing will be sent)</string>
                  </property>
                 </widget>
                </item>
@@ -9467,7 +9472,7 @@ padding:2px</string>
    <hints>
     <hint type="sourcelabel">
      <x>956</x>
-     <y>290</y>
+     <y>327</y>
     </hint>
     <hint type="destinationlabel">
      <x>964</x>
@@ -9483,7 +9488,7 @@ padding:2px</string>
    <hints>
     <hint type="sourcelabel">
      <x>956</x>
-     <y>267</y>
+     <y>302</y>
     </hint>
     <hint type="destinationlabel">
      <x>848</x>
@@ -9531,7 +9536,7 @@ padding:2px</string>
    <hints>
     <hint type="sourcelabel">
      <x>899</x>
-     <y>533</y>
+     <y>573</y>
     </hint>
     <hint type="destinationlabel">
      <x>964</x>
@@ -9547,11 +9552,11 @@ padding:2px</string>
    <hints>
     <hint type="sourcelabel">
      <x>971</x>
-     <y>680</y>
+     <y>720</y>
     </hint>
     <hint type="destinationlabel">
      <x>941</x>
-     <y>574</y>
+     <y>614</y>
     </hint>
    </hints>
   </connection>
@@ -9563,11 +9568,11 @@ padding:2px</string>
    <hints>
     <hint type="sourcelabel">
      <x>971</x>
-     <y>680</y>
+     <y>720</y>
     </hint>
     <hint type="destinationlabel">
      <x>941</x>
-     <y>601</y>
+     <y>641</y>
     </hint>
    </hints>
   </connection>
@@ -9579,11 +9584,11 @@ padding:2px</string>
    <hints>
     <hint type="sourcelabel">
      <x>971</x>
-     <y>680</y>
+     <y>720</y>
     </hint>
     <hint type="destinationlabel">
      <x>941</x>
-     <y>628</y>
+     <y>668</y>
     </hint>
    </hints>
   </connection>
@@ -9595,11 +9600,11 @@ padding:2px</string>
    <hints>
     <hint type="sourcelabel">
      <x>971</x>
-     <y>680</y>
+     <y>720</y>
     </hint>
     <hint type="destinationlabel">
      <x>972</x>
-     <y>574</y>
+     <y>614</y>
     </hint>
    </hints>
   </connection>
@@ -9611,11 +9616,11 @@ padding:2px</string>
    <hints>
     <hint type="sourcelabel">
      <x>971</x>
-     <y>680</y>
+     <y>720</y>
     </hint>
     <hint type="destinationlabel">
      <x>972</x>
-     <y>601</y>
+     <y>641</y>
     </hint>
    </hints>
   </connection>
@@ -9627,11 +9632,11 @@ padding:2px</string>
    <hints>
     <hint type="sourcelabel">
      <x>971</x>
-     <y>680</y>
+     <y>720</y>
     </hint>
     <hint type="destinationlabel">
      <x>972</x>
-     <y>628</y>
+     <y>668</y>
     </hint>
    </hints>
   </connection>
@@ -9643,7 +9648,7 @@ padding:2px</string>
    <hints>
     <hint type="sourcelabel">
      <x>964</x>
-     <y>411</y>
+     <y>451</y>
     </hint>
     <hint type="destinationlabel">
      <x>846</x>
@@ -9659,7 +9664,7 @@ padding:2px</string>
    <hints>
     <hint type="sourcelabel">
      <x>207</x>
-     <y>472</y>
+     <y>510</y>
     </hint>
     <hint type="destinationlabel">
      <x>385</x>
@@ -9675,7 +9680,7 @@ padding:2px</string>
    <hints>
     <hint type="sourcelabel">
      <x>207</x>
-     <y>500</y>
+     <y>538</y>
     </hint>
     <hint type="destinationlabel">
      <x>507</x>
@@ -9691,7 +9696,7 @@ padding:2px</string>
    <hints>
     <hint type="sourcelabel">
      <x>207</x>
-     <y>528</y>
+     <y>566</y>
     </hint>
     <hint type="destinationlabel">
      <x>630</x>
@@ -9707,7 +9712,7 @@ padding:2px</string>
    <hints>
     <hint type="sourcelabel">
      <x>220</x>
-     <y>469</y>
+     <y>507</y>
     </hint>
     <hint type="destinationlabel">
      <x>144</x>
@@ -9723,7 +9728,7 @@ padding:2px</string>
    <hints>
     <hint type="sourcelabel">
      <x>124</x>
-     <y>637</y>
+     <y>677</y>
     </hint>
     <hint type="destinationlabel">
      <x>57</x>
@@ -9739,7 +9744,7 @@ padding:2px</string>
    <hints>
     <hint type="sourcelabel">
      <x>220</x>
-     <y>595</y>
+     <y>635</y>
     </hint>
     <hint type="destinationlabel">
      <x>186</x>
@@ -9755,7 +9760,7 @@ padding:2px</string>
    <hints>
     <hint type="sourcelabel">
      <x>912</x>
-     <y>411</y>
+     <y>451</y>
     </hint>
     <hint type="destinationlabel">
      <x>846</x>
@@ -9771,7 +9776,7 @@ padding:2px</string>
    <hints>
     <hint type="sourcelabel">
      <x>457</x>
-     <y>637</y>
+     <y>677</y>
     </hint>
     <hint type="destinationlabel">
      <x>333</x>
@@ -9787,7 +9792,7 @@ padding:2px</string>
    <hints>
     <hint type="sourcelabel">
      <x>457</x>
-     <y>469</y>
+     <y>507</y>
     </hint>
     <hint type="destinationlabel">
      <x>322</x>
@@ -9803,7 +9808,7 @@ padding:2px</string>
    <hints>
     <hint type="sourcelabel">
      <x>748</x>
-     <y>534</y>
+     <y>574</y>
     </hint>
     <hint type="destinationlabel">
      <x>835</x>
@@ -9819,7 +9824,7 @@ padding:2px</string>
    <hints>
     <hint type="sourcelabel">
      <x>207</x>
-     <y>472</y>
+     <y>510</y>
     </hint>
     <hint type="destinationlabel">
      <x>130</x>
@@ -9835,11 +9840,11 @@ padding:2px</string>
    <hints>
     <hint type="sourcelabel">
      <x>207</x>
-     <y>472</y>
+     <y>510</y>
     </hint>
     <hint type="destinationlabel">
      <x>131</x>
-     <y>526</y>
+     <y>564</y>
     </hint>
    </hints>
   </connection>
@@ -9851,11 +9856,11 @@ padding:2px</string>
    <hints>
     <hint type="sourcelabel">
      <x>207</x>
-     <y>472</y>
+     <y>510</y>
     </hint>
     <hint type="destinationlabel">
      <x>93</x>
-     <y>602</y>
+     <y>640</y>
     </hint>
    </hints>
   </connection>
@@ -9867,11 +9872,11 @@ padding:2px</string>
    <hints>
     <hint type="sourcelabel">
      <x>207</x>
-     <y>472</y>
+     <y>510</y>
     </hint>
     <hint type="destinationlabel">
      <x>93</x>
-     <y>569</y>
+     <y>607</y>
     </hint>
    </hints>
   </connection>
@@ -9883,11 +9888,11 @@ padding:2px</string>
    <hints>
     <hint type="sourcelabel">
      <x>207</x>
-     <y>472</y>
+     <y>510</y>
     </hint>
     <hint type="destinationlabel">
-     <x>236</x>
-     <y>592</y>
+     <x>238</x>
+     <y>632</y>
     </hint>
    </hints>
   </connection>
@@ -9899,11 +9904,11 @@ padding:2px</string>
    <hints>
     <hint type="sourcelabel">
      <x>207</x>
-     <y>472</y>
+     <y>510</y>
     </hint>
     <hint type="destinationlabel">
-     <x>234</x>
-     <y>636</y>
+     <x>237</x>
+     <y>676</y>
     </hint>
    </hints>
   </connection>
@@ -9915,11 +9920,11 @@ padding:2px</string>
    <hints>
     <hint type="sourcelabel">
      <x>207</x>
-     <y>472</y>
+     <y>510</y>
     </hint>
     <hint type="destinationlabel">
-     <x>470</x>
-     <y>637</y>
+     <x>479</x>
+     <y>677</y>
     </hint>
    </hints>
   </connection>
@@ -9931,11 +9936,11 @@ padding:2px</string>
    <hints>
     <hint type="sourcelabel">
      <x>207</x>
-     <y>472</y>
+     <y>510</y>
     </hint>
     <hint type="destinationlabel">
-     <x>414</x>
-     <y>591</y>
+     <x>418</x>
+     <y>631</y>
     </hint>
    </hints>
   </connection>
@@ -9947,7 +9952,7 @@ padding:2px</string>
    <hints>
     <hint type="sourcelabel">
      <x>457</x>
-     <y>560</y>
+     <y>583</y>
     </hint>
     <hint type="destinationlabel">
      <x>387</x>
@@ -9963,7 +9968,7 @@ padding:2px</string>
    <hints>
     <hint type="sourcelabel">
      <x>457</x>
-     <y>602</y>
+     <y>625</y>
     </hint>
     <hint type="destinationlabel">
      <x>529</x>
@@ -9979,11 +9984,11 @@ padding:2px</string>
    <hints>
     <hint type="sourcelabel">
      <x>956</x>
-     <y>211</y>
+     <y>240</y>
     </hint>
     <hint type="destinationlabel">
      <x>956</x>
-     <y>234</y>
+     <y>268</y>
     </hint>
    </hints>
   </connection>
@@ -9995,11 +10000,11 @@ padding:2px</string>
    <hints>
     <hint type="sourcelabel">
      <x>125</x>
-     <y>553</y>
+     <y>593</y>
     </hint>
     <hint type="destinationlabel">
      <x>125</x>
-     <y>578</y>
+     <y>618</y>
     </hint>
    </hints>
   </connection>
@@ -10011,11 +10016,11 @@ padding:2px</string>
    <hints>
     <hint type="sourcelabel">
      <x>207</x>
-     <y>472</y>
+     <y>510</y>
     </hint>
     <hint type="destinationlabel">
      <x>93</x>
-     <y>635</y>
+     <y>673</y>
     </hint>
    </hints>
   </connection>
@@ -10027,7 +10032,7 @@ padding:2px</string>
    <hints>
     <hint type="sourcelabel">
      <x>207</x>
-     <y>472</y>
+     <y>510</y>
     </hint>
     <hint type="destinationlabel">
      <x>123</x>
@@ -10043,11 +10048,11 @@ padding:2px</string>
    <hints>
     <hint type="sourcelabel">
      <x>207</x>
-     <y>472</y>
+     <y>510</y>
     </hint>
     <hint type="destinationlabel">
-     <x>292</x>
-     <y>631</y>
+     <x>352</x>
+     <y>676</y>
     </hint>
    </hints>
   </connection>
@@ -10058,12 +10063,12 @@ padding:2px</string>
    <slot>setHidden(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>479</x>
-     <y>511</y>
+     <x>428</x>
+     <y>535</y>
     </hint>
     <hint type="destinationlabel">
      <x>428</x>
-     <y>539</y>
+     <y>582</y>
     </hint>
    </hints>
   </connection>
@@ -10075,7 +10080,7 @@ padding:2px</string>
    <hints>
     <hint type="sourcelabel">
      <x>956</x>
-     <y>470</y>
+     <y>495</y>
     </hint>
     <hint type="destinationlabel">
      <x>836</x>
@@ -10090,8 +10095,8 @@ padding:2px</string>
    <slot>plotLayoutChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>356</x>
-     <y>487</y>
+     <x>439</x>
+     <y>529</y>
     </hint>
     <hint type="destinationlabel">
      <x>298</x>
@@ -10106,8 +10111,8 @@ padding:2px</string>
    <slot>plotLayoutChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>369</x>
-     <y>522</y>
+     <x>439</x>
+     <y>667</y>
     </hint>
     <hint type="destinationlabel">
      <x>389</x>
@@ -10122,8 +10127,8 @@ padding:2px</string>
    <slot>plotLayoutChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>434</x>
-     <y>524</y>
+     <x>439</x>
+     <y>621</y>
     </hint>
     <hint type="destinationlabel">
      <x>516</x>
@@ -10138,8 +10143,8 @@ padding:2px</string>
    <slot>plotLayoutChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>462</x>
-     <y>486</y>
+     <x>439</x>
+     <y>575</y>
     </hint>
     <hint type="destinationlabel">
      <x>636</x>

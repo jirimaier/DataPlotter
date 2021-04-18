@@ -428,3 +428,7 @@ void MainWindow::on_comboBoxFIR_currentIndexChanged(int index) {
       break;
   }
 }
+
+void MainWindow::on_checkBoxEchoReply_toggled(bool checked) {
+  emit replyEcho(checked);
+}
