@@ -422,7 +422,7 @@ void MyTerminal::changeFont(bool smallFont) {
   }
 
   cellWidth = smallFont ? 12 : 18;
-  cellHeight =  smallFont ? 16 : 25;
+  cellHeight =  smallFont ? 17 : 25;
 
   for (int r = 0; r < rowCount(); r++)
     setRowHeight(r, cellHeight);
