@@ -85,6 +85,8 @@
         <file>icons/viewfft.png</file>
         <file>icons/viewtime.png</file>
         <file>icons/viewxy.png</file>
+        <file>icons/bigfont.png</file>
+        <file>icons/smallfont.png</file>
     </qresource>
     <qresource prefix="/translations">
         <file>translations/translation_cz.qm</file>

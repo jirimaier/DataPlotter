@@ -318,7 +318,7 @@ static int intLog10(double x) {
     return 100;
   if (x == NAN)
     return 0;
-  x = abs(x);
+  x = std::abs(x);
   int result = 0;
   if (x > 1)
     for (double d = 10.0; d <= x; d *= 10, result++);

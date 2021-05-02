@@ -70,6 +70,31 @@ void SerialReader::write(QByteArray data) {
 
 void SerialReader::parserReady() { connect(serial, &QSerialPort::readyRead, this, &SerialReader::read); }
 
+void SerialReader::changeBaud(qint32 baud) {
+  if (!serial->isOpen())
+    return;
+
+  serial->close();
+  disconnect(serial, &QSerialPort::readyRead, this, &SerialReader::read);
+
+  serial->setBaudRate(baud);
+  if (!serial->open(QIODevice::ReadWrite)) {
+    auto error = serial->error();
+
+    QString errorText;
+    if (error == QSerialPort::PermissionError)
+      errorText = tr("Access denied");
+    else
+      errorText = tr("Error");
+
+    emit connectionResult(false, errorText, serial->errorString());
+  }
+  if (serial->isOpen()) {
+    serial->clear();
+    emit started(); // Parser si vymaže buffer a odpoví že je připraven, teprve po odpovědi se začnou číst data.
+  }
+}
+
 void SerialReader::end() {
   disconnect(serial, &QSerialPort::readyRead, this, &SerialReader::read);
   emit connectionResult(false, tr("Not connected"), "");

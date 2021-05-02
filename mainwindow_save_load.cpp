@@ -39,10 +39,9 @@ void MainWindow::initSetables() {
   setables["clearonrec"] = ui->checkBoxClearOnReconnect;
   setables["manualin"] = ui->checkBoxShowManualInput;
   setables["serialmon"] = ui->checkBoxSerialMonitor;
-  setables["sendonrec"] = ui->checkBoxResetCmdEn;
   setables["rstcmd"] = ui->lineEditResetCmd;
   setables["autoautoset"] = ui->checkBoxAutoAutoSet;
-  setables["termnosendblack"] = ui->checkBoxTerminalClicksendNoBackground;
+  setables["termvscroll"] = ui->checkBoxEnablTerminalVScrollBar;
 
   // Send
   setables["sendend"] = ui->comboBoxLineEnding;
@@ -104,6 +103,12 @@ QByteArray MainWindow::getSettings() {
 
   settings.append(QString("baud:%1;\n").arg(ui->comboBoxBaud->currentText().toUInt()).toLocal8Bit());
 
+  settings.append("noclickclr:");
+  for (int i = 0; i < ui->listWidgetTerminalBlacklist->count(); i++)
+    settings.append(ui->listWidgetTerminalBlacklist->item(i)->text().toLocal8Bit().replace(';', '.') + ',');
+  settings.remove(settings.length() - 1, 1);
+  settings.append(";\n");
+
   if (ui->radioButtonFixedRange->isChecked())
     settings.append("plotrange:fix;\n");
   else if (ui->radioButtonFreeRange->isChecked())
@@ -127,14 +132,8 @@ QByteArray MainWindow::getSettings() {
   else if (ui->checkBoxTriggerLineEn->checkState() == Qt::PartiallyChecked)
     settings.append("trigline:auto;\n");
 
-  if (ui->pushButtonTerminalClickToSend->isChecked())
-    settings.append("terminal:clicksend;\n");
-  else if (ui->pushButtonTerminalClickToSend->isChecked())
-    settings.append("terminal:select;\n");
-  else
-    settings.append("terminal:nointeract;\n");
-
-  settings.append(QString("openglwarning:%1;").arg(recommendOpenGL ? "1" : "0").toUtf8());
+  if (!recommendOpenGL)
+    settings.append("noopengldialog;\n");
 
   settings.append(ui->radioButtonEn->isChecked() ? "lang:en" : "lang:cz");
   settings.append(";\n");
@@ -197,6 +196,10 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarg
       ui->comboBoxBaud->setEditText(QString::number(value.toUInt()));
     }
 
+    else if (type == "connectme") {
+      ui->comboBoxBaud->setCurrentText(QString::number(value.toUInt()));
+    }
+
     else if (type == "presetport") {
       preselectPortHint = value;
       ui->comboBoxCom->clear();
@@ -241,17 +244,6 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarg
         ui->radioButtonCz->setChecked(true);
     }
 
-    else if (type == "terminal") {
-      if (value == "clicksend")
-        ui->pushButtonTerminalClickToSend->setChecked(true);
-      if (value == "select")
-        ui->pushButtonTerminalSelect->setChecked(true);
-      if (value == "nointeract") {
-        ui->pushButtonTerminalClickToSend->setChecked(false);
-        ui->pushButtonTerminalSelect->setChecked(false);
-      }
-    }
-
     else if (type == "csvsep") {
       if (value == "cs")
         ui->radioButtonCSVComma->setChecked(true);
@@ -277,6 +269,16 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarg
         ui->radioButtonLayoutFFT->setChecked(true);
       if (value == "xy")
         ui->radioButtonLayoutXY->setChecked(true);
+    }
+
+    else if (type == "noclickclr") {
+      QByteArrayList list = value.replace('.', ';').split(',');
+      ui->listWidgetTerminalBlacklist->clear();
+      foreach (QByteArray item, list) {
+        if (!addColorToBlacklist(item))
+          printMessage(tr("Invalid color-code").toUtf8(), item, MessageLevel::error, source);
+      }
+      updateColorBlacklist();
     }
 
     else if (type == "clearch") {

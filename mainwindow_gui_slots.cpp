@@ -323,56 +323,21 @@ void MainWindow::on_pushButtonNegative_clicked() {
 }
 
 void MainWindow::on_pushButtonTerminalDebug_toggled(bool checked) {
-  if (checked) {
-    ui->pushButtonTerminalClickToSend->blockSignals(true);
-    ui->pushButtonTerminalClickToSend->setChecked(false);
-    ui->pushButtonTerminalClickToSend->blockSignals(false);
-    ui->pushButtonTerminalSelect->blockSignals(true);
-    ui->pushButtonTerminalSelect->setChecked(false);
-    ui->pushButtonTerminalSelect->blockSignals(false);
-    ui->pushButtonTerminalCopy->setEnabled(false);
-    ui->frameTermanalDebug->setVisible(true);
+  ui->frameTermanalDebug->setVisible(checked);
+  ui->pushButtonTerminalClickToSend->setDisabled(checked);
+  ui->pushButtonTerminalCopy->setEnabled(!checked && !ui->pushButtonTerminalClickToSend->isChecked());
+  if (checked)
     ui->myTerminal->setMode(TerminalMode::debug);
-  } else {
-    ui->myTerminal->setMode(TerminalMode::none);
-    ui->frameTermanalDebug->setVisible(false);
-  }
+  else
+    ui->myTerminal->setMode(ui->pushButtonTerminalClickToSend->isChecked() ? TerminalMode::clicksend : TerminalMode::select);
 }
 
 void MainWindow::on_pushButtonTerminalClickToSend_toggled(bool checked) {
-  if (checked) {
-    ui->pushButtonTerminalSelect->blockSignals(true);
-    ui->pushButtonTerminalSelect->setChecked(false);
-    ui->pushButtonTerminalSelect->blockSignals(false);
-    ui->pushButtonTerminalDebug->blockSignals(true);
-    ui->pushButtonTerminalDebug->setChecked(false);
-    ui->frameTermanalDebug->setVisible(false);
-    ui->pushButtonTerminalDebug->blockSignals(false);
-    ui->pushButtonTerminalCopy->setEnabled(false);
-    ui->myTerminal->setMode(TerminalMode::clicksend);
-  } else
-    ui->myTerminal->setMode(TerminalMode::none);
-}
-
-void MainWindow::on_pushButtonTerminalSelect_toggled(bool checked) {
-  if (checked) {
-    ui->pushButtonTerminalClickToSend->blockSignals(true);
-    ui->pushButtonTerminalClickToSend->setChecked(false);
-    ui->pushButtonTerminalClickToSend->blockSignals(false);
-    ui->pushButtonTerminalDebug->blockSignals(true);
-    ui->pushButtonTerminalDebug->setChecked(false);
-    ui->frameTermanalDebug->setVisible(false);
-    ui->pushButtonTerminalDebug->blockSignals(false);
-    ui->pushButtonTerminalCopy->setEnabled(true);
-    ui->myTerminal->setMode(TerminalMode::select);
-  } else {
-    ui->pushButtonTerminalCopy->setEnabled(false);
-    ui->myTerminal->setMode(TerminalMode::none);
-  }
+  ui->myTerminal->setMode(checked ? TerminalMode::clicksend : TerminalMode::select);
+  ui->pushButtonTerminalCopy->setEnabled(!checked);
 }
 
 void MainWindow::insertInTerminalDebug(QString text, QColor textColor) {
-  // text.replace(" ", "&nbsp;"); // Normální mezera se nezobrazí :-(
   ui->textEditTerminalDebug->setTextColor(textColor);
   ui->textEditTerminalDebug->textCursor().insertText(text);
   ui->textEditTerminalDebug->setTextColor(Qt::black);

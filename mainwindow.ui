@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>990</width>
-    <height>740</height>
+    <width>986</width>
+    <height>714</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -37,7 +37,7 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_14">
-    <item row="0" column="0">
+    <item row="1" column="0">
      <widget class="QSplitter" name="splitter">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
@@ -86,11 +86,11 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
-           <widget class="MyFFTPlot" name="plotFFT" native="true">
+          <item row="1" column="0" colspan="2">
+           <widget class="MyMainPlot" name="plot" native="true">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-              <horstretch>2</horstretch>
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
               <verstretch>1</verstretch>
              </sizepolicy>
             </property>
@@ -102,11 +102,11 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="0" colspan="2">
-           <widget class="MyMainPlot" name="plot" native="true">
+          <item row="0" column="1">
+           <widget class="MyFFTPlot" name="plotFFT" native="true">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-              <horstretch>0</horstretch>
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>2</horstretch>
               <verstretch>1</verstretch>
              </sizepolicy>
             </property>
@@ -423,7 +423,7 @@
                   </font>
                  </property>
                  <property name="toolTip">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Channel style&lt;/p&gt;&lt;p&gt;Fill under channel (useful in logic channels) has high performance inpact, enable OpenGL in settings tab before use.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  <string>Set style of channel</string>
                  </property>
                  <property name="iconSize">
                   <size>
@@ -744,7 +744,7 @@
              <enum>QTabWidget::Rounded</enum>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>2</number>
             </property>
             <property name="iconSize">
              <size>
@@ -3598,6 +3598,12 @@
                      <verstretch>0</verstretch>
                     </sizepolicy>
                    </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>80</width>
+                     <height>0</height>
+                    </size>
+                   </property>
                    <property name="maxVisibleItems">
                     <number>1000</number>
                    </property>
@@ -3956,6 +3962,12 @@
                      <horstretch>0</horstretch>
                      <verstretch>0</verstretch>
                     </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>80</width>
+                     <height>0</height>
+                    </size>
                    </property>
                    <property name="maxVisibleItems">
                     <number>1000</number>
@@ -7142,19 +7154,7 @@
            <attribute name="title">
             <string/>
            </attribute>
-           <layout class="QVBoxLayout" name="verticalLayout_16" stretch="0,1000">
-            <property name="leftMargin">
-             <number>6</number>
-            </property>
-            <property name="topMargin">
-             <number>6</number>
-            </property>
-            <property name="rightMargin">
-             <number>6</number>
-            </property>
-            <property name="bottomMargin">
-             <number>6</number>
-            </property>
+           <layout class="QVBoxLayout" name="verticalLayout_16">
             <item>
              <layout class="QGridLayout" name="gridLayout_27" columnstretch="100,1,1,1">
               <property name="spacing">
@@ -7281,17 +7281,17 @@
                 </property>
                 <item>
                  <property name="text">
-                  <string>2250000</string>
+                  <string notr="true">2250000</string>
                  </property>
                 </item>
                 <item>
                  <property name="text">
-                  <string>1000000</string>
+                  <string notr="true">1000000</string>
                  </property>
                 </item>
                 <item>
                  <property name="text">
-                  <string>500000</string>
+                  <string notr="true">500000</string>
                  </property>
                 </item>
                 <item>
@@ -7974,7 +7974,7 @@
            <attribute name="title">
             <string/>
            </attribute>
-           <layout class="QVBoxLayout" name="verticalLayout_17" stretch="1000,1,1">
+           <layout class="QVBoxLayout" name="verticalLayout_17" stretch="100,1,1">
             <property name="spacing">
              <number>3</number>
             </property>
@@ -7996,14 +7996,14 @@
                <bool>true</bool>
               </property>
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
                 <horstretch>0</horstretch>
-                <verstretch>3</verstretch>
+                <verstretch>0</verstretch>
                </sizepolicy>
               </property>
               <property name="minimumSize">
                <size>
-                <width>258</width>
+                <width>260</width>
                 <height>0</height>
                </size>
               </property>
@@ -8019,17 +8019,28 @@
               <property name="contextMenuPolicy">
                <enum>Qt::NoContextMenu</enum>
               </property>
+              <property name="toolTip">
+               <string/>
+              </property>
+              <property name="autoFillBackground">
+               <bool>false</bool>
+              </property>
               <property name="styleSheet">
-               <string notr="true">background-color: rgb(0, 0, 0);
+               <string notr="true">QTableWidget{
+background-color: rgb(0, 0, 0);
 alternate-background-color: rgb(170, 0, 0);
 gridline-color: rgb(255, 255, 255);
-padding:2px</string>
+padding:3px;
+}</string>
               </property>
               <property name="verticalScrollBarPolicy">
                <enum>Qt::ScrollBarAlwaysOff</enum>
               </property>
               <property name="horizontalScrollBarPolicy">
-               <enum>Qt::ScrollBarAlwaysOff</enum>
+               <enum>Qt::ScrollBarAsNeeded</enum>
+              </property>
+              <property name="sizeAdjustPolicy">
+               <enum>QAbstractScrollArea::AdjustIgnored</enum>
               </property>
               <property name="autoScroll">
                <bool>false</bool>
@@ -8041,6 +8052,9 @@ padding:2px</string>
                <bool>false</bool>
               </property>
               <property name="showDropIndicator" stdset="0">
+               <bool>false</bool>
+              </property>
+              <property name="dragEnabled">
                <bool>false</bool>
               </property>
               <property name="dragDropOverwriteMode">
@@ -8071,19 +8085,25 @@ padding:2px</string>
                <bool>false</bool>
               </attribute>
               <attribute name="horizontalHeaderMinimumSectionSize">
-               <number>18</number>
+               <number>0</number>
               </attribute>
               <attribute name="horizontalHeaderDefaultSectionSize">
                <number>18</number>
+              </attribute>
+              <attribute name="horizontalHeaderHighlightSections">
+               <bool>false</bool>
               </attribute>
               <attribute name="verticalHeaderVisible">
                <bool>false</bool>
               </attribute>
               <attribute name="verticalHeaderMinimumSectionSize">
-               <number>25</number>
+               <number>0</number>
               </attribute>
               <attribute name="verticalHeaderDefaultSectionSize">
                <number>25</number>
+              </attribute>
+              <attribute name="verticalHeaderHighlightSections">
+               <bool>false</bool>
               </attribute>
               <row/>
               <column/>
@@ -8150,35 +8170,12 @@ padding:2px</string>
                </widget>
               </item>
               <item>
-               <widget class="QPushButton" name="pushButtonTerminalSelect">
-                <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selection mode&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
-                <property name="text">
-                 <string/>
-                </property>
-                <property name="icon">
-                 <iconset resource="resources.qrc">
-                  <normaloff>:/images/icons/terminalSelect.png</normaloff>:/images/icons/terminalSelect.png</iconset>
-                </property>
-                <property name="iconSize">
-                 <size>
-                  <width>30</width>
-                  <height>30</height>
-                 </size>
-                </property>
-                <property name="checkable">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
                <widget class="QPushButton" name="pushButtonTerminalCopy">
                 <property name="enabled">
                  <bool>false</bool>
                 </property>
                 <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Copy selection to clipboard&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Copy selection to clipboard (disable &quot;click to send&quot; to enable selecting and copying)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="text">
                  <string/>
@@ -8193,6 +8190,46 @@ padding:2px</string>
                   <height>30</height>
                  </size>
                 </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QComboBox" name="comboBoxTerminalFont">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="toolTip">
+                 <string>Font size</string>
+                </property>
+                <property name="currentIndex">
+                 <number>0</number>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>30</width>
+                  <height>30</height>
+                 </size>
+                </property>
+                <item>
+                 <property name="text">
+                  <string notr="true"/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="resources.qrc">
+                   <normaloff>:/images/icons/bigfont.png</normaloff>:/images/icons/bigfont.png</iconset>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="resources.qrc">
+                   <normaloff>:/images/icons/smallfont.png</normaloff>:/images/icons/smallfont.png</iconset>
+                 </property>
+                </item>
                </widget>
               </item>
               <item>
@@ -8471,7 +8508,7 @@ padding:2px</string>
            <attribute name="title">
             <string/>
            </attribute>
-           <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,1,0,0,100,1">
+           <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,1,1,1,100,1">
             <property name="leftMargin">
              <number>6</number>
             </property>
@@ -8554,6 +8591,9 @@ padding:2px</string>
                <string>Connection</string>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_39">
+               <property name="spacing">
+                <number>3</number>
+               </property>
                <property name="leftMargin">
                 <number>6</number>
                </property>
@@ -8567,30 +8607,41 @@ padding:2px</string>
                 <number>6</number>
                </property>
                <item>
-                <widget class="QCheckBox" name="checkBoxClearOnReconnect">
-                 <property name="toolTip">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clear graph after connecting&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                 <property name="text">
-                  <string>Clear on reconect</string>
-                 </property>
-                 <property name="checked">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QCheckBox" name="checkBoxAutoAutoSet">
-                 <property name="toolTip">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Do autoset function after first data for channel 1 is received&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                 <property name="text">
-                  <string>Autoset on reconnect</string>
-                 </property>
-                 <property name="checked">
-                  <bool>false</bool>
-                 </property>
-                </widget>
+                <layout class="QHBoxLayout" name="horizontalLayout_21" stretch="100,1,1">
+                 <item>
+                  <widget class="QLabel" name="label_17">
+                   <property name="text">
+                    <string>After connection:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QCheckBox" name="checkBoxClearOnReconnect">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clear graph after connecting&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                   <property name="text">
+                    <string>Clear</string>
+                   </property>
+                   <property name="checked">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QCheckBox" name="checkBoxAutoAutoSet">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Do autoset function after first data for channel 1 is received&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                   <property name="text">
+                    <string>Autoset</string>
+                   </property>
+                   <property name="checked">
+                    <bool>false</bool>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
                </item>
                <item>
                 <widget class="Line" name="line_10">
@@ -8600,31 +8651,38 @@ padding:2px</string>
                 </widget>
                </item>
                <item>
-                <widget class="QCheckBox" name="checkBoxEchoReply">
-                 <property name="text">
-                  <string>Reply to echo command</string>
-                 </property>
-                 <property name="checked">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QCheckBox" name="checkBoxResetCmdEn">
-                 <property name="text">
-                  <string>Send reset command on reconnect</string>
-                 </property>
-                 <property name="checked">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLineEdit" name="lineEditResetCmd">
-                 <property name="placeholderText">
-                  <string>( reset command is empty, nothing will be sent)</string>
-                 </property>
-                </widget>
+                <layout class="QHBoxLayout" name="horizontalLayout_23" stretch="1,0,1">
+                 <item>
+                  <widget class="QLineEdit" name="lineEditResetCmd">
+                   <property name="toolTip">
+                    <string>If reset command is set, it will be sent to device on connect.</string>
+                   </property>
+                   <property name="placeholderText">
+                    <string>reset command</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="Line" name="line">
+                   <property name="orientation">
+                    <enum>Qt::Vertical</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QCheckBox" name="checkBoxEchoReply">
+                   <property name="toolTip">
+                    <string>Enable responding to echo command</string>
+                   </property>
+                   <property name="text">
+                    <string>Reply to echo</string>
+                   </property>
+                   <property name="checked">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
                </item>
                <item>
                 <widget class="Line" name="line_3">
@@ -8634,24 +8692,34 @@ padding:2px</string>
                 </widget>
                </item>
                <item>
-                <widget class="QCheckBox" name="checkBoxSerialMonitor">
-                 <property name="text">
-                  <string>Show serial monitor</string>
-                 </property>
-                 <property name="checked">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QCheckBox" name="checkBoxShowManualInput">
-                 <property name="text">
-                  <string>Enable manual input</string>
-                 </property>
-                 <property name="checked">
-                  <bool>true</bool>
-                 </property>
-                </widget>
+                <layout class="QHBoxLayout" name="horizontalLayout_30">
+                 <item>
+                  <widget class="QCheckBox" name="checkBoxSerialMonitor">
+                   <property name="toolTip">
+                    <string>Show serial monitor on connection tab (not recommended for large ammount of data)</string>
+                   </property>
+                   <property name="text">
+                    <string>Serial monitor</string>
+                   </property>
+                   <property name="checked">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QCheckBox" name="checkBoxShowManualInput">
+                   <property name="toolTip">
+                    <string>Show manual input console on connection tab</string>
+                   </property>
+                   <property name="text">
+                    <string>Manual input</string>
+                   </property>
+                   <property name="checked">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
                </item>
               </layout>
              </widget>
@@ -8662,6 +8730,9 @@ padding:2px</string>
                <string>Plot</string>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_40">
+               <property name="spacing">
+                <number>3</number>
+               </property>
                <property name="leftMargin">
                 <number>6</number>
                </property>
@@ -8675,14 +8746,31 @@ padding:2px</string>
                 <number>6</number>
                </property>
                <item>
-                <widget class="QCheckBox" name="checkBoxOpenGL">
-                 <property name="toolTip">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable OpenGL hardware acceleration for drawing main plot (recommended for logic channels with fill under graph line)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                 <property name="text">
-                  <string>Use OpenGL for main plot</string>
-                 </property>
-                </widget>
+                <layout class="QHBoxLayout" name="horizontalLayout_35">
+                 <item>
+                  <widget class="QCheckBox" name="checkBoxOpenGL">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable OpenGL hardware acceleration for drawing main plot (recommended for logic channels with fill under graph line)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                   <property name="text">
+                    <string>OpenGL</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QCheckBox" name="checkBoxMouseControls">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show sample value when mouse cursor is near,set cursors by clicking on graph, mouse-drag cursors a zero-lines of channels.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                   <property name="text">
+                    <string>Mouse interactions</string>
+                   </property>
+                   <property name="checked">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
                </item>
                <item>
                 <widget class="QCheckBox" name="checkBoxSelUnused">
@@ -8694,24 +8782,11 @@ padding:2px</string>
                  </property>
                 </widget>
                </item>
-               <item>
-                <widget class="QCheckBox" name="checkBoxMouseControls">
-                 <property name="toolTip">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show sample value when mouse cursor is near,set cursors by clicking on graph, mouse-drag cursors a zero-lines of channels.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                 <property name="text">
-                  <string>Enable mouse controlls in plot</string>
-                 </property>
-                 <property name="checked">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
               </layout>
              </widget>
             </item>
             <item>
-             <widget class="QGroupBox" name="groupBox_7">
+             <widget class="QGroupBox" name="groupBox_6">
               <property name="title">
                <string>Terminal</string>
               </property>
@@ -8729,12 +8804,163 @@ padding:2px</string>
                 <number>6</number>
                </property>
                <item>
-                <widget class="QCheckBox" name="checkBoxTerminalClicksendNoBackground">
+                <widget class="QLabel" name="label_12">
+                 <property name="text">
+                  <string>Disable click for those background colors:</string>
+                 </property>
+                 <property name="wordWrap">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_36" stretch="1,1">
+                 <item>
+                  <widget class="QListWidget" name="listWidgetTerminalBlacklist">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>150</height>
+                    </size>
+                   </property>
+                   <property name="verticalScrollBarPolicy">
+                    <enum>Qt::ScrollBarAlwaysOn</enum>
+                   </property>
+                   <property name="horizontalScrollBarPolicy">
+                    <enum>Qt::ScrollBarAlwaysOff</enum>
+                   </property>
+                   <property name="editTriggers">
+                    <set>QAbstractItemView::NoEditTriggers</set>
+                   </property>
+                   <property name="selectionMode">
+                    <enum>QAbstractItemView::MultiSelection</enum>
+                   </property>
+                   <property name="layoutMode">
+                    <enum>QListView::SinglePass</enum>
+                   </property>
+                   <property name="sortingEnabled">
+                    <bool>false</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <layout class="QGridLayout" name="gridLayout_22">
+                   <item row="2" column="0" colspan="3">
+                    <spacer name="verticalSpacer_14">
+                     <property name="orientation">
+                      <enum>Qt::Vertical</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>20</width>
+                       <height>10</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                   <item row="1" column="0">
+                    <widget class="QPushButton" name="pushButtonTerminalBlacklistClear">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="toolTip">
+                      <string>Delete selected color</string>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="resources.qrc">
+                       <normaloff>:/images/icons/multiply.png</normaloff>:/images/icons/multiply.png</iconset>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="0" colspan="3">
+                    <widget class="QLineEdit" name="lineEditTerminalBlacklist">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true"/>
+                     </property>
+                     <property name="placeholderText">
+                      <string>Add color</string>
+                     </property>
+                     <property name="clearButtonEnabled">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="2">
+                    <widget class="QPushButton" name="pushButtonTerminalBlacklisAdd">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="toolTip">
+                      <string>Add color</string>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="resources.qrc">
+                       <normaloff>:/images/icons/send.png</normaloff>:/images/icons/send.png</iconset>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="1">
+                    <widget class="QPushButton" name="pushButtonTerminalBlacklistCopy">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="toolTip">
+                      <string>Copy list of colors</string>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="resources.qrc">
+                       <normaloff>:/images/icons/copy.png</normaloff>:/images/icons/copy.png</iconset>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <widget class="Line" name="line_8">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="checkBoxEnablTerminalVScrollBar">
                  <property name="toolTip">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Click to send feature is disabled for characters with black background&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  <string>Show vertical scroll bar in terminal if text is higher than terminal window (you can always scroll with mouse wheel)</string>
                  </property>
                  <property name="text">
-                  <string>Disable click for black background</string>
+                  <string>Enable vertical scrollbar</string>
                  </property>
                 </widget>
                </item>
@@ -8749,7 +8975,7 @@ padding:2px</string>
               <property name="sizeHint" stdset="0">
                <size>
                 <width>20</width>
-                <height>1</height>
+                <height>40</height>
                </size>
               </property>
              </spacer>
@@ -8916,7 +9142,7 @@ padding:2px</string>
               <property name="sizeHint" stdset="0">
                <size>
                 <width>20</width>
-                <height>40</height>
+                <height>10</height>
                </size>
               </property>
              </spacer>
@@ -8993,7 +9219,7 @@ padding:2px</string>
               <item row="0" column="1">
                <widget class="QLabel" name="label_signature">
                 <property name="text">
-                 <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;©2020 Jiří Maier&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;©2020 - 2021 Jiří Maier&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -9448,7 +9674,6 @@ padding:2px</string>
   <tabstop>radioButtonRollingRange</tabstop>
   <tabstop>dialZoom</tabstop>
   <tabstop>pushButtonTerminalDebug</tabstop>
-  <tabstop>pushButton</tabstop>
   <tabstop>radioButtonEn</tabstop>
   <tabstop>radioButtonCz</tabstop>
   <tabstop>pushButtonDefaults</tabstop>
@@ -9647,8 +9872,8 @@ padding:2px</string>
    <slot>resetTerminal()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>964</x>
-     <y>451</y>
+     <x>897</x>
+     <y>450</y>
     </hint>
     <hint type="destinationlabel">
      <x>846</x>
@@ -9749,22 +9974,6 @@ padding:2px</string>
     <hint type="destinationlabel">
      <x>186</x>
      <y>174</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButtonTerminalCopy</sender>
-   <signal>clicked()</signal>
-   <receiver>myTerminal</receiver>
-   <slot>copyToClipboard()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>912</x>
-     <y>451</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>846</x>
-     <y>322</y>
     </hint>
    </hints>
   </connection>
@@ -9977,22 +10186,6 @@ padding:2px</string>
    </hints>
   </connection>
   <connection>
-   <sender>checkBoxResetCmdEn</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>lineEditResetCmd</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>956</x>
-     <y>240</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>956</x>
-     <y>268</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>checkBoxFFTTwoSided</sender>
    <signal>toggled(bool)</signal>
    <receiver>checkBoxFFTZeroCenter</receiver>
@@ -10069,22 +10262,6 @@ padding:2px</string>
     <hint type="destinationlabel">
      <x>428</x>
      <y>582</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkBoxTerminalClicksendNoBackground</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>myTerminal</receiver>
-   <slot>setDisableSendingBlackBackgnd(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>956</x>
-     <y>495</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>836</x>
-     <y>212</y>
     </hint>
    </hints>
   </connection>

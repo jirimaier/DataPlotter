@@ -145,6 +145,8 @@ class MainWindow : public QMainWindow {
   void horizontalSliderTimeCur2_realValueChanged(int arg1);
   void updateUsedChannels();
   void turnOffTriggerLine() {ui->plot->setTriggerLineVisible(false);}
+  bool addColorToBlacklist(QByteArray code);
+  void updateColorBlacklist();
 
  private slots: // Autoconnect slots
   void on_dialRollingRange_realValueChanged(double value) { ui->doubleSpinBoxRangeHorizontal->setValue(value); }
@@ -186,7 +188,6 @@ class MainWindow : public QMainWindow {
   void on_pushButtonViewBuffer_2_clicked() { emit requestManualBufferShow(); }
   void on_comboBoxOutputLevel_currentIndexChanged(int index);
   void on_comboBoxCom_currentIndexChanged(int) { emit disconnectSerial(); }
-  void on_comboBoxBaud_currentIndexChanged(int) { emit disconnectSerial(); }
   void on_pushButtonScrollDown_2_clicked();
   void on_checkBoxSerialMonitor_toggled(bool checked);
   void on_comboBoxSelectedChannel_currentIndexChanged(int index);
@@ -225,7 +226,6 @@ class MainWindow : public QMainWindow {
   void on_pushButtonNegative_clicked();
   void on_pushButtonTerminalDebug_toggled(bool checked);
   void on_pushButtonTerminalClickToSend_toggled(bool checked);
-  void on_pushButtonTerminalSelect_toggled(bool checked);
   void on_pushButtonTerminalInputCopy_clicked();
   void on_listWidgetTerminalCodeList_itemClicked(QListWidgetItem* item);
   void on_pushButtonFFT_toggled(bool checked);
@@ -275,12 +275,19 @@ class MainWindow : public QMainWindow {
   void on_pushButtonProtocolGuideCZ_clicked();
   void on_pushButtonProtocolGuideEN_clicked();
   void on_pushButtonIntroVideoCZ_clicked();
-
   void on_labelLogo_clicked();
-
   void on_comboBoxFIR_currentIndexChanged(int index);
-
   void on_checkBoxEchoReply_toggled(bool checked);
+  void on_comboBoxTerminalFont_currentIndexChanged(int index);
+  void on_lineEditTerminalBlacklist_returnPressed();
+  void on_pushButtonTerminalBlacklistClear_clicked();
+  void on_pushButtonTerminalBlacklisAdd_clicked();
+  void on_checkBoxEnablTerminalVScrollBar_toggled(bool checked);
+  void on_lineEditTerminalBlacklist_textChanged(const QString& arg1);
+
+  void on_comboBoxBaud_currentTextChanged(const QString& arg1);
+
+  void on_pushButtonTerminalBlacklistCopy_clicked();
 
  public slots:
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumMessageTarget target);
@@ -339,5 +346,6 @@ class MainWindow : public QMainWindow {
   void setAveragerCount(int chID, int count);
   void setInterpolationFilter(QString filename, int upsampling);
   void replyEcho(bool enabled);
+  void changeSerialBaud(qint32 baud);
 };
 #endif // MAINWINDOW_H

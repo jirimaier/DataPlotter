@@ -64,7 +64,7 @@ MyMainPlot::MyMainPlot(QWidget* parent) : MyPlot(parent) {
   // Propojení musí být až po skončení inicializace!
   connect(this->yAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(verticalAxisRangeChanged()));
   connect(&plotUpdateTimer, &QTimer::timeout, this, &MyMainPlot::update);
-  plotUpdateTimer.start(50);
+  plotUpdateTimer.start(30);
   replot();
 }
 
@@ -395,7 +395,7 @@ void MyMainPlot::redraw() {
   if (plotRangeType != PlotRange::freeMove) {
     double dataLenght = maxT - minT;
     if (plotRangeType == PlotRange::fixedRange) {
-      this->xAxis->setRange(minT + dataLenght * 0.001 * (horizontalPos - zoom / 2), minT + dataLenght * 0.001 * (horizontalPos + zoom / 2));
+      this->xAxis->setRange(minT + dataLenght * 0.0005 * (2 * horizontalPos - zoom), minT + dataLenght * 0.0005 * (2 * horizontalPos + zoom));
     } else if (plotRangeType == PlotRange::rolling) {
       if (dataLenght < rollingRange) {
         this->xAxis->setRange(minT, minT + rollingRange);
@@ -529,7 +529,7 @@ void MyMainPlot::setShiftStep(int step) {
     if (step == 0)
       plotUpdateTimer.setInterval(16);
     else
-      plotUpdateTimer.setInterval(50);
+      plotUpdateTimer.setInterval(30);
   }
 }
 

@@ -78,15 +78,15 @@ void MainWindow::on_pushButtonAutoset_clicked() {
       QCPRange range;
       if (channelExpectedRanges[activeAnalogs.first()].unknown) {
         bool foundRange;
-        range = ui->plot->graph(activeAnalogs.at(activeAnalogs.first()))->data()->valueRange(foundRange);
+        range = ui->plot->graph(activeAnalogs.first())->data()->valueRange(foundRange);
         if (foundRange) {
-          range.lower = ceilToNiceValue(range.lower) * ui->plot->getChScale(activeAnalogs.at(activeAnalogs.first()));
-          range.upper = ceilToNiceValue(range.upper) * ui->plot->getChScale(activeAnalogs.at(activeAnalogs.first()));
+          range.lower = ceilToNiceValue(range.lower) * ui->plot->getChScale(activeAnalogs.first());
+          range.upper = ceilToNiceValue(range.upper) * ui->plot->getChScale(activeAnalogs.first());
         } else
           range = QCPRange(0, 0);
       } else
         range = QCPRange(channelExpectedRanges[activeAnalogs.first()].minimum, channelExpectedRanges[activeAnalogs.first()].maximum);
-      if (ui->plot->isChInverted(activeAnalogs.at(0))) {
+      if (ui->plot->isChInverted(activeAnalogs.first())) {
         // Pokud je kanál invertovaný, změní znaménko a prohodí
         range.upper *= -1;
         range.lower *= -1;
@@ -103,9 +103,9 @@ void MainWindow::on_pushButtonAutoset_clicked() {
         ui->doubleSpinBoxRangeVerticalRange->setValue(2 * MAX(std::abs(range.upper), std::abs(range.lower)));
       }
       ui->checkBoxVerticalValues->setChecked(true);
-      ui->comboBoxSelectedChannel->setCurrentIndex(activeAnalogs.at(0));
+      ui->comboBoxSelectedChannel->setCurrentIndex(activeAnalogs.first());
     } else if (!activeLogic.isEmpty()) {
-      int bitsUsed = ui->plot->getLogicBitsUsed(activeLogic.at(0));
+      int bitsUsed = ui->plot->getLogicBitsUsed(activeLogic.first());
       // Skupina logických kanálů má spodek na 0 a vršek je 3*počet pod-kanálů (bitů)
       ui->doubleSpinBoxRangeVerticalRange->setValue(bitsUsed * 3 * ui->plot->getLogicScale(activeLogic.at(0)));
       ui->checkBoxVerticalValues->setChecked(false);

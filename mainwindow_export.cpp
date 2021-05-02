@@ -104,13 +104,33 @@ void MainWindow::on_pushButtonPlotImage_clicked() {
 
   if (returnValue == QMessageBox::Yes) {
     QClipboard* clipboard = QGuiApplication::clipboard();
-    clipboard->setImage(ui->plot->toPNG());
+    clipboard->setImage(ui->plot->toPixmap().toImage());
   } else if (returnValue == QMessageBox::Ok) {
     QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/export/plot.png");
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Export main plot as image"), defaultName, tr("Portable network graphics (*.png)"));
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Export main plot as image"), defaultName, tr("PNG image (*.png);;Vector graphics (*.pdf);;JPEG image (*.jpg);;BMP image (*.bmp)"));
     if (fileName.isEmpty())
       return;
-    ui->plot->toPNG().save(fileName);
+
+    bool isOK = false;
+
+    if (fileName.right(3).toLower() == "jpg")
+      isOK = ui->plot->saveJpg(fileName);
+    else if (fileName.right(3).toLower() == "jpeg")
+      isOK = ui->plot->saveJpg(fileName);
+    else if (fileName.right(3).toLower() == "bmp")
+      isOK = ui->plot->saveBmp(fileName);
+    else if (fileName.right(3).toLower() == "pdf")
+      isOK = ui->plot->savePdf(fileName, 0, 0, QCP::epNoCosmetic);
+    else // png
+      isOK = ui->plot->savePng(fileName);
+
+    if (!isOK) {
+      QMessageBox msgBox(this);
+      msgBox.setText(tr("Cant write to file."));
+      msgBox.setInformativeText(tr("This may be because file is opened in another program."));
+      msgBox.setIcon(QMessageBox::Critical);
+      msgBox.exec();
+    }
   }
 }
 
@@ -126,13 +146,33 @@ void MainWindow::on_pushButtonXYImage_clicked() {
 
   if (returnValue == QMessageBox::Yes) {
     QClipboard* clipboard = QGuiApplication::clipboard();
-    clipboard->setImage(ui->plotxy->toPNG());
+    clipboard->setImage(ui->plotxy->toPixmap().toImage());
   } else if (returnValue == QMessageBox::Ok) {
     QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/export/xy.png");
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Export XY plot as image"), defaultName, tr("Portable network graphics (*.png)"));
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Export XY plot as image"), defaultName,  tr("PNG image (*.png);;Vector graphics (*.pdf);;JPEG image (*.jpg);;BMP image (*.bmp)"));
     if (fileName.isEmpty())
       return;
-    ui->plotxy->toPNG().save(fileName);
+
+    bool isOK = false;
+
+    if (fileName.right(3).toLower() == "jpg")
+      isOK = ui->plotxy->saveJpg(fileName);
+    else if (fileName.right(3).toLower() == "jpeg")
+      isOK = ui->plotxy->saveJpg(fileName);
+    else if (fileName.right(3).toLower() == "bmp")
+      isOK = ui->plotxy->saveBmp(fileName);
+    else if (fileName.right(3).toLower() == "pdf")
+      isOK = ui->plotxy->savePdf(fileName, 0, 0, QCP::epNoCosmetic);
+    else // png
+      isOK = ui->plotxy->savePng(fileName);
+
+    if (!isOK) {
+      QMessageBox msgBox(this);
+      msgBox.setText(tr("Cant write to file."));
+      msgBox.setInformativeText(tr("This may be because file is opened in another program."));
+      msgBox.setIcon(QMessageBox::Critical);
+      msgBox.exec();
+    }
   }
 }
 
@@ -148,12 +188,32 @@ void MainWindow::on_pushButtonFFTImage_clicked() {
 
   if (returnValue == QMessageBox::Yes) {
     QClipboard* clipboard = QGuiApplication::clipboard();
-    clipboard->setImage(ui->plotFFT->toPNG());
+    clipboard->setImage(ui->plotFFT->toPixmap().toImage());
   } else if (returnValue == QMessageBox::Ok) {
     QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/export/fft.png");
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Export FFT plot as image"), defaultName, tr("Portable network graphics (*.png)"));
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Export FFT plot as image"), defaultName,  tr("PNG image (*.png);;Vector graphics (*.pdf);;JPEG image (*.jpg);;BMP image (*.bmp)"));
     if (fileName.isEmpty())
       return;
-    ui->plotFFT->toPNG().save(fileName);
+
+    bool isOK = false;
+
+    if (fileName.right(3).toLower() == "jpg")
+      isOK = ui->plotFFT->saveJpg(fileName);
+    else if (fileName.right(3).toLower() == "jpeg")
+      isOK = ui->plotFFT->saveJpg(fileName);
+    else if (fileName.right(3).toLower() == "bmp")
+      isOK = ui->plotFFT->saveBmp(fileName);
+    else if (fileName.right(3).toLower() == "pdf")
+      isOK = ui->plotFFT->savePdf(fileName, 0, 0, QCP::epNoCosmetic);
+    else // png
+      isOK = ui->plotFFT->savePng(fileName);
+
+    if (!isOK) {
+      QMessageBox msgBox(this);
+      msgBox.setText(tr("Cant write to file."));
+      msgBox.setInformativeText(tr("This may be because file is opened in another program."));
+      msgBox.setIcon(QMessageBox::Critical);
+      msgBox.exec();
+    }
   }
 }

@@ -280,6 +280,11 @@ void MyPlot::checkIfTracerTextFits() {
   }
 }
 
+void MyPlot::leaveEvent(QMouseEvent* event) {
+  Q_UNUSED(event)
+  hideTracer();
+}
+
 int MyPlot::keyToNearestSample(QCPGraph* mGraph, double keyCoord) {
   // Převzato z funkce pro originální tracer v QCustomPlot a upraveno
 

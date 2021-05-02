@@ -47,7 +47,6 @@ class MyPlot : public QCustomPlot {
   void setTimeCursorVisible(Cursors::enumCursors cursor, bool visible);
   double getVDiv() { return unitTickerY->tickStep(); }
   double getHDiv() { return unitTickerX->tickStep(); }
-  QImage toPNG() { return (this->toPixmap().toImage()); };
   void setXUnit(QString unit, bool usePrefix) {
     xUnit = unit;
     unitTickerX->unit = unit;
@@ -84,6 +83,8 @@ class MyPlot : public QCustomPlot {
   QCursor defaultMouseCursor = Qt::ArrowCursor;
 
   QColor transparentWhite = QColor::fromRgbF(1, 1, 1, 0.8);
+
+  virtual void leaveEvent(QMouseEvent* event);
 
  protected slots:
   virtual void mouseMoved(QMouseEvent* event) = 0;

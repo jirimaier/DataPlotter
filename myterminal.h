@@ -36,6 +36,13 @@ class MyTerminal : public QTableWidget {
   explicit MyTerminal(QWidget* parent = nullptr);
   QByteArray nearestColorCode(QColor color);
   ~MyTerminal();
+  QMap<QString, QColor> colorCodes;
+  void setColorBlacklist(QList<QColor> newlist) {blacklist = newlist;}
+
+  /// Převede kód na barvu, kód musí obsahovat 3/4 na začátku a nesmí mít m na konci
+  bool colorFromSequence(QByteArray code, QColor& clr);
+
+  void changeFont(bool smallFont);
 
  private:
   struct BlinkedItem {
@@ -48,8 +55,7 @@ class MyTerminal : public QTableWidget {
   QTimer clickBlinkTimer;
   TerminalMode::enumTerminalMode mode = clicksend;
   QByteArray buffer;
-  QMap<QString, QColor> colorCodes;
-  bool disableSendingBlackBackgnd = false;
+
   void printChar(QChar text);
   void moveCursorAbsolute(int16_t x, int16_t y);
   void moveCursorRelative(int16_t x, int16_t y) { moveCursorAbsolute(cursorX + x, cursorY + y); }
@@ -71,13 +77,17 @@ class MyTerminal : public QTableWidget {
   QColor fontColor = Qt::white;
   QColor backColor = Qt::black;
   QFont font = QFont("Courier New", 18, QFont::Normal);
+  int cellWidth = 18, cellHeight = 25;
   void resetFont();
   bool isSmallest(uint8_t number, QVector<uint8_t> list);
   void clearTerminal();
   void highLightField(QTableWidgetItem* field);
-
+  void addRows(int newCount);
+  void addColumns(int newCount);
   void clearCell(int x, int y);
+  QList<QColor> blacklist;
  private slots:
+
   void resetBlinkedItem();
 
   void characterClicked(int r, int c);
@@ -90,15 +100,17 @@ class MyTerminal : public QTableWidget {
   void setMode(TerminalMode::enumTerminalMode mode);
   void resetTerminal();
   void copyToClipboard();
-  void setDisableSendingBlackBackgnd(bool en) {disableSendingBlackBackgnd = en;}
+  void setVScrollBar(bool show);
 
  signals:
   /// Pošle zprávu do výpisu
   void sendMessage(QByteArray header, QByteArray message, MessageLevel::enumMessageLevel type, MessageTarget::enumMessageTarget target = MessageTarget::serial1);
   /// Pošle data pro zapsání do portu
   void writeToSerial(QByteArray byte);
+  /// Byl změněn mód
+  void modeChanged(TerminalMode::enumTerminalMode mode);
 
- private:
+ public:
   uint32_t colorCodes256[256] = {0x000000, 0x800000, 0x008000, 0x808000, 0x000080, 0x800080, 0x008080, 0xc0c0c0, 0x808080, 0xff0000, 0x00ff00, 0xffff00, 0x0000ff, 0xff00ff, 0x00ffff, 0xffffff, 0x000000, 0x00005f, 0x000087, 0x0000af, 0x0000d7, 0x0000ff, 0x005f00, 0x005f5f, 0x005f87, 0x005faf,
                                  0x005fd7, 0x005fff, 0x008700, 0x00875f, 0x008787, 0x0087af, 0x0087d7, 0x0087ff, 0x00af00, 0x00af5f, 0x00af87, 0x00afaf, 0x00afd7, 0x00afff, 0x00d700, 0x00d75f, 0x00d787, 0x00d7af, 0x00d7d7, 0x00d7ff, 0x00ff00, 0x00ff5f, 0x00ff87, 0x00ffaf, 0x00ffd7, 0x00ffff,
                                  0x5f0000, 0x5f005f, 0x5f0087, 0x5f00af, 0x5f00d7, 0x5f00ff, 0x5f5f00, 0x5f5f5f, 0x5f5f87, 0x5f5faf, 0x5f5fd7, 0x5f5fff, 0x5f8700, 0x5f875f, 0x5f8787, 0x5f87af, 0x5f87d7, 0x5f87ff, 0x5faf00, 0x5faf5f, 0x5faf87, 0x5fafaf, 0x5fafd7, 0x5fafff, 0x5fd700, 0x5fd75f,

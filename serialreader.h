@@ -61,6 +61,8 @@ class SerialReader : public QObject {
   void parserReady();
   /// Zapne předávání dat
   void enableMonitoring(bool en) { serialMonitor = en; }
+  /// Pokud je port připojen, změní baud bez odpojení
+  void changeBaud(qint32 baud);
 };
 
 #endif // SERIALREADER_H

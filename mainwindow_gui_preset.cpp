@@ -34,7 +34,6 @@ void MainWindow::connectSignals() {
   connect(ui->doubleSpinBoxRangeVerticalRange, SIGNAL(valueChanged(double)), ui->plot, SLOT(setVerticalRange(double)));
   connect(ui->doubleSpinBoxRangeHorizontal, SIGNAL(valueChanged(double)), ui->dialRollingRange, SLOT(updatePosition(double)));
   connect(ui->doubleSpinBoxRangeVerticalRange, SIGNAL(valueChanged(double)), ui->dialVerticalRange, SLOT(updatePosition(double)));
-  //connect(ui->doubleSpinBoxChScale, SIGNAL(valueChanged(double)), ui->dialChScale, SLOT(updatePosition(double)));
   connect(ui->sliderVerticalCenter, &QSlider::valueChanged, ui->plot, &MyMainPlot::setVerticalCenter);
   connect(ui->horizontalScrollBarHorizontal, &QScrollBar::valueChanged, ui->plot, &MyMainPlot::setHorizontalPos);
   connect(ui->lineEditHtitle, &QLineEdit::textChanged, ui->plot, &MyPlot::setXTitle);
@@ -83,9 +82,9 @@ void MainWindow::startTimers() {
   cursorRangeUpdateTimer.start(100);
   measureRefreshTimer1.start(250);
   measureRefreshTimer2.start(250);
-  fftTimer1.start(100);
-  fftTimer2.start(100);
-  xyTimer.start(100);
+  fftTimer1.start(50);
+  fftTimer2.start(50);
+  xyTimer.start(50);
   serialMonitorTimer.start(500);
   dataRateTimer.start(1000);
   interpolationTimer.start(50);
@@ -133,6 +132,8 @@ void MainWindow::setGuiDefaults() {
   ui->comboBoxFFTType->setCurrentIndex(1);
 
   ui->comboBoxBaud->setCurrentIndex(1);
+
+  ui->comboBoxTerminalFont->setCurrentIndex(0);
 
   ui->plot->setGridHintX(ui->horizontalSliderHGrid->value());
   ui->plot->setGridHintY(ui->horizontalSliderVGrid->value());

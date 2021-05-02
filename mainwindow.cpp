@@ -135,7 +135,7 @@ void MainWindow::serialConnectResult(bool connected, QString message, QString de
       channelExpectedRanges[i].unknown = true;
     pendingDeviceMessage = false;
   }
-  if (connected && ui->checkBoxResetCmdEn->isChecked() && (!ui->lineEditResetCmd->text().isEmpty())) {
+  if (connected && !ui->lineEditResetCmd->text().isEmpty()) {
     // Poslat reset příkaz
     QByteArray data = ui->textEditTerminalDebug->toPlainText().toLocal8Bit();
     data.replace("\\n", "\n");
@@ -258,7 +258,6 @@ void MainWindow::deviceError(QByteArray message, MessageTarget::enumMessageTarge
     msgBox.exec();
   }
 }
-
 
 void MainWindow::on_pushButtonSerialSetting_clicked() {
   serialSettingsDialog->show();
@@ -431,4 +430,91 @@ void MainWindow::on_comboBoxFIR_currentIndexChanged(int index) {
 
 void MainWindow::on_checkBoxEchoReply_toggled(bool checked) {
   emit replyEcho(checked);
+}
+
+void MainWindow::on_comboBoxTerminalFont_currentIndexChanged(int index) {
+  ui->myTerminal->changeFont(index);
+}
+
+void MainWindow::on_lineEditTerminalBlacklist_returnPressed() {
+  if (addColorToBlacklist(ui->lineEditTerminalBlacklist->text().toLocal8Bit().trimmed())) {
+    ui->lineEditTerminalBlacklist->clear();
+    ui->lineEditTerminalBlacklist->setStyleSheet("color: rgb(0, 0, 0);");
+    updateColorBlacklist();
+  } else
+    ui->lineEditTerminalBlacklist->setStyleSheet("color: rgb(255, 0, 0);");
+}
+
+bool MainWindow::addColorToBlacklist(QByteArray code) {
+  QColor clr;
+  bool valid = false;
+  code.replace("\u001b", "");
+  code.replace("\\u001b", "");
+  code.replace("\\e", "");
+  code.replace("[", "");
+  code.replace("m", "");
+  if (code.at(0) == '3')
+    code.replace(0, 1, "4");
+
+  valid = ui->myTerminal->colorFromSequence(code, clr);
+
+  if (valid) {
+    QPixmap colour = QPixmap(12, 12);
+    colour.fill(clr);
+    ui->listWidgetTerminalBlacklist->addItem(new QListWidgetItem(QIcon(colour), code, ui->listWidgetTerminalBlacklist));
+  }
+  return valid;
+}
+
+void MainWindow::updateColorBlacklist() {
+  QList<QColor> list;
+  for (int i = 0; i < ui->listWidgetTerminalBlacklist->count(); i++) {
+    QPixmap pixmap =  ui->listWidgetTerminalBlacklist->item(i)->icon().pixmap(1, 1);
+    list.append(pixmap.toImage().pixel(0, 0));
+  }
+
+  ui->myTerminal->setColorBlacklist(list);
+}
+
+void MainWindow::on_pushButtonTerminalBlacklistClear_clicked() {
+  auto selection = ui->listWidgetTerminalBlacklist->selectedItems();
+  if (selection.isEmpty())
+    ui->listWidgetTerminalBlacklist->clear();
+  else {
+    foreach (QListWidgetItem* item, ui->listWidgetTerminalBlacklist->selectedItems()) {
+      delete ui->listWidgetTerminalBlacklist->takeItem(ui->listWidgetTerminalBlacklist->row(item));
+    }
+  }
+  updateColorBlacklist();
+}
+
+void MainWindow::on_pushButtonTerminalBlacklisAdd_clicked() {
+  on_lineEditTerminalBlacklist_returnPressed();
+}
+
+void MainWindow::on_checkBoxEnablTerminalVScrollBar_toggled(bool checked) {
+  ui->myTerminal->setVScrollBar(checked);
+}
+
+void MainWindow::on_lineEditTerminalBlacklist_textChanged(const QString& arg1) {
+  if (arg1.isEmpty())
+    ui->lineEditTerminalBlacklist->setStyleSheet("");
+}
+
+void MainWindow::on_comboBoxBaud_currentTextChanged(const QString& arg1) {
+  bool isok;
+  qint32 baud = arg1.toUInt(&isok);
+  if (isok)
+    emit changeSerialBaud(baud);
+}
+
+void MainWindow::on_pushButtonTerminalBlacklistCopy_clicked() {
+  QClipboard* clipboard = QGuiApplication :: clipboard();
+  QString settingsEntry;
+  settingsEntry.append("noclickclr:");
+  for (int i = 0; i < ui->listWidgetTerminalBlacklist->count(); i++)
+    settingsEntry.append(ui->listWidgetTerminalBlacklist->item(i)->text().toLocal8Bit().replace(';', '.') + ',');
+  settingsEntry.remove(settingsEntry.length() - 1, 1);
+  settingsEntry.append(";\n");
+  clipboard ->setText(settingsEntry);
 }

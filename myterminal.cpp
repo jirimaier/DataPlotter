@@ -49,6 +49,28 @@ MyTerminal::~MyTerminal() {
         delete this->item(r, c);
 }
 
+bool MyTerminal::colorFromSequence(QByteArray code, QColor& clr) {
+  code.remove(0, 1);
+
+  // 256 barev
+  if (code.left(4) == "8;5;") {
+    bool isOK;
+    unsigned int index = code.mid(4).toUInt(&isOK);
+    if (!isOK || index >= 256)
+      return false;
+    clr = colorCodes256[index];
+    return true;
+  }
+
+  // Základní a rozšířené (16) barvy
+  else if (colorCodes.contains(code)) {
+    clr = colorCodes[code];
+    return true;
+  }
+
+  return false;
+}
+
 void MyTerminal::printText(QByteArray bytes) {
   QString text = QString::fromUtf8(bytes);
   for (uint16_t i = 0; i < text.length(); i++) {
@@ -86,6 +108,11 @@ void MyTerminal::printChar(QChar letter) {
       resetBlinkedItem();
   }
 
+  if (cursorY >= this->rowCount())
+    addRows(cursorY + 1);
+  if (cursorX >= this->columnCount())
+    addColumns(cursorX + 1);
+
   clearCell(cursorX, cursorY);
   this->setItem(cursorY, cursorX, new QTableWidgetItem(letter));
   this->item(cursorY, cursorX)->setBackground(backColor);
@@ -100,12 +127,13 @@ void MyTerminal::moveCursorAbsolute(int16_t x, int16_t y) {
     this->setCurrentCell(cursorY, cursorX, QItemSelectionModel::Deselect);
   cursorX = (x > 0) ? x : 0;
   cursorY = (y > 0) ? y : 0;
-  if (cursorY >= this->rowCount())
-    this->setRowCount(cursorY + 1);
-  if (cursorX >= this->columnCount())
-    this->setColumnCount(cursorX + 1);
-  if (mode == debug)
+  if (mode == debug) {
+    if (cursorY >= this->rowCount())
+      addRows(cursorY + 1);
+    if (cursorX >= this->columnCount())
+      addColumns(cursorX + 1);
     this->setCurrentCell(cursorY, cursorX, QItemSelectionModel::Select);
+  }
 }
 
 void MyTerminal::clearTerminal() {
@@ -115,11 +143,13 @@ void MyTerminal::clearTerminal() {
         delete this->item(r, c);
   this->setRowCount(1);
   this->setColumnCount(1);
+  setRowHeight(0, cellHeight);
+  setColumnWidth(0, cellWidth);
   resetFont();
   moveCursorAbsolute(0, 0);
   if (mode == debug) {
-    setRowCount(100);
-    setColumnCount(200);
+    addRows(100);
+    addColumns(50);
   }
 }
 
@@ -134,8 +164,23 @@ void MyTerminal::highLightField(QTableWidgetItem* field) {
   field->setBackground(clr);
 }
 
+void MyTerminal::addRows(int newCount) {
+  int oldcount = rowCount();
+  setRowCount(newCount);
+  for (int r = oldcount; r < newCount; r++)
+    setRowHeight(r, cellHeight);
+}
+
+void MyTerminal::addColumns(int newCount) {
+  int oldcount = columnCount();
+  setColumnCount(newCount);
+  for (int c = oldcount; c < newCount; c++)
+    setColumnWidth(c, cellWidth);
+}
+
 QByteArray MyTerminal::nearestColorCode(QColor color) {
-  foreach (QColor clr, colorCodes.values())
+  auto colors = colorCodes.values();
+  foreach (QColor clr, colors)
     if (color == clr)
       return colorCodes.key(color).toLocal8Bit();
 
@@ -170,30 +215,22 @@ void MyTerminal::parseFontEscapeCode(QByteArray data) {
     backColor = clr;
   }
 
-  // 256 Colors Text
-  else if (data.left(5) == "38;5;")
-    fontColor = QColor::fromRgb(colorCodes256[data.right(data.length() - 5).toUInt()]);
-
   // Font color
   else if (*data.begin() == '3') {
-    QString code = data.mid(1);
-    if (colorCodes.contains(code))
-      fontColor = colorCodes[code];
+    if (!colorFromSequence(data, fontColor))
+      goto INVALID;
   }
-
-  // 256 Colors Background
-  else if (data.contains("48;5;"))
-    backColor = QColor::fromRgb(colorCodes256[data.right(data.length() - 5).toUInt()]);
 
   // Bacground color
   else if (*data.begin() == '4') {
-    QString code = data.mid(1);
-    if (colorCodes.contains(code))
-      backColor = colorCodes[code];
+    if (!colorFromSequence(data, backColor))
+      goto INVALID;
   }
 
-  else
+  else {
+INVALID:
     emit sendMessage(tr("Invalid escape sequence").toUtf8(), data, MessageLevel::error);
+  }
 }
 
 void MyTerminal::parseEscapeCode(QByteArray data) {
@@ -333,8 +370,8 @@ void MyTerminal::setMode(TerminalMode::enumTerminalMode mode) {
   if (mode == TerminalMode::debug) {
     this->setSelectionMode(QAbstractItemView::SelectionMode::NoSelection);
     this->setCurrentCell(cursorY, cursorX, QItemSelectionModel::Select);
-    this->setRowCount(MAX(100, rowCount()));
-    this->setColumnCount(MAX(200, columnCount()));
+    this->addRows(MAX(100, rowCount()));
+    this->addColumns(MAX(50, columnCount()));
   } else if (mode == TerminalMode::select) {
     this->setSelectionMode(QAbstractItemView::SelectionMode::ContiguousSelection);
   } else if (mode == TerminalMode::clicksend) {
@@ -343,6 +380,8 @@ void MyTerminal::setMode(TerminalMode::enumTerminalMode mode) {
     this->setSelectionMode(QAbstractItemView::SelectionMode::NoSelection);
   }
   this->setShowGrid(mode == TerminalMode::debug);
+
+  emit modeChanged(mode);
 }
 
 void MyTerminal::resetTerminal() {
@@ -367,6 +406,39 @@ void MyTerminal::copyToClipboard() {
   }
   clipboard->setText(text);
   clearSelection();
+}
+
+void MyTerminal::changeFont(bool smallFont) {
+  font.setPointSize(smallFont ? 12 : 18);
+  setFont(font);
+  for (int r = 0; r < rowCount(); r++) {
+    for (int c = 0; c < columnCount(); c++) {
+      if (this->item(r, c) != nullptr) {
+        auto newfont =  this->item(r, c)->font();
+        newfont.setPointSize(smallFont ? 12 : 18);
+        this->item(r, c)->setFont(newfont);
+      }
+    }
+  }
+
+  cellWidth = smallFont ? 12 : 18;
+  cellHeight =  smallFont ? 16 : 25;
+
+  for (int r = 0; r < rowCount(); r++)
+    setRowHeight(r, cellHeight);
+
+  for (int c = 0; c < columnCount(); c++)
+    setColumnWidth(c, cellWidth);
+
+}
+
+void MyTerminal::setVScrollBar(bool show) {
+  this->setVerticalScrollBarPolicy(show ? Qt::ScrollBarAsNeeded : Qt::ScrollBarAlwaysOff);
+
+  // Po zapnutí scrollbaru se změna neprojeví (scrollbar se neobjeví), dokud nedojde ke změně (asi bug v Qt)
+  if (show)
+    addRows(rowCount() + 1);
+
 }
 
 void MyTerminal::resetFont() {
@@ -437,10 +509,9 @@ void MyTerminal::characterClicked(int r, int c) {
   if (mode == clicksend) {
     QTableWidgetItem* it = item(r, c);
     if (it) {
-      if (disableSendingBlackBackgnd) {
-        if (it->background().color() == Qt::black)
-          return;
-      }
+      if (blacklist.contains(it->background().color()))
+        return;
+
       emit writeToSerial(it->text().toUtf8());
       if (blinkedItem.blinkInProggres)
         resetBlinkedItem();
@@ -455,8 +526,8 @@ void MyTerminal::characterClicked(int r, int c) {
   } else if (mode == debug) {
     moveCursorAbsolute(c, r);
     if (c > this->columnCount() / 2)
-      this->setColumnCount(this->columnCount() * 1.5);
+      this->addColumns(this->columnCount() * 1.5);
     if (r > this->rowCount() / 2)
-      this->setRowCount(this->rowCount() * 1.5);
+      this->addRows(this->rowCount() * 1.5);
   }
 }

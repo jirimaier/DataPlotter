@@ -192,7 +192,7 @@ void PlotData::addPoint(QList<QPair<ValueType, QByteArray>> data) {
     }
 
     bool isLogic = false;
-    for (int i = 0; i < LOGIC_GROUPS; i++)
+    for (int i = 0; i < LOGIC_GROUPS - 1; i++)
       if (logicTargets[i] == ch)
         isLogic = true;
     if (isLogic) {
@@ -246,7 +246,7 @@ void PlotData::addPoint(QList<QPair<ValueType, QByteArray>> data) {
   lastTime = time;
   if (debugLevel == OutputLevel::info) {
     message.remove(message.length() - 2, 2); // Odstraní ", " na konci
-    emit sendMessage(tr("Received point").toUtf8(), message.toUtf8(), MessageLevel::info);
+    emit sendMessage(tr("Parsed point").toUtf8(), message.toUtf8(), MessageLevel::info);
   }
 }
 
@@ -286,7 +286,7 @@ void PlotData::addLogicPoint(QPair<ValueType, QByteArray> timeArray, QPair<Value
   }
 
   if (debugLevel == OutputLevel::info)
-    emit sendMessage(tr("Received logic point").toUtf8(),  tr("%n bit(s)", "", bits).toUtf8(), MessageLevel::info);
+    emit sendMessage(tr("Parsed logic point").toUtf8(),  tr("%n bit(s)", "", bits).toUtf8(), MessageLevel::info);
 
   lastTime = time;
 }
@@ -336,7 +336,7 @@ void PlotData::addChannel(QPair<ValueType, QByteArray> data, unsigned int ch, QP
       message.append(tr(", from %1 to %2").arg(minimum).arg(maximum).toUtf8());
     if (zeroIndex > 0)
       message.append(tr(", zero time at sample index %3").arg(zeroIndex).toUtf8());
-    emit sendMessage(tr("Received channel %1").arg(ch).toUtf8(), message, MessageLevel::info);
+    emit sendMessage(tr("Parsed channel %1").arg(ch).toUtf8(), message, MessageLevel::info);
   }
 
   bool isLogic = false;
@@ -422,7 +422,7 @@ void PlotData::addLogicChannel(QPair<ValueType, QByteArray> data, QPair<ValueTyp
     message.append(tr(", %n bit(s)", "", bits).toUtf8());
     if (zeroIndex > 0)
       message.append(tr(", zero time at sample index %3").arg(zeroIndex).toUtf8());
-    emit sendMessage(tr("Received logic channel").toUtf8(), message, MessageLevel::info);
+    emit sendMessage(tr("Parsed logic channel").toUtf8(), message, MessageLevel::info);
   }
 
   QVector<double> times;
