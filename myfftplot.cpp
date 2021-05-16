@@ -168,16 +168,18 @@ void MyFFTPlot::autoset() {
   QCPRange xRange2 = graph(1)->data()->keyRange(foundrange);
 
   double yMax = MAX(yRange1.upper, yRange2.upper);
-  double yMin = MIN(yRange1.lower, yRange2.lower);
+  double yMin; // = MIN(yRange1.lower, yRange2.lower);
   double xMax = MAX(xRange1.upper, xRange2.upper);
   double xMin = MIN(xRange1.lower, xRange2.lower);
 
-  if (yMin >= 0)
+  if (getYUnit() == "dB") {
+    yMax = ceil(yMax / 10.0) * 10.0 + 10;
+    yMin = yMax - 100;
+  } else {
+    yMax = ceilToNiceValue(yMax);
     yMin = 0;
-  else
-    yMin = -50;
+  }
 
-  yMax = ceilToNiceValue(yMax);
   xAxis->setRange(xMin, xMax);
   yAxis->setRange(yMin, yMax);
 }
@@ -215,8 +217,17 @@ void MyFFTPlot::updateTracerText(int index) {
     tracerTextStr.append(" " + getChName(chSourceChannel[0]) + "\n");
   if (index == 1)
     tracerTextStr.append(getChName(chSourceChannel[1]) + "\n");
-  tracerTextStr.append(floatToNiceString(tracer->position->value(), 4, true, false) + getYUnit() + "\n");
-  tracerTextStr.append(floatToNiceString(tracer->position->key(), 4, true, false) + getXUnit());
+
+  if (unitTickerY->usePrefix)
+    tracerTextStr.append(floatToNiceString(tracer->position->value(), 4, true, false) + getYUnit() + "\n");
+  else
+    tracerTextStr.append(QString::number(tracer->position->value(), 'g', 4) + " " + getYUnit() + "\n");
+
+  if (getXUnit().isEmpty())
+    tracerTextStr.append(QString::number(tracer->position->key(), 'g', 4));
+  else
+    tracerTextStr.append(floatToNiceString(tracer->position->key(), 4, true, false) + getXUnit());
+
   tracerText->setText(tracerTextStr);
   checkIfTracerTextFits();
   tracerLayer->replot();

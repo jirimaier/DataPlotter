@@ -41,7 +41,8 @@ SOURCES += \
     qcustomplot.cpp \
     serialreader.cpp \
     serialsettingsdialog.cpp \
-    signalprocessing.cpp
+    signalprocessing.cpp \
+    xymode.cpp
 
 HEADERS += \
     averager.h \
@@ -68,7 +69,8 @@ HEADERS += \
     qcustomplot.h \
     serialreader.h \
     serialsettingsdialog.h \
-    signalprocessing.h
+    signalprocessing.h \
+    xymode.h
 
 FORMS += mainwindow.ui \
     serialsettingsdialog.ui

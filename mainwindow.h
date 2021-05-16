@@ -25,6 +25,7 @@
 #include <QTimer>
 #include <QTranslator>
 #include <QtCore>
+#include <QElapsedTimer>
 
 #include "global.h"
 #include "plotdata.h"
@@ -56,7 +57,7 @@ class MainWindow : public QMainWindow {
   Ui::MainWindow* ui;
   SerialSettingsDialog* serialSettingsDialog;
   QTranslator* translator;
-  QTimer portsRefreshTimer, activeChRefreshTimer, xyTimer, cursorRangeUpdateTimer, measureRefreshTimer1, measureRefreshTimer2, fftTimer1, fftTimer2, serialMonitorTimer, interpolationTimer, triggerLineTimer;
+  QTimer portsRefreshTimer, activeChRefreshTimer, xyTimer, cursorRangeUpdateTimer, measureRefreshTimer1, measureRefreshTimer2, fftTimer1, fftTimer2, serialMonitorTimer, consoleTimer, interpolationTimer, triggerLineTimer;
   QList<QSerialPortInfo> portList;
 
   void setComboboxItemVisible(QComboBox& comboBox, int index, bool visible);
@@ -108,6 +109,7 @@ class MainWindow : public QMainWindow {
   QIcon iconRun, iconPause, iconHidden, iconVisible, iconConnected, iconNotConnected, iconCross, iconAbsoluteCursor;
 
   QByteArray serialMonitor;
+  QStringList consoleBuffer;
 
   void setCursorsVisibility(Cursors::enumCursors cursor, int graph, int timeCurState, int valueCurState);
   void updateXYCursorsCalculations();
@@ -147,6 +149,7 @@ class MainWindow : public QMainWindow {
   void turnOffTriggerLine() {ui->plot->setTriggerLineVisible(false);}
   bool addColorToBlacklist(QByteArray code);
   void updateColorBlacklist();
+  void updateConsole();
 
  private slots: // Autoconnect slots
   void on_dialRollingRange_realValueChanged(double value) { ui->doubleSpinBoxRangeHorizontal->setValue(value); }
@@ -284,10 +287,9 @@ class MainWindow : public QMainWindow {
   void on_pushButtonTerminalBlacklisAdd_clicked();
   void on_checkBoxEnablTerminalVScrollBar_toggled(bool checked);
   void on_lineEditTerminalBlacklist_textChanged(const QString& arg1);
-
   void on_comboBoxBaud_currentTextChanged(const QString& arg1);
-
   void on_pushButtonTerminalBlacklistCopy_clicked();
+  void on_pushButtonTerminalCopy_clicked();
 
  public slots:
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumMessageTarget target);

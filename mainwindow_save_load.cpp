@@ -42,6 +42,7 @@ void MainWindow::initSetables() {
   setables["rstcmd"] = ui->lineEditResetCmd;
   setables["autoautoset"] = ui->checkBoxAutoAutoSet;
   setables["termvscroll"] = ui->checkBoxEnablTerminalVScrollBar;
+  setables["nofreeze"] = ui->checkBoxFreezeSafe;
 
   // Send
   setables["sendend"] = ui->comboBoxLineEnding;
@@ -194,10 +195,6 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarg
 
     else if (type == "baud") {
       ui->comboBoxBaud->setEditText(QString::number(value.toUInt()));
-    }
-
-    else if (type == "connectme") {
-      ui->comboBoxBaud->setCurrentText(QString::number(value.toUInt()));
     }
 
     else if (type == "presetport") {

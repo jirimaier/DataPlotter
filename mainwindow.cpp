@@ -186,7 +186,8 @@ void MainWindow::printMessage(QString messageHeader, QByteArray messageBody, int
   stringMessage = messageBody;
 
   if (target == MessageTarget::serial1)
-    ui->plainTextEditConsole->appendHtml(color + QString(messageHeader) + "</font color>" + (stringMessage.isEmpty() ? "" : ": ") + stringMessage);
+    //ui->plainTextEditConsole->appendHtml(color + QString(messageHeader) + "</font color>" + (stringMessage.isEmpty() ? "" : ": ") + stringMessage);
+    consoleBuffer.append(color + QString(messageHeader) + "</font color>" + (stringMessage.isEmpty() ? "" : ": ") + stringMessage);
   else
     ui->plainTextEditConsole_2->appendHtml(color + QString(messageHeader) + "</font color>" + (stringMessage.isEmpty() ? "" : ": ") + stringMessage);
 }
@@ -364,6 +365,7 @@ void MainWindow::on_lineEditHUnit_textChanged(const QString& arg1) {
   }
 
   ui->plot->setXUnit(unit, timeUseUnits);
+  ui->plotxy->tUnit = unit;
   ui->doubleSpinBoxRangeHorizontal->setUnit(unit, timeUseUnits);
   ui->doubleSpinBoxXCur1->setUnit(unit, timeUseUnits);
   ui->doubleSpinBoxXCur2->setUnit(unit, timeUseUnits);
@@ -517,4 +519,8 @@ void MainWindow::on_pushButtonTerminalBlacklistCopy_clicked() {
   settingsEntry.remove(settingsEntry.length() - 1, 1);
   settingsEntry.append(";\n");
   clipboard ->setText(settingsEntry);
+}
+
+void MainWindow::on_pushButtonTerminalCopy_clicked() {
+  ui->myTerminal->copyToClipboard();
 }

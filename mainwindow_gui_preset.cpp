@@ -55,6 +55,7 @@ void MainWindow::connectSignals() {
   connect(&fftTimer2, &QTimer::timeout, this, &::MainWindow::updateFFT2);
   connect(&xyTimer, &QTimer::timeout, this, &::MainWindow::updateXY);
   connect(&serialMonitorTimer, &QTimer::timeout, this, &MainWindow::updateSerialMonitor);
+  connect(&serialMonitorTimer, &QTimer::timeout, this, &MainWindow::updateConsole);
   connect(&dataRateTimer, &QTimer::timeout, this, &MainWindow::updateDataRate);
   connect(&interpolationTimer, &QTimer::timeout, this, &MainWindow::updateInterpolation);
   connect(&triggerLineTimer, &QTimer::timeout, this, &MainWindow::turnOffTriggerLine);
@@ -88,6 +89,7 @@ void MainWindow::startTimers() {
   serialMonitorTimer.start(500);
   dataRateTimer.start(1000);
   interpolationTimer.start(50);
+  consoleTimer.start(250);
 }
 
 void MainWindow::setGuiDefaults() {

@@ -36,10 +36,9 @@ class PlotMath : public QObject {
   void addMathData(int mathNumber, bool isFirst, QSharedPointer<QCPGraphDataContainer> in, bool shouldIgnorePause);
   void clearMath(int math);
   void resetMath(int mathNumber, MathOperations::enumMathOperations mode, QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2);
-  void calculateXY(QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2, bool removeDC);
+
  signals:
   void sendResult(int chNumber, QSharedPointer<QCPGraphDataContainer> result, bool ignorePause);
-  void sendResultXY(QSharedPointer<QCPCurveDataContainer> result);
   void sendMessage(QString header, QByteArray message, MessageLevel::enumMessageLevel type = MessageLevel::error, MessageTarget::enumMessageTarget target = MessageTarget::serial1);
 };
 

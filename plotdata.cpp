@@ -202,7 +202,7 @@ void PlotData::addPoint(QList<QPair<ValueType, QByteArray>> data) {
         uint32_t digitalValue = getBits(data.at(ch));
         for (uint8_t bit = 0; bit < bits; bit++)
           digitalChannels.append((((bool)((digitalValue) & ((uint32_t)1 << (bit)))) + bit * 3));
-        for (int logicGroup = 0; logicGroup < LOGIC_GROUPS; logicGroup++) {
+        for (int logicGroup = 0; logicGroup < LOGIC_GROUPS - 1; logicGroup++) {
           if (logicTargets[logicGroup] != ch)
             continue;
           if (logicBits[ch - 1] > 0 && logicBits[ch - 1] < bits)
@@ -340,7 +340,7 @@ void PlotData::addChannel(QPair<ValueType, QByteArray> data, unsigned int ch, QP
   }
 
   bool isLogic = false;
-  for (int i = 0; i < LOGIC_GROUPS; i++)
+  for (int i = 0; i < LOGIC_GROUPS - 1; i++)
     if (logicTargets[i] == ch)
       isLogic = true;
   if (isLogic && data.first.type != ValueType::Type::unsignedint) {
@@ -395,7 +395,7 @@ void PlotData::addChannel(QPair<ValueType, QByteArray> data, unsigned int ch, QP
       for (uint8_t bit = 0; bit < bits; bit++)
         digitalChannels.at(bit)->add(QCPGraphData(times.at(i), ((bool)((valuesDigital.at(i)) & ((uint32_t)1 << (bit)))) + bit * 3));
 
-    for (int logicGroup = 0; logicGroup < LOGIC_GROUPS; logicGroup++) {
+    for (int logicGroup = 0; logicGroup < LOGIC_GROUPS - 1; logicGroup++) {
       if (logicTargets[logicGroup] != ch)
         continue;
       if (logicBits[ch - 1] > 0 && logicBits[ch - 1] < (unsigned int)bits)

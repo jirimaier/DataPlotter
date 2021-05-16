@@ -98,6 +98,14 @@ void MyTerminal::printText(QByteArray bytes) {
       while (cursorX % 8);
       continue;
     }
+
+    if (text.at(i) == '_') { // Podtržítko je mod hluboko a nevejde se do pole, nahradí se podtržením.
+      bool wasUnderlined = font.underline();
+      font.setUnderline(true);
+      printChar('_');
+      font.setUnderline(wasUnderlined);
+      continue;
+    }
     printChar(text.at(i));
   }
 }
@@ -334,6 +342,25 @@ void MyTerminal::parseEscapeCode(QByteArray data) {
 void MyTerminal::printToTerminal(QByteArray data) {
   buffer.push_back(data);
   while (!buffer.isEmpty()) {
+    if ((((uint8_t)buffer.at(buffer.length() - 1)) & 0b10000000) == 0b10000000) { //1xxxxxxx
+      if ((((uint8_t)buffer.at(buffer.length() - 1)) & 0b11000000) == 0b10000000) { //10xxxxxx
+        //Poslední znak je UTF-8, ale ne první bajt, je potřeba zjistit, jestli jde o poslední z bajtů (kompletní znak)
+        bool complete = false;
+        if ((buffer.length() >= 2) && (((uint8_t)buffer.at(buffer.length() - 2)) & 0b11100000) == 0b11000000) //110xxxxx 10xxxxxx
+          complete = true;
+
+        else if ((buffer.length() >= 3) && (((uint8_t)buffer.at(buffer.length() - 3)) & 0b11110000) == 0b11100000) //1110xxxx 10xxxxxx 10xxxxxx
+          complete = true;
+
+        else if ((buffer.length() >= 4) && (((uint8_t)buffer.at(buffer.length() - 4)) & 0b11111000) == 0b11110000) //11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
+          complete = true;
+
+        if (!complete)
+          return;
+      } else
+        return; // Pozlední znak je začátek UTF-8 znaku, je potřeba počkat na zbytek
+    }
+
     if (buffer.at(0) != '\u001b') {
       if (!buffer.contains('\u001b')) {
         printText(buffer);

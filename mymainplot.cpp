@@ -198,9 +198,18 @@ void MyMainPlot::updateTracerText(int index) {
     else
       tracerTextStr.append("LOW");
     tracerTextStr.append("\n");
-  } else
-    tracerTextStr.append(floatToNiceString(tracer->position->value(), 4, true, false) + getYUnit() + "\n");
-  tracerTextStr.append(floatToNiceString(tracer->position->key(), 4, true, false) + getXUnit());
+  } else {
+    if (unitTickerY->usePrefix)
+      tracerTextStr.append(floatToNiceString(tracer->position->value(), 4, true, false) + getYUnit() + "\n");
+    else
+      tracerTextStr.append(QString::number(tracer->position->value(), 'g', 4) + " " + getYUnit() + "\n");
+  }
+
+  if (getXUnit().isEmpty())
+    tracerTextStr.append(QString::number(tracer->position->key(), 'g', 4));
+  else
+    tracerTextStr.append(floatToNiceString(tracer->position->key(), 4, true, false) + getXUnit());
+
   tracerText->setText(tracerTextStr);
   checkIfTracerTextFits();
   tracerLayer->replot();

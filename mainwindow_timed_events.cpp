@@ -283,9 +283,13 @@ void MainWindow::updateInterpolation() {
 }
 
 void MainWindow::updateSerialMonitor() {
-  //serialMonitorTimer.stop();
   if (serialMonitor.isEmpty() || !ui->checkBoxSerialMonitor->isChecked())
     return;
+
+  serialMonitorTimer.stop();
+
+  QElapsedTimer tmr;
+  tmr.start();
 
   if (ui->pushButtonDolarNewline->isChecked()) {
     serialMonitor.replace("\n", "");
@@ -308,7 +312,30 @@ void MainWindow::updateSerialMonitor() {
   else
     scroll->setValue(lastVal);
 
-  //serialMonitorTimer.start();
+  if (tmr.elapsed() > 100) {
+    ui->checkBoxSerialMonitor->setChecked(false);
+    QMessageBox::warning(this, tr("Freeze prevention"), tr("Printing text takes too long, disabling serial monitor!"), QMessageBox::Ok, QMessageBox::Ok);
+  }
+
+  serialMonitorTimer.start();
+}
+
+void MainWindow::updateConsole() {
+  if (consoleBuffer.isEmpty())
+    return;
+
+  consoleTimer.stop();
+
+  QElapsedTimer tmr;
+  tmr.start();
+  foreach (QString str, consoleBuffer)
+    ui->plainTextEditConsole->appendHtml(str);
+  consoleBuffer.clear();
+  if (tmr.elapsed() > 100 && ui->checkBoxFreezeSafe->isChecked() && ui->comboBoxOutputLevel->currentIndex() == OutputLevel::info) {
+    ui->comboBoxOutputLevel->setCurrentIndex(OutputLevel::warning);
+    QMessageBox::warning(this, tr("Freeze prevention"), tr("Printing text takes too long, disabling info messages!"), QMessageBox::Ok, QMessageBox::Ok);
+  }
+  consoleTimer.start();
 }
 
 void MainWindow::updateDataRate() {

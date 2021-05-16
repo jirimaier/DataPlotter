@@ -92,9 +92,21 @@ void MyXYPlot::autoset() {
 
 void MyXYPlot::updateTracerText() {
   QString tracerTextStr;
-  tracerTextStr.append("X: " + floatToNiceString(tracer->position->key(), 4, true, false) + getXUnit() + "\n");
-  tracerTextStr.append("Y: " + floatToNiceString(tracer->position->value(), 4, true, false) + getYUnit() + "\n");
-  tracerTextStr.append("t: " + floatToNiceString(graphXY->data().data()->at(tracer->sampleNumber())->t, 4, true, false) + tUnit);
+  if (unitTickerX->usePrefix)
+    tracerTextStr.append("X: " + floatToNiceString(tracer->position->key(), 4, true, false) + getXUnit() + "\n");
+  else
+    tracerTextStr.append("X: " + QString::number(+tracer->position->key(), 'g', 4) + " " + getXUnit() + "\n");
+
+  if (unitTickerY->usePrefix)
+    tracerTextStr.append("Y: " + floatToNiceString(tracer->position->value(), 4, true, false) + getYUnit() + "\n");
+  else
+    tracerTextStr.append("Y: " + QString::number(tracer->position->value(), 'g', 4) + " " + getYUnit() + "\n");
+
+  if (tUnit.isEmpty())
+    tracerTextStr.append("t: " + QString::number(graphXY->data().data()->at(tracer->sampleNumber())->t, 'g', 4));
+  else
+    tracerTextStr.append("t: " + floatToNiceString(graphXY->data().data()->at(tracer->sampleNumber())->t, 4, true, false) + tUnit);
+
   tracerText->setText(tracerTextStr);
   checkIfTracerTextFits();
   tracerLayer->replot();

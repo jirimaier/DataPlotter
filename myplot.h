@@ -31,7 +31,6 @@ class MyPlot : public QCustomPlot {
   int yGridHint = -3;
   double lastGridX = 0, lastGridY = 0;
   QSharedPointer<QCPAxisTickerTime> timeTickerX, longTimeTickerX;
-  QSharedPointer<MyAxisTickerWithUnit> unitTickerX, unitTickerY;
   void setVerticalDiv(double value);
   void setHorizontalDiv(double value);
   bool isFreeMove = false;
@@ -83,6 +82,8 @@ class MyPlot : public QCustomPlot {
   QCursor defaultMouseCursor = Qt::ArrowCursor;
 
   QColor transparentWhite = QColor::fromRgbF(1, 1, 1, 0.8);
+
+  QSharedPointer<MyAxisTickerWithUnit> unitTickerX, unitTickerY;
 
   virtual void leaveEvent(QMouseEvent* event);
 

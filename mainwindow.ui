@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>986</width>
-    <height>714</height>
+    <height>742</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -744,7 +744,7 @@
              <enum>QTabWidget::Rounded</enum>
             </property>
             <property name="currentIndex">
-             <number>2</number>
+             <number>5</number>
             </property>
             <property name="iconSize">
              <size>
@@ -5530,7 +5530,7 @@
                  <item>
                   <widget class="QComboBox" name="comboBoxFFTType">
                    <property name="toolTip">
-                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Type of graph shown&lt;/p&gt;&lt;p&gt;Spectrum: module of DFT result in linear scale&lt;/p&gt;&lt;p&gt;Periodogram: (|X|^2)/N in decibel&lt;/p&gt;&lt;p&gt;Welch PSD: power spectral density estimate using Welch's method. Unit should be dB/(rad/sample)).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Type of graph shown:&lt;/p&gt;&lt;p&gt;Spectrum: module of DFT result in linear scale, normalized by number of samples.&lt;/p&gt;&lt;p&gt;Periodogram: spectrum in decibel, 1 V&lt;span style=&quot; vertical-align:sub;&quot;&gt;DC&lt;/span&gt;  equals 0 dB.&lt;/p&gt;&lt;p&gt;Welch PSD: periodogram calculated using Welch's method.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                    </property>
                    <property name="currentIndex">
                     <number>0</number>
@@ -7129,7 +7129,7 @@
            </size>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>0</number>
           </property>
           <property name="iconSize">
            <size>
@@ -7286,7 +7286,7 @@
                 </item>
                 <item>
                  <property name="text">
-                  <string notr="true">1000000</string>
+                  <string notr="true">921600</string>
                  </property>
                 </item>
                 <item>
@@ -7296,7 +7296,17 @@
                 </item>
                 <item>
                  <property name="text">
+                  <string notr="true">460800</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
                   <string notr="true">250000</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string notr="true">230400</string>
                  </property>
                 </item>
                 <item>
@@ -8720,6 +8730,26 @@ padding:3px;
                   </widget>
                  </item>
                 </layout>
+               </item>
+               <item>
+                <widget class="Line" name="line_12">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QCheckBox" name="checkBoxFreezeSafe">
+                 <property name="toolTip">
+                  <string>If there is too much text printed to console or serial monitor, it will be disabled.</string>
+                 </property>
+                 <property name="text">
+                  <string>Prevent freezing</string>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
+                 </property>
+                </widget>
                </item>
               </layout>
              </widget>

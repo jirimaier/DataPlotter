@@ -55,6 +55,7 @@
 #include "signalprocessing.h"
 #include "interpolator.h"
 #include "averager.h"
+#include "xymode.h"
 
 Q_DECLARE_METATYPE(ChannelSettings_t)
 Q_DECLARE_METATYPE(DataMode::enumDataMode)
@@ -112,6 +113,7 @@ int main(int argc, char* argv[]) {
   NewSerialParser* serialParserM = new NewSerialParser(MessageTarget::manual);
   SerialReader* serial1 = new SerialReader();
   PlotMath* plotMath = new PlotMath();
+  XYMode* xyMode = new XYMode();
   SignalProcessing* signalProcessing1 = new SignalProcessing();
   SignalProcessing* signalProcessing2 = new SignalProcessing();
   SignalProcessing* signalProcessingFFT1 = new SignalProcessing();
@@ -120,7 +122,7 @@ int main(int argc, char* argv[]) {
   Averager* averager = new Averager();
 
   // Vytvoří vlákna
-  QThread plotDataThread;
+  //QThread plotDataThread;
   QThread serialParser1Thread;
   QThread serialParserMThread;
   QThread plotMathThread;
@@ -128,6 +130,7 @@ int main(int argc, char* argv[]) {
   QThread signalProcessing1Thread, signalProcessing2Thread, signalProcessingFFT1Thread, signalProcessingFFT2Thread;
   QThread interpolatorThread;
   QThread averagerThread;
+  QThread xyThread;
 
   // Propojí signály
   QObject::connect(serial1, &SerialReader::sendData, serialParser1, &NewSerialParser::parse);
@@ -174,7 +177,7 @@ int main(int argc, char* argv[]) {
   QObject::connect(&mainWindow, &MainWindow::setChDigital, plotData, &PlotData::setDigitalChannel);
   QObject::connect(&mainWindow, &MainWindow::setLogicBits, plotData, &PlotData::setLogicBits);
   QObject::connect(&mainWindow, &MainWindow::resetMath, plotMath, &PlotMath::resetMath);
-  QObject::connect(&mainWindow, &MainWindow::requestXY, plotMath, &PlotMath::calculateXY);
+  QObject::connect(&mainWindow, &MainWindow::requestXY, xyMode, &XYMode::calculateXY);
   QObject::connect(plotData, &PlotData::addMathData, plotMath, &PlotMath::addMathData);
   QObject::connect(&mainWindow, &MainWindow::setMathFirst, plotData, &PlotData::setMathFirst);
   QObject::connect(&mainWindow, &MainWindow::setMathSecond, plotData, &PlotData::setMathSecond);
@@ -187,7 +190,7 @@ int main(int argc, char* argv[]) {
   QObject::connect(signalProcessing2, &SignalProcessing::result, &mainWindow, &MainWindow::signalMeasurementsResult2);
   QObject::connect(signalProcessingFFT1, &SignalProcessing::fftResult, &mainWindow, &MainWindow::fftResult1);
   QObject::connect(signalProcessingFFT2, &SignalProcessing::fftResult, &mainWindow, &MainWindow::fftResult2);
-  QObject::connect(plotMath, &PlotMath::sendResultXY, &mainWindow, &MainWindow::xyResult);
+  QObject::connect(xyMode, &XYMode::sendResultXY, &mainWindow, &MainWindow::xyResult);
   QObject::connect(&mainWindow, &MainWindow::interpolate, interpolator, &Interpolator::interpolate);
   QObject::connect(interpolator, &Interpolator::interpolationResult, &mainWindow, &MainWindow::interpolationResult);
   QObject::connect(&mainWindow, &MainWindow::setAverager, plotData, &PlotData::setAverager);
@@ -206,8 +209,11 @@ int main(int argc, char* argv[]) {
   serial1->moveToThread(&serialReader1Thread);
   serialParser1->moveToThread(&serialParser1Thread);
   serialParserM->moveToThread(&serialParserMThread);
-  plotData->moveToThread(&plotDataThread);
+
+  plotData->moveToThread(&serialParser1Thread);
   plotMath->moveToThread(&plotMathThread);
+
+  xyMode->moveToThread(&xyThread);
   signalProcessing1->moveToThread(&signalProcessing1Thread);
   signalProcessing2->moveToThread(&signalProcessing2Thread);
   signalProcessingFFT1->moveToThread(&signalProcessingFFT1Thread);
@@ -219,7 +225,7 @@ int main(int argc, char* argv[]) {
   serialReader1Thread.start();
   serialParser1Thread.start();
   serialParserMThread.start();
-  plotDataThread.start();
+  //plotDataThread.start();
   plotMathThread.start();
   signalProcessing1Thread.start();
   signalProcessing2Thread.start();
@@ -227,6 +233,7 @@ int main(int argc, char* argv[]) {
   signalProcessingFFT2Thread.start();
   interpolatorThread.start();
   averagerThread.start();
+  xyThread.start();
 
   // Zobrazí okno a čeká na ukončení
   mainWindow.init(&translator, plotData, plotMath, serial1, averager);
@@ -245,11 +252,12 @@ int main(int argc, char* argv[]) {
   signalProcessingFFT2->deleteLater();
   interpolator->deleteLater();
   averager->deleteLater();
+  xyMode->deleteLater();
 
   // Vyžádá ukončení event loopu
   serialParser1Thread.quit();
   serialParserMThread.quit();
-  plotDataThread.quit();
+  //plotDataThread.quit();
   plotMathThread.quit();
   serialReader1Thread.quit();
   signalProcessing1Thread.quit();
@@ -258,11 +266,12 @@ int main(int argc, char* argv[]) {
   signalProcessingFFT2Thread.quit();
   interpolatorThread.quit();
   averagerThread.quit();
+  xyThread.quit();
 
   // Čeká na ukončení procesů
   serialParser1Thread.wait();
   serialParserMThread.wait();
-  plotDataThread.wait();
+  //plotDataThread.wait();
   plotMathThread.wait();
   serialReader1Thread.wait();
   signalProcessing1Thread.wait();
@@ -271,6 +280,7 @@ int main(int argc, char* argv[]) {
   signalProcessingFFT2Thread.wait();
   interpolatorThread.wait();
   averagerThread.wait();
+  xyThread.wait();
 
   return returnValue;
 }

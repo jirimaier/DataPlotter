@@ -91,13 +91,17 @@ void SignalProcessing::getFFTPlot(QSharedPointer<QCPGraphDataContainer> data, FF
     for (int i = 0; i < data->size(); i++)
       values.append(std::complex<double>(data->at(i)->value, 0));
 
-    QElapsedTimer timer;
-    timer.start();
+    double normalization = data->size();
+    if (window == FFTWindow::hamming)
+      normalization *= 0.54;
+    else if (window == FFTWindow::hann)
+      normalization *= 0.5;
+    else if (window == FFTWindow::blackman)
+      normalization *= 0.42;
+    double normalizationSquared = normalization * normalization;
 
     QVector<std::complex<double>> resultValues = calculateSpectrum(values, window, minNFFT);
     int nfft = resultValues.size();
-
-    qDebug() << nfft << " point FFT took " << timer.nsecsElapsed() << "nanoseconds";
 
     auto result = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer);
     double freqStep = fs / nfft;
@@ -109,9 +113,9 @@ void SignalProcessing::getFFTPlot(QSharedPointer<QCPGraphDataContainer> data, FF
         // Výpočet |x|^2 jako x * komplexně sdružené x;
         double absSquared = (resultValues.at(i) * std::complex<double>(resultValues.at(i).real(), -resultValues.at(i).imag())).real();
         // double absSquared = abs(resultValues.at(i)) * abs(resultValues.at(i));
-        result->add(QCPGraphData(freq, 10 * log10(absSquared / nfft)));
+        result->add(QCPGraphData(freq, 10 * log10(absSquared / normalizationSquared)));
       } else
-        result->add(QCPGraphData(freq, std::abs(resultValues.at(i))));
+        result->add(QCPGraphData(freq, std::abs(resultValues.at(i)) / normalization));
     }
     emit fftResult(result);
   }
@@ -141,6 +145,15 @@ void SignalProcessing::getFFTPlot(QSharedPointer<QCPGraphDataContainer> data, FF
         segments[i].append(std::complex<double>(data->at(j)->value, 0));
     }
 
+    double normalization = 2 * halfSegmentLength;
+    if (window == FFTWindow::hamming)
+      normalization *= 0.54;
+    else if (window == FFTWindow::hann)
+      normalization *= 0.5;
+    else if (window == FFTWindow::blackman)
+      normalization *= 0.42;
+    double normalizationSquared = normalization * normalization;
+
     // Výpočet spektra pro jednotlivé segmenty
     // Funkce calculateSpectrum použije okno a doplní nulami na mocninu dvou
     for (int i = 0; i < segments.size(); i++) {
@@ -161,7 +174,7 @@ void SignalProcessing::getFFTPlot(QSharedPointer<QCPGraphDataContainer> data, FF
         // Přičte k value |x|^2, Výpočet |x|^2 jako x * komplexně sdružené x;
         value += (segments.at(j).at(i) * std::complex<double>(segments.at(j).at(i).real(), -segments.at(j).at(i).imag())).real();
       //Přidá do výsledku bod - součet hodnot ze segmentů dělený nfft a počtem segmentů. V dB.
-      result->add(QCPGraphData(freq, 10 * log10(value / nfft / segments.size())));
+      result->add(QCPGraphData(freq, 10 * log10(value / normalizationSquared / segments.size())));
     }
     emit fftResult(result);
   }
