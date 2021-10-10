@@ -268,13 +268,17 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarg
         ui->radioButtonLayoutXY->setChecked(true);
     }
 
-    else if (type == "noclickclr") {
+    else if (type == "noclickclr" || type == "clickclr") {
       QByteArrayList list = value.replace('.', ';').split(',');
       ui->listWidgetTerminalBlacklist->clear();
       foreach (QByteArray item, list) {
         if (!addColorToBlacklist(item))
           printMessage(tr("Invalid color-code").toUtf8(), item, MessageLevel::error, source);
       }
+      if (type == "noclickclr")
+        ui->radioButtonColorBlacklist->setChecked(true);
+      if (type == "clickclr")
+        ui->radioButtonColorWhitelist->setChecked(true);
       updateColorBlacklist();
     }
 

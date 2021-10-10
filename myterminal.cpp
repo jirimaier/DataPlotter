@@ -49,6 +49,11 @@ MyTerminal::~MyTerminal() {
         delete this->item(r, c);
 }
 
+void MyTerminal::setColorExceptionList(QList<QColor> newlist, bool isBlacklist) {
+  exceptionList = newlist;
+  exeptionListIsBlacklist = isBlacklist;
+}
+
 bool MyTerminal::colorFromSequence(QByteArray code, QColor& clr) {
   code.remove(0, 1);
 
@@ -316,11 +321,15 @@ void MyTerminal::parseEscapeCode(QByteArray data) {
   }
 
   // Vymazat od kursoru na konec všeho
-  else if (data == "0J" || data == "J")
+  else if (data == "0J" || data == "J") {
+    clearLineRight();
     clearDown();
+  }
   // Vymazet od kursoru po začátek všeho
-  else if (data == "1J")
+  else if (data == "1J") {
+    clearLineLeft();
     clearUp();
+  }
   // Vymazat všechno
   else if (data == "2J")
     clearTerminal();
@@ -493,12 +502,12 @@ void MyTerminal::clearLine(uint16_t line) {
 }
 
 void MyTerminal::clearLineLeft() {
-  for (uint16_t i = 0; i < cursorX; i++)
+  for (uint16_t i = 0; i <= cursorX; i++)
     clearCell(i, cursorY);
 }
 
 void MyTerminal::clearLineRight() {
-  for (uint16_t i = cursorX + 1; i < this->columnCount(); i++)
+  for (uint16_t i = cursorX; i < this->columnCount(); i++)
     clearCell(i, cursorY);
 }
 
@@ -536,7 +545,9 @@ void MyTerminal::characterClicked(int r, int c) {
   if (mode == clicksend) {
     QTableWidgetItem* it = item(r, c);
     if (it) {
-      if (blacklist.contains(it->background().color()))
+      if (exeptionListIsBlacklist && exceptionList.contains(it->background().color()))
+        return;
+      if (!exeptionListIsBlacklist && !exceptionList.contains(it->background().color()))
         return;
 
       emit writeToSerial(it->text().toUtf8());

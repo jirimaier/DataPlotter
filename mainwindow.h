@@ -291,6 +291,8 @@ class MainWindow : public QMainWindow {
   void on_pushButtonTerminalBlacklistCopy_clicked();
   void on_pushButtonTerminalCopy_clicked();
 
+  void on_radioButtonColorBlacklist_toggled(bool checked);
+
  public slots:
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumMessageTarget target);
   void showPlotStatus(PlotStatus::enumPlotStatus type);

@@ -37,7 +37,7 @@ class MyTerminal : public QTableWidget {
   QByteArray nearestColorCode(QColor color);
   ~MyTerminal();
   QMap<QString, QColor> colorCodes;
-  void setColorBlacklist(QList<QColor> newlist) {blacklist = newlist;}
+  void setColorExceptionList(QList<QColor> newlist, bool isBlacklist);
 
   /// Převede kód na barvu, kód musí obsahovat 3/4 na začátku a nesmí mít m na konci
   bool colorFromSequence(QByteArray code, QColor& clr);
@@ -85,7 +85,8 @@ class MyTerminal : public QTableWidget {
   void addRows(int newCount);
   void addColumns(int newCount);
   void clearCell(int x, int y);
-  QList<QColor> blacklist;
+  bool exeptionListIsBlacklist = true;
+  QList<QColor> exceptionList;
  private slots:
 
   void resetBlinkedItem();

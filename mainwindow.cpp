@@ -475,7 +475,7 @@ void MainWindow::updateColorBlacklist() {
     list.append(pixmap.toImage().pixel(0, 0));
   }
 
-  ui->myTerminal->setColorBlacklist(list);
+  ui->myTerminal->setColorExceptionList(list, ui->radioButtonColorBlacklist->isChecked());
 }
 
 void MainWindow::on_pushButtonTerminalBlacklistClear_clicked() {
@@ -523,4 +523,9 @@ void MainWindow::on_pushButtonTerminalBlacklistCopy_clicked() {
 
 void MainWindow::on_pushButtonTerminalCopy_clicked() {
   ui->myTerminal->copyToClipboard();
+}
+
+void MainWindow::on_radioButtonColorBlacklist_toggled(bool checked) {
+  Q_UNUSED(checked);
+  updateColorBlacklist();
 }
