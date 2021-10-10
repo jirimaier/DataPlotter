@@ -317,23 +317,23 @@ void MyTerminal::parseEscapeCode(QByteArray data) {
 
   // Vymazat od kursoru na konec všeho
   else if (data == "0J" || data == "J")
-    clearUp();
+    clearDown();
   // Vymazet od kursoru po začátek všeho
   else if (data == "1J")
-    clearDown();
+    clearUp();
   // Vymazat všechno
   else if (data == "2J")
     clearTerminal();
 
   // Vymazat od kursoru na konec řádku
   else if (data == "0K" || data == "K")
-    clearUp();
+    clearLineRight();
   // Vymazet od kursoru po začátek řádku
   else if (data == "1K")
-    clearDown();
+    clearLineLeft();
   // Vymazat řádek
   else if (data == "2K")
-    clearTerminal();
+    clearLine();
 
   else
     emit sendMessage(tr("Invalid escape sequence").toUtf8(), data, MessageLevel::error);

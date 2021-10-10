@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>986</width>
-    <height>742</height>
+    <height>746</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -7129,7 +7129,7 @@
            </size>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <property name="iconSize">
            <size>
@@ -8432,12 +8432,12 @@ padding:3px;
                  </item>
                  <item>
                   <property name="text">
-                   <string>0K Clear line left</string>
+                   <string>0K Clear line right</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
-                   <string>1K Clear line right</string>
+                   <string>1K Clear line left</string>
                   </property>
                  </item>
                  <item>
