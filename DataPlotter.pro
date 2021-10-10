@@ -30,6 +30,7 @@ SOURCES += \
     myfftplot.cpp \
     mymainplot.cpp \
     mymodifiedqcptracer.cpp \
+    mypeakplot.cpp \
     myplot.cpp \
     mypow2spinbox.cpp \
     myscaledoublespinbox.cpp \
@@ -58,6 +59,7 @@ HEADERS += \
     myfftplot.h \
     mymainplot.h \
     mymodifiedqcptracer.h \
+    mypeakplot.h \
     myplot.h \
     mypow2spinbox.h \
     myscaledoublespinbox.h \

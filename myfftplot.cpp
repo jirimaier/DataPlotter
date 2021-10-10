@@ -118,6 +118,15 @@ void MyFFTPlot::newData(int chID, QSharedPointer<QCPGraphDataContainer> data) {
     autoset();
   this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
 
+  double peakAmp = -Q_INFINITY, peakFreq = 0;
+  for (int i = graph(chID)->findBegin(xAxis->range().lower, false); i < graph(chID)->findEnd(xAxis->range().upper, false) - 1; i++) {
+    if (graph(chID)->data()->at(i)->value > peakAmp) {
+      peakAmp = graph(chID)->data()->at(i)->value;
+      peakFreq = graph(chID)->data()->at(i)->key;
+    }
+  }
+  emit newPeakValues(chID, peakFreq, peakAmp);
+
   // Přepsat text u traceru
   if (tracer->visible() && currentTracerIndex == chID) {
     updateTracerText(currentTracerIndex);

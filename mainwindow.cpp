@@ -24,6 +24,9 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
 
   for (int i = 0; i < ANALOG_COUNT; i++)
     averagerCounts[i] = 8;
+
+  ui->plotPeak->setUptimeTimer(&uptime);
+  uptime.start();
 }
 
 MainWindow::~MainWindow() { delete ui; delete serialSettingsDialog; }
@@ -126,6 +129,7 @@ void MainWindow::serialConnectResult(bool connected, QString message, QString de
     ui->plotxy->clear();
     ui->plotFFT->clear(0);
     ui->plotFFT->clear(1);
+    ui->plotPeak->clear();
     ui->myTerminal->resetTerminal();
     ui->plainTextEditConsole->clear();
     ui->plainTextEditConsole_3->clear();
@@ -373,6 +377,7 @@ void MainWindow::on_lineEditHUnit_textChanged(const QString& arg1) {
   freqUseUnits = (unit == "s");
 
   ui->plotFFT->setXUnit(freqUseUnits ? "Hz" : "", freqUseUnits);
+  ui->plotPeak->setYUnit(freqUseUnits ? "Hz" : "", freqUseUnits);
 
   if (unit != "s") {
     if (ui->comboBoxHAxisType->currentIndex() > HAxisType::normal) {
@@ -528,4 +533,46 @@ void MainWindow::on_pushButtonTerminalCopy_clicked() {
 void MainWindow::on_radioButtonColorBlacklist_toggled(bool checked) {
   Q_UNUSED(checked);
   updateColorBlacklist();
+}
+
+void MainWindow::on_pushButtonRecordMeasurements1_clicked() {
+  if (recordingOfMeasurements1.isOpen()) {
+    recordingOfMeasurements1.close();
+    recordingOfMeasurements1.setFileName("");
+  } else {
+    if (ui->comboBoxMeasure1->currentIndex() == ui->comboBoxMeasure1->count() - 1)
+      return;
+    QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/%1 measurements").arg(getChName(ui->comboBoxMeasure1->currentIndex()));
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Record measurements"), defaultName, tr("Comma separated values (*.csv)"));
+    if (fileName.isEmpty())
+      return;
+    recordingOfMeasurements1.setFileName(fileName);
+    if (recordingOfMeasurements1.open(QFile::WriteOnly | QFile::Truncate)) {
+      char separator = ui->radioButtonCSVDot->isChecked() ? ',' : ';';
+      recordingOfMeasurements1.write(QByteArray("timestamp,period,freq,amp,min,max,vrms,dc,fs,rise,fall,samples\n").replace(',', separator));
+    }
+  }
+
+  ui->pushButtonRecordMeasurements1->setText(recordingOfMeasurements1.isOpen() ? tr("Stop") : tr("Record"));
+}
+
+void MainWindow::on_pushButtonRecordMeasurements2_clicked() {
+  if (recordingOfMeasurements2.isOpen()) {
+    recordingOfMeasurements2.close();
+    recordingOfMeasurements2.setFileName("");
+  } else {
+    if (ui->comboBoxMeasure1->currentIndex() == ui->comboBoxMeasure1->count() - 1)
+      return;
+    QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/%1 measurements").arg(getChName(ui->comboBoxMeasure1->currentIndex()));
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Record measurements"), defaultName, tr("Comma separated values (*.csv)"));
+    if (fileName.isEmpty())
+      return;
+    recordingOfMeasurements2.setFileName(fileName);
+    if (recordingOfMeasurements2.open(QFile::WriteOnly | QFile::Truncate)) {
+      char separator = ui->radioButtonCSVDot->isChecked() ? ',' : ';';
+      recordingOfMeasurements2.write(QByteArray("timestamp,period,freq,amp,min,max,vrms,dc,fs,rise,fall,samples\n").replace(',', separator));
+    }
+  }
+
+  ui->pushButtonRecordMeasurements1->setText(recordingOfMeasurements2.isOpen() ? tr("Stop") : tr("Record"));
 }

@@ -24,6 +24,8 @@ void MainWindow::exportCSV(int ch) {
       name = "fft";
     else if (ch == EXPORT_XY)
       name = "xy";
+    else if (ch == EXPORT_XY)
+      name = "xy";
     else if (ch == ANALOG_COUNT + MATH_COUNT + LOGIC_GROUPS - 1)
       name = tr("logic");
     else if (ch >= ANALOG_COUNT + MATH_COUNT)

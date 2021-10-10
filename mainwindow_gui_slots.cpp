@@ -344,6 +344,36 @@ void MainWindow::insertInTerminalDebug(QString text, QColor textColor) {
 }
 
 void MainWindow::signalMeasurementsResult1(double period, double freq, double amp, double min, double max, double vrms, double dc, double fs, double rise, double fall, int samples) {
+  if (recordingOfMeasurements1.isOpen()) {
+    char decimal = ui->radioButtonCSVDot->isChecked() ? '.' : ',';
+    char separator = ui->radioButtonCSVDot->isChecked() ? ',' : ';';
+
+    recordingOfMeasurements1.write(QString::number(uptime.elapsed() / 1000.0, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
+    recordingOfMeasurements1.write(QByteArray(&separator, 1));
+    recordingOfMeasurements1.write(QString::number(period, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
+    recordingOfMeasurements1.write(QByteArray(&separator, 1));
+    recordingOfMeasurements1.write(QString::number(freq, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
+    recordingOfMeasurements1.write(QByteArray(&separator, 1));
+    recordingOfMeasurements1.write(QString::number(amp, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
+    recordingOfMeasurements1.write(QByteArray(&separator, 1));
+    recordingOfMeasurements1.write(QString::number(min, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
+    recordingOfMeasurements1.write(QByteArray(&separator, 1));
+    recordingOfMeasurements1.write(QString::number(max, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
+    recordingOfMeasurements1.write(QByteArray(&separator, 1));
+    recordingOfMeasurements1.write(QString::number(vrms, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
+    recordingOfMeasurements1.write(QByteArray(&separator, 1));
+    recordingOfMeasurements1.write(QString::number(dc, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
+    recordingOfMeasurements1.write(QByteArray(&separator, 1));
+    recordingOfMeasurements1.write(QString::number(fs, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
+    recordingOfMeasurements1.write(QByteArray(&separator, 1));
+    recordingOfMeasurements1.write(QString::number(rise, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
+    recordingOfMeasurements1.write(QByteArray(&separator, 1));
+    recordingOfMeasurements1.write(QString::number(fall, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
+    recordingOfMeasurements1.write(QByteArray(&separator, 1));
+    recordingOfMeasurements1.write(QString::number(samples, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
+    recordingOfMeasurements1.write("\n");
+  }
+
   if (valuesUseUnits) {
     ui->labelSig1Vrms->setText(floatToNiceString(vrms, 4, false, false) + ui->plot->getYUnit());
     ui->labelSig1Min->setText(floatToNiceString(min, 4, false, false) + ui->plot->getYUnit());
@@ -382,6 +412,36 @@ void MainWindow::signalMeasurementsResult1(double period, double freq, double am
   measureRefreshTimer1.start(250);
 }
 void MainWindow::signalMeasurementsResult2(double period, double freq, double amp, double min, double max, double vrms, double dc, double fs, double rise, double fall, int samples) {
+  if (recordingOfMeasurements2.isOpen()) {
+    char decimal = ui->radioButtonCSVDot->isChecked() ? '.' : ',';
+    char separator = ui->radioButtonCSVDot->isChecked() ? ',' : ';';
+
+    recordingOfMeasurements2.write(QString::number(uptime.elapsed() / 1000.0, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
+    recordingOfMeasurements2.write(QByteArray(&separator, 1));
+    recordingOfMeasurements2.write(QString::number(period, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
+    recordingOfMeasurements2.write(QByteArray(&separator, 1));
+    recordingOfMeasurements2.write(QString::number(freq, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
+    recordingOfMeasurements2.write(QByteArray(&separator, 1));
+    recordingOfMeasurements2.write(QString::number(amp, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
+    recordingOfMeasurements2.write(QByteArray(&separator, 1));
+    recordingOfMeasurements2.write(QString::number(min, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
+    recordingOfMeasurements2.write(QByteArray(&separator, 1));
+    recordingOfMeasurements2.write(QString::number(max, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
+    recordingOfMeasurements2.write(QByteArray(&separator, 1));
+    recordingOfMeasurements2.write(QString::number(vrms, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
+    recordingOfMeasurements2.write(QByteArray(&separator, 1));
+    recordingOfMeasurements2.write(QString::number(dc, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
+    recordingOfMeasurements2.write(QByteArray(&separator, 1));
+    recordingOfMeasurements2.write(QString::number(fs, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
+    recordingOfMeasurements2.write(QByteArray(&separator, 1));
+    recordingOfMeasurements2.write(QString::number(rise, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
+    recordingOfMeasurements2.write(QByteArray(&separator, 1));
+    recordingOfMeasurements2.write(QString::number(fall, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
+    recordingOfMeasurements2.write(QByteArray(&separator, 1));
+    recordingOfMeasurements2.write(QString::number(samples, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
+    recordingOfMeasurements2.write("\n");
+  }
+
   if (valuesUseUnits) {
     ui->labelSig2Vrms->setText(floatToNiceString(vrms, 4, false, false) + ui->plot->getYUnit());
     ui->labelSig2Min->setText(floatToNiceString(min, 4, false, false) + ui->plot->getYUnit());
@@ -615,6 +675,7 @@ void MainWindow::on_checkBoxMouseControls_toggled(bool checked) {
   ui->plot->enableMouseCursorControll(checked);
   ui->plotxy->enableMouseCursorControll(checked);
   ui->plotFFT->enableMouseCursorControll(checked);
+  ui->plotPeak->enableMouseCursorControll(checked);
 }
 
 void MainWindow::on_checkBoxFFTCh1_toggled(bool checked) {

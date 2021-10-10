@@ -200,6 +200,7 @@ void MainWindow::updateFFT1() {
     }
 
     if (ui->plotFFT->setChSorce(1, chid, ui->plot->getChColor(chid))) {
+      ui->plotPeak->setChSorce(1, chid, ui->plot->getChColor(chid));
       QPixmap color(12, 12);
       color.fill(ui->plot->getChColor(chid));
       auto* model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor1Channel->model());
@@ -244,6 +245,7 @@ void MainWindow::updateFFT2() {
     }
 
     if (ui->plotFFT->setChSorce(2, chid, ui->plot->getChColor(chid))) {
+      ui->plotPeak->setChSorce(2, chid, ui->plot->getChColor(chid));
       QPixmap color(12, 12);
       color.fill(ui->plot->getChColor(chid));
       auto* model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor1Channel->model());

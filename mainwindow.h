@@ -127,6 +127,9 @@ class MainWindow : public QMainWindow {
 
   ChannelExpectedRange channelExpectedRanges[ANALOG_COUNT + MATH_COUNT];
 
+  QFile recordingOfMeasurements1, recordingOfMeasurements2;
+  QElapsedTimer uptime;
+
  private slots:
   void updateCursors();
   void setAdaptiveSpinBoxes();
@@ -292,6 +295,14 @@ class MainWindow : public QMainWindow {
   void on_pushButtonTerminalCopy_clicked();
 
   void on_radioButtonColorBlacklist_toggled(bool checked);
+
+  void on_pushButtonRecordMeasurements1_clicked();
+
+  void on_pushButtonRecordMeasurements2_clicked();
+
+  void on_radioButtonFreqTimeFixed_toggled(bool checked) { ui->plotPeak->setAutoSize(checked);}
+
+  void on_pushButton_2_clicked();
 
  public slots:
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumMessageTarget target);

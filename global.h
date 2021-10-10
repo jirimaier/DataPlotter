@@ -252,6 +252,7 @@ inline QString valueTypeToString(ValueType val) {
 #define EXPORT_XY -1
 #define EXPORT_FFT -2
 #define EXPORT_ALL -3
+#define EXPORT_FREQTIME -4
 
 #define IS_ANALOG_OR_MATH(ch) (ch < ANALOG_COUNT + MATH_COUNT)
 #define IS_ANALOG_OR_MATH_OR_LOGIC(ch) (ch < ANALOG_COUNT + MATH_COUNT+LOGIC_GROUPS)

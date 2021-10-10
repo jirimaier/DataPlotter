@@ -376,10 +376,6 @@
         <translation></translation>
     </message>
     <message>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Type of graph shown&lt;/p&gt;&lt;p&gt;Spectrum: module of DFT result in linear scale&lt;/p&gt;&lt;p&gt;Periodogram: (|X|^2)/N in decibel&lt;/p&gt;&lt;p&gt;Welch PSD: power spectral density estimate using Welch&apos;s method. Unit should be dB/(rad/sample)).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Typ grafu&lt;/p&gt;&lt;p&gt;Spectrum: modul výsledku DFT v lineárním měřítku&lt;/p&gt;&lt;p&gt;Periodogram: (|X|^2)/N v decibelech&lt;/p&gt;&lt;p&gt;Welch PSD: odhad spektrální výkonové hustoty Welchovou metodou. Jednotkou by měl být dB/(rad/vzorek)).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
         <location filename="../mainwindow.ui" line="5550"/>
         <source>Welch PSD</source>
         <translation>Welch PSD</translation>
@@ -837,10 +833,10 @@
     </message>
     <message>
         <location filename="../mainwindow.ui" line="7866"/>
-        <location filename="../mainwindow.ui" line="9341"/>
-        <location filename="../mainwindow.ui" line="9394"/>
-        <location filename="../mainwindow.ui" line="9447"/>
-        <location filename="../mainwindow.ui" line="9500"/>
+        <location filename="../mainwindow.ui" line="9353"/>
+        <location filename="../mainwindow.ui" line="9406"/>
+        <location filename="../mainwindow.ui" line="9459"/>
+        <location filename="../mainwindow.ui" line="9512"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Send&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Odeslat</translation>
     </message>
@@ -933,16 +929,6 @@
         <location filename="../mainwindow.ui" line="8430"/>
         <source>2K Clear line</source>
         <translation>2K Vymazat řádek</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="8435"/>
-        <source>0K Clear line left</source>
-        <translation>0K Vymazat vlevo</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="8440"/>
-        <source>1K Clear line right</source>
-        <translation>1K Vymazat vpravo</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="8445"/>
@@ -1070,17 +1056,17 @@
         <translation>Terminál</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="9025"/>
+        <location filename="../mainwindow.ui" line="9037"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load user default setting from file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Načíst uživatelské výchozí nastavení ze souboru&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="9065"/>
+        <location filename="../mainwindow.ui" line="9077"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load setting file or CSV&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Načíst nastavení nebo CSV&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="9085"/>
+        <location filename="../mainwindow.ui" line="9097"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save settings&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Uložit nastavení&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -1170,6 +1156,16 @@
         <translation>Velikost písma</translation>
     </message>
     <message>
+        <location filename="../mainwindow.ui" line="8435"/>
+        <source>0K Clear line right</source>
+        <translation>0K Vymazat vpravo</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="8440"/>
+        <source>1K Clear line left</source>
+        <translation>1K Vymazat vlevo</translation>
+    </message>
+    <message>
         <location filename="../mainwindow.ui" line="8624"/>
         <source>After connection:</source>
         <translation>Po připojení:</translation>
@@ -1225,133 +1221,143 @@
         <translation>Ovládání myší</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="8839"/>
-        <source>Disable click for those background colors:</source>
-        <translation>Neodesílat znaky s touto barvou pozadí:</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.ui" line="8906"/>
+        <location filename="../mainwindow.ui" line="8955"/>
         <source>Delete selected color</source>
         <translation>Vymazat vybrané barvy</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="8929"/>
-        <location filename="../mainwindow.ui" line="8945"/>
+        <location filename="../mainwindow.ui" line="8919"/>
+        <location filename="../mainwindow.ui" line="8935"/>
         <source>Add color</source>
         <translation>Přidat barvu</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="8965"/>
+        <location filename="../mainwindow.ui" line="8839"/>
+        <source>Clickable background colors in terminal</source>
+        <translation>Barvy pozadí na které lze kliknout v terminálu</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="8889"/>
+        <source>Forbiden</source>
+        <translation>Zakázané</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="8899"/>
+        <source>Allowed</source>
+        <translation>Povolené</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="8975"/>
         <source>Copy list of colors</source>
         <translation>Kopírovat seznam barev</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="8990"/>
+        <location filename="../mainwindow.ui" line="9002"/>
         <source>Show vertical scroll bar in terminal if text is higher than terminal window (you can always scroll with mouse wheel)</source>
         <translation>Zobrazit svislý posuvník v terminálu, pokud je výpis vyšší než zobrazení (vždy je možné terminál posouvat kolečkem myši)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="8993"/>
+        <location filename="../mainwindow.ui" line="9005"/>
         <source>Enable vertical scrollbar</source>
         <translation>Zobrazit svislý posuvník</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="9018"/>
+        <location filename="../mainwindow.ui" line="9030"/>
         <source>Settings file</source>
         <translation>Načíst nastavení</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="9045"/>
+        <location filename="../mainwindow.ui" line="9057"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load hard-coded defaults&lt;/p&gt;&lt;p&gt;This will also override default setting file (./settings/defaults.cfg)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Načíst výchozí nastavení&lt;/p&gt;&lt;p&gt;Také přepíše soubor s uživatelským výchozím nastavením (./settings/defaults.cfg)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="9130"/>
-        <location filename="../mainwindow.ui" line="9140"/>
-        <location filename="../mainwindow.ui" line="9150"/>
+        <location filename="../mainwindow.ui" line="9142"/>
+        <location filename="../mainwindow.ui" line="9152"/>
+        <location filename="../mainwindow.ui" line="9162"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Click to open in external PDF browser&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Kliknutím se otevře v externím prohlížeči PDF</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="9133"/>
+        <location filename="../mainwindow.ui" line="9145"/>
         <source>Open user manual (Czech)</source>
         <translation>Otevřít uživatelskou příručku (Česky)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="9143"/>
+        <location filename="../mainwindow.ui" line="9155"/>
         <source>Open protocol guide (Czech)</source>
         <translation>Otevřít přehled protokolu (Česky)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="9153"/>
+        <location filename="../mainwindow.ui" line="9165"/>
         <source>Open protocol guide (English)</source>
         <translation>Otevřít přehled protokolu (Anglicky)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="9160"/>
+        <location filename="../mainwindow.ui" line="9172"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Click to open in external web browser&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Kliknutím se otevře v externím webovém prohlížeči</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="9163"/>
+        <location filename="../mainwindow.ui" line="9175"/>
         <source>Video: features overview (Czech)</source>
         <translation>Video: přehled funkcí (Česky)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="9214"/>
+        <location filename="../mainwindow.ui" line="9226"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This program comes with absolutely no warranty. This is free software, and you are welcome to redistribute it under certain conditions. See the &lt;a href=&quot;https://www.gnu.org/licenses/gpl-3.0.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#007af4;&quot;&gt;GNU General Public License&lt;/span&gt;&lt;/a&gt; for more details.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tento program je absolutně bez záruky. Jde o svobodný software a jeho šíření je za určitých podmínek vítáno. Pro více informací: &lt;a href=&quot;https://www.gnu.org/licenses/gpl-3.0.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#007af4;&quot;&gt;GNU General Public License&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="9242"/>
+        <location filename="../mainwindow.ui" line="9254"/>
         <source>Translation: none</source>
         <translation>Překlad: CZ_02052021</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="9262"/>
+        <location filename="../mainwindow.ui" line="9274"/>
         <source>maierjir@fel.cvut.cz</source>
         <translation>maierjir@fel.cvut.cz</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="9316"/>
-        <location filename="../mainwindow.ui" line="9369"/>
-        <location filename="../mainwindow.ui" line="9422"/>
-        <location filename="../mainwindow.ui" line="9475"/>
+        <location filename="../mainwindow.ui" line="9328"/>
+        <location filename="../mainwindow.ui" line="9381"/>
+        <location filename="../mainwindow.ui" line="9434"/>
+        <location filename="../mainwindow.ui" line="9487"/>
         <source>send data to device</source>
         <translation>Odeslat do zařízení</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="9525"/>
+        <location filename="../mainwindow.ui" line="9537"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This will be added to the end of sent message.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>Toto bude přidáno na konec zprávy</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="9529"/>
+        <location filename="../mainwindow.ui" line="9541"/>
         <source>No line ending</source>
         <translation>Zakončení: žádné</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="9534"/>
+        <location filename="../mainwindow.ui" line="9546"/>
         <source>New line</source>
         <translation>Zakončení: LF</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="9539"/>
+        <location filename="../mainwindow.ui" line="9551"/>
         <source>Carriage return</source>
         <translation>Zakončení: CR</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="9544"/>
+        <location filename="../mainwindow.ui" line="9556"/>
         <source>CR LF</source>
         <translation>Zakončení: CR LF</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="9552"/>
+        <location filename="../mainwindow.ui" line="9564"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show multiple lines for sending message, this allows to have up to 4 commands prepared. Line will not be erased after send in this mode.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zobrazit více řádků pro příkaz, to umožní mít připraveny až 4 příkazy. Řádek nebude po odeslání smazán.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="9555"/>
+        <location filename="../mainwindow.ui" line="9567"/>
         <source>Multiple inputs</source>
         <translation>Více řádků</translation>
     </message>
@@ -1515,7 +1521,7 @@
         <location filename="../mainwindow_export.cpp" line="129"/>
         <location filename="../mainwindow_export.cpp" line="171"/>
         <location filename="../mainwindow_export.cpp" line="213"/>
-        <location filename="../mainwindow_save_load.cpp" line="433"/>
+        <location filename="../mainwindow_save_load.cpp" line="438"/>
         <source>Cant write to file.</source>
         <translation>Nelze zapsat do souboru.</translation>
     </message>
@@ -1606,70 +1612,70 @@
         <location filename="../mainwindow.cpp" line="390"/>
         <location filename="../mainwindow.cpp" line="401"/>
         <location filename="../mainwindow_gui_slots.cpp" line="258"/>
-        <location filename="../mainwindow_save_load.cpp" line="401"/>
-        <location filename="../mainwindow_save_load.cpp" line="415"/>
+        <location filename="../mainwindow_save_load.cpp" line="406"/>
+        <location filename="../mainwindow_save_load.cpp" line="420"/>
         <source>Cant open file.</source>
         <translation>Nelze otevřít soubor.</translation>
     </message>
     <message>
-        <location filename="../mainwindow_save_load.cpp" line="185"/>
+        <location filename="../mainwindow_save_load.cpp" line="186"/>
         <source>Invalid settings</source>
         <translation>Neplatné nastavení</translation>
     </message>
     <message>
-        <location filename="../mainwindow_save_load.cpp" line="299"/>
+        <location filename="../mainwindow_save_load.cpp" line="304"/>
         <source>Invalid channel in settings</source>
         <translation>Neexistující kanál v nastavení</translation>
     </message>
     <message>
-        <location filename="../mainwindow_save_load.cpp" line="288"/>
-        <location filename="../mainwindow_save_load.cpp" line="314"/>
-        <location filename="../mainwindow_save_load.cpp" line="342"/>
+        <location filename="../mainwindow_save_load.cpp" line="293"/>
+        <location filename="../mainwindow_save_load.cpp" line="319"/>
+        <location filename="../mainwindow_save_load.cpp" line="347"/>
         <source>Invalid color: </source>
         <translation>Neplatná barva: </translation>
     </message>
     <message>
-        <location filename="../mainwindow_save_load.cpp" line="275"/>
+        <location filename="../mainwindow_save_load.cpp" line="276"/>
         <source>Invalid color-code</source>
         <translation>Neplatný kód barvy</translation>
     </message>
     <message>
-        <location filename="../mainwindow_save_load.cpp" line="329"/>
+        <location filename="../mainwindow_save_load.cpp" line="334"/>
         <source>Invalid logic in settings</source>
         <translation>Neexistující logický kanál v nastavení</translation>
     </message>
     <message>
-        <location filename="../mainwindow_save_load.cpp" line="356"/>
+        <location filename="../mainwindow_save_load.cpp" line="361"/>
         <source>Unknown setting</source>
         <translation>Neznámé nastavení</translation>
     </message>
     <message>
-        <location filename="../mainwindow_save_load.cpp" line="361"/>
+        <location filename="../mainwindow_save_load.cpp" line="366"/>
         <source>Applied settings</source>
         <translation>Použito nastavení</translation>
     </message>
     <message>
-        <location filename="../mainwindow_save_load.cpp" line="366"/>
+        <location filename="../mainwindow_save_load.cpp" line="371"/>
         <source>Load file</source>
         <translation>Načíst soubor</translation>
     </message>
     <message>
-        <location filename="../mainwindow_save_load.cpp" line="366"/>
+        <location filename="../mainwindow_save_load.cpp" line="371"/>
         <source>Settings file (*.cfg);;Comma separated values (*.csv);;Any file (*.*)</source>
         <translation>Nastavení (*.cfg);;Comma separated values (*.csv);;Jakýkoliv soubory (*.*)</translation>
     </message>
     <message>
-        <location filename="../mainwindow_save_load.cpp" line="424"/>
+        <location filename="../mainwindow_save_load.cpp" line="429"/>
         <source>Settings file (*.cfg)</source>
         <translation>Soubor s nastavením (*.cfg)</translation>
     </message>
     <message>
-        <location filename="../mainwindow_save_load.cpp" line="424"/>
+        <location filename="../mainwindow_save_load.cpp" line="429"/>
         <source>Save settings</source>
         <translation>Uložit nastavení</translation>
     </message>
     <message>
-        <location filename="../mainwindow_save_load.cpp" line="462"/>
+        <location filename="../mainwindow_save_load.cpp" line="467"/>
         <source>Can not create default settings file</source>
         <translation>Nelze vytvořit soubor s uživatelským výchozím nastavením</translation>
     </message>
@@ -1738,10 +1744,10 @@
 <context>
     <name>MyTerminal</name>
     <message>
-        <location filename="../myterminal.cpp" line="240"/>
-        <location filename="../myterminal.cpp" line="265"/>
-        <location filename="../myterminal.cpp" line="315"/>
-        <location filename="../myterminal.cpp" line="339"/>
+        <location filename="../myterminal.cpp" line="245"/>
+        <location filename="../myterminal.cpp" line="270"/>
+        <location filename="../myterminal.cpp" line="320"/>
+        <location filename="../myterminal.cpp" line="348"/>
         <source>Invalid escape sequence</source>
         <translation>Neplatná escape sekvence</translation>
     </message>

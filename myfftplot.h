@@ -63,6 +63,9 @@ class MyFFTPlot : public MyPlot {
  private slots:
   void mouseMoved(QMouseEvent* event);
   void mousePressed(QMouseEvent* event);
+
+ signals:
+  void newPeakValues(int chID, double freq, double amp);
 };
 
 #endif // MYFFTPLOT_H
