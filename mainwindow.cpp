@@ -97,6 +97,7 @@ void MainWindow::changeLanguage(QString code) {
   qApp->installTranslator(translator);
   ui->retranslateUi(this);
   serialSettingsDialog->retranslate();
+  ui->plotPeak->setInfoText();
 }
 
 void MainWindow::showPlotStatus(PlotStatus::enumPlotStatus type) {
@@ -231,9 +232,19 @@ void MainWindow::updateMathNow(int number) {
   ui->plot->clearCh(getAnalogChId(number, ChannelType::math));
   if (mathEn[number - 1]->isChecked()) {
     MathOperations::enumMathOperations operation = (MathOperations::enumMathOperations)mathOp[number - 1]->currentIndex();
-    QSharedPointer<QCPGraphDataContainer> in1 = ui->plot->graph(getAnalogChId(mathFirst[number - 1]->currentIndex() + 1, ChannelType::analog))->data();
-    QSharedPointer<QCPGraphDataContainer> in2 = ui->plot->graph(getAnalogChId(mathSecond[number - 1]->currentIndex() + 1, ChannelType::analog))->data();
-    emit resetMath(number, operation, in1, in2);
+    QSharedPointer<QCPGraphDataContainer> in1, in2;
+
+    if (mathFirst[number - 1]->currentIndex() < ANALOG_COUNT)
+      in1 = ui->plot->graph(getAnalogChId(mathFirst[number - 1]->currentIndex() + 1, ChannelType::analog))->data();
+    else
+      in1 = ui->plot->graph(getAnalogChId(1, ChannelType::analog))->data();
+
+    if (mathSecond[number - 1]->currentIndex() < ANALOG_COUNT)
+      in2 = ui->plot->graph(getAnalogChId(mathSecond[number - 1]->currentIndex() + 1, ChannelType::analog))->data();
+    else
+      in2 = ui->plot->graph(getAnalogChId(1, ChannelType::analog))->data();
+
+    emit resetMath(number, operation, in1, in2, mathFirst[number - 1]->currentIndex() == ANALOG_COUNT, mathSecond[number - 1]->currentIndex() == ANALOG_COUNT, mathScalarFirst[number - 1]->value(), mathScalarSecond[number - 1]->value());
   }
 }
 
@@ -575,4 +586,17 @@ void MainWindow::on_pushButtonRecordMeasurements2_clicked() {
   }
 
   ui->pushButtonRecordMeasurements1->setText(recordingOfMeasurements2.isOpen() ? tr("Stop") : tr("Record"));
+}
+
+void MainWindow::on_pushButtonPeakPlotClear_clicked() {
+  ui->plotPeak->clear();
+}
+
+
+void MainWindow::on_pushButtonSetFFTForPeak_clicked() {
+  ui->spinBoxFFTSamples1->setValue(ui->spinBoxFFTSamples1->maximum());
+  ui->spinBoxFFTSamples2->setValue(ui->spinBoxFFTSamples2->maximum());
+  ui->checkBoxFFTNoDC1->setChecked(true);
+  ui->checkBoxFFTNoDC2->setChecked(true);
+  ui->pushButtonFFT->setChecked(true);
 }

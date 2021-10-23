@@ -65,7 +65,7 @@ class MyFFTPlot : public MyPlot {
   void mousePressed(QMouseEvent* event);
 
  signals:
-  void newPeakValues(int chID, double freq, double amp);
+  void newPeakValues(int chID, double freq);
 };
 
 #endif // MYFFTPLOT_H

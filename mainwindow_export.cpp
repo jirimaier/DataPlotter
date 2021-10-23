@@ -24,8 +24,8 @@ void MainWindow::exportCSV(int ch) {
       name = "fft";
     else if (ch == EXPORT_XY)
       name = "xy";
-    else if (ch == EXPORT_XY)
-      name = "xy";
+    else if (ch == EXPORT_FREQTIME)
+      name = "freqTime";
     else if (ch == ANALOG_COUNT + MATH_COUNT + LOGIC_GROUPS - 1)
       name = tr("logic");
     else if (ch >= ANALOG_COUNT + MATH_COUNT)
@@ -45,6 +45,8 @@ void MainWindow::exportCSV(int ch) {
       data = (ui->plot->exportLogicCSV(separator, decimal, ch - ANALOG_COUNT - MATH_COUNT, ui->spinBoxCSVPrecision->value(), ui->checkBoxCSVVRO->isChecked()));
     else if (ch == EXPORT_XY)
       data = (ui->plotxy->exportCSV(separator, decimal, ui->spinBoxCSVPrecision->value()));
+    else if (ch == EXPORT_FREQTIME)
+      data = (ui->plotPeak->exportCSV(separator, decimal, ui->spinBoxCSVPrecision->value()));
     else if (ch == EXPORT_FFT)
       data = (ui->plotFFT->exportCSV(separator, decimal, ui->spinBoxCSVPrecision->value()));
     else

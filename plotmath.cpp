@@ -32,30 +32,36 @@ void PlotMath::addMathData(int mathNumber, bool isFirst, QSharedPointer<QCPGraph
   else
     second = in;
 
-  if (!first.isNull() && !second.isNull()) {
+  if (first.isNull() && !isconstFirst[mathNumber])
+    return;
+  if (second.isNull() && !isconstSeconds[mathNumber])
+    return;
+
+  if (!isconstFirst[mathNumber] && !isconstSeconds[mathNumber]) {
     if (first->size() != second->size()) {
       emit sendMessage(tr("Math error"), tr("Channels have different length, can not use math").toUtf8());
       first.clear();
       second.clear();
       return;
     }
-    auto result = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer());
-    for (int i = 0; i < first->size(); i++) {
-      double resultSample = first->at(i)->value;
-      if (operations[mathNumber] == MathOperations::add)
-        resultSample += second->at(i)->value;
-      else if (operations[mathNumber] == MathOperations::subtract)
-        resultSample -= second->at(i)->value;
-      else if (operations[mathNumber] == MathOperations::multiply)
-        resultSample *= second->at(i)->value;
-      else if (operations[mathNumber] == MathOperations::divide)
-        resultSample /= second->at(i)->value;
-      result->add(QCPGraphData(first->at(i)->key, resultSample));
-    }
-    emit sendResult(getAnalogChId(mathNumber + 1, ChannelType::math), result, shouldIgnorePause);
-    first.clear();
-    second.clear();
   }
+
+  auto result = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer());
+  for (int i = 0; i < first->size(); i++) {
+    double resultSample = (isconstFirst[mathNumber] ? 1.0 : first->at(i)->value) * scalarsFirst[mathNumber];
+    if (operations[mathNumber] == MathOperations::add)
+      resultSample += (isconstSeconds[mathNumber] ? 1.0 : second->at(i)->value) * scalarsSeconds[mathNumber];
+    else if (operations[mathNumber] == MathOperations::subtract)
+      resultSample -= (isconstSeconds[mathNumber] ? 1.0 : second->at(i)->value) * scalarsSeconds[mathNumber];
+    else if (operations[mathNumber] == MathOperations::multiply)
+      resultSample *= (isconstSeconds[mathNumber] ? 1.0 : second->at(i)->value) * scalarsSeconds[mathNumber];
+    else if (operations[mathNumber] == MathOperations::divide)
+      resultSample /= (isconstSeconds[mathNumber] ? 1.0 : second->at(i)->value) * scalarsSeconds[mathNumber];
+    result->add(QCPGraphData(first->at(i)->key, resultSample));
+  }
+  emit sendResult(getAnalogChId(mathNumber + 1, ChannelType::math), result, shouldIgnorePause);
+  first.clear();
+  second.clear();
 }
 
 void PlotMath::clearMath(int math) {
@@ -63,9 +69,15 @@ void PlotMath::clearMath(int math) {
   seconds[math - 1].clear();
 }
 
-void PlotMath::resetMath(int mathNumber, MathOperations::enumMathOperations mode, QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2) {
+void PlotMath::resetMath(int mathNumber, MathOperations::enumMathOperations mode, QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2, bool firstIsConst, bool secondIsConst, double scaleFirst, double scaleSecond) {
   operations[mathNumber - 1] = mode;
-  seconds[mathNumber - 1].clear();               // Vymaže druhá data
+  seconds[mathNumber - 1].clear();// Vymaže druhá data
+
+  isconstFirst[mathNumber - 1] = firstIsConst;
+  isconstSeconds[mathNumber - 1] = secondIsConst;
+  scalarsFirst[mathNumber - 1] = scaleFirst;
+  scalarsSeconds[mathNumber - 1] = scaleSecond;
+
   firsts[mathNumber - 1] = in1;                  // Vloží první data
   addMathData(mathNumber - 1, false, in2, true); // Vloží druhá data, spočítá a pošle do grafu
 }

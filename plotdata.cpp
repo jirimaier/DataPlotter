@@ -460,6 +460,14 @@ void PlotData::setLogicBits(int target, int bits) {
   emit clearLogic(target - 1, bits);
 }
 
+void PlotData::setMathFirst(int math, int ch) {
+  mathFirsts[math - 1] = ch;
+}
+
+void PlotData::setMathSecond(int math, int ch) {
+  mathSeconds[math - 1] = ch;
+}
+
 void PlotData::sendMessageIfAllowed(QString header, QByteArray message, MessageLevel::enumMessageLevel type) {
   if ((int)debugLevel >= (int)type)
     emit sendMessage(header, message, type);

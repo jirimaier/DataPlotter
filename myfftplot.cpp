@@ -125,7 +125,7 @@ void MyFFTPlot::newData(int chID, QSharedPointer<QCPGraphDataContainer> data) {
       peakFreq = graph(chID)->data()->at(i)->key;
     }
   }
-  emit newPeakValues(chID, peakFreq, peakAmp);
+  emit newPeakValues(chID, peakFreq);
 
   // Přepsat text u traceru
   if (tracer->visible() && currentTracerIndex == chID) {
@@ -222,10 +222,7 @@ void MyFFTPlot::setMouseCursorStyle(QMouseEvent* event) {
 
 void MyFFTPlot::updateTracerText(int index) {
   QString tracerTextStr;
-  if (index == 0)
-    tracerTextStr.append(" " + getChName(chSourceChannel[0]) + "\n");
-  if (index == 1)
-    tracerTextStr.append(getChName(chSourceChannel[1]) + "\n");
+  tracerTextStr.append(getChName(chSourceChannel[index]) + "\n");
 
   if (unitTickerY->usePrefix)
     tracerTextStr.append(floatToNiceString(tracer->position->value(), 4, true, false) + getYUnit() + "\n");

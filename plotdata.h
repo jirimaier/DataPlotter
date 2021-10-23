@@ -72,8 +72,8 @@ class PlotData : public QObject {
 
   void setLogicBits(int target, int bits);
 
-  void setMathFirst(int math, int ch) { mathFirsts[math - 1] = ch; }
-  void setMathSecond(int math, int ch) { mathSeconds[math - 1] = ch; }
+  void setMathFirst(int math, int ch);
+  void setMathSecond(int math, int ch);
 
   void setAverager(bool enabled) {averagerEnabled = enabled;  }
 

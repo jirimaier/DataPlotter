@@ -61,12 +61,12 @@ void MainWindow::updateUsedChannels() {
   updateChannelComboBox(*ui->comboBoxFFTCh2, 0);
   updateChannelComboBox(*ui->comboBoxXYx,  0);
   updateChannelComboBox(*ui->comboBoxXYy,  0);
-  updateChannelComboBox(*ui->comboBoxMathFirst1,  0);
-  updateChannelComboBox(*ui->comboBoxMathFirst2,  0);
-  updateChannelComboBox(*ui->comboBoxMathFirst3,  0);
-  updateChannelComboBox(*ui->comboBoxMathSecond1,  0);
-  updateChannelComboBox(*ui->comboBoxMathSecond2,  0);
-  updateChannelComboBox(*ui->comboBoxMathSecond3,  0);
+  updateChannelComboBox(*ui->comboBoxMathFirst1,  1);
+  updateChannelComboBox(*ui->comboBoxMathFirst2,  1);
+  updateChannelComboBox(*ui->comboBoxMathFirst3,  1);
+  updateChannelComboBox(*ui->comboBoxMathSecond1,  1);
+  updateChannelComboBox(*ui->comboBoxMathSecond2,  1);
+  updateChannelComboBox(*ui->comboBoxMathSecond3,  1);
   updateChannelComboBox(*ui->comboBoxLogic1,  0);
   updateChannelComboBox(*ui->comboBoxLogic2,  0);
   updateChannelComboBox(*ui->comboBoxAvgIndividualCh,  0);

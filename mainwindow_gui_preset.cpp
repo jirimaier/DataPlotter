@@ -145,6 +145,8 @@ void MainWindow::setGuiDefaults() {
   ui->plotxy->setGridHintY(ui->horizontalSliderXYGrid->value());
   ui->plotFFT->setGridHintX(ui->horizontalSliderGridFFTH->value());
   ui->plotFFT->setGridHintY(ui->horizontalSliderGridFFTV->value());
+  ui->plotPeak->setGridHintX(ui->horizontalSliderGridFreqtimeH->value());
+  ui->plotPeak->setGridHintY(ui->horizontalSliderGridFreqtimeV->value());
 
   on_doubleSpinBoxRangeVerticalRange_valueChanged(ui->doubleSpinBoxRangeVerticalRange->value());
 
@@ -180,6 +182,14 @@ void MainWindow::setGuiArrays() {
   mathOp[0] = ui->comboBoxMath1Op;
   mathOp[1] = ui->comboBoxMath2Op;
   mathOp[2] = ui->comboBoxMath3Op;
+
+  mathScalarFirst[0] = ui->doubleSpinBoxMathScalar1_1;
+  mathScalarFirst[1] = ui->doubleSpinBoxMathScalar1_2;
+  mathScalarFirst[2] = ui->doubleSpinBoxMathScalar1_3;
+
+  mathScalarSecond[0] = ui->doubleSpinBoxMathScalar2_1;
+  mathScalarSecond[1] = ui->doubleSpinBoxMathScalar2_2;
+  mathScalarSecond[2] = ui->doubleSpinBoxMathScalar2_3;
 }
 
 void MainWindow::fillChannelSelect() {
@@ -261,6 +271,13 @@ void MainWindow::fillChannelSelect() {
   setComboboxItemVisible(*ui->comboBoxCursor2Channel, FFT_INDEX(0), false);
   setComboboxItemVisible(*ui->comboBoxCursor1Channel, FFT_INDEX(1), false);
   setComboboxItemVisible(*ui->comboBoxCursor2Channel, FFT_INDEX(1), false);
+
+  ui->comboBoxMathFirst1->addItem(tr("Constant"));
+  ui->comboBoxMathFirst2->addItem(tr("Constant"));
+  ui->comboBoxMathFirst3->addItem(tr("Constant"));
+  ui->comboBoxMathSecond1->addItem(tr("Constant"));
+  ui->comboBoxMathSecond2->addItem(tr("Constant"));
+  ui->comboBoxMathSecond3->addItem(tr("Constant"));
 
   ui->comboBoxSelectedChannel->blockSignals(false);
   ui->comboBoxCursor1Channel->blockSignals(false);

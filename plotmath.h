@@ -32,10 +32,14 @@ class PlotMath : public QObject {
  private:
   QVector<QSharedPointer<QCPGraphDataContainer>> firsts, seconds = QVector<QSharedPointer<QCPGraphDataContainer>>();
   MathOperations::enumMathOperations operations[MATH_COUNT];
+  bool isconstFirst[MATH_COUNT];
+  bool isconstSeconds[MATH_COUNT];
+  double scalarsFirst[MATH_COUNT];
+  double scalarsSeconds[MATH_COUNT];
  public slots:
   void addMathData(int mathNumber, bool isFirst, QSharedPointer<QCPGraphDataContainer> in, bool shouldIgnorePause);
   void clearMath(int math);
-  void resetMath(int mathNumber, MathOperations::enumMathOperations mode, QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2);
+  void resetMath(int mathNumber, MathOperations::enumMathOperations mode, QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2, bool firstIsConst, bool secondIsConst, double scaleFirst, double scaleSecond);
 
  signals:
   void sendResult(int chNumber, QSharedPointer<QCPGraphDataContainer> result, bool ignorePause);

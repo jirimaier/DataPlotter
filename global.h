@@ -279,9 +279,19 @@ inline int indexOfStandardValuesCeil(double value) {
       return i;
   return (LOG_SET_SIZE - 1);
 }
+
 inline double ceilToNiceValue(double value) {
   if (value > 0)
     return (logaritmicSettings[indexOfStandardValuesCeil(value)]);
+  else if (value < 0)
+    return (-logaritmicSettings[MAX(indexOfStandardValuesCeil(-value) - 1, 0)]);
+  else
+    return 0;
+}
+
+inline double floorToNiceValue(double value) {
+  if (value > 0)
+    return (logaritmicSettings[MAX(indexOfStandardValuesCeil(value) - 1, 0)]);
   else if (value < 0)
     return (-logaritmicSettings[indexOfStandardValuesCeil(-value)]);
   else

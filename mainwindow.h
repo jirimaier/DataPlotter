@@ -65,10 +65,12 @@ class MainWindow : public QMainWindow {
 
   int lastSelectedChannel = 1;
 
-  QPushButton* mathEn[4];
-  QComboBox* mathFirst[4];
-  QComboBox* mathSecond[4];
-  QComboBox* mathOp[4];
+  QPushButton* mathEn[3];
+  QComboBox* mathFirst[3];
+  QComboBox* mathSecond[3];
+  QComboBox* mathOp[3];
+  QDoubleSpinBox* mathScalarFirst[3];
+  QDoubleSpinBox* mathScalarSecond[3];
 
   QTimer dataRateTimer;
   int dataUpdates = 0;
@@ -218,12 +220,18 @@ class MainWindow : public QMainWindow {
   void on_comboBoxMath1Op_currentIndexChanged(int) { updateMathNow(1); }
   void on_comboBoxMath2Op_currentIndexChanged(int) { updateMathNow(2); }
   void on_comboBoxMath3Op_currentIndexChanged(int) { updateMathNow(3); }
-  void on_comboBoxMathFirst1_currentIndexChanged(int) { updateMathNow(1); };
-  void on_comboBoxMathFirst2_currentIndexChanged(int) { updateMathNow(2); };
-  void on_comboBoxMathFirst3_currentIndexChanged(int) { updateMathNow(3); };
-  void on_comboBoxMathSecond1_currentIndexChanged(int) { updateMathNow(1); };
-  void on_comboBoxMathSecond2_currentIndexChanged(int) { updateMathNow(2); };
-  void on_comboBoxMathSecond3_currentIndexChanged(int) { updateMathNow(3); };
+  void on_comboBoxMathFirst1_currentIndexChanged(int) { updateMathNow(1); }
+  void on_comboBoxMathFirst2_currentIndexChanged(int) { updateMathNow(2); }
+  void on_comboBoxMathFirst3_currentIndexChanged(int) { updateMathNow(3); }
+  void on_comboBoxMathSecond1_currentIndexChanged(int) { updateMathNow(1); }
+  void on_comboBoxMathSecond2_currentIndexChanged(int) { updateMathNow(2); }
+  void on_comboBoxMathSecond3_currentIndexChanged(int) { updateMathNow(3); }
+  void on_doubleSpinBoxMathScalar1_1_valueChanged(double) {updateMathNow(1);}
+  void on_doubleSpinBoxMathScalar1_2_valueChanged(double) {updateMathNow(2);}
+  void on_doubleSpinBoxMathScalar1_3_valueChanged(double) {updateMathNow(3);}
+  void on_doubleSpinBoxMathScalar2_1_valueChanged(double) {updateMathNow(1);}
+  void on_doubleSpinBoxMathScalar2_2_valueChanged(double) {updateMathNow(2);}
+  void on_doubleSpinBoxMathScalar2_3_valueChanged(double) {updateMathNow(3);}
   void on_horizontalSliderXYGrid_valueChanged(int value);
   void on_pushButtonXY_toggled(bool checked);
   void on_comboBoxCursor1Channel_currentIndexChanged(int index);
@@ -302,7 +310,11 @@ class MainWindow : public QMainWindow {
 
   void on_radioButtonFreqTimeFixed_toggled(bool checked) { ui->plotPeak->setAutoSize(checked);}
 
-  void on_pushButton_2_clicked();
+  void on_pushButtonPeakPlotClear_clicked();
+
+  void on_pushButtonSetFFTForPeak_clicked();
+
+  void on_pushButtonEXportFreqTimeCSV_clicked() {exportCSV(EXPORT_FREQTIME);}
 
  public slots:
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumMessageTarget target);
@@ -348,7 +360,7 @@ class MainWindow : public QMainWindow {
   void setMathFirst(int math, int ch);
   void setMathSecond(int math, int ch);
   void clearMath(int math);
-  void resetMath(int mathNumber, MathOperations::enumMathOperations mode, QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2, bool shouldIgnorePause = false);
+  void resetMath(int mathNumber, MathOperations::enumMathOperations mode, QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2, bool firstIsConst, bool secondIsConst, double scaleFirst, double scaleSecond);
   void requestXY(QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2, bool removeDC);
   void requstMeasurements1(QSharedPointer<QCPGraphDataContainer> data);
   void requstMeasurements2(QSharedPointer<QCPGraphDataContainer> data);
