@@ -43,6 +43,7 @@ class MyFFTPlot : public MyPlot {
   int chSourceChannel[2];
   QColor chSourceColor[2];
   QPair<QVector<double>, QVector<double> > getDataVector(int chID);
+  bool holdmax[2] = {false, false};
 
  public slots:
   /// Přidá data (přepíše stará)
@@ -59,6 +60,9 @@ class MyFFTPlot : public MyPlot {
 
   /// Zapne/vypne automatický rozsah
   void setAutoSize(bool en);
+
+  void setHoldMax1(bool en) {holdmax[0] = en;}
+  void setHoldMax2(bool en) {holdmax[1] = en;}
 
  private slots:
   void mouseMoved(QMouseEvent* event);

@@ -111,7 +111,14 @@ void MyFFTPlot::newData(int chID, QSharedPointer<QCPGraphDataContainer> data) {
       emit moveTimeCursor(Cursors::Cursor2, cur2Graph == -1 ? 0 : keyToNearestSample(graph(cur2Graph), cur2ShouldBeAtKey), cur1ShouldBeAtKey);
 
   } else {
-    graph(chID)->setData(data);
+    int len = data->size();
+    if (holdmax[chID] && data->at(len - 1)->key == graph(chID)->data()->at(len - 1)->key) {
+      auto dataNew = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer());
+      for (int i = 0; i < len; i++)
+        dataNew->add(QCPGraphData(data->at(i)->key, std::max(data->at(i)->value, graph(chID)->data()->at(i)->value)));
+      graph(chID)->setData(dataNew);
+    } else
+      graph(chID)->setData(data);
   }
 
   if (autoSize)

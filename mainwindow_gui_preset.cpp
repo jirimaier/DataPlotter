@@ -45,6 +45,8 @@ void MainWindow::connectSignals() {
   connect(ui->horizontalSliderHGrid, &QDial::valueChanged, ui->plot, &MyPlot::setGridHintX);
   connect(ui->spinBoxShiftStep, SIGNAL(valueChanged(int)), ui->plot, SLOT(setShiftStep(int)));
   connect(ui->plot, &MyMainPlot::requestCursorUpdate, this, &MainWindow::updateCursors);
+  connect(ui->pushButtonFFTHoldMax1, &QPushButton::toggled, ui->plotFFT, &MyFFTPlot::setHoldMax1);
+  connect(ui->pushButtonFFTHoldMax2, &QPushButton::toggled, ui->plotFFT, &MyFFTPlot::setHoldMax2);
 
   connect(&portsRefreshTimer, &QTimer::timeout, this, &MainWindow::comRefresh);
   connect(&activeChRefreshTimer, &QTimer::timeout, this, &MainWindow::updateUsedChannels);
