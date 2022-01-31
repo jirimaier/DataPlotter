@@ -167,8 +167,10 @@ void PlotData::addPoint(QList<QPair<ValueType, QByteArray>> data) {
     if (debugLevel == OutputLevel::info)
       message.append(tr("Time (time of day): %1 s, ").arg(QString::number(time, 'g', 5)));
   } else if (data.at(0).second == "-auto") {
-    if (!timerRunning)
+    if (!timerRunning) {
       elapsedTime.start();
+      timerRunning = 1;
+    }
     time = elapsedTime.nsecsElapsed() * 1e-9;
     lastRecommandedAxisType = time >= 3600 ? HAxisType::HMS : HAxisType::MS;
     if (debugLevel == OutputLevel::info)
@@ -263,8 +265,10 @@ void PlotData::addLogicPoint(QPair<ValueType, QByteArray> timeArray, QPair<Value
     time = qTime.currentTime().msecsSinceStartOfDay() / 1000.0;
     lastRecommandedAxisType = HAxisType::HMS;
   } else if (timeArray.second == "-auto") {
-    if (!timerRunning)
+    if (!timerRunning) {
       elapsedTime.start();
+      timerRunning = 1;
+    }
     time = elapsedTime.nsecsElapsed() * 1e-9;
     lastRecommandedAxisType = time >= 3600 ? HAxisType::HMS : HAxisType::MS;
   } else {
