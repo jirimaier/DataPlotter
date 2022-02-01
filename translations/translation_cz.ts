@@ -2,10 +2,24 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="cs_CZ" sourcelanguage="en">
 <context>
+    <name>FileSender</name>
+    <message>
+        <location filename="../filesender.cpp" line="29"/>
+        <location filename="../filesender.cpp" line="53"/>
+        <source>Invalid length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../filesender.cpp" line="34"/>
+        <source>Block length not specified</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MainWindow</name>
     <message>
         <location filename="../mainwindow.ui" line="184"/>
-        <location filename="../mainwindow.cpp" line="109"/>
+        <location filename="../mainwindow.cpp" line="110"/>
         <source>Running (click to pause)</source>
         <translation>Běží (kliknout pro pauzu)</translation>
     </message>
@@ -702,8 +716,8 @@
     <message>
         <location filename="../mainwindow.ui" line="3626"/>
         <location filename="../mainwindow.ui" line="4064"/>
-        <location filename="../mainwindow.cpp" line="567"/>
-        <location filename="../mainwindow.cpp" line="588"/>
+        <location filename="../mainwindow.cpp" line="568"/>
+        <location filename="../mainwindow.cpp" line="589"/>
         <source>Record</source>
         <translation>Záznam</translation>
     </message>
@@ -1417,99 +1431,99 @@
         <translation>Více řádků</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="106"/>
+        <location filename="../mainwindow.cpp" line="107"/>
         <source>Paused (click to resume)</source>
         <translation>Pauza (kliknout pro pokračování)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="117"/>
-        <location filename="../mainwindow.cpp" line="119"/>
+        <location filename="../mainwindow.cpp" line="118"/>
+        <location filename="../mainwindow.cpp" line="120"/>
         <source> / Div</source>
         <translation> / Dílek</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="160"/>
-        <location filename="../mainwindow.cpp" line="162"/>
-        <location filename="../mainwindow.cpp" line="169"/>
-        <location filename="../mainwindow.cpp" line="171"/>
+        <location filename="../mainwindow.cpp" line="161"/>
+        <location filename="../mainwindow.cpp" line="163"/>
+        <location filename="../mainwindow.cpp" line="170"/>
+        <location filename="../mainwindow.cpp" line="172"/>
         <source>/Div</source>
         <translation>/Dílek</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="208"/>
+        <location filename="../mainwindow.cpp" line="209"/>
         <source>&lt;font color=darkred&gt;Device warning:&lt;/font color&gt; </source>
         <translation>&lt;font color=darkred&gt;Varování ze zařízení:&lt;/font color&gt; </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="210"/>
+        <location filename="../mainwindow.cpp" line="211"/>
         <source>&lt;font color=darkgreen&gt;Device message:&lt;/font color&gt; </source>
         <translation>&lt;font color=darkgreen&gt;Zpráva ze zařízení:&lt;/font color&gt; </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="262"/>
-        <location filename="../mainwindow.cpp" line="270"/>
+        <location filename="../mainwindow.cpp" line="263"/>
+        <location filename="../mainwindow.cpp" line="271"/>
         <source>Device error</source>
         <translation>Chyba zařízení</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="263"/>
+        <location filename="../mainwindow.cpp" line="264"/>
         <source>Error message sent from manual input</source>
         <translation>Chybová zpráva poslaná z ručního vstupu</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="271"/>
+        <location filename="../mainwindow.cpp" line="272"/>
         <source>Device reported error (port disconnected)</source>
         <translation>Zařízení ohlásilo chybu (spojení ukončeno)</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="288"/>
+        <location filename="../mainwindow.cpp" line="289"/>
         <source>Description: %1
 </source>
         <translation>Popis: %1
 </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="289"/>
+        <location filename="../mainwindow.cpp" line="290"/>
         <source>Manufacturer: %1
 </source>
         <translation>Výrobce: %1
 </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="290"/>
+        <location filename="../mainwindow.cpp" line="291"/>
         <source>Serial number: %1
 </source>
         <translation>Sériové číslo: %1
 </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="291"/>
+        <location filename="../mainwindow.cpp" line="292"/>
         <source>Location: %1
 </source>
         <translation>Umístění: %1
 </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="292"/>
+        <location filename="../mainwindow.cpp" line="293"/>
         <source>Vendor Identifier: %1
 </source>
         <translation>Označení prodejce: %1
 </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="293"/>
+        <location filename="../mainwindow.cpp" line="294"/>
         <source>Product Identifier: %1</source>
         <translation>Označení produktu: %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="557"/>
-        <location filename="../mainwindow.cpp" line="578"/>
+        <location filename="../mainwindow.cpp" line="558"/>
+        <location filename="../mainwindow.cpp" line="579"/>
         <source>Record measurements</source>
         <translation>Záznam změřených hodnot</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="567"/>
-        <location filename="../mainwindow.cpp" line="588"/>
+        <location filename="../mainwindow.cpp" line="568"/>
+        <location filename="../mainwindow.cpp" line="589"/>
         <source>Stop</source>
         <translation>Stop</translation>
     </message>
@@ -1589,8 +1603,8 @@
         <translation>Exportovat %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="557"/>
-        <location filename="../mainwindow.cpp" line="578"/>
+        <location filename="../mainwindow.cpp" line="558"/>
+        <location filename="../mainwindow.cpp" line="579"/>
         <location filename="../mainwindow_export.cpp" line="82"/>
         <source>Comma separated values (*.csv)</source>
         <translation>Hodnoty oddělené čárkou (*.csv)</translation>
@@ -1688,11 +1702,12 @@
         <translation>Nelze zapsat do souboru výchozího nastavení</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="406"/>
-        <location filename="../mainwindow.cpp" line="417"/>
+        <location filename="../mainwindow.cpp" line="407"/>
+        <location filename="../mainwindow.cpp" line="418"/>
         <location filename="../mainwindow_gui_slots.cpp" line="258"/>
         <location filename="../mainwindow_save_load.cpp" line="406"/>
         <location filename="../mainwindow_save_load.cpp" line="420"/>
+        <location filename="../mainwindow_send_file.cpp" line="20"/>
         <source>Cant open file.</source>
         <translation>Nelze otevřít soubor.</translation>
     </message>
@@ -1797,6 +1812,24 @@
         <source>s</source>
         <translation>s</translation>
     </message>
+    <message>
+        <location filename="../mainwindow_send_file.cpp" line="9"/>
+        <source>Send file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow_send_file.cpp" line="33"/>
+        <location filename="../mainwindow_send_file.cpp" line="38"/>
+        <location filename="../mainwindow_send_file.cpp" line="43"/>
+        <location filename="../mainwindow_send_file.cpp" line="46"/>
+        <source>Invalid file request</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow_send_file.cpp" line="46"/>
+        <source>Too many arguments in header</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MyFFTPlot</name>
@@ -1850,15 +1883,16 @@
         <location filename="../newserialparser.cpp" line="121"/>
         <location filename="../newserialparser.cpp" line="164"/>
         <location filename="../newserialparser.cpp" line="457"/>
-        <location filename="../newserialparser.cpp" line="470"/>
+        <location filename="../newserialparser.cpp" line="477"/>
+        <location filename="../newserialparser.cpp" line="490"/>
         <source>Missing semicolumn ?</source>
         <translation>Chybějící středník ?</translation>
     </message>
     <message>
         <location filename="../newserialparser.cpp" line="78"/>
         <location filename="../newserialparser.cpp" line="175"/>
-        <location filename="../newserialparser.cpp" line="489"/>
-        <location filename="../newserialparser.cpp" line="637"/>
+        <location filename="../newserialparser.cpp" line="509"/>
+        <location filename="../newserialparser.cpp" line="659"/>
         <source>Unknown</source>
         <translation>Neznámé</translation>
     </message>
@@ -2052,97 +2086,102 @@
         <translation>data nejsou označena jako typ unsigned integer</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="477"/>
+        <location filename="../newserialparser.cpp" line="497"/>
         <source>Parsing error</source>
         <translation>Chyba při zpracování</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="491"/>
+        <location filename="../newserialparser.cpp" line="511"/>
         <source>Fatal error</source>
         <translation>Katastrofální selhání</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="728"/>
+        <location filename="../newserialparser.cpp" line="655"/>
+        <source>File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../newserialparser.cpp" line="750"/>
         <source>New data</source>
         <translation>Nová data</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="582"/>
+        <location filename="../newserialparser.cpp" line="602"/>
         <source>Value &quot;%1&quot; is not a valid integer.</source>
         <translation>Hodnota &quot;%1&quot; není platné celé číslo.</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="708"/>
+        <location filename="../newserialparser.cpp" line="730"/>
         <source>Invalid value type: %1</source>
         <translation>Neplatný datový typ: %1</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="584"/>
+        <location filename="../newserialparser.cpp" line="604"/>
         <source>Value is negative: %1</source>
         <translation>Hodnota je záporná: %1</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="554"/>
+        <location filename="../newserialparser.cpp" line="574"/>
         <source>Expected value, but &quot;%1&quot; found.</source>
         <translation>Očekávána hodnota, ale načteno &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="588"/>
+        <location filename="../newserialparser.cpp" line="608"/>
         <source>Value is not unsigned integer type</source>
         <translation>Hodnota není typu unsigned integer</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="625"/>
+        <location filename="../newserialparser.cpp" line="645"/>
         <source>Points</source>
         <translation>Body</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="627"/>
+        <location filename="../newserialparser.cpp" line="647"/>
         <source>Terminal</source>
         <translation>Terminál</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="629"/>
+        <location filename="../newserialparser.cpp" line="649"/>
         <source>Info</source>
         <translation>Informace</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="631"/>
+        <location filename="../newserialparser.cpp" line="651"/>
         <source>Warning</source>
         <translation>Varování</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="633"/>
+        <location filename="../newserialparser.cpp" line="653"/>
         <source>Channel</source>
         <translation>Kanál</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="635"/>
+        <location filename="../newserialparser.cpp" line="657"/>
         <source>Settings</source>
         <translation>Nastavení</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="639"/>
+        <location filename="../newserialparser.cpp" line="661"/>
         <source>Echo</source>
         <translation>Ozvěna</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="641"/>
+        <location filename="../newserialparser.cpp" line="663"/>
         <source>Logic channel</source>
         <translation>Logický kanál</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="643"/>
+        <location filename="../newserialparser.cpp" line="665"/>
         <source>Logic points</source>
         <translation>Logický bod</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="645"/>
+        <location filename="../newserialparser.cpp" line="667"/>
         <source>Device error</source>
         <translation>Chyba zařízení</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="649"/>
+        <location filename="../newserialparser.cpp" line="671"/>
         <source>Unknown data type</source>
         <translation>Neznámí typ dat</translation>
     </message>
@@ -2165,47 +2204,47 @@
         <translation>Čas (čas dne): %1 s, </translation>
     </message>
     <message>
-        <location filename="../plotdata.cpp" line="175"/>
+        <location filename="../plotdata.cpp" line="177"/>
         <source>Time (automatic): %1 s, </source>
         <translation>Čas (automatický): %1 s, </translation>
     </message>
     <message>
-        <location filename="../plotdata.cpp" line="183"/>
+        <location filename="../plotdata.cpp" line="185"/>
         <source>Time: %1 s, </source>
         <translation>Čas: %1 s, </translation>
     </message>
     <message>
-        <location filename="../plotdata.cpp" line="190"/>
+        <location filename="../plotdata.cpp" line="192"/>
         <source>Can not parse points value</source>
         <translation>Neplatná hodnota</translation>
     </message>
     <message>
-        <location filename="../plotdata.cpp" line="230"/>
+        <location filename="../plotdata.cpp" line="232"/>
         <source>Ch%1: %2, </source>
         <translation>Ch%1: %2, </translation>
     </message>
     <message>
-        <location filename="../plotdata.cpp" line="249"/>
+        <location filename="../plotdata.cpp" line="251"/>
         <source>Parsed point</source>
         <translation>Zpracován bod</translation>
     </message>
     <message>
-        <location filename="../plotdata.cpp" line="339"/>
+        <location filename="../plotdata.cpp" line="343"/>
         <source>Parsed channel %1</source>
         <translation>Zpracován kanál %1</translation>
     </message>
     <message>
-        <location filename="../plotdata.cpp" line="425"/>
+        <location filename="../plotdata.cpp" line="429"/>
         <source>Parsed logic channel</source>
         <translation>Zpracován logický kanál</translation>
     </message>
     <message>
-        <location filename="../plotdata.cpp" line="273"/>
+        <location filename="../plotdata.cpp" line="277"/>
         <source>Can not parse logic point time</source>
         <translation>Nelze přečíst čas logického bodu</translation>
     </message>
     <message numerus="yes">
-        <location filename="../plotdata.cpp" line="289"/>
+        <location filename="../plotdata.cpp" line="293"/>
         <source>%n bit(s)</source>
         <translation>
             <numerusform>%n bit</numerusform>
@@ -2214,19 +2253,19 @@
         </translation>
     </message>
     <message>
-        <location filename="../plotdata.cpp" line="289"/>
+        <location filename="../plotdata.cpp" line="293"/>
         <source>Parsed logic point</source>
         <translation>Zpracován logický bod</translation>
     </message>
     <message>
-        <location filename="../plotdata.cpp" line="333"/>
-        <location filename="../plotdata.cpp" line="421"/>
+        <location filename="../plotdata.cpp" line="337"/>
+        <location filename="../plotdata.cpp" line="425"/>
         <source>%1 samples, sampling period %2s</source>
         <translation>%1 vzorků, perioda vzorkování %2s</translation>
     </message>
     <message numerus="yes">
-        <location filename="../plotdata.cpp" line="334"/>
-        <location filename="../plotdata.cpp" line="422"/>
+        <location filename="../plotdata.cpp" line="338"/>
+        <location filename="../plotdata.cpp" line="426"/>
         <source>, %n bit(s)</source>
         <translation>
             <numerusform>, %n bit</numerusform>
@@ -2235,60 +2274,60 @@
         </translation>
     </message>
     <message>
-        <location filename="../plotdata.cpp" line="302"/>
+        <location filename="../plotdata.cpp" line="306"/>
         <source>Can not parse channel time step</source>
         <translation>Neplatná perioda vzorků</translation>
     </message>
     <message>
-        <location filename="../plotdata.cpp" line="313"/>
+        <location filename="../plotdata.cpp" line="317"/>
         <source>Minumum value is stated, but maximum is not</source>
         <translation>Minimální hodnota je nastavena, ale maximální ne</translation>
     </message>
     <message>
-        <location filename="../plotdata.cpp" line="313"/>
+        <location filename="../plotdata.cpp" line="317"/>
         <source>Value will not be remaped!</source>
         <translation>Hodnota nebude přemapována!</translation>
     </message>
     <message>
-        <location filename="../plotdata.cpp" line="316"/>
+        <location filename="../plotdata.cpp" line="320"/>
         <source>Can not parse minimum value</source>
         <translation>Neplatná minimální hodnota</translation>
     </message>
     <message>
-        <location filename="../plotdata.cpp" line="326"/>
+        <location filename="../plotdata.cpp" line="330"/>
         <source>Can not parse maximum value</source>
         <translation>Neplatná maximální hodnota</translation>
     </message>
     <message>
-        <location filename="../plotdata.cpp" line="336"/>
+        <location filename="../plotdata.cpp" line="340"/>
         <source>, from %1 to %2</source>
         <translation>, od %1 do %2</translation>
     </message>
     <message>
-        <location filename="../plotdata.cpp" line="338"/>
-        <location filename="../plotdata.cpp" line="424"/>
+        <location filename="../plotdata.cpp" line="342"/>
+        <location filename="../plotdata.cpp" line="428"/>
         <source>, zero time at sample index %3</source>
         <translation>, nula na vzorku s indexem %3</translation>
     </message>
     <message>
-        <location filename="../plotdata.cpp" line="415"/>
+        <location filename="../plotdata.cpp" line="419"/>
         <source>Can not parse logic channel time step</source>
         <translation>Nelze přečíst časový krok mezi vzorky logického kanálu</translation>
     </message>
     <message>
-        <location filename="../plotdata.cpp" line="215"/>
-        <location filename="../plotdata.cpp" line="348"/>
+        <location filename="../plotdata.cpp" line="217"/>
+        <location filename="../plotdata.cpp" line="352"/>
         <source>Can not show channel %1 as logic</source>
         <translation>Nelze zobrazí kanál %1 jako logický</translation>
     </message>
     <message>
-        <location filename="../plotdata.cpp" line="179"/>
+        <location filename="../plotdata.cpp" line="181"/>
         <source>Can not parse point time</source>
         <translation>Nelze přečíst čas bodu</translation>
     </message>
     <message>
-        <location filename="../plotdata.cpp" line="215"/>
-        <location filename="../plotdata.cpp" line="348"/>
+        <location filename="../plotdata.cpp" line="217"/>
+        <location filename="../plotdata.cpp" line="352"/>
         <source>digital mode is only available for unsigned integer data type</source>
         <translation>Logický režim je dostupný jen pro celé číslo bez znaménka</translation>
     </message>

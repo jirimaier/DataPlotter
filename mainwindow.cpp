@@ -70,6 +70,7 @@ void MainWindow::init(QTranslator* translator, const PlotData* plotData, const P
   QObject::connect(plotData, &PlotData::addPointToPlot, ui->plot, &MyMainPlot::newDataPoint);
   QObject::connect(plotData, &PlotData::clearLogic, ui->plot, &MyMainPlot::clearLogicGroup);
   QObject::connect(ui->myTerminal, &MyTerminal::writeToSerial, serialReader, &SerialReader::write);
+  QObject::connect(&fileSender, &FileSender::transmit, serialReader, &SerialReader::write);
 
   QObject::connect(avg, &Averager::addVectorToPlot, ui->plot, &MyMainPlot::newDataVector);
   QObject::connect(avg, &Averager::addPointToPlot, ui->plot, &MyMainPlot::newDataPoint);

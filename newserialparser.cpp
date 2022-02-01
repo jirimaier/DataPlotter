@@ -462,6 +462,22 @@ void NewSerialParser::parse(QByteArray newData) {
         break;
       }
 
+      if (currentMode == DataMode::file) {
+        readResult result = bufferPullBeforeSemicolumn(pendingDataBuffer, true);
+        if (result == complete) {
+            emit sendFileRequest(pendingDataBuffer, target);
+            pendingDataBuffer.clear();
+            continue;
+        }
+        if (result == notProperlyEnded) {
+            emit sendFileRequest(pendingDataBuffer, target);
+            sendMessageIfAllowed(tr("Missing semicolumn ?"), pendingDataBuffer, MessageLevel::warning);
+            pendingDataBuffer.clear();
+            continue;
+        }
+        break;
+      }
+
       if (currentMode == DataMode::deviceerror) {
         readResult result = bufferPullBeforeSemicolumn(pendingDataBuffer, true);
         if (result == incomplete)
@@ -631,6 +647,8 @@ void NewSerialParser::parseMode(QChar modeChar) {
     changeMode(DataMode::warning, previousMode, tr("Warning").toUtf8());
   else if (modeIdent == 'C')
     changeMode(DataMode::channel, previousMode, tr("Channel").toUtf8());
+  else if (modeIdent == 'F')
+    changeMode(DataMode::file, previousMode, tr("File").toUtf8());
   else if (modeIdent == 'S')
     changeMode(DataMode::settings, previousMode, tr("Settings").toUtf8());
   else if (modeIdent == 'U')

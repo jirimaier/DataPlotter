@@ -38,6 +38,7 @@
 #include "serialsettingsdialog.h"
 #include "mycursorslider.h"
 #include "averager.h"
+#include "filesender.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -59,6 +60,7 @@ class MainWindow : public QMainWindow {
   QTranslator* translator;
   QTimer portsRefreshTimer, activeChRefreshTimer, xyTimer, cursorRangeUpdateTimer, measureRefreshTimer1, measureRefreshTimer2, fftTimer1, fftTimer2, serialMonitorTimer, consoleTimer, interpolationTimer, triggerLineTimer;
   QList<QSerialPortInfo> portList;
+  FileSender fileSender;
 
   void setComboboxItemVisible(QComboBox& comboBox, int index, bool visible);
   void setChStyleSelection(GraphType::enumGraphType type);
@@ -322,6 +324,7 @@ class MainWindow : public QMainWindow {
   void serialConnectResult(bool connected, QString message, QString details);
   void printToTerminal(QByteArray data) { ui->myTerminal->printToTerminal(data); }
   void useSettings(QByteArray settings, MessageTarget::enumMessageTarget source);
+  void fileRequest(QByteArray message, MessageTarget::enumMessageTarget source);
   void printDeviceMessage(QByteArray message, bool warning, bool ended);
   void printSerialMonitor(QByteArray data) { serialMonitor.append(data); }
   void signalMeasurementsResult1(double period, double freq, double amp, double min, double max, double vrms, double dc, double fs, double rise, double fall, int samples);

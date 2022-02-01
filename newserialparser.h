@@ -40,6 +40,8 @@ class NewSerialParser : public QObject {
   void sendTerminal(QByteArray message);
   /// Pošle nastavení (jedno, ne celý úsek)
   void sendSettings(QByteArray message, MessageTarget::enumMessageTarget source);
+  /// Pošle požadavek na soubor
+  void sendFileRequest(QByteArray message, MessageTarget::enumMessageTarget source);
   /// Pošle bod ke zpracování
   void sendPoint(QList<QPair<ValueType, QByteArray>> data);
   /// Pošle logický bod ke zpracování

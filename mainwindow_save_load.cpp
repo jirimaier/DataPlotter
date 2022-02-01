@@ -176,7 +176,7 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarg
     ui->plot->clearLogicGroup(2, 0);
   }
 
-  if (settings == "noopengldialog") {
+  else if (settings == "noopengldialog") {
     recommendOpenGL = false;
   }
 
@@ -363,7 +363,7 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarg
     }
   }
   if (source == MessageTarget::manual || ui->comboBoxOutputLevel->currentIndex() == MessageLevel::info)
-    printMessage(tr("Applied settings").toUtf8(), settings, MessageLevel::info, source);
+      printMessage(tr("Applied settings").toUtf8(), settings, MessageLevel::info, source);
 }
 
 void MainWindow::on_pushButtonLoadFile_clicked() {

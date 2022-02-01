@@ -11,6 +11,7 @@ CONFIG += c++11
 SOURCES += \
     averager.cpp \
     clickablelabel.cpp \
+    filesender.cpp \
     interpolator.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -21,6 +22,7 @@ SOURCES += \
     mainwindow_gui_preset.cpp \
     mainwindow_gui_slots.cpp \
     mainwindow_save_load.cpp \
+    mainwindow_send_file.cpp \
     mainwindow_timed_events.cpp \
     myaxistickerwithunit.cpp \
     mycursorslider.cpp \
@@ -48,6 +50,7 @@ SOURCES += \
 HEADERS += \
     averager.h \
     clickablelabel.h \
+    filesender.h \
     global.h \
     interpolator.h \
     mainwindow.h \

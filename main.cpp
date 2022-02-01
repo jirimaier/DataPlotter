@@ -109,7 +109,7 @@ int main(int argc, char* argv[]) {
   MainWindow mainWindow;
   QTranslator translator; // Musí být zde aby dokázal přeložit i texty v objektech jiných než MainWindow
   PlotData* plotData = new PlotData();
-  NewSerialParser* serialParser1 = new NewSerialParser(MessageTarget::serial1);
+  NewSerialParser* serialParser = new NewSerialParser(MessageTarget::serial1);
   NewSerialParser* serialParserM = new NewSerialParser(MessageTarget::manual);
   SerialReader* serial1 = new SerialReader();
   PlotMath* plotMath = new PlotMath();
@@ -123,33 +123,33 @@ int main(int argc, char* argv[]) {
 
   // Vytvoří vlákna
   //QThread plotDataThread;
-  QThread serialParser1Thread;
-  QThread serialParserMThread;
+  QThread serialParserThread;
   QThread plotMathThread;
-  QThread serialReader1Thread;
+  QThread serialReaderThread;
   QThread signalProcessing1Thread, signalProcessing2Thread, signalProcessingFFT1Thread, signalProcessingFFT2Thread;
   QThread interpolatorThread;
   QThread averagerThread;
   QThread xyThread;
 
   // Propojí signály
-  QObject::connect(serial1, &SerialReader::sendData, serialParser1, &NewSerialParser::parse);
-  QObject::connect(serial1, &SerialReader::started, serialParser1, &NewSerialParser::getReady);
-  QObject::connect(serialParser1, &NewSerialParser::ready, serial1, &SerialReader::parserReady);
+  QObject::connect(serial1, &SerialReader::sendData, serialParser, &NewSerialParser::parse);
+  QObject::connect(serial1, &SerialReader::started, serialParser, &NewSerialParser::getReady);
+  QObject::connect(serialParser, &NewSerialParser::ready, serial1, &SerialReader::parserReady);
   QObject::connect(serial1, &SerialReader::connectionResult, &mainWindow, &MainWindow::serialConnectResult);
-  QObject::connect(serialParser1, &NewSerialParser::sendMessage, &mainWindow, &MainWindow::printMessage);
-  QObject::connect(serialParser1, &NewSerialParser::sendDeviceMessage, &mainWindow, &MainWindow::printDeviceMessage);
-  QObject::connect(serialParser1, &NewSerialParser::sendSettings, &mainWindow, &MainWindow::useSettings);
-  QObject::connect(serialParser1, &NewSerialParser::deviceError, &mainWindow, &MainWindow::deviceError);
-  QObject::connect(serialParser1, &NewSerialParser::sendTerminal, &mainWindow, &MainWindow::printToTerminal);
-  QObject::connect(serialParser1, &NewSerialParser::sendPoint, plotData, &PlotData::addPoint);
-  QObject::connect(serialParser1, &NewSerialParser::sendLogicPoint, plotData, &PlotData::addLogicPoint);
-  QObject::connect(serialParser1, &NewSerialParser::sendChannel, plotData, &PlotData::addChannel);
-  QObject::connect(serialParser1, &NewSerialParser::sendLogicChannel, plotData, &PlotData::addLogicChannel);
-  QObject::connect(serialParser1, &NewSerialParser::sendEcho, serial1, &SerialReader::write);
-  QObject::connect(&mainWindow, &MainWindow::requestSerialBufferClear, serialParser1, &NewSerialParser::clearBuffer);
-  QObject::connect(&mainWindow, &MainWindow::requestSerialBufferShow, serialParser1, &NewSerialParser::showBuffer);
-  QObject::connect(&mainWindow, &MainWindow::setSerialMessageLevel, serialParser1, &NewSerialParser::setMsgLevel);
+  QObject::connect(serialParser, &NewSerialParser::sendMessage, &mainWindow, &MainWindow::printMessage);
+  QObject::connect(serialParser, &NewSerialParser::sendDeviceMessage, &mainWindow, &MainWindow::printDeviceMessage);
+  QObject::connect(serialParser, &NewSerialParser::sendSettings, &mainWindow, &MainWindow::useSettings);
+  QObject::connect(serialParser, &NewSerialParser::sendFileRequest, &mainWindow, &MainWindow::fileRequest);
+  QObject::connect(serialParser, &NewSerialParser::deviceError, &mainWindow, &MainWindow::deviceError);
+  QObject::connect(serialParser, &NewSerialParser::sendTerminal, &mainWindow, &MainWindow::printToTerminal);
+  QObject::connect(serialParser, &NewSerialParser::sendPoint, plotData, &PlotData::addPoint);
+  QObject::connect(serialParser, &NewSerialParser::sendLogicPoint, plotData, &PlotData::addLogicPoint);
+  QObject::connect(serialParser, &NewSerialParser::sendChannel, plotData, &PlotData::addChannel);
+  QObject::connect(serialParser, &NewSerialParser::sendLogicChannel, plotData, &PlotData::addLogicChannel);
+  QObject::connect(serialParser, &NewSerialParser::sendEcho, serial1, &SerialReader::write);
+  QObject::connect(&mainWindow, &MainWindow::requestSerialBufferClear, serialParser, &NewSerialParser::clearBuffer);
+  QObject::connect(&mainWindow, &MainWindow::requestSerialBufferShow, serialParser, &NewSerialParser::showBuffer);
+  QObject::connect(&mainWindow, &MainWindow::setSerialMessageLevel, serialParser, &NewSerialParser::setMsgLevel);
   QObject::connect(&mainWindow, &MainWindow::setSerialMessageLevel, plotData, &PlotData::setDebugLevel);
   QObject::connect(&mainWindow, &MainWindow::enableSerialMonitor, serial1, &SerialReader::enableMonitoring);
   QObject::connect(serial1, &SerialReader::monitor, &mainWindow, &MainWindow::printSerialMonitor);
@@ -162,6 +162,7 @@ int main(int argc, char* argv[]) {
   QObject::connect(serialParserM, &NewSerialParser::sendLogicPoint, plotData, &PlotData::addLogicPoint);
   QObject::connect(serialParserM, &NewSerialParser::sendChannel, plotData, &PlotData::addChannel);
   QObject::connect(serialParserM, &NewSerialParser::sendLogicChannel, plotData, &PlotData::addLogicChannel);
+  QObject::connect(serialParserM, &NewSerialParser::sendFileRequest, &mainWindow, &MainWindow::fileRequest);
   QObject::connect(&mainWindow, &MainWindow::requestManualBufferClear, serialParserM, &NewSerialParser::clearBuffer);
   QObject::connect(&mainWindow, &MainWindow::requestManualBufferShow, serialParserM, &NewSerialParser::showBuffer);
   QObject::connect(&mainWindow, &MainWindow::setManualMessageLevel, serialParserM, &NewSerialParser::setMsgLevel);
@@ -199,18 +200,17 @@ int main(int argc, char* argv[]) {
   QObject::connect(plotData, &PlotData::addDataToAverager, averager, &Averager::newDataVector);
   QObject::connect(plotData, &PlotData::addPointToAverager, averager, &Averager::newDataPoint);
   QObject::connect(&mainWindow, &MainWindow::setInterpolationFilter, interpolator, &Interpolator::loadFilterFromFile);
-  QObject::connect(&mainWindow, &MainWindow::replyEcho, serialParser1, &NewSerialParser::replyEcho);
+  QObject::connect(&mainWindow, &MainWindow::replyEcho, serialParser, &NewSerialParser::replyEcho);
   QObject::connect(&mainWindow, &MainWindow::changeSerialBaud, serial1, &SerialReader::changeBaud);
 
   // Funkce init je zavolána až z nového vlákna
-  QObject::connect(&serialReader1Thread, &QThread::started, serial1, &SerialReader::init);
+  QObject::connect(&serialReaderThread, &QThread::started, serial1, &SerialReader::init);
 
   // Přesuny do vláken
-  serial1->moveToThread(&serialReader1Thread);
-  serialParser1->moveToThread(&serialParser1Thread);
-  serialParserM->moveToThread(&serialParserMThread);
-
-  plotData->moveToThread(&serialParser1Thread);
+  serial1->moveToThread(&serialReaderThread);
+  serialParser->moveToThread(&serialParserThread);
+  serialParserM->moveToThread(&serialParserThread);
+  plotData->moveToThread(&serialParserThread);
   plotMath->moveToThread(&plotMathThread);
 
   xyMode->moveToThread(&xyThread);
@@ -222,10 +222,8 @@ int main(int argc, char* argv[]) {
   averager->moveToThread(&averagerThread);
 
   // Zahájí vlákna
-  serialReader1Thread.start();
-  serialParser1Thread.start();
-  serialParserMThread.start();
-  //plotDataThread.start();
+  serialReaderThread.start();
+  serialParserThread.start();
   plotMathThread.start();
   signalProcessing1Thread.start();
   signalProcessing2Thread.start();
@@ -241,7 +239,7 @@ int main(int argc, char* argv[]) {
   int returnValue = application.exec();
 
   // Smazat objekty až budou dokončeny procesy v nich
-  serialParser1->deleteLater();
+  serialParser->deleteLater();
   serialParserM->deleteLater();
   plotData->deleteLater();
   plotMath->deleteLater();
@@ -255,11 +253,9 @@ int main(int argc, char* argv[]) {
   xyMode->deleteLater();
 
   // Vyžádá ukončení event loopu
-  serialParser1Thread.quit();
-  serialParserMThread.quit();
-  //plotDataThread.quit();
+  serialParserThread.quit();
   plotMathThread.quit();
-  serialReader1Thread.quit();
+  serialReaderThread.quit();
   signalProcessing1Thread.quit();
   signalProcessing2Thread.quit();
   signalProcessingFFT1Thread.quit();
@@ -269,11 +265,9 @@ int main(int argc, char* argv[]) {
   xyThread.quit();
 
   // Čeká na ukončení procesů
-  serialParser1Thread.wait();
-  serialParserMThread.wait();
-  //plotDataThread.wait();
+  serialParserThread.wait();
   plotMathThread.wait();
-  serialReader1Thread.wait();
+  serialReaderThread.wait();
   signalProcessing1Thread.wait();
   signalProcessing2Thread.wait();
   signalProcessingFFT1Thread.wait();
