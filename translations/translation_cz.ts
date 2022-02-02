@@ -4,15 +4,19 @@
 <context>
     <name>FileSender</name>
     <message>
-        <location filename="../filesender.cpp" line="29"/>
-        <location filename="../filesender.cpp" line="53"/>
-        <source>Invalid length</source>
-        <translation type="unfinished"></translation>
+        <location filename="../filesender.cpp" line="37"/>
+        <source>Invalid ending</source>
+        <translation>Neplatné zakončení</translation>
     </message>
     <message>
-        <location filename="../filesender.cpp" line="34"/>
+        <location filename="../filesender.cpp" line="50"/>
+        <source>Invalid length</source>
+        <translation>Neplatná délka</translation>
+    </message>
+    <message>
+        <location filename="../filesender.cpp" line="55"/>
         <source>Block length not specified</source>
-        <translation type="unfinished"></translation>
+        <translation>Délka bloku nebyla specifikována</translation>
     </message>
 </context>
 <context>
@@ -1815,7 +1819,7 @@
     <message>
         <location filename="../mainwindow_send_file.cpp" line="9"/>
         <source>Send file</source>
-        <translation type="unfinished"></translation>
+        <translation>Odeslat soubor</translation>
     </message>
     <message>
         <location filename="../mainwindow_send_file.cpp" line="33"/>
@@ -1823,12 +1827,12 @@
         <location filename="../mainwindow_send_file.cpp" line="43"/>
         <location filename="../mainwindow_send_file.cpp" line="46"/>
         <source>Invalid file request</source>
-        <translation type="unfinished"></translation>
+        <translation>Neplatná žádost o soubor</translation>
     </message>
     <message>
         <location filename="../mainwindow_send_file.cpp" line="46"/>
         <source>Too many arguments in header</source>
-        <translation type="unfinished"></translation>
+        <translation>Příliš mnoho parametrů v záhlaví</translation>
     </message>
 </context>
 <context>
@@ -1883,16 +1887,16 @@
         <location filename="../newserialparser.cpp" line="121"/>
         <location filename="../newserialparser.cpp" line="164"/>
         <location filename="../newserialparser.cpp" line="457"/>
-        <location filename="../newserialparser.cpp" line="477"/>
-        <location filename="../newserialparser.cpp" line="490"/>
+        <location filename="../newserialparser.cpp" line="474"/>
+        <location filename="../newserialparser.cpp" line="486"/>
         <source>Missing semicolumn ?</source>
         <translation>Chybějící středník ?</translation>
     </message>
     <message>
         <location filename="../newserialparser.cpp" line="78"/>
         <location filename="../newserialparser.cpp" line="175"/>
-        <location filename="../newserialparser.cpp" line="509"/>
-        <location filename="../newserialparser.cpp" line="659"/>
+        <location filename="../newserialparser.cpp" line="505"/>
+        <location filename="../newserialparser.cpp" line="655"/>
         <source>Unknown</source>
         <translation>Neznámé</translation>
     </message>
@@ -2086,102 +2090,102 @@
         <translation>data nejsou označena jako typ unsigned integer</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="497"/>
+        <location filename="../newserialparser.cpp" line="493"/>
         <source>Parsing error</source>
         <translation>Chyba při zpracování</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="511"/>
+        <location filename="../newserialparser.cpp" line="507"/>
         <source>Fatal error</source>
         <translation>Katastrofální selhání</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="655"/>
+        <location filename="../newserialparser.cpp" line="651"/>
         <source>File</source>
-        <translation type="unfinished"></translation>
+        <translation>Soubor</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="750"/>
+        <location filename="../newserialparser.cpp" line="746"/>
         <source>New data</source>
         <translation>Nová data</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="602"/>
+        <location filename="../newserialparser.cpp" line="598"/>
         <source>Value &quot;%1&quot; is not a valid integer.</source>
         <translation>Hodnota &quot;%1&quot; není platné celé číslo.</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="730"/>
+        <location filename="../newserialparser.cpp" line="726"/>
         <source>Invalid value type: %1</source>
         <translation>Neplatný datový typ: %1</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="604"/>
+        <location filename="../newserialparser.cpp" line="600"/>
         <source>Value is negative: %1</source>
         <translation>Hodnota je záporná: %1</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="574"/>
+        <location filename="../newserialparser.cpp" line="570"/>
         <source>Expected value, but &quot;%1&quot; found.</source>
         <translation>Očekávána hodnota, ale načteno &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="608"/>
+        <location filename="../newserialparser.cpp" line="604"/>
         <source>Value is not unsigned integer type</source>
         <translation>Hodnota není typu unsigned integer</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="645"/>
+        <location filename="../newserialparser.cpp" line="641"/>
         <source>Points</source>
         <translation>Body</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="647"/>
+        <location filename="../newserialparser.cpp" line="643"/>
         <source>Terminal</source>
         <translation>Terminál</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="649"/>
+        <location filename="../newserialparser.cpp" line="645"/>
         <source>Info</source>
         <translation>Informace</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="651"/>
+        <location filename="../newserialparser.cpp" line="647"/>
         <source>Warning</source>
         <translation>Varování</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="653"/>
+        <location filename="../newserialparser.cpp" line="649"/>
         <source>Channel</source>
         <translation>Kanál</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="657"/>
+        <location filename="../newserialparser.cpp" line="653"/>
         <source>Settings</source>
         <translation>Nastavení</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="661"/>
+        <location filename="../newserialparser.cpp" line="657"/>
         <source>Echo</source>
         <translation>Ozvěna</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="663"/>
+        <location filename="../newserialparser.cpp" line="659"/>
         <source>Logic channel</source>
         <translation>Logický kanál</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="665"/>
+        <location filename="../newserialparser.cpp" line="661"/>
         <source>Logic points</source>
         <translation>Logický bod</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="667"/>
+        <location filename="../newserialparser.cpp" line="663"/>
         <source>Device error</source>
         <translation>Chyba zařízení</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="671"/>
+        <location filename="../newserialparser.cpp" line="667"/>
         <source>Unknown data type</source>
         <translation>Neznámí typ dat</translation>
     </message>

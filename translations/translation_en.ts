@@ -4,15 +4,19 @@
 <context>
     <name>FileSender</name>
     <message>
-        <location filename="../filesender.cpp" line="29"/>
-        <location filename="../filesender.cpp" line="53"/>
-        <source>Invalid length</source>
-        <translation type="unfinished"></translation>
+        <location filename="../filesender.cpp" line="37"/>
+        <source>Invalid ending</source>
+        <translation>Invalid ending</translation>
     </message>
     <message>
-        <location filename="../filesender.cpp" line="34"/>
+        <location filename="../filesender.cpp" line="50"/>
+        <source>Invalid length</source>
+        <translation>Invalid length</translation>
+    </message>
+    <message>
+        <location filename="../filesender.cpp" line="55"/>
         <source>Block length not specified</source>
-        <translation type="unfinished"></translation>
+        <translation>Block length not specified</translation>
     </message>
 </context>
 <context>
@@ -1815,7 +1819,7 @@
     <message>
         <location filename="../mainwindow_send_file.cpp" line="9"/>
         <source>Send file</source>
-        <translation type="unfinished"></translation>
+        <translation>Send file</translation>
     </message>
     <message>
         <location filename="../mainwindow_send_file.cpp" line="33"/>
@@ -1823,12 +1827,12 @@
         <location filename="../mainwindow_send_file.cpp" line="43"/>
         <location filename="../mainwindow_send_file.cpp" line="46"/>
         <source>Invalid file request</source>
-        <translation type="unfinished"></translation>
+        <translation>Invalid file request</translation>
     </message>
     <message>
         <location filename="../mainwindow_send_file.cpp" line="46"/>
         <source>Too many arguments in header</source>
-        <translation type="unfinished"></translation>
+        <translation>Too many arguments in header</translation>
     </message>
 </context>
 <context>
@@ -1883,16 +1887,16 @@
         <location filename="../newserialparser.cpp" line="121"/>
         <location filename="../newserialparser.cpp" line="164"/>
         <location filename="../newserialparser.cpp" line="457"/>
-        <location filename="../newserialparser.cpp" line="477"/>
-        <location filename="../newserialparser.cpp" line="490"/>
+        <location filename="../newserialparser.cpp" line="474"/>
+        <location filename="../newserialparser.cpp" line="486"/>
         <source>Missing semicolumn ?</source>
         <translation>Missing semicolon ?</translation>
     </message>
     <message>
         <location filename="../newserialparser.cpp" line="78"/>
         <location filename="../newserialparser.cpp" line="175"/>
-        <location filename="../newserialparser.cpp" line="509"/>
-        <location filename="../newserialparser.cpp" line="659"/>
+        <location filename="../newserialparser.cpp" line="505"/>
+        <location filename="../newserialparser.cpp" line="655"/>
         <source>Unknown</source>
         <translation>Unknown</translation>
     </message>
@@ -2086,102 +2090,102 @@
         <translation>data are not designated as unsigned integer</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="497"/>
+        <location filename="../newserialparser.cpp" line="493"/>
         <source>Parsing error</source>
         <translation>Parsing error</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="511"/>
+        <location filename="../newserialparser.cpp" line="507"/>
         <source>Fatal error</source>
         <translation>Fatal error</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="655"/>
+        <location filename="../newserialparser.cpp" line="651"/>
         <source>File</source>
-        <translation type="unfinished"></translation>
+        <translation>File</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="750"/>
+        <location filename="../newserialparser.cpp" line="746"/>
         <source>New data</source>
         <translation>New data</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="602"/>
+        <location filename="../newserialparser.cpp" line="598"/>
         <source>Value &quot;%1&quot; is not a valid integer.</source>
         <translation>Value &quot;%1&quot; is not a valid integer.</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="730"/>
+        <location filename="../newserialparser.cpp" line="726"/>
         <source>Invalid value type: %1</source>
         <translation>Invalid value type: %1</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="604"/>
+        <location filename="../newserialparser.cpp" line="600"/>
         <source>Value is negative: %1</source>
         <translation>Value is negative: %1</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="574"/>
+        <location filename="../newserialparser.cpp" line="570"/>
         <source>Expected value, but &quot;%1&quot; found.</source>
         <translation>Expected value, but &quot;%1&quot; found.</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="608"/>
+        <location filename="../newserialparser.cpp" line="604"/>
         <source>Value is not unsigned integer type</source>
         <translation>Value is not unsigned integer type</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="645"/>
+        <location filename="../newserialparser.cpp" line="641"/>
         <source>Points</source>
         <translation>Points</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="647"/>
+        <location filename="../newserialparser.cpp" line="643"/>
         <source>Terminal</source>
         <translation>Terminal</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="649"/>
+        <location filename="../newserialparser.cpp" line="645"/>
         <source>Info</source>
         <translation>Info</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="651"/>
+        <location filename="../newserialparser.cpp" line="647"/>
         <source>Warning</source>
         <translation>Warning</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="653"/>
+        <location filename="../newserialparser.cpp" line="649"/>
         <source>Channel</source>
         <translation>Channel</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="657"/>
+        <location filename="../newserialparser.cpp" line="653"/>
         <source>Settings</source>
         <translation>Settings</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="661"/>
+        <location filename="../newserialparser.cpp" line="657"/>
         <source>Echo</source>
         <translation>Echo</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="663"/>
+        <location filename="../newserialparser.cpp" line="659"/>
         <source>Logic channel</source>
         <translation>Logic channel</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="665"/>
+        <location filename="../newserialparser.cpp" line="661"/>
         <source>Logic points</source>
         <translation>Logic points</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="667"/>
+        <location filename="../newserialparser.cpp" line="663"/>
         <source>Device error</source>
         <translation>Device error</translation>
     </message>
     <message>
-        <location filename="../newserialparser.cpp" line="671"/>
+        <location filename="../newserialparser.cpp" line="667"/>
         <source>Unknown data type</source>
         <translation>Unknown data type</translation>
     </message>
