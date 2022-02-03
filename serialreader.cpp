@@ -59,6 +59,7 @@ void SerialReader::begin(QString portName, int baudRate, QSerialPort::DataBits d
   }
   if (serial->isOpen()) {
     serial->clear();
+    serial->setDataTerminalReady(true);
     emit started(); // Parser si vymaže buffer a odpoví že je připraven, teprve po odpovědi se začnou číst data.
   }
 }
@@ -100,6 +101,7 @@ void SerialReader::end() {
   emit connectionResult(false, tr("Not connected"), "");
   if (!serial->isOpen())
     return;
+  serial->setDataTerminalReady(false);
   serial->close();
 }
 
