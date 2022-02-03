@@ -478,6 +478,16 @@ void NewSerialParser::parse(QByteArray newData) {
         break;
       }
 
+      if (currentMode == DataMode::qml) {
+        readResult result = bufferPullBeforeNull(pendingDataBuffer);
+        if (result == complete) {
+            emit sendQmlCode(pendingDataBuffer);
+            pendingDataBuffer.clear();
+            continue;
+        }
+        break;
+      }
+
       if (currentMode == DataMode::deviceerror) {
         readResult result = bufferPullBeforeSemicolumn(pendingDataBuffer, true);
         if (result == incomplete)
@@ -661,6 +671,8 @@ void NewSerialParser::parseMode(QChar modeChar) {
     changeMode(DataMode::logicPoint, previousMode, tr("Logic points").toUtf8());
   else if (modeIdent == 'X')
     changeMode(DataMode::deviceerror, previousMode, tr("Device error").toUtf8());
+  else if (modeIdent == 'Q')
+    changeMode(DataMode::qml, previousMode, tr("Qml code").toUtf8());
   else {
     currentMode = DataMode::unknown;
     QByteArray character = QString(modeChar).toLocal8Bit();
@@ -716,6 +728,22 @@ NewSerialParser::readResult NewSerialParser::bufferPullBeforeSemicolumn(QByteArr
   }
   buffer.remove(0, end);
   return notProperlyEnded;
+}
+
+NewSerialParser::readResult NewSerialParser::bufferPullBeforeNull(QByteArray& result) {
+  int end;
+  bool ended = false;
+  if (buffer.contains('\0')) {
+    ended = true;
+    end = buffer.indexOf('\0');
+  }
+
+  if (!ended)
+    return incomplete;
+
+  result.push_back(buffer.left(end));
+  buffer.remove(0, end + 1);
+  return complete;
 }
 
 NewSerialParser::readResult NewSerialParser::bufferPullChannel(QPair<ValueType, QByteArray>& result) {

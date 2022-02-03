@@ -85,7 +85,7 @@ class MyTerminal : public QTableWidget {
   void addRows(int newCount);
   void addColumns(int newCount);
   void clearCell(int x, int y);
-  bool exeptionListIsBlacklist = true;
+  bool exeptionListIsBlacklist = false;
   QList<QColor> exceptionList;
  private slots:
 

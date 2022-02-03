@@ -104,12 +104,6 @@ QByteArray MainWindow::getSettings() {
 
   settings.append(QString("baud:%1;\n").arg(ui->comboBoxBaud->currentText().toUInt()).toLocal8Bit());
 
-  settings.append("noclickclr:");
-  for (int i = 0; i < ui->listWidgetTerminalBlacklist->count(); i++)
-    settings.append(ui->listWidgetTerminalBlacklist->item(i)->text().toLocal8Bit().replace(';', '.') + ',');
-  settings.remove(settings.length() - 1, 1);
-  settings.append(";\n");
-
   if (ui->radioButtonFixedRange->isChecked())
     settings.append("plotrange:fix;\n");
   else if (ui->radioButtonFreeRange->isChecked())

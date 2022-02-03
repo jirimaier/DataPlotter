@@ -26,6 +26,8 @@
 #include <QTranslator>
 #include <QtCore>
 #include <QElapsedTimer>
+#include <QQmlContext>
+#include <QQmlEngine>
 
 #include "global.h"
 #include "plotdata.h"
@@ -39,6 +41,7 @@
 #include "mycursorslider.h"
 #include "averager.h"
 #include "filesender.h"
+#include "qmlterminalinterface.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -56,6 +59,7 @@ class MainWindow : public QMainWindow {
 
  private:
   Ui::MainWindow* ui;
+  QmlTerminalInterface *qmlTerminalInterface;
   SerialSettingsDialog* serialSettingsDialog;
   QTranslator* translator;
   QTimer portsRefreshTimer, activeChRefreshTimer, xyTimer, cursorRangeUpdateTimer, measureRefreshTimer1, measureRefreshTimer2, fftTimer1, fftTimer2, serialMonitorTimer, consoleTimer, interpolationTimer, triggerLineTimer;
@@ -127,14 +131,18 @@ class MainWindow : public QMainWindow {
 
   bool timeUseUnits = true, valuesUseUnits = true, freqUseUnits = true;
 
-  QString preselectPortHint = "ST";
+  QString preselectPortHint = "USB";
 
   ChannelExpectedRange channelExpectedRanges[ANALOG_COUNT + MATH_COUNT];
 
   QFile recordingOfMeasurements1, recordingOfMeasurements2;
   QElapsedTimer uptime;
 
- private slots:
+  void initQmlTerminal();
+
+  void loadQmlFile(QUrl url);
+
+private slots:
   void updateCursors();
   void setAdaptiveSpinBoxes();
   void updateDivs();
@@ -303,22 +311,21 @@ class MainWindow : public QMainWindow {
   void on_comboBoxBaud_currentTextChanged(const QString& arg1);
   void on_pushButtonTerminalBlacklistCopy_clicked();
   void on_pushButtonTerminalCopy_clicked();
-
   void on_radioButtonColorBlacklist_toggled(bool checked);
-
   void on_pushButtonRecordMeasurements1_clicked();
-
   void on_pushButtonRecordMeasurements2_clicked();
-
   void on_radioButtonFreqTimeFixed_toggled(bool checked) { ui->plotPeak->setAutoSize(checked);}
-
   void on_pushButtonPeakPlotClear_clicked();
-
   void on_pushButtonSetFFTForPeak_clicked();
-
   void on_pushButtonEXportFreqTimeCSV_clicked() {exportCSV(EXPORT_FREQTIME);}
+  void on_pushButtonTerminalBlacklisAddSelect_clicked();
+  void on_pushButtonQmlReload_clicked();
+  void on_pushButtonQmlSaveTemplate_clicked();
+  void on_pushButtonQmlLoad_clicked();
+  void on_pushButtonQmlExport_clicked();
+  void on_quickWidget_statusChanged(const QQuickWidget::Status &arg1);
 
- public slots:
+public slots:
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumMessageTarget target);
   void showPlotStatus(PlotStatus::enumPlotStatus type);
   void serialConnectResult(bool connected, QString message, QString details);
@@ -343,6 +350,7 @@ class MainWindow : public QMainWindow {
   void interpolationResult(int chID, QSharedPointer<QCPGraphDataContainer> dataOriginal, QSharedPointer<QCPGraphDataContainer> dataInterpolated, bool dataIsFromInterpolationBuffer);
   void deviceError(QByteArray message, MessageTarget::enumMessageTarget source);
   void setExpectedRange(int chID, bool known, double min, double max) {channelExpectedRanges[chID].maximum = max; channelExpectedRanges[chID].minimum = min; channelExpectedRanges[chID].unknown = !known;}
+  void loadCompressedQml(QByteArray data);
 
  signals:
   void setChDigital(int chid, int target);

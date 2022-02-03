@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>998</width>
-    <height>754</height>
+    <width>1000</width>
+    <height>800</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -70,11 +70,11 @@
         </property>
         <item>
          <layout class="QGridLayout" name="gridLayout" rowstretch="0,0" columnstretch="0,0">
-          <item row="0" column="1">
-           <widget class="MyFFTPlot" name="plotFFT" native="true">
+          <item row="0" column="0">
+           <widget class="MyXYPlot" name="plotxy" native="true">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-              <horstretch>2</horstretch>
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>1</horstretch>
               <verstretch>1</verstretch>
              </sizepolicy>
             </property>
@@ -86,11 +86,11 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="0">
-           <widget class="MyXYPlot" name="plotxy" native="true">
+          <item row="0" column="1">
+           <widget class="MyFFTPlot" name="plotFFT" native="true">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-              <horstretch>1</horstretch>
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>2</horstretch>
               <verstretch>1</verstretch>
              </sizepolicy>
             </property>
@@ -768,6 +768,12 @@
              <bool>true</bool>
             </property>
             <widget class="QWidget" name="range">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <attribute name="icon">
               <iconset resource="resources.qrc">
                <normaloff>:/images/icons/rangeTab.png</normaloff>:/images/icons/rangeTab.png</iconset>
@@ -1618,13 +1624,6 @@
                      <height>0</height>
                     </size>
                    </property>
-                   <property name="font">
-                    <font>
-                     <family>Courier New</family>
-                     <weight>75</weight>
-                     <bold>true</bold>
-                    </font>
-                   </property>
                    <property name="text">
                     <string notr="true">xxx xX/Div</string>
                    </property>
@@ -1743,13 +1742,6 @@
                      <height>0</height>
                     </size>
                    </property>
-                   <property name="font">
-                    <font>
-                     <family>Courier New</family>
-                     <weight>75</weight>
-                     <bold>true</bold>
-                    </font>
-                   </property>
                    <property name="text">
                     <string notr="true">xxx xX/Div</string>
                    </property>
@@ -1768,6 +1760,12 @@
                   <horstretch>0</horstretch>
                   <verstretch>0</verstretch>
                  </sizepolicy>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>16777215</height>
+                 </size>
                 </property>
                 <property name="frameShape">
                  <enum>QFrame::StyledPanel</enum>
@@ -1976,9 +1974,7 @@
                         </property>
                         <property name="font">
                          <font>
-                          <family>MS Shell Dlg 2</family>
                           <pointsize>10</pointsize>
-                          <weight>50</weight>
                           <bold>false</bold>
                          </font>
                         </property>
@@ -2099,9 +2095,7 @@
                       </property>
                       <property name="font">
                        <font>
-                        <family>MS Shell Dlg 2</family>
                         <pointsize>10</pointsize>
-                        <weight>50</weight>
                         <bold>false</bold>
                        </font>
                       </property>
@@ -2205,9 +2199,7 @@
                         </property>
                         <property name="font">
                          <font>
-                          <family>MS Shell Dlg 2</family>
                           <pointsize>10</pointsize>
-                          <weight>50</weight>
                           <bold>false</bold>
                          </font>
                         </property>
@@ -2450,9 +2442,7 @@
                    </property>
                    <property name="font">
                     <font>
-                     <family>Courier New</family>
                      <pointsize>10</pointsize>
-                     <weight>75</weight>
                      <bold>true</bold>
                     </font>
                    </property>
@@ -2490,9 +2480,7 @@
                    </property>
                    <property name="font">
                     <font>
-                     <family>Courier New</family>
                      <pointsize>10</pointsize>
-                     <weight>75</weight>
                      <bold>true</bold>
                     </font>
                    </property>
@@ -2530,9 +2518,7 @@
                    </property>
                    <property name="font">
                     <font>
-                     <family>Courier New</family>
                      <pointsize>10</pointsize>
-                     <weight>75</weight>
                      <bold>true</bold>
                     </font>
                    </property>
@@ -2570,9 +2556,7 @@
                    </property>
                    <property name="font">
                     <font>
-                     <family>Courier New</family>
                      <pointsize>10</pointsize>
-                     <weight>75</weight>
                      <bold>true</bold>
                     </font>
                    </property>
@@ -2610,9 +2594,7 @@
                    </property>
                    <property name="font">
                     <font>
-                     <family>Courier New</family>
                      <pointsize>10</pointsize>
-                     <weight>75</weight>
                      <bold>true</bold>
                     </font>
                    </property>
@@ -2746,9 +2728,7 @@
                         </property>
                         <property name="font">
                          <font>
-                          <family>MS Shell Dlg 2</family>
                           <pointsize>10</pointsize>
-                          <weight>50</weight>
                           <bold>false</bold>
                          </font>
                         </property>
@@ -2869,9 +2849,7 @@
                       </property>
                       <property name="font">
                        <font>
-                        <family>MS Shell Dlg 2</family>
                         <pointsize>10</pointsize>
-                        <weight>50</weight>
                         <bold>false</bold>
                        </font>
                       </property>
@@ -2988,9 +2966,7 @@
                         </property>
                         <property name="font">
                          <font>
-                          <family>MS Shell Dlg 2</family>
                           <pointsize>10</pointsize>
-                          <weight>50</weight>
                           <bold>false</bold>
                          </font>
                         </property>
@@ -3298,7 +3274,6 @@
                    <property name="font">
                     <font>
                      <pointsize>8</pointsize>
-                     <weight>75</weight>
                      <bold>true</bold>
                     </font>
                    </property>
@@ -3321,7 +3296,6 @@
                    <property name="font">
                     <font>
                      <pointsize>8</pointsize>
-                     <weight>75</weight>
                      <bold>true</bold>
                     </font>
                    </property>
@@ -3344,7 +3318,6 @@
                    <property name="font">
                     <font>
                      <pointsize>8</pointsize>
-                     <weight>75</weight>
                      <bold>true</bold>
                     </font>
                    </property>
@@ -3367,7 +3340,6 @@
                    <property name="font">
                     <font>
                      <pointsize>8</pointsize>
-                     <weight>75</weight>
                      <bold>true</bold>
                     </font>
                    </property>
@@ -3389,7 +3361,6 @@
                    </property>
                    <property name="font">
                     <font>
-                     <weight>75</weight>
                      <bold>true</bold>
                     </font>
                    </property>
@@ -3465,7 +3436,6 @@
                   <widget class="QLabel" name="labelSig1fs">
                    <property name="font">
                     <font>
-                     <weight>75</weight>
                      <bold>true</bold>
                     </font>
                    </property>
@@ -3488,7 +3458,6 @@
                    <property name="font">
                     <font>
                      <pointsize>8</pointsize>
-                     <weight>75</weight>
                      <bold>true</bold>
                     </font>
                    </property>
@@ -3511,7 +3480,6 @@
                    <property name="font">
                     <font>
                      <pointsize>8</pointsize>
-                     <weight>75</weight>
                      <bold>true</bold>
                     </font>
                    </property>
@@ -3534,7 +3502,6 @@
                    <property name="font">
                     <font>
                      <pointsize>8</pointsize>
-                     <weight>75</weight>
                      <bold>true</bold>
                     </font>
                    </property>
@@ -3556,7 +3523,6 @@
                    </property>
                    <property name="font">
                     <font>
-                     <weight>75</weight>
                      <bold>true</bold>
                     </font>
                    </property>
@@ -3578,7 +3544,6 @@
                    </property>
                    <property name="font">
                     <font>
-                     <weight>75</weight>
                      <bold>true</bold>
                     </font>
                    </property>
@@ -3692,7 +3657,6 @@
                    </property>
                    <property name="font">
                     <font>
-                     <weight>75</weight>
                      <bold>true</bold>
                     </font>
                    </property>
@@ -3715,7 +3679,6 @@
                    <property name="font">
                     <font>
                      <pointsize>8</pointsize>
-                     <weight>75</weight>
                      <bold>true</bold>
                     </font>
                    </property>
@@ -3731,7 +3694,6 @@
                   <widget class="QLabel" name="labelSig2fs">
                    <property name="font">
                     <font>
-                     <weight>75</weight>
                      <bold>true</bold>
                     </font>
                    </property>
@@ -3753,7 +3715,6 @@
                    </property>
                    <property name="font">
                     <font>
-                     <weight>75</weight>
                      <bold>true</bold>
                     </font>
                    </property>
@@ -3786,7 +3747,6 @@
                    <property name="font">
                     <font>
                      <pointsize>8</pointsize>
-                     <weight>75</weight>
                      <bold>true</bold>
                     </font>
                    </property>
@@ -3809,7 +3769,6 @@
                    <property name="font">
                     <font>
                      <pointsize>8</pointsize>
-                     <weight>75</weight>
                      <bold>true</bold>
                     </font>
                    </property>
@@ -3875,7 +3834,6 @@
                    <property name="font">
                     <font>
                      <pointsize>8</pointsize>
-                     <weight>75</weight>
                      <bold>true</bold>
                     </font>
                    </property>
@@ -3898,7 +3856,6 @@
                    <property name="font">
                     <font>
                      <pointsize>8</pointsize>
-                     <weight>75</weight>
                      <bold>true</bold>
                     </font>
                    </property>
@@ -3950,7 +3907,6 @@
                    </property>
                    <property name="font">
                     <font>
-                     <weight>75</weight>
                      <bold>true</bold>
                     </font>
                    </property>
@@ -3993,7 +3949,6 @@
                    <property name="font">
                     <font>
                      <pointsize>8</pointsize>
-                     <weight>75</weight>
                      <bold>true</bold>
                     </font>
                    </property>
@@ -4016,7 +3971,6 @@
                    <property name="font">
                     <font>
                      <pointsize>8</pointsize>
-                     <weight>75</weight>
                      <bold>true</bold>
                     </font>
                    </property>
@@ -5082,7 +5036,6 @@
                      <property name="font">
                       <font>
                        <pointsize>10</pointsize>
-                       <weight>75</weight>
                        <bold>true</bold>
                       </font>
                      </property>
@@ -5099,7 +5052,6 @@
                      <property name="font">
                       <font>
                        <pointsize>10</pointsize>
-                       <weight>75</weight>
                        <bold>true</bold>
                       </font>
                      </property>
@@ -5498,39 +5450,7 @@
                   </layout>
                  </item>
                  <item>
-                  <layout class="QGridLayout" name="gridLayout_18" rowstretch="1,1,1,1,0" columnstretch="1,1000">
-                   <item row="3" column="0" rowspan="2">
-                    <widget class="QLabel" name="label_54">
-                     <property name="toolTip">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Measure phase difference using cursors: arcsin(A/B)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                     </property>
-                     <property name="text">
-                      <string/>
-                     </property>
-                     <property name="pixmap">
-                      <pixmap resource="resources.qrc">:/images/icons/xyphase.png</pixmap>
-                     </property>
-                     <property name="alignment">
-                      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="1" column="0">
-                    <widget class="QLabel" name="label_53">
-                     <property name="toolTip">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                     </property>
-                     <property name="text">
-                      <string/>
-                     </property>
-                     <property name="pixmap">
-                      <pixmap resource="resources.qrc">:/images/icons/deltaY.png</pixmap>
-                     </property>
-                     <property name="alignment">
-                      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                     </property>
-                    </widget>
-                   </item>
+                  <layout class="QGridLayout" name="gridLayout_18" rowstretch="1,1,100,1,1" columnstretch="1,100">
                    <item row="0" column="0">
                     <widget class="QLabel" name="label_52">
                      <property name="toolTip">
@@ -5560,9 +5480,7 @@
                      </property>
                      <property name="font">
                       <font>
-                       <family>Courier New</family>
                        <pointsize>10</pointsize>
-                       <weight>75</weight>
                        <bold>true</bold>
                       </font>
                      </property>
@@ -5587,9 +5505,7 @@
                      </property>
                      <property name="font">
                       <font>
-                       <family>Courier New</family>
                        <pointsize>10</pointsize>
-                       <weight>75</weight>
                        <bold>true</bold>
                       </font>
                      </property>
@@ -5604,6 +5520,22 @@
                      </property>
                     </widget>
                    </item>
+                   <item row="3" column="0" rowspan="2">
+                    <widget class="QLabel" name="label_54">
+                     <property name="toolTip">
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Measure phase difference using cursors: arcsin(A/B)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="pixmap">
+                      <pixmap resource="resources.qrc">:/images/icons/xyphase.png</pixmap>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                     </property>
+                    </widget>
+                   </item>
                    <item row="3" column="1">
                     <widget class="QLabel" name="labelXYPhaseDeg">
                      <property name="sizePolicy">
@@ -5614,9 +5546,7 @@
                      </property>
                      <property name="font">
                       <font>
-                       <family>Courier New</family>
                        <pointsize>10</pointsize>
-                       <weight>75</weight>
                        <bold>true</bold>
                       </font>
                      </property>
@@ -5631,6 +5561,22 @@
                      </property>
                     </widget>
                    </item>
+                   <item row="1" column="0">
+                    <widget class="QLabel" name="label_53">
+                     <property name="toolTip">
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="pixmap">
+                      <pixmap resource="resources.qrc">:/images/icons/deltaY.png</pixmap>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                     </property>
+                    </widget>
+                   </item>
                    <item row="1" column="1">
                     <widget class="QLabel" name="labelXYDeltaX">
                      <property name="sizePolicy">
@@ -5641,9 +5587,7 @@
                      </property>
                      <property name="font">
                       <font>
-                       <family>Courier New</family>
                        <pointsize>10</pointsize>
-                       <weight>75</weight>
                        <bold>true</bold>
                       </font>
                      </property>
@@ -5666,7 +5610,7 @@
                      <property name="sizeHint" stdset="0">
                       <size>
                        <width>20</width>
-                       <height>0</height>
+                       <height>1</height>
                       </size>
                      </property>
                     </spacer>
@@ -6031,19 +5975,6 @@
                   </spacer>
                  </item>
                  <item>
-                  <widget class="QPushButton" name="pushButtonFFTHoldMax1">
-                   <property name="toolTip">
-                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Keep maximum value for each sample. Useful for measuring amplitude frequency response.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                   </property>
-                   <property name="text">
-                    <string>Hold max</string>
-                   </property>
-                   <property name="checkable">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
                   <widget class="QComboBox" name="comboBoxFFTStyle1">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -6090,6 +6021,19 @@
                       <normaloff>:/images/icons/linePoint.png</normaloff>:/images/icons/linePoint.png</iconset>
                     </property>
                    </item>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="pushButtonFFTHoldMax1">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Keep maximum value for each sample. Useful for measuring amplitude frequency response.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                   <property name="text">
+                    <string>Hold max</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
                   </widget>
                  </item>
                 </layout>
@@ -6252,19 +6196,6 @@
                   </spacer>
                  </item>
                  <item>
-                  <widget class="QPushButton" name="pushButtonFFTHoldMax2">
-                   <property name="toolTip">
-                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Keep maximum value for each sample. Useful for measuring amplitude frequency response.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                   </property>
-                   <property name="text">
-                    <string>Hold max</string>
-                   </property>
-                   <property name="checkable">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
                   <widget class="QComboBox" name="comboBoxFFTStyle2">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -6311,6 +6242,19 @@
                       <normaloff>:/images/icons/linePoint.png</normaloff>:/images/icons/linePoint.png</iconset>
                     </property>
                    </item>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="pushButtonFFTHoldMax2">
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Keep maximum value for each sample. Useful for measuring amplitude frequency response.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                   <property name="text">
+                    <string>Hold max</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
                   </widget>
                  </item>
                 </layout>
@@ -6436,7 +6380,7 @@
                    <property name="sizeHint" stdset="0">
                     <size>
                      <width>20</width>
-                     <height>13</height>
+                     <height>1</height>
                     </size>
                    </property>
                   </spacer>
@@ -6458,8 +6402,8 @@
                 </property>
                 <property name="sizeHint" stdset="0">
                  <size>
-                  <width>40</width>
-                  <height>20</height>
+                  <width>1</width>
+                  <height>1</height>
                  </size>
                 </property>
                </spacer>
@@ -7766,9 +7710,6 @@
                 <property name="insertPolicy">
                  <enum>QComboBox::InsertAtTop</enum>
                 </property>
-                <property name="sizeAdjustPolicy">
-                 <enum>QComboBox::AdjustToMinimumContentsLength</enum>
-                </property>
                 <property name="minimumContentsLength">
                  <number>8</number>
                 </property>
@@ -7909,7 +7850,6 @@
                    </property>
                    <property name="font">
                     <font>
-                     <family>Courier New</family>
                      <strikeout>false</strikeout>
                     </font>
                    </property>
@@ -8067,7 +8007,6 @@
                    </property>
                    <property name="font">
                     <font>
-                     <family>Courier New</family>
                      <strikeout>false</strikeout>
                     </font>
                    </property>
@@ -8285,7 +8224,6 @@
                    </property>
                    <property name="font">
                     <font>
-                     <family>Courier New</family>
                      <strikeout>false</strikeout>
                     </font>
                    </property>
@@ -8323,9 +8261,7 @@
                       </sizepolicy>
                      </property>
                      <property name="font">
-                      <font>
-                       <family>Courier New</family>
-                      </font>
+                      <font/>
                      </property>
                      <property name="frame">
                       <bool>true</bool>
@@ -8477,7 +8413,7 @@
            <attribute name="title">
             <string/>
            </attribute>
-           <layout class="QVBoxLayout" name="verticalLayout_17" stretch="100,1,1">
+           <layout class="QVBoxLayout" name="verticalLayout_17" stretch="100,1,1,1">
             <property name="spacing">
              <number>3</number>
             </property>
@@ -8512,7 +8448,6 @@
               </property>
               <property name="font">
                <font>
-                <family>Courier New</family>
                 <pointsize>18</pointsize>
                </font>
               </property>
@@ -8771,7 +8706,7 @@ padding:3px;
               <property name="frameShadow">
                <enum>QFrame::Raised</enum>
               </property>
-              <layout class="QGridLayout" name="gridLayout_16" rowstretch="100,1" columnstretch="1,1">
+              <layout class="QGridLayout" name="gridLayout_16" rowstretch="100,0" columnstretch="2,0">
                <property name="leftMargin">
                 <number>0</number>
                </property>
@@ -8787,6 +8722,19 @@ padding:3px;
                <property name="spacing">
                 <number>3</number>
                </property>
+               <item row="0" column="0">
+                <widget class="QTextEdit" name="textEditTerminalDebug">
+                 <property name="horizontalScrollBarPolicy">
+                  <enum>Qt::ScrollBarAlwaysOff</enum>
+                 </property>
+                 <property name="acceptRichText">
+                  <bool>false</bool>
+                 </property>
+                 <property name="textInteractionFlags">
+                  <set>Qt::TextEditorInteraction</set>
+                 </property>
+                </widget>
+               </item>
                <item row="1" column="0">
                 <layout class="QHBoxLayout" name="horizontalLayout_12">
                  <property name="spacing">
@@ -8985,21 +8933,369 @@ padding:3px;
                  </item>
                 </widget>
                </item>
-               <item row="0" column="0">
-                <widget class="QTextEdit" name="textEditTerminalDebug">
-                 <property name="horizontalScrollBarPolicy">
-                  <enum>Qt::ScrollBarAlwaysOff</enum>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QFrame" name="frameTerminalClickableColors">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>120</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_22" columnstretch="2,1,1">
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <property name="spacing">
+                <number>3</number>
+               </property>
+               <item row="1" column="1">
+                <widget class="QRadioButton" name="radioButtonColorBlacklist">
+                 <property name="text">
+                  <string>Forbiden</string>
                  </property>
-                 <property name="acceptRichText">
+                 <property name="checked">
                   <bool>false</bool>
-                 </property>
-                 <property name="textInteractionFlags">
-                  <set>Qt::TextEditorInteraction</set>
                  </property>
                 </widget>
                </item>
+               <item row="1" column="0" rowspan="4">
+                <widget class="QListWidget" name="listWidgetTerminalBlacklist">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>150</height>
+                  </size>
+                 </property>
+                 <property name="verticalScrollBarPolicy">
+                  <enum>Qt::ScrollBarAlwaysOn</enum>
+                 </property>
+                 <property name="horizontalScrollBarPolicy">
+                  <enum>Qt::ScrollBarAlwaysOff</enum>
+                 </property>
+                 <property name="editTriggers">
+                  <set>QAbstractItemView::NoEditTriggers</set>
+                 </property>
+                 <property name="selectionMode">
+                  <enum>QAbstractItemView::MultiSelection</enum>
+                 </property>
+                 <property name="layoutMode">
+                  <enum>QListView::SinglePass</enum>
+                 </property>
+                 <property name="sortingEnabled">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="2">
+                <widget class="QRadioButton" name="radioButtonColorWhitelist">
+                 <property name="text">
+                  <string>Allowed</string>
+                 </property>
+                 <property name="checkable">
+                  <bool>true</bool>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="0" colspan="3">
+                <widget class="QLabel" name="label_12">
+                 <property name="text">
+                  <string>Clickable background colors in terminal</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="1" colspan="2">
+                <layout class="QHBoxLayout" name="horizontalLayout_36">
+                 <property name="spacing">
+                  <number>3</number>
+                 </property>
+                 <item>
+                  <widget class="QLineEdit" name="lineEditTerminalBlacklist">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true"/>
+                   </property>
+                   <property name="placeholderText">
+                    <string>Add color</string>
+                   </property>
+                   <property name="clearButtonEnabled">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="pushButtonTerminalBlacklisAdd">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="toolTip">
+                    <string>Add color</string>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="resources.qrc">
+                     <normaloff>:/images/icons/send.png</normaloff>:/images/icons/send.png</iconset>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item row="4" column="1" colspan="2">
+                <layout class="QHBoxLayout" name="horizontalLayout_37" stretch="1,1,1">
+                 <property name="spacing">
+                  <number>3</number>
+                 </property>
+                 <item>
+                  <widget class="QPushButton" name="pushButtonTerminalBlacklisAddSelect">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="toolTip">
+                    <string>Add color</string>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="resources.qrc">
+                     <normaloff>:/images/icons/plus.png</normaloff>:/images/icons/plus.png</iconset>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="pushButtonTerminalBlacklistClear">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="toolTip">
+                    <string>Delete selected color</string>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="resources.qrc">
+                     <normaloff>:/images/icons/minus.png</normaloff>:/images/icons/minus.png</iconset>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="pushButtonTerminalBlacklistCopy">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="toolTip">
+                    <string>Copy list of colors</string>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="resources.qrc">
+                     <normaloff>:/images/icons/copy.png</normaloff>:/images/icons/copy.png</iconset>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item row="2" column="1" colspan="2">
+                <spacer name="verticalSpacer_7">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>71</width>
+                   <height>13</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
               </layout>
              </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="qmlTab">
+           <attribute name="title">
+            <string>QML</string>
+           </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout_44" stretch="1000,1">
+            <property name="spacing">
+             <number>3</number>
+            </property>
+            <property name="leftMargin">
+             <number>6</number>
+            </property>
+            <property name="topMargin">
+             <number>6</number>
+            </property>
+            <property name="rightMargin">
+             <number>6</number>
+            </property>
+            <property name="bottomMargin">
+             <number>6</number>
+            </property>
+            <item>
+             <widget class="QQuickWidget" name="quickWidget">
+              <property name="resizeMode">
+               <enum>QQuickWidget::SizeRootObjectToView</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QGridLayout" name="gridLayout_26">
+              <item row="0" column="1">
+               <widget class="QPushButton" name="pushButtonQmlLoad">
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load qml file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset resource="resources.qrc">
+                  <normaloff>:/images/icons/load.png</normaloff>:/images/icons/load.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>30</width>
+                  <height>30</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2">
+               <widget class="QPushButton" name="pushButtonQmlSaveTemplate">
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save example file as template&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset resource="resources.qrc">
+                  <normaloff>:/images/icons/save.png</normaloff>:/images/icons/save.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>30</width>
+                  <height>30</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0">
+               <widget class="QPushButton" name="pushButtonQmlReload">
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Reload current file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset resource="resources.qrc">
+                  <normaloff>:/images/icons/reload.png</normaloff>:/images/icons/reload.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>30</width>
+                  <height>30</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="3">
+               <widget class="QPushButton" name="pushButtonQmlExport">
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Export qml file in compressed and encoded format&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset resource="resources.qrc">
+                  <normaloff>:/images/icons/send.png</normaloff>:/images/icons/send.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>30</width>
+                  <height>30</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0" colspan="4">
+               <widget class="QPlainTextEdit" name="plainTextEditQmlLog">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>100</height>
+                 </size>
+                </property>
+                <property name="lineWrapMode">
+                 <enum>QPlainTextEdit::NoWrap</enum>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+                <property name="placeholderText">
+                 <string/>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
            </layout>
           </widget>
@@ -9011,7 +9307,7 @@ padding:3px;
            <attribute name="title">
             <string/>
            </attribute>
-           <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,1,1,1,100,1">
+           <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,1,1,0,100,1">
             <property name="leftMargin">
              <number>6</number>
             </property>
@@ -9309,197 +9605,13 @@ padding:3px;
              </widget>
             </item>
             <item>
-             <widget class="QGroupBox" name="groupBox_6">
-              <property name="title">
-               <string>Terminal</string>
+             <widget class="QCheckBox" name="checkBoxEnablTerminalVScrollBar">
+              <property name="toolTip">
+               <string>Show vertical scroll bar in terminal if text is higher than terminal window (you can always scroll with mouse wheel)</string>
               </property>
-              <layout class="QVBoxLayout" name="verticalLayout_42">
-               <property name="leftMargin">
-                <number>6</number>
-               </property>
-               <property name="topMargin">
-                <number>6</number>
-               </property>
-               <property name="rightMargin">
-                <number>6</number>
-               </property>
-               <property name="bottomMargin">
-                <number>6</number>
-               </property>
-               <item>
-                <widget class="QLabel" name="label_12">
-                 <property name="text">
-                  <string>Clickable background colors in terminal</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_36" stretch="1,0">
-                 <property name="spacing">
-                  <number>3</number>
-                 </property>
-                 <item>
-                  <widget class="QListWidget" name="listWidgetTerminalBlacklist">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>16777215</width>
-                     <height>150</height>
-                    </size>
-                   </property>
-                   <property name="verticalScrollBarPolicy">
-                    <enum>Qt::ScrollBarAlwaysOn</enum>
-                   </property>
-                   <property name="horizontalScrollBarPolicy">
-                    <enum>Qt::ScrollBarAlwaysOff</enum>
-                   </property>
-                   <property name="editTriggers">
-                    <set>QAbstractItemView::NoEditTriggers</set>
-                   </property>
-                   <property name="selectionMode">
-                    <enum>QAbstractItemView::MultiSelection</enum>
-                   </property>
-                   <property name="layoutMode">
-                    <enum>QListView::SinglePass</enum>
-                   </property>
-                   <property name="sortingEnabled">
-                    <bool>false</bool>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <layout class="QVBoxLayout" name="verticalLayout_45">
-                   <item>
-                    <layout class="QHBoxLayout" name="horizontalLayout_37">
-                     <item>
-                      <widget class="QRadioButton" name="radioButtonColorBlacklist">
-                       <property name="text">
-                        <string>Forbiden</string>
-                       </property>
-                       <property name="checked">
-                        <bool>true</bool>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QRadioButton" name="radioButtonColorWhitelist">
-                       <property name="text">
-                        <string>Allowed</string>
-                       </property>
-                      </widget>
-                     </item>
-                    </layout>
-                   </item>
-                   <item>
-                    <layout class="QGridLayout" name="gridLayout_22">
-                     <item row="0" column="0" colspan="3">
-                      <widget class="QLineEdit" name="lineEditTerminalBlacklist">
-                       <property name="sizePolicy">
-                        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                         <horstretch>0</horstretch>
-                         <verstretch>0</verstretch>
-                        </sizepolicy>
-                       </property>
-                       <property name="styleSheet">
-                        <string notr="true"/>
-                       </property>
-                       <property name="placeholderText">
-                        <string>Add color</string>
-                       </property>
-                       <property name="clearButtonEnabled">
-                        <bool>true</bool>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="1" column="2">
-                      <widget class="QPushButton" name="pushButtonTerminalBlacklisAdd">
-                       <property name="sizePolicy">
-                        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                         <horstretch>0</horstretch>
-                         <verstretch>0</verstretch>
-                        </sizepolicy>
-                       </property>
-                       <property name="toolTip">
-                        <string>Add color</string>
-                       </property>
-                       <property name="text">
-                        <string/>
-                       </property>
-                       <property name="icon">
-                        <iconset resource="resources.qrc">
-                         <normaloff>:/images/icons/send.png</normaloff>:/images/icons/send.png</iconset>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="1" column="0">
-                      <widget class="QPushButton" name="pushButtonTerminalBlacklistClear">
-                       <property name="sizePolicy">
-                        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                         <horstretch>0</horstretch>
-                         <verstretch>0</verstretch>
-                        </sizepolicy>
-                       </property>
-                       <property name="toolTip">
-                        <string>Delete selected color</string>
-                       </property>
-                       <property name="text">
-                        <string/>
-                       </property>
-                       <property name="icon">
-                        <iconset resource="resources.qrc">
-                         <normaloff>:/images/icons/multiply.png</normaloff>:/images/icons/multiply.png</iconset>
-                       </property>
-                      </widget>
-                     </item>
-                     <item row="1" column="1">
-                      <widget class="QPushButton" name="pushButtonTerminalBlacklistCopy">
-                       <property name="sizePolicy">
-                        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                         <horstretch>0</horstretch>
-                         <verstretch>0</verstretch>
-                        </sizepolicy>
-                       </property>
-                       <property name="toolTip">
-                        <string>Copy list of colors</string>
-                       </property>
-                       <property name="text">
-                        <string/>
-                       </property>
-                       <property name="icon">
-                        <iconset resource="resources.qrc">
-                         <normaloff>:/images/icons/copy.png</normaloff>:/images/icons/copy.png</iconset>
-                       </property>
-                      </widget>
-                     </item>
-                    </layout>
-                   </item>
-                  </layout>
-                 </item>
-                </layout>
-               </item>
-               <item>
-                <widget class="Line" name="line_8">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QCheckBox" name="checkBoxEnablTerminalVScrollBar">
-                 <property name="toolTip">
-                  <string>Show vertical scroll bar in terminal if text is higher than terminal window (you can always scroll with mouse wheel)</string>
-                 </property>
-                 <property name="text">
-                  <string>Enable vertical scrollbar</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
+              <property name="text">
+               <string>Enable vertical scrollbar in terminal</string>
+              </property>
              </widget>
             </item>
             <item>
@@ -9813,9 +9925,7 @@ padding:3px;
               </sizepolicy>
              </property>
              <property name="font">
-              <font>
-               <family>Courier New</family>
-              </font>
+              <font/>
              </property>
              <property name="placeholderText">
               <string>send data to device</string>
@@ -9866,9 +9976,7 @@ padding:3px;
               </sizepolicy>
              </property>
              <property name="font">
-              <font>
-               <family>Courier New</family>
-              </font>
+              <font/>
              </property>
              <property name="placeholderText">
               <string>send data to device</string>
@@ -9919,9 +10027,7 @@ padding:3px;
               </sizepolicy>
              </property>
              <property name="font">
-              <font>
-               <family>Courier New</family>
-              </font>
+              <font/>
              </property>
              <property name="placeholderText">
               <string>send data to device</string>
@@ -9972,9 +10078,7 @@ padding:3px;
               </sizepolicy>
              </property>
              <property name="font">
-              <font>
-               <family>Courier New</family>
-              </font>
+              <font/>
              </property>
              <property name="placeholderText">
               <string>send data to device</string>
@@ -10080,6 +10184,11 @@ padding:3px;
   </widget>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>QQuickWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">QtQuickWidgets/QQuickWidget</header>
+  </customwidget>
   <customwidget>
    <class>MyTerminal</class>
    <extends>QTableWidget</extends>
@@ -10305,8 +10414,8 @@ padding:3px;
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>895</x>
-     <y>584</y>
+     <x>905</x>
+     <y>628</y>
     </hint>
     <hint type="destinationlabel">
      <x>959</x>
@@ -10321,12 +10430,12 @@ padding:3px;
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>969</x>
-     <y>734</y>
+     <x>979</x>
+     <y>781</y>
     </hint>
     <hint type="destinationlabel">
-     <x>939</x>
-     <y>628</y>
+     <x>949</x>
+     <y>672</y>
     </hint>
    </hints>
   </connection>
@@ -10337,12 +10446,12 @@ padding:3px;
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>969</x>
-     <y>734</y>
+     <x>979</x>
+     <y>781</y>
     </hint>
     <hint type="destinationlabel">
-     <x>939</x>
-     <y>655</y>
+     <x>949</x>
+     <y>699</y>
     </hint>
    </hints>
   </connection>
@@ -10353,12 +10462,12 @@ padding:3px;
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>969</x>
-     <y>734</y>
+     <x>979</x>
+     <y>781</y>
     </hint>
     <hint type="destinationlabel">
-     <x>939</x>
-     <y>682</y>
+     <x>949</x>
+     <y>726</y>
     </hint>
    </hints>
   </connection>
@@ -10369,12 +10478,12 @@ padding:3px;
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>969</x>
-     <y>734</y>
+     <x>979</x>
+     <y>781</y>
     </hint>
     <hint type="destinationlabel">
-     <x>970</x>
-     <y>628</y>
+     <x>980</x>
+     <y>672</y>
     </hint>
    </hints>
   </connection>
@@ -10385,12 +10494,12 @@ padding:3px;
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>969</x>
-     <y>734</y>
+     <x>979</x>
+     <y>781</y>
     </hint>
     <hint type="destinationlabel">
-     <x>970</x>
-     <y>655</y>
+     <x>980</x>
+     <y>699</y>
     </hint>
    </hints>
   </connection>
@@ -10401,12 +10510,12 @@ padding:3px;
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>969</x>
-     <y>734</y>
+     <x>979</x>
+     <y>781</y>
     </hint>
     <hint type="destinationlabel">
-     <x>970</x>
-     <y>682</y>
+     <x>980</x>
+     <y>726</y>
     </hint>
    </hints>
   </connection>
@@ -10417,12 +10526,12 @@ padding:3px;
    <slot>resetTerminal()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>962</x>
-     <y>464</y>
+     <x>972</x>
+     <y>361</y>
     </hint>
     <hint type="destinationlabel">
-     <x>846</x>
-     <y>322</y>
+     <x>973</x>
+     <y>320</y>
     </hint>
    </hints>
   </connection>
@@ -10433,8 +10542,8 @@ padding:3px;
    <slot>rangeTypeChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>207</x>
-     <y>510</y>
+     <x>213</x>
+     <y>547</y>
     </hint>
     <hint type="destinationlabel">
      <x>385</x>
@@ -10449,8 +10558,8 @@ padding:3px;
    <slot>rangeTypeChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>207</x>
-     <y>538</y>
+     <x>213</x>
+     <y>584</y>
     </hint>
     <hint type="destinationlabel">
      <x>507</x>
@@ -10465,8 +10574,8 @@ padding:3px;
    <slot>rangeTypeChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>207</x>
-     <y>566</y>
+     <x>213</x>
+     <y>621</y>
     </hint>
     <hint type="destinationlabel">
      <x>630</x>
@@ -10481,8 +10590,8 @@ padding:3px;
    <slot>setAutoSize(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>220</x>
-     <y>507</y>
+     <x>232</x>
+     <y>538</y>
     </hint>
     <hint type="destinationlabel">
      <x>144</x>
@@ -10497,8 +10606,8 @@ padding:3px;
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>124</x>
-     <y>677</y>
+     <x>132</x>
+     <y>737</y>
     </hint>
     <hint type="destinationlabel">
      <x>57</x>
@@ -10513,8 +10622,8 @@ padding:3px;
    <slot>setStyle(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>220</x>
-     <y>635</y>
+     <x>232</x>
+     <y>695</y>
     </hint>
     <hint type="destinationlabel">
      <x>186</x>
@@ -10529,8 +10638,8 @@ padding:3px;
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>457</x>
-     <y>677</y>
+     <x>472</x>
+     <y>737</y>
     </hint>
     <hint type="destinationlabel">
      <x>333</x>
@@ -10545,8 +10654,8 @@ padding:3px;
    <slot>setAutoSize(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>457</x>
-     <y>507</y>
+     <x>472</x>
+     <y>538</y>
     </hint>
     <hint type="destinationlabel">
      <x>322</x>
@@ -10561,12 +10670,12 @@ padding:3px;
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>744</x>
-     <y>588</y>
+     <x>742</x>
+     <y>632</y>
     </hint>
     <hint type="destinationlabel">
-     <x>832</x>
-     <y>560</y>
+     <x>805</x>
+     <y>604</y>
     </hint>
    </hints>
   </connection>
@@ -10577,8 +10686,8 @@ padding:3px;
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>207</x>
-     <y>510</y>
+     <x>213</x>
+     <y>547</y>
     </hint>
     <hint type="destinationlabel">
      <x>130</x>
@@ -10593,12 +10702,12 @@ padding:3px;
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>207</x>
-     <y>510</y>
+     <x>213</x>
+     <y>547</y>
     </hint>
     <hint type="destinationlabel">
      <x>131</x>
-     <y>564</y>
+     <y>594</y>
     </hint>
    </hints>
   </connection>
@@ -10609,12 +10718,12 @@ padding:3px;
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>207</x>
-     <y>510</y>
+     <x>213</x>
+     <y>547</y>
     </hint>
     <hint type="destinationlabel">
      <x>93</x>
-     <y>640</y>
+     <y>686</y>
     </hint>
    </hints>
   </connection>
@@ -10625,12 +10734,12 @@ padding:3px;
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>207</x>
-     <y>510</y>
+     <x>213</x>
+     <y>547</y>
     </hint>
     <hint type="destinationlabel">
      <x>93</x>
-     <y>607</y>
+     <y>645</y>
     </hint>
    </hints>
   </connection>
@@ -10641,12 +10750,12 @@ padding:3px;
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>207</x>
-     <y>510</y>
+     <x>213</x>
+     <y>547</y>
     </hint>
     <hint type="destinationlabel">
-     <x>237</x>
-     <y>646</y>
+     <x>239</x>
+     <y>692</y>
     </hint>
    </hints>
   </connection>
@@ -10657,12 +10766,12 @@ padding:3px;
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>207</x>
-     <y>510</y>
+     <x>213</x>
+     <y>547</y>
     </hint>
     <hint type="destinationlabel">
-     <x>236</x>
-     <y>690</y>
+     <x>239</x>
+     <y>736</y>
     </hint>
    </hints>
   </connection>
@@ -10673,12 +10782,12 @@ padding:3px;
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>207</x>
-     <y>510</y>
+     <x>213</x>
+     <y>547</y>
     </hint>
     <hint type="destinationlabel">
-     <x>475</x>
-     <y>691</y>
+     <x>486</x>
+     <y>737</y>
     </hint>
    </hints>
   </connection>
@@ -10689,12 +10798,12 @@ padding:3px;
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>207</x>
-     <y>510</y>
+     <x>213</x>
+     <y>547</y>
     </hint>
     <hint type="destinationlabel">
-     <x>416</x>
-     <y>645</y>
+     <x>422</x>
+     <y>691</y>
     </hint>
    </hints>
   </connection>
@@ -10705,8 +10814,8 @@ padding:3px;
    <slot>setGridHintX(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>457</x>
-     <y>583</y>
+     <x>472</x>
+     <y>610</y>
     </hint>
     <hint type="destinationlabel">
      <x>387</x>
@@ -10721,8 +10830,8 @@ padding:3px;
    <slot>setGridHintY(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>457</x>
-     <y>625</y>
+     <x>472</x>
+     <y>649</y>
     </hint>
     <hint type="destinationlabel">
      <x>529</x>
@@ -10737,12 +10846,12 @@ padding:3px;
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>125</x>
-     <y>593</y>
+     <x>132</x>
+     <y>644</y>
     </hint>
     <hint type="destinationlabel">
-     <x>125</x>
-     <y>618</y>
+     <x>132</x>
+     <y>672</y>
     </hint>
    </hints>
   </connection>
@@ -10753,12 +10862,12 @@ padding:3px;
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>207</x>
-     <y>510</y>
+     <x>213</x>
+     <y>547</y>
     </hint>
     <hint type="destinationlabel">
      <x>93</x>
-     <y>673</y>
+     <y>727</y>
     </hint>
    </hints>
   </connection>
@@ -10769,12 +10878,12 @@ padding:3px;
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>207</x>
-     <y>510</y>
+     <x>213</x>
+     <y>547</y>
     </hint>
     <hint type="destinationlabel">
-     <x>123</x>
-     <y>603</y>
+     <x>130</x>
+     <y>727</y>
     </hint>
    </hints>
   </connection>
@@ -10785,12 +10894,12 @@ padding:3px;
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>207</x>
-     <y>510</y>
+     <x>213</x>
+     <y>547</y>
     </hint>
     <hint type="destinationlabel">
-     <x>351</x>
-     <y>690</y>
+     <x>354</x>
+     <y>736</y>
     </hint>
    </hints>
   </connection>
@@ -10801,12 +10910,12 @@ padding:3px;
    <slot>setHidden(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>428</x>
-     <y>535</y>
+     <x>111</x>
+     <y>565</y>
     </hint>
     <hint type="destinationlabel">
-     <x>428</x>
-     <y>582</y>
+     <x>111</x>
+     <y>617</y>
     </hint>
    </hints>
   </connection>
@@ -10817,8 +10926,8 @@ padding:3px;
    <slot>plotLayoutChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>439</x>
-     <y>529</y>
+     <x>454</x>
+     <y>564</y>
     </hint>
     <hint type="destinationlabel">
      <x>298</x>
@@ -10833,8 +10942,8 @@ padding:3px;
    <slot>plotLayoutChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>439</x>
-     <y>667</y>
+     <x>454</x>
+     <y>723</y>
     </hint>
     <hint type="destinationlabel">
      <x>389</x>
@@ -10849,8 +10958,8 @@ padding:3px;
    <slot>plotLayoutChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>439</x>
-     <y>621</y>
+     <x>454</x>
+     <y>670</y>
     </hint>
     <hint type="destinationlabel">
      <x>516</x>
@@ -10865,8 +10974,8 @@ padding:3px;
    <slot>plotLayoutChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>439</x>
-     <y>575</y>
+     <x>454</x>
+     <y>617</y>
     </hint>
     <hint type="destinationlabel">
      <x>636</x>
@@ -10881,8 +10990,8 @@ padding:3px;
    <slot>setGridHintY(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>454</x>
-     <y>554</y>
+     <x>489</x>
+     <y>659</y>
     </hint>
     <hint type="destinationlabel">
      <x>330</x>
@@ -10897,8 +11006,8 @@ padding:3px;
    <slot>setGridHintX(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>447</x>
-     <y>572</y>
+     <x>489</x>
+     <y>641</y>
     </hint>
     <hint type="destinationlabel">
      <x>332</x>

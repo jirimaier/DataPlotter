@@ -324,6 +324,7 @@ void MainWindow::on_pushButtonNegative_clicked() {
 
 void MainWindow::on_pushButtonTerminalDebug_toggled(bool checked) {
   ui->frameTermanalDebug->setVisible(checked);
+    ui->frameTerminalClickableColors->setVisible(checked);
   ui->pushButtonTerminalClickToSend->setDisabled(checked);
   ui->pushButtonTerminalCopy->setEnabled(!checked && !ui->pushButtonTerminalClickToSend->isChecked());
   if (checked)
@@ -701,4 +702,14 @@ void MainWindow::on_pushButtonInterpolate_toggled(bool checked) {
     ui->plot->setChInterpolate(chid, checked);
     emit setInterpolation(chid, checked);
   }
+}
+
+void MainWindow::on_pushButtonTerminalBlacklisAddSelect_clicked()
+{
+    QColor color = QColorDialog::getColor(Qt::black);
+    if (!color.isValid())
+      return;
+    QByteArray colorCode = ui->myTerminal->nearestColorCode(color);
+    addColorToBlacklist(QString("\\e[3" + colorCode + "m").toUtf8());
+    updateColorBlacklist();
 }

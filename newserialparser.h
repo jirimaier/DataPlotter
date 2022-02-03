@@ -56,6 +56,8 @@ class NewSerialParser : public QObject {
   void sendEcho(QByteArray);
   /// Pošle chabovou zprávu od zařízení
   void deviceError(QByteArray, MessageTarget::enumMessageTarget source);
+  /// Send compressed and stuffed qml file
+  void sendQmlCode(QByteArray data);
 
  private:
   MessageTarget::enumMessageTarget target;
@@ -84,7 +86,8 @@ class NewSerialParser : public QObject {
   readResult bufferPullChannel(QPair<ValueType, QByteArray>& result);
   bool replyToEcho = true;
 
- public slots:
+  NewSerialParser::readResult bufferPullBeforeNull(QByteArray &result);
+public slots:
   /// Zpracuje data
   void parse(QByteArray newData);
   /// Clear buffers

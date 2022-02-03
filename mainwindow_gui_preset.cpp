@@ -105,6 +105,7 @@ void MainWindow::setGuiDefaults() {
   ui->radioButtonFixedRange->setChecked(true);
   plotLayoutChanged();
   ui->frameTermanalDebug->setVisible(ui->pushButtonTerminalDebug->isChecked());
+  ui->frameTerminalClickableColors->setVisible(ui->pushButtonTerminalDebug->isChecked());
   ui->labelBuildDate->setText(tr("Build: ") + QString(__DATE__) + " " + QString(__TIME__));
   ui->pushButtonPause->setIcon(iconRun);
   ui->pushButtonMultiplInputs->setChecked(false);

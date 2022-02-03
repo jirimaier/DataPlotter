@@ -1,4 +1,5 @@
-QT += core gui serialport widgets printsupport opengl
+QT += core gui serialport widgets printsupport opengl qml quickwidgets \
+    quick
 
 LIBS += -lOpenGL32
 
@@ -11,6 +12,7 @@ CONFIG += c++11
 SOURCES += \
     averager.cpp \
     clickablelabel.cpp \
+    cobs.cpp \
     filesender.cpp \
     interpolator.cpp \
     main.cpp \
@@ -21,6 +23,7 @@ SOURCES += \
     mainwindow_export.cpp \
     mainwindow_gui_preset.cpp \
     mainwindow_gui_slots.cpp \
+    mainwindow_qml.cpp \
     mainwindow_save_load.cpp \
     mainwindow_send_file.cpp \
     mainwindow_timed_events.cpp \
@@ -42,6 +45,7 @@ SOURCES += \
     plotdata.cpp \
     plotmath.cpp \
     qcustomplot.cpp \
+    qmlterminalinterface.cpp \
     serialreader.cpp \
     serialsettingsdialog.cpp \
     signalprocessing.cpp \
@@ -50,6 +54,7 @@ SOURCES += \
 HEADERS += \
     averager.h \
     clickablelabel.h \
+    cobs.h \
     filesender.h \
     global.h \
     interpolator.h \
@@ -72,6 +77,7 @@ HEADERS += \
     plotdata.h \
     plotmath.h \
     qcustomplot.h \
+    qmlterminalinterface.h \
     serialreader.h \
     serialsettingsdialog.h \
     signalprocessing.h \
@@ -85,5 +91,8 @@ TRANSLATIONS += \
     translations/translation_cz.ts
 
 RESOURCES += resources.qrc
+
+DISTFILES += \
+    ExampleQmlTerminal.qml
 
 
