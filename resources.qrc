@@ -96,9 +96,6 @@
     </qresource>
     <qresource prefix="/text">
         <file>settings/default.cfg</file>
-        <file>stylesheets/styleSheetLinux.txt</file>
-        <file>stylesheets/styleSheetWindows.txt</file>
-        <file>stylesheets/styleSheetWindows10.txt</file>
         <file>fir/hamm_x8.csv</file>
         <file>fir/kaiser_x8.csv</file>
         <file>fir/kaiser_x16.csv</file>

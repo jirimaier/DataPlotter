@@ -18,7 +18,9 @@
     <normaloff>:/images/icons/icon.ico</normaloff>:/images/icons/icon.ico</iconset>
   </property>
   <property name="styleSheet">
-   <string notr="true"/>
+   <string notr="true">QFrame#frame_leftHalf,#frame_rightHalf {
+	background-color: rgb(255, 255, 255);
+}</string>
   </property>
   <property name="iconSize">
    <size>
@@ -28,9 +30,6 @@
   </property>
   <property name="toolButtonStyle">
    <enum>Qt::ToolButtonIconOnly</enum>
-  </property>
-  <property name="documentMode">
-   <bool>false</bool>
   </property>
   <property name="unifiedTitleAndToolBarOnMac">
    <bool>false</bool>
@@ -48,6 +47,9 @@
          <horstretch>255</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
        </property>
        <property name="frameShape">
         <enum>QFrame::StyledPanel</enum>
@@ -82,7 +84,7 @@
              <cursorShape>ArrowCursor</cursorShape>
             </property>
             <property name="styleSheet">
-             <string notr="true">background-color:gray;</string>
+             <string notr="true"/>
             </property>
            </widget>
           </item>
@@ -98,7 +100,7 @@
              <cursorShape>ArrowCursor</cursorShape>
             </property>
             <property name="styleSheet">
-             <string notr="true">background-color:gray;</string>
+             <string notr="true"/>
             </property>
            </widget>
           </item>
@@ -114,7 +116,7 @@
              <cursorShape>ArrowCursor</cursorShape>
             </property>
             <property name="styleSheet">
-             <string notr="true">background-color:gray;</string>
+             <string notr="true"/>
             </property>
            </widget>
           </item>
@@ -123,7 +125,7 @@
         <item>
          <layout class="QGridLayout" name="gridLayout_8" rowstretch="1,0" columnstretch="1000,0">
           <item row="0" column="1">
-           <widget class="QFrame" name="frame_31">
+           <widget class="QFrame" name="frameRP">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -744,7 +746,7 @@
              <enum>QTabWidget::Rounded</enum>
             </property>
             <property name="currentIndex">
-             <number>6</number>
+             <number>9</number>
             </property>
             <property name="iconSize">
              <size>
@@ -7566,7 +7568,7 @@
            </size>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>4</number>
           </property>
           <property name="iconSize">
            <size>
@@ -9797,13 +9799,13 @@ padding:3px;
             <item>
              <widget class="ClickableLabel" name="labelLogo">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
               <property name="frameShape">
-               <enum>QFrame::StyledPanel</enum>
+               <enum>QFrame::NoFrame</enum>
               </property>
               <property name="frameShadow">
                <enum>QFrame::Sunken</enum>

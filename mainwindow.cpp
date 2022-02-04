@@ -16,6 +16,7 @@
 #include "mainwindow.h"
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWindow),   serialSettingsDialog(new SerialSettingsDialog) {
+    QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGL);
     ui->setupUi(this);
     ui->doubleSpinBoxRangeVerticalRange->trimDecimalZeroes = true;
     ui->doubleSpinBoxRangeVerticalRange->emptyDefaultValue = 1;

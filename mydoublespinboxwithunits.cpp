@@ -67,15 +67,15 @@ double MyDoubleSpinBoxWithUnits::valueFromText(const QString& text) const {
   bool isok = false;
   double val;
   if (text.contains('k'))
-    val = 1e3 * text.leftRef(text.indexOf('k')).toDouble(&isok);
+    val = 1e3 * text.left(text.indexOf('k')).toDouble(&isok);
   else if (text.contains('M'))
-    val = 1e6 * text.leftRef(text.indexOf('M')).toDouble(&isok);
+    val = 1e6 * text.left(text.indexOf('M')).toDouble(&isok);
   else if (text.contains('m'))
-    val = 1e-3 * text.leftRef(text.indexOf('m')).toDouble(&isok);
+    val = 1e-3 * text.left(text.indexOf('m')).toDouble(&isok);
   else if (text.contains('u'))
-    val = 1e-6 * text.leftRef(text.indexOf('u')).toDouble(&isok);
+    val = 1e-6 * text.left(text.indexOf('u')).toDouble(&isok);
   else
-    val = text.leftRef(text.indexOf(suffix())).toDouble(&isok);
+    val = text.left(text.indexOf(suffix())).toDouble(&isok);
   if (!isok)
     return emptyDefaultValue;
   return val;

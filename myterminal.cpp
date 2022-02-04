@@ -79,7 +79,7 @@ bool MyTerminal::colorFromSequence(QByteArray code, QColor& clr) {
 void MyTerminal::printText(QByteArray bytes) {
   QString text = QString::fromUtf8(bytes);
   for (uint16_t i = 0; i < text.length(); i++) {
-    if (text.at(i) == '\b' || text.at(i) == 0x7f) {
+    if (text.at(i) == '\b' || text.at(i) == QChar::fromLatin1((char)0x7f)) {
       moveCursorRelative(-1, 0);
       printChar(' ');
       moveCursorRelative(-1, 0);

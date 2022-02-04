@@ -81,6 +81,11 @@ Q_DECLARE_METATYPE(QSerialPort::FlowControl);
 int main(int argc, char* argv[]) {
     QApplication application(argc, argv);
 
+    QFile file(":/dark/stylesheet.qss");
+    file.open(QFile::ReadOnly | QFile::Text);
+    QTextStream stream(&file);
+    application.setStyleSheet(stream.readAll());
+
     // Zaregistruje typy aby je šlo posílat signály mezi vlákny
     qRegisterMetaType<ChannelSettings_t>();
     qRegisterMetaType<QPair<QVector<double>, QVector<double>>>();

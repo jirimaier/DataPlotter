@@ -109,9 +109,9 @@ double MyScaleDoubleSpinBox::valueFromText(const QString& text) const {
   QChar first = text.at(0);
   if (!first.isDigit()) {
     if (first == '/' || first == DIVIDE)
-      val = 1.0 / text.midRef(1).toDouble(&isok);
+      val = 1.0 / text.mid(1).toDouble(&isok);
     else if (first == '*' || first == MULTIPLY)
-      val = text.midRef(1).toDouble(&isok);
+      val = text.mid(1).toDouble(&isok);
     else
       isok = false;
   } else {

@@ -490,6 +490,7 @@ void MainWindow::setUp() {
     }
   }
 
+/*
   QString style = "";
 #ifdef _WIN32
   if (QSysInfo::productVersion() == "10")
@@ -507,5 +508,6 @@ void MainWindow::setUp() {
     styleSheet.close();
     qDebug() << "Using stylesheet: " << style;
   }
+  */
 }
 
