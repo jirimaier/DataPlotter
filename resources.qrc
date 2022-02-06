@@ -89,6 +89,7 @@
         <file>icons/smallfont.png</file>
         <file>icons/freqtime.png</file>
         <file>icons/filter.png</file>
+        <file>icons/qmlterminal.png</file>
     </qresource>
     <qresource prefix="/translations">
         <file>translations/translation_cz.qm</file>

@@ -98,6 +98,12 @@ void NewSerialParser::parse(QByteArray newData) {
           break;
       }
 
+      /*if (buffer.length() >= 1 && removeCommaRightAfterTypeID) {
+        if (buffer.left(1) == ",")
+          buffer.remove(0, 1);
+        removeCommaRightAfterTypeID = false;
+      }*/
+
       if (currentMode == DataMode::point) {
         readResult result;
         try {
@@ -462,18 +468,38 @@ void NewSerialParser::parse(QByteArray newData) {
         break;
       }
 
-      if (currentMode == DataMode::file) {
+      if (currentMode == DataMode::qmlvar) {
         readResult result = bufferPullBeforeSemicolumn(pendingDataBuffer, true);
         if (result == complete) {
-            emit sendFileRequest(pendingDataBuffer, target);
+          if (!pendingDataBuffer.isEmpty()) {
+            emit sendQmlVar(pendingDataBuffer);
             pendingDataBuffer.clear();
             continue;
+          }
         }
         if (result == notProperlyEnded) {
-            emit sendFileRequest(pendingDataBuffer, target);
+          if (!pendingDataBuffer.isEmpty()) {
+            emit sendQmlVar(pendingDataBuffer);
             sendMessageIfAllowed(tr("Missing semicolumn ?"), pendingDataBuffer, MessageLevel::warning);
             pendingDataBuffer.clear();
             continue;
+          }
+        }
+        break;
+      }
+
+      if (currentMode == DataMode::requestfile) {
+        readResult result = bufferPullBeforeSemicolumn(pendingDataBuffer, true);
+        if (result == complete) {
+          emit sendFileRequest(pendingDataBuffer, target);
+          pendingDataBuffer.clear();
+          continue;
+        }
+        if (result == notProperlyEnded) {
+          emit sendFileRequest(pendingDataBuffer, target);
+          sendMessageIfAllowed(tr("Missing semicolumn ?"), pendingDataBuffer, MessageLevel::warning);
+          pendingDataBuffer.clear();
+          continue;
         }
         break;
       }
@@ -481,9 +507,29 @@ void NewSerialParser::parse(QByteArray newData) {
       if (currentMode == DataMode::qml) {
         readResult result = bufferPullBeforeNull(pendingDataBuffer);
         if (result == complete) {
-            emit sendQmlCode(pendingDataBuffer);
-            pendingDataBuffer.clear();
-            continue;
+          emit sendQmlCode(pendingDataBuffer);
+          pendingDataBuffer.clear();
+          continue;
+        }
+        break;
+      }
+
+      if (currentMode == DataMode::qmldirect) {
+        readResult result = bufferPullBeforeNull(pendingDataBuffer);
+        if (result == complete) {
+          emit sendQmlDirectInput(pendingDataBuffer);
+          pendingDataBuffer.clear();
+          continue;
+        }
+        break;
+      }
+
+      if (currentMode == DataMode::savefile) {
+        readResult result = bufferPullBeforeNull(pendingDataBuffer);
+        if (result == complete) {
+          emit sendFileToSave(pendingDataBuffer);
+          pendingDataBuffer.clear();
+          continue;
         }
         break;
       }
@@ -647,6 +693,7 @@ uint32_t NewSerialParser::arrayToUint(QPair<ValueType, QByteArray> value) {
 void NewSerialParser::parseMode(QChar modeChar) {
   DataMode::enumDataMode previousMode = currentMode;
   QChar modeIdent = modeChar.toUpper();
+
   if (modeIdent == 'P')
     changeMode(DataMode::point, previousMode, tr("Points").toUtf8());
   else if (modeIdent == 'T')
@@ -657,8 +704,8 @@ void NewSerialParser::parseMode(QChar modeChar) {
     changeMode(DataMode::warning, previousMode, tr("Warning").toUtf8());
   else if (modeIdent == 'C')
     changeMode(DataMode::channel, previousMode, tr("Channel").toUtf8());
-  else if (modeIdent == 'F')
-    changeMode(DataMode::file, previousMode, tr("File").toUtf8());
+  else if (modeIdent == 'R')
+    changeMode(DataMode::requestfile, previousMode, tr("Request file").toUtf8());
   else if (modeIdent == 'S')
     changeMode(DataMode::settings, previousMode, tr("Settings").toUtf8());
   else if (modeIdent == 'U')
@@ -673,11 +720,18 @@ void NewSerialParser::parseMode(QChar modeChar) {
     changeMode(DataMode::deviceerror, previousMode, tr("Device error").toUtf8());
   else if (modeIdent == 'Q')
     changeMode(DataMode::qml, previousMode, tr("Qml code").toUtf8());
+  else if (modeIdent == 'D')
+    changeMode(DataMode::qmldirect, previousMode, tr("Qml direct input").toUtf8());
+  else if (modeIdent == 'V')
+    changeMode(DataMode::qmlvar, previousMode, tr("Qml variable").toUtf8());
+  else if (modeIdent == 'F')
+    changeMode(DataMode::savefile, previousMode, tr("Save file").toUtf8());
   else {
     currentMode = DataMode::unknown;
     QByteArray character = QString(modeChar).toLocal8Bit();
     sendMessageIfAllowed(tr("Unknown data type"), character, MessageLevel::error);
   }
+
   if (!pendingDataBuffer.isEmpty())
     pendingDataBuffer.clear();
   if (!pendingPointBuffer.isEmpty())

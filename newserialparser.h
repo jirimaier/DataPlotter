@@ -59,6 +59,12 @@ class NewSerialParser : public QObject {
   /// Send compressed and stuffed qml file
   void sendQmlCode(QByteArray data);
 
+  void sendFileToSave(QByteArray data);
+
+  void sendQmlDirectInput(QByteArray data);
+
+  void sendQmlVar(QByteArray data);
+
  private:
   MessageTarget::enumMessageTarget target;
   void resetChHeader();
@@ -85,9 +91,10 @@ class NewSerialParser : public QObject {
   uint32_t arrayToUint(QPair<ValueType, QByteArray> value);
   readResult bufferPullChannel(QPair<ValueType, QByteArray>& result);
   bool replyToEcho = true;
+  //bool removeCommaRightAfterTypeID = false;
 
-  NewSerialParser::readResult bufferPullBeforeNull(QByteArray &result);
-public slots:
+  NewSerialParser::readResult bufferPullBeforeNull(QByteArray& result);
+ public slots:
   /// Zpracuje data
   void parse(QByteArray newData);
   /// Clear buffers

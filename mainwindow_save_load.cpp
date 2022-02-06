@@ -43,6 +43,7 @@ void MainWindow::initSetables() {
   setables["autoautoset"] = ui->checkBoxAutoAutoSet;
   setables["termvscroll"] = ui->checkBoxEnablTerminalVScrollBar;
   setables["nofreeze"] = ui->checkBoxFreezeSafe;
+  setables["qmldev"] = ui->checkBoxQmlDev;
 
   // Send
   setables["sendend"] = ui->comboBoxLineEnding;
@@ -357,7 +358,7 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarg
     }
   }
   if (source == MessageTarget::manual || ui->comboBoxOutputLevel->currentIndex() == MessageLevel::info)
-      printMessage(tr("Applied settings").toUtf8(), settings, MessageLevel::info, source);
+    printMessage(tr("Applied settings").toUtf8(), settings, MessageLevel::info, source);
 }
 
 void MainWindow::on_pushButtonLoadFile_clicked() {
@@ -490,24 +491,40 @@ void MainWindow::setUp() {
     }
   }
 
-/*
-  QString style = "";
-#ifdef _WIN32
-  if (QSysInfo::productVersion() == "10")
-    style = ":/text/stylesheets/styleSheetWindows10.txt";
-  else
-    style = ":/text/stylesheets/styleSheetWindows.txt";
-#endif           // Windows
-#ifdef __linux__ // Linux
-  style = ":/text/stylesheets/styleSheetLinux.txt";
-#endif // Linux
-  QFile styleSheet(style);
+  /*
+    QString style = "";
+  #ifdef _WIN32
+    if (QSysInfo::productVersion() == "10")
+      style = ":/text/stylesheets/styleSheetWindows10.txt";
+    else
+      style = ":/text/stylesheets/styleSheetWindows.txt";
+  #endif           // Windows
+  #ifdef __linux__ // Linux
+    style = ":/text/stylesheets/styleSheetLinux.txt";
+  #endif // Linux
+    QFile styleSheet(style);
 
-  if (styleSheet.open(QFile::ReadOnly | QFile::Text)) {
-    qApp->setStyleSheet(styleSheet.readAll());
-    styleSheet.close();
-    qDebug() << "Using stylesheet: " << style;
+    if (styleSheet.open(QFile::ReadOnly | QFile::Text)) {
+      qApp->setStyleSheet(styleSheet.readAll());
+      styleSheet.close();
+      qDebug() << "Using stylesheet: " << style;
+    }
+    */
+}
+
+void MainWindow::saveToFile(QByteArray data) {
+  QString fileName = QFileDialog::getSaveFileName(this, tr("Save file"), "", tr("Text file (*.txt);;Any file (*.*)"));
+  if (fileName.isEmpty())
+    return;
+  QFile file(fileName);
+  if (file.open(QFile::WriteOnly | QFile::Truncate)) {
+    file.write(data);
+    file.close();
+  } else {
+    QMessageBox msgBox(this);
+    msgBox.setText(tr("Cant write to file."));
+    msgBox.setIcon(QMessageBox::Critical);
+    msgBox.exec();
   }
-  */
 }
 

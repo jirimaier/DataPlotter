@@ -59,7 +59,7 @@ class MainWindow : public QMainWindow {
 
  private:
   Ui::MainWindow* ui;
-  QmlTerminalInterface *qmlTerminalInterface;
+  QmlTerminalInterface* qmlTerminalInterface;
   SerialSettingsDialog* serialSettingsDialog;
   QTranslator* translator;
   QTimer portsRefreshTimer, activeChRefreshTimer, xyTimer, cursorRangeUpdateTimer, measureRefreshTimer1, measureRefreshTimer2, fftTimer1, fftTimer2, serialMonitorTimer, consoleTimer, interpolationTimer, triggerLineTimer;
@@ -142,7 +142,7 @@ class MainWindow : public QMainWindow {
 
   void loadQmlFile(QUrl url);
 
-private slots:
+ private slots:
   void updateCursors();
   void setAdaptiveSpinBoxes();
   void updateDivs();
@@ -323,9 +323,13 @@ private slots:
   void on_pushButtonQmlSaveTemplate_clicked();
   void on_pushButtonQmlLoad_clicked();
   void on_pushButtonQmlExport_clicked();
-  void on_quickWidget_statusChanged(const QQuickWidget::Status &arg1);
+  void on_quickWidget_statusChanged(const QQuickWidget::Status& arg1);
 
-public slots:
+  void on_checkBoxQmlDev_toggled(bool checked) {
+    ui->frameQmlDev->setVisible(checked);
+  }
+
+ public slots:
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumMessageTarget target);
   void showPlotStatus(PlotStatus::enumPlotStatus type);
   void serialConnectResult(bool connected, QString message, QString details);
@@ -351,6 +355,9 @@ public slots:
   void deviceError(QByteArray message, MessageTarget::enumMessageTarget source);
   void setExpectedRange(int chID, bool known, double min, double max) {channelExpectedRanges[chID].maximum = max; channelExpectedRanges[chID].minimum = min; channelExpectedRanges[chID].unknown = !known;}
   void loadCompressedQml(QByteArray data);
+  void saveToFile(QByteArray data);
+  void qmlDirectInput(QByteArray data);
+  void setQmlProperty(QByteArray data);
 
  signals:
   void setChDigital(int chid, int target);

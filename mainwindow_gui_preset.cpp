@@ -66,6 +66,8 @@ void MainWindow::connectSignals() {
   connect(ui->horizontalSliderTimeCur2, &myCursorSlider::realValueChanged, this, &MainWindow::horizontalSliderTimeCur2_realValueChanged);
 
   connect(ui->plotFFT, &MyFFTPlot::newPeakValues, ui->plotPeak, &MyPeakPlot::newData);
+
+  QObject::connect(qmlTerminalInterface, &QmlTerminalInterface::dataSentToParser, this, &MainWindow::sendManualInput);
 }
 
 void MainWindow::setAdaptiveSpinBoxes() {
@@ -141,6 +143,8 @@ void MainWindow::setGuiDefaults() {
   ui->comboBoxBaud->setCurrentIndex(1);
 
   ui->comboBoxTerminalFont->setCurrentIndex(0);
+
+  ui->frameQmlDev->setVisible(ui->checkBoxQmlDev->isChecked());
 
   ui->plot->setGridHintX(ui->horizontalSliderHGrid->value());
   ui->plot->setGridHintY(ui->horizontalSliderVGrid->value());
