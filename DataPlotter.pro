@@ -33,6 +33,7 @@ SOURCES += \
     mydoublespinboxwithunits.cpp \
     myelidedcombobox.cpp \
     myfftplot.cpp \
+    myframewithresizesignal.cpp \
     mymainplot.cpp \
     mymodifiedqcptracer.cpp \
     mypeakplot.cpp \
@@ -65,6 +66,7 @@ HEADERS += \
     mydoublespinboxwithunits.h \
     myelidedcombobox.h \
     myfftplot.h \
+    myframewithresizesignal.h \
     mymainplot.h \
     mymodifiedqcptracer.h \
     mypeakplot.h \

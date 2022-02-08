@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QQuickItem>
+#include <QPalette>
 
 class QmlTerminalInterface : public QObject {
   Q_OBJECT
@@ -10,23 +11,34 @@ class QmlTerminalInterface : public QObject {
   explicit QmlTerminalInterface(QObject* parent = nullptr);
   ~QmlTerminalInterface() {}
 
-  const QString& testText() const;
-  void setTestText(const QString& newTestText);
-
   Q_INVOKABLE void transmitToSerial(QVariant data);
   Q_INVOKABLE void sendToParser(QVariant data);
 
   void directInput(QByteArray data);
 
- signals:
-  void testTextChanged();
+
+public:
+  bool darkThemeIsUsed() const;
+  void setDarkThemeIsUsed(bool newDarkThemeIsUsed);
+
+  const QPalette &themePalette() const;
+  void setThemePalette(const QPalette &newThemePalette);
+
+signals:
   void receivedFromSerial(QByteArray data);
   void dataTransmitted(QByteArray data);
   void dataSentToParser(QByteArray data);
+  void darkThemeIsUsedChanged();
+  void themePaletteChanged();
 
- private:
-  QString m_testText = "helloWorld;";
-  Q_PROPERTY(QString testText READ testText WRITE setTestText NOTIFY testTextChanged)
+  void basicTextSizeChanged();
+
+private:
+  bool m_darkThemeIsUsed;
+  QPalette m_themePalette;
+
+  Q_PROPERTY(bool darkThemeIsUsed READ darkThemeIsUsed NOTIFY darkThemeIsUsedChanged)
+  Q_PROPERTY(QPalette themePalette READ themePalette NOTIFY themePaletteChanged)
 };
 
 #endif // QMLTERMINALINTERFACE_H

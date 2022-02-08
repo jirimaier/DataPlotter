@@ -28,6 +28,9 @@
 
 #include "global.h"
 
+#define LARGE_COLS 14
+#define SMALL_COLS 21
+
 using namespace TerminalMode;
 
 class MyTerminal : public QTableWidget {
@@ -76,8 +79,9 @@ class MyTerminal : public QTableWidget {
   uint16_t cursorY_saved = 0;
   QColor fontColor = Qt::white;
   QColor backColor = Qt::black;
-  QFont font = QFont("Courier New", 18, QFont::Normal);
-  int cellWidth = 18, cellHeight = 25;
+  QFont font = QFont("Courier New", 16, QFont::Normal);
+  int cellWidth, cellHeight;
+  bool smallFont;
   void resetFont();
   bool isSmallest(uint8_t number, QVector<uint8_t> list);
   void clearTerminal();
@@ -123,6 +127,10 @@ class MyTerminal : public QTableWidget {
                                  0xff8700, 0xff875f, 0xff8787, 0xff87af, 0xff87d7, 0xff87ff, 0xffaf00, 0xffaf5f, 0xffaf87, 0xffafaf, 0xffafd7, 0xffafff, 0xffd700, 0xffd75f, 0xffd787, 0xffd7af, 0xffd7d7, 0xffd7ff, 0xffff00, 0xffff5f, 0xffff87, 0xffffaf, 0xffffd7, 0xffffff, 0x080808, 0x121212,
                                  0x1c1c1c, 0x262626, 0x303030, 0x3a3a3a, 0x444444, 0x4e4e4e, 0x585858, 0x626262, 0x6c6c6c, 0x767676, 0x808080, 0x8a8a8a, 0x949494, 0x9e9e9e, 0xa8a8a8, 0xb2b2b2, 0xbcbcbc, 0xc6c6c6, 0xd0d0d0, 0xdadada, 0xe4e4e4, 0xeeeeee
                                 };
+
+  // QWidget interface
+protected:
+  void resizeEvent(QResizeEvent *event);
 };
 
 #endif // MYTERMINAL_H

@@ -40,6 +40,8 @@ MyTerminal::MyTerminal(QWidget* parent) : QTableWidget(parent) {
   setMode(mode);
   clickBlinkTimer.setSingleShot(true);
   clickBlinkTimer.setInterval(TERMINAL_CLICK_BLINK_TIME);
+
+  changeFont(false);
 }
 
 MyTerminal::~MyTerminal() {
@@ -104,10 +106,10 @@ void MyTerminal::printText(QByteArray bytes) {
       continue;
     }
 
-    if (text.at(i) == '_') { // Podtržítko je mod hluboko a nevejde se do pole, nahradí se podtržením.
+    if (text.at(i) == '_') { // Podtržítko je moc hluboko a nevejde se do pole, nahradí se podtržením.
       bool wasUnderlined = font.underline();
       font.setUnderline(true);
-      printChar('_');
+      printChar(' ');
       font.setUnderline(wasUnderlined);
       continue;
     }
@@ -407,7 +409,7 @@ void MyTerminal::setMode(TerminalMode::enumTerminalMode mode) {
     this->setSelectionMode(QAbstractItemView::SelectionMode::NoSelection);
     this->setCurrentCell(cursorY, cursorX, QItemSelectionModel::Select);
     this->addRows(MAX(100, rowCount()));
-    this->addColumns(MAX(50, columnCount()));
+    this->addColumns(MAX(smallFont?SMALL_COLS:LARGE_COLS, columnCount()));
   } else if (mode == TerminalMode::select) {
     this->setSelectionMode(QAbstractItemView::SelectionMode::ContiguousSelection);
   } else if (mode == TerminalMode::clicksend) {
@@ -445,20 +447,25 @@ void MyTerminal::copyToClipboard() {
 }
 
 void MyTerminal::changeFont(bool smallFont) {
-  font.setPointSize(smallFont ? 12 : 18);
+  font.setPointSize(smallFont ? 10 : 16);
   setFont(font);
   for (int r = 0; r < rowCount(); r++) {
     for (int c = 0; c < columnCount(); c++) {
       if (this->item(r, c) != nullptr) {
         auto newfont =  this->item(r, c)->font();
-        newfont.setPointSize(smallFont ? 12 : 18);
+        newfont.setPointSize(smallFont ? 10 : 16);
         this->item(r, c)->setFont(newfont);
       }
     }
   }
 
-  cellWidth = smallFont ? 12 : 18;
-  cellHeight =  smallFont ? 17 : 25;
+  this->smallFont = smallFont;
+
+  if(mode==debug)
+      this->addColumns(MAX(smallFont?SMALL_COLS:LARGE_COLS, columnCount()));
+
+  cellWidth = smallFont ? (geometry().width()-6)/SMALL_COLS : (geometry().width()-6)/LARGE_COLS;
+  cellHeight =  cellWidth * (24.0/18.0);
 
   for (int r = 0; r < rowCount(); r++)
     setRowHeight(r, cellHeight);
@@ -475,6 +482,11 @@ void MyTerminal::setVScrollBar(bool show) {
   if (show)
     addRows(rowCount() + 1);
 
+}
+
+void MyTerminal::resizeEvent(QResizeEvent *event)
+{
+    changeFont(smallFont);
 }
 
 void MyTerminal::resetFont() {
@@ -563,8 +575,6 @@ void MyTerminal::characterClicked(int r, int c) {
     }
   } else if (mode == debug) {
     moveCursorAbsolute(c, r);
-    if (c > this->columnCount() / 2)
-      this->addColumns(this->columnCount() * 1.5);
     if (r > this->rowCount() / 2)
       this->addRows(this->rowCount() * 1.5);
   }

@@ -135,6 +135,8 @@ QByteArray MainWindow::getSettings() {
   settings.append(";\n");
   settings.append(ui->radioButtonCSVDot->isChecked() ? "csvsep:dc" : "csvsep:cs");
   settings.append(";\n");
+  settings.append(ui->radioButtonLight->isChecked() ? "theme:light" : "theme:dark");
+  settings.append(";\n");
 
   QColor xyclr = ui->plotxy->graphXY->pen().color();
   settings.append(QString("xyclr:%1,%2,%3").arg(xyclr.red()).arg(xyclr.green()).arg(xyclr.blue()).toUtf8());
@@ -234,6 +236,13 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarg
         ui->radioButtonEn->setChecked(true);
       if (value == "cz")
         ui->radioButtonCz->setChecked(true);
+    }
+
+    else if (type == "theme") {
+      if (value == "light")
+        ui->radioButtonLight->setChecked(true);
+      if (value == "dark")
+        ui->radioButtonDark->setChecked(true);
     }
 
     else if (type == "csvsep") {

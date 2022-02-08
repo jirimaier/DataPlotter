@@ -42,6 +42,7 @@
 #include "averager.h"
 #include "filesender.h"
 #include "qmlterminalinterface.h"
+#include "myframewithresizesignal.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -65,6 +66,8 @@ class MainWindow : public QMainWindow {
   QTimer portsRefreshTimer, activeChRefreshTimer, xyTimer, cursorRangeUpdateTimer, measureRefreshTimer1, measureRefreshTimer2, fftTimer1, fftTimer2, serialMonitorTimer, consoleTimer, interpolationTimer, triggerLineTimer;
   QList<QSerialPortInfo> portList;
   FileSender fileSender;
+
+    QPalette darkPalette, lightPalette;
 
   void setComboboxItemVisible(QComboBox& comboBox, int index, bool visible);
   void setChStyleSelection(GraphType::enumGraphType type);
@@ -141,6 +144,8 @@ class MainWindow : public QMainWindow {
   void initQmlTerminal();
 
   void loadQmlFile(QUrl url);
+  QSize lastQmlTerminalSize;
+  bool currentThemeDark = false;
 
  private slots:
   void updateCursors();
@@ -165,6 +170,7 @@ class MainWindow : public QMainWindow {
   bool addColorToBlacklist(QByteArray code);
   void updateColorBlacklist();
   void updateConsole();
+  void resizeQmlTerminal(QSize size);
 
  private slots: // Autoconnect slots
   void on_dialRollingRange_realValueChanged(double value) { ui->doubleSpinBoxRangeHorizontal->setValue(value); }
@@ -324,12 +330,10 @@ class MainWindow : public QMainWindow {
   void on_pushButtonQmlLoad_clicked();
   void on_pushButtonQmlExport_clicked();
   void on_quickWidget_statusChanged(const QQuickWidget::Status& arg1);
+  void on_checkBoxQmlDev_toggled(bool checked);
+  void on_radioButtonDark_toggled(bool checked);
 
-  void on_checkBoxQmlDev_toggled(bool checked) {
-    ui->frameQmlDev->setVisible(checked);
-  }
-
- public slots:
+public slots:
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumMessageTarget target);
   void showPlotStatus(PlotStatus::enumPlotStatus type);
   void serialConnectResult(bool connected, QString message, QString details);
