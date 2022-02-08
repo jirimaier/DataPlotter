@@ -20,13 +20,6 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     this->setAttribute(Qt::WA_NativeWindow);
 
-    auto g = geometry();
-    g.setWidth(1024);
-    g.setHeight(800);
-    g.setX(screen()->geometry().width()/2-g.width()/2);
-    g.setY(screen()->geometry().height()/2-g.height()/2);
-    setGeometry(g);
-
     ui->doubleSpinBoxRangeVerticalRange->trimDecimalZeroes = true;
     ui->doubleSpinBoxRangeVerticalRange->emptyDefaultValue = 1;
     ui->doubleSpinBoxRangeHorizontal->trimDecimalZeroes = true;
@@ -42,22 +35,39 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     lightPalette = qApp->palette();
 
-    darkPalette.setColor(QPalette::Window, QColor(53,53,53));
+    QColor darkGray(53, 53, 53);
+    QColor gray(128, 128, 128);
+    QColor black(25, 25, 25);
+    QColor blue(42, 130, 218);
+
+    darkPalette.setColor(QPalette::Window, darkGray);
     darkPalette.setColor(QPalette::WindowText, Qt::white);
-    darkPalette.setColor(QPalette::Base, QColor(25,25,25));
-    darkPalette.setColor(QPalette::AlternateBase, QColor(53,53,53));
-    darkPalette.setColor(QPalette::ToolTipBase, Qt::white);
+    darkPalette.setColor(QPalette::Base, black);
+    darkPalette.setColor(QPalette::AlternateBase, darkGray);
+    darkPalette.setColor(QPalette::ToolTipBase, blue);
     darkPalette.setColor(QPalette::ToolTipText, Qt::white);
     darkPalette.setColor(QPalette::Text, Qt::white);
-    darkPalette.setColor(QPalette::Button, QColor(53,53,53));
+    darkPalette.setColor(QPalette::Button, darkGray);
     darkPalette.setColor(QPalette::ButtonText, Qt::white);
-    darkPalette.setColor(QPalette::BrightText, Qt::red);
-    darkPalette.setColor(QPalette::Link, QColor(42, 130, 218));
-
-    darkPalette.setColor(QPalette::Highlight, QColor(42, 130, 218));
+    darkPalette.setColor(QPalette::Link, blue);
+    darkPalette.setColor(QPalette::Highlight, blue);
     darkPalette.setColor(QPalette::HighlightedText, Qt::black);
 
-    on_radioButtonDark_toggled(ui->radioButtonDark->isChecked());
+    darkPalette.setColor(QPalette::Active, QPalette::Button, gray.darker());
+    darkPalette.setColor(QPalette::Disabled, QPalette::ButtonText, gray);
+    darkPalette.setColor(QPalette::Disabled, QPalette::WindowText, gray);
+    darkPalette.setColor(QPalette::Disabled, QPalette::Text, gray);
+    darkPalette.setColor(QPalette::Disabled, QPalette::Light, darkGray);
+
+    QStringList styles;
+    styles << QStyleFactory::keys();
+    if(styles.contains(defaultStyle)){
+        ui->comboBoxStyle->addItem(defaultStyle);
+        styles.removeAll(defaultStyle);
+    }
+    ui->comboBoxStyle->addItems(styles);
+    ui->comboBoxStyle->setCurrentIndex(0);
+    on_comboBoxStyle_currentTextChanged(ui->comboBoxStyle->currentText());
 }
 
 MainWindow::~MainWindow() {
@@ -645,6 +655,7 @@ void MainWindow::on_pushButtonSetFFTForPeak_clicked() {
 void MainWindow::on_radioButtonDark_toggled(bool checked)
 {
     if(currentThemeDark!=checked) {
+        currentThemeDark = checked;
         auto ico = iconHidden.pixmap(ui->pushButtonHideCh->iconSize()).toImage();
         ico.invertPixels();
         iconHidden = QPixmap::fromImage(ico);
@@ -727,8 +738,47 @@ void MainWindow::on_radioButtonDark_toggled(bool checked)
         }
     }
 
-    setStyleSheet(checked?"QFrame {background-color: rgb(67, 67, 67);}":"QFrame {background-color: rgb(255, 255, 255);}");
+    setStyleSheet(checked?"QFrame {background-color: rgb(67, 67, 67);}QMessageBox {background-color: rgb(67, 67, 67);}":"QFrame {background-color: rgb(255, 255, 255);}QMessageBox {background-color: rgb(255, 255, 255);}");
 
     qmlTerminalInterface->setThemePalette(qApp->palette());
     qmlTerminalInterface->setDarkThemeIsUsed(checked);
+    qmlTerminalInterface->setTabBackground(checked?"#434343":"#ffffff");
 }
+
+
+void MainWindow::on_comboBoxStyle_currentTextChanged(const QString &arg1)
+{
+    qApp->setStyle(QStyleFactory::create(arg1));
+    on_radioButtonDark_toggled(ui->radioButtonDark->isChecked());
+}
+
+
+void MainWindow::printSerialMonitor(QByteArray data) {
+
+    serialMonitor.append(QString::fromStdString(data.toStdString()));
+}
+
+void MainWindow::on_radioButtonLayoutHide_toggled(bool checked)
+{
+    ui->myTerminal->changeSize(ui->radioButtonLayoutWide->isChecked());
+
+    ui->tabs_right->setHidden(checked);
+    if(checked)
+    {
+        ui->pushButtonMultiplInputs->setChecked(false);
+    }
+    ui->pushButtonSendCommand->setHidden(checked);
+    ui->pushButtonMultiplInputs->setHidden(checked);
+    ui->lineEditCommand->setHidden(checked);
+    ui->comboBoxLineEnding->setHidden(checked);
+    ui->tabs_right->updateGeometry();
+}
+
+
+void MainWindow::on_radioButtonLayoutSmall_toggled(bool checked)
+{
+    Q_UNUSED(checked);
+    ui->myTerminal->changeSize(ui->radioButtonLayoutWide->isChecked());
+    ui->tabs_right->updateGeometry();
+}
+

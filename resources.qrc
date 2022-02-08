@@ -90,6 +90,9 @@
         <file>icons/freqtime.png</file>
         <file>icons/filter.png</file>
         <file>icons/qmlterminal.png</file>
+        <file>icons/sideHide.png</file>
+        <file>icons/sideNorm.png</file>
+        <file>icons/sideWide.png</file>
     </qresource>
     <qresource prefix="/translations">
         <file>translations/translation_cz.qm</file>

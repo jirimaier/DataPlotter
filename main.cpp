@@ -82,8 +82,6 @@ int main(int argc, char* argv[]) {
     QGuiApplication::setAttribute(Qt::AA_DisableHighDpiScaling);
     QApplication application(argc, argv);
 
-    qApp->setStyle(QStyleFactory::create("Fusion"));
-
     // Zaregistruje typy aby je šlo posílat signály mezi vlákny
     qRegisterMetaType<ChannelSettings_t>();
     qRegisterMetaType<QPair<QVector<double>, QVector<double>>>();
@@ -110,6 +108,7 @@ int main(int argc, char* argv[]) {
 
     // Vytvoří instance hlavních objektů
     MainWindow mainWindow;
+    mainWindow.resize(1024,768);
     QTranslator translator; // Musí být zde aby dokázal přeložit i texty v objektech jiných než MainWindow
     PlotData* plotData = new PlotData();
     NewSerialParser* serialParser = new NewSerialParser(MessageTarget::serial1);

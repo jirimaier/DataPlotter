@@ -3,11 +3,13 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 
 Rectangle {
+    // Do not set size of anchors of root object
+
     property var themePalette: dataPlotter.themePalette // https://doc.qt.io/qt-5/qml-palette.html
     property bool darkThemeIsUsed: dataPlotter.darkThemeIsUsed
     property var textColor: themePalette.text
 
-    color: themePalette.base
+    color: dataPlotter.tabBackground
 
     property int fontPointSize: 9
 
@@ -44,8 +46,8 @@ Rectangle {
 
     Column {
         anchors.fill: parent
-        anchors.margins: 10
         spacing: 10
+        anchors.margins: 2
 
         Rectangle{
             anchors.horizontalCenter: parent.horizontalCenter
@@ -72,6 +74,7 @@ Rectangle {
             font.pointSize: fontPointSize
             color: textColor
             linkColor: themePalette.link
+            horizontalAlignment: Text.AlignJustify
         }
 
         RowLayout {

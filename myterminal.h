@@ -28,9 +28,6 @@
 
 #include "global.h"
 
-#define LARGE_COLS 14
-#define SMALL_COLS 21
-
 using namespace TerminalMode;
 
 class MyTerminal : public QTableWidget {
@@ -46,6 +43,7 @@ class MyTerminal : public QTableWidget {
   bool colorFromSequence(QByteArray code, QColor& clr);
 
   void changeFont(bool smallFont);
+  void changeSize(bool isWide);
 
  private:
   struct BlinkedItem {
@@ -82,6 +80,7 @@ class MyTerminal : public QTableWidget {
   QFont font = QFont("Courier New", 16, QFont::Normal);
   int cellWidth, cellHeight;
   bool smallFont;
+  bool isWide;
   void resetFont();
   bool isSmallest(uint8_t number, QVector<uint8_t> list);
   void clearTerminal();
@@ -91,6 +90,8 @@ class MyTerminal : public QTableWidget {
   void clearCell(int x, int y);
   bool exeptionListIsBlacklist = false;
   QList<QColor> exceptionList;
+  int fontCols();
+
  private slots:
 
   void resetBlinkedItem();

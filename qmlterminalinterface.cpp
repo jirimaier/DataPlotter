@@ -41,3 +41,16 @@ void QmlTerminalInterface::setThemePalette(const QPalette &newThemePalette)
     m_themePalette = newThemePalette;
     emit themePaletteChanged();
 }
+
+const QString &QmlTerminalInterface::tabBackground() const
+{
+    return m_tabBackground;
+}
+
+void QmlTerminalInterface::setTabBackground(const QString &newTabBackground)
+{
+    if (m_tabBackground == newTabBackground)
+        return;
+    m_tabBackground = newTabBackground;
+    emit tabBackgroundChanged();
+}

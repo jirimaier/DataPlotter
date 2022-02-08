@@ -409,7 +409,7 @@ void MyTerminal::setMode(TerminalMode::enumTerminalMode mode) {
     this->setSelectionMode(QAbstractItemView::SelectionMode::NoSelection);
     this->setCurrentCell(cursorY, cursorX, QItemSelectionModel::Select);
     this->addRows(MAX(100, rowCount()));
-    this->addColumns(MAX(smallFont?SMALL_COLS:LARGE_COLS, columnCount()));
+    this->addColumns(MAX(fontCols(), columnCount()));
   } else if (mode == TerminalMode::select) {
     this->setSelectionMode(QAbstractItemView::SelectionMode::ContiguousSelection);
   } else if (mode == TerminalMode::clicksend) {
@@ -462,9 +462,9 @@ void MyTerminal::changeFont(bool smallFont) {
   this->smallFont = smallFont;
 
   if(mode==debug)
-      this->addColumns(MAX(smallFont?SMALL_COLS:LARGE_COLS, columnCount()));
+      this->addColumns(MAX(fontCols(), columnCount()));
 
-  cellWidth = smallFont ? (geometry().width()-6)/SMALL_COLS : (geometry().width()-6)/LARGE_COLS;
+  cellWidth = (geometry().width()-6)/fontCols();
   cellHeight =  cellWidth * (24.0/18.0);
 
   for (int r = 0; r < rowCount(); r++)
@@ -473,6 +473,16 @@ void MyTerminal::changeFont(bool smallFont) {
   for (int c = 0; c < columnCount(); c++)
     setColumnWidth(c, cellWidth);
 
+}
+
+void MyTerminal::changeSize(bool isWide)
+{
+    this->isWide = isWide;
+    if(isWide)
+        setMinimumSize(386,0);
+    else
+        setMinimumSize(260,0);
+    changeFont(smallFont);
 }
 
 void MyTerminal::setVScrollBar(bool show) {
@@ -537,7 +547,22 @@ void MyTerminal::clearUp() {
 
 void MyTerminal::clearCell(int x, int y) {
   if (this->item(y, x) != NULL)
-    delete this->item(y, x);
+      delete this->item(y, x);
+}
+
+int MyTerminal::fontCols()
+{
+    if(isWide) {
+        if(smallFont)
+            return 31;
+        else
+            return 21;
+    } else {
+        if(smallFont)
+            return 21;
+        else
+            return 14;
+    }
 }
 
 void MyTerminal::resetBlinkedItem() {

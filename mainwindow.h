@@ -119,7 +119,7 @@ class MainWindow : public QMainWindow {
 
   QIcon iconRun, iconPause, iconHidden, iconVisible, iconConnected, iconNotConnected, iconCross, iconAbsoluteCursor;
 
-  QByteArray serialMonitor;
+  QString serialMonitor;
   QStringList consoleBuffer;
 
   void setCursorsVisibility(Cursors::enumCursors cursor, int graph, int timeCurState, int valueCurState);
@@ -135,6 +135,8 @@ class MainWindow : public QMainWindow {
   bool timeUseUnits = true, valuesUseUnits = true, freqUseUnits = true;
 
   QString preselectPortHint = "USB";
+
+  QString defaultStyle = "Fusion";
 
   ChannelExpectedRange channelExpectedRanges[ANALOG_COUNT + MATH_COUNT];
 
@@ -332,6 +334,11 @@ class MainWindow : public QMainWindow {
   void on_quickWidget_statusChanged(const QQuickWidget::Status& arg1);
   void on_checkBoxQmlDev_toggled(bool checked);
   void on_radioButtonDark_toggled(bool checked);
+  void on_comboBoxStyle_currentTextChanged(const QString &arg1);
+
+  void on_radioButtonLayoutHide_toggled(bool checked);
+
+  void on_radioButtonLayoutSmall_toggled(bool checked);
 
 public slots:
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumMessageTarget target);
@@ -341,7 +348,7 @@ public slots:
   void useSettings(QByteArray settings, MessageTarget::enumMessageTarget source);
   void fileRequest(QByteArray message, MessageTarget::enumMessageTarget source);
   void printDeviceMessage(QByteArray message, bool warning, bool ended);
-  void printSerialMonitor(QByteArray data) { serialMonitor.append(data); }
+  void printSerialMonitor(QByteArray data);
   void signalMeasurementsResult1(double period, double freq, double amp, double min, double max, double vrms, double dc, double fs, double rise, double fall, int samples);
   void signalMeasurementsResult2(double period, double freq, double amp, double min, double max, double vrms, double dc, double fs, double rise, double fall, int samples);
   void fftResult1(QSharedPointer<QCPGraphDataContainer> data);

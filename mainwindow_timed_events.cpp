@@ -295,7 +295,7 @@ void MainWindow::updateSerialMonitor() {
 
   if (ui->pushButtonDolarNewline->isChecked()) {
     serialMonitor.replace("\n", "");
-    serialMonitor.replace((char)0, "");
+    serialMonitor.replace(QChar('\0'), "");
     serialMonitor.replace("$$", "\n$$");
   }
 
