@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1277</width>
+    <width>1174</width>
     <height>900</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>0</width>
-    <height>0</height>
+    <width>1000</width>
+    <height>600</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -2862,7 +2862,7 @@ padding:3px;
     <item row="1" column="0" rowspan="2">
      <widget class="QTabWidget" name="tabsControll">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+       <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
@@ -2886,7 +2886,7 @@ padding:3px;
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>9</number>
+       <number>2</number>
       </property>
       <property name="iconSize">
        <size>
@@ -3347,7 +3347,7 @@ padding:3px;
                 </property>
                 <property name="sizeHint" stdset="0">
                  <size>
-                  <width>40</width>
+                  <width>1</width>
                   <height>20</height>
                  </size>
                 </property>
@@ -3814,7 +3814,7 @@ padding:3px;
           </property>
           <property name="sizeHint" stdset="0">
            <size>
-            <width>0</width>
+            <width>1</width>
             <height>20</height>
            </size>
           </property>
@@ -4153,6 +4153,7 @@ padding:3px;
                   <property name="font">
                    <font>
                     <pointsize>10</pointsize>
+                    <weight>50</weight>
                     <bold>false</bold>
                    </font>
                   </property>
@@ -4274,6 +4275,7 @@ padding:3px;
                 <property name="font">
                  <font>
                   <pointsize>10</pointsize>
+                  <weight>50</weight>
                   <bold>false</bold>
                  </font>
                 </property>
@@ -4378,6 +4380,7 @@ padding:3px;
                   <property name="font">
                    <font>
                     <pointsize>10</pointsize>
+                    <weight>50</weight>
                     <bold>false</bold>
                    </font>
                   </property>
@@ -4621,6 +4624,7 @@ padding:3px;
              <property name="font">
               <font>
                <pointsize>10</pointsize>
+               <weight>75</weight>
                <bold>true</bold>
               </font>
              </property>
@@ -4659,6 +4663,7 @@ padding:3px;
              <property name="font">
               <font>
                <pointsize>10</pointsize>
+               <weight>75</weight>
                <bold>true</bold>
               </font>
              </property>
@@ -4697,6 +4702,7 @@ padding:3px;
              <property name="font">
               <font>
                <pointsize>10</pointsize>
+               <weight>75</weight>
                <bold>true</bold>
               </font>
              </property>
@@ -4735,6 +4741,7 @@ padding:3px;
              <property name="font">
               <font>
                <pointsize>10</pointsize>
+               <weight>75</weight>
                <bold>true</bold>
               </font>
              </property>
@@ -4773,6 +4780,7 @@ padding:3px;
              <property name="font">
               <font>
                <pointsize>10</pointsize>
+               <weight>75</weight>
                <bold>true</bold>
               </font>
              </property>
@@ -4907,6 +4915,7 @@ padding:3px;
                   <property name="font">
                    <font>
                     <pointsize>10</pointsize>
+                    <weight>50</weight>
                     <bold>false</bold>
                    </font>
                   </property>
@@ -5028,6 +5037,7 @@ padding:3px;
                 <property name="font">
                  <font>
                   <pointsize>10</pointsize>
+                  <weight>50</weight>
                   <bold>false</bold>
                  </font>
                 </property>
@@ -5145,6 +5155,7 @@ padding:3px;
                   <property name="font">
                    <font>
                     <pointsize>10</pointsize>
+                    <weight>50</weight>
                     <bold>false</bold>
                    </font>
                   </property>
@@ -5332,7 +5343,7 @@ padding:3px;
        <attribute name="title">
         <string/>
        </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_19" stretch="100,100,0">
+       <layout class="QVBoxLayout" name="verticalLayout_19" stretch="10,10,1">
         <property name="spacing">
          <number>3</number>
         </property>
@@ -5386,14 +5397,14 @@ padding:3px;
              <item>
               <widget class="QComboBox" name="comboBoxMeasure1">
                <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
                <property name="minimumSize">
                 <size>
-                 <width>80</width>
+                 <width>0</width>
                  <height>0</height>
                 </size>
                </property>
@@ -5407,6 +5418,12 @@ padding:3px;
              </item>
              <item>
               <widget class="QPushButton" name="pushButtonRecordMeasurements1">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Measured values will be saved to CSV file, refer to Export page for settings of CSV separator and number precision.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
@@ -5419,15 +5436,16 @@ padding:3px;
            </item>
            <item row="3" column="4">
             <widget class="QLabel" name="labelSig1rise">
-             <property name="minimumSize">
-              <size>
-               <width>70</width>
-               <height>0</height>
-              </size>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
              <property name="font">
               <font>
                <pointsize>9</pointsize>
+               <weight>75</weight>
                <bold>true</bold>
               </font>
              </property>
@@ -5441,6 +5459,12 @@ padding:3px;
            </item>
            <item row="0" column="1">
             <widget class="QLabel" name="label_29">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text">
               <string>Period</string>
              </property>
@@ -5451,6 +5475,12 @@ padding:3px;
            </item>
            <item row="2" column="2">
             <widget class="QLabel" name="label_33">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text">
               <string>max</string>
              </property>
@@ -5461,15 +5491,16 @@ padding:3px;
            </item>
            <item row="3" column="2">
             <widget class="QLabel" name="labelSig1Max">
-             <property name="minimumSize">
-              <size>
-               <width>70</width>
-               <height>0</height>
-              </size>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
              <property name="font">
               <font>
                <pointsize>9</pointsize>
+               <weight>75</weight>
                <bold>true</bold>
               </font>
              </property>
@@ -5483,6 +5514,12 @@ padding:3px;
            </item>
            <item row="2" column="5">
             <widget class="QLabel" name="label_46">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text">
               <string>Fall</string>
              </property>
@@ -5493,15 +5530,16 @@ padding:3px;
            </item>
            <item row="3" column="1">
             <widget class="QLabel" name="labelSig1Min">
-             <property name="minimumSize">
-              <size>
-               <width>70</width>
-               <height>0</height>
-              </size>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
              <property name="font">
               <font>
                <pointsize>9</pointsize>
+               <weight>75</weight>
                <bold>true</bold>
               </font>
              </property>
@@ -5515,6 +5553,12 @@ padding:3px;
            </item>
            <item row="0" column="3">
             <widget class="QLabel" name="label_28">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text">
               <string>Amplitude</string>
              </property>
@@ -5525,15 +5569,16 @@ padding:3px;
            </item>
            <item row="1" column="4">
             <widget class="QLabel" name="labelSig1Vrms">
-             <property name="minimumSize">
-              <size>
-               <width>70</width>
-               <height>0</height>
-              </size>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
              <property name="font">
               <font>
                <pointsize>9</pointsize>
+               <weight>75</weight>
                <bold>true</bold>
               </font>
              </property>
@@ -5547,6 +5592,12 @@ padding:3px;
            </item>
            <item row="2" column="4">
             <widget class="QLabel" name="label_45">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text">
               <string>Rise</string>
              </property>
@@ -5557,15 +5608,16 @@ padding:3px;
            </item>
            <item row="1" column="2">
             <widget class="QLabel" name="labelSig1Freq">
-             <property name="minimumSize">
-              <size>
-               <width>70</width>
-               <height>0</height>
-              </size>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
              <property name="font">
               <font>
                <pointsize>9</pointsize>
+               <weight>75</weight>
                <bold>true</bold>
               </font>
              </property>
@@ -5579,6 +5631,12 @@ padding:3px;
            </item>
            <item row="2" column="0">
             <widget class="QLabel" name="label_20">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text">
               <string>Sampling freq</string>
              </property>
@@ -5589,6 +5647,12 @@ padding:3px;
            </item>
            <item row="2" column="1">
             <widget class="QLabel" name="label_32">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text">
               <string>min</string>
              </property>
@@ -5599,6 +5663,12 @@ padding:3px;
            </item>
            <item row="0" column="2">
             <widget class="QLabel" name="label_27">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text">
               <string>Frequency</string>
              </property>
@@ -5609,6 +5679,12 @@ padding:3px;
            </item>
            <item row="0" column="4">
             <widget class="QLabel" name="label_31">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text">
               <string>Vrms</string>
              </property>
@@ -5619,15 +5695,16 @@ padding:3px;
            </item>
            <item row="1" column="1">
             <widget class="QLabel" name="labelSig1Period">
-             <property name="minimumSize">
-              <size>
-               <width>70</width>
-               <height>0</height>
-              </size>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
              <property name="font">
               <font>
                <pointsize>9</pointsize>
+               <weight>75</weight>
                <bold>true</bold>
               </font>
              </property>
@@ -5641,15 +5718,16 @@ padding:3px;
            </item>
            <item row="3" column="3">
             <widget class="QLabel" name="labelSig1Dc">
-             <property name="minimumSize">
-              <size>
-               <width>70</width>
-               <height>0</height>
-              </size>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
              <property name="font">
               <font>
                <pointsize>9</pointsize>
+               <weight>75</weight>
                <bold>true</bold>
               </font>
              </property>
@@ -5663,15 +5741,16 @@ padding:3px;
            </item>
            <item row="3" column="5">
             <widget class="QLabel" name="labelSig1fall">
-             <property name="minimumSize">
-              <size>
-               <width>70</width>
-               <height>0</height>
-              </size>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
              <property name="font">
               <font>
                <pointsize>9</pointsize>
+               <weight>75</weight>
                <bold>true</bold>
               </font>
              </property>
@@ -5685,15 +5764,16 @@ padding:3px;
            </item>
            <item row="1" column="3">
             <widget class="QLabel" name="labelSig1Amp">
-             <property name="minimumSize">
-              <size>
-               <width>70</width>
-               <height>0</height>
-              </size>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
              <property name="font">
               <font>
                <pointsize>9</pointsize>
+               <weight>75</weight>
                <bold>true</bold>
               </font>
              </property>
@@ -5707,6 +5787,12 @@ padding:3px;
            </item>
            <item row="2" column="3">
             <widget class="QLabel" name="label_34">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text">
               <string>dc</string>
              </property>
@@ -5717,6 +5803,12 @@ padding:3px;
            </item>
            <item row="0" column="5">
             <widget class="QLabel" name="label_44">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text">
               <string>Samples</string>
              </property>
@@ -5727,9 +5819,16 @@ padding:3px;
            </item>
            <item row="3" column="0">
             <widget class="QLabel" name="labelSig1fs">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="font">
               <font>
                <pointsize>9</pointsize>
+               <weight>75</weight>
                <bold>true</bold>
               </font>
              </property>
@@ -5743,15 +5842,16 @@ padding:3px;
            </item>
            <item row="1" column="5">
             <widget class="QLabel" name="labelSig1samples">
-             <property name="minimumSize">
-              <size>
-               <width>70</width>
-               <height>0</height>
-              </size>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
              <property name="font">
               <font>
                <pointsize>9</pointsize>
+               <weight>75</weight>
                <bold>true</bold>
               </font>
              </property>
@@ -5798,15 +5898,16 @@ padding:3px;
            </property>
            <item row="1" column="5">
             <widget class="QLabel" name="labelSig2samples">
-             <property name="minimumSize">
-              <size>
-               <width>70</width>
-               <height>0</height>
-              </size>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
              <property name="font">
               <font>
                <pointsize>9</pointsize>
+               <weight>75</weight>
                <bold>true</bold>
               </font>
              </property>
@@ -5820,15 +5921,16 @@ padding:3px;
            </item>
            <item row="1" column="2">
             <widget class="QLabel" name="labelSig2Freq">
-             <property name="minimumSize">
-              <size>
-               <width>70</width>
-               <height>0</height>
-              </size>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
              <property name="font">
               <font>
                <pointsize>9</pointsize>
+               <weight>75</weight>
                <bold>true</bold>
               </font>
              </property>
@@ -5842,6 +5944,12 @@ padding:3px;
            </item>
            <item row="0" column="3">
             <widget class="QLabel" name="label_39">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text">
               <string>Amplitude</string>
              </property>
@@ -5852,15 +5960,16 @@ padding:3px;
            </item>
            <item row="3" column="1">
             <widget class="QLabel" name="labelSig2Min">
-             <property name="minimumSize">
-              <size>
-               <width>70</width>
-               <height>0</height>
-              </size>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
              <property name="font">
               <font>
                <pointsize>9</pointsize>
+               <weight>75</weight>
                <bold>true</bold>
               </font>
              </property>
@@ -5874,15 +5983,16 @@ padding:3px;
            </item>
            <item row="1" column="3">
             <widget class="QLabel" name="labelSig2Amp">
-             <property name="minimumSize">
-              <size>
-               <width>70</width>
-               <height>0</height>
-              </size>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
              <property name="font">
               <font>
                <pointsize>9</pointsize>
+               <weight>75</weight>
                <bold>true</bold>
               </font>
              </property>
@@ -5896,6 +6006,12 @@ padding:3px;
            </item>
            <item row="0" column="5">
             <widget class="QLabel" name="label_48">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text">
               <string>Samples</string>
              </property>
@@ -5906,6 +6022,12 @@ padding:3px;
            </item>
            <item row="2" column="5">
             <widget class="QLabel" name="label_50">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text">
               <string>Fall</string>
              </property>
@@ -5916,6 +6038,12 @@ padding:3px;
            </item>
            <item row="0" column="4">
             <widget class="QLabel" name="label_40">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text">
               <string>Vrms</string>
              </property>
@@ -5926,6 +6054,12 @@ padding:3px;
            </item>
            <item row="2" column="4">
             <widget class="QLabel" name="label_49">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text">
               <string>Rise</string>
              </property>
@@ -5936,6 +6070,12 @@ padding:3px;
            </item>
            <item row="2" column="0">
             <widget class="QLabel" name="label_47">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text">
               <string>Sampling freq</string>
              </property>
@@ -5946,6 +6086,12 @@ padding:3px;
            </item>
            <item row="2" column="2">
             <widget class="QLabel" name="label_42">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text">
               <string>max</string>
              </property>
@@ -5956,6 +6102,12 @@ padding:3px;
            </item>
            <item row="0" column="2">
             <widget class="QLabel" name="label_38">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text">
               <string>Frequency</string>
              </property>
@@ -5966,6 +6118,12 @@ padding:3px;
            </item>
            <item row="2" column="3">
             <widget class="QLabel" name="label_43">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text">
               <string>dc</string>
              </property>
@@ -5976,15 +6134,16 @@ padding:3px;
            </item>
            <item row="3" column="3">
             <widget class="QLabel" name="labelSig2Dc">
-             <property name="minimumSize">
-              <size>
-               <width>70</width>
-               <height>0</height>
-              </size>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
              <property name="font">
               <font>
                <pointsize>9</pointsize>
+               <weight>75</weight>
                <bold>true</bold>
               </font>
              </property>
@@ -5998,15 +6157,16 @@ padding:3px;
            </item>
            <item row="3" column="5">
             <widget class="QLabel" name="labelSig2fall">
-             <property name="minimumSize">
-              <size>
-               <width>70</width>
-               <height>0</height>
-              </size>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
              <property name="font">
               <font>
                <pointsize>9</pointsize>
+               <weight>75</weight>
                <bold>true</bold>
               </font>
              </property>
@@ -6026,14 +6186,14 @@ padding:3px;
              <item>
               <widget class="QComboBox" name="comboBoxMeasure2">
                <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
                <property name="minimumSize">
                 <size>
-                 <width>80</width>
+                 <width>0</width>
                  <height>0</height>
                 </size>
                </property>
@@ -6047,6 +6207,12 @@ padding:3px;
              </item>
              <item>
               <widget class="QPushButton" name="pushButtonRecordMeasurements2">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="toolTip">
                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Measured values will be saved to CSV file, refer to Export page for settings of CSV separator and number precision.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
@@ -6059,15 +6225,16 @@ padding:3px;
            </item>
            <item row="1" column="4">
             <widget class="QLabel" name="labelSig2Vrms">
-             <property name="minimumSize">
-              <size>
-               <width>70</width>
-               <height>0</height>
-              </size>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
              <property name="font">
               <font>
                <pointsize>9</pointsize>
+               <weight>75</weight>
                <bold>true</bold>
               </font>
              </property>
@@ -6081,9 +6248,16 @@ padding:3px;
            </item>
            <item row="3" column="0">
             <widget class="QLabel" name="labelSig2fs">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="font">
               <font>
                <pointsize>9</pointsize>
+               <weight>75</weight>
                <bold>true</bold>
               </font>
              </property>
@@ -6097,15 +6271,16 @@ padding:3px;
            </item>
            <item row="3" column="4">
             <widget class="QLabel" name="labelSig2rise">
-             <property name="minimumSize">
-              <size>
-               <width>70</width>
-               <height>0</height>
-              </size>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
              <property name="font">
               <font>
                <pointsize>9</pointsize>
+               <weight>75</weight>
                <bold>true</bold>
               </font>
              </property>
@@ -6119,6 +6294,12 @@ padding:3px;
            </item>
            <item row="0" column="1">
             <widget class="QLabel" name="label_30">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text">
               <string>Period</string>
              </property>
@@ -6129,15 +6310,16 @@ padding:3px;
            </item>
            <item row="3" column="2">
             <widget class="QLabel" name="labelSig2Max">
-             <property name="minimumSize">
-              <size>
-               <width>70</width>
-               <height>0</height>
-              </size>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
              <property name="font">
               <font>
                <pointsize>9</pointsize>
+               <weight>75</weight>
                <bold>true</bold>
               </font>
              </property>
@@ -6151,15 +6333,16 @@ padding:3px;
            </item>
            <item row="1" column="1">
             <widget class="QLabel" name="labelSig2Period">
-             <property name="minimumSize">
-              <size>
-               <width>70</width>
-               <height>0</height>
-              </size>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
              <property name="font">
               <font>
                <pointsize>9</pointsize>
+               <weight>75</weight>
                <bold>true</bold>
               </font>
              </property>
@@ -6173,6 +6356,12 @@ padding:3px;
            </item>
            <item row="2" column="1">
             <widget class="QLabel" name="label_41">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="text">
               <string>min</string>
              </property>
@@ -7149,7 +7338,7 @@ padding:3px;
           </property>
           <property name="sizeHint" stdset="0">
            <size>
-            <width>258</width>
+            <width>1</width>
             <height>20</height>
            </size>
           </property>
@@ -7232,6 +7421,7 @@ padding:3px;
                <property name="font">
                 <font>
                  <pointsize>10</pointsize>
+                 <weight>75</weight>
                  <bold>true</bold>
                 </font>
                </property>
@@ -7248,6 +7438,7 @@ padding:3px;
                <property name="font">
                 <font>
                  <pointsize>10</pointsize>
+                 <weight>75</weight>
                  <bold>true</bold>
                 </font>
                </property>
@@ -7317,13 +7508,6 @@ padding:3px;
              </property>
             </widget>
            </item>
-           <item>
-            <widget class="QPushButton" name="pushButtonXYClear">
-             <property name="text">
-              <string>Clear plot</string>
-             </property>
-            </widget>
-           </item>
           </layout>
          </widget>
         </item>
@@ -7332,7 +7516,7 @@ padding:3px;
           <property name="frameShape">
            <enum>QFrame::StyledPanel</enum>
           </property>
-          <layout class="QVBoxLayout" name="verticalLayout_26" stretch="1,1,0,1,1,100,1,1">
+          <layout class="QVBoxLayout" name="verticalLayout_26" stretch="1,1,0,1,1,100,1,1,0">
            <property name="leftMargin">
             <number>6</number>
            </property>
@@ -7495,6 +7679,13 @@ padding:3px;
                <width>30</width>
                <height>30</height>
               </size>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButtonXYClear">
+             <property name="text">
+              <string>Clear plot</string>
              </property>
             </widget>
            </item>
@@ -7680,6 +7871,7 @@ padding:3px;
                <property name="font">
                 <font>
                  <pointsize>10</pointsize>
+                 <weight>75</weight>
                  <bold>true</bold>
                 </font>
                </property>
@@ -7705,6 +7897,7 @@ padding:3px;
                <property name="font">
                 <font>
                  <pointsize>10</pointsize>
+                 <weight>75</weight>
                  <bold>true</bold>
                 </font>
                </property>
@@ -7746,6 +7939,7 @@ padding:3px;
                <property name="font">
                 <font>
                  <pointsize>10</pointsize>
+                 <weight>75</weight>
                  <bold>true</bold>
                 </font>
                </property>
@@ -7787,6 +7981,7 @@ padding:3px;
                <property name="font">
                 <font>
                  <pointsize>10</pointsize>
+                 <weight>75</weight>
                  <bold>true</bold>
                 </font>
                </property>
@@ -7826,7 +8021,7 @@ padding:3px;
           </property>
           <property name="sizeHint" stdset="0">
            <size>
-            <width>40</width>
+            <width>1</width>
             <height>0</height>
            </size>
           </property>
@@ -9176,8 +9371,8 @@ padding:3px;
           </property>
           <property name="sizeHint" stdset="0">
            <size>
-            <width>40</width>
-            <height>20</height>
+            <width>1</width>
+            <height>1</height>
            </size>
           </property>
          </spacer>
@@ -9848,7 +10043,7 @@ padding:3px;
           </property>
           <property name="sizeHint" stdset="0">
            <size>
-            <width>40</width>
+            <width>1</width>
             <height>0</height>
            </size>
           </property>
