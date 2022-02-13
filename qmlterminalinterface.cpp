@@ -13,44 +13,27 @@ void QmlTerminalInterface::sendToParser(QVariant data) {
 }
 
 void QmlTerminalInterface::directInput(QByteArray data) {
-    emit receivedFromSerial(data);
+  emit receivedFromSerial(data);
 }
 
-bool QmlTerminalInterface::darkThemeIsUsed() const
-{
-    return m_darkThemeIsUsed;
+bool QmlTerminalInterface::darkThemeIsUsed() const {
+  return m_darkThemeIsUsed;
 }
 
-void QmlTerminalInterface::setDarkThemeIsUsed(bool newDarkThemeIsUsed)
-{
-    if (m_darkThemeIsUsed == newDarkThemeIsUsed)
-        return;
-    m_darkThemeIsUsed = newDarkThemeIsUsed;
-    emit darkThemeIsUsedChanged();
+void QmlTerminalInterface::setDarkThemeIsUsed(bool newDarkThemeIsUsed) {
+  if (m_darkThemeIsUsed == newDarkThemeIsUsed)
+    return;
+  m_darkThemeIsUsed = newDarkThemeIsUsed;
+  emit darkThemeIsUsedChanged();
 }
 
-const QPalette &QmlTerminalInterface::themePalette() const
-{
-    return m_themePalette;
+const QString& QmlTerminalInterface::tabBackground() const {
+  return m_tabBackground;
 }
 
-void QmlTerminalInterface::setThemePalette(const QPalette &newThemePalette)
-{
-    if (m_themePalette == newThemePalette)
-        return;
-    m_themePalette = newThemePalette;
-    emit themePaletteChanged();
-}
-
-const QString &QmlTerminalInterface::tabBackground() const
-{
-    return m_tabBackground;
-}
-
-void QmlTerminalInterface::setTabBackground(const QString &newTabBackground)
-{
-    if (m_tabBackground == newTabBackground)
-        return;
-    m_tabBackground = newTabBackground;
-    emit tabBackgroundChanged();
+void QmlTerminalInterface::setTabBackground(const QString& newTabBackground) {
+  if (m_tabBackground == newTabBackground)
+    return;
+  m_tabBackground = newTabBackground;
+  emit tabBackgroundChanged();
 }

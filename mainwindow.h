@@ -67,7 +67,7 @@ class MainWindow : public QMainWindow {
   QList<QSerialPortInfo> portList;
   FileSender fileSender;
 
-    QPalette darkPalette, lightPalette;
+  QPalette darkPalette, lightPalette;
 
   void setComboboxItemVisible(QComboBox& comboBox, int index, bool visible);
   void setChStyleSelection(GraphType::enumGraphType type);
@@ -119,7 +119,7 @@ class MainWindow : public QMainWindow {
 
   QIcon iconRun, iconPause, iconHidden, iconVisible, iconConnected, iconNotConnected, iconCross, iconAbsoluteCursor;
 
-  QString serialMonitor;
+  QByteArray serialMonitor;
   QStringList consoleBuffer;
 
   void setCursorsVisibility(Cursors::enumCursors cursor, int graph, int timeCurState, int valueCurState);
@@ -135,8 +135,6 @@ class MainWindow : public QMainWindow {
   bool timeUseUnits = true, valuesUseUnits = true, freqUseUnits = true;
 
   QString preselectPortHint = "USB";
-
-  QString defaultStyle = "Fusion";
 
   ChannelExpectedRange channelExpectedRanges[ANALOG_COUNT + MATH_COUNT];
 
@@ -334,13 +332,11 @@ class MainWindow : public QMainWindow {
   void on_quickWidget_statusChanged(const QQuickWidget::Status& arg1);
   void on_checkBoxQmlDev_toggled(bool checked);
   void on_radioButtonDark_toggled(bool checked);
-  void on_comboBoxStyle_currentTextChanged(const QString &arg1);
-
   void on_radioButtonLayoutHide_toggled(bool checked);
-
   void on_radioButtonLayoutSmall_toggled(bool checked);
+  void on_tabs_right_currentChanged(int index);
 
-public slots:
+ public slots:
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumMessageTarget target);
   void showPlotStatus(PlotStatus::enumPlotStatus type);
   void serialConnectResult(bool connected, QString message, QString details);

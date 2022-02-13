@@ -1,5 +1,5 @@
 QT += core gui serialport widgets printsupport opengl qml quickwidgets \
-    quick
+    quick quickcontrols2
 
 LIBS += -lOpenGL32
 

@@ -17,7 +17,7 @@
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWindow),   serialSettingsDialog(new SerialSettingsDialog) {
   ui->setupUi(this);
-
+  qApp->setStyle("Fusion");
   this->setAttribute(Qt::WA_NativeWindow);
 
   ui->doubleSpinBoxRangeVerticalRange->trimDecimalZeroes = true;
@@ -59,17 +59,8 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
   darkPalette.setColor(QPalette::Disabled, QPalette::Text, gray);
   darkPalette.setColor(QPalette::Disabled, QPalette::Light, darkGray);
 
-  QStringList styles;
-  styles << QStyleFactory::keys();
-  if (styles.contains(defaultStyle)) {
-    ui->comboBoxStyle->addItem(defaultStyle);
-    styles.removeAll(defaultStyle);
-  }
-  ui->comboBoxStyle->addItems(styles);
-  ui->comboBoxStyle->setCurrentIndex(0);
-  on_comboBoxStyle_currentTextChanged(ui->comboBoxStyle->currentText());
-
   this->resize(1024, 768);
+  on_radioButtonDark_toggled(ui->radioButtonDark->isChecked());
 }
 
 MainWindow::~MainWindow() {
@@ -742,17 +733,9 @@ void MainWindow::on_radioButtonDark_toggled(bool checked) {
 
   setStyleSheet(checked ? "QFrame {background-color: rgb(67, 67, 67);}QMessageBox {background-color: rgb(67, 67, 67);}" : "QFrame {background-color: rgb(255, 255, 255);}QMessageBox {background-color: rgb(255, 255, 255);}");
 
-  qmlTerminalInterface->setThemePalette(qApp->palette());
   qmlTerminalInterface->setDarkThemeIsUsed(checked);
   qmlTerminalInterface->setTabBackground(checked ? "#434343" : "#ffffff");
 }
-
-
-void MainWindow::on_comboBoxStyle_currentTextChanged(const QString& arg1) {
-  qApp->setStyle(QStyleFactory::create(arg1));
-  on_radioButtonDark_toggled(ui->radioButtonDark->isChecked());
-}
-
 
 void MainWindow::printSerialMonitor(QByteArray data) {
 
@@ -778,5 +761,13 @@ void MainWindow::on_radioButtonLayoutSmall_toggled(bool checked) {
   Q_UNUSED(checked);
   ui->myTerminal->changeSize(ui->radioButtonLayoutWide->isChecked());
   ui->tabs_right->updateGeometry();
+}
+
+
+void MainWindow::on_tabs_right_currentChanged(int index) {
+#if QT_VERSION < 0x050C00
+  if (index == 2)
+    on_radioButtonDark_toggled(ui->radioButtonDark->isChecked());
+#endif
 }
 

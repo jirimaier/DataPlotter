@@ -45,6 +45,7 @@
 #include <QSerialPort>
 #include <QTimer>
 #include <QTranslator>
+#include <QQuickStyle>
 
 #include "global.h"
 #include "mainwindow.h"
@@ -80,6 +81,7 @@ Q_DECLARE_METATYPE(QSerialPort::FlowControl);
 
 int main(int argc, char* argv[]) {
   QGuiApplication::setAttribute(Qt::AA_DisableHighDpiScaling);
+  QQuickStyle::setStyle("Material");
   QApplication application(argc, argv);
 
   // Zaregistruje typy aby je šlo posílat signály mezi vlákny

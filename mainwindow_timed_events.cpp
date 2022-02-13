@@ -293,11 +293,17 @@ void MainWindow::updateSerialMonitor() {
   QElapsedTimer tmr;
   tmr.start();
 
+  QString text;
+  QDebug printer(&text);
+  printer.nospace() << serialMonitor;
+  serialMonitor.clear();
+
   if (ui->pushButtonDolarNewline->isChecked()) {
-    serialMonitor.replace("\n", "");
-    serialMonitor.replace(QChar('\0'), "");
-    serialMonitor.replace("$$", "\n$$");
+    text.replace("$$", "\n$$");
   }
+
+  text.remove(0, 1);
+  text.remove(text.length() - 1, 1);
 
   QScrollBar* scroll = ui->plainTextEditConsole_3->verticalScrollBar();
   int lastVal = -1;
@@ -306,8 +312,8 @@ void MainWindow::updateSerialMonitor() {
 
   auto cursor = ui->plainTextEditConsole_3->textCursor();
   cursor.movePosition(QTextCursor::End);
-  cursor.insertText(serialMonitor);
-  serialMonitor.clear();
+  cursor.insertText(text);
+
 
   if (lastVal == -1)
     scroll->setValue(scroll->maximum());
