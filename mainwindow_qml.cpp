@@ -23,14 +23,20 @@ void MainWindow::loadCompressedQml(QByteArray data) {
     return;
   }
 
-  QFile file(QString(QCoreApplication::applicationDirPath()) + QString("/terminal.qml"));
-  if (file.open(QFile::WriteOnly | QFile::Truncate)) {
-    file.write(data);
-    file.close();
+  if (currentQmlFile.open()) {
+    currentQmlFile.write(data);
+    currentQmlFile.close();
+  } else {
+    QMessageBox msgBox(this);
+    msgBox.setText(tr("QML terminal fatal error"));
+    msgBox.setInformativeText(tr("Could not create temporary file."));
+    msgBox.setIcon(QMessageBox::Critical);
+    msgBox.exec();
+    return;
   }
 
   ui->tabs_right->setCurrentIndex(2);
-  loadQmlFile(QUrl::fromLocalFile(file.fileName()));
+  loadQmlFile(QUrl::fromLocalFile(currentQmlFile.fileName()));
 }
 
 void MainWindow::loadQmlFile(QUrl url) {
@@ -104,7 +110,7 @@ void MainWindow::on_pushButtonQmlExport_clicked() {
     QByteArray newData;
     newData.append(QString("const unsigned char terminalQml[%1] = {'$','$','Q',").arg(data.length() + 3).toLocal8Bit());
     for (auto it = data.begin(); it != data.end(); it++) {
-      newData.append(QString::number((byte)*it).toLocal8Bit());
+      newData.append(QString::number((quint8)*it).toLocal8Bit());
       newData.append(",");
     }
     newData.remove(newData.length() - 1, 1);

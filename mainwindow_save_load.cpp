@@ -501,7 +501,7 @@ void MainWindow::on_pushButtonReset_clicked() {
     }
   } else {
     QMessageBox msgBox(this);
-    msgBox.setText(tr("Can not create default settings file"));
+    msgBox.setText(tr("Can not create default settings file (if installed in ProgramFiles, admin rights are required)"));
     msgBox.setDetailedText(defaultName);
     msgBox.setIcon(QMessageBox::Critical);
     msgBox.exec();
@@ -519,16 +519,6 @@ void MainWindow::setUp() {
     if (defaults.open(QFile::ReadOnly | QFile::Text)) {
       QByteArray defaultSettings = defaults.readAll();
       defaults.close();
-
-      QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/settings/default.cfg");
-      QFile file(defaultName);
-      if (!QDir(QCoreApplication::applicationDirPath() + "/settings").exists())
-        QDir().mkdir((QCoreApplication::applicationDirPath() + "/settings"));
-      if (file.open(QFile::WriteOnly | QFile::Truncate)) {
-        file.write(defaultSettings);
-        file.close();
-      }
-
       emit sendManualInput("$$S" + defaultSettings.replace("\n", "") + "$$U");
     }
   }
@@ -544,7 +534,7 @@ void MainWindow::saveToFile(QByteArray data) {
     file.close();
   } else {
     QMessageBox msgBox(this);
-    msgBox.setText(tr("Cant write to file."));
+    msgBox.setText(tr("Cant write to file. (if installed in ProgramFiles, admin rights are required)"));
     msgBox.setIcon(QMessageBox::Critical);
     msgBox.exec();
   }

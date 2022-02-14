@@ -147,6 +147,8 @@ class MainWindow : public QMainWindow {
   QSize lastQmlTerminalSize;
   bool currentThemeDark = false;
 
+  QTemporaryFile currentQmlFile;
+
  private slots:
   void updateCursors();
   void setAdaptiveSpinBoxes();
@@ -339,7 +341,7 @@ class MainWindow : public QMainWindow {
  public slots:
   void on_pushButtonTerminalDebugShift_clicked();
 
-public slots:
+ public slots:
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumMessageTarget target);
   void showPlotStatus(PlotStatus::enumPlotStatus type);
   void serialConnectResult(bool connected, QString message, QString details);
