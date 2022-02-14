@@ -731,7 +731,15 @@ void MainWindow::on_radioButtonDark_toggled(bool checked) {
     }
   }
 
-  setStyleSheet(checked ? "QFrame {background-color: rgb(67, 67, 67);}QMessageBox {background-color: rgb(67, 67, 67);}" : "QFrame {background-color: rgb(255, 255, 255);}QMessageBox {background-color: rgb(255, 255, 255);}");
+  setStyleSheet(checked?
+                    "QFrame {background-color: rgb(67, 67, 67);}"
+                    "QMessageBox {background-color: rgb(67, 67, 67);}"
+                    "QInputDialog {background-color: rgb(67, 67, 67);}"
+                  :
+                    "QFrame {background-color: rgb(255, 255, 255);}"
+                    "QMessageBox {background-color: rgb(255, 255, 255);}"
+                    "QInputDialog {background-color: rgb(255, 255, 255);}"
+                    );
 
   qmlTerminalInterface->setDarkThemeIsUsed(checked);
   qmlTerminalInterface->setTabBackground(checked ? "#434343" : "#ffffff");
@@ -769,5 +777,38 @@ void MainWindow::on_tabs_right_currentChanged(int index) {
   if (index == 2)
     on_radioButtonDark_toggled(ui->radioButtonDark->isChecked());
 #endif
+}
+
+
+void MainWindow::on_pushButtonTerminalDebugShift_clicked()
+{
+    bool ok;
+    int i = QInputDialog::getInt(this,"",tr("Shift content verticaly"),0,-1000,1000,1, &ok, Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
+    if(!ok) return;
+
+    QString input = ui->textEditTerminalDebug->toPlainText();
+    QString output = "";
+    QRegularExpression re("\\\\e\\[\\d+;\\d+H");
+    while(true) {
+        QRegularExpressionMatch match = re.match(input);
+        if(match.hasMatch()) {
+            output.append(input.left(match.capturedStart()));
+            QString a = match.captured();
+            a = a.mid(3,a.length()-4);
+            auto b = a.split(';');
+            unsigned int c = b.first().toUInt(&ok);
+            unsigned int d = b.last().toUInt(&ok);
+            if(!ok) return;
+            output.append(QString("\\e[%1;%2H").arg(c+i).arg(d));
+            input.remove(0,match.capturedStart()+match.capturedLength());
+        }
+        else
+        {
+            output.append(input);
+            break;
+        }
+    }
+    ui->textEditTerminalDebug->setPlainText(output);
+    on_pushButtonTerminalDebugSend_clicked();
 }
 

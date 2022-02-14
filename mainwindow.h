@@ -337,6 +337,9 @@ class MainWindow : public QMainWindow {
   void on_tabs_right_currentChanged(int index);
 
  public slots:
+  void on_pushButtonTerminalDebugShift_clicked();
+
+public slots:
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumMessageTarget target);
   void showPlotStatus(PlotStatus::enumPlotStatus type);
   void serialConnectResult(bool connected, QString message, QString details);

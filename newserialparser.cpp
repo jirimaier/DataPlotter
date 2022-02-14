@@ -256,6 +256,7 @@ void NewSerialParser::parse(QByteArray newData) {
                   semicolumPositionMessage = tr("There is semicolum %1 bytes after end.").arg(buffer.indexOf(';')).toUtf8();
               }
             }
+
             emit sendMessage(tr("Channel not ended with ';'"), semicolumPositionMessage, MessageLevel::warning, target);
           }
 
