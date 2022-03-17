@@ -42,6 +42,7 @@ MyTerminal::MyTerminal(QWidget* parent) : QTableWidget(parent) {
   clickBlinkTimer.setInterval(TERMINAL_CLICK_BLINK_TIME);
 
   changeFont(false);
+  changeSize(false);
 }
 
 MyTerminal::~MyTerminal() {
@@ -461,11 +462,11 @@ void MyTerminal::changeFont(bool smallFont) {
 
   this->smallFont = smallFont;
 
-  if(mode==debug)
-      this->addColumns(MAX(fontCols(), columnCount()));
+  if (mode == debug)
+    this->addColumns(MAX(fontCols(), columnCount()));
 
-  cellWidth = (geometry().width()-6)/fontCols();
-  cellHeight =  cellWidth * (24.0/18.0);
+  cellWidth = (geometry().width() - 6) / fontCols();
+  cellHeight =  cellWidth * (24.0 / 18.0);
 
   for (int r = 0; r < rowCount(); r++)
     setRowHeight(r, cellHeight);
@@ -475,14 +476,13 @@ void MyTerminal::changeFont(bool smallFont) {
 
 }
 
-void MyTerminal::changeSize(bool isWide)
-{
-    this->isWide = isWide;
-    if(isWide)
-        setMinimumSize(386,0);
-    else
-        setMinimumSize(260,0);
-    changeFont(smallFont);
+void MyTerminal::changeSize(bool isWide) {
+  this->isWide = isWide;
+  if (isWide)
+    setMinimumSize(386, 0);
+  else
+    setMinimumSize(260, 0);
+  changeFont(smallFont);
 }
 
 void MyTerminal::setVScrollBar(bool show) {
@@ -494,9 +494,8 @@ void MyTerminal::setVScrollBar(bool show) {
 
 }
 
-void MyTerminal::resizeEvent(QResizeEvent *event)
-{
-    changeFont(smallFont);
+void MyTerminal::resizeEvent(QResizeEvent* event) {
+  changeFont(smallFont);
 }
 
 void MyTerminal::resetFont() {
@@ -547,22 +546,21 @@ void MyTerminal::clearUp() {
 
 void MyTerminal::clearCell(int x, int y) {
   if (this->item(y, x) != NULL)
-      delete this->item(y, x);
+    delete this->item(y, x);
 }
 
-int MyTerminal::fontCols()
-{
-    if(isWide) {
-        if(smallFont)
-            return 31;
-        else
-            return 21;
-    } else {
-        if(smallFont)
-            return 21;
-        else
-            return 14;
-    }
+int MyTerminal::fontCols() {
+  if (isWide) {
+    if (smallFont)
+      return 31;
+    else
+      return 21;
+  } else {
+    if (smallFont)
+      return 21;
+    else
+      return 14;
+  }
 }
 
 void MyTerminal::resetBlinkedItem() {
