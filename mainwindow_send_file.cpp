@@ -6,13 +6,13 @@ void MainWindow::fileRequest(QByteArray message, MessageTarget::enumMessageTarge
 
     if(!list.isEmpty() && list.first().toLower()=="new")
     {
+        QByteArray text = {};
         QString fileName = QFileDialog::getOpenFileName(this, tr("Send file"), "", "Any file (*.*)");
         if (fileName.isEmpty())
           return;
         QFile file(fileName);
         if (file.open(QFile::ReadOnly | QFile::Text)) {
-          QByteArray text = file.readAll();
-          fileSender.newFile(text);
+          text = file.readAll();
         }
         else
         {
@@ -21,6 +21,8 @@ void MainWindow::fileRequest(QByteArray message, MessageTarget::enumMessageTarge
             msgBox.setIcon(QMessageBox::Critical);
             msgBox.exec();
         }
+
+        fileSender.newFile(text);
 
         list.removeFirst();
 
