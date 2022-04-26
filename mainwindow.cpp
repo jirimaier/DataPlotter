@@ -551,7 +551,7 @@ void MainWindow::on_pushButtonTerminalBlacklisAdd_clicked() {
 }
 
 void MainWindow::on_checkBoxEnablTerminalVScrollBar_toggled(bool checked) {
-  ui->myTerminal->setVScrollBar(checked);
+  ui->myTerminal->setScrollBar(checked);
 }
 
 void MainWindow::on_lineEditTerminalBlacklist_textChanged(const QString& arg1) {

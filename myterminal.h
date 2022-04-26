@@ -106,7 +106,7 @@ class MyTerminal : public QTableWidget {
   void setMode(TerminalMode::enumTerminalMode mode);
   void resetTerminal();
   void copyToClipboard();
-  void setVScrollBar(bool show);
+  void setScrollBar(bool show);
 
  signals:
   /// Pošle zprávu do výpisu
