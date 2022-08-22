@@ -67,7 +67,7 @@ void MainWindow::on_pushButtonAutoset_clicked() {
       recentOffset += maxRange.upper;
     }
     if (recentOffset != 0) {
-      on_pushButtonPositive_clicked();
+      ui->pushButtonPositive->setChecked(true);
       ui->checkBoxVerticalValues->setChecked(false);
       ui->doubleSpinBoxRangeVerticalRange->setValue(ceilToMultipleOf(recentOffset, ui->plot->getVDiv()));
     }
@@ -93,13 +93,13 @@ void MainWindow::on_pushButtonAutoset_clicked() {
         range.normalize();
       }
       if (range.lower >= 0) {
-        on_pushButtonPositive_clicked();
+        ui->pushButtonPositive->setChecked(true);
         ui->doubleSpinBoxRangeVerticalRange->setValue(range.upper);
       } else if (range.upper <= 0) {
-        on_pushButtonNegative_clicked();
+        ui->pushButtonNegative->setChecked(true);
         ui->doubleSpinBoxRangeVerticalRange->setValue(abs(range.lower));
       } else {
-        on_pushButtonCenter_clicked();
+        ui->pushButtonCenter->setChecked(true);
         ui->doubleSpinBoxRangeVerticalRange->setValue(2 * MAX(std::abs(range.upper), std::abs(range.lower)));
       }
       ui->checkBoxVerticalValues->setChecked(true);
@@ -109,7 +109,7 @@ void MainWindow::on_pushButtonAutoset_clicked() {
       // Skupina logických kanálů má spodek na 0 a vršek je 3*počet pod-kanálů (bitů)
       ui->doubleSpinBoxRangeVerticalRange->setValue(bitsUsed * 3 * ui->plot->getLogicScale(activeLogic.at(0)));
       ui->checkBoxVerticalValues->setChecked(false);
-      on_pushButtonPositive_clicked();
+      ui->pushButtonCenter->setChecked(true);
       ui->comboBoxSelectedChannel->setCurrentIndex(LOGIC_GROUP_TO_CH_LIST_INDEX(activeLogic.at(0)));
     }
   }
@@ -145,7 +145,7 @@ void MainWindow::on_pushButtonResetChannels_clicked() {
       QCPRange chRange;
       if (channelExpectedRanges[i].unknown) {
         bool zbytrecnaPromena;
-        chRange = ui->plot->graph(i)->getValueRange(zbytrecnaPromena);
+        chRange = ui->plot->graph(i)->getValueRange(zbytrecnaPromena, QCP::sdBoth, ui->plot->xAxis->range());
       } else {
         chRange.lower = channelExpectedRanges[i].minimum;
         chRange.upper = channelExpectedRanges[i].maximum;
@@ -174,13 +174,13 @@ void MainWindow::on_pushButtonResetChannels_clicked() {
     }
 
   if (valueRange.lower >= 0) {
-    on_pushButtonPositive_clicked();
+    ui->pushButtonPositive->setChecked(true);
     ui->doubleSpinBoxRangeVerticalRange->setValue(valueRange.upper);
   } else if (valueRange.upper <= 0) {
-    on_pushButtonNegative_clicked();
+    ui->pushButtonNegative->setChecked(true);
     ui->doubleSpinBoxRangeVerticalRange->setValue(abs(valueRange.lower));
   } else {
-    on_pushButtonCenter_clicked();
+    ui->pushButtonCenter->setChecked(true);
     ui->doubleSpinBoxRangeVerticalRange->setValue(2 * MAX(std::abs(valueRange.upper), std::abs(valueRange.lower)));
   }
   ui->checkBoxVerticalValues->setChecked(true);

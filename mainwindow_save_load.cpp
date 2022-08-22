@@ -19,7 +19,7 @@ void MainWindow::initSetables() {
   // Range
   setables["vrange"] = ui->doubleSpinBoxRangeVerticalRange;
   setables["hrange"] = ui->doubleSpinBoxRangeHorizontal;
-  setables["vpos"] = ui->sliderVerticalCenter;
+  setables["vcenter"] = ui->doubleSpinBoxViewOffset;
 
   // Plot settings
   setables["vaxis"] = ui->checkBoxVerticalValues;
@@ -100,6 +100,13 @@ QByteArray MainWindow::readGuiElementSettings(QWidget* target) {
 
 QByteArray MainWindow::getSettings() {
   QByteArray settings;
+
+  if (ui->pushButtonCenter->isChecked())
+    settings.append("vpos:0;\n");
+  else if (ui->pushButtonPositive->isChecked())
+    settings.append("vpos:1;\n");
+  else if (ui->pushButtonNegative->isChecked())
+    settings.append("vpos:-1;\n");
 
   for (QMap<QString, QWidget*>::iterator it = setables.begin(); it != setables.end(); it++)
     settings.append(QString(it.key() + ':' + readGuiElementSettings(it.value()) + ";\n").toUtf8());
@@ -200,6 +207,16 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarg
 
     else if (type == "baud") {
       ui->comboBoxBaud->setEditText(QString::number(value.toUInt()));
+    }
+
+    else if (type == "vpos") {
+        if(value.toInt()>0)
+            ui->pushButtonPositive->setChecked(true);
+        else if(value.toInt()<0)
+            ui->pushButtonNegative->setChecked(true);
+        else
+            ui->pushButtonCenter->setChecked(true);
+        printMessage(tr("\"vpos\" has different meaning than in previous versions").toUtf8(), settings, MessageLevel::warning, source);
     }
 
     else if (type == "presetport") {

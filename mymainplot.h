@@ -142,7 +142,9 @@ class MyMainPlot : public MyPlot {
   /// Nastaví OpenGL a překreslí graf
   void setOpenGL(bool enable) {QCustomPlot::setOpenGl(enable); redraw();}
 
- private:
+  void setVposLock(int newVposLock);
+
+private:
   void redraw();
 
   QTimer plotUpdateTimer;
@@ -164,7 +166,8 @@ class MyMainPlot : public MyPlot {
   bool newData = true;
   double minT = 0.0, maxT = 1.0;
   int shiftStep = 0;
-  double presetVRange = 10, presetVCenterRatio = 0;
+  double presetVRange = 10, presetVCenter = 0;
+  int vposLock = 0;
   double rollingRange = 100;
   int zoom = 1000;
   double horizontalPos = 500;
@@ -209,8 +212,8 @@ class MyMainPlot : public MyPlot {
   /// Nastaví zoom
   void setZoom(int value);
 
-  /// Nastaví svyslí střed (-100 až 100, 0 je symetricky)
-  void setVerticalCenter(int value);
+  /// Nastaví svyslí střed
+  void setVerticalCenter(double value);
 
   /// Krok předbíhání rolling režimu v % délky
   void setShiftStep(int step);

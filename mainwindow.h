@@ -201,7 +201,6 @@ class MainWindow : public QMainWindow {
   void on_pushButtonCSVFFT_clicked() { exportCSV(EXPORT_FFT); }
   void on_comboBoxHAxisType_currentIndexChanged(int index);
   void on_pushButtonOpenHelpCZ_clicked();
-  void on_pushButtonCenter_clicked();
   void on_pushButtonScrollDown_clicked();
   void on_pushButtonSendManual_clicked() { on_lineEditManualInput_returnPressed(); }
   void on_lineEditCommand_returnPressed();
@@ -254,8 +253,6 @@ class MainWindow : public QMainWindow {
   void on_pushButtonXY_toggled(bool checked);
   void on_comboBoxCursor1Channel_currentIndexChanged(int index);
   void on_comboBoxCursor2Channel_currentIndexChanged(int index);
-  void on_pushButtonPositive_clicked();
-  void on_pushButtonNegative_clicked();
   void on_pushButtonTerminalDebug_toggled(bool checked);
   void on_pushButtonTerminalClickToSend_toggled(bool checked);
   void on_pushButtonTerminalInputCopy_clicked();
@@ -338,7 +335,15 @@ class MainWindow : public QMainWindow {
   void on_radioButtonLayoutSmall_toggled(bool checked);
   void on_tabs_right_currentChanged(int index);
 
- public slots:
+  void on_pushButtonCenter_toggled(bool checked);
+
+  void on_pushButtonPositive_toggled(bool checked);
+
+  void on_pushButtonNegative_toggled(bool checked);
+
+  void on_pushButtonRangeFit_clicked();
+
+public slots:
   void on_pushButtonTerminalDebugShift_clicked();
 
  public slots:

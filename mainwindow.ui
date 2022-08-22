@@ -138,7 +138,7 @@
          </size>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <property name="iconSize">
          <size>
@@ -2900,7 +2900,7 @@ padding:3px;
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <property name="iconSize">
        <size>
@@ -3448,7 +3448,7 @@ padding:3px;
           <property name="frameShadow">
            <enum>QFrame::Sunken</enum>
           </property>
-          <layout class="QVBoxLayout" name="verticalLayout" stretch="1,1,0,100">
+          <layout class="QVBoxLayout" name="verticalLayout" stretch="1,1,1,1,1">
            <property name="leftMargin">
             <number>6</number>
            </property>
@@ -3592,123 +3592,183 @@ padding:3px;
             </widget>
            </item>
            <item>
-            <layout class="QGridLayout" name="gridLayout_21" rowstretch="1,1,1" columnstretch="2,1">
-             <item row="1" column="0">
-              <widget class="QPushButton" name="pushButtonCenter">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="toolTip">
-                <string>Symetric positive and negative</string>
-               </property>
+            <layout class="QVBoxLayout" name="verticalLayout_14">
+             <property name="spacing">
+              <number>3</number>
+             </property>
+             <item>
+              <widget class="QLabel" name="label_10">
                <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset resource="resources.qrc">
-                 <normaloff>:/images/icons/verticalCenter.png</normaloff>:/images/icons/verticalCenter.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>30</width>
-                 <height>20</height>
-                </size>
+                <string>View vertical position</string>
                </property>
               </widget>
              </item>
-             <item row="0" column="1" rowspan="3">
-              <widget class="QSlider" name="sliderVerticalCenter">
+             <item>
+              <widget class="MyDoubleSpinBoxWithUnits" name="doubleSpinBoxViewOffset">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>10</pointsize>
+                </font>
+               </property>
                <property name="toolTip">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Zero value position in view&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Move graph verticaly&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                </property>
-               <property name="minimum">
-                <number>-100</number>
+               <property name="alignment">
+                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                </property>
-               <property name="maximum">
-                <number>100</number>
+               <property name="prefix">
+                <string/>
                </property>
-               <property name="singleStep">
+               <property name="suffix">
+                <string notr="true">V</string>
+               </property>
+               <property name="decimals">
                 <number>10</number>
                </property>
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
+               <property name="minimum">
+                <double>-1000000.000000000000000</double>
                </property>
-               <property name="invertedAppearance">
-                <bool>false</bool>
-               </property>
-               <property name="invertedControls">
-                <bool>false</bool>
-               </property>
-               <property name="tickPosition">
-                <enum>QSlider::TicksAbove</enum>
-               </property>
-               <property name="tickInterval">
-                <number>20</number>
+               <property name="maximum">
+                <double>1000000.000000000000000</double>
                </property>
               </widget>
              </item>
-             <item row="0" column="0">
-              <widget class="QPushButton" name="pushButtonPositive">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_21">
+               <property name="spacing">
+                <number>3</number>
                </property>
-               <property name="toolTip">
-                <string>Only positive</string>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset resource="resources.qrc">
-                 <normaloff>:/images/icons/verticalPositive.png</normaloff>:/images/icons/verticalPositive.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>30</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </widget>
+               <item>
+                <widget class="QPushButton" name="pushButtonPositive">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="toolTip">
+                  <string>Only positive</string>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="resources.qrc">
+                   <normaloff>:/images/icons/verticalPositive.png</normaloff>:/images/icons/verticalPositive.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>30</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                 <property name="checkable">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="pushButtonCenter">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="toolTip">
+                  <string>Symetric positive and negative</string>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="resources.qrc">
+                   <normaloff>:/images/icons/verticalCenter.png</normaloff>:/images/icons/verticalCenter.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>30</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                 <property name="checkable">
+                  <bool>true</bool>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="pushButtonNegative">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="toolTip">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Only negative&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="resources.qrc">
+                   <normaloff>:/images/icons/verticalNegative.png</normaloff>:/images/icons/verticalNegative.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>30</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                 <property name="checkable">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </item>
-             <item row="2" column="0">
-              <widget class="QPushButton" name="pushButtonNegative">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="toolTip">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Only negative&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-               </property>
+             <item>
+              <widget class="QPushButton" name="pushButtonRangeFit">
                <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset resource="resources.qrc">
-                 <normaloff>:/images/icons/verticalNegative.png</normaloff>:/images/icons/verticalNegative.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>30</width>
-                 <height>20</height>
-                </size>
+                <string>Fit selected channel</string>
                </property>
               </widget>
              </item>
             </layout>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_17">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>1</height>
+              </size>
+             </property>
+            </spacer>
            </item>
           </layout>
          </widget>
@@ -10795,11 +10855,11 @@ padding:3px;
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1249</x>
-     <y>392</y>
+     <x>1146</x>
+     <y>365</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1257</x>
+     <x>1154</x>
      <y>738</y>
     </hint>
    </hints>
@@ -10811,12 +10871,12 @@ padding:3px;
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1249</x>
-     <y>367</y>
+     <x>1146</x>
+     <y>340</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1257</x>
-     <y>278</y>
+     <x>1154</x>
+     <y>311</y>
     </hint>
    </hints>
   </connection>
@@ -10827,11 +10887,11 @@ padding:3px;
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1170</x>
+     <x>1067</x>
      <y>310</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1257</x>
+     <x>1154</x>
      <y>270</y>
     </hint>
    </hints>
@@ -10843,11 +10903,11 @@ padding:3px;
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1208</x>
+     <x>1105</x>
      <y>523</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1257</x>
+     <x>1154</x>
      <y>483</y>
     </hint>
    </hints>
@@ -10859,11 +10919,11 @@ padding:3px;
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1191</x>
+     <x>1088</x>
      <y>737</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1257</x>
+     <x>1154</x>
      <y>670</y>
     </hint>
    </hints>
@@ -10875,11 +10935,11 @@ padding:3px;
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1264</x>
+     <x>1161</x>
      <y>887</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1234</x>
+     <x>1131</x>
      <y>778</y>
     </hint>
    </hints>
@@ -10891,11 +10951,11 @@ padding:3px;
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1264</x>
+     <x>1161</x>
      <y>887</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1234</x>
+     <x>1131</x>
      <y>805</y>
     </hint>
    </hints>
@@ -10907,11 +10967,11 @@ padding:3px;
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1264</x>
+     <x>1161</x>
      <y>887</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1234</x>
+     <x>1131</x>
      <y>832</y>
     </hint>
    </hints>
@@ -10923,11 +10983,11 @@ padding:3px;
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1264</x>
+     <x>1161</x>
      <y>887</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1265</x>
+     <x>1162</x>
      <y>778</y>
     </hint>
    </hints>
@@ -10939,11 +10999,11 @@ padding:3px;
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1264</x>
+     <x>1161</x>
      <y>887</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1265</x>
+     <x>1162</x>
      <y>805</y>
     </hint>
    </hints>
@@ -10955,11 +11015,11 @@ padding:3px;
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1264</x>
+     <x>1161</x>
      <y>887</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1265</x>
+     <x>1162</x>
      <y>832</y>
     </hint>
    </hints>
@@ -10971,12 +11031,12 @@ padding:3px;
    <slot>resetTerminal()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1257</x>
+     <x>1154</x>
      <y>491</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1258</x>
-     <y>362</y>
+     <x>1155</x>
+     <y>404</y>
     </hint>
    </hints>
   </connection>
@@ -10987,11 +11047,11 @@ padding:3px;
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1027</x>
+     <x>926</x>
      <y>615</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1090</x>
+     <x>1024</x>
      <y>587</y>
     </hint>
    </hints>
@@ -11023,7 +11083,7 @@ padding:3px;
      <y>655</y>
     </hint>
     <hint type="destinationlabel">
-     <x>313</x>
+     <x>309</x>
      <y>800</y>
     </hint>
    </hints>
@@ -11103,7 +11163,7 @@ padding:3px;
      <y>655</y>
     </hint>
     <hint type="destinationlabel">
-     <x>313</x>
+     <x>309</x>
      <y>844</y>
     </hint>
    </hints>
@@ -11119,7 +11179,7 @@ padding:3px;
      <y>655</y>
     </hint>
     <hint type="destinationlabel">
-     <x>566</x>
+     <x>517</x>
      <y>799</y>
     </hint>
    </hints>
@@ -11135,7 +11195,7 @@ padding:3px;
      <y>655</y>
     </hint>
     <hint type="destinationlabel">
-     <x>428</x>
+     <x>424</x>
      <y>844</y>
     </hint>
    </hints>
@@ -11148,7 +11208,7 @@ padding:3px;
    <hints>
     <hint type="sourcelabel">
      <x>224</x>
-     <y>803</y>
+     <y>773</y>
     </hint>
     <hint type="destinationlabel">
      <x>186</x>
@@ -11167,8 +11227,8 @@ padding:3px;
      <y>655</y>
     </hint>
     <hint type="destinationlabel">
-     <x>112</x>
-     <y>756</y>
+     <x>72</x>
+     <y>792</y>
     </hint>
    </hints>
   </connection>
@@ -11211,7 +11271,7 @@ padding:3px;
    <slot>setGridHintX(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>738</x>
+     <x>635</x>
      <y>749</y>
     </hint>
     <hint type="destinationlabel">
@@ -11231,8 +11291,8 @@ padding:3px;
      <y>655</y>
     </hint>
     <hint type="destinationlabel">
-     <x>112</x>
-     <y>844</y>
+     <x>173</x>
+     <y>792</y>
     </hint>
    </hints>
   </connection>
@@ -11295,7 +11355,7 @@ padding:3px;
      <y>655</y>
     </hint>
     <hint type="destinationlabel">
-     <x>735</x>
+     <x>632</x>
      <y>845</y>
     </hint>
    </hints>
@@ -11307,7 +11367,7 @@ padding:3px;
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>124</x>
+     <x>224</x>
      <y>845</y>
     </hint>
     <hint type="destinationlabel">
@@ -11329,22 +11389,6 @@ padding:3px;
     <hint type="destinationlabel">
      <x>387</x>
      <y>120</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>radioButtonFreeRange</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>sliderVerticalCenter</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>253</x>
-     <y>655</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>130</x>
-     <y>727</y>
     </hint>
    </hints>
   </connection>
@@ -11407,8 +11451,8 @@ padding:3px;
      <y>655</y>
     </hint>
     <hint type="destinationlabel">
-     <x>112</x>
-     <y>800</y>
+     <x>123</x>
+     <y>792</y>
     </hint>
    </hints>
   </connection>
@@ -11451,7 +11495,7 @@ padding:3px;
    <slot>setGridHintY(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>738</x>
+     <x>635</x>
      <y>767</y>
     </hint>
     <hint type="destinationlabel">

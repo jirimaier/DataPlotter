@@ -34,7 +34,7 @@ void MainWindow::connectSignals() {
     connect(ui->doubleSpinBoxRangeVerticalRange, SIGNAL(valueChanged(double)), ui->plot, SLOT(setVerticalRange(double)));
     connect(ui->doubleSpinBoxRangeHorizontal, SIGNAL(valueChanged(double)), ui->dialRollingRange, SLOT(updatePosition(double)));
     connect(ui->doubleSpinBoxRangeVerticalRange, SIGNAL(valueChanged(double)), ui->dialVerticalRange, SLOT(updatePosition(double)));
-    connect(ui->sliderVerticalCenter, &QSlider::valueChanged, ui->plot, &MyMainPlot::setVerticalCenter);
+    connect(ui->doubleSpinBoxViewOffset, SIGNAL(valueChanged(double)), ui->plot, SLOT(setVerticalCenter(double)));
     connect(ui->horizontalScrollBarHorizontal, &QScrollBar::valueChanged, ui->plot, &MyMainPlot::setHorizontalPos);
     connect(ui->lineEditHtitle, &QLineEdit::textChanged, ui->plot, &MyPlot::setXTitle);
     connect(ui->lineEditVtitle, &QLineEdit::textChanged, ui->plot, &MyPlot::setYTitle);

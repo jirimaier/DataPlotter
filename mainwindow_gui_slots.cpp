@@ -308,20 +308,6 @@ void MainWindow::on_pushButtonHideCh_toggled(bool checked) {
     ui->plot->setLogicVisibility(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT, !checked);
 }
 
-void MainWindow::on_pushButtonPositive_clicked() {
-  if (ui->sliderVerticalCenter->value() != ui->sliderVerticalCenter->maximum())
-    ui->sliderVerticalCenter->setValue(ui->sliderVerticalCenter->maximum());
-  else
-    ui->plot->setVerticalCenter(ui->sliderVerticalCenter->maximum());
-}
-
-void MainWindow::on_pushButtonNegative_clicked() {
-  if (ui->sliderVerticalCenter->value() != ui->sliderVerticalCenter->minimum())
-    ui->sliderVerticalCenter->setValue(ui->sliderVerticalCenter->minimum());
-  else
-    ui->plot->setVerticalCenter(ui->sliderVerticalCenter->minimum());
-}
-
 void MainWindow::on_pushButtonTerminalDebug_toggled(bool checked) {
   ui->frameTermanalDebug->setVisible(checked);
     ui->frameTerminalClickableColors->setVisible(checked);
@@ -561,13 +547,6 @@ void MainWindow::on_doubleSpinBoxRangeVerticalRange_valueChanged(double arg1) {
   ui->doubleSpinBoxChOffset->setSingleStep(pow(10.0, log10(arg1) - 2));
   ui->doubleSpinBoxYCur1->setSingleStep(pow(10.0, floor(log10(arg1)) - 2));
   ui->doubleSpinBoxYCur2->setSingleStep(pow(10.0, floor(log10(arg1)) - 2));
-}
-
-void MainWindow::on_pushButtonCenter_clicked() {
-  if (ui->sliderVerticalCenter->value() != 0)
-    ui->sliderVerticalCenter->setValue(0);
-  else
-    ui->plot->setVerticalCenter(0);
 }
 
 void MainWindow::on_pushButtonClearAll_clicked() {
