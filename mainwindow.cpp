@@ -323,7 +323,7 @@ void MainWindow::on_pushButtonSerialMoreInfo_clicked() {
     QString portinfo;
 
     auto portlist = QSerialPortInfo::availablePorts();
-    auto port = portlist.at(ui->comboBoxCom->currentIndex());
+    auto port = portlist.at(ui->listWidgetCom->currentRow());
 
     portinfo.append(tr("Description: %1\n").arg(port.description()));
     portinfo.append(tr("Manufacturer: %1\n").arg(port.manufacturer()));
@@ -879,5 +879,18 @@ void MainWindow::on_pushButtonRangeFit_clicked()
     chRange = ui->plot->graph(ui->comboBoxSelectedChannel->currentIndex())->getValueRange(zbytrecnaPromena, QCP::sdBoth, ui->plot->xAxis->range());
     ui->doubleSpinBoxViewOffset->setValue(chRange.center());
     ui->doubleSpinBoxRangeVerticalRange->setValue(ceilToNiceValue(chRange.size()));
+}
+
+
+void MainWindow::on_listWidgetCom_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous)
+{
+    if(current == NULL) {
+        emit disconnectSerial();
+        return;
+    }
+
+    SerialSettingsDialog::Settings settings = serialSettingsDialog->settings();
+    attemptReconnectPort = "";
+    emit beginSerialConnection(current->data(Qt::UserRole).toString(), ui->comboBoxBaud->currentText().toInt(), settings.dataBits, settings.parity, settings.stopBits, settings.flowControl);
 }
 

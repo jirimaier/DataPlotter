@@ -50,13 +50,6 @@ void MainWindow::plotLayoutChanged() {
 
 }
 
-void MainWindow::on_pushButtonConnect_clicked() {
-  if (ui->comboBoxCom->currentIndex() >= 0) {
-    SerialSettingsDialog::Settings settings = serialSettingsDialog->settings();
-    emit toggleSerialConnection(portList.at(ui->comboBoxCom->currentIndex()).portName(), ui->comboBoxBaud->currentText().toInt(), settings.dataBits, settings.parity, settings.stopBits, settings.flowControl);
-  }
-}
-
 void MainWindow::on_doubleSpinBoxChOffset_valueChanged(double arg1) {
   if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT)
     ui->plot->setChOffset(ui->comboBoxSelectedChannel->currentIndex(), arg1);
@@ -101,6 +94,16 @@ void MainWindow::on_comboBoxGraphStyle_currentIndexChanged(int index) {
     ui->plot->setLogicStyle(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT, index);
   }
 }
+
+void MainWindow::on_pushButtonConnect_clicked()
+{
+  SerialSettingsDialog::Settings settings = serialSettingsDialog->settings();
+  if(ui->listWidgetCom->currentItem() != NULL)
+    emit toggleSerialConnection(ui->listWidgetCom->currentItem()->data(Qt::UserRole).toString(), ui->comboBoxBaud->currentText().toInt(), settings.dataBits, settings.parity, settings.stopBits, settings.flowControl);
+  else
+    emit disconnectSerial();
+}
+
 void MainWindow::on_doubleSpinBoxChScale_valueChanged(double arg1) {
   if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT)
     ui->plot->setChScale(ui->comboBoxSelectedChannel->currentIndex(), arg1);

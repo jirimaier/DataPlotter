@@ -134,7 +134,8 @@ class MainWindow : public QMainWindow {
 
   bool timeUseUnits = true, valuesUseUnits = true, freqUseUnits = true;
 
-  QString preselectPortHint = "USB";
+  QStringList autoConnectPortNames;
+  QString attemptReconnectPort;
 
   ChannelExpectedRange channelExpectedRanges[ANALOG_COUNT + MATH_COUNT];
 
@@ -343,7 +344,9 @@ class MainWindow : public QMainWindow {
 
   void on_pushButtonRangeFit_clicked();
 
-public slots:
+  void on_listWidgetCom_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
+
+  public slots:
   void on_pushButtonTerminalDebugShift_clicked();
 
  public slots:
@@ -383,6 +386,7 @@ public slots:
   void requestSerialBufferShow();
   void requestManualBufferClear();
   void requestManualBufferShow();
+  void beginSerialConnection(QString port, int baud, QSerialPort::DataBits dataBits, QSerialPort::Parity parity, QSerialPort::StopBits stopBits, QSerialPort::FlowControl flowControll);
   void toggleSerialConnection(QString port, int baud, QSerialPort::DataBits dataBits, QSerialPort::Parity parity, QSerialPort::StopBits stopBits, QSerialPort::FlowControl flowControll);
   void writeToSerial(QByteArray data);
   void resetChannels();

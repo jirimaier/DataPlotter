@@ -177,6 +177,7 @@ int main(int argc, char* argv[]) {
   QObject::connect(&mainWindow, &MainWindow::requestManualBufferClear, serialParserM, &NewSerialParser::clearBuffer);
   QObject::connect(&mainWindow, &MainWindow::requestManualBufferShow, serialParserM, &NewSerialParser::showBuffer);
   QObject::connect(&mainWindow, &MainWindow::setManualMessageLevel, serialParserM, &NewSerialParser::setMsgLevel);
+  QObject::connect(&mainWindow, &MainWindow::beginSerialConnection, serial1, &SerialReader::begin);
   QObject::connect(&mainWindow, &MainWindow::toggleSerialConnection, serial1, &SerialReader::toggle);
   QObject::connect(&mainWindow, &MainWindow::disconnectSerial, serial1, &SerialReader::end);
   QObject::connect(&mainWindow, &MainWindow::resetChannels, plotData, &PlotData::reset);

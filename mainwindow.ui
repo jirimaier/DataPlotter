@@ -163,7 +163,7 @@
          <attribute name="title">
           <string/>
          </attribute>
-         <layout class="QVBoxLayout" name="verticalLayout_16" stretch="1,1000">
+         <layout class="QVBoxLayout" name="verticalLayout_16" stretch="0,1000">
           <property name="spacing">
            <number>3</number>
           </property>
@@ -180,110 +180,11 @@
            <number>6</number>
           </property>
           <item>
-           <layout class="QGridLayout" name="gridLayout_27" rowstretch="1,1" columnstretch="10,10,1,1">
-            <property name="spacing">
-             <number>3</number>
-            </property>
-            <item row="0" column="0" colspan="2">
-             <widget class="MyElidedComboBox" name="comboBoxCom">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
-                <horstretch>1</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="editable">
-               <bool>false</bool>
-              </property>
-              <property name="currentText">
-               <string notr="true"/>
-              </property>
-              <property name="insertPolicy">
-               <enum>QComboBox::NoInsert</enum>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="2">
-             <widget class="QPushButton" name="pushButtonSerialMoreInfo">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-              <property name="icon">
-               <iconset resource="resources.qrc">
-                <normaloff>:/images/icons/about.png</normaloff>:/images/icons/about.png</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>12</width>
-                <height>12</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="3" rowspan="2">
-             <widget class="QPushButton" name="pushButtonConnect">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-              <property name="icon">
-               <iconset resource="resources.qrc">
-                <normaloff>:/images/icons/disconnected.png</normaloff>:/images/icons/disconnected.png</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>20</width>
-                <height>30</height>
-               </size>
-              </property>
-              <property name="checkable">
-               <bool>false</bool>
-              </property>
-              <property name="checked">
-               <bool>false</bool>
-              </property>
-              <property name="default">
-               <bool>false</bool>
-              </property>
-              <property name="flat">
-               <bool>false</bool>
-              </property>
-             </widget>
+           <layout class="QGridLayout" name="gridLayout_21">
+            <item row="0" column="0" colspan="3">
+             <widget class="QListWidget" name="listWidgetCom"/>
             </item>
             <item row="1" column="0">
-             <widget class="QLabel" name="labelPortInfo">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="frameShape">
-               <enum>QFrame::StyledPanel</enum>
-              </property>
-              <property name="text">
-               <string>Not connected</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-              <property name="wordWrap">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
              <widget class="QComboBox" name="comboBoxBaud">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
@@ -373,7 +274,7 @@
               </item>
              </widget>
             </item>
-            <item row="1" column="2">
+            <item row="1" column="1">
              <widget class="QPushButton" name="pushButtonSerialSetting">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -396,6 +297,86 @@
                 <width>12</width>
                 <height>12</height>
                </size>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2">
+             <widget class="QPushButton" name="pushButtonSerialMoreInfo">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset resource="resources.qrc">
+                <normaloff>:/images/icons/about.png</normaloff>:/images/icons/about.png</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>12</width>
+                <height>12</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0" colspan="2">
+             <widget class="QLabel" name="labelPortInfo">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::StyledPanel</enum>
+              </property>
+              <property name="text">
+               <string>Not connected</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+              <property name="wordWrap">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="2">
+             <widget class="QPushButton" name="pushButtonConnect">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset resource="resources.qrc">
+                <normaloff>:/images/icons/disconnected.png</normaloff>:/images/icons/disconnected.png</iconset>
+              </property>
+              <property name="iconSize">
+               <size>
+                <width>20</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="checkable">
+               <bool>false</bool>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+              <property name="default">
+               <bool>false</bool>
+              </property>
+              <property name="flat">
+               <bool>false</bool>
               </property>
              </widget>
             </item>
@@ -10769,11 +10750,6 @@ padding:3px;
    <class>MyScaleDoubleSpinBox</class>
    <extends>QDoubleSpinBox</extends>
    <header>myscaledoublespinbox.h</header>
-  </customwidget>
-  <customwidget>
-   <class>MyElidedComboBox</class>
-   <extends>QComboBox</extends>
-   <header>myelidedcombobox.h</header>
   </customwidget>
   <customwidget>
    <class>ClickableLabel</class>

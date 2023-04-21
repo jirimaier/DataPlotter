@@ -16,6 +16,7 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
+#include "qserialportinfo.h"
 #include <QColor>
 #include <QObject>
 #include <QVector>
@@ -462,6 +463,12 @@ inline QString floatToNiceString(double d, int significantDigits, bool justify, 
 
 inline double ceilToMultipleOf(double value, double multipleOf) {
   return (std::ceil(value / multipleOf) * multipleOf);
+}
+
+inline bool operator==(const QSerialPortInfo &lhs, const QSerialPortInfo &rhs) {
+  return lhs.portName() == rhs.portName() &&
+         lhs.serialNumber() == rhs.serialNumber() &&
+         lhs.description() == rhs.description();
 }
 
 struct ChannelSettings_t {

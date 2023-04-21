@@ -219,13 +219,6 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarg
         printMessage(tr("\"vpos\" has different meaning than in previous versions").toUtf8(), settings, MessageLevel::warning, source);
     }
 
-    else if (type == "presetport") {
-      preselectPortHint = value;
-      ui->comboBoxCom->clear();
-      portList.clear();
-      comRefresh();
-    }
-
     else if (type == "trigline") {
       if (value == "on")
         ui->checkBoxTriggerLineEn->setCheckState(Qt::Checked);
