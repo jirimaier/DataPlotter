@@ -24,18 +24,18 @@ class QmlTerminalInterface : public QObject {
   const QString& tabBackground() const;
   void setTabBackground(const QString& newTabBackground);
 
- signals:
+  signals:
   void receivedFromSerial(QByteArray data);
   void dataTransmitted(QByteArray data);
   void dataSentToParser(QByteArray data);
   void darkThemeIsUsedChanged();
   void themePaletteChanged();
-
   void basicTextSizeChanged();
-
   void tabBackgroundChanged();
+  void deviceMessagesChanged();
+  void deviceMessagesWarningOrInfoChanged();
 
- private:
+  private:
   bool m_darkThemeIsUsed;
   QPalette m_themePalette;
   QString m_tabBackground;

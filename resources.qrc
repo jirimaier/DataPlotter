@@ -108,5 +108,6 @@
     <qresource prefix="/"/>
     <qresource prefix="/qml">
         <file>ExampleQmlTerminal.qml</file>
+        <file>DefaultQmlTerminal.qml</file>
     </qresource>
 </RCC>

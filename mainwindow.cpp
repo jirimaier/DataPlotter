@@ -179,6 +179,9 @@ void MainWindow::serialConnectResult(bool connected, QString message, QString de
         for (int i = 0; i < ANALOG_COUNT; i++)
             channelExpectedRanges[i].unknown = true;
         pendingDeviceMessage = false;
+        messageModel.clear();
+        resetQmlTerminal();
+        pendingMessagePart.clear();
     }
     if (connected && !ui->lineEditResetCmd->text().isEmpty()) {
         // Poslat reset příkaz
@@ -248,6 +251,13 @@ void MainWindow::printDeviceMessage(QByteArray message, bool warning, bool ended
             ui->plainTextEditConsole->appendHtml(tr("<font color=darkred>Device warning:</font color> "));
         else
             ui->plainTextEditConsole->appendHtml(tr("<font color=darkgreen>Device message:</font color> "));
+        pendingMessageType = warning;
+    }
+
+    pendingMessagePart.append(message);
+    if(ended) {
+        messageModel.addMessage(pendingMessagePart,pendingMessageType?'w':'i');
+        pendingMessagePart.clear();
     }
 
     ui->plainTextEditConsole->moveCursor(QTextCursor::End);
@@ -323,7 +333,17 @@ void MainWindow::on_pushButtonSerialMoreInfo_clicked() {
     QString portinfo;
 
     auto portlist = QSerialPortInfo::availablePorts();
-    auto port = portlist.at(ui->listWidgetCom->currentRow());
+    QSerialPortInfo port;
+
+    if(ui->listWidgetCom->currentItem() != NULL) {
+        auto name = ui->listWidgetCom->currentItem()->data(Qt::UserRole);
+        for (const auto &prt : qAsConst(portlist)) {
+            if(name == prt.portName()) {
+                port = prt;
+            }
+        }
+        auto port = portlist.at(ui->listWidgetCom->currentRow());
+    }
 
     portinfo.append(tr("Description: %1\n").arg(port.description()));
     portinfo.append(tr("Manufacturer: %1\n").arg(port.manufacturer()));
@@ -721,7 +741,6 @@ void MainWindow::on_radioButtonDark_toggled(bool checked) {
         list5.append(ui->comboBoxFFTStyle2);
         list5.append(ui->comboBoxXYStyle);
         list5.append(ui->comboBoxGraphStyle);
-        list5.append(ui->comboBoxTerminalFont);
         foreach (auto w, list5) {
             for (int i = 0; i < w->count(); i++) {
                 auto icon = w->itemIcon(i).pixmap(w->iconSize()).toImage();
@@ -731,54 +750,33 @@ void MainWindow::on_radioButtonDark_toggled(bool checked) {
         }
     }
 
-    setStyleSheet(checked?
-                      "QFrame {background-color: rgb(67, 67, 67);}"
-                      "QMessageBox {background-color: rgb(67, 67, 67);}"
-                      "QInputDialog {background-color: rgb(67, 67, 67);}"
-                    :
-                      "QFrame {background-color: rgb(255, 255, 255);}"
-                      "QMessageBox {background-color: rgb(255, 255, 255);}"
-                      "QInputDialog {background-color: rgb(255, 255, 255);}"
-                      );
+    setStyleSheet(QString(checked?
+                              "QFrame {background-color: rgb(67, 67, 67);}"
+                              "QMessageBox {background-color: rgb(67, 67, 67);}"
+                              "QInputDialog {background-color: rgb(67, 67, 67);}"
+                                  :
+                              "QFrame {background-color: rgb(255, 255, 255);}"
+                              "QMessageBox {background-color: rgb(255, 255, 255);}"
+                              "QInputDialog {background-color: rgb(255, 255, 255);}"
+                          ) + "QWidget#widget {background-color: " + qApp->palette().color(QPalette::Window).name() + ";}" +
+                  + "QWidget#widget_2 {background-color: " + qApp->palette().color(QPalette::Window).name() + ";}"
+                  + "QSplitter#splitter {background-color: " + qApp->palette().color(QPalette::Window).name() + ";}");
 
     qmlTerminalInterface->setDarkThemeIsUsed(checked);
     qmlTerminalInterface->setTabBackground(checked ? "#434343" : "#ffffff");
 }
 
 void MainWindow::printSerialMonitor(QByteArray data) {
-
     serialMonitor.append(QString::fromStdString(data.toStdString()));
 }
 
-void MainWindow::on_radioButtonLayoutHide_toggled(bool checked) {
-    ui->myTerminal->changeSize(ui->radioButtonLayoutWide->isChecked());
-
-    ui->tabs_right->setHidden(checked);
-    if (checked) {
-        ui->pushButtonMultiplInputs->setChecked(false);
-    }
-    ui->pushButtonSendCommand->setHidden(checked);
-    ui->pushButtonMultiplInputs->setHidden(checked);
-    ui->lineEditCommand->setHidden(checked);
-    ui->comboBoxLineEnding->setHidden(checked);
-    ui->tabs_right->updateGeometry();
-}
-
-
-void MainWindow::on_radioButtonLayoutSmall_toggled(bool checked) {
-    Q_UNUSED(checked);
-    ui->myTerminal->changeSize(ui->radioButtonLayoutWide->isChecked());
-    ui->tabs_right->updateGeometry();
-}
-
-
 void MainWindow::on_tabs_right_currentChanged(int index) {
+// TODO
 #if QT_VERSION < 0x050C00
-    if (index == 2)
+    if (index == -1)
         on_radioButtonDark_toggled(ui->radioButtonDark->isChecked());
 #endif
 }
-
 
 void MainWindow::on_pushButtonTerminalDebugShift_clicked()
 {

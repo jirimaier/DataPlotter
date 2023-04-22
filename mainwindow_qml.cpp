@@ -1,13 +1,23 @@
 #include "mainwindow.h"
 #include "cobs.h"
+#include "messagemodel.h"
+#include "qmlterminalemulator.h"
 
 void MainWindow::initQmlTerminal() {
   qmlTerminalInterface = new QmlTerminalInterface();
 
   QQmlContext* context = ui->quickWidget->rootContext();
   context->setContextProperty("dataPlotter", qmlTerminalInterface);
+  context->setContextProperty("messageModel", &messageModel);
 
-  loadQmlFile(QUrl::fromLocalFile(":/qml/ExampleQmlTerminal.qml"));
+  qmlRegisterType<MessageModel>("DataPlotter", 1, 0, "MessageModel");
+  qmlRegisterType<QMLTerminalEmulator>("QMLTerminalEmulator", 1, 0, "ANSITerminalModel");
+
+  resetQmlTerminal();
+}
+
+void MainWindow::resetQmlTerminal() {
+    loadQmlFile(QUrl::fromLocalFile(":/qml/DefaultQmlTerminal.qml"));
 }
 
 void MainWindow::loadCompressedQml(QByteArray data) {
@@ -35,7 +45,7 @@ void MainWindow::loadCompressedQml(QByteArray data) {
     return;
   }
 
-  ui->tabs_right->setCurrentIndex(2);
+  ui->tabWidget->setCurrentIndex(0);
   loadQmlFile(QUrl::fromLocalFile(currentQmlFile.fileName()));
 }
 
@@ -45,7 +55,6 @@ void MainWindow::loadQmlFile(QUrl url) {
   ui->quickWidget->setSource(QUrl());
   ui->quickWidget->engine()->clearComponentCache();
   ui->quickWidget->setSource(url);
-  resizeQmlTerminal(lastQmlTerminalSize);
 }
 
 void MainWindow::on_pushButtonQmlReload_clicked() {
@@ -159,20 +168,6 @@ void MainWindow::setQmlProperty(QByteArray data) {
   if (l.length() == 2) {
     ui->quickWidget->rootObject()->setProperty(l.at(0), l.at(1));
   }
-}
-
-void MainWindow::on_checkBoxQmlDev_toggled(bool checked) {
-  ui->frameQmlDev->setVisible(checked);
-}
-
-
-void MainWindow::resizeQmlTerminal(QSize size) {
-  auto rootObject = ui->quickWidget->rootObject();
-  lastQmlTerminalSize = size;
-  if (rootObject)
-    rootObject->setProperty("width", QVariant::fromValue(size.width()));
-  if (rootObject)
-    rootObject->setProperty("height", QVariant::fromValue(size.height()));
 }
 
 

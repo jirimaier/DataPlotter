@@ -30,6 +30,7 @@
 #include <QQmlEngine>
 
 #include "global.h"
+#include "messagemodel.h"
 #include "plotdata.h"
 #include "plotmath.h"
 #include "serialreader.h"
@@ -88,7 +89,7 @@ class MainWindow : public QMainWindow {
   bool autoAutosetPending = false;
   HAxisType::enumHAxisType recommandedAxisType = HAxisType::normal;
 
-  QMap<QString, QWidget*> setables;
+  QMap<QString,QPair<QWidget*,bool>> setables;
   void initSetables();
   QByteArray getSettings();
   void applyGuiElementSettings(QWidget*, QString value);
@@ -145,12 +146,17 @@ class MainWindow : public QMainWindow {
   void initQmlTerminal();
 
   void loadQmlFile(QUrl url);
-  QSize lastQmlTerminalSize;
   bool currentThemeDark = false;
 
   QTemporaryFile currentQmlFile;
+  QString pendingMessagePart;
+  bool pendingMessageType;
 
- private slots:
+  MessageModel messageModel;
+
+
+  void resetQmlTerminal();
+  private slots:
   void updateCursors();
   void setAdaptiveSpinBoxes();
   void updateDivs();
@@ -173,7 +179,6 @@ class MainWindow : public QMainWindow {
   bool addColorToBlacklist(QByteArray code);
   void updateColorBlacklist();
   void updateConsole();
-  void resizeQmlTerminal(QSize size);
 
  private slots: // Autoconnect slots
   void on_dialRollingRange_realValueChanged(double value) { ui->doubleSpinBoxRangeHorizontal->setValue(value); }
@@ -181,10 +186,6 @@ class MainWindow : public QMainWindow {
   void on_doubleSpinBoxChOffset_valueChanged(double arg1);
   void on_comboBoxGraphStyle_currentIndexChanged(int index);
   void on_pushButtonConnect_clicked();
-  void on_pushButtonSendCommand_clicked() { on_lineEditCommand_returnPressed(); }
-  void on_pushButtonSendCommand_2_clicked() { on_lineEditCommand_2_returnPressed(); }
-  void on_pushButtonSendCommand_3_clicked() { on_lineEditCommand_3_returnPressed(); }
-  void on_pushButtonSendCommand_4_clicked() { on_lineEditCommand_4_returnPressed(); }
   void on_doubleSpinBoxChScale_valueChanged(double arg1);
   void on_pushButtonSelectedCSV_clicked() { exportCSV(ui->comboBoxSelectedChannel->currentIndex()); }
   void on_dialZoom_valueChanged(int value);
@@ -204,10 +205,6 @@ class MainWindow : public QMainWindow {
   void on_pushButtonOpenHelpCZ_clicked();
   void on_pushButtonScrollDown_clicked();
   void on_pushButtonSendManual_clicked() { on_lineEditManualInput_returnPressed(); }
-  void on_lineEditCommand_returnPressed();
-  void on_lineEditCommand_2_returnPressed();
-  void on_lineEditCommand_3_returnPressed();
-  void on_lineEditCommand_4_returnPressed();
   void on_pushButtonClearBuffer_clicked() { emit requestSerialBufferClear(); }
   void on_pushButtonViewBuffer_clicked() { emit requestSerialBufferShow(); }
   void on_pushButtonClearBuffer_2_clicked() { emit requestManualBufferClear(); }
@@ -255,8 +252,6 @@ class MainWindow : public QMainWindow {
   void on_comboBoxCursor1Channel_currentIndexChanged(int index);
   void on_comboBoxCursor2Channel_currentIndexChanged(int index);
   void on_pushButtonTerminalDebug_toggled(bool checked);
-  void on_pushButtonTerminalClickToSend_toggled(bool checked);
-  void on_pushButtonTerminalInputCopy_clicked();
   void on_listWidgetTerminalCodeList_itemClicked(QListWidgetItem* item);
   void on_pushButtonFFT_toggled(bool checked);
   void on_pushButtonFFTImage_clicked();
@@ -330,20 +325,12 @@ class MainWindow : public QMainWindow {
   void on_pushButtonQmlLoad_clicked();
   void on_pushButtonQmlExport_clicked();
   void on_quickWidget_statusChanged(const QQuickWidget::Status& arg1);
-  void on_checkBoxQmlDev_toggled(bool checked);
   void on_radioButtonDark_toggled(bool checked);
-  void on_radioButtonLayoutHide_toggled(bool checked);
-  void on_radioButtonLayoutSmall_toggled(bool checked);
   void on_tabs_right_currentChanged(int index);
-
   void on_pushButtonCenter_toggled(bool checked);
-
   void on_pushButtonPositive_toggled(bool checked);
-
   void on_pushButtonNegative_toggled(bool checked);
-
   void on_pushButtonRangeFit_clicked();
-
   void on_listWidgetCom_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
 
   public slots:

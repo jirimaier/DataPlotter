@@ -27,6 +27,7 @@ SOURCES += \
     mainwindow_save_load.cpp \
     mainwindow_send_file.cpp \
     mainwindow_timed_events.cpp \
+    messagemodel.cpp \
     myaxistickerwithunit.cpp \
     mycursorslider.cpp \
     mydial.cpp \
@@ -46,6 +47,7 @@ SOURCES += \
     plotdata.cpp \
     plotmath.cpp \
     qcustomplot.cpp \
+    qmlterminalemulator.cpp \
     qmlterminalinterface.cpp \
     serialreader.cpp \
     serialsettingsdialog.cpp \
@@ -60,6 +62,7 @@ HEADERS += \
     global.h \
     interpolator.h \
     mainwindow.h \
+    messagemodel.h \
     myaxistickerwithunit.h \
     mycursorslider.h \
     mydial.h \
@@ -79,6 +82,7 @@ HEADERS += \
     plotdata.h \
     plotmath.h \
     qcustomplot.h \
+    qmlterminalemulator.h \
     qmlterminalinterface.h \
     serialreader.h \
     serialsettingsdialog.h \

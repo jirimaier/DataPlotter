@@ -144,28 +144,6 @@ void MainWindow::on_pushButtonScrollDown_clicked() {
   scroll->setValue(scroll->minimum());
 };
 
-void MainWindow::on_lineEditCommand_returnPressed() {
-  QString text = ui->lineEditCommand->text() + lineEndings[ui->comboBoxLineEnding->currentIndex()];
-  emit writeToSerial(text.toLocal8Bit());
-  if (!ui->pushButtonMultiplInputs->isChecked())
-    ui->lineEditCommand->clear();
-}
-
-void MainWindow::on_lineEditCommand_2_returnPressed() {
-  QString text = ui->lineEditCommand_2->text() + lineEndings[ui->comboBoxLineEnding->currentIndex()];
-  emit writeToSerial(text.toLocal8Bit());
-}
-
-void MainWindow::on_lineEditCommand_3_returnPressed() {
-  QString text = ui->lineEditCommand_3->text() + lineEndings[ui->comboBoxLineEnding->currentIndex()];
-  emit writeToSerial(text.toLocal8Bit());
-}
-
-void MainWindow::on_lineEditCommand_4_returnPressed() {
-  QString text = ui->lineEditCommand_4->text() + lineEndings[ui->comboBoxLineEnding->currentIndex()];
-  emit writeToSerial(text.toLocal8Bit());
-}
-
 void MainWindow::on_comboBoxOutputLevel_currentIndexChanged(int index) {
   if (index >= 0)
     emit setSerialMessageLevel((OutputLevel::enumOutputLevel)index);
@@ -312,19 +290,10 @@ void MainWindow::on_pushButtonHideCh_toggled(bool checked) {
 }
 
 void MainWindow::on_pushButtonTerminalDebug_toggled(bool checked) {
-  ui->frameTermanalDebug->setVisible(checked);
-    ui->frameTerminalClickableColors->setVisible(checked);
-  ui->pushButtonTerminalClickToSend->setDisabled(checked);
-  ui->pushButtonTerminalCopy->setEnabled(!checked && !ui->pushButtonTerminalClickToSend->isChecked());
   if (checked)
     ui->myTerminal->setMode(TerminalMode::debug);
   else
-    ui->myTerminal->setMode(ui->pushButtonTerminalClickToSend->isChecked() ? TerminalMode::clicksend : TerminalMode::select);
-}
-
-void MainWindow::on_pushButtonTerminalClickToSend_toggled(bool checked) {
-  ui->myTerminal->setMode(checked ? TerminalMode::clicksend : TerminalMode::select);
-  ui->pushButtonTerminalCopy->setEnabled(!checked);
+    ui->myTerminal->setMode(TerminalMode::clicksend);
 }
 
 void MainWindow::insertInTerminalDebug(QString text, QColor textColor) {
@@ -558,19 +527,6 @@ void MainWindow::on_pushButtonClearAll_clicked() {
   emit resetAverager();
 }
 
-void MainWindow::on_pushButtonTerminalInputCopy_clicked() {
-  QByteArray bytes = ui->textEditTerminalDebug->toPlainText().replace('\n', "\\r\\n").toUtf8();
-  for (unsigned char ch = 0;; ch++) {
-    if (ch == 32)
-      ch = 127;
-    bytes.replace(ch, ("\\x" + QString::number(ch, 16)).toLocal8Bit() + "\"\"");
-    if (ch == 255)
-      break;
-  }
-
-  QGuiApplication::clipboard()->setText(bytes);
-}
-
 void MainWindow::on_pushButtonChangeXYColor_clicked() {
   QColor color = QColorDialog::getColor(ui->plotxy->graphXY->pen().color());
   if (color.isValid())
@@ -580,7 +536,6 @@ void MainWindow::on_pushButtonChangeXYColor_clicked() {
 void MainWindow::on_pushButtonTerminalDebugSend_clicked() {
   QByteArray data = ui->textEditTerminalDebug->toPlainText().toUtf8();
   data.replace("\n", "\r\n"); // Odřádkování v textovém poli
-
   data.replace("\\n", "\n");
   data.replace("\\e", "\u001b");
   data.replace("\\r", "\r");
@@ -672,7 +627,16 @@ void MainWindow::on_checkBoxFFTCh2_toggled(bool checked) {
 }
 
 void MainWindow::on_pushButtonDolarNewline_toggled(bool checked) {
+  QString str = ui->plainTextEditConsole_3->toPlainText();
+  ui->plainTextEditConsole_3->clear();
   ui->plainTextEditConsole_3->setLineWrapMode(checked ? QPlainTextEdit::LineWrapMode::NoWrap : QPlainTextEdit::LineWrapMode::WidgetWidth);
+  str.replace("\n$$","$$");
+  if(checked)
+    str.replace("$$","\n$$");
+  if(str.left(1)=="\n")
+    str.remove(0,1);
+  ui->plainTextEditConsole_3->setPlainText(str);
+  on_pushButtonScrollDown_3_clicked();
 }
 
 void MainWindow::on_pushButtonInterpolate_toggled(bool checked) {

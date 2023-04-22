@@ -68,7 +68,6 @@ void MainWindow::connectSignals() {
     connect(ui->plotFFT, &MyFFTPlot::newPeakValues, ui->plotPeak, &MyPeakPlot::newData);
 
     QObject::connect(qmlTerminalInterface, &QmlTerminalInterface::dataSentToParser, this, &MainWindow::sendManualInput);
-    QObject::connect(ui->frameQml, &MyFrameWithResizeSignal::resized, this, &MainWindow::resizeQmlTerminal);
 }
 
 void MainWindow::setAdaptiveSpinBoxes() {
@@ -107,11 +106,8 @@ void MainWindow::setGuiDefaults() {
     ui->comboBoxOutputLevel->setCurrentIndex((int)OutputLevel::info);
     ui->radioButtonFixedRange->setChecked(true);
     plotLayoutChanged();
-    ui->frameTermanalDebug->setVisible(ui->pushButtonTerminalDebug->isChecked());
-    ui->frameTerminalClickableColors->setVisible(ui->pushButtonTerminalDebug->isChecked());
     ui->labelBuildDate->setText(tr("Build: ") + QString(__DATE__) + " " + QString(__TIME__));
     ui->pushButtonPause->setIcon(iconRun);
-    ui->pushButtonMultiplInputs->setChecked(false);
 
     on_lineEditHUnit_textChanged(ui->lineEditHUnit->text());
     on_lineEditVUnit_textChanged(ui->lineEditVUnit->text());
@@ -143,9 +139,7 @@ void MainWindow::setGuiDefaults() {
 
     ui->comboBoxBaud->setCurrentIndex(1);
 
-    ui->comboBoxTerminalFont->setCurrentIndex(0);
-
-    ui->frameQmlDev->setVisible(ui->checkBoxQmlDev->isChecked());
+    ui->radioButtonLayoutTime->setChecked(true);
 
     ui->plot->setGridHintX(ui->horizontalSliderHGrid->value());
     ui->plot->setGridHintY(ui->horizontalSliderVGrid->value());
@@ -172,6 +166,11 @@ void MainWindow::setGuiDefaults() {
 
     ui->comboBoxFIR->setCurrentIndex(0);
     on_comboBoxFIR_currentIndexChanged(0); // Interpolátor načte filtr
+
+    ui->tabWidget->setCurrentIndex(0);
+
+    addColorToBlacklist("40");
+    updateColorBlacklist();
 }
 
 void MainWindow::setGuiArrays() {
