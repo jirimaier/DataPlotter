@@ -8511,7 +8511,7 @@
            </size>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <property name="iconSize">
            <size>
@@ -8536,7 +8536,7 @@
            <attribute name="title">
             <string/>
            </attribute>
-           <layout class="QVBoxLayout" name="verticalLayout_16" stretch="0,0">
+           <layout class="QVBoxLayout" name="verticalLayout_16" stretch="1,1000">
             <property name="spacing">
              <number>3</number>
             </property>
@@ -8781,241 +8781,16 @@
              </layout>
             </item>
             <item>
-             <widget class="QTabWidget" name="tabWidget">
-              <property name="tabPosition">
-               <enum>QTabWidget::South</enum>
+             <widget class="QQuickWidget" name="quickWidget">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
               </property>
-              <property name="tabShape">
-               <enum>QTabWidget::Rounded</enum>
+              <property name="resizeMode">
+               <enum>QQuickWidget::SizeRootObjectToView</enum>
               </property>
-              <property name="currentIndex">
-               <number>1</number>
-              </property>
-              <property name="elideMode">
-               <enum>Qt::ElideNone</enum>
-              </property>
-              <property name="usesScrollButtons">
-               <bool>false</bool>
-              </property>
-              <property name="documentMode">
-               <bool>true</bool>
-              </property>
-              <property name="tabsClosable">
-               <bool>false</bool>
-              </property>
-              <property name="movable">
-               <bool>false</bool>
-              </property>
-              <property name="tabBarAutoHide">
-               <bool>false</bool>
-              </property>
-              <widget class="QWidget" name="tab_2">
-               <attribute name="icon">
-                <iconset resource="resources.qrc">
-                 <normaloff>:/images/icons/qmlterminal.png</normaloff>:/images/icons/qmlterminal.png</iconset>
-               </attribute>
-               <attribute name="title">
-                <string/>
-               </attribute>
-               <layout class="QVBoxLayout" name="verticalLayout_8">
-                <property name="leftMargin">
-                 <number>0</number>
-                </property>
-                <property name="topMargin">
-                 <number>0</number>
-                </property>
-                <property name="rightMargin">
-                 <number>0</number>
-                </property>
-                <property name="bottomMargin">
-                 <number>0</number>
-                </property>
-                <item>
-                 <widget class="QFrame" name="frame_31">
-                  <property name="frameShape">
-                   <enum>QFrame::StyledPanel</enum>
-                  </property>
-                  <property name="frameShadow">
-                   <enum>QFrame::Sunken</enum>
-                  </property>
-                  <layout class="QVBoxLayout" name="verticalLayout_45">
-                   <property name="leftMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="topMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="rightMargin">
-                    <number>0</number>
-                   </property>
-                   <property name="bottomMargin">
-                    <number>0</number>
-                   </property>
-                   <item>
-                    <widget class="QQuickWidget" name="quickWidget">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="resizeMode">
-                      <enum>QQuickWidget::SizeRootObjectToView</enum>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-              <widget class="QWidget" name="tab_4">
-               <attribute name="icon">
-                <iconset resource="resources.qrc">
-                 <normaloff>:/images/icons/terminal.png</normaloff>:/images/icons/terminal.png</iconset>
-               </attribute>
-               <attribute name="title">
-                <string/>
-               </attribute>
-               <layout class="QVBoxLayout" name="verticalLayout_42">
-                <property name="leftMargin">
-                 <number>0</number>
-                </property>
-                <property name="topMargin">
-                 <number>0</number>
-                </property>
-                <property name="rightMargin">
-                 <number>0</number>
-                </property>
-                <property name="bottomMargin">
-                 <number>0</number>
-                </property>
-                <item>
-                 <widget class="MyTerminal" name="myTerminal">
-                  <property name="enabled">
-                   <bool>true</bool>
-                  </property>
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>260</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>16777215</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="font">
-                   <font>
-                    <pointsize>18</pointsize>
-                   </font>
-                  </property>
-                  <property name="focusPolicy">
-                   <enum>Qt::NoFocus</enum>
-                  </property>
-                  <property name="contextMenuPolicy">
-                   <enum>Qt::NoContextMenu</enum>
-                  </property>
-                  <property name="toolTip">
-                   <string/>
-                  </property>
-                  <property name="autoFillBackground">
-                   <bool>false</bool>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QTableWidget{
-background-color: rgb(0, 0, 0);
-alternate-background-color: rgb(170, 0, 0);
-gridline-color: rgb(255, 255, 255);
-padding:3px;
-}</string>
-                  </property>
-                  <property name="verticalScrollBarPolicy">
-                   <enum>Qt::ScrollBarAlwaysOff</enum>
-                  </property>
-                  <property name="horizontalScrollBarPolicy">
-                   <enum>Qt::ScrollBarAsNeeded</enum>
-                  </property>
-                  <property name="sizeAdjustPolicy">
-                   <enum>QAbstractScrollArea::AdjustToContents</enum>
-                  </property>
-                  <property name="autoScroll">
-                   <bool>false</bool>
-                  </property>
-                  <property name="editTriggers">
-                   <set>QAbstractItemView::NoEditTriggers</set>
-                  </property>
-                  <property name="tabKeyNavigation">
-                   <bool>false</bool>
-                  </property>
-                  <property name="showDropIndicator" stdset="0">
-                   <bool>false</bool>
-                  </property>
-                  <property name="dragEnabled">
-                   <bool>false</bool>
-                  </property>
-                  <property name="dragDropOverwriteMode">
-                   <bool>false</bool>
-                  </property>
-                  <property name="textElideMode">
-                   <enum>Qt::ElideNone</enum>
-                  </property>
-                  <property name="showGrid">
-                   <bool>false</bool>
-                  </property>
-                  <property name="gridStyle">
-                   <enum>Qt::DotLine</enum>
-                  </property>
-                  <property name="wordWrap">
-                   <bool>false</bool>
-                  </property>
-                  <property name="cornerButtonEnabled">
-                   <bool>false</bool>
-                  </property>
-                  <property name="rowCount">
-                   <number>1</number>
-                  </property>
-                  <property name="columnCount">
-                   <number>1</number>
-                  </property>
-                  <attribute name="horizontalHeaderVisible">
-                   <bool>false</bool>
-                  </attribute>
-                  <attribute name="horizontalHeaderMinimumSectionSize">
-                   <number>0</number>
-                  </attribute>
-                  <attribute name="horizontalHeaderDefaultSectionSize">
-                   <number>18</number>
-                  </attribute>
-                  <attribute name="horizontalHeaderHighlightSections">
-                   <bool>false</bool>
-                  </attribute>
-                  <attribute name="verticalHeaderVisible">
-                   <bool>false</bool>
-                  </attribute>
-                  <attribute name="verticalHeaderMinimumSectionSize">
-                   <number>0</number>
-                  </attribute>
-                  <attribute name="verticalHeaderDefaultSectionSize">
-                   <number>25</number>
-                  </attribute>
-                  <attribute name="verticalHeaderHighlightSections">
-                   <bool>false</bool>
-                  </attribute>
-                  <row/>
-                  <column/>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
              </widget>
             </item>
            </layout>
@@ -10278,20 +10053,9 @@ padding:3px;
    <header location="global">QtQuickWidgets/QQuickWidget</header>
   </customwidget>
   <customwidget>
-   <class>MyTerminal</class>
-   <extends>QTableWidget</extends>
-   <header>myterminal.h</header>
-   <slots>
-    <slot>resetTerminal()</slot>
-    <slot>setDebug(bool)</slot>
-    <slot>copyToClipboard()</slot>
-    <slot>setDisableSendingBlackBackgnd(bool)</slot>
-   </slots>
-  </customwidget>
-  <customwidget>
    <class>MyMainPlot</class>
    <extends>QWidget</extends>
-   <header>mymainplot.h</header>
+   <header>plots/mymainplot.h</header>
    <container>1</container>
    <slots>
     <slot>setOpenGl(bool)</slot>
@@ -10300,12 +10064,12 @@ padding:3px;
   <customwidget>
    <class>myDial</class>
    <extends>QDial</extends>
-   <header>mydial.h</header>
+   <header>customwidgets/mydial.h</header>
   </customwidget>
   <customwidget>
    <class>MyXYPlot</class>
    <extends>QWidget</extends>
-   <header>myxyplot.h</header>
+   <header>plots/myxyplot.h</header>
    <container>1</container>
    <slots>
     <slot>clear()</slot>
@@ -10316,7 +10080,7 @@ padding:3px;
   <customwidget>
    <class>myCursorSlider</class>
    <extends>QSlider</extends>
-   <header>mycursorslider.h</header>
+   <header>customwidgets/mycursorslider.h</header>
    <slots>
     <slot>setRealValue(int)</slot>
    </slots>
@@ -10324,7 +10088,7 @@ padding:3px;
   <customwidget>
    <class>MyFFTPlot</class>
    <extends>QWidget</extends>
-   <header>myfftplot.h</header>
+   <header>plots/myfftplot.h</header>
    <container>1</container>
    <slots>
     <slot>clear()</slot>
@@ -10337,22 +10101,22 @@ padding:3px;
   <customwidget>
    <class>MyDoubleSpinBoxWithUnits</class>
    <extends>QDoubleSpinBox</extends>
-   <header>mydoublespinboxwithunits.h</header>
+   <header>customwidgets/mydoublespinboxwithunits.h</header>
   </customwidget>
   <customwidget>
    <class>MyPow2Spinbox</class>
    <extends>QSpinBox</extends>
-   <header>mypow2spinbox.h</header>
+   <header>customwidgets/mypow2spinbox.h</header>
   </customwidget>
   <customwidget>
    <class>MyScaleDoubleSpinBox</class>
    <extends>QDoubleSpinBox</extends>
-   <header>myscaledoublespinbox.h</header>
+   <header>customwidgets/myscaledoublespinbox.h</header>
   </customwidget>
   <customwidget>
    <class>ClickableLabel</class>
    <extends>QLabel</extends>
-   <header>clickablelabel.h</header>
+   <header>customwidgets/clickablelabel.h</header>
    <slots>
     <signal>clicked()</signal>
    </slots>
@@ -10360,7 +10124,7 @@ padding:3px;
   <customwidget>
    <class>MyPeakPlot</class>
    <extends>QWidget</extends>
-   <header>mypeakplot.h</header>
+   <header>plots/mypeakplot.h</header>
    <container>1</container>
    <slots>
     <slot>setGridHintY(int)</slot>
@@ -10443,22 +10207,6 @@ padding:3px;
     <hint type="destinationlabel">
      <x>991</x>
      <y>607</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton</sender>
-   <signal>clicked()</signal>
-   <receiver>myTerminal</receiver>
-   <slot>resetTerminal()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1153</x>
-     <y>468</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1118</x>
-     <y>178</y>
     </hint>
    </hints>
   </connection>

@@ -19,7 +19,7 @@
 #include <QObject>
 
 #include "global.h"
-#include "qcustomplot.h"
+#include "plots/qcustomplot.h"
 
 class Interpolator : public QObject {
   Q_OBJECT

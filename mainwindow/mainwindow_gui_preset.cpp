@@ -40,7 +40,6 @@ void MainWindow::connectSignals() {
     connect(ui->lineEditVtitle, &QLineEdit::textChanged, ui->plot, &MyPlot::setYTitle);
     connect(ui->lineEditVtitle, &QLineEdit::textChanged, ui->plotxy, &MyPlot::setXTitle);
     connect(ui->lineEditVtitle, &QLineEdit::textChanged, ui->plotxy, &MyPlot::setYTitle);
-    connect(ui->myTerminal, &MyTerminal::sendMessage, this, &MainWindow::printMessage);
     connect(ui->horizontalSliderVGrid, &QDial::valueChanged, ui->plot, &MyPlot::setGridHintY);
     connect(ui->horizontalSliderHGrid, &QDial::valueChanged, ui->plot, &MyPlot::setGridHintX);
     connect(ui->spinBoxShiftStep, SIGNAL(valueChanged(int)), ui->plot, SLOT(setShiftStep(int)));
@@ -48,6 +47,7 @@ void MainWindow::connectSignals() {
     connect(ui->pushButtonFFTHoldMax1, &QPushButton::toggled, ui->plotFFT, &MyFFTPlot::setHoldMax1);
     connect(ui->pushButtonFFTHoldMax2, &QPushButton::toggled, ui->plotFFT, &MyFFTPlot::setHoldMax2);
 
+    connect(&ansiTerminalModel, &AnsiTerminalModel::sendMessage, this, &MainWindow::printMessage);
     connect(&portsRefreshTimer, &QTimer::timeout, this, &MainWindow::comRefresh);
     connect(&activeChRefreshTimer, &QTimer::timeout, this, &MainWindow::updateUsedChannels);
     connect(&cursorRangeUpdateTimer, &QTimer::timeout, this, &MainWindow::updateCursorRange);
@@ -166,8 +166,6 @@ void MainWindow::setGuiDefaults() {
 
     ui->comboBoxFIR->setCurrentIndex(0);
     on_comboBoxFIR_currentIndexChanged(0); // Interpolátor načte filtr
-
-    ui->tabWidget->setCurrentIndex(0);
 
     addColorToBlacklist("40");
     updateColorBlacklist();

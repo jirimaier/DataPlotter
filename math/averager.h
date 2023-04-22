@@ -17,7 +17,7 @@
 #define AVERAGER_H
 
 #include <QObject>
-#include "qcustomplot.h"
+#include "plots/qcustomplot.h"
 #include "global.h"
 
 class Averager : public QObject {

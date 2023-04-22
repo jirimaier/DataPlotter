@@ -13,22 +13,24 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#ifndef MYAXISTICKERWITHUNIT_H
-#define MYAXISTICKERWITHUNIT_H
+#ifndef XYMODE_H
+#define XYMODE_H
+
+#include <QObject>
 
 #include "global.h"
-#include "qcustomplot.h"
+#include "plots/qcustomplot.h"
 
-/// Verze axisTickeru která zobrazuje jednotky s předponami (milli, mikro...)
-class MyAxisTickerWithUnit : public QCPAxisTickerFixed {
- private:
-  int tickStepOrder = 0;
-
+class XYMode : public QObject {
+  Q_OBJECT
  public:
-  QString unit = "";
-  bool usePrefix = false;
-  QString getTickLabel(double tick, const QLocale& locale, QChar formatChar, int precision);
-  void setTickStep(double value);
+  explicit XYMode(QObject* parent = nullptr);
+
+ public slots:
+  void calculateXY(QSharedPointer<QCPGraphDataContainer> in1, QSharedPointer<QCPGraphDataContainer> in2, bool removeDC);
+
+ signals:
+  void sendResultXY(QSharedPointer<QCPCurveDataContainer> result);
 };
 
-#endif // MYAXISTICKERWITHUNIT_H
+#endif // XYMODE_H

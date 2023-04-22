@@ -48,15 +48,16 @@
 #include <QQuickStyle>
 
 #include "global.h"
-#include "mainwindow.h"
-#include "newserialparser.h"
-#include "plotdata.h"
-#include "plotmath.h"
-#include "serialreader.h"
-#include "signalprocessing.h"
-#include "interpolator.h"
-#include "averager.h"
-#include "xymode.h"
+#include "mainwindow/mainwindow.h"
+#include "communication/newserialparser.h"
+#include "communication/plotdata.h"
+#include "math/plotmath.h"
+#include "communication/serialreader.h"
+#include "math/plotmath.h"
+#include "math/signalprocessing.h"
+#include "math/interpolator.h"
+#include "math/averager.h"
+#include "math/xymode.h"
 
 Q_DECLARE_METATYPE(ChannelSettings_t)
 Q_DECLARE_METATYPE(DataMode::enumDataMode)

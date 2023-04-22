@@ -19,7 +19,7 @@
 #include <QTimer>
 
 #include "myplot.h"
-#include "plotdata.h"
+#include "communication/plotdata.h"
 
 class MyMainPlot : public MyPlot {
   Q_OBJECT

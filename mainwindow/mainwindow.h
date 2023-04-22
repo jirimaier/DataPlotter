@@ -29,21 +29,17 @@
 #include <QQmlContext>
 #include <QQmlEngine>
 
+#include "communication/filesender.h"
+#include "communication/serialreader.h"
+#include "communication/serialsettingsdialog.h"
 #include "global.h"
-#include "messagemodel.h"
-#include "plotdata.h"
-#include "plotmath.h"
-#include "serialreader.h"
-#include "signalprocessing.h"
-#include "interpolator.h"
+#include "math/averager.h"
+#include "math/plotmath.h"
+#include "communication/serialreader.h"
+#include "qml/ansiterminalmodel.h"
+#include "qml/messagemodel.h"
+#include "qml/qmlterminalinterface.h"
 #include "ui_mainwindow.h"
-#include "myplot.h"
-#include "serialsettingsdialog.h"
-#include "mycursorslider.h"
-#include "averager.h"
-#include "filesender.h"
-#include "qmlterminalinterface.h"
-#include "myframewithresizesignal.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -153,6 +149,7 @@ class MainWindow : public QMainWindow {
   bool pendingMessageType;
 
   MessageModel messageModel;
+  AnsiTerminalModel ansiTerminalModel;
 
 
   void resetQmlTerminal();
@@ -340,7 +337,7 @@ class MainWindow : public QMainWindow {
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumMessageTarget target);
   void showPlotStatus(PlotStatus::enumPlotStatus type);
   void serialConnectResult(bool connected, QString message, QString details);
-  void printToTerminal(QByteArray data) { ui->myTerminal->printToTerminal(data); }
+  void printToTerminal(QByteArray data) {ansiTerminalModel.printToTerminal(data); }
   void useSettings(QByteArray settings, MessageTarget::enumMessageTarget source);
   void fileRequest(QByteArray message, MessageTarget::enumMessageTarget source);
   void printDeviceMessage(QByteArray message, bool warning, bool ended);

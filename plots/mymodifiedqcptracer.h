@@ -16,7 +16,7 @@
 #ifndef MYMODIFIEDQCPTRACER_H
 #define MYMODIFIEDQCPTRACER_H
 
-#include "qcustomplot.h"
+#include "plots/qcustomplot.h"
 
 /// Tracer, který hledá nejbližší vrorek podle (dX^2 + dY^2), ne jen podle X. Funguje i pro křivku (XY graf)
 class MyModifiedQCPTracer : public QCPItemTracer {

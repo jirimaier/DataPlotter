@@ -1,7 +1,7 @@
 #include "mainwindow.h"
-#include "cobs.h"
-#include "messagemodel.h"
-#include "qmlterminalemulator.h"
+#include "communication/cobs.h"
+#include "qml/messagemodel.h"
+#include "qml/ansiterminalmodel.h"
 
 void MainWindow::initQmlTerminal() {
   qmlTerminalInterface = new QmlTerminalInterface();
@@ -9,9 +9,10 @@ void MainWindow::initQmlTerminal() {
   QQmlContext* context = ui->quickWidget->rootContext();
   context->setContextProperty("dataPlotter", qmlTerminalInterface);
   context->setContextProperty("messageModel", &messageModel);
+  context->setContextProperty("ansiTerminalModel", &ansiTerminalModel);
 
   qmlRegisterType<MessageModel>("DataPlotter", 1, 0, "MessageModel");
-  qmlRegisterType<QMLTerminalEmulator>("QMLTerminalEmulator", 1, 0, "ANSITerminalModel");
+  qmlRegisterType<AnsiTerminalModel>("DataPlotter", 1, 0, "ANSITerminalModel");
 
   resetQmlTerminal();
 }
@@ -45,7 +46,6 @@ void MainWindow::loadCompressedQml(QByteArray data) {
     return;
   }
 
-  ui->tabWidget->setCurrentIndex(0);
   loadQmlFile(QUrl::fromLocalFile(currentQmlFile.fileName()));
 }
 

@@ -24,7 +24,7 @@
 #include <QElapsedTimer>
 
 #include "global.h"
-#include "qcustomplot.h"
+#include "plots/qcustomplot.h"
 
 class SignalProcessing : public QObject {
   Q_OBJECT

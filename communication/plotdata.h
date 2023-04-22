@@ -26,7 +26,7 @@
 #include <QElapsedTimer>
 
 #include "global.h"
-#include "qcustomplot.h"
+#include "plots/qcustomplot.h"
 
 class PlotData : public QObject {
   Q_OBJECT

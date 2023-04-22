@@ -290,10 +290,7 @@ void MainWindow::on_pushButtonHideCh_toggled(bool checked) {
 }
 
 void MainWindow::on_pushButtonTerminalDebug_toggled(bool checked) {
-  if (checked)
-    ui->myTerminal->setMode(TerminalMode::debug);
-  else
-    ui->myTerminal->setMode(TerminalMode::clicksend);
+  // TODO
 }
 
 void MainWindow::insertInTerminalDebug(QString text, QColor textColor) {
@@ -481,7 +478,7 @@ void MainWindow::on_listWidgetTerminalCodeList_itemClicked(QListWidgetItem* item
     QColor color = QColorDialog::getColor(Qt::white);
     if (!color.isValid())
       return;
-    QByteArray colorCode = ui->myTerminal->nearestColorCode(color);
+    QByteArray colorCode = ansiTerminalModel.nearestColorCode(color);
     insertInTerminalDebug(QString("\\e[3" + colorCode + "m").toUtf8(), Qt::red);
   }
 
@@ -489,7 +486,7 @@ void MainWindow::on_listWidgetTerminalCodeList_itemClicked(QListWidgetItem* item
     QColor color = QColorDialog::getColor(Qt::black);
     if (!color.isValid())
       return;
-    QByteArray colorCode = ui->myTerminal->nearestColorCode(color);
+    QByteArray colorCode = ansiTerminalModel.nearestColorCode(color);
     insertInTerminalDebug(QString("\\e[4" + colorCode + "m").toUtf8(), Qt::red);
   }
 
@@ -543,7 +540,7 @@ void MainWindow::on_pushButtonTerminalDebugSend_clicked() {
   data.replace("\\b", "\b");
   data.replace("\\a", "\a");
 
-  ui->myTerminal->printToTerminal(data);
+  ansiTerminalModel.printToTerminal(data);
 }
 
 void MainWindow::on_textEditTerminalDebug_cursorPositionChanged() {
@@ -655,7 +652,7 @@ void MainWindow::on_pushButtonTerminalBlacklisAddSelect_clicked()
     QColor color = QColorDialog::getColor(Qt::black);
     if (!color.isValid())
       return;
-    QByteArray colorCode = ui->myTerminal->nearestColorCode(color);
+    QByteArray colorCode = ansiTerminalModel.nearestColorCode(color);
     addColorToBlacklist(QString("\\e[3" + colorCode + "m").toUtf8());
     updateColorBlacklist();
 }

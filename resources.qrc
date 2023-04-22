@@ -105,9 +105,8 @@
         <file>fir/kaiser_x16.csv</file>
         <file>fir/kaiser_x32.csv</file>
     </qresource>
-    <qresource prefix="/"/>
-    <qresource prefix="/qml">
-        <file>ExampleQmlTerminal.qml</file>
-        <file>DefaultQmlTerminal.qml</file>
+    <qresource prefix="/">
+        <file>qml/ExampleQmlTerminal.qml</file>
+        <file>qml/DefaultQmlTerminal.qml</file>
     </qresource>
 </RCC>

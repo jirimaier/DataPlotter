@@ -21,7 +21,7 @@
 #include <QThread>
 
 #include "global.h"
-#include "qcustomplot.h"
+#include "plots/qcustomplot.h"
 
 class PlotMath : public QObject {
   Q_OBJECT

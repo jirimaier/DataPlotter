@@ -107,7 +107,6 @@ void MainWindow::init(QTranslator* translator, const PlotData* plotData, const P
     QObject::connect(plotData, &PlotData::addVectorToPlot, ui->plot, &MyMainPlot::newDataVector);
     QObject::connect(plotData, &PlotData::addPointToPlot, ui->plot, &MyMainPlot::newDataPoint);
     QObject::connect(plotData, &PlotData::clearLogic, ui->plot, &MyMainPlot::clearLogicGroup);
-    QObject::connect(ui->myTerminal, &MyTerminal::writeToSerial, serialReader, &SerialReader::write);
     QObject::connect(&fileSender, &FileSender::transmit, serialReader, &SerialReader::write);
     QObject::connect(qmlTerminalInterface, &QmlTerminalInterface::dataTransmitted, serialReader, &SerialReader::write);
 
@@ -171,7 +170,8 @@ void MainWindow::serialConnectResult(bool connected, QString message, QString de
         ui->plotFFT->clear(0);
         ui->plotFFT->clear(1);
         ui->plotPeak->clear();
-        ui->myTerminal->resetTerminal();
+        ansiTerminalModel.clear();
+        ansiTerminalModel.setActive(false);
         ui->plainTextEditConsole->clear();
         ui->plainTextEditConsole_3->clear();
         emit resetChannels();
@@ -511,7 +511,6 @@ void MainWindow::on_checkBoxEchoReply_toggled(bool checked) {
 }
 
 void MainWindow::on_comboBoxTerminalFont_currentIndexChanged(int index) {
-    ui->myTerminal->changeFont(index);
 }
 
 void MainWindow::on_lineEditTerminalBlacklist_returnPressed() {
@@ -534,7 +533,7 @@ bool MainWindow::addColorToBlacklist(QByteArray code) {
     if (code.at(0) == '3')
         code.replace(0, 1, "4");
 
-    valid = ui->myTerminal->colorFromSequence(code, clr);
+    valid = ansiTerminalModel.colorFromSequence(code, clr);
 
     if (valid) {
         QPixmap colour = QPixmap(12, 12);
@@ -551,7 +550,7 @@ void MainWindow::updateColorBlacklist() {
         list.append(pixmap.toImage().pixel(0, 0));
     }
 
-    ui->myTerminal->setColorExceptionList(list, ui->radioButtonColorBlacklist->isChecked());
+    ansiTerminalModel.setColorExceptionList(list, ui->radioButtonColorBlacklist->isChecked());
 }
 
 void MainWindow::on_pushButtonTerminalBlacklistClear_clicked() {
@@ -571,7 +570,7 @@ void MainWindow::on_pushButtonTerminalBlacklisAdd_clicked() {
 }
 
 void MainWindow::on_checkBoxEnablTerminalVScrollBar_toggled(bool checked) {
-    ui->myTerminal->setScrollBar(checked);
+
 }
 
 void MainWindow::on_lineEditTerminalBlacklist_textChanged(const QString& arg1) {
@@ -601,7 +600,7 @@ void MainWindow::on_pushButtonTerminalBlacklistCopy_clicked() {
 }
 
 void MainWindow::on_pushButtonTerminalCopy_clicked() {
-    ui->myTerminal->copyToClipboard();
+
 }
 
 void MainWindow::on_radioButtonColorBlacklist_toggled(bool checked) {

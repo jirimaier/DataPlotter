@@ -19,7 +19,7 @@
 #include "global.h"
 #include "myaxistickerwithunit.h"
 #include "mymodifiedqcptracer.h"
-#include "qcustomplot.h"
+#include "plots/qcustomplot.h"
 #include <QWidget>
 
 class MyPlot : public QCustomPlot {
