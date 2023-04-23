@@ -45,7 +45,7 @@
    <bool>false</bool>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout_37">
+   <layout class="QHBoxLayout" name="horizontalLayout_30">
     <item>
      <widget class="QSplitter" name="splitter">
       <property name="orientation">
@@ -753,7 +753,7 @@
         <item row="1" column="0" rowspan="2">
          <widget class="QTabWidget" name="tabsControll">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -8491,7 +8491,7 @@
            </size>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <property name="iconSize">
            <size>
@@ -8508,7 +8508,7 @@
           <property name="documentMode">
            <bool>false</bool>
           </property>
-          <widget class="QWidget" name="tab_7">
+          <widget class="QWidget" name="main">
            <attribute name="icon">
             <iconset resource="resources.qrc">
              <normaloff>:/images/icons/connection.png</normaloff>:/images/icons/connection.png</iconset>
@@ -8516,51 +8516,16 @@
            <attribute name="title">
             <string/>
            </attribute>
-           <layout class="QVBoxLayout" name="verticalLayout_16" stretch="1,1000">
-            <property name="spacing">
-             <number>3</number>
-            </property>
-            <property name="leftMargin">
-             <number>6</number>
-            </property>
-            <property name="topMargin">
-             <number>6</number>
-            </property>
-            <property name="rightMargin">
-             <number>6</number>
-            </property>
-            <property name="bottomMargin">
-             <number>6</number>
-            </property>
+           <layout class="QVBoxLayout" name="verticalLayout_12">
             <item>
-             <layout class="QGridLayout" name="gridLayout_21">
-              <item row="1" column="2">
-               <widget class="QPushButton" name="pushButtonSerialMoreInfo">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="text">
-                 <string/>
-                </property>
-                <property name="icon">
-                 <iconset resource="resources.qrc">
-                  <normaloff>:/images/icons/about.png</normaloff>:/images/icons/about.png</iconset>
-                </property>
-                <property name="iconSize">
-                 <size>
-                  <width>12</width>
-                  <height>12</height>
-                 </size>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="0" colspan="3">
+             <layout class="QGridLayout" name="gridLayout_14">
+              <property name="spacing">
+               <number>2</number>
+              </property>
+              <item row="0" column="0" colspan="4">
                <widget class="QListWidget" name="listWidgetCom">
                 <property name="sizePolicy">
-                 <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
                   <horstretch>0</horstretch>
                   <verstretch>0</verstretch>
                  </sizepolicy>
@@ -8574,7 +8539,7 @@
                 <property name="maximumSize">
                  <size>
                   <width>16777215</width>
-                  <height>200</height>
+                  <height>16777215</height>
                  </size>
                 </property>
                 <property name="horizontalScrollBarPolicy">
@@ -8582,6 +8547,18 @@
                 </property>
                 <property name="sizeAdjustPolicy">
                  <enum>QAbstractScrollArea::AdjustToContents</enum>
+                </property>
+                <property name="autoScroll">
+                 <bool>false</bool>
+                </property>
+                <property name="alternatingRowColors">
+                 <bool>false</bool>
+                </property>
+                <property name="selectionMode">
+                 <enum>QAbstractItemView::SingleSelection</enum>
+                </property>
+                <property name="sortingEnabled">
+                 <bool>true</bool>
                 </property>
                </widget>
               </item>
@@ -8675,7 +8652,56 @@
                 </item>
                </widget>
               </item>
-              <item row="2" column="2">
+              <item row="1" column="1">
+               <widget class="QPushButton" name="pushButtonSerialSetting">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="toolTip">
+                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Aditional settings&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset resource="resources.qrc">
+                  <normaloff>:/images/icons/settings.png</normaloff>:/images/icons/settings.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>12</width>
+                  <height>12</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="2">
+               <widget class="QPushButton" name="pushButtonSerialMoreInfo">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset resource="resources.qrc">
+                  <normaloff>:/images/icons/about.png</normaloff>:/images/icons/about.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>12</width>
+                  <height>12</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="3" rowspan="2">
                <widget class="QPushButton" name="pushButtonConnect">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -8710,7 +8736,7 @@
                 </property>
                </widget>
               </item>
-              <item row="2" column="0" colspan="2">
+              <item row="2" column="0" colspan="3">
                <widget class="QLabel" name="labelPortInfo">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
@@ -8732,32 +8758,6 @@
                 </property>
                </widget>
               </item>
-              <item row="1" column="1">
-               <widget class="QPushButton" name="pushButtonSerialSetting">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="toolTip">
-                 <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Aditional settings&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                </property>
-                <property name="text">
-                 <string/>
-                </property>
-                <property name="icon">
-                 <iconset resource="resources.qrc">
-                  <normaloff>:/images/icons/settings.png</normaloff>:/images/icons/settings.png</iconset>
-                </property>
-                <property name="iconSize">
-                 <size>
-                  <width>12</width>
-                  <height>12</height>
-                 </size>
-                </property>
-               </widget>
-              </item>
              </layout>
             </item>
             <item>
@@ -8775,7 +8775,7 @@
             </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="qmlTab">
+          <widget class="QWidget" name="consoles">
            <attribute name="icon">
             <iconset resource="resources.qrc">
              <normaloff>:/images/icons/qmlterminal.png</normaloff>:/images/icons/qmlterminal.png</iconset>
@@ -9431,7 +9431,7 @@
             </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="tab_8">
+          <widget class="QWidget" name="settings">
            <attribute name="icon">
             <iconset resource="resources.qrc">
              <normaloff>:/images/icons/settings.png</normaloff>:/images/icons/settings.png</iconset>
@@ -9830,7 +9830,7 @@
             </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="tab_3">
+          <widget class="QWidget" name="about">
            <attribute name="icon">
             <iconset resource="resources.qrc">
              <normaloff>:/images/icons/about.png</normaloff>:/images/icons/about.png</iconset>
@@ -10165,12 +10165,12 @@
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1090</x>
-     <y>546</y>
+     <x>1611</x>
+     <y>287</y>
     </hint>
     <hint type="destinationlabel">
-     <x>991</x>
-     <y>490</y>
+     <x>1500</x>
+     <y>81</y>
     </hint>
    </hints>
   </connection>
@@ -10181,12 +10181,12 @@
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1058</x>
-     <y>714</y>
+     <x>1594</x>
+     <y>785</y>
     </hint>
     <hint type="destinationlabel">
-     <x>991</x>
-     <y>607</y>
+     <x>1500</x>
+     <y>578</y>
     </hint>
    </hints>
   </connection>
@@ -10197,12 +10197,12 @@
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>900</x>
-     <y>592</y>
+     <x>382</x>
+     <y>840</y>
     </hint>
     <hint type="destinationlabel">
-     <x>891</x>
-     <y>549</y>
+     <x>389</x>
+     <y>624</y>
     </hint>
    </hints>
   </connection>
@@ -10214,11 +10214,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>314</x>
-     <y>631</y>
+     <y>632</y>
     </hint>
     <hint type="destinationlabel">
      <x>215</x>
-     <y>782</y>
+     <y>783</y>
     </hint>
    </hints>
   </connection>
@@ -10245,12 +10245,12 @@
    <slot>setGridHintY(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>559</x>
+     <x>1093</x>
      <y>759</y>
     </hint>
     <hint type="destinationlabel">
-     <x>285</x>
-     <y>692</y>
+     <x>28</x>
+     <y>609</y>
     </hint>
    </hints>
   </connection>
@@ -10262,10 +10262,10 @@
    <hints>
     <hint type="sourcelabel">
      <x>314</x>
-     <y>631</y>
+     <y>632</y>
     </hint>
     <hint type="destinationlabel">
-     <x>501</x>
+     <x>768</x>
      <y>794</y>
     </hint>
    </hints>
@@ -10277,12 +10277,12 @@
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>549</x>
+     <x>558</x>
      <y>840</y>
     </hint>
     <hint type="destinationlabel">
-     <x>420</x>
-     <y>169</y>
+     <x>890</x>
+     <y>181</y>
     </hint>
    </hints>
   </connection>
@@ -10294,7 +10294,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>314</x>
-     <y>675</y>
+     <y>676</y>
     </hint>
     <hint type="destinationlabel">
      <x>507</x>
@@ -10309,8 +10309,8 @@
    <slot>plotLayoutChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>456</x>
-     <y>650</y>
+     <x>479</x>
+     <y>625</y>
     </hint>
     <hint type="destinationlabel">
      <x>298</x>
@@ -10325,8 +10325,8 @@
    <slot>plotLayoutChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>456</x>
-     <y>840</y>
+     <x>479</x>
+     <y>814</y>
     </hint>
     <hint type="destinationlabel">
      <x>389</x>
@@ -10342,7 +10342,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>314</x>
-     <y>631</y>
+     <y>632</y>
     </hint>
     <hint type="destinationlabel">
      <x>385</x>
@@ -10374,11 +10374,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>314</x>
-     <y>631</y>
+     <y>632</y>
     </hint>
     <hint type="destinationlabel">
-     <x>556</x>
-     <y>840</y>
+     <x>781</x>
+     <y>831</y>
     </hint>
    </hints>
   </connection>
@@ -10389,12 +10389,12 @@
    <slot>setGridHintX(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>559</x>
+     <x>1093</x>
      <y>738</y>
     </hint>
     <hint type="destinationlabel">
-     <x>285</x>
-     <y>692</y>
+     <x>28</x>
+     <y>609</y>
     </hint>
    </hints>
   </connection>
@@ -10406,11 +10406,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>314</x>
-     <y>631</y>
+     <y>632</y>
     </hint>
     <hint type="destinationlabel">
-     <x>79</x>
-     <y>782</y>
+     <x>88</x>
+     <y>783</y>
     </hint>
    </hints>
   </connection>
@@ -10422,11 +10422,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>314</x>
-     <y>631</y>
+     <y>632</y>
     </hint>
     <hint type="destinationlabel">
      <x>151</x>
-     <y>782</y>
+     <y>783</y>
     </hint>
    </hints>
   </connection>
@@ -10438,7 +10438,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>314</x>
-     <y>719</y>
+     <y>720</y>
     </hint>
     <hint type="destinationlabel">
      <x>630</x>
@@ -10454,11 +10454,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>314</x>
-     <y>631</y>
+     <y>632</y>
     </hint>
     <hint type="destinationlabel">
-     <x>111</x>
-     <y>679</y>
+     <x>125</x>
+     <y>674</y>
     </hint>
    </hints>
   </connection>
@@ -10469,8 +10469,8 @@
    <slot>plotLayoutChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>456</x>
-     <y>714</y>
+     <x>479</x>
+     <y>688</y>
     </hint>
     <hint type="destinationlabel">
      <x>636</x>
@@ -10486,7 +10486,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>270</x>
-     <y>620</y>
+     <y>621</y>
     </hint>
     <hint type="destinationlabel">
      <x>144</x>
@@ -10501,12 +10501,12 @@
    <slot>setGridHintY(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>549</x>
-     <y>769</y>
+     <x>558</x>
+     <y>770</y>
     </hint>
     <hint type="destinationlabel">
-     <x>420</x>
-     <y>151</y>
+     <x>890</x>
+     <y>163</y>
     </hint>
    </hints>
   </connection>
@@ -10517,11 +10517,11 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>122</x>
+     <x>125</x>
      <y>735</y>
     </hint>
     <hint type="destinationlabel">
-     <x>122</x>
+     <x>125</x>
      <y>767</y>
     </hint>
    </hints>
@@ -10534,11 +10534,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>314</x>
-     <y>631</y>
+     <y>632</y>
     </hint>
     <hint type="destinationlabel">
-     <x>216</x>
-     <y>635</y>
+     <x>118</x>
+     <y>618</y>
     </hint>
    </hints>
   </connection>
@@ -10549,12 +10549,12 @@
    <slot>setAutoSize(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>549</x>
-     <y>620</y>
+     <x>558</x>
+     <y>621</y>
     </hint>
     <hint type="destinationlabel">
-     <x>420</x>
-     <y>130</y>
+     <x>890</x>
+     <y>142</y>
     </hint>
    </hints>
   </connection>
@@ -10566,11 +10566,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>314</x>
-     <y>631</y>
+     <y>632</y>
     </hint>
     <hint type="destinationlabel">
-     <x>436</x>
-     <y>839</y>
+     <x>504</x>
+     <y>832</y>
     </hint>
    </hints>
   </connection>
@@ -10582,11 +10582,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>314</x>
-     <y>631</y>
+     <y>632</y>
     </hint>
     <hint type="destinationlabel">
-     <x>319</x>
-     <y>839</y>
+     <x>339</x>
+     <y>832</y>
     </hint>
    </hints>
   </connection>
@@ -10598,11 +10598,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>119</x>
-     <y>650</y>
+     <y>651</y>
     </hint>
     <hint type="destinationlabel">
      <x>119</x>
-     <y>710</y>
+     <y>711</y>
     </hint>
    </hints>
   </connection>
@@ -10613,12 +10613,12 @@
    <slot>setGridHintX(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>549</x>
-     <y>723</y>
+     <x>558</x>
+     <y>724</y>
     </hint>
     <hint type="destinationlabel">
-     <x>387</x>
-     <y>120</y>
+     <x>857</x>
+     <y>132</y>
     </hint>
    </hints>
   </connection>
@@ -10630,10 +10630,10 @@
    <hints>
     <hint type="sourcelabel">
      <x>314</x>
-     <y>631</y>
+     <y>632</y>
     </hint>
     <hint type="destinationlabel">
-     <x>323</x>
+     <x>387</x>
      <y>795</y>
     </hint>
    </hints>
@@ -10645,8 +10645,8 @@
    <slot>plotLayoutChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>456</x>
-     <y>777</y>
+     <x>479</x>
+     <y>751</y>
     </hint>
     <hint type="destinationlabel">
      <x>516</x>
@@ -10661,12 +10661,12 @@
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1044</x>
-     <y>380</y>
+     <x>1572</x>
+     <y>537</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1123</x>
-     <y>339</y>
+     <x>1500</x>
+     <y>329</y>
     </hint>
    </hints>
   </connection>
@@ -10677,12 +10677,12 @@
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1145</x>
-     <y>396</y>
+     <x>1488</x>
+     <y>826</y>
     </hint>
     <hint type="destinationlabel">
-     <x>990</x>
-     <y>648</y>
+     <x>1488</x>
+     <y>549</y>
     </hint>
    </hints>
   </connection>
@@ -10693,12 +10693,12 @@
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1145</x>
-     <y>369</y>
+     <x>1488</x>
+     <y>797</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1153</x>
-     <y>326</y>
+     <x>1488</x>
+     <y>300</y>
     </hint>
    </hints>
   </connection>

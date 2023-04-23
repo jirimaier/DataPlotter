@@ -111,5 +111,6 @@
         <file>qml/DataPlotterComponents/ANSITerminal.qml</file>
         <file>qml/DataPlotterComponents/qmldir</file>
         <file>qml/DataPlotterComponents/MessageConsole.qml</file>
+        <file>qml/DataPlotterComponents/SerialSender.qml</file>
     </qresource>
 </RCC>

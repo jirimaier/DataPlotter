@@ -103,7 +103,7 @@ void MainWindow::setGuiDefaults() {
     ui->checkBoxShowManualInput->setChecked(false);
     ui->tabs_right->setCurrentIndex(0);
     ui->tabsControll->setCurrentIndex(0);
-    ui->comboBoxOutputLevel->setCurrentIndex((int)OutputLevel::info);
+    ui->comboBoxOutputLevel->setCurrentIndex((int)OutputLevel::warning);
     ui->radioButtonFixedRange->setChecked(true);
     plotLayoutChanged();
     ui->labelBuildDate->setText(tr("Build: ") + QString(__DATE__) + " " + QString(__TIME__));
