@@ -336,7 +336,7 @@ void MainWindow::on_checkBoxCur1Visible_stateChanged(int arg1) {
 }
 
 void MainWindow::on_checkBoxCur2Visible_stateChanged(int arg1) {
-  int selectedChannel = ui->comboBoxCursor1Channel->currentIndex();
+  int selectedChannel = ui->comboBoxCursor2Channel->currentIndex();
 
   if (!IS_ANALOG_OR_MATH(selectedChannel) && selectedChannel != CURSOR_ABSOLUTE && arg1 == Qt::CheckState::Checked) {
     ui->checkBoxCur2Visible->setCheckState(Qt::CheckState::Unchecked);
