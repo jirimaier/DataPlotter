@@ -510,9 +510,6 @@ void MainWindow::on_checkBoxEchoReply_toggled(bool checked) {
     emit replyEcho(checked);
 }
 
-void MainWindow::on_comboBoxTerminalFont_currentIndexChanged(int index) {
-}
-
 void MainWindow::on_lineEditTerminalBlacklist_returnPressed() {
     if (addColorToBlacklist(ui->lineEditTerminalBlacklist->text().toLocal8Bit().trimmed())) {
         ui->lineEditTerminalBlacklist->clear();
@@ -550,7 +547,7 @@ void MainWindow::updateColorBlacklist() {
         list.append(pixmap.toImage().pixel(0, 0));
     }
 
-    ansiTerminalModel.setColorExceptionList(list, ui->radioButtonColorBlacklist->isChecked());
+    ansiTerminalModel.setColorExceptionList(list, ui->comboBoxTerminalColorListMode->currentIndex()==0);
 }
 
 void MainWindow::on_pushButtonTerminalBlacklistClear_clicked() {
@@ -563,14 +560,6 @@ void MainWindow::on_pushButtonTerminalBlacklistClear_clicked() {
         }
     }
     updateColorBlacklist();
-}
-
-void MainWindow::on_pushButtonTerminalBlacklisAdd_clicked() {
-    on_lineEditTerminalBlacklist_returnPressed();
-}
-
-void MainWindow::on_checkBoxEnablTerminalVScrollBar_toggled(bool checked) {
-
 }
 
 void MainWindow::on_lineEditTerminalBlacklist_textChanged(const QString& arg1) {
@@ -588,24 +577,12 @@ void MainWindow::on_comboBoxBaud_currentTextChanged(const QString& arg1) {
 void MainWindow::on_pushButtonTerminalBlacklistCopy_clicked() {
     QClipboard* clipboard = QGuiApplication :: clipboard();
     QString settingsEntry;
-    if (ui->radioButtonColorBlacklist->isChecked())
-        settingsEntry.append("noclickclr:");
-    else
-        settingsEntry.append("clickclr:");
+    settingsEntry.append(ui->comboBoxTerminalColorListMode->currentIndex()==0?"noclickclr:":"clickclr:");
     for (int i = 0; i < ui->listWidgetTerminalBlacklist->count(); i++)
         settingsEntry.append(ui->listWidgetTerminalBlacklist->item(i)->text().toLocal8Bit().replace(';', '.') + ',');
     settingsEntry.remove(settingsEntry.length() - 1, 1);
     settingsEntry.append(";\n");
     clipboard ->setText(settingsEntry);
-}
-
-void MainWindow::on_pushButtonTerminalCopy_clicked() {
-
-}
-
-void MainWindow::on_radioButtonColorBlacklist_toggled(bool checked) {
-    Q_UNUSED(checked);
-    updateColorBlacklist();
 }
 
 void MainWindow::on_pushButtonRecordMeasurements1_clicked() {
@@ -889,5 +866,12 @@ void MainWindow::on_listWidgetCom_currentItemChanged(QListWidgetItem *current, Q
     SerialSettingsDialog::Settings settings = serialSettingsDialog->settings();
     attemptReconnectPort = "";
     emit beginSerialConnection(current->data(Qt::UserRole).toString(), ui->comboBoxBaud->currentText().toInt(), settings.dataBits, settings.parity, settings.stopBits, settings.flowControl);
+}
+
+
+void MainWindow::on_comboBoxTerminalColorListMode_currentIndexChanged(int index)
+{
+    Q_UNUSED(index);
+    updateColorBlacklist();
 }
 

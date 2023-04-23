@@ -207,7 +207,6 @@ class MainWindow : public QMainWindow {
   void on_pushButtonClearBuffer_2_clicked() { emit requestManualBufferClear(); }
   void on_pushButtonViewBuffer_2_clicked() { emit requestManualBufferShow(); }
   void on_comboBoxOutputLevel_currentIndexChanged(int index);
-  void on_comboBoxCom_currentIndexChanged(int) { emit disconnectSerial(); }
   void on_pushButtonScrollDown_2_clicked();
   void on_checkBoxSerialMonitor_toggled(bool checked);
   void on_comboBoxSelectedChannel_currentIndexChanged(int index);
@@ -257,7 +256,6 @@ class MainWindow : public QMainWindow {
   void on_comboBoxXYx_currentIndexChanged(int) { updateXY(); }
   void on_pushButtonTerminalDebugSend_clicked();
   void on_textEditTerminalDebug_cursorPositionChanged();
-  void on_myTerminal_cellClicked(int row, int column);
   void on_comboBoxFFTType_currentIndexChanged(int index);
   void on_checkBoxOpenGL_toggled(bool checked);
   void on_checkBoxMouseControls_toggled(bool checked);
@@ -300,16 +298,11 @@ class MainWindow : public QMainWindow {
   void on_labelLogo_clicked();
   void on_comboBoxFIR_currentIndexChanged(int index);
   void on_checkBoxEchoReply_toggled(bool checked);
-  void on_comboBoxTerminalFont_currentIndexChanged(int index);
   void on_lineEditTerminalBlacklist_returnPressed();
   void on_pushButtonTerminalBlacklistClear_clicked();
-  void on_pushButtonTerminalBlacklisAdd_clicked();
-  void on_checkBoxEnablTerminalVScrollBar_toggled(bool checked);
   void on_lineEditTerminalBlacklist_textChanged(const QString& arg1);
   void on_comboBoxBaud_currentTextChanged(const QString& arg1);
   void on_pushButtonTerminalBlacklistCopy_clicked();
-  void on_pushButtonTerminalCopy_clicked();
-  void on_radioButtonColorBlacklist_toggled(bool checked);
   void on_pushButtonRecordMeasurements1_clicked();
   void on_pushButtonRecordMeasurements2_clicked();
   void on_radioButtonFreqTimeFixed_toggled(bool checked) { ui->plotPeak->setAutoSize(checked);}
@@ -329,6 +322,7 @@ class MainWindow : public QMainWindow {
   void on_pushButtonNegative_toggled(bool checked);
   void on_pushButtonRangeFit_clicked();
   void on_listWidgetCom_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
+  void on_comboBoxTerminalColorListMode_currentIndexChanged(int index);
 
   public slots:
   void on_pushButtonTerminalDebugShift_clicked();

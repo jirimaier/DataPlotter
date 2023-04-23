@@ -5,6 +5,11 @@ import QtQuick.Controls 2.0
 import QtQuick.Controls.Material 2.0
 import QtQuick.Layouts 1.2
 
+import "qrc:/qml/DataPlotterComponents"
+// Components provided by DataPlotter:
+// ANSITerminal
+// MessageConsole
+
 Rectangle {
     // Do not set size or anchors of root object
 

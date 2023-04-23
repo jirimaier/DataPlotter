@@ -11,6 +11,12 @@ void MainWindow::initQmlTerminal() {
   context->setContextProperty("messageModel", &messageModel);
   context->setContextProperty("ansiTerminalModel", &ansiTerminalModel);
 
+  // Get the QQmlEngine instance from the widget
+  QQmlEngine* engine = ui->quickWidget->engine();
+
+  // Add the import path to the directory where the QML file is located
+  engine->addImportPath(":/qml/GenericComponents");
+
   qmlRegisterType<MessageModel>("DataPlotter", 1, 0, "MessageModel");
   qmlRegisterType<AnsiTerminalModel>("DataPlotter", 1, 0, "ANSITerminalModel");
 

@@ -548,11 +548,6 @@ void MainWindow::on_textEditTerminalDebug_cursorPositionChanged() {
     ui->textEditTerminalDebug->setTextColor(Qt::black);
 }
 
-void MainWindow::on_myTerminal_cellClicked(int row, int column) {
-  if (ui->pushButtonTerminalDebug->isChecked())
-    insertInTerminalDebug(QString("\\e[%1;%2H").arg(row + 1).arg(column + 1), Qt::red);
-}
-
 void MainWindow::on_comboBoxFFTType_currentIndexChanged(int index) {
   if (index != FFTType::spectrum) {
     ui->plotFFT->setYUnit("dB", false);

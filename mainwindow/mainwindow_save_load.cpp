@@ -246,10 +246,8 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarg
                 if (!addColorToBlacklist(item))
                     printMessage(tr("Invalid color-code").toUtf8(), item, MessageLevel::error, source);
             }
-            if (type == "noclickclr")
-                ui->radioButtonColorBlacklist->setChecked(true);
-            if (type == "clickclr")
-                ui->radioButtonColorWhitelist->setChecked(true);
+
+            ui->comboBoxTerminalColorListMode->setCurrentIndex(type == "noclickclr" ? 0 : 1);
             updateColorBlacklist();
         }
 

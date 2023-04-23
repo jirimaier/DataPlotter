@@ -108,5 +108,8 @@
     <qresource prefix="/">
         <file>qml/ExampleQmlTerminal.qml</file>
         <file>qml/DefaultQmlTerminal.qml</file>
+        <file>qml/DataPlotterComponents/ANSITerminal.qml</file>
+        <file>qml/DataPlotterComponents/qmldir</file>
+        <file>qml/DataPlotterComponents/MessageConsole.qml</file>
     </qresource>
 </RCC>

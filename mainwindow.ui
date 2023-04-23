@@ -777,7 +777,7 @@
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>10</number>
+           <number>1</number>
           </property>
           <property name="iconSize">
            <size>
@@ -803,7 +803,7 @@
           <property name="tabBarAutoHide">
            <bool>false</bool>
           </property>
-          <widget class="QWidget" name="range">
+          <widget class="QWidget" name="Range">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
              <horstretch>0</horstretch>
@@ -3278,7 +3278,7 @@
             </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="measure">
+          <widget class="QWidget" name="Measure">
            <attribute name="icon">
             <iconset resource="resources.qrc">
              <normaloff>:/images/icons/measure.png</normaloff>:/images/icons/measure.png</iconset>
@@ -5053,7 +5053,7 @@
             </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="tab">
+          <widget class="QWidget" name="Filter">
            <attribute name="icon">
             <iconset resource="resources.qrc">
              <normaloff>:/images/icons/filter.png</normaloff>:/images/icons/filter.png</iconset>
@@ -5267,7 +5267,7 @@
             </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="xy">
+          <widget class="QWidget" name="XY">
            <attribute name="icon">
             <iconset resource="resources.qrc">
              <normaloff>:/images/icons/xyTab.png</normaloff>:/images/icons/xyTab.png</iconset>
@@ -5944,7 +5944,7 @@
             </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="fft">
+          <widget class="QWidget" name="FFT">
            <attribute name="icon">
             <iconset resource="resources.qrc">
              <normaloff>:/images/icons/fft.png</normaloff>:/images/icons/fft.png</iconset>
@@ -6719,7 +6719,7 @@
             </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="freqtime">
+          <widget class="QWidget" name="FreqTime">
            <attribute name="icon">
             <iconset resource="resources.qrc">
              <normaloff>:/images/icons/freqtime.png</normaloff>:/images/icons/freqtime.png</iconset>
@@ -6953,7 +6953,7 @@
             </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="export_2">
+          <widget class="QWidget" name="CSV">
            <attribute name="icon">
             <iconset resource="resources.qrc">
              <normaloff>:/images/icons/export.png</normaloff>:/images/icons/export.png</iconset>
@@ -7294,7 +7294,7 @@
             </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="settings">
+          <widget class="QWidget" name="Settings">
            <attribute name="icon">
             <iconset resource="resources.qrc">
              <normaloff>:/images/icons/settingsLighter.png</normaloff>:/images/icons/settingsLighter.png</iconset>
@@ -7842,7 +7842,7 @@
             </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="tab_5">
+          <widget class="QWidget" name="TerminalDev">
            <attribute name="icon">
             <iconset resource="resources.qrc">
              <normaloff>:/images/icons/terminal.png</normaloff>:/images/icons/terminal.png</iconset>
@@ -7851,185 +7851,8 @@
             <string/>
            </attribute>
            <layout class="QGridLayout" name="gridLayout_27" rowstretch="1,1000">
-            <item row="1" column="0">
-             <layout class="QGridLayout" name="gridLayout_14">
-              <item row="1" column="0" colspan="2">
-               <layout class="QHBoxLayout" name="horizontalLayout_35">
-                <item>
-                 <widget class="QRadioButton" name="radioButtonColorBlacklist">
-                  <property name="text">
-                   <string>Forbiden</string>
-                  </property>
-                  <property name="checked">
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QRadioButton" name="radioButtonColorWhitelist">
-                  <property name="text">
-                   <string>Allowed</string>
-                  </property>
-                  <property name="checkable">
-                   <bool>true</bool>
-                  </property>
-                  <property name="checked">
-                   <bool>false</bool>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-              <item row="2" column="0" rowspan="3">
-               <widget class="QListWidget" name="listWidgetTerminalBlacklist">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Preferred" vsizetype="Ignored">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>16777215</width>
-                  <height>16777215</height>
-                 </size>
-                </property>
-                <property name="verticalScrollBarPolicy">
-                 <enum>Qt::ScrollBarAlwaysOn</enum>
-                </property>
-                <property name="horizontalScrollBarPolicy">
-                 <enum>Qt::ScrollBarAlwaysOff</enum>
-                </property>
-                <property name="editTriggers">
-                 <set>QAbstractItemView::NoEditTriggers</set>
-                </property>
-                <property name="selectionMode">
-                 <enum>QAbstractItemView::MultiSelection</enum>
-                </property>
-                <property name="layoutMode">
-                 <enum>QListView::SinglePass</enum>
-                </property>
-                <property name="sortingEnabled">
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="1">
-               <widget class="QPushButton" name="pushButtonTerminalBlacklisAddSelect">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>16777215</width>
-                  <height>16777215</height>
-                 </size>
-                </property>
-                <property name="toolTip">
-                 <string>Add color</string>
-                </property>
-                <property name="text">
-                 <string/>
-                </property>
-                <property name="icon">
-                 <iconset resource="resources.qrc">
-                  <normaloff>:/images/icons/plus.png</normaloff>:/images/icons/plus.png</iconset>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="1">
-               <widget class="QPushButton" name="pushButtonTerminalBlacklistClear">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="toolTip">
-                 <string>Delete selected color</string>
-                </property>
-                <property name="text">
-                 <string/>
-                </property>
-                <property name="icon">
-                 <iconset resource="resources.qrc">
-                  <normaloff>:/images/icons/minus.png</normaloff>:/images/icons/minus.png</iconset>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="1">
-               <widget class="QPushButton" name="pushButtonTerminalBlacklistCopy">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="toolTip">
-                 <string>Copy list of colors</string>
-                </property>
-                <property name="text">
-                 <string/>
-                </property>
-                <property name="icon">
-                 <iconset resource="resources.qrc">
-                  <normaloff>:/images/icons/copy.png</normaloff>:/images/icons/copy.png</iconset>
-                </property>
-               </widget>
-              </item>
-              <item row="5" column="0">
-               <widget class="QLineEdit" name="lineEditTerminalBlacklist">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true"/>
-                </property>
-                <property name="placeholderText">
-                 <string>Add color</string>
-                </property>
-                <property name="clearButtonEnabled">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item row="5" column="1">
-               <widget class="QPushButton" name="pushButtonTerminalBlacklisAdd">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="toolTip">
-                 <string>Add color</string>
-                </property>
-                <property name="text">
-                 <string/>
-                </property>
-                <property name="icon">
-                 <iconset resource="resources.qrc">
-                  <normaloff>:/images/icons/send.png</normaloff>:/images/icons/send.png</iconset>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="0" colspan="2">
-               <widget class="QLabel" name="label_12">
-                <property name="text">
-                 <string>Clickable background colors in terminal</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
             <item row="0" column="1" rowspan="2">
-             <layout class="QGridLayout" name="gridLayout_16">
+             <layout class="QGridLayout" name="gridLayout_16" columnstretch="1,4" columnminimumwidth="0,0">
               <item row="0" column="0">
                <widget class="QTextEdit" name="textEditTerminalDebug">
                 <property name="sizePolicy">
@@ -8052,7 +7875,7 @@
               <item row="0" column="1" rowspan="2">
                <widget class="QListWidget" name="listWidgetTerminalCodeList">
                 <property name="sizePolicy">
-                 <sizepolicy hsizetype="Preferred" vsizetype="Ignored">
+                 <sizepolicy hsizetype="Maximum" vsizetype="Ignored">
                   <horstretch>0</horstretch>
                   <verstretch>0</verstretch>
                  </sizepolicy>
@@ -8463,6 +8286,163 @@
                <enum>Qt::Vertical</enum>
               </property>
              </widget>
+            </item>
+            <item row="1" column="0">
+             <layout class="QVBoxLayout" name="verticalLayout_8" stretch="1,1,1000,1,1">
+              <property name="spacing">
+               <number>2</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="label_12">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string>Clickable colors</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QComboBox" name="comboBoxTerminalColorListMode">
+                <item>
+                 <property name="text">
+                  <string>BlackList</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>AllowedList</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item>
+               <widget class="QListWidget" name="listWidgetTerminalBlacklist">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Maximum" vsizetype="Ignored">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="verticalScrollBarPolicy">
+                 <enum>Qt::ScrollBarAlwaysOn</enum>
+                </property>
+                <property name="horizontalScrollBarPolicy">
+                 <enum>Qt::ScrollBarAlwaysOff</enum>
+                </property>
+                <property name="editTriggers">
+                 <set>QAbstractItemView::NoEditTriggers</set>
+                </property>
+                <property name="selectionMode">
+                 <enum>QAbstractItemView::MultiSelection</enum>
+                </property>
+                <property name="layoutMode">
+                 <enum>QListView::SinglePass</enum>
+                </property>
+                <property name="sortingEnabled">
+                 <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="lineEditTerminalBlacklist">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true"/>
+                </property>
+                <property name="placeholderText">
+                 <string>Add by code</string>
+                </property>
+                <property name="clearButtonEnabled">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_17">
+                <item>
+                 <widget class="QPushButton" name="pushButtonTerminalBlacklisAddSelect">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="toolTip">
+                   <string>Add color</string>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="resources.qrc">
+                    <normaloff>:/images/icons/plus.png</normaloff>:/images/icons/plus.png</iconset>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="pushButtonTerminalBlacklistClear">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>Delete selected color</string>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="resources.qrc">
+                    <normaloff>:/images/icons/minus.png</normaloff>:/images/icons/minus.png</iconset>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="pushButtonTerminalBlacklistCopy">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>Copy list of colors</string>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="resources.qrc">
+                    <normaloff>:/images/icons/copy.png</normaloff>:/images/icons/copy.png</iconset>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
             </item>
            </layout>
           </widget>
