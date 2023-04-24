@@ -14,6 +14,7 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "mainwindow.h"
+#include "ui_developeroptions.h"
 
 void MainWindow::comRefresh() {
     // Zjistí, jestli nastala změna v portech.
@@ -347,7 +348,7 @@ void MainWindow::updateConsole() {
     foreach (QString str, consoleBuffer)
         ui->plainTextEditConsole->appendHtml(str);
     consoleBuffer.clear();
-    if (tmr.elapsed() > 100 && ui->checkBoxFreezeSafe->isChecked() && ui->comboBoxOutputLevel->currentIndex() == OutputLevel::info) {
+    if (tmr.elapsed() > 100 && developerOptions->getUi()->checkBoxFreezeSafe->isChecked() && ui->comboBoxOutputLevel->currentIndex() == OutputLevel::info) {
         ui->comboBoxOutputLevel->setCurrentIndex(OutputLevel::warning);
         QMessageBox::warning(this, tr("Freeze prevention"), tr("Printing text takes too long, disabling info messages!"), QMessageBox::Ok, QMessageBox::Ok);
     }

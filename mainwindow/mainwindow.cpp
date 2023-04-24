@@ -14,11 +14,14 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "mainwindow.h"
+#include "ui_developeroptions.h"
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWindow),   serialSettingsDialog(new SerialSettingsDialog) {
     ui->setupUi(this);
     qApp->setStyle("Fusion");
     this->setAttribute(Qt::WA_NativeWindow);
+
+    developerOptions = new DeveloperOptions(ui->quickWidget);
 
     ui->doubleSpinBoxRangeVerticalRange->trimDecimalZeroes = true;
     ui->doubleSpinBoxRangeVerticalRange->emptyDefaultValue = 1;
@@ -64,9 +67,12 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
 }
 
 MainWindow::~MainWindow() {
+    seveDefaultSettings();
     ui->quickWidget->setSource(QUrl());
     ui->quickWidget->engine()->clearComponentCache();
-    delete ui; delete serialSettingsDialog; delete qmlTerminalInterface;
+    developerOptions->close();
+    serialSettingsDialog->close();
+    delete ui; delete serialSettingsDialog; delete qmlTerminalInterface; delete developerOptions;
 }
 
 void MainWindow::setComboboxItemVisible(QComboBox& comboBox, int index, bool visible) {
@@ -109,7 +115,6 @@ void MainWindow::init(QTranslator* translator, const PlotData* plotData, const P
     QObject::connect(plotData, &PlotData::clearLogic, ui->plot, &MyMainPlot::clearLogicGroup);
     QObject::connect(&fileSender, &FileSender::transmit, serialReader, &SerialReader::write);
     QObject::connect(qmlTerminalInterface, &QmlTerminalInterface::dataTransmitted, serialReader, &SerialReader::write);
-
     QObject::connect(avg, &Averager::addVectorToPlot, ui->plot, &MyMainPlot::newDataVector);
     QObject::connect(avg, &Averager::addPointToPlot, ui->plot, &MyMainPlot::newDataPoint);
 
@@ -136,6 +141,7 @@ void MainWindow::changeLanguage(QString code) {
     qApp->installTranslator(translator);
     ui->retranslateUi(this);
     serialSettingsDialog->retranslate();
+    developerOptions->retranslate();
     ui->plotPeak->setInfoText();
 }
 
@@ -164,7 +170,7 @@ void MainWindow::serialConnectResult(bool connected, QString message, QString de
     ui->pushButtonConnect->setIcon(connected ? iconConnected : iconNotConnected);
     ui->labelPortInfo->setText(message);
     ui->labelPortInfo->setToolTip(details);
-    if (connected && ui->checkBoxClearOnReconnect->isChecked()) {
+    if (connected && developerOptions->getUi()->checkBoxClearOnReconnect->isChecked()) {
         ui->plot->resetChannels();
         ui->plotxy->clear();
         ui->plotFFT->clear(0);
@@ -183,16 +189,16 @@ void MainWindow::serialConnectResult(bool connected, QString message, QString de
         resetQmlTerminal();
         pendingMessagePart.clear();
     }
-    if (connected && !ui->lineEditResetCmd->text().isEmpty()) {
+    if (connected && !developerOptions->getUi()->lineEditResetCmd->text().isEmpty()) {
         // Poslat reset příkaz
-        QByteArray data = ui->textEditTerminalDebug->toPlainText().toLocal8Bit();
+        QByteArray data = developerOptions->getUi()->textEditTerminalDebug->toPlainText().toLocal8Bit();
         data.replace("\\n", "\n");
         data.replace("\\r", "\r");
-        emit writeToSerial(ui->lineEditResetCmd->text().toLocal8Bit());
+        emit writeToSerial(developerOptions->getUi()->lineEditResetCmd->text().toLocal8Bit());
     }
 
     dataRateTimer.start();
-    autoAutosetPending = ui->checkBoxAutoAutoSet->isChecked();
+    autoAutosetPending = developerOptions->getUi()->checkBoxAutoAutoSet->isChecked();
 }
 
 void MainWindow::updateDivs() {
@@ -412,12 +418,12 @@ void MainWindow::on_comboBoxAvgIndividualCh_currentIndexChanged(int arg1) {
     ui->spinBoxAvg->blockSignals(false);
 }
 
-void MainWindow::on_checkBoxTriggerLineEn_stateChanged(int arg1) {
+void MainWindow::checkBoxTriggerLineEn_stateChanged(int arg1) {
     ui->plot->setTriggerLineVisible(arg1 == Qt::Checked);
 }
 
-void MainWindow::on_pushButtonClearGraph_clicked() {
-    int chid = ui->comboBoxChClear->currentIndex();
+void MainWindow::pushButtonClearGraph_clicked() {
+    int chid = developerOptions->getUi()->comboBoxChClear->currentIndex();
 
     if (IS_LOGIC_INDEX(chid))
         ui->plot->clearLogicGroup(CH_LIST_INDEX_TO_LOGIC_GROUP(chid), 0);
@@ -506,65 +512,8 @@ void MainWindow::on_comboBoxFIR_currentIndexChanged(int index) {
     }
 }
 
-void MainWindow::on_checkBoxEchoReply_toggled(bool checked) {
+void MainWindow::checkBoxEchoReply_toggled(bool checked) {
     emit replyEcho(checked);
-}
-
-void MainWindow::on_lineEditTerminalBlacklist_returnPressed() {
-    if (addColorToBlacklist(ui->lineEditTerminalBlacklist->text().toLocal8Bit().trimmed())) {
-        ui->lineEditTerminalBlacklist->clear();
-        ui->lineEditTerminalBlacklist->setStyleSheet("color: rgb(0, 0, 0);");
-        updateColorBlacklist();
-    } else
-        ui->lineEditTerminalBlacklist->setStyleSheet("color: rgb(255, 0, 0);");
-}
-
-bool MainWindow::addColorToBlacklist(QByteArray code) {
-    QColor clr;
-    bool valid = false;
-    code.replace("\u001b", "");
-    code.replace("\\u001b", "");
-    code.replace("\\e", "");
-    code.replace("[", "");
-    code.replace("m", "");
-    if (code.at(0) == '3')
-        code.replace(0, 1, "4");
-
-    valid = ansiTerminalModel.colorFromSequence(code, clr);
-
-    if (valid) {
-        QPixmap colour = QPixmap(12, 12);
-        colour.fill(clr);
-        ui->listWidgetTerminalBlacklist->addItem(new QListWidgetItem(QIcon(colour), code, ui->listWidgetTerminalBlacklist));
-    }
-    return valid;
-}
-
-void MainWindow::updateColorBlacklist() {
-    QList<QColor> list;
-    for (int i = 0; i < ui->listWidgetTerminalBlacklist->count(); i++) {
-        QPixmap pixmap =  ui->listWidgetTerminalBlacklist->item(i)->icon().pixmap(1, 1);
-        list.append(pixmap.toImage().pixel(0, 0));
-    }
-
-    ansiTerminalModel.setColorExceptionList(list, ui->comboBoxTerminalColorListMode->currentIndex()==0);
-}
-
-void MainWindow::on_pushButtonTerminalBlacklistClear_clicked() {
-    auto selection = ui->listWidgetTerminalBlacklist->selectedItems();
-    if (selection.isEmpty())
-        ui->listWidgetTerminalBlacklist->clear();
-    else {
-        foreach (QListWidgetItem* item, ui->listWidgetTerminalBlacklist->selectedItems()) {
-            delete ui->listWidgetTerminalBlacklist->takeItem(ui->listWidgetTerminalBlacklist->row(item));
-        }
-    }
-    updateColorBlacklist();
-}
-
-void MainWindow::on_lineEditTerminalBlacklist_textChanged(const QString& arg1) {
-    if (arg1.isEmpty())
-        ui->lineEditTerminalBlacklist->setStyleSheet("");
 }
 
 void MainWindow::on_comboBoxBaud_currentTextChanged(const QString& arg1) {
@@ -572,17 +521,6 @@ void MainWindow::on_comboBoxBaud_currentTextChanged(const QString& arg1) {
     qint32 baud = arg1.toUInt(&isok);
     if (isok)
         emit changeSerialBaud(baud);
-}
-
-void MainWindow::on_pushButtonTerminalBlacklistCopy_clicked() {
-    QClipboard* clipboard = QGuiApplication :: clipboard();
-    QString settingsEntry;
-    settingsEntry.append(ui->comboBoxTerminalColorListMode->currentIndex()==0?"noclickclr:":"clickclr:");
-    for (int i = 0; i < ui->listWidgetTerminalBlacklist->count(); i++)
-        settingsEntry.append(ui->listWidgetTerminalBlacklist->item(i)->text().toLocal8Bit().replace(';', '.') + ',');
-    settingsEntry.remove(settingsEntry.length() - 1, 1);
-    settingsEntry.append(";\n");
-    clipboard ->setText(settingsEntry);
 }
 
 void MainWindow::on_pushButtonRecordMeasurements1_clicked() {
@@ -754,39 +692,6 @@ void MainWindow::on_tabs_right_currentChanged(int index) {
 #endif
 }
 
-void MainWindow::on_pushButtonTerminalDebugShift_clicked()
-{
-    bool ok;
-    int i = QInputDialog::getInt(this,"",tr("Shift content verticaly"),0,-1000,1000,1, &ok, Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
-    if(!ok) return;
-
-    QString input = ui->textEditTerminalDebug->toPlainText();
-    QString output = "";
-    QRegularExpression re("\\\\e\\[\\d+;\\d+H");
-    while(true) {
-        QRegularExpressionMatch match = re.match(input);
-        if(match.hasMatch()) {
-            output.append(input.left(match.capturedStart()));
-            QString a = match.captured();
-            a = a.mid(3,a.length()-4);
-            auto b = a.split(';');
-            unsigned int c = b.first().toUInt(&ok);
-            unsigned int d = b.last().toUInt(&ok);
-            if(!ok) return;
-            output.append(QString("\\e[%1;%2H").arg(c+i).arg(d));
-            input.remove(0,match.capturedStart()+match.capturedLength());
-        }
-        else
-        {
-            output.append(input);
-            break;
-        }
-    }
-    ui->textEditTerminalDebug->setPlainText(output);
-    on_pushButtonTerminalDebugSend_clicked();
-}
-
-
 void MainWindow::on_pushButtonCenter_toggled(bool checked)
 {
     if(checked) {
@@ -803,7 +708,6 @@ void MainWindow::on_pushButtonCenter_toggled(bool checked)
     }
 
 }
-
 
 void MainWindow::on_pushButtonPositive_toggled(bool checked)
 {
@@ -868,10 +772,8 @@ void MainWindow::on_listWidgetCom_currentItemChanged(QListWidgetItem *current, Q
     emit beginSerialConnection(current->data(Qt::UserRole).toString(), ui->comboBoxBaud->currentText().toInt(), settings.dataBits, settings.parity, settings.stopBits, settings.flowControl);
 }
 
-
-void MainWindow::on_comboBoxTerminalColorListMode_currentIndexChanged(int index)
+void MainWindow::on_pushButton_clicked()
 {
-    Q_UNUSED(index);
-    updateColorBlacklist();
+    developerOptions->show();
 }
 

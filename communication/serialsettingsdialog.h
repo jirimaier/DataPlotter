@@ -27,7 +27,7 @@ class SerialSettingsDialog;
 class SerialSettingsDialog : public QDialog {
   Q_OBJECT
 
- public:
+ private:
   Ui::SerialSettingsDialog* ui;
 
  public:

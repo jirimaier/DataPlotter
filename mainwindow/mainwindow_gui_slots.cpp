@@ -14,6 +14,7 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "mainwindow.h"
+#include "ui_developeroptions.h"
 
 void MainWindow::rangeTypeChanged() {
   if (ui->radioButtonFixedRange->isChecked()) {
@@ -289,16 +290,6 @@ void MainWindow::on_pushButtonHideCh_toggled(bool checked) {
     ui->plot->setLogicVisibility(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT, !checked);
 }
 
-void MainWindow::on_pushButtonTerminalDebug_toggled(bool checked) {
-  // TODO
-}
-
-void MainWindow::insertInTerminalDebug(QString text, QColor textColor) {
-  ui->textEditTerminalDebug->setTextColor(textColor);
-  ui->textEditTerminalDebug->textCursor().insertText(text);
-  ui->textEditTerminalDebug->setTextColor(Qt::black);
-}
-
 void MainWindow::signalMeasurementsResult1(double period, double freq, double amp, double min, double max, double vrms, double dc, double fs, double rise, double fall, int samples) {
   if (recordingOfMeasurements1.isOpen()) {
     char decimal = ui->radioButtonCSVDot->isChecked() ? '.' : ',';
@@ -464,36 +455,6 @@ void MainWindow::xyResult(QSharedPointer<QCPCurveDataContainer> data) {
   xyTimer.start();
 }
 
-void MainWindow::on_listWidgetTerminalCodeList_itemClicked(QListWidgetItem* item) {
-  QString code = "";
-  if (item->text().contains(" "))
-    code = item->text().left(item->text().indexOf(" "));
-  else
-    code = item->text();
-
-  if (code.at(0) == '\\')
-    insertInTerminalDebug(QString(code.left(2)), Qt::blue);
-
-  else if (code == "3?m") {
-    QColor color = QColorDialog::getColor(Qt::white);
-    if (!color.isValid())
-      return;
-    QByteArray colorCode = ansiTerminalModel.nearestColorCode(color);
-    insertInTerminalDebug(QString("\\e[3" + colorCode + "m").toUtf8(), Qt::red);
-  }
-
-  else if (code == "4?m") {
-    QColor color = QColorDialog::getColor(Qt::black);
-    if (!color.isValid())
-      return;
-    QByteArray colorCode = ansiTerminalModel.nearestColorCode(color);
-    insertInTerminalDebug(QString("\\e[4" + colorCode + "m").toUtf8(), Qt::red);
-  }
-
-  else
-    insertInTerminalDebug(QString("\\e[" + code).toUtf8(), Qt::red);
-}
-
 void MainWindow::on_pushButtonFFT_toggled(bool checked) {
   on_checkBoxFFTCh1_toggled(ui->checkBoxFFTCh1->isChecked());
   on_checkBoxFFTCh2_toggled(ui->checkBoxFFTCh2->isChecked());
@@ -518,7 +479,7 @@ void MainWindow::on_doubleSpinBoxRangeVerticalRange_valueChanged(double arg1) {
   ui->doubleSpinBoxYCur2->setSingleStep(pow(10.0, floor(log10(arg1)) - 2));
 }
 
-void MainWindow::on_pushButtonClearAll_clicked() {
+void MainWindow::pushButtonClearAll_clicked() {
   ui->plot->resetChannels();
   emit resetChannels();
   emit resetAverager();
@@ -528,24 +489,6 @@ void MainWindow::on_pushButtonChangeXYColor_clicked() {
   QColor color = QColorDialog::getColor(ui->plotxy->graphXY->pen().color());
   if (color.isValid())
     ui->plotxy->graphXY->setPen(QColor(color));
-}
-
-void MainWindow::on_pushButtonTerminalDebugSend_clicked() {
-  QByteArray data = ui->textEditTerminalDebug->toPlainText().toUtf8();
-  data.replace("\n", "\r\n"); // Odřádkování v textovém poli
-  data.replace("\\n", "\n");
-  data.replace("\\e", "\u001b");
-  data.replace("\\r", "\r");
-  data.replace("\\t", "\t");
-  data.replace("\\b", "\b");
-  data.replace("\\a", "\a");
-
-  ansiTerminalModel.printToTerminal(data);
-}
-
-void MainWindow::on_textEditTerminalDebug_cursorPositionChanged() {
-  if (ui->textEditTerminalDebug->textCursor().selectedText().isEmpty())
-    ui->textEditTerminalDebug->setTextColor(Qt::black);
 }
 
 void MainWindow::on_comboBoxFFTType_currentIndexChanged(int index) {
@@ -642,12 +585,3 @@ void MainWindow::on_pushButtonInterpolate_toggled(bool checked) {
   }
 }
 
-void MainWindow::on_pushButtonTerminalBlacklisAddSelect_clicked()
-{
-    QColor color = QColorDialog::getColor(Qt::black);
-    if (!color.isValid())
-      return;
-    QByteArray colorCode = ansiTerminalModel.nearestColorCode(color);
-    addColorToBlacklist(QString("\\e[3" + colorCode + "m").toUtf8());
-    updateColorBlacklist();
-}

@@ -10,6 +10,7 @@ DEFINES += QT_DEPRECATED_WARNINGS QCUSTOMPLOT_USE_OPENGL
 CONFIG += c++11
 
 FORMS += mainwindow.ui \
+    developeroptions.ui \
     serialsettingsdialog.ui
 
 TRANSLATIONS += \
@@ -33,6 +34,7 @@ HEADERS += \
     customwidgets/myframewithresizesignal.h \
     customwidgets/mypow2spinbox.h \
     customwidgets/myscaledoublespinbox.h \
+    developeroptions.h \
     global.h \
     mainwindow/mainwindow.h \
     math/averager.h \
@@ -68,6 +70,7 @@ SOURCES += \
     customwidgets/myframewithresizesignal.cpp \
     customwidgets/mypow2spinbox.cpp \
     customwidgets/myscaledoublespinbox.cpp \
+    developeroptions.cpp \
     main.cpp \
     mainwindow/mainwindow.cpp \
     mainwindow/mainwindow_autoset.cpp \

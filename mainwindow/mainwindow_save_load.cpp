@@ -14,6 +14,7 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "mainwindow.h"
+#include "ui_developeroptions.h"
 
 void MainWindow::initSetables() {
     // Range
@@ -33,10 +34,10 @@ void MainWindow::initSetables() {
     setables["filter"] = {ui->comboBoxFIR,true};
 
     // Settings
-    setables["clearonrec"] = {ui->checkBoxClearOnReconnect,true};
-    setables["rstcmd"] = {ui->lineEditResetCmd,true};
-    setables["autoautoset"] = {ui->checkBoxAutoAutoSet,true};
-    setables["nofreeze"] = {ui->checkBoxFreezeSafe,true};
+    setables["clearonrec"] = {developerOptions->getUi()->checkBoxClearOnReconnect,true};
+    setables["rstcmd"] = {developerOptions->getUi()->lineEditResetCmd,true};
+    setables["autoautoset"] = {developerOptions->getUi()->checkBoxAutoAutoSet,true};
+    setables["nofreeze"] = {developerOptions->getUi()->checkBoxFreezeSafe,true};
 }
 
 void MainWindow::applyGuiElementSettings(QWidget* target, QString value) {
@@ -91,11 +92,11 @@ QByteArray MainWindow::getSettings() {
 
     settings.append(QString("baud:%1;\n").arg(ui->comboBoxBaud->currentText().toUInt()).toLocal8Bit());
 
-    if (ui->checkBoxTriggerLineEn->checkState() == Qt::Checked)
+    if (developerOptions->getUi()->checkBoxTriggerLineEn->checkState() == Qt::Checked)
         settings.append("trigline:on;\n");
-    else if (ui->checkBoxTriggerLineEn->checkState() == Qt::Unchecked)
+    else if (developerOptions->getUi()->checkBoxTriggerLineEn->checkState() == Qt::Unchecked)
         settings.append("trigline:off;\n");
-    else if (ui->checkBoxTriggerLineEn->checkState() == Qt::PartiallyChecked)
+    else if (developerOptions->getUi()->checkBoxTriggerLineEn->checkState() == Qt::PartiallyChecked)
         settings.append("trigline:auto;\n");
 
     if (!recommendOpenGL)
@@ -170,11 +171,11 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarg
 
         else if (type == "trigline") {
             if (value == "on")
-                ui->checkBoxTriggerLineEn->setCheckState(Qt::Checked);
+                developerOptions->getUi()->checkBoxTriggerLineEn->setCheckState(Qt::Checked);
             if (value == "off")
-                ui->checkBoxTriggerLineEn->setCheckState(Qt::Unchecked);
+                developerOptions->getUi()->checkBoxTriggerLineEn->setCheckState(Qt::Unchecked);
             if (value == "auto")
-                ui->checkBoxTriggerLineEn->setCheckState(Qt::PartiallyChecked);
+                developerOptions->getUi()->checkBoxTriggerLineEn->setCheckState(Qt::PartiallyChecked);
         }
 
         else if (type == "trigch") {
@@ -184,7 +185,7 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarg
             if (chid >= ANALOG_COUNT)
                 chid = ANALOG_COUNT - 1;
             ui->plot->setTriggerLineChannel(chid);
-            if (ui->checkBoxTriggerLineEn->checkState() == Qt::PartiallyChecked) {
+            if (developerOptions->getUi()->checkBoxTriggerLineEn->checkState() == Qt::PartiallyChecked) {
                 ui->plot->setTriggerLineVisible(true);
                 triggerLineTimer.start();
             }
@@ -192,7 +193,7 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarg
 
         else if (type == "trigpos") {
             ui->plot->setTriggerLineValue(value.toDouble());
-            if (ui->checkBoxTriggerLineEn->checkState() == Qt::PartiallyChecked) {
+            if (developerOptions->getUi()->checkBoxTriggerLineEn->checkState() == Qt::PartiallyChecked) {
                 ui->plot->setTriggerLineVisible(true);
                 triggerLineTimer.start();
             }
@@ -241,14 +242,14 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarg
 
         else if (type == "noclickclr" || type == "clickclr") {
             QByteArrayList list = value.replace('.', ';').split(',');
-            ui->listWidgetTerminalBlacklist->clear();
+            developerOptions->getUi()->listWidgetTerminalBlacklist->clear();
             foreach (QByteArray item, list) {
-                if (!addColorToBlacklist(item))
+                if (!developerOptions->addColorToBlacklist(item))
                     printMessage(tr("Invalid color-code").toUtf8(), item, MessageLevel::error, source);
             }
 
-            ui->comboBoxTerminalColorListMode->setCurrentIndex(type == "noclickclr" ? 0 : 1);
-            updateColorBlacklist();
+            developerOptions->getUi()->comboBoxTerminalColorListMode->setCurrentIndex(type == "noclickclr" ? 0 : 1);
+            developerOptions->updateColorBlacklist();
         }
 
         else if (type == "clearch") {
@@ -335,7 +336,7 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarg
         printMessage(tr("Applied settings").toUtf8(), settings, MessageLevel::info, source);
 }
 
-void MainWindow::on_pushButtonLoadFile_clicked() {
+void MainWindow::pushButtonLoadFile_clicked_new() {
     QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/settings/");
     QString fileName = QFileDialog::getOpenFileName(this, tr("Load file"), defaultName, tr("Settings file (*.cfg);;Comma separated values (*.csv);;Any file (*.*)"));
     if (fileName.isEmpty())
@@ -378,7 +379,7 @@ void MainWindow::on_pushButtonLoadFile_clicked() {
     }
 }
 
-void MainWindow::on_pushButtonDefaults_clicked() {
+void MainWindow::pushButtonDefaults_clicked_new() {
     QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/settings/default.cfg");
     QFile file(defaultName);
     if (file.open(QFile::ReadOnly | QFile::Text)) {
@@ -393,7 +394,7 @@ void MainWindow::on_pushButtonDefaults_clicked() {
     }
 }
 
-void MainWindow::on_pushButtonSaveSettings_clicked() {
+void MainWindow::pushButtonSaveSettings_clicked() {
     QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/settings/default.cfg");
     QString fileName = QFileDialog::getSaveFileName(this, tr("Save settings"), defaultName, tr("Settings file (*.cfg)"));
     if (fileName.isEmpty())
@@ -481,6 +482,18 @@ void MainWindow::saveToFile(QByteArray data) {
         msgBox.setText(tr("Cant write to file. (if installed in ProgramFiles, admin rights are required)"));
         msgBox.setIcon(QMessageBox::Critical);
         msgBox.exec();
+    }
+}
+
+void MainWindow::seveDefaultSettings()
+{
+    if (!QDir(QCoreApplication::applicationDirPath() + "/settings").exists())
+        QDir().mkdir((QCoreApplication::applicationDirPath() + "/settings"));
+    QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/settings/default.cfg");
+    QFile file(defaultName);
+    if (file.open(QFile::WriteOnly | QFile::Truncate)) {
+        file.write(getSettings());
+        file.close();
     }
 }
 

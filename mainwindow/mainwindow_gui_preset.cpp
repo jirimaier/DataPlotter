@@ -14,6 +14,7 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "mainwindow.h"
+#include "ui_developeroptions.h"
 
 void MainWindow::connectSignals() {
     connect(ui->pushButtonPause, &QPushButton::clicked, ui->plot, &MyMainPlot::togglePause);
@@ -67,7 +68,20 @@ void MainWindow::connectSignals() {
 
     connect(ui->plotFFT, &MyFFTPlot::newPeakValues, ui->plotPeak, &MyPeakPlot::newData);
 
-    QObject::connect(qmlTerminalInterface, &QmlTerminalInterface::dataSentToParser, this, &MainWindow::sendManualInput);
+    connect(qmlTerminalInterface, &QmlTerminalInterface::dataSentToParser, this, &MainWindow::sendManualInput);
+
+    connect(developerOptions, &DeveloperOptions::colorExceptionListChanged, &ansiTerminalModel, &AnsiTerminalModel::setColorExceptionList);
+    connect(developerOptions, &DeveloperOptions::loadQmlFile, this, &MainWindow::loadQmlFile);
+    connect(developerOptions, &DeveloperOptions::terminalDevToggled, &ansiTerminalModel, &AnsiTerminalModel::setShowGrid);
+    connect(developerOptions, &DeveloperOptions::printToTerminal, this, &MainWindow::printToTerminal);
+    //connect(developerOptions->getUi()->pushButtonLoadFile, &QPushButton::clicked, this, &MainWindow::opushButtonLoadFile_clicked);
+    //connect(developerOptions->getUi()->pushButtonDefaults, &QPushButton::clicked, this, &MainWindow::pushButtonDefaults_clicked);
+    //connect(developerOptions->getUi()->pushButtonSaveSettings, &QPushButton::clicked, this, &MainWindow::pushButtonSaveSettings_clicked);
+    connect(developerOptions->getUi()->pushButtonClearAll, &QPushButton::clicked, this, &MainWindow::pushButtonClearAll_clicked);
+    connect(developerOptions->getUi()->checkBoxTriggerLineEn, &QCheckBox::stateChanged, this, &MainWindow::checkBoxTriggerLineEn_stateChanged);
+    connect(developerOptions->getUi()->pushButtonClearGraph, &QPushButton::clicked, this, &MainWindow::pushButtonClearGraph_clicked);
+    connect(developerOptions->getUi()->checkBoxEchoReply, &QCheckBox::toggled, this, &MainWindow::checkBoxEchoReply_toggled);
+
 }
 
 void MainWindow::setAdaptiveSpinBoxes() {
@@ -162,13 +176,10 @@ void MainWindow::setGuiDefaults() {
     triggerLineTimer.setSingleShot(true);
     triggerLineTimer.setInterval(2000);
 
-    ui->checkBoxTriggerLineEn->setCheckState(Qt::PartiallyChecked);
+    developerOptions->getUi()->checkBoxTriggerLineEn->setCheckState(Qt::PartiallyChecked);
 
     ui->comboBoxFIR->setCurrentIndex(0);
     on_comboBoxFIR_currentIndexChanged(0); // Interpolátor načte filtr
-
-    addColorToBlacklist("40");
-    updateColorBlacklist();
 }
 
 void MainWindow::setGuiArrays() {
@@ -216,7 +227,7 @@ void MainWindow::fillChannelSelect() {
     ui->comboBoxLogic1->blockSignals(true);
     ui->comboBoxLogic2->blockSignals(true);
     ui->comboBoxAvgIndividualCh->blockSignals(true);
-    ui->comboBoxChClear->blockSignals(true);
+    developerOptions->getUi()->comboBoxChClear->blockSignals(true);
 
     for (int i = 0; i < ANALOG_COUNT; i++) {
         ui->comboBoxMathFirst1->addItem(getChName(i));
@@ -241,20 +252,20 @@ void MainWindow::fillChannelSelect() {
         ui->comboBoxFFTCh2->addItem(getChName(i));
         ui->comboBoxXYx->addItem(getChName(i));
         ui->comboBoxXYy->addItem(getChName(i));
-        ui->comboBoxChClear->addItem(getChName(i));
+        developerOptions->getUi()->comboBoxChClear->addItem(getChName(i));
     }
     for (int i = 1; i <= LOGIC_GROUPS - 1; i++) {
         ui->comboBoxSelectedChannel->addItem(tr("Logic %1").arg(i));
         ui->comboBoxCursor1Channel->addItem(tr("Logic %1").arg(i));
         ui->comboBoxCursor2Channel->addItem(tr("Logic %1").arg(i));
-        ui->comboBoxChClear->addItem(tr("Logic %1").arg(i));
+        developerOptions->getUi()->comboBoxChClear->addItem(tr("Logic %1").arg(i));
     }
 
     // Poslední logický kanál (pro přímý zápis) je bez čísla
     ui->comboBoxSelectedChannel->addItem(tr("Logic"));
     ui->comboBoxCursor1Channel->addItem(tr("Logic"));
     ui->comboBoxCursor2Channel->addItem(tr("Logic"));
-    ui->comboBoxChClear->addItem(tr("Logic"));
+    developerOptions->getUi()->comboBoxChClear->addItem(tr("Logic"));
 
     ui->comboBoxCursor1Channel->addItem("FFT 1");
     ui->comboBoxCursor1Channel->addItem("FFT 2");
@@ -302,5 +313,5 @@ void MainWindow::fillChannelSelect() {
     ui->comboBoxLogic1->blockSignals(false);
     ui->comboBoxLogic2->blockSignals(false);
     ui->comboBoxAvgIndividualCh->blockSignals(false);
-    ui->comboBoxChClear->blockSignals(false);
+    developerOptions->getUi()->comboBoxChClear->blockSignals(false);
 }
