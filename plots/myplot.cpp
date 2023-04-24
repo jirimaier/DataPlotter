@@ -51,13 +51,13 @@ MyPlot::MyPlot(QWidget* parent) : QCustomPlot(parent) {
 
 void MyPlot::onXRangeChanged(QCPRange range) {
   bool changed = false;
-  if (range.lower < -MAX_PLOT_ZOOMOUT) {
-    range.lower = -MAX_PLOT_ZOOMOUT;
-    changed = true;
+  if (range.lower < maxZoomX.lower) {
+      range.lower = maxZoomX.lower;
+      changed = true;
   }
-  if (range.upper > MAX_PLOT_ZOOMOUT) {
-    range.upper = MAX_PLOT_ZOOMOUT;
-    changed = true;
+  if (range.upper > maxZoomX.upper) {
+      range.upper = maxZoomX.upper;
+      changed = true;
   }
   if (changed)
     this->xAxis->setRange(range);
@@ -84,12 +84,12 @@ void MyPlot::initTracer() {
 
 void MyPlot::onYRangeChanged(QCPRange range) {
   bool changed = false;
-  if (range.lower < -MAX_PLOT_ZOOMOUT) {
-    range.lower = -MAX_PLOT_ZOOMOUT;
+  if (range.lower < maxZoomY.lower) {
+    range.lower = maxZoomY.lower;
     changed = true;
   }
-  if (range.upper > MAX_PLOT_ZOOMOUT) {
-    range.upper = MAX_PLOT_ZOOMOUT;
+  if (range.upper > maxZoomY.upper) {
+    range.upper = maxZoomY.upper;
     changed = true;
   }
   if (changed)
@@ -283,6 +283,32 @@ void MyPlot::checkIfTracerTextFits() {
 void MyPlot::leaveEvent(QMouseEvent* event) {
   Q_UNUSED(event)
   hideTracer();
+}
+
+QCPRange MyPlot::getMaxZoomY() const
+{
+  return maxZoomY;
+}
+
+void MyPlot::setMaxZoomY(const QCPRange &newMaxZoomY, bool reset)
+{
+  maxZoomY = newMaxZoomY;
+  onYRangeChanged(yAxis->range());
+  if(reset)
+    yAxis->setRange(maxZoomY);
+}
+
+QCPRange MyPlot::getMaxZoomX() const
+{
+  return maxZoomX;
+}
+
+void MyPlot::setMaxZoomX(const QCPRange &newMaxZoomX, bool reset)
+{
+  maxZoomX = newMaxZoomX;
+  onXRangeChanged(xAxis->range());
+  if(reset)
+    xAxis->setRange(maxZoomX);
 }
 
 int MyPlot::keyToNearestSample(QCPGraph* mGraph, double keyCoord) {

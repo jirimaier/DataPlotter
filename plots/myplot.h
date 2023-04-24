@@ -65,7 +65,13 @@ class MyPlot : public QCustomPlot {
   double getTimeCursorPosition(Cursors::enumCursors cursor) {return cursorsKey.at(cursor)->start->coords().x();}
   int keyToNearestSample(QCPGraph* graph, double keyCoord);
 
- protected:
+  QCPRange getMaxZoomX() const;
+  void setMaxZoomX(const QCPRange &newMaxZoomX, bool reset = false);
+
+  QCPRange getMaxZoomY() const;
+  void setMaxZoomY(const QCPRange &newMaxZoomY, bool reset = false);
+
+  protected:
   QCPLayer* cursorLayer;
   QVector<QCPItemLine*> cursorsKey, cursorsVal;
   QVector<QCPItemText*> curNums, curKeys, curVals;
@@ -86,6 +92,9 @@ class MyPlot : public QCustomPlot {
   QSharedPointer<MyAxisTickerWithUnit> unitTickerX, unitTickerY;
 
   virtual void leaveEvent(QMouseEvent* event);
+
+  QCPRange maxZoomX = {-MAX_PLOT_ZOOMOUT,MAX_PLOT_ZOOMOUT};
+  QCPRange maxZoomY = {-MAX_PLOT_ZOOMOUT,MAX_PLOT_ZOOMOUT};
 
  protected slots:
   virtual void mouseMoved(QMouseEvent* event) = 0;

@@ -35,7 +35,6 @@ class MyFFTPlot : public MyPlot {
   bool setChSorce(int ch, int sourceChannel, QColor color);
 
  private:
-  bool autoSize = true;
   void autoset();
   void setMouseCursorStyle(QMouseEvent* event);
   void updateTracerText(int index);
@@ -44,6 +43,7 @@ class MyFFTPlot : public MyPlot {
   QColor chSourceColor[2];
   QPair<QVector<double>, QVector<double> > getDataVector(int chID);
   bool holdmax[2] = {false, false};
+  bool firstAutoset = true;
 
  public slots:
   /// Přidá data (přepíše stará)
@@ -57,9 +57,6 @@ class MyFFTPlot : public MyPlot {
 
   /// Nastaví styl kanálu
   void setStyle(int chID, int style);
-
-  /// Zapne/vypne automatický rozsah
-  void setAutoSize(bool en);
 
   void setHoldMax1(bool en) {holdmax[0] = en;}
   void setHoldMax2(bool en) {holdmax[1] = en;}
