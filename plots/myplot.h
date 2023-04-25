@@ -111,9 +111,9 @@ class MyPlot : public QCustomPlot {
   void hideTracer();
   void enableMouseCursorControll(bool enabled);
 
- private slots:
-  void onXRangeChanged(QCPRange range);
-  void onYRangeChanged(QCPRange range);
+ protected slots:
+  virtual void onXRangeChanged(QCPRange range);
+  virtual void onYRangeChanged(QCPRange range);
 
  signals:
   void gridChanged();

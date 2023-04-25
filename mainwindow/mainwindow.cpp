@@ -15,15 +15,17 @@
 
 #include "mainwindow.h"
 #include "ui_developeroptions.h"
+#include "ui_freqtimeplotdialog.h"
 
-MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWindow),   serialSettingsDialog(new SerialSettingsDialog) {
+MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWindow),   serialSettingsDialog(new SerialSettingsDialog(this)) {
     ui->setupUi(this);
     qApp->setStyle("Fusion");
     this->setAttribute(Qt::WA_NativeWindow);
 
     configFilePath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/config.ini";
 
-    developerOptions = new DeveloperOptions(ui->quickWidget);
+    developerOptions = new DeveloperOptions(this,ui->quickWidget);
+    freqTimePlotDialog = new FreqTimePlotDialog(nullptr);
 
     ui->doubleSpinBoxRangeVerticalRange->trimDecimalZeroes = true;
     ui->doubleSpinBoxRangeVerticalRange->emptyDefaultValue = 1;
@@ -33,7 +35,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
     for (int i = 0; i < ANALOG_COUNT; i++)
         averagerCounts[i] = 8;
 
-    ui->plotPeak->setUptimeTimer(&uptime);
+    freqTimePlotDialog->getUi()->plotPeak->setUptimeTimer(&uptime);
     uptime.start();
 
     initQmlTerminal();
@@ -70,8 +72,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
 
 void MainWindow::closeEvent (QCloseEvent *event)
 {
-    developerOptions->close();
-    serialSettingsDialog->close();
+    freqTimePlotDialog->close();
     ui->quickWidget->setSource(QUrl());
     ui->quickWidget->engine()->clearComponentCache();
     saveDefaultSettings();
@@ -82,6 +83,7 @@ MainWindow::~MainWindow() {
     delete serialSettingsDialog;
     delete qmlTerminalInterface;
     delete developerOptions;
+    delete freqTimePlotDialog;
     delete ui;
 }
 
@@ -152,7 +154,8 @@ void MainWindow::changeLanguage(QString code) {
     ui->retranslateUi(this);
     serialSettingsDialog->retranslate();
     developerOptions->retranslate();
-    ui->plotPeak->setInfoText();
+    freqTimePlotDialog->retranslate();
+    freqTimePlotDialog->getUi()->plotPeak->setInfoText();
 }
 
 void MainWindow::showPlotStatus(PlotStatus::enumPlotStatus type) {
@@ -185,7 +188,7 @@ void MainWindow::serialConnectResult(bool connected, QString message, QString de
         ui->plotxy->clear();
         ui->plotFFT->clear(0);
         ui->plotFFT->clear(1);
-        ui->plotPeak->clear();
+        freqTimePlotDialog->getUi()->plotPeak->clear();
         ansiTerminalModel.clear();
         ansiTerminalModel.setActive(false);
         ui->plainTextEditConsole->clear();
@@ -464,7 +467,7 @@ void MainWindow::on_lineEditHUnit_textChanged(const QString& arg1) {
     freqUseUnits = (unit == "s");
 
     ui->plotFFT->setXUnit(freqUseUnits ? "Hz" : "", freqUseUnits);
-    ui->plotPeak->setYUnit(freqUseUnits ? "Hz" : "", freqUseUnits);
+    freqTimePlotDialog->getUi()->plotPeak->setYUnit(freqUseUnits ? "Hz" : "", freqUseUnits);
 
     if (unit != "s") {
         if (ui->comboBoxHAxisType->currentIndex() > HAxisType::normal) {
@@ -575,20 +578,6 @@ void MainWindow::on_pushButtonRecordMeasurements2_clicked() {
     ui->pushButtonRecordMeasurements1->setText(recordingOfMeasurements2.isOpen() ? tr("Stop") : tr("Record"));
 }
 
-void MainWindow::on_pushButtonPeakPlotClear_clicked() {
-    ui->plotPeak->clear();
-}
-
-
-void MainWindow::on_pushButtonSetFFTForPeak_clicked() {
-    ui->spinBoxFFTSamples1->setValue(ui->spinBoxFFTSamples1->maximum());
-    ui->spinBoxFFTSamples2->setValue(ui->spinBoxFFTSamples2->maximum());
-    ui->checkBoxFFTNoDC1->setChecked(true);
-    ui->checkBoxFFTNoDC2->setChecked(true);
-    ui->pushButtonFFT->setChecked(true);
-    ui->radioButtonFreeRange->setChecked(true);
-}
-
 void MainWindow::on_radioButtonDark_toggled(bool checked) {
     if (currentThemeDark != checked) {
         currentThemeDark = checked;
@@ -661,9 +650,9 @@ void MainWindow::on_radioButtonDark_toggled(bool checked) {
         }
 
         QList<QComboBox*> list5;
-        list5.append(ui->comboBoxFFTStyle1);
-        list5.append(ui->comboBoxFFTStyle2);
-        list5.append(ui->comboBoxXYStyle);
+//        list5.append(ui->comboBoxFFTStyle1);
+//        list5.append(ui->comboBoxFFTStyle2);
+//        list5.append(ui->comboBoxXYStyle);
         list5.append(ui->comboBoxGraphStyle);
         foreach (auto w, list5) {
             for (int i = 0; i < w->count(); i++) {
@@ -755,9 +744,15 @@ void MainWindow::on_pushButtonXY_FS_toggled(bool checked) {
     plotLayoutChanged();
 }
 
-
-
-
-
-
+void MainWindow::on_pushButtonFvsT_clicked()
+{
+    ui->spinBoxFFTSamples1->setValue(ui->spinBoxFFTSamples1->maximum());
+    ui->spinBoxFFTSamples2->setValue(ui->spinBoxFFTSamples2->maximum());
+    ui->checkBoxFFTNoDC1->setChecked(true);
+    ui->checkBoxFFTNoDC2->setChecked(true);
+    ui->pushButtonFFT->setChecked(true);
+    ui->radioButtonFreeRange->setChecked(true);
+    freqTimePlotDialog->open();
+    ui->plotFFT->setOutputPeakValue(true);
+}
 

@@ -14,6 +14,7 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "mainwindow.h"
+#include "ui_freqtimeplotdialog.h"
 
 void MainWindow::rangeTypeChanged() {
   if (ui->radioButtonFixedRange->isChecked()) {
@@ -463,6 +464,7 @@ void MainWindow::on_pushButtonFFT_toggled(bool checked) {
     updateFFT2();
   }
 
+  ui->plotFFT->setOutputPeakValue(false);
   plotLayoutChanged();
 }
 
@@ -497,7 +499,11 @@ void MainWindow::on_comboBoxFFTType_currentIndexChanged(int index) {
       ui->doubleSpinBoxYCur1->setSuffix("");
     if (IS_FFT_INDEX(ui->comboBoxCursor2Channel->currentIndex()))
       ui->doubleSpinBoxYCur2->setSuffix("");
-  } ui->spinBoxFFTSegments1->setVisible(index == FFTType::pwelch);
+  }
+
+  ui->spinBoxFFTSegments1->setEnabled(true);
+  ui->spinBoxFFTSegments2->setEnabled(true);
+  ui->spinBoxFFTSegments1->setVisible(index == FFTType::pwelch);
   ui->spinBoxFFTSegments2->setVisible(index == FFTType::pwelch);
 }
 
@@ -541,7 +547,7 @@ void MainWindow::checkBoxMouseControls_toggled_new(bool checked) {
   ui->plot->enableMouseCursorControll(checked);
   ui->plotxy->enableMouseCursorControll(checked);
   ui->plotFFT->enableMouseCursorControll(checked);
-  ui->plotPeak->enableMouseCursorControll(checked);
+  freqTimePlotDialog->getUi()->plotPeak->enableMouseCursorControll(checked);
 }
 
 void MainWindow::on_checkBoxFFTCh1_toggled(bool checked) {

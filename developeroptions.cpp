@@ -23,20 +23,17 @@ QString addSpacesToCamelCase(const QString& input)
     return output;
 }
 
-DeveloperOptions::DeveloperOptions(QQuickWidget *qQuickWidget, QWidget *parent) :
+DeveloperOptions::DeveloperOptions(QWidget *parent, QQuickWidget *qQuickWidget) :
     QDialog(parent),
     ui(new Ui::DeveloperOptions),
     qQuickWidget(qQuickWidget)
 {
     ui->setupUi(this);
 
-    setWindowTitle(tr("Developer Options"));
-
     Q_ASSERT(qQuickWidget != nullptr);
     connect(qQuickWidget,&QQuickWidget::statusChanged,this,&DeveloperOptions::quickWidget_statusChanged);
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
-    setWindowFlags(windowFlags() | Qt::WindowStaysOnTopHint);
     addColorToBlacklist("40");
     updateColorBlacklist();
 
@@ -58,7 +55,7 @@ DeveloperOptions::~DeveloperOptions()
     delete ui;
 }
 
-Ui::DeveloperOptions *DeveloperOptions::getUi() const
+Ui::DeveloperOptions *DeveloperOptions::getUi()
 {
     return ui;
 }
@@ -350,7 +347,7 @@ void DeveloperOptions::on_listWidgetQMLFiles_itemClicked(QListWidgetItem *item)
 
 void DeveloperOptions::qmlReload() {
     QUrl url = qQuickWidget->source();
-    loadQmlFile(url);
+    emit loadQmlFile(url);
 }
 
 void DeveloperOptions::quickWidget_statusChanged(const QQuickWidget::Status& arg1) {

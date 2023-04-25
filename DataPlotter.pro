@@ -11,6 +11,7 @@ CONFIG += c++11
 
 FORMS += mainwindow.ui \
     developeroptions.ui \
+    freqtimeplotdialog.ui \
     serialsettingsdialog.ui
 
 TRANSLATIONS += \
@@ -35,6 +36,7 @@ HEADERS += \
     customwidgets/mypow2spinbox.h \
     customwidgets/myscaledoublespinbox.h \
     developeroptions.h \
+    freqtimeplotdialog.h \
     global.h \
     mainwindow/mainwindow.h \
     math/averager.h \
@@ -71,6 +73,7 @@ SOURCES += \
     customwidgets/mypow2spinbox.cpp \
     customwidgets/myscaledoublespinbox.cpp \
     developeroptions.cpp \
+    freqtimeplotdialog.cpp \
     main.cpp \
     mainwindow/mainwindow.cpp \
     mainwindow/mainwindow_autoset.cpp \

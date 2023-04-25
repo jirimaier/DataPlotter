@@ -15,10 +15,10 @@ class DeveloperOptions : public QDialog
     Q_OBJECT
 
 public:
-    explicit DeveloperOptions(QQuickWidget *qQuickWidget, QWidget *parent = nullptr);
+    explicit DeveloperOptions(QWidget *parent, QQuickWidget *qQuickWidget);
     ~DeveloperOptions();
 
-    Ui::DeveloperOptions *getUi() const;
+    Ui::DeveloperOptions *getUi();
     bool addColorToBlacklist(QByteArray code);
     void updateColorBlacklist();
 

@@ -15,6 +15,7 @@
 
 #include "mainwindow.h"
 #include "ui_developeroptions.h"
+#include "ui_freqtimeplotdialog.h"
 
 void MainWindow::connectSignals() {
     connect(ui->pushButtonPause, &QPushButton::clicked, ui->plot, &MyMainPlot::togglePause);
@@ -66,7 +67,7 @@ void MainWindow::connectSignals() {
     connect(ui->horizontalSliderTimeCur1, &myCursorSlider::realValueChanged, this, &MainWindow::horizontalSliderTimeCur1_realValueChanged);
     connect(ui->horizontalSliderTimeCur2, &myCursorSlider::realValueChanged, this, &MainWindow::horizontalSliderTimeCur2_realValueChanged);
 
-    connect(ui->plotFFT, &MyFFTPlot::newPeakValues, ui->plotPeak, &MyPeakPlot::newData);
+    connect(ui->plotFFT, &MyFFTPlot::newPeakValues, freqTimePlotDialog->getUi()->plotPeak, &MyPeakPlot::newData);
 
     connect(qmlTerminalInterface, &QmlTerminalInterface::dataSentToParser, this, &MainWindow::sendManualInput);
 
@@ -82,6 +83,8 @@ void MainWindow::connectSignals() {
     connect(developerOptions->getUi()->pushButtonClearGraph, &QPushButton::clicked, this, &MainWindow::pushButtonClearGraph_clicked);
     connect(developerOptions->getUi()->checkBoxEchoReply, &QCheckBox::toggled, this, &MainWindow::checkBoxEchoReply_toggled);
     connect(developerOptions->getUi()->checkBoxMouseControls, &QCheckBox::toggled, this, &MainWindow::checkBoxMouseControls_toggled_new);
+
+    connect(freqTimePlotDialog,&FreqTimePlotDialog::requestedCSVExport,this,&MainWindow::exportCSV);
 }
 
 void MainWindow::setAdaptiveSpinBoxes() {
@@ -160,8 +163,6 @@ void MainWindow::setGuiDefaults() {
     ui->plotxy->setGridHintY(ui->horizontalSliderXYGrid->value());
     ui->plotFFT->setGridHintX(ui->horizontalSliderGridFFTH->value());
     ui->plotFFT->setGridHintY(ui->horizontalSliderGridFFTV->value());
-    ui->plotPeak->setGridHintX(ui->horizontalSliderGridFreqtimeH->value());
-    ui->plotPeak->setGridHintY(ui->horizontalSliderGridFreqtimeV->value());
 
     on_doubleSpinBoxRangeVerticalRange_valueChanged(ui->doubleSpinBoxRangeVerticalRange->value());
 

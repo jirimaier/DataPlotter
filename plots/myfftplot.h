@@ -34,7 +34,9 @@ class MyFFTPlot : public MyPlot {
   /// Přizpůsobý barvu a popis, vrátí true, pokud se barva změnila
   bool setChSorce(int ch, int sourceChannel, QColor color);
 
- private:
+  void setOutputPeakValue(bool newOutputPeakValue);
+
+  private:
   void autoset();
   void setMouseCursorStyle(QMouseEvent* event);
   void updateTracerText(int index);
@@ -44,6 +46,7 @@ class MyFFTPlot : public MyPlot {
   QPair<QVector<double>, QVector<double> > getDataVector(int chID);
   bool holdmax[2] = {false, false};
   bool firstAutoset = true;
+  bool outputPeakValue;
 
  public slots:
   /// Přidá data (přepíše stará)

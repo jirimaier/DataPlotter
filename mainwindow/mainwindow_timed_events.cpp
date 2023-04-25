@@ -15,6 +15,7 @@
 
 #include "mainwindow.h"
 #include "ui_developeroptions.h"
+#include "ui_freqtimeplotdialog.h"
 
 void MainWindow::comRefresh() {
     // Zjistí, jestli nastala změna v portech.
@@ -209,7 +210,7 @@ void MainWindow::updateFFT1() {
         }
 
         if (ui->plotFFT->setChSorce(1, chid, ui->plot->getChColor(chid))) {
-            ui->plotPeak->setChSorce(1, chid, ui->plot->getChColor(chid));
+            freqTimePlotDialog->getUi()->plotPeak->setChSorce(1, chid, ui->plot->getChColor(chid));
             QPixmap color(12, 12);
             color.fill(ui->plot->getChColor(chid));
             auto* model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor1Channel->model());
@@ -222,7 +223,7 @@ void MainWindow::updateFFT1() {
         }
 
         fftTimer1.stop();
-        emit requestFFT1(data, (FFTType::enumFFTType)ui->comboBoxFFTType->currentIndex(), (FFTWindow::enumFFTWindow)ui->comboBoxFFTWindow1->currentIndex(), ui->checkBoxFFTNoDC1->isChecked(), ui->spinBoxFFTSegments1->value(), ui->checkBoxFFTTwoSided->isChecked(), ui->checkBoxFFTZeroCenter->isChecked(), ui->spinBoxFFTSamples1->value());
+        emit requestFFT1(data, (FFTType::enumFFTType)ui->comboBoxFFTType->currentIndex(), (FFTWindow::enumFFTWindow)ui->comboBoxFFTWindow1->currentIndex(), ui->checkBoxFFTNoDC1->isChecked(), ui->spinBoxFFTSegments1->value(), developerOptions->getUi()->checkBoxFFTTwoSided->isChecked(), developerOptions->getUi()->checkBoxFFTZeroCenter->isChecked(), ui->spinBoxFFTSamples1->value());
     } else
         ui->plotFFT->clear(0);
 }
@@ -254,7 +255,7 @@ void MainWindow::updateFFT2() {
         }
 
         if (ui->plotFFT->setChSorce(2, chid, ui->plot->getChColor(chid))) {
-            ui->plotPeak->setChSorce(2, chid, ui->plot->getChColor(chid));
+            freqTimePlotDialog->getUi()->plotPeak->setChSorce(2, chid, ui->plot->getChColor(chid));
             QPixmap color(12, 12);
             color.fill(ui->plot->getChColor(chid));
             auto* model = qobject_cast<QStandardItemModel*>(ui->comboBoxCursor1Channel->model());
@@ -266,7 +267,7 @@ void MainWindow::updateFFT2() {
             item->setIcon(QIcon(color));
         }
         fftTimer2.stop();
-        emit requestFFT2(data, (FFTType::enumFFTType)ui->comboBoxFFTType->currentIndex(), (FFTWindow::enumFFTWindow)ui->comboBoxFFTWindow2->currentIndex(), ui->checkBoxFFTNoDC2->isChecked(), ui->spinBoxFFTSegments2->value(), ui->checkBoxFFTTwoSided->isChecked(), ui->checkBoxFFTZeroCenter->isChecked(), ui->spinBoxFFTSamples2->value());
+        emit requestFFT2(data, (FFTType::enumFFTType)ui->comboBoxFFTType->currentIndex(), (FFTWindow::enumFFTWindow)ui->comboBoxFFTWindow2->currentIndex(), ui->checkBoxFFTNoDC2->isChecked(), ui->spinBoxFFTSegments2->value(), developerOptions->getUi()->checkBoxFFTTwoSided->isChecked(), developerOptions->getUi()->checkBoxFFTZeroCenter->isChecked(), ui->spinBoxFFTSamples2->value());
     } else
         ui->plotFFT->clear(1);
 }

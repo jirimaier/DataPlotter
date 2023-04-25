@@ -14,6 +14,7 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "mainwindow.h"
+#include "ui_freqtimeplotdialog.h"
 
 void MainWindow::exportCSV(int ch) {
   QString name = "";
@@ -46,7 +47,7 @@ void MainWindow::exportCSV(int ch) {
     else if (ch == EXPORT_XY)
       data = (ui->plotxy->exportCSV(separator, decimal, ui->spinBoxCSVPrecision->value()));
     else if (ch == EXPORT_FREQTIME)
-      data = (ui->plotPeak->exportCSV(separator, decimal, ui->spinBoxCSVPrecision->value()));
+      data = (freqTimePlotDialog->getUi()->plotPeak->exportCSV(separator, decimal, ui->spinBoxCSVPrecision->value()));
     else if (ch == EXPORT_FFT)
       data = (ui->plotFFT->exportCSV(separator, decimal, ui->spinBoxCSVPrecision->value()));
     else
@@ -61,7 +62,8 @@ void MainWindow::exportCSV(int ch) {
     return;
   }
 
-  QMessageBox msgBox(this);
+  QWidget *dialogParent = (ch == EXPORT_FREQTIME) ? static_cast<QWidget*>(freqTimePlotDialog) : this;
+  QMessageBox msgBox(dialogParent);
   msgBox.setText(tr("Export %1 as table").arg(name));
   msgBox.setIcon(QMessageBox::Question);
   msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::Ok | QMessageBox::Cancel);
@@ -78,8 +80,8 @@ void MainWindow::exportCSV(int ch) {
     QClipboard* clipboard = QGuiApplication::clipboard();
     clipboard->setText(data);
   } else {
-    QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/export/%1.csv").arg(name);
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Export %1").arg(name), defaultName, tr("Comma separated values (*.csv)"));
+    QString defaultName = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation) + QString("%1.csv").arg(name);
+    QString fileName = QFileDialog::getSaveFileName(dialogParent, tr("Export %1").arg(name), defaultName, tr("Comma separated values (*.csv)"));
     if (fileName.isEmpty())
       return;
     QFile file(fileName);
@@ -110,7 +112,7 @@ void MainWindow::on_pushButtonPlotImage_clicked() {
     QClipboard* clipboard = QGuiApplication::clipboard();
     clipboard->setImage(ui->plot->toPixmap().toImage());
   } else if (returnValue == QMessageBox::Ok) {
-    QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/export/plot.png");
+    QString defaultName = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation) + QString("plot.png");
     QString fileName = QFileDialog::getSaveFileName(this, tr("Export main plot as image"), defaultName, tr("PNG image (*.png);;Vector graphics (*.pdf);;JPEG image (*.jpg);;BMP image (*.bmp)"));
     if (fileName.isEmpty())
       return;
@@ -152,7 +154,7 @@ void MainWindow::on_pushButtonXYImage_clicked() {
     QClipboard* clipboard = QGuiApplication::clipboard();
     clipboard->setImage(ui->plotxy->toPixmap().toImage());
   } else if (returnValue == QMessageBox::Ok) {
-    QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/export/xy.png");
+    QString defaultName = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation) + QString("xy.png");
     QString fileName = QFileDialog::getSaveFileName(this, tr("Export XY plot as image"), defaultName,  tr("PNG image (*.png);;Vector graphics (*.pdf);;JPEG image (*.jpg);;BMP image (*.bmp)"));
     if (fileName.isEmpty())
       return;
@@ -194,7 +196,7 @@ void MainWindow::on_pushButtonFFTImage_clicked() {
     QClipboard* clipboard = QGuiApplication::clipboard();
     clipboard->setImage(ui->plotFFT->toPixmap().toImage());
   } else if (returnValue == QMessageBox::Ok) {
-    QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/export/fft.png");
+    QString defaultName = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation) + QString("fft.png");
     QString fileName = QFileDialog::getSaveFileName(this, tr("Export FFT plot as image"), defaultName,  tr("PNG image (*.png);;Vector graphics (*.pdf);;JPEG image (*.jpg);;BMP image (*.bmp)"));
     if (fileName.isEmpty())
       return;

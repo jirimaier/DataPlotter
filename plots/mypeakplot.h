@@ -22,7 +22,7 @@ class MyPeakPlot : public MyPlot {
   void setInfoText();
 
  private:
-  bool autoSize = true;
+  bool firstAutoset = true;
   void autoset();
   void setMouseCursorStyle(QMouseEvent* event);
   void updateTracerText(int index);
@@ -33,6 +33,8 @@ class MyPeakPlot : public MyPlot {
   QCPItemText* infoText;
   QElapsedTimer* uptime;
   double timeLength = 100;
+  enum Mode{free, growing, rolling, empty, free_locked} mode = empty;
+  double lastSignalEnd = 0;
 
   QSharedPointer<MyAxisTickerWithUnit> unitTickerY2;
 
@@ -48,10 +50,6 @@ class MyPeakPlot : public MyPlot {
 
   /// Nastaví styl kanálu
   void setStyle(int chID, int style);
-
-  /// Zapne/vypne automatický rozsah
-  void setAutoSize(bool en);
-
 
  private slots:
   void mouseMoved(QMouseEvent* event);

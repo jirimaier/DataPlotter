@@ -41,6 +41,7 @@
 #include "qml/qmlterminalinterface.h"
 #include "ui_mainwindow.h"
 #include "developeroptions.h"
+#include "freqtimeplotdialog.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -61,6 +62,7 @@ private:
     QmlTerminalInterface* qmlTerminalInterface;
     SerialSettingsDialog* serialSettingsDialog;
     DeveloperOptions* developerOptions;
+    FreqTimePlotDialog *freqTimePlotDialog;
     QTranslator* translator;
     QTimer portsRefreshTimer, activeChRefreshTimer, xyTimer, cursorRangeUpdateTimer, measureRefreshTimer1, measureRefreshTimer2, fftTimer1, fftTimer2, serialMonitorTimer, consoleTimer, interpolationTimer, triggerLineTimer;
     QList<QSerialPortInfo> portList;
@@ -248,8 +250,6 @@ private slots: // Autoconnect slots
     void on_doubleSpinBoxXCur1_valueChanged(double arg1);
     void on_checkBoxFFTCh1_toggled(bool checked);
     void on_checkBoxFFTCh2_toggled(bool checked);
-    void on_comboBoxFFTStyle1_currentIndexChanged(int index) {ui->plotFFT->setStyle(0, index);}
-    void on_comboBoxFFTStyle2_currentIndexChanged(int index) {ui->plotFFT->setStyle(1, index);}
     void on_checkBoxXYCur1_toggled(bool checked);
     void on_checkBoxXYCur2_toggled(bool checked);
     void on_doubleSpinBoxXYCurY1_valueChanged(double arg1);
@@ -276,20 +276,17 @@ private slots: // Autoconnect slots
     void on_comboBoxBaud_currentTextChanged(const QString& arg1);
     void on_pushButtonRecordMeasurements1_clicked();
     void on_pushButtonRecordMeasurements2_clicked();
-    void on_radioButtonFreqTimeFixed_toggled(bool checked) { ui->plotPeak->setAutoSize(checked);}
-    void on_pushButtonPeakPlotClear_clicked();
-    void on_pushButtonSetFFTForPeak_clicked();
-    void on_pushButtonEXportFreqTimeCSV_clicked() {exportCSV(EXPORT_FREQTIME);}
     void on_radioButtonDark_toggled(bool checked);
     void on_tabs_right_currentChanged(int index);
     void on_pushButtonRangeFit_clicked();
     void on_listWidgetCom_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
-    void on_pushButtonDevOptions_clicked() { developerOptions->show(); }
+    void on_pushButtonDevOptions_clicked() { developerOptions->open(); }
     void on_pushButtonSetPositive_clicked();
     void on_pushButtonSetCenter_clicked();
     void on_pushButtonSetNegative_clicked();
     void on_pushButtonFFT_FS_toggled(bool checked);
     void on_pushButtonXY_FS_toggled(bool checked);
+    void on_pushButtonFvsT_clicked();
 
 public slots:
     void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumMessageTarget target);

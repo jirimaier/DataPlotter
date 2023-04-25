@@ -124,6 +124,7 @@ void MyFFTPlot::newData(int chID, QSharedPointer<QCPGraphDataContainer> data) {
     autoset();
     this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
 
+    if(outputPeakValue) {
     double peakAmp = -Q_INFINITY, peakFreq = 0;
     for (int i = graph(chID)->findBegin(xAxis->range().lower, false); i < graph(chID)->findEnd(xAxis->range().upper, false) - 1; i++) {
         if (graph(chID)->data()->at(i)->value > peakAmp) {
@@ -132,6 +133,7 @@ void MyFFTPlot::newData(int chID, QSharedPointer<QCPGraphDataContainer> data) {
         }
     }
     emit newPeakValues(chID, peakFreq);
+    }
 
     // Přepsat text u traceru
     if (tracer->visible() && currentTracerIndex == chID) {
@@ -166,6 +168,11 @@ void MyFFTPlot::setStyle(int chID, int style) {
         graph(chID)->setBrush(Qt::NoBrush);
     }
     this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
+}
+
+void MyFFTPlot::setOutputPeakValue(bool newOutputPeakValue)
+{
+    outputPeakValue = newOutputPeakValue;
 }
 
 void MyFFTPlot::autoset() {

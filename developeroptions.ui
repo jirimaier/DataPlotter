@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Developer Options</string>
   </property>
   <property name="sizeGripEnabled">
    <bool>false</bool>
@@ -23,7 +23,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>3</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tab_3">
       <attribute name="title">
@@ -634,23 +634,8 @@
          <property name="title">
           <string>Connection</string>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout_39">
-          <property name="spacing">
-           <number>3</number>
-          </property>
-          <property name="leftMargin">
-           <number>6</number>
-          </property>
-          <property name="topMargin">
-           <number>6</number>
-          </property>
-          <property name="rightMargin">
-           <number>6</number>
-          </property>
-          <property name="bottomMargin">
-           <number>6</number>
-          </property>
-          <item>
+         <layout class="QGridLayout" name="gridLayout_2">
+          <item row="0" column="0">
            <widget class="QCheckBox" name="checkBoxClearOnReconnect">
             <property name="toolTip">
              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clear graph after connecting&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -663,53 +648,7 @@
             </property>
            </widget>
           </item>
-          <item>
-           <widget class="QCheckBox" name="checkBoxAutoAutoSet">
-            <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Do autoset function after first data for channel 1 is received&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-            <property name="text">
-             <string>Autoset on reconnect</string>
-            </property>
-            <property name="checked">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="Line" name="line_10">
-            <property name="frameShadow">
-             <enum>QFrame::Sunken</enum>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLineEdit" name="lineEditResetCmd">
-            <property name="toolTip">
-             <string>If reset command is set, it will be sent to device on connect.</string>
-            </property>
-            <property name="text">
-             <string>Send this after reconnect:</string>
-            </property>
-            <property name="placeholderText">
-             <string>reset command</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="Line" name="line_3">
-            <property name="frameShadow">
-             <enum>QFrame::Sunken</enum>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item>
+          <item row="0" column="1">
            <widget class="QCheckBox" name="checkBoxEchoReply">
             <property name="toolTip">
              <string>Enable responding to echo command</string>
@@ -722,7 +661,20 @@
             </property>
            </widget>
           </item>
-          <item>
+          <item row="1" column="0">
+           <widget class="QCheckBox" name="checkBoxAutoAutoSet">
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Do autoset function after first data for channel 1 is received&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>Autoset on reconnect</string>
+            </property>
+            <property name="checked">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
            <widget class="QCheckBox" name="checkBoxFreezeSafe">
             <property name="toolTip">
              <string>If there is too much text printed to console or serial monitor, it will be disabled.</string>
@@ -734,6 +686,30 @@
              <bool>true</bool>
             </property>
            </widget>
+          </item>
+          <item row="2" column="0" colspan="2">
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <item>
+             <widget class="QLabel" name="label_2">
+              <property name="text">
+               <string>Send after reconnect:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="lineEditResetCmd">
+              <property name="toolTip">
+               <string>If reset command is set, it will be sent to device on connect.</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="placeholderText">
+               <string/>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
         </widget>
@@ -844,6 +820,44 @@
              </widget>
             </item>
            </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_3">
+         <property name="title">
+          <string>FFT</string>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <widget class="QCheckBox" name="checkBoxFFTZeroCenter">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show from -f&lt;span style=&quot; vertical-align:sub;&quot;&gt;s&lt;/span&gt;/2 to f&lt;span style=&quot; vertical-align:sub;&quot;&gt;s&lt;/span&gt;/2&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>Zero-centered</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBoxFFTTwoSided">
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show from 0 to f&lt;span style=&quot; vertical-align:sub;&quot;&gt;s &lt;/span&gt; instead of only f&lt;span style=&quot; vertical-align:sub;&quot;&gt;s&lt;/span&gt;/2&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>Two-sided</string>
+            </property>
+            <property name="tristate">
+             <bool>false</bool>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>

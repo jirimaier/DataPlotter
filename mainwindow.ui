@@ -801,7 +801,7 @@
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>5</number>
+           <number>6</number>
           </property>
           <property name="iconSize">
            <size>
@@ -5308,7 +5308,7 @@
            <attribute name="title">
             <string/>
            </attribute>
-           <layout class="QHBoxLayout" name="horizontalLayout_25" stretch="1,1,1,1000">
+           <layout class="QHBoxLayout" name="horizontalLayout_25" stretch="0,1,1,1000">
             <property name="leftMargin">
              <number>6</number>
             </property>
@@ -5322,11 +5322,155 @@
              <number>6</number>
             </property>
             <item>
-             <widget class="QFrame" name="frame_15">
+             <layout class="QVBoxLayout" name="verticalLayout_16" stretch="1,3">
+              <item>
+               <widget class="QPushButton" name="pushButtonXY">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string>Enable XY</string>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>20</width>
+                  <height>20</height>
+                 </size>
+                </property>
+                <property name="checkable">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QFrame" name="frame_15">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::StyledPanel</enum>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_38">
+                 <property name="leftMargin">
+                  <number>6</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>6</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>6</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>6</number>
+                 </property>
+                 <item>
+                  <widget class="QPushButton" name="pushButtonXY_FS">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="text">
+                    <string>Maximize plot</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_36">
+                   <item>
+                    <widget class="QLabel" name="label_26">
+                     <property name="text">
+                      <string>Grid</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QSlider" name="horizontalSliderXYGrid">
+                     <property name="minimum">
+                      <number>-4</number>
+                     </property>
+                     <property name="maximum">
+                      <number>-2</number>
+                     </property>
+                     <property name="pageStep">
+                      <number>1</number>
+                     </property>
+                     <property name="value">
+                      <number>-2</number>
+                     </property>
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="pushButtonChangeXYColor">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="toolTip">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Channel color&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="resources.qrc">
+                     <normaloff>:/images/icons/color.png</normaloff>:/images/icons/color.png</iconset>
+                   </property>
+                   <property name="iconSize">
+                    <size>
+                     <width>30</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="pushButtonXYClear">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="text">
+                    <string>Reset plot</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QFrame" name="frame_14">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="frameShape">
                <enum>QFrame::StyledPanel</enum>
               </property>
-              <layout class="QVBoxLayout" name="verticalLayout_38">
+              <layout class="QVBoxLayout" name="verticalLayout_26" stretch="0,0,0,0,0,0">
                <property name="leftMargin">
                 <number>6</number>
                </property>
@@ -5339,32 +5483,6 @@
                <property name="bottomMargin">
                 <number>6</number>
                </property>
-               <item>
-                <widget class="QPushButton" name="pushButtonXY">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="text">
-                  <string>Enable</string>
-                 </property>
-                 <property name="icon">
-                  <iconset resource="resources.qrc">
-                   <normaloff>:/images/icons/xyChannel.png</normaloff>:/images/icons/xyChannel.png</iconset>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>20</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                 <property name="checkable">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
                <item>
                 <layout class="QGridLayout" name="gridLayout_3">
                  <property name="spacing">
@@ -5425,6 +5543,39 @@
                 </layout>
                </item>
                <item>
+                <widget class="QCheckBox" name="checkBoxXYNoDC">
+                 <property name="toolTip">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove DC component from signal before calculating DFT.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                 <property name="text">
+                  <string>Remove DC</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="verticalSpacer_7">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeType">
+                  <enum>QSizePolicy::Preferred</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>1</width>
+                   <height>1</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QLabel" name="label">
+                 <property name="text">
+                  <string>Calculate from</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
                 <widget class="QRadioButton" name="radioButtonXYFull">
                  <property name="toolTip">
                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate from:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -5450,212 +5601,14 @@
                  </property>
                 </widget>
                </item>
-               <item>
-                <widget class="QCheckBox" name="checkBoxXYNoDC">
-                 <property name="toolTip">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove DC component from signal before calculating DFT.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                 <property name="text">
-                  <string>Remove DC</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item>
-             <widget class="QFrame" name="frame_14">
-              <property name="frameShape">
-               <enum>QFrame::StyledPanel</enum>
-              </property>
-              <layout class="QVBoxLayout" name="verticalLayout_26" stretch="1,1,0,0,1,1,100,1,1,0">
-               <property name="leftMargin">
-                <number>6</number>
-               </property>
-               <property name="topMargin">
-                <number>6</number>
-               </property>
-               <property name="rightMargin">
-                <number>6</number>
-               </property>
-               <property name="bottomMargin">
-                <number>6</number>
-               </property>
-               <item>
-                <widget class="QRadioButton" name="radioButtonXYAutoSize">
-                 <property name="toolTip">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Automatic range&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                 <property name="text">
-                  <string>Fixed size</string>
-                 </property>
-                 <property name="checked">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QRadioButton" name="radioButtonXYFree">
-                 <property name="toolTip">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Move and zoom plot by mouse&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                 <property name="text">
-                  <string>Free move</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QPushButton" name="pushButtonXY_FS">
-                 <property name="text">
-                  <string>FullScreen</string>
-                 </property>
-                 <property name="checkable">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="Line" name="line_9">
-                 <property name="frameShadow">
-                  <enum>QFrame::Sunken</enum>
-                 </property>
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLabel" name="label_26">
-                 <property name="text">
-                  <string>Grid</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QSlider" name="horizontalSliderXYGrid">
-                 <property name="minimum">
-                  <number>-4</number>
-                 </property>
-                 <property name="maximum">
-                  <number>-2</number>
-                 </property>
-                 <property name="pageStep">
-                  <number>1</number>
-                 </property>
-                 <property name="value">
-                  <number>-2</number>
-                 </property>
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <spacer name="verticalSpacer_9">
-                 <property name="orientation">
-                  <enum>Qt::Vertical</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>20</width>
-                   <height>1</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item>
-                <widget class="QComboBox" name="comboBoxXYStyle">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>100</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>20</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                 <item>
-                  <property name="text">
-                   <string/>
-                  </property>
-                  <property name="icon">
-                   <iconset resource="resources.qrc">
-                    <normaloff>:/images/icons/line.png</normaloff>:/images/icons/line.png</iconset>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string/>
-                  </property>
-                  <property name="icon">
-                   <iconset resource="resources.qrc">
-                    <normaloff>:/images/icons/points.png</normaloff>:/images/icons/points.png</iconset>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string/>
-                  </property>
-                  <property name="icon">
-                   <iconset resource="resources.qrc">
-                    <normaloff>:/images/icons/linePoint.png</normaloff>:/images/icons/linePoint.png</iconset>
-                  </property>
-                 </item>
-                </widget>
-               </item>
-               <item>
-                <widget class="QPushButton" name="pushButtonChangeXYColor">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>16777215</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="toolTip">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Channel color&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="icon">
-                  <iconset resource="resources.qrc">
-                   <normaloff>:/images/icons/color.png</normaloff>:/images/icons/color.png</iconset>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>30</width>
-                   <height>30</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QPushButton" name="pushButtonXYClear">
-                 <property name="text">
-                  <string>Clear plot</string>
-                 </property>
-                </widget>
-               </item>
               </layout>
              </widget>
             </item>
             <item>
              <widget class="QFrame" name="frame_12">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="frameShape">
                <enum>QFrame::StyledPanel</enum>
               </property>
@@ -5995,7 +5948,7 @@
            <attribute name="title">
             <string/>
            </attribute>
-           <layout class="QHBoxLayout" name="horizontalLayout_13" stretch="1,1,1,1,1000">
+           <layout class="QHBoxLayout" name="horizontalLayout_13" stretch="0,1,1,1000">
             <property name="leftMargin">
              <number>6</number>
             </property>
@@ -6009,157 +5962,247 @@
              <number>6</number>
             </property>
             <item>
-             <widget class="QFrame" name="frame_16">
-              <property name="frameShape">
-               <enum>QFrame::StyledPanel</enum>
-              </property>
-              <layout class="QVBoxLayout" name="verticalLayout_20">
-               <property name="spacing">
-                <number>6</number>
-               </property>
-               <property name="leftMargin">
-                <number>6</number>
-               </property>
-               <property name="topMargin">
-                <number>6</number>
-               </property>
-               <property name="rightMargin">
-                <number>6</number>
-               </property>
-               <property name="bottomMargin">
-                <number>6</number>
-               </property>
-               <item>
-                <widget class="QPushButton" name="pushButtonFFT">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
+             <layout class="QVBoxLayout" name="verticalLayout_17">
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_34">
+                <item>
+                 <widget class="QPushButton" name="pushButtonFFT">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="text">
+                   <string>Enable FFT</string>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>20</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                  <property name="checkable">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QComboBox" name="comboBoxFFTType">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="toolTip">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Type of graph shown:&lt;/p&gt;&lt;p&gt;Spectrum: module of DFT result in linear scale, normalized by number of samples.&lt;/p&gt;&lt;p&gt;Periodogram: spectrum in decibel, 1 V&lt;span style=&quot; vertical-align:sub;&quot;&gt;DC&lt;/span&gt;  equals 0 dB.&lt;/p&gt;&lt;p&gt;Welch PSD: periodogram calculated using Welch's method.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="currentIndex">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string>Linear</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>dB</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>Welch PSD</string>
+                   </property>
+                  </item>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="QFrame" name="frame_16">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::StyledPanel</enum>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_9">
+                 <property name="leftMargin">
+                  <number>6</number>
                  </property>
-                 <property name="text">
-                  <string>Enable</string>
+                 <property name="topMargin">
+                  <number>6</number>
                  </property>
-                 <property name="icon">
-                  <iconset resource="resources.qrc">
-                   <normaloff>:/images/icons/fft.png</normaloff>:/images/icons/fft.png</iconset>
+                 <property name="rightMargin">
+                  <number>6</number>
                  </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>20</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                 <property name="checkable">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QComboBox" name="comboBoxFFTType">
-                 <property name="toolTip">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Type of graph shown:&lt;/p&gt;&lt;p&gt;Spectrum: module of DFT result in linear scale, normalized by number of samples.&lt;/p&gt;&lt;p&gt;Periodogram: spectrum in decibel, 1 V&lt;span style=&quot; vertical-align:sub;&quot;&gt;DC&lt;/span&gt;  equals 0 dB.&lt;/p&gt;&lt;p&gt;Welch PSD: periodogram calculated using Welch's method.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                 <property name="currentIndex">
-                  <number>0</number>
+                 <property name="bottomMargin">
+                  <number>6</number>
                  </property>
                  <item>
-                  <property name="text">
-                   <string>Spectrum</string>
-                  </property>
+                  <layout class="QGridLayout" name="gridLayout_8" columnstretch="2,1">
+                   <item row="1" column="1">
+                    <widget class="QSlider" name="horizontalSliderGridFFTV">
+                     <property name="minimum">
+                      <number>-4</number>
+                     </property>
+                     <property name="maximum">
+                      <number>-2</number>
+                     </property>
+                     <property name="pageStep">
+                      <number>1</number>
+                     </property>
+                     <property name="value">
+                      <number>-2</number>
+                     </property>
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="0">
+                    <widget class="QLabel" name="label_36">
+                     <property name="text">
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Values grid&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     </property>
+                     <property name="wordWrap">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="1">
+                    <widget class="QSlider" name="horizontalSliderGridFFTH">
+                     <property name="minimum">
+                      <number>-5</number>
+                     </property>
+                     <property name="maximum">
+                      <number>-2</number>
+                     </property>
+                     <property name="pageStep">
+                      <number>1</number>
+                     </property>
+                     <property name="value">
+                      <number>-3</number>
+                     </property>
+                     <property name="sliderPosition">
+                      <number>-3</number>
+                     </property>
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="0">
+                    <widget class="QLabel" name="label_35">
+                     <property name="text">
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Frequency grid&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     </property>
+                     <property name="wordWrap">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
                  </item>
                  <item>
-                  <property name="text">
-                   <string>Periodogram</string>
-                  </property>
+                  <layout class="QHBoxLayout" name="horizontalLayout_35">
+                   <item>
+                    <widget class="QPushButton" name="pushButtonFFT_FS">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="text">
+                      <string>Maximize plot</string>
+                     </property>
+                     <property name="checkable">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="pushButtonClearFFT">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="text">
+                      <string>Reset plot</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
                  </item>
                  <item>
-                  <property name="text">
-                   <string>Welch PSD</string>
-                  </property>
+                  <widget class="Line" name="line_3">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                  </widget>
                  </item>
-                </widget>
-               </item>
-               <item>
-                <spacer name="verticalSpacer_6">
-                 <property name="orientation">
-                  <enum>Qt::Vertical</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>20</width>
-                   <height>1</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item>
-                <widget class="QCheckBox" name="checkBoxFFTTwoSided">
-                 <property name="toolTip">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show from 0 to f&lt;span style=&quot; vertical-align:sub;&quot;&gt;s &lt;/span&gt; instead of only f&lt;span style=&quot; vertical-align:sub;&quot;&gt;s&lt;/span&gt;/2&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                 <property name="text">
-                  <string>Two-sided</string>
-                 </property>
-                 <property name="tristate">
-                  <bool>false</bool>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QCheckBox" name="checkBoxFFTZeroCenter">
-                 <property name="enabled">
-                  <bool>false</bool>
-                 </property>
-                 <property name="toolTip">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show from -f&lt;span style=&quot; vertical-align:sub;&quot;&gt;s&lt;/span&gt;/2 to f&lt;span style=&quot; vertical-align:sub;&quot;&gt;s&lt;/span&gt;/2&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                 <property name="text">
-                  <string>Zero-centered</string>
-                 </property>
-                 <property name="checked">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="Line" name="line_6">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QRadioButton" name="radioButtonFFTFull">
-                 <property name="toolTip">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate from:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                 <property name="text">
-                  <string>Whole signal</string>
-                 </property>
-                 <property name="checked">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QRadioButton" name="radioButtonFFTPart">
-                 <property name="toolTip">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate from:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                 <property name="text">
-                  <string>Visible interval</string>
-                 </property>
-                 <property name="checked">
-                  <bool>false</bool>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
+                 <item>
+                  <widget class="QPushButton" name="pushButtonFvsT">
+                   <property name="text">
+                    <string>Frequency vs Time plot</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="Line" name="line_6">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_23">
+                   <item>
+                    <widget class="QRadioButton" name="radioButtonFFTFull">
+                     <property name="toolTip">
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate from:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     </property>
+                     <property name="text">
+                      <string>Whole signal</string>
+                     </property>
+                     <property name="checked">
+                      <bool>false</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QRadioButton" name="radioButtonFFTPart">
+                     <property name="toolTip">
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate from:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     </property>
+                     <property name="text">
+                      <string>Visible interval</string>
+                     </property>
+                     <property name="checked">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+             </layout>
             </item>
             <item>
              <widget class="QFrame" name="frame_8">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="frameShape">
                <enum>QFrame::StyledPanel</enum>
               </property>
@@ -6187,7 +6230,7 @@
                  <item>
                   <widget class="QCheckBox" name="checkBoxFFTCh1">
                    <property name="enabled">
-                    <bool>true</bool>
+                    <bool>false</bool>
                    </property>
                    <property name="text">
                     <string/>
@@ -6281,7 +6324,7 @@
                <item>
                 <widget class="QSpinBox" name="spinBoxFFTSegments1">
                  <property name="enabled">
-                  <bool>true</bool>
+                  <bool>false</bool>
                  </property>
                  <property name="toolTip">
                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of segments for Welch's PSD estimate. (with 50% overlap)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -6327,55 +6370,6 @@
                 </spacer>
                </item>
                <item>
-                <widget class="QComboBox" name="comboBoxFFTStyle1">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>100</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>20</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                 <item>
-                  <property name="text">
-                   <string/>
-                  </property>
-                  <property name="icon">
-                   <iconset resource="resources.qrc">
-                    <normaloff>:/images/icons/line.png</normaloff>:/images/icons/line.png</iconset>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string/>
-                  </property>
-                  <property name="icon">
-                   <iconset resource="resources.qrc">
-                    <normaloff>:/images/icons/points.png</normaloff>:/images/icons/points.png</iconset>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string/>
-                  </property>
-                  <property name="icon">
-                   <iconset resource="resources.qrc">
-                    <normaloff>:/images/icons/linePoint.png</normaloff>:/images/icons/linePoint.png</iconset>
-                  </property>
-                 </item>
-                </widget>
-               </item>
-               <item>
                 <widget class="QPushButton" name="pushButtonFFTHoldMax1">
                  <property name="toolTip">
                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Keep maximum value for each sample. Useful for measuring amplitude frequency response.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -6393,6 +6387,9 @@
             </item>
             <item>
              <widget class="QFrame" name="frame_11">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="frameShape">
                <enum>QFrame::StyledPanel</enum>
               </property>
@@ -6502,7 +6499,7 @@
                <item>
                 <widget class="QSpinBox" name="spinBoxFFTSegments2">
                  <property name="enabled">
-                  <bool>true</bool>
+                  <bool>false</bool>
                  </property>
                  <property name="toolTip">
                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of segments for Welch's PSD estimate. (with 50% overlap)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -6548,55 +6545,6 @@
                 </spacer>
                </item>
                <item>
-                <widget class="QComboBox" name="comboBoxFFTStyle2">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>100</width>
-                   <height>16777215</height>
-                  </size>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>20</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                 <item>
-                  <property name="text">
-                   <string/>
-                  </property>
-                  <property name="icon">
-                   <iconset resource="resources.qrc">
-                    <normaloff>:/images/icons/line.png</normaloff>:/images/icons/line.png</iconset>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string/>
-                  </property>
-                  <property name="icon">
-                   <iconset resource="resources.qrc">
-                    <normaloff>:/images/icons/points.png</normaloff>:/images/icons/points.png</iconset>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string/>
-                  </property>
-                  <property name="icon">
-                   <iconset resource="resources.qrc">
-                    <normaloff>:/images/icons/linePoint.png</normaloff>:/images/icons/linePoint.png</iconset>
-                  </property>
-                 </item>
-                </widget>
-               </item>
-               <item>
                 <widget class="QPushButton" name="pushButtonFFTHoldMax2">
                  <property name="toolTip">
                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Keep maximum value for each sample. Useful for measuring amplitude frequency response.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -6613,366 +6561,17 @@
              </widget>
             </item>
             <item>
-             <widget class="QFrame" name="frame_17">
-              <property name="frameShape">
-               <enum>QFrame::StyledPanel</enum>
-              </property>
-              <layout class="QVBoxLayout" name="verticalLayout_25">
-               <property name="spacing">
-                <number>4</number>
-               </property>
-               <property name="leftMargin">
-                <number>6</number>
-               </property>
-               <property name="topMargin">
-                <number>6</number>
-               </property>
-               <property name="rightMargin">
-                <number>6</number>
-               </property>
-               <property name="bottomMargin">
-                <number>6</number>
-               </property>
-               <item>
-                <widget class="QLabel" name="label_35">
-                 <property name="text">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grid Frequency&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                 <property name="wordWrap">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QSlider" name="horizontalSliderGridFFTH">
-                 <property name="minimum">
-                  <number>-5</number>
-                 </property>
-                 <property name="maximum">
-                  <number>-2</number>
-                 </property>
-                 <property name="pageStep">
-                  <number>1</number>
-                 </property>
-                 <property name="value">
-                  <number>-3</number>
-                 </property>
-                 <property name="sliderPosition">
-                  <number>-3</number>
-                 </property>
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLabel" name="label_36">
-                 <property name="text">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Grid Value&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                 <property name="wordWrap">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QSlider" name="horizontalSliderGridFFTV">
-                 <property name="minimum">
-                  <number>-4</number>
-                 </property>
-                 <property name="maximum">
-                  <number>-2</number>
-                 </property>
-                 <property name="pageStep">
-                  <number>1</number>
-                 </property>
-                 <property name="value">
-                  <number>-2</number>
-                 </property>
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QPushButton" name="pushButtonFFT_FS">
-                 <property name="text">
-                  <string>FullScreen</string>
-                 </property>
-                 <property name="checkable">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <spacer name="verticalSpacer_12">
-                 <property name="orientation">
-                  <enum>Qt::Vertical</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>20</width>
-                   <height>1</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item>
-                <widget class="QPushButton" name="pushButtonClearFFT">
-                 <property name="text">
-                  <string>Reset</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer_8">
+             <spacer name="horizontalSpacer_4">
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
-                <width>1</width>
-                <height>1</height>
+                <width>40</width>
+                <height>20</height>
                </size>
               </property>
              </spacer>
-            </item>
-           </layout>
-          </widget>
-          <widget class="QWidget" name="FreqTime">
-           <attribute name="icon">
-            <iconset resource="resources.qrc">
-             <normaloff>:/images/icons/freqtime.png</normaloff>:/images/icons/freqtime.png</iconset>
-           </attribute>
-           <attribute name="title">
-            <string/>
-           </attribute>
-           <layout class="QHBoxLayout" name="horizontalLayout_38" stretch="1000,1">
-            <property name="spacing">
-             <number>3</number>
-            </property>
-            <property name="leftMargin">
-             <number>3</number>
-            </property>
-            <property name="topMargin">
-             <number>3</number>
-            </property>
-            <property name="rightMargin">
-             <number>3</number>
-            </property>
-            <property name="bottomMargin">
-             <number>3</number>
-            </property>
-            <item>
-             <widget class="MyPeakPlot" name="plotPeak" native="true">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>1</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="cursor">
-               <cursorShape>ArrowCursor</cursorShape>
-              </property>
-              <property name="styleSheet">
-               <string notr="true"/>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QFrame" name="frame_30">
-              <property name="frameShape">
-               <enum>QFrame::StyledPanel</enum>
-              </property>
-              <property name="frameShadow">
-               <enum>QFrame::Plain</enum>
-              </property>
-              <layout class="QVBoxLayout" name="verticalLayout_49">
-               <property name="spacing">
-                <number>3</number>
-               </property>
-               <property name="leftMargin">
-                <number>6</number>
-               </property>
-               <property name="topMargin">
-                <number>6</number>
-               </property>
-               <property name="rightMargin">
-                <number>6</number>
-               </property>
-               <property name="bottomMargin">
-                <number>6</number>
-               </property>
-               <item>
-                <widget class="QRadioButton" name="radioButtonFreqTimeFixed">
-                 <property name="toolTip">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select range automaticaly&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                 <property name="text">
-                  <string>Fixed</string>
-                 </property>
-                 <property name="checked">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QRadioButton" name="radioButtonFreqtimeFree">
-                 <property name="toolTip">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Move and zoom plot by mouse&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                 <property name="text">
-                  <string>Free</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <spacer name="verticalSpacer_15">
-                 <property name="orientation">
-                  <enum>Qt::Vertical</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>20</width>
-                   <height>1</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item>
-                <widget class="QLabel" name="label_57">
-                 <property name="text">
-                  <string>Grid</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignCenter</set>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QSlider" name="horizontalSliderGridFreqtimeH">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="toolTip">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Time grid divisions&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                 <property name="minimum">
-                  <number>-5</number>
-                 </property>
-                 <property name="maximum">
-                  <number>-2</number>
-                 </property>
-                 <property name="pageStep">
-                  <number>1</number>
-                 </property>
-                 <property name="value">
-                  <number>-3</number>
-                 </property>
-                 <property name="sliderPosition">
-                  <number>-3</number>
-                 </property>
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QSlider" name="horizontalSliderGridFreqtimeV">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="toolTip">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Value grid divisions&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                 <property name="minimum">
-                  <number>-4</number>
-                 </property>
-                 <property name="maximum">
-                  <number>-2</number>
-                 </property>
-                 <property name="pageStep">
-                  <number>1</number>
-                 </property>
-                 <property name="value">
-                  <number>-3</number>
-                 </property>
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QPushButton" name="pushButtonSetFFTForPeak">
-                 <property name="toolTip">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Autoset&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="icon">
-                  <iconset resource="resources.qrc">
-                   <normaloff>:/images/icons/settingsLighter.png</normaloff>:/images/icons/settingsLighter.png</iconset>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>16</width>
-                   <height>16</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QPushButton" name="pushButtonEXportFreqTimeCSV">
-                 <property name="toolTip">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Export to CSV&lt;/p&gt;&lt;p&gt;Refer to export page for settings&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="icon">
-                  <iconset resource="resources.qrc">
-                   <normaloff>:/images/icons/export.png</normaloff>:/images/icons/export.png</iconset>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>16</width>
-                   <height>16</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QPushButton" name="pushButtonPeakPlotClear">
-                 <property name="toolTip">
-                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clear plot&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="icon">
-                  <iconset resource="resources.qrc">
-                   <normaloff>:/images/icons/cross.png</normaloff>:/images/icons/cross.png</iconset>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>16</width>
-                   <height>16</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
             </item>
            </layout>
           </widget>
@@ -9003,16 +8602,6 @@
     <signal>clicked()</signal>
    </slots>
   </customwidget>
-  <customwidget>
-   <class>MyPeakPlot</class>
-   <extends>QWidget</extends>
-   <header>plots/mypeakplot.h</header>
-   <container>1</container>
-   <slots>
-    <slot>setGridHintY(int)</slot>
-    <slot>setGridHintX(int)</slot>
-   </slots>
-  </customwidget>
  </customwidgets>
  <tabstops>
   <tabstop>plainTextEditConsole_3</tabstop>
@@ -9032,8 +8621,6 @@
   <tabstop>pushButtonClearReceivedList_2</tabstop>
   <tabstop>pushButtonScrollDown_2</tabstop>
   <tabstop>tabs_right</tabstop>
-  <tabstop>pushButtonXY</tabstop>
-  <tabstop>radioButtonXYAutoSize</tabstop>
   <tabstop>pushButtonLog1</tabstop>
   <tabstop>radioButtonCSVComma</tabstop>
   <tabstop>radioButtonCSVDot</tabstop>
@@ -9088,310 +8675,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>comboBoxXYStyle</sender>
-   <signal>currentIndexChanged(int)</signal>
-   <receiver>plotxy</receiver>
-   <slot>setStyle(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>270</x>
-     <y>760</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>147</x>
-     <y>186</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>horizontalSliderGridFreqtimeV</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>plotPeak</receiver>
-   <slot>setGridHintY(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1005</x>
-     <y>759</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>28</x>
-     <y>609</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>radioButtonFreeRange</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>dialZoom</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>314</x>
-     <y>631</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>794</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButtonClearFFT</sender>
-   <signal>clicked()</signal>
-   <receiver>plotFFT</receiver>
-   <slot>clear()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>540</x>
-     <y>840</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>890</x>
-     <y>181</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>radioButtonFixedRange</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>rangeTypeChanged()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>314</x>
-     <y>675</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>507</x>
-     <y>659</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>radioButtonFreeRange</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>rangeTypeChanged()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>314</x>
-     <y>631</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>385</x>
-     <y>659</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButtonXYClear</sender>
-   <signal>clicked()</signal>
-   <receiver>plotxy</receiver>
-   <slot>clear()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>270</x>
-     <y>840</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>57</x>
-     <y>160</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>radioButtonFreeRange</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>horizontalScrollBarHorizontal</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>314</x>
-     <y>631</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>781</x>
-     <y>831</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>horizontalSliderGridFreqtimeH</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>plotPeak</receiver>
-   <slot>setGridHintX(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1005</x>
-     <y>738</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>28</x>
-     <y>609</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>radioButtonRollingRange</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>MainWindow</receiver>
-   <slot>rangeTypeChanged()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>314</x>
-     <y>719</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>630</x>
-     <y>659</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>radioButtonFreeRange</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>doubleSpinBoxRangeVerticalRange</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>314</x>
-     <y>631</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>125</x>
-     <y>674</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>radioButtonXYAutoSize</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>plotxy</receiver>
-   <slot>setAutoSize(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>270</x>
-     <y>620</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>144</x>
-     <y>128</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>horizontalSliderGridFFTV</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>plotFFT</receiver>
-   <slot>setGridHintY(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>540</x>
-     <y>702</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>890</x>
-     <y>163</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>radioButtonFreeRange</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>dialVerticalRange</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>314</x>
-     <y>631</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>118</x>
-     <y>618</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>radioButtonFreeRange</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>spinBoxShiftStep</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>314</x>
-     <y>631</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>503</x>
-     <y>839</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>radioButtonFreeRange</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>doubleSpinBoxRangeHorizontal</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>314</x>
-     <y>631</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>339</x>
-     <y>832</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>radioButtonAverageAll</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>comboBoxAvgIndividualCh</receiver>
-   <slot>setHidden(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>119</x>
-     <y>650</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>119</x>
-     <y>710</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>horizontalSliderGridFFTH</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>plotFFT</receiver>
-   <slot>setGridHintX(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>540</x>
-     <y>656</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>857</x>
-     <y>132</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>radioButtonFreeRange</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>dialRollingRange</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>314</x>
-     <y>631</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>386</x>
-     <y>795</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>pushButtonClearReceivedList_3</sender>
    <signal>clicked()</signal>
    <receiver>plainTextEditConsole_3</receiver>
@@ -9440,25 +8723,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>checkBoxFFTTwoSided</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>checkBoxFFTZeroCenter</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>125</x>
-     <y>735</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>125</x>
-     <y>767</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>radioButtonFreeRange</sender>
    <signal>toggled(bool)</signal>
-   <receiver>pushButtonSetNegative</receiver>
+   <receiver>horizontalScrollBarHorizontal</receiver>
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -9466,8 +8733,72 @@
      <y>631</y>
     </hint>
     <hint type="destinationlabel">
-     <x>215</x>
-     <y>782</y>
+     <x>781</x>
+     <y>831</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonClearFFT</sender>
+   <signal>clicked()</signal>
+   <receiver>plotFFT</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>275</x>
+     <y>747</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>890</x>
+     <y>181</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radioButtonFreeRange</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>doubleSpinBoxRangeHorizontal</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>314</x>
+     <y>631</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>339</x>
+     <y>832</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radioButtonFreeRange</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>dialRollingRange</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>314</x>
+     <y>631</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>386</x>
+     <y>795</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radioButtonRollingRange</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>rangeTypeChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>314</x>
+     <y>719</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>630</x>
+     <y>659</y>
     </hint>
    </hints>
   </connection>
@@ -9490,6 +8821,38 @@
   <connection>
    <sender>radioButtonFreeRange</sender>
    <signal>toggled(bool)</signal>
+   <receiver>dialZoom</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>314</x>
+     <y>631</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>794</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radioButtonFreeRange</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>pushButtonSetNegative</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>314</x>
+     <y>631</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>215</x>
+     <y>782</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radioButtonFreeRange</sender>
+   <signal>toggled(bool)</signal>
    <receiver>pushButtonSetPositive</receiver>
    <slot>setDisabled(bool)</slot>
    <hints>
@@ -9500,6 +8863,262 @@
     <hint type="destinationlabel">
      <x>88</x>
      <y>782</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radioButtonFreeRange</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>doubleSpinBoxRangeVerticalRange</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>314</x>
+     <y>631</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>125</x>
+     <y>674</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radioButtonAverageAll</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>comboBoxAvgIndividualCh</receiver>
+   <slot>setHidden(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>119</x>
+     <y>650</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>119</x>
+     <y>710</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radioButtonFreeRange</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>dialVerticalRange</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>314</x>
+     <y>631</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>118</x>
+     <y>618</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radioButtonFixedRange</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>rangeTypeChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>314</x>
+     <y>675</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>507</x>
+     <y>659</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radioButtonFreeRange</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>spinBoxShiftStep</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>314</x>
+     <y>631</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>503</x>
+     <y>839</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonXYClear</sender>
+   <signal>clicked()</signal>
+   <receiver>plotxy</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>105</x>
+     <y>828</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>57</x>
+     <y>160</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radioButtonFreeRange</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>rangeTypeChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>314</x>
+     <y>631</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>385</x>
+     <y>659</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>horizontalSliderGridFFTH</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>plotFFT</receiver>
+   <slot>setGridHintX(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>275</x>
+     <y>681</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>857</x>
+     <y>132</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>horizontalSliderGridFFTV</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>plotFFT</receiver>
+   <slot>setGridHintY(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>275</x>
+     <y>708</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>890</x>
+     <y>163</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonFFT</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>frame_16</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>44</x>
+     <y>630</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>82</x>
+     <y>740</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonFFT</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>frame_8</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>37</x>
+     <y>614</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>322</x>
+     <y>609</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonFFT</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>frame_11</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>36</x>
+     <y>630</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>456</x>
+     <y>609</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonXY</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>frame_15</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>110</x>
+     <y>630</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>150</x>
+     <y>722</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonXY</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>frame_14</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>112</x>
+     <y>617</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>608</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonXY</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>frame_12</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>43</x>
+     <y>619</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>444</x>
+     <y>608</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonFFT</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>comboBoxFFTType</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>123</x>
+     <y>630</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>184</x>
+     <y>626</y>
     </hint>
    </hints>
   </connection>
