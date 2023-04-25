@@ -35,7 +35,7 @@ void MainWindow::connectSignals() {
     connect(ui->doubleSpinBoxRangeVerticalRange, SIGNAL(valueChanged(double)), ui->plot, SLOT(setVerticalRange(double)));
     connect(ui->doubleSpinBoxRangeHorizontal, SIGNAL(valueChanged(double)), ui->dialRollingRange, SLOT(updatePosition(double)));
     connect(ui->doubleSpinBoxRangeVerticalRange, SIGNAL(valueChanged(double)), ui->dialVerticalRange, SLOT(updatePosition(double)));
-    connect(ui->doubleSpinBoxViewOffset, SIGNAL(valueChanged(double)), ui->plot, SLOT(setVerticalCenter(double)));
+    connect(ui->doubleSpinBoxViewCenter, SIGNAL(valueChanged(double)), ui->plot, SLOT(setVerticalCenter(double)));
     connect(ui->horizontalScrollBarHorizontal, &QScrollBar::valueChanged, ui->plot, &MyMainPlot::setHorizontalPos);
     connect(ui->lineEditHtitle, &QLineEdit::textChanged, ui->plot, &MyPlot::setXTitle);
     connect(ui->lineEditVtitle, &QLineEdit::textChanged, ui->plot, &MyPlot::setYTitle);
@@ -81,7 +81,7 @@ void MainWindow::connectSignals() {
     connect(developerOptions->getUi()->checkBoxTriggerLineEn, &QCheckBox::stateChanged, this, &MainWindow::checkBoxTriggerLineEn_stateChanged);
     connect(developerOptions->getUi()->pushButtonClearGraph, &QPushButton::clicked, this, &MainWindow::pushButtonClearGraph_clicked);
     connect(developerOptions->getUi()->checkBoxEchoReply, &QCheckBox::toggled, this, &MainWindow::checkBoxEchoReply_toggled);
-
+    connect(developerOptions->getUi()->checkBoxMouseControls, &QCheckBox::toggled, this, &MainWindow::checkBoxMouseControls_toggled_new);
 }
 
 void MainWindow::setAdaptiveSpinBoxes() {
@@ -119,9 +119,10 @@ void MainWindow::setGuiDefaults() {
     ui->tabsControll->setCurrentIndex(0);
     ui->comboBoxOutputLevel->setCurrentIndex((int)OutputLevel::warning);
     ui->radioButtonFixedRange->setChecked(true);
-    plotLayoutChanged();
     ui->labelBuildDate->setText(tr("Build: ") + QString(__DATE__) + " " + QString(__TIME__));
     ui->pushButtonPause->setIcon(iconRun);
+
+    plotLayoutChanged();
 
     on_lineEditHUnit_textChanged(ui->lineEditHUnit->text());
     on_lineEditVUnit_textChanged(ui->lineEditVUnit->text());
@@ -152,8 +153,6 @@ void MainWindow::setGuiDefaults() {
     ui->comboBoxFFTType->setCurrentIndex(1);
 
     ui->comboBoxBaud->setCurrentIndex(1);
-
-    ui->radioButtonLayoutTime->setChecked(true);
 
     ui->plot->setGridHintX(ui->horizontalSliderHGrid->value());
     ui->plot->setGridHintY(ui->horizontalSliderVGrid->value());

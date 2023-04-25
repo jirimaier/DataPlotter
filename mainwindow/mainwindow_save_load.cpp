@@ -20,7 +20,7 @@ void MainWindow::initSetables() {
     // Range
     setables["vrange"] = {ui->doubleSpinBoxRangeVerticalRange,false};
     setables["hrange"] = {ui->doubleSpinBoxRangeHorizontal,false};
-    setables["vcenter"] = {ui->doubleSpinBoxViewOffset,false};
+    setables["vcenter"] = {ui->doubleSpinBoxChOffset,false};
 
     // Plot settings
     setables["vaxis"] = {ui->checkBoxVerticalValues,false};
@@ -159,16 +159,6 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarg
             ui->comboBoxBaud->setEditText(QString::number(value.toUInt()));
         }
 
-        else if (type == "vpos") {
-            if(value.toInt()>0)
-                ui->pushButtonPositive->setChecked(true);
-            else if(value.toInt()<0)
-                ui->pushButtonNegative->setChecked(true);
-            else
-                ui->pushButtonCenter->setChecked(true);
-            printMessage(tr("\"vpos\" has different meaning than in previous versions").toUtf8(), settings, MessageLevel::warning, source);
-        }
-
         else if (type == "trigline") {
             if (value == "on")
                 developerOptions->getUi()->checkBoxTriggerLineEn->setCheckState(Qt::Checked);
@@ -227,17 +217,6 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarg
                 ui->radioButtonFreeRange->setChecked(true);
             if (value == "roll")
                 ui->radioButtonRollingRange->setChecked(true);
-        }
-
-        else if (type == "layout") {
-            if (value == "all")
-                ui->radioButtonLayoutAll->setChecked(true);
-            if (value == "time")
-                ui->radioButtonLayoutTime->setChecked(true);
-            if (value == "fft")
-                ui->radioButtonLayoutFFT->setChecked(true);
-            if (value == "xy")
-                ui->radioButtonLayoutXY->setChecked(true);
         }
 
         else if (type == "noclickclr" || type == "clickclr") {
@@ -417,55 +396,16 @@ void MainWindow::on_pushButtonReset_clicked() {
         emit sendManualInput("$$S" + defaults.readAll().replace("\n", "") + "$$U");
         defaults.close();
     }
-    QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/settings/default.cfg");
-    QFile file(defaultName);
-    if (!QDir(QCoreApplication::applicationDirPath() + "/settings").exists())
-        QDir().mkdir((QCoreApplication::applicationDirPath() + "/settings"));
-    if (file.open(QFile::WriteOnly | QFile::Truncate)) {
-        QFile defaults(":/text/settings/default.cfg");
-        if (defaults.open(QFile::ReadOnly | QFile::Text)) {
-            QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/settings/default.cfg");
-            QFile file(defaultName);
-            if (file.open(QFile::WriteOnly | QFile::Truncate)) {
-                file.write(defaults.readAll());
-                file.close();
-            }
-            defaults.close();
-        }
-    } else {
-        QMessageBox msgBox(this);
-        msgBox.setText(tr("Can not create default settings file (if installed in ProgramFiles, admin rights are required)"));
-        msgBox.setDetailedText(defaultName);
-        msgBox.setIcon(QMessageBox::Critical);
-        msgBox.exec();
-    }
+    saveDefaultSettings();
 }
 
 void MainWindow::setUp() {
-    QString userDefaults = QString(QCoreApplication::applicationDirPath()) + QString("/settings/default.cfg");
-    QFile userDefaultsFile(userDefaults);
-    if (userDefaultsFile.open(QFile::ReadOnly | QFile::Text)) {
-        emit sendManualInput("$$S" + userDefaultsFile.readAll().replace("\n", "") + "$$U");
-        userDefaultsFile.close();
+    QFile settingsFile(configFilePath);
+    if (settingsFile.open(QFile::ReadOnly | QFile::Text)) {
+        emit sendManualInput("$$S" + settingsFile.readAll().replace("\n", "") + "$$U");
+        settingsFile.close();
     } else {
-        QFile defaults(":/text/settings/default.cfg");
-        if (defaults.open(QFile::ReadOnly | QFile::Text)) {
-            QByteArray defaultSettings = defaults.readAll();
-            defaults.close();
-
-            // Create defaults file
-            if (!QDir(QCoreApplication::applicationDirPath() + "/settings").exists())
-                QDir().mkdir((QCoreApplication::applicationDirPath() + "/settings"));
-            QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/settings/default.cfg");
-            QFile file(defaultName);
-            if (file.open(QFile::WriteOnly | QFile::Truncate)) {
-                file.write(defaultSettings);
-                file.close();
-            }
-
-            // Apply defaults
-            emit sendManualInput("$$S" + defaultSettings.replace("\n", "") + "$$U");
-        }
+        on_pushButtonReset_clicked();
     }
 }
 
@@ -479,21 +419,27 @@ void MainWindow::saveToFile(QByteArray data) {
         file.close();
     } else {
         QMessageBox msgBox(this);
-        msgBox.setText(tr("Cant write to file. (if installed in ProgramFiles, admin rights are required)"));
+        msgBox.setText(tr("Unable to write to this file."));
         msgBox.setIcon(QMessageBox::Critical);
         msgBox.exec();
     }
 }
 
-void MainWindow::seveDefaultSettings()
+void MainWindow::saveDefaultSettings()
 {
-    if (!QDir(QCoreApplication::applicationDirPath() + "/settings").exists())
-        QDir().mkdir((QCoreApplication::applicationDirPath() + "/settings"));
-    QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/settings/default.cfg");
-    QFile file(defaultName);
+    QDir configDir(QFileInfo(configFilePath).absolutePath());
+    if (!configDir.exists()) {
+        if (!configDir.mkpath(".")) {
+            qWarning() << "Failed to create configuration directory";
+        }
+    }
+
+    QFile file(configFilePath);
     if (file.open(QFile::WriteOnly | QFile::Truncate)) {
         file.write(getSettings());
         file.close();
+    } else {
+        qWarning() << "Unable to save settings";
     }
 }
 

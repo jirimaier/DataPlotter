@@ -14,7 +14,6 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "mainwindow.h"
-#include "ui_developeroptions.h"
 
 void MainWindow::rangeTypeChanged() {
   if (ui->radioButtonFixedRange->isChecked()) {
@@ -30,25 +29,25 @@ void MainWindow::rangeTypeChanged() {
   }
 }
 
-void MainWindow::plotLayoutChanged() {
-  if (ui->radioButtonLayoutAll->isChecked()) {
-    ui->plot->setVisible(true);
-    ui->plotxy->setVisible(true);
-    ui->plotFFT->setVisible(true);
-  } else if (ui->radioButtonLayoutTime->isChecked()) {
-    ui->plot->setVisible(true);
-    ui->plotxy->setVisible(false);
-    ui->plotFFT->setVisible(false);
-  } else if (ui->radioButtonLayoutFFT->isChecked()) {
-    ui->plot->setVisible(false);
-    ui->plotxy->setVisible(false);
-    ui->plotFFT->setVisible(true);
-  } else { /*if (ui->radioButtonLayoutAll->isChecked())*/
-    ui->plot->setVisible(false);
-    ui->plotxy->setVisible(true);
-    ui->plotFFT->setVisible(false);
-  }
+void MainWindow::plotLayoutChanged()
+{
+  bool fft = ui->pushButtonFFT->isChecked();
+  bool xy = ui->pushButtonXY->isChecked();
+  bool fsfft = ui->pushButtonFFT_FS->isChecked();
+  bool fsxy = ui->pushButtonXY_FS->isChecked();
 
+  if(!fft)
+    ui->pushButtonFFT_FS->setChecked(false);
+
+  if(!xy)
+    ui->pushButtonXY_FS->setChecked(false);
+
+  Q_ASSERT(fsfft == false || fsxy == false); // Cannot be both true
+
+  ui->plotFFT->setVisible(fft && !fsxy);
+  ui->plotxy->setVisible(xy && !fsfft);
+  ui->frameUpperPlots->setVisible(fft||xy);
+  ui->plot->setHidden(fsfft || fsxy);
 }
 
 void MainWindow::on_doubleSpinBoxChOffset_valueChanged(double arg1) {
@@ -272,10 +271,7 @@ void MainWindow::on_pushButtonXY_toggled(bool checked) {
   else
     updateXY();
 
-  if (checked && ui->radioButtonLayoutTime->isChecked())
-    ui->radioButtonLayoutAll->setChecked(true);
-  else if (!ui->pushButtonFFT->isChecked() && ui->radioButtonLayoutAll->isChecked())
-    ui->radioButtonLayoutTime->setChecked(true);
+  plotLayoutChanged();
 }
 
 void MainWindow::on_pushButtonHideCh_toggled(bool checked) {
@@ -467,10 +463,7 @@ void MainWindow::on_pushButtonFFT_toggled(bool checked) {
     updateFFT2();
   }
 
-  if (checked && ui->radioButtonLayoutTime->isChecked())
-    ui->radioButtonLayoutAll->setChecked(true);
-  else if (!ui->pushButtonXY->isChecked() && ui->radioButtonLayoutAll->isChecked())
-    ui->radioButtonLayoutTime->setChecked(true);
+  plotLayoutChanged();
 }
 
 void MainWindow::on_doubleSpinBoxRangeVerticalRange_valueChanged(double arg1) {
@@ -544,7 +537,7 @@ void MainWindow::on_checkBoxOpenGL_toggled(bool checked) {
   ui->plot->setOpenGl(checked);
 }
 
-void MainWindow::on_checkBoxMouseControls_toggled(bool checked) {
+void MainWindow::checkBoxMouseControls_toggled_new(bool checked) {
   ui->plot->enableMouseCursorControll(checked);
   ui->plotxy->enableMouseCursorControll(checked);
   ui->plotFFT->enableMouseCursorControll(checked);

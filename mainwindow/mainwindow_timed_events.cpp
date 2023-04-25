@@ -93,9 +93,9 @@ void MainWindow::updateChannelComboBox(QComboBox& combobox, int numberOfExcluded
         auto* item = model->item(i);
         bool willBeVisible;
         if (i < ANALOG_COUNT + MATH_COUNT)
-            willBeVisible = ui->checkBoxSelUnused->isChecked() || ui->plot->isChUsed(i);
+            willBeVisible = developerOptions->getUi()->checkBoxSelUnused->isChecked() || ui->plot->isChUsed(i);
         else
-            willBeVisible = ui->checkBoxSelUnused->isChecked() || ui->plot->isChUsed(getLogicChannelID(i - ANALOG_COUNT - MATH_COUNT, 1));
+            willBeVisible = developerOptions->getUi()->checkBoxSelUnused->isChecked() || ui->plot->isChUsed(getLogicChannelID(i - ANALOG_COUNT - MATH_COUNT, 1));
         if (willBeVisible)
             atLeastOneVisible = true;
 

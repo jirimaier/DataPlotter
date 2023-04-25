@@ -21,6 +21,8 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
     qApp->setStyle("Fusion");
     this->setAttribute(Qt::WA_NativeWindow);
 
+    configFilePath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/config.ini";
+
     developerOptions = new DeveloperOptions(ui->quickWidget);
 
     ui->doubleSpinBoxRangeVerticalRange->trimDecimalZeroes = true;
@@ -66,13 +68,21 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
     on_radioButtonDark_toggled(ui->radioButtonDark->isChecked());
 }
 
-MainWindow::~MainWindow() {
-    seveDefaultSettings();
-    ui->quickWidget->setSource(QUrl());
-    ui->quickWidget->engine()->clearComponentCache();
+void MainWindow::closeEvent (QCloseEvent *event)
+{
     developerOptions->close();
     serialSettingsDialog->close();
-    delete ui; delete serialSettingsDialog; delete qmlTerminalInterface; delete developerOptions;
+    ui->quickWidget->setSource(QUrl());
+    ui->quickWidget->engine()->clearComponentCache();
+    saveDefaultSettings();
+    event->accept();
+}
+
+MainWindow::~MainWindow() {
+    delete serialSettingsDialog;
+    delete qmlTerminalInterface;
+    delete developerOptions;
+    delete ui;
 }
 
 void MainWindow::setComboboxItemVisible(QComboBox& comboBox, int index, bool visible) {
@@ -692,70 +702,13 @@ void MainWindow::on_tabs_right_currentChanged(int index) {
 #endif
 }
 
-void MainWindow::on_pushButtonCenter_toggled(bool checked)
-{
-    if(checked) {
-        ui->pushButtonNegative->blockSignals(true);
-        ui->pushButtonNegative->setChecked(false);
-        ui->pushButtonNegative->blockSignals(false);
-        ui->pushButtonPositive->blockSignals(true);
-        ui->pushButtonPositive->setChecked(false);
-        ui->pushButtonPositive->blockSignals(false);
-        ui->plot->setVposLock(0);
-        ui->doubleSpinBoxViewOffset->setValue(0.0);
-    } else {
-        ui->pushButtonCenter->setChecked(true);
-    }
-
-}
-
-void MainWindow::on_pushButtonPositive_toggled(bool checked)
-{
-    if(checked) {
-
-        ui->pushButtonCenter->blockSignals(true);
-        ui->pushButtonCenter->setChecked(false);
-        ui->pushButtonCenter->blockSignals(false);
-        ui->pushButtonNegative->blockSignals(true);
-        ui->pushButtonNegative->setChecked(false);
-        ui->pushButtonNegative->blockSignals(false);
-        ui->plot->setVposLock(1);
-        ui->doubleSpinBoxViewOffset->setValue(0.0);
-    } else {
-        if(!ui->pushButtonNegative->isChecked()) {
-            ui->pushButtonCenter->setChecked(true);
-        }
-    }
-}
-
-
-void MainWindow::on_pushButtonNegative_toggled(bool checked)
-{
-    if(checked) {
-        ui->pushButtonCenter->blockSignals(true);
-        ui->pushButtonCenter->setChecked(false);
-        ui->pushButtonCenter->blockSignals(false);
-        ui->pushButtonPositive->blockSignals(true);
-        ui->pushButtonPositive->setChecked(false);
-        ui->pushButtonPositive->blockSignals(false);
-        ui->plot->setVposLock(-1);
-        ui->doubleSpinBoxViewOffset->setValue(0.0);
-    } else {
-        if(!ui->pushButtonPositive->isChecked()) {
-            ui->pushButtonCenter->setChecked(true);
-        }
-    }
-}
-
-
 void MainWindow::on_pushButtonRangeFit_clicked()
 {
     on_pushButtonResetChannels_clicked();
-    ui->pushButtonCenter->setChecked(true);
     QCPRange chRange;
     bool zbytrecnaPromena;
     chRange = ui->plot->graph(ui->comboBoxSelectedChannel->currentIndex())->getValueRange(zbytrecnaPromena, QCP::sdBoth, ui->plot->xAxis->range());
-    ui->doubleSpinBoxViewOffset->setValue(chRange.center());
+    ui->doubleSpinBoxViewCenter->setValue(chRange.center());
     ui->doubleSpinBoxRangeVerticalRange->setValue(ceilToNiceValue(chRange.size()));
 }
 
@@ -772,8 +725,39 @@ void MainWindow::on_listWidgetCom_currentItemChanged(QListWidgetItem *current, Q
     emit beginSerialConnection(current->data(Qt::UserRole).toString(), ui->comboBoxBaud->currentText().toInt(), settings.dataBits, settings.parity, settings.stopBits, settings.flowControl);
 }
 
-void MainWindow::on_pushButton_clicked()
+
+
+
+void MainWindow::on_pushButtonSetPositive_clicked()
 {
-    developerOptions->show();
+    ui->doubleSpinBoxViewCenter->setValue(ui->doubleSpinBoxRangeVerticalRange->value()/2);
 }
+
+
+void MainWindow::on_pushButtonSetCenter_clicked()
+{
+    ui->doubleSpinBoxViewCenter->setValue(0);
+}
+
+
+void MainWindow::on_pushButtonSetNegative_clicked()
+{
+    ui->doubleSpinBoxViewCenter->setValue(-ui->doubleSpinBoxRangeVerticalRange->value()/2);
+}
+
+void MainWindow::on_pushButtonFFT_FS_toggled(bool checked) {
+    if(checked) ui->pushButtonXY_FS->setChecked(false);
+    plotLayoutChanged();
+}
+
+void MainWindow::on_pushButtonXY_FS_toggled(bool checked) {
+    if(checked) ui->pushButtonFFT_FS->setChecked(false);
+    plotLayoutChanged();
+}
+
+
+
+
+
+
 

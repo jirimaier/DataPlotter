@@ -65,94 +65,72 @@ private:
     QTimer portsRefreshTimer, activeChRefreshTimer, xyTimer, cursorRangeUpdateTimer, measureRefreshTimer1, measureRefreshTimer2, fftTimer1, fftTimer2, serialMonitorTimer, consoleTimer, interpolationTimer, triggerLineTimer;
     QList<QSerialPortInfo> portList;
     FileSender fileSender;
-
     QPalette darkPalette, lightPalette;
-
-    void setComboboxItemVisible(QComboBox& comboBox, int index, bool visible);
-    void setChStyleSelection(GraphType::enumGraphType type);
-
-    int lastSelectedChannel = 1;
-
     QPushButton* mathEn[3];
     QComboBox* mathFirst[3];
     QComboBox* mathSecond[3];
     QComboBox* mathOp[3];
     QDoubleSpinBox* mathScalarFirst[3];
     QDoubleSpinBox* mathScalarSecond[3];
-
-    QTimer dataRateTimer;
-    int dataUpdates = 0;
-    bool lastUpdateWasPoint = false;
-    bool lastUpdateWasLogic = false;
+    QIcon iconRun, iconPause, iconHidden, iconVisible, iconConnected, iconNotConnected, iconCross, iconAbsoluteCursor;
+    QByteArray serialMonitor;
+    QStringList consoleBuffer;
+    QString configFilePath;
+    int averagerCounts[ANALOG_COUNT];
+    QStringList autoConnectPortNames;
+    QString attemptReconnectPort;
+    ChannelExpectedRange channelExpectedRanges[ANALOG_COUNT + MATH_COUNT];
+    QFile recordingOfMeasurements1, recordingOfMeasurements2;
+    QElapsedTimer uptime;
+    QTemporaryFile currentQmlFile;
+    QString pendingMessagePart;
+    bool pendingMessageType;
+    MessageModel messageModel;
+    AnsiTerminalModel ansiTerminalModel;
     bool autoAutosetPending = false;
+    bool colorUpdateNeeded = true;
+    bool currentThemeDark = false;
+    int dataUpdates = 0;
+    QMap<QString, QPair<QWidget*, bool>> setables;
+    int interpolationsRunning = 0;
+    bool lastUpdateWasLogic = false;
+    bool lastUpdateWasPoint = false;
+    int lastSelectedChannel = 1;
+    bool pendingDeviceMessage = false;
     HAxisType::enumHAxisType recommandedAxisType = HAxisType::normal;
+    bool recommendOpenGL = true;
+    bool timeUseUnits = true;
+    bool valuesUseUnits = true;
+    bool freqUseUnits = true;
+    QTimer dataRateTimer;
 
-    QMap<QString,QPair<QWidget*,bool>> setables;
+private:
+    void setComboboxItemVisible(QComboBox& comboBox, int index, bool visible);
+    void setChStyleSelection(GraphType::enumGraphType type);
     void initSetables();
     QByteArray getSettings();
     void applyGuiElementSettings(QWidget*, QString value);
     QByteArray readGuiElementSettings(QWidget* target);
-
     void connectSignals();
     void setUp();
     void startTimers();
     void setGuiDefaults();
     void setGuiArrays();
-
     void updateChScale();
     void changeLanguage(QString code = "en");
-
     void exportCSV(int ch);
-
-    bool colorUpdateNeeded = true;
     void fillChannelSelect();
     void updateChannelComboBox(QComboBox& combobox, int numberOfExcludedAtEnd);
     void updateSelectedChannel(int arg1);
-
-    bool pendingDeviceMessage = false;
-
     void updateMathNow(int number);
     void updateXY();
-
-    QIcon iconRun, iconPause, iconHidden, iconVisible, iconConnected, iconNotConnected, iconCross, iconAbsoluteCursor;
-
-    QByteArray serialMonitor;
-    QStringList consoleBuffer;
-
     void setCursorsVisibility(Cursors::enumCursors cursor, int graph, int timeCurState, int valueCurState);
     void updateXYCursorsCalculations();
     void updateCursorMeasurementsText();
-
-    int interpolationsRunning = 0;
-
-    bool recommendOpenGL = true;
-
-    int averagerCounts[ANALOG_COUNT];
-
-    bool timeUseUnits = true, valuesUseUnits = true, freqUseUnits = true;
-
-    QStringList autoConnectPortNames;
-    QString attemptReconnectPort;
-
-    ChannelExpectedRange channelExpectedRanges[ANALOG_COUNT + MATH_COUNT];
-
-    QFile recordingOfMeasurements1, recordingOfMeasurements2;
-    QElapsedTimer uptime;
-
     void initQmlTerminal();
-
-    bool currentThemeDark = false;
-
-    QTemporaryFile currentQmlFile;
-    QString pendingMessagePart;
-    bool pendingMessageType;
-
-    MessageModel messageModel;
-    AnsiTerminalModel ansiTerminalModel;
-
     void resetQmlTerminal();
-
-    void seveDefaultSettings();
+    void saveDefaultSettings();
+    void closeEvent(QCloseEvent *event);
 
 private slots:
     void updateCursors();
@@ -175,6 +153,16 @@ private slots:
     void updateUsedChannels();
     void turnOffTriggerLine() {ui->plot->setTriggerLineVisible(false);}
     void updateConsole();
+
+private slots:
+    void pushButtonLoadFile_clicked_new();
+    void pushButtonDefaults_clicked_new();
+    void pushButtonSaveSettings_clicked();
+    void pushButtonClearAll_clicked();
+    void checkBoxTriggerLineEn_stateChanged(int arg1);
+    void pushButtonClearGraph_clicked();
+    void checkBoxEchoReply_toggled(bool checked);
+    void checkBoxMouseControls_toggled_new(bool checked);
 
 private slots: // Autoconnect slots
     void on_dialRollingRange_realValueChanged(double value) { ui->doubleSpinBoxRangeHorizontal->setValue(value); }
@@ -249,7 +237,6 @@ private slots: // Autoconnect slots
     void on_comboBoxXYx_currentIndexChanged(int) { updateXY(); }
     void on_comboBoxFFTType_currentIndexChanged(int index);
     void on_checkBoxOpenGL_toggled(bool checked);
-    void on_checkBoxMouseControls_toggled(bool checked);
     void on_lineEditVUnit_textChanged(const QString& arg1);
     void on_pushButtonClearReceivedList_3_clicked() { serialMonitor.clear(); }
     void on_pushButtonScrollDown_3_clicked();
@@ -295,21 +282,14 @@ private slots: // Autoconnect slots
     void on_pushButtonEXportFreqTimeCSV_clicked() {exportCSV(EXPORT_FREQTIME);}
     void on_radioButtonDark_toggled(bool checked);
     void on_tabs_right_currentChanged(int index);
-    void on_pushButtonCenter_toggled(bool checked);
-    void on_pushButtonPositive_toggled(bool checked);
-    void on_pushButtonNegative_toggled(bool checked);
     void on_pushButtonRangeFit_clicked();
     void on_listWidgetCom_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
-    void on_pushButton_clicked();
-
-    void pushButtonLoadFile_clicked_new();
-    void pushButtonDefaults_clicked_new();
-    void pushButtonSaveSettings_clicked();
-    void pushButtonClearAll_clicked();
-    void checkBoxTriggerLineEn_stateChanged(int arg1);
-    void pushButtonClearGraph_clicked();
-    void checkBoxEchoReply_toggled(bool checked);
-
+    void on_pushButtonDevOptions_clicked() { developerOptions->show(); }
+    void on_pushButtonSetPositive_clicked();
+    void on_pushButtonSetCenter_clicked();
+    void on_pushButtonSetNegative_clicked();
+    void on_pushButtonFFT_FS_toggled(bool checked);
+    void on_pushButtonXY_FS_toggled(bool checked);
 
 public slots:
     void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumMessageTarget target);
