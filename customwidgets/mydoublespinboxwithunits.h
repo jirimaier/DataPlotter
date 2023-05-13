@@ -16,9 +16,11 @@
 #ifndef MYDOUBLESPINBOXWITHUNITS_H
 #define MYDOUBLESPINBOXWITHUNITS_H
 
-#include "global.h"
+#include "math/expressionparser.h"
 #include <QDoubleSpinBox>
 #include <QWidget>
+#include <QJSEngine>
+#include <QJSValue>
 
 /// Double spin box, který zobrazuje předpony jednotek (milli, mikro ...). Samotná jednotka se nastaví jako suffix.
 class MyDoubleSpinBoxWithUnits : public QDoubleSpinBox {
@@ -40,13 +42,8 @@ class MyDoubleSpinBoxWithUnits : public QDoubleSpinBox {
   QString textFromValue(double val) const;
   double valueFromText(const QString& text) const;
   bool useUnitPrefix = true;
-
-  /// písmena (předpony jednotky), která se smí v poli objevit
-  QString validchars = "Mkmu";
-
-
-
- signals:
+  QString replaceUnitPrefixes(QString expr) const;
+  signals:
 };
 
 #endif // MYDOUBLESPINBOXWITHUNITS_H

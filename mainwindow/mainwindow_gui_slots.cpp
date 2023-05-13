@@ -15,6 +15,7 @@
 
 #include "mainwindow.h"
 #include "ui_freqtimeplotdialog.h"
+#include "ui_manualinputdialog.h"
 
 void MainWindow::rangeTypeChanged() {
   if (ui->radioButtonFixedRange->isChecked()) {
@@ -130,13 +131,7 @@ void MainWindow::on_radioButtonCz_toggled(bool checked) {
     changeLanguage("cz");
 }
 
-void MainWindow::on_lineEditManualInput_returnPressed() {
-  QByteArray bytes;
-  bytes.append(ui->lineEditManualInput->text().toLocal8Bit());
-  emit sendManualInput(bytes);
-  ui->lineEditManualInput->clear();
-  on_pushButtonScrollDown_clicked();
-}
+
 
 void MainWindow::on_pushButtonScrollDown_clicked() {
   QScrollBar* scroll = ui->plainTextEditConsole->verticalScrollBar();
@@ -150,23 +145,13 @@ void MainWindow::on_comboBoxOutputLevel_currentIndexChanged(int index) {
     emit setSerialMessageLevel((OutputLevel::enumOutputLevel)index);
 }
 
-void MainWindow::on_pushButtonScrollDown_2_clicked() {
-  QScrollBar* scroll = ui->plainTextEditConsole_2->verticalScrollBar();
-  scroll->setValue(scroll->maximum());
-  scroll = ui->plainTextEditConsole_2->horizontalScrollBar();
-  scroll->setValue(scroll->minimum());
-}
+
 
 void MainWindow::on_pushButtonScrollDown_3_clicked() {
   QScrollBar* scroll = ui->plainTextEditConsole_3->verticalScrollBar();
   scroll->setValue(scroll->maximum());
   scroll = ui->plainTextEditConsole_3->horizontalScrollBar();
   scroll->setValue(scroll->minimum());
-}
-
-void MainWindow::on_checkBoxSerialMonitor_toggled(bool checked) {
-  ui->frameSerialMonitor->setVisible(checked);
-  emit enableSerialMonitor(checked);
 }
 
 void MainWindow::on_comboBoxSelectedChannel_currentIndexChanged(int index) {
@@ -567,7 +552,7 @@ void MainWindow::on_pushButtonDolarNewline_toggled(bool checked) {
   str.replace("\n$$","$$");
   if(checked)
     str.replace("$$","\n$$");
-  if(str.left(1)=="\n")
+  if(str.at(0)=="\n")
     str.remove(0,1);
   ui->plainTextEditConsole_3->setPlainText(str);
   on_pushButtonScrollDown_3_clicked();

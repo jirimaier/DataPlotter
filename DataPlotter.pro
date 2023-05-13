@@ -12,6 +12,7 @@ CONFIG += c++11
 FORMS += mainwindow.ui \
     developeroptions.ui \
     freqtimeplotdialog.ui \
+    manualinputdialog.ui \
     serialsettingsdialog.ui
 
 TRANSLATIONS += \
@@ -39,10 +40,14 @@ HEADERS += \
     freqtimeplotdialog.h \
     global.h \
     mainwindow/mainwindow.h \
+    manualinputdialog.h \
     math/averager.h \
+    math/expressionparser.h \
     math/interpolator.h \
     math/plotmath.h \
     math/signalprocessing.h \
+    math/simpleexpressionparser.h \
+    math/variableexpressionparser.h \
     math/xymode.h \
     customwidgets/myterminal.h \
     plots/myaxistickerwithunit.h \
@@ -86,10 +91,14 @@ SOURCES += \
     mainwindow/mainwindow_save_load.cpp \
     mainwindow/mainwindow_send_file.cpp \
     mainwindow/mainwindow_timed_events.cpp \
+    manualinputdialog.cpp \
     math/averager.cpp \
+    math/expressionparser.cpp \
     math/interpolator.cpp \
     math/plotmath.cpp \
     math/signalprocessing.cpp \
+    math/simpleexpressionparser.cpp \
+    math/variableexpressionparser.cpp \
     math/xymode.cpp \
     customwidgets/myterminal.cpp \
     plots/myaxistickerwithunit.cpp \

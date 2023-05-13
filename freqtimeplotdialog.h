@@ -18,8 +18,6 @@ public:
 
     Ui::FreqTimePlotDialog *getUi() const;
 
-    void retranslate();
-
 private slots:
     void on_pushButtonPeakPlotClear_clicked();
 

@@ -1,4 +1,5 @@
 #include "ansiterminalmodel.h"
+#include "qdebug.h"
 
 AnsiTerminalModel::AnsiTerminalModel(QObject *parent) : QAbstractListModel(parent)
 {
@@ -167,6 +168,8 @@ void AnsiTerminalModel::moveCursorAbsolute(int16_t x, int16_t y)
         appendColumn();
     while(cursorY>=rowCount()/columns())
         appendRow();
+
+    setCursorIndex(x+y*columns());
 
     Q_ASSERT(rowCount()%columns() == 0);
 }
@@ -390,6 +393,27 @@ void AnsiTerminalModel::setColorExceptionList(QList<QColor> newlist, bool isBlac
     endResetModel();
 }
 
+void AnsiTerminalModel::gridClicked(int index)
+{
+    int x = index%columns();
+    int y = index / columns();
+    emit gridClickedSignal(x,y);
+    moveCursorAbsolute(x,y);
+}
+
+int AnsiTerminalModel::getCursorIndex() const
+{
+    return cursorIndex;
+}
+
+void AnsiTerminalModel::setCursorIndex(int newCursorIndex)
+{
+    if (cursorIndex == newCursorIndex)
+        return;
+    cursorIndex = newCursorIndex;
+    emit cursorIndexChanged();
+}
+
 bool AnsiTerminalModel::showGrid() const
 {
     return m_showGrid;
@@ -400,6 +424,8 @@ void AnsiTerminalModel::setShowGrid(bool newShowGrid)
     if (m_showGrid == newShowGrid)
         return;
     m_showGrid = newShowGrid;
+    if(newShowGrid)
+        setActive(true);
     emit showGridChanged();
 }
 

@@ -23,11 +23,6 @@ Ui::FreqTimePlotDialog *FreqTimePlotDialog::getUi() const
     return ui;
 }
 
-void FreqTimePlotDialog::retranslate()
-{
-    ui->retranslateUi(this);
-}
-
 void FreqTimePlotDialog::on_pushButtonPeakPlotClear_clicked()
 {
     ui->plotPeak->clear();

@@ -16,6 +16,8 @@
 #include "mainwindow.h"
 #include "ui_developeroptions.h"
 #include "ui_freqtimeplotdialog.h"
+#include "ui_manualinputdialog.h"
+#include "ui_serialsettingsdialog.h"
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWindow),   serialSettingsDialog(new SerialSettingsDialog(this)) {
     ui->setupUi(this);
@@ -26,6 +28,7 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     developerOptions = new DeveloperOptions(this,ui->quickWidget);
     freqTimePlotDialog = new FreqTimePlotDialog(nullptr);
+    manualInputDialog = new ManualInputDialog(nullptr);
 
     ui->doubleSpinBoxRangeVerticalRange->trimDecimalZeroes = true;
     ui->doubleSpinBoxRangeVerticalRange->emptyDefaultValue = 1;
@@ -73,6 +76,8 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
 void MainWindow::closeEvent (QCloseEvent *event)
 {
     freqTimePlotDialog->close();
+    manualInputDialog->close();
+    developerOptions->close();
     ui->quickWidget->setSource(QUrl());
     ui->quickWidget->engine()->clearComponentCache();
     saveDefaultSettings();
@@ -84,6 +89,7 @@ MainWindow::~MainWindow() {
     delete qmlTerminalInterface;
     delete developerOptions;
     delete freqTimePlotDialog;
+    delete manualInputDialog;
     delete ui;
 }
 
@@ -152,10 +158,11 @@ void MainWindow::changeLanguage(QString code) {
     }
     qApp->installTranslator(translator);
     ui->retranslateUi(this);
-    serialSettingsDialog->retranslate();
-    developerOptions->retranslate();
-    freqTimePlotDialog->retranslate();
+    serialSettingsDialog->getUi()->retranslateUi(serialSettingsDialog);
+    developerOptions->getUi()->retranslateUi(developerOptions);
+    freqTimePlotDialog->getUi()->retranslateUi(freqTimePlotDialog);
     freqTimePlotDialog->getUi()->plotPeak->setInfoText();
+    manualInputDialog->getUi()->retranslateUi(manualInputDialog);
 }
 
 void MainWindow::showPlotStatus(PlotStatus::enumPlotStatus type) {
@@ -234,7 +241,7 @@ void MainWindow::updateDivs() {
 }
 
 void MainWindow::printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumMessageTarget target) {
-    QString color = "<font color=black>";
+    QString color = "<font color=gray>";
     switch (type) {
     case MessageLevel::warning:
         color = "<font color=orange>";
@@ -246,7 +253,7 @@ void MainWindow::printMessage(QString messageHeader, QByteArray messageBody, int
         color = "<font color=green>";
         break;
     default:
-        color = "<font color=black>";
+        color = "<font color=gray>";
     }
 
     QString stringMessage;
@@ -256,7 +263,7 @@ void MainWindow::printMessage(QString messageHeader, QByteArray messageBody, int
         //ui->plainTextEditConsole->appendHtml(color + QString(messageHeader) + "</font color>" + (stringMessage.isEmpty() ? "" : ": ") + stringMessage);
         consoleBuffer.append(color + QString(messageHeader) + "</font color>" + (stringMessage.isEmpty() ? "" : ": ") + stringMessage);
     else
-        ui->plainTextEditConsole_2->appendHtml(color + QString(messageHeader) + "</font color>" + (stringMessage.isEmpty() ? "" : ": ") + stringMessage);
+        manualInputDialog->getUi()->plainTextEditConsole_2->appendHtml(color + QString(messageHeader) + "</font color>" + (stringMessage.isEmpty() ? "" : ": ") + stringMessage);
 }
 
 void MainWindow::printDeviceMessage(QByteArray message, bool warning, bool ended) {
@@ -589,8 +596,10 @@ void MainWindow::on_radioButtonDark_toggled(bool checked) {
         iconVisible = QPixmap::fromImage(ico);
 
         auto list1 = this->findChildren<QPushButton*>();
+        list1.append(manualInputDialog->findChildren<QPushButton*>());
+        list1.append(freqTimePlotDialog->findChildren<QPushButton*>());
         foreach (auto w, list1) {
-            if (w == ui->pushButtonPause || w == ui->pushButtonConnect)
+            if (w == ui->pushButtonPause || w == ui->pushButtonConnect || w == manualInputDialog->getUi()->pushButtonRolling)
                 continue;
             auto icon = w->icon().pixmap(w->iconSize()).toImage();
             icon.invertPixels(QImage::InvertRgb);
@@ -598,6 +607,8 @@ void MainWindow::on_radioButtonDark_toggled(bool checked) {
         }
 
         auto list6 = this->findChildren<QRadioButton*>();
+        list6.append(manualInputDialog->findChildren<QRadioButton*>());
+        list6.append(freqTimePlotDialog->findChildren<QRadioButton*>());
         foreach (auto w, list6) {
             if (w == ui->radioButtonCz || w == ui->radioButtonEn)
                 continue;
@@ -607,6 +618,8 @@ void MainWindow::on_radioButtonDark_toggled(bool checked) {
         }
 
         auto list2 = this->findChildren<QTabBar*>();
+        list2.append(manualInputDialog->findChildren<QTabBar*>());
+        list2.append(freqTimePlotDialog->findChildren<QTabBar*>());
         foreach (auto w, list2) {
             for (int i = 0; i < w->count(); i++) {
                 auto icon = w->tabIcon(i).pixmap(w->iconSize()).toImage();
@@ -616,12 +629,14 @@ void MainWindow::on_radioButtonDark_toggled(bool checked) {
         }
 
         auto list3 = this->findChildren<QLabel*>();
+        list3.append(manualInputDialog->findChildren<QLabel*>());
+        list3.append(freqTimePlotDialog->findChildren<QLabel*>());
         foreach (auto w, list3) {
             if (w == ui->labelLogo)
                 continue;
-            if (!w->pixmap())
+            if (!w->pixmap(Qt::ReturnByValue))
                 continue;
-            auto icon = w->pixmap()->toImage();
+            auto icon = w->pixmap(Qt::ReturnByValue).toImage();
             icon.invertPixels(QImage::InvertRgb);
             w->setPixmap(QPixmap::fromImage(icon));
         }
@@ -631,6 +646,7 @@ void MainWindow::on_radioButtonDark_toggled(bool checked) {
         QColor fnt = !checked ? QColor::fromRgb(67, 67, 67) : Qt::white;
 
         auto list4 = this->findChildren<QCustomPlot*>();
+        list4.append(freqTimePlotDialog->findChildren<QCustomPlot*>());
         foreach (auto plot, list4) {
             plot->setBackground(bck);
             plot->axisRect()->setBackground(bck);
@@ -650,9 +666,9 @@ void MainWindow::on_radioButtonDark_toggled(bool checked) {
         }
 
         QList<QComboBox*> list5;
-//        list5.append(ui->comboBoxFFTStyle1);
-//        list5.append(ui->comboBoxFFTStyle2);
-//        list5.append(ui->comboBoxXYStyle);
+        list5.append(ui->comboBoxFFTStyle1);
+        list5.append(ui->comboBoxFFTStyle2);
+        list5.append(ui->comboBoxXYStyle);
         list5.append(ui->comboBoxGraphStyle);
         foreach (auto w, list5) {
             for (int i = 0; i < w->count(); i++) {
@@ -752,7 +768,30 @@ void MainWindow::on_pushButtonFvsT_clicked()
     ui->checkBoxFFTNoDC2->setChecked(true);
     ui->pushButtonFFT->setChecked(true);
     ui->radioButtonFreeRange->setChecked(true);
-    freqTimePlotDialog->open();
+    freqTimePlotDialog->show();
     ui->plotFFT->setOutputPeakValue(true);
+}
+
+void MainWindow::on_pushButtonSerialMonitor_toggled(bool checked)
+{
+    ui->frameSerialMonitor->setEnabled(checked);
+    emit enableSerialMonitor(checked);
+}
+
+
+void MainWindow::on_comboBoxXYStyle_currentIndexChanged(int index)
+{
+    ui->plotxy->setStyle(index);
+}
+
+
+void MainWindow::on_comboBoxFFTStyle1_currentIndexChanged(int index)
+{
+    ui->plotFFT->setStyle(0,index);
+}
+
+void MainWindow::on_comboBoxFFTStyle2_currentIndexChanged(int index)
+{
+    ui->plotFFT->setStyle(1,index);
 }
 

@@ -63,7 +63,7 @@ Ui::DeveloperOptions *DeveloperOptions::getUi()
 void DeveloperOptions::on_lineEditTerminalBlacklist_returnPressed() {
     if (addColorToBlacklist(ui->lineEditTerminalBlacklist->text().toLocal8Bit().trimmed())) {
         ui->lineEditTerminalBlacklist->clear();
-        ui->lineEditTerminalBlacklist->setStyleSheet("color: rgb(0, 0, 0);");
+        ui->lineEditTerminalBlacklist->setStyleSheet("");
         updateColorBlacklist();
     } else
         ui->lineEditTerminalBlacklist->setStyleSheet("color: rgb(255, 0, 0);");
@@ -191,9 +191,8 @@ void DeveloperOptions::on_pushButtonTerminalDebugSend_clicked() {
 
 void DeveloperOptions::on_textEditTerminalDebug_cursorPositionChanged() {
     if (ui->textEditTerminalDebug->textCursor().selectedText().isEmpty())
-        ui->textEditTerminalDebug->setTextColor(Qt::black);
+        ui->textEditTerminalDebug->setTextColor(ui->textEditTerminalDebug->palette().color(QPalette::Text));
 }
-
 
 void DeveloperOptions::on_pushButtonTerminalBlacklisAddSelect_clicked()
 {
@@ -216,6 +215,11 @@ void DeveloperOptions::addPathToList(QString fileName)
     newItem->setText(fileName);
     newItem->setData(Qt::UserRole,fileName);
     ui->listWidgetQMLFiles->addItem(newItem);
+}
+
+void DeveloperOptions::addTerminalCursorPosCommand(int x, int y)
+{
+    insertInTerminalDebug(QString("\\e[%1;%2H").arg(y).arg(x),Qt::green);
 }
 
 void DeveloperOptions::on_pushButtonQmlSave_clicked() {
@@ -337,7 +341,7 @@ void DeveloperOptions::on_listWidgetTerminalCodeList_itemClicked(QListWidgetItem
 void DeveloperOptions::insertInTerminalDebug(QString text, QColor textColor) {
     ui->textEditTerminalDebug->setTextColor(textColor);
     ui->textEditTerminalDebug->textCursor().insertText(text);
-    ui->textEditTerminalDebug->setTextColor(Qt::black);
+    ui->textEditTerminalDebug->setTextColor(ui->textEditTerminalDebug->palette().color(QPalette::Text));
 }
 
 void DeveloperOptions::on_listWidgetQMLFiles_itemClicked(QListWidgetItem *item)
@@ -360,7 +364,23 @@ void DeveloperOptions::quickWidget_statusChanged(const QQuickWidget::Status& arg
     }
 }
 
-void DeveloperOptions::retranslate() {
-    ui->retranslateUi(this);
+void DeveloperOptions::on_pushButtonClearAnsiTerminal_clicked()
+{
+    emit printToTerminal("\e[2J");
+}
+
+
+void DeveloperOptions::on_pushButtonTerminalInputCopy_clicked()
+{
+    QByteArray bytes = ui->textEditTerminalDebug->toPlainText().replace('\n', "\\r\\n").toUtf8();
+    for (unsigned char ch = 0;; ch++) {
+        if (ch == 32)
+            ch = 127;
+        bytes.replace(ch, ("\\x" + QString::number(ch, 16)).toLocal8Bit() + "\"\"");
+        if (ch == 255)
+            break;
+    }
+
+    QGuiApplication::clipboard()->setText(bytes);
 }
 

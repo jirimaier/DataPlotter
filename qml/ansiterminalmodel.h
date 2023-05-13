@@ -109,6 +109,8 @@ private:
     bool m_showGrid = false;
     QList<GridItem> m_items;
     int m_columns = 14;
+
+    int cursorIndex = 0;
     Q_PROPERTY(int columns READ columns WRITE setColumns NOTIFY columnsChanged)
 
     bool m_active = false;
@@ -118,18 +120,21 @@ private:
 
     Q_PROPERTY(bool active READ active WRITE setActive NOTIFY activeChanged)
     Q_PROPERTY(bool showGrid READ showGrid WRITE setShowGrid NOTIFY showGridChanged)
+    Q_PROPERTY(int cursorIndex READ getCursorIndex NOTIFY cursorIndexChanged)
+
 
 public slots:
     void printToTerminal(QByteArray data);
     void setShowGrid(bool newShowGrid);
+    Q_INVOKABLE void gridClicked(int index);
 
 signals:
     /// Pošle zprávu do výpisu
     void sendMessage(QByteArray header, QByteArray message, MessageLevel::enumMessageLevel type, MessageTarget::enumMessageTarget target = MessageTarget::serial1);
-
     void activeChanged();
-
     void showGridChanged();
+    void cursorIndexChanged();
+    void gridClickedSignal(int x, int y);
 
 public:
     bool active() const;
@@ -138,6 +143,8 @@ public:
 
     static uint32_t colorCodes256(int code);
     static QMap<QString, QColor> colorCodes();
+    int getCursorIndex() const;
+    void setCursorIndex(int newCursorIndex);
 };
 
 #endif // ANSITERMINALMODEL_H

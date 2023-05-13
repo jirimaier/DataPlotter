@@ -5470,7 +5470,7 @@
               <property name="frameShape">
                <enum>QFrame::StyledPanel</enum>
               </property>
-              <layout class="QVBoxLayout" name="verticalLayout_26" stretch="0,0,0,0,0,0">
+              <layout class="QVBoxLayout" name="verticalLayout_26" stretch="0,0,0,0,0,0,0">
                <property name="leftMargin">
                 <number>6</number>
                </property>
@@ -5567,6 +5567,75 @@
                   </size>
                  </property>
                 </spacer>
+               </item>
+               <item>
+                <widget class="QComboBox" name="comboBoxXYStyle">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>60</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>10000000</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <pointsize>8</pointsize>
+                  </font>
+                 </property>
+                 <property name="toolTip">
+                  <string>Set style of channel</string>
+                 </property>
+                 <property name="currentText">
+                  <string/>
+                 </property>
+                 <property name="sizeAdjustPolicy">
+                  <enum>QComboBox::AdjustToContents</enum>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="resources.qrc">
+                    <normaloff>:/images/icons/line.png</normaloff>:/images/icons/line.png</iconset>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="resources.qrc">
+                    <normaloff>:/images/icons/points.png</normaloff>:/images/icons/points.png</iconset>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="resources.qrc">
+                    <normaloff>:/images/icons/linePoint.png</normaloff>:/images/icons/linePoint.png</iconset>
+                  </property>
+                 </item>
+                </widget>
                </item>
                <item>
                 <widget class="QLabel" name="label">
@@ -6370,6 +6439,75 @@
                 </spacer>
                </item>
                <item>
+                <widget class="QComboBox" name="comboBoxFFTStyle1">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>60</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>10000000</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <pointsize>8</pointsize>
+                  </font>
+                 </property>
+                 <property name="toolTip">
+                  <string>Set style of channel</string>
+                 </property>
+                 <property name="currentText">
+                  <string/>
+                 </property>
+                 <property name="sizeAdjustPolicy">
+                  <enum>QComboBox::AdjustToContents</enum>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="resources.qrc">
+                    <normaloff>:/images/icons/line.png</normaloff>:/images/icons/line.png</iconset>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="resources.qrc">
+                    <normaloff>:/images/icons/points.png</normaloff>:/images/icons/points.png</iconset>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="resources.qrc">
+                    <normaloff>:/images/icons/linePoint.png</normaloff>:/images/icons/linePoint.png</iconset>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+               <item>
                 <widget class="QPushButton" name="pushButtonFFTHoldMax1">
                  <property name="toolTip">
                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Keep maximum value for each sample. Useful for measuring amplitude frequency response.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -6543,6 +6681,75 @@
                   </size>
                  </property>
                 </spacer>
+               </item>
+               <item>
+                <widget class="QComboBox" name="comboBoxFFTStyle2">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>60</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>10000000</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <pointsize>8</pointsize>
+                  </font>
+                 </property>
+                 <property name="toolTip">
+                  <string>Set style of channel</string>
+                 </property>
+                 <property name="currentText">
+                  <string/>
+                 </property>
+                 <property name="sizeAdjustPolicy">
+                  <enum>QComboBox::AdjustToContents</enum>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="resources.qrc">
+                    <normaloff>:/images/icons/line.png</normaloff>:/images/icons/line.png</iconset>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="resources.qrc">
+                    <normaloff>:/images/icons/points.png</normaloff>:/images/icons/points.png</iconset>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="resources.qrc">
+                    <normaloff>:/images/icons/linePoint.png</normaloff>:/images/icons/linePoint.png</iconset>
+                  </property>
+                 </item>
+                </widget>
                </item>
                <item>
                 <widget class="QPushButton" name="pushButtonFFTHoldMax2">
@@ -6961,7 +7168,7 @@
            </size>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>1</number>
           </property>
           <property name="iconSize">
            <size>
@@ -7270,220 +7477,19 @@
              <number>6</number>
             </property>
             <item>
-             <widget class="QFrame" name="frameOutput">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>1</verstretch>
-               </sizepolicy>
+             <widget class="QPushButton" name="pushButtonSerialMonitor">
+              <property name="toolTip">
+               <string>Show serial monitor on connection tab (not recommended for large ammount of data)</string>
               </property>
-              <property name="frameShape">
-               <enum>QFrame::NoFrame</enum>
+              <property name="text">
+               <string>Enable Serial monitor</string>
               </property>
-              <property name="frameShadow">
-               <enum>QFrame::Raised</enum>
+              <property name="checkable">
+               <bool>true</bool>
               </property>
-              <layout class="QVBoxLayout" name="verticalLayout_28">
-               <property name="spacing">
-                <number>2</number>
-               </property>
-               <property name="leftMargin">
-                <number>0</number>
-               </property>
-               <property name="topMargin">
-                <number>0</number>
-               </property>
-               <property name="rightMargin">
-                <number>0</number>
-               </property>
-               <property name="bottomMargin">
-                <number>0</number>
-               </property>
-               <item>
-                <widget class="QPlainTextEdit" name="plainTextEditConsole">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="font">
-                  <font>
-                   <strikeout>false</strikeout>
-                  </font>
-                 </property>
-                 <property name="verticalScrollBarPolicy">
-                  <enum>Qt::ScrollBarAlwaysOn</enum>
-                 </property>
-                 <property name="undoRedoEnabled">
-                  <bool>false</bool>
-                 </property>
-                 <property name="lineWrapMode">
-                  <enum>QPlainTextEdit::NoWrap</enum>
-                 </property>
-                 <property name="readOnly">
-                  <bool>true</bool>
-                 </property>
-                 <property name="plainText">
-                  <string notr="true"/>
-                 </property>
-                 <property name="centerOnScroll">
-                  <bool>false</bool>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_18">
-                 <property name="spacing">
-                  <number>3</number>
-                 </property>
-                 <item>
-                  <widget class="QComboBox" name="comboBoxOutputLevel">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="toolTip">
-                    <string>Message filter</string>
-                   </property>
-                   <property name="currentIndex">
-                    <number>3</number>
-                   </property>
-                   <property name="iconSize">
-                    <size>
-                     <width>30</width>
-                     <height>30</height>
-                    </size>
-                   </property>
-                   <item>
-                    <property name="text">
-                     <string/>
-                    </property>
-                    <property name="icon">
-                     <iconset resource="resources.qrc">
-                      <normaloff>:/images/icons/messagesDevice.png</normaloff>:/images/icons/messagesDevice.png</iconset>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string/>
-                    </property>
-                    <property name="icon">
-                     <iconset resource="resources.qrc">
-                      <normaloff>:/images/icons/messagesErrors.png</normaloff>:/images/icons/messagesErrors.png</iconset>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string/>
-                    </property>
-                    <property name="icon">
-                     <iconset resource="resources.qrc">
-                      <normaloff>:/images/icons/messagesWarnings.png</normaloff>:/images/icons/messagesWarnings.png</iconset>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string/>
-                    </property>
-                    <property name="icon">
-                     <iconset resource="resources.qrc">
-                      <normaloff>:/images/icons/messagesAll.png</normaloff>:/images/icons/messagesAll.png</iconset>
-                    </property>
-                   </item>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="pushButtonViewBuffer">
-                   <property name="toolTip">
-                    <string>Print buffer content</string>
-                   </property>
-                   <property name="text">
-                    <string/>
-                   </property>
-                   <property name="icon">
-                    <iconset resource="resources.qrc">
-                     <normaloff>:/images/icons/viewBuffer.png</normaloff>:/images/icons/viewBuffer.png</iconset>
-                   </property>
-                   <property name="iconSize">
-                    <size>
-                     <width>30</width>
-                     <height>30</height>
-                    </size>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="pushButtonClearBuffer">
-                   <property name="toolTip">
-                    <string>Clear buffer</string>
-                   </property>
-                   <property name="text">
-                    <string/>
-                   </property>
-                   <property name="icon">
-                    <iconset resource="resources.qrc">
-                     <normaloff>:/images/icons/clearBuffer.png</normaloff>:/images/icons/clearBuffer.png</iconset>
-                   </property>
-                   <property name="iconSize">
-                    <size>
-                     <width>30</width>
-                     <height>30</height>
-                    </size>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="pushButtonClearReceivedList">
-                   <property name="toolTip">
-                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clear console&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                   </property>
-                   <property name="text">
-                    <string/>
-                   </property>
-                   <property name="icon">
-                    <iconset resource="resources.qrc">
-                     <normaloff>:/images/icons/clear.png</normaloff>:/images/icons/clear.png</iconset>
-                   </property>
-                   <property name="iconSize">
-                    <size>
-                     <width>30</width>
-                     <height>30</height>
-                    </size>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="pushButtonScrollDown">
-                   <property name="minimumSize">
-                    <size>
-                     <width>0</width>
-                     <height>0</height>
-                    </size>
-                   </property>
-                   <property name="toolTip">
-                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Autoscroll&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                   </property>
-                   <property name="text">
-                    <string/>
-                   </property>
-                   <property name="icon">
-                    <iconset resource="resources.qrc">
-                     <normaloff>:/images/icons/scrollDown.png</normaloff>:/images/icons/scrollDown.png</iconset>
-                   </property>
-                   <property name="iconSize">
-                    <size>
-                     <width>30</width>
-                     <height>30</height>
-                    </size>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </item>
-              </layout>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
              </widget>
             </item>
             <item>
@@ -7644,7 +7650,14 @@
              </widget>
             </item>
             <item>
-             <widget class="QFrame" name="frameManual">
+             <widget class="Line" name="line_4">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QFrame" name="frameOutput">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                 <horstretch>0</horstretch>
@@ -7657,7 +7670,7 @@
               <property name="frameShadow">
                <enum>QFrame::Raised</enum>
               </property>
-              <layout class="QVBoxLayout" name="verticalLayout_32">
+              <layout class="QVBoxLayout" name="verticalLayout_28">
                <property name="spacing">
                 <number>2</number>
                </property>
@@ -7674,7 +7687,7 @@
                 <number>0</number>
                </property>
                <item>
-                <widget class="QPlainTextEdit" name="plainTextEditConsole_2">
+                <widget class="QPlainTextEdit" name="plainTextEditConsole">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                    <horstretch>0</horstretch>
@@ -7707,79 +7720,23 @@
                 </widget>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_10">
+                <layout class="QHBoxLayout" name="horizontalLayout_18">
                  <property name="spacing">
                   <number>3</number>
                  </property>
                  <item>
-                  <widget class="QLineEdit" name="lineEditManualInput">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="font">
-                    <font/>
-                   </property>
-                   <property name="frame">
-                    <bool>true</bool>
-                   </property>
-                   <property name="placeholderText">
-                    <string>Manual input</string>
-                   </property>
-                   <property name="clearButtonEnabled">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="pushButtonSendManual">
-                   <property name="enabled">
-                    <bool>true</bool>
-                   </property>
+                  <widget class="QComboBox" name="comboBoxOutputLevel">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                      <horstretch>0</horstretch>
                      <verstretch>0</verstretch>
                     </sizepolicy>
                    </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>16777215</width>
-                     <height>16777215</height>
-                    </size>
-                   </property>
                    <property name="toolTip">
-                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Send&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                    <string>Message filter</string>
                    </property>
-                   <property name="text">
-                    <string/>
-                   </property>
-                   <property name="icon">
-                    <iconset resource="resources.qrc">
-                     <normaloff>:/images/icons/send.png</normaloff>:/images/icons/send.png</iconset>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </item>
-               <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_31">
-                 <property name="spacing">
-                  <number>3</number>
-                 </property>
-                 <item>
-                  <widget class="QPushButton" name="pushButtonViewBuffer_2">
-                   <property name="toolTip">
-                    <string>Print manual input buffer</string>
-                   </property>
-                   <property name="text">
-                    <string/>
-                   </property>
-                   <property name="icon">
-                    <iconset resource="resources.qrc">
-                     <normaloff>:/images/icons/viewBuffer.png</normaloff>:/images/icons/viewBuffer.png</iconset>
+                   <property name="currentIndex">
+                    <number>3</number>
                    </property>
                    <property name="iconSize">
                     <size>
@@ -7787,30 +7744,46 @@
                      <height>30</height>
                     </size>
                    </property>
+                   <item>
+                    <property name="text">
+                     <string/>
+                    </property>
+                    <property name="icon">
+                     <iconset resource="resources.qrc">
+                      <normaloff>:/images/icons/messagesDevice.png</normaloff>:/images/icons/messagesDevice.png</iconset>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string/>
+                    </property>
+                    <property name="icon">
+                     <iconset resource="resources.qrc">
+                      <normaloff>:/images/icons/messagesErrors.png</normaloff>:/images/icons/messagesErrors.png</iconset>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string/>
+                    </property>
+                    <property name="icon">
+                     <iconset resource="resources.qrc">
+                      <normaloff>:/images/icons/messagesWarnings.png</normaloff>:/images/icons/messagesWarnings.png</iconset>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string/>
+                    </property>
+                    <property name="icon">
+                     <iconset resource="resources.qrc">
+                      <normaloff>:/images/icons/messagesAll.png</normaloff>:/images/icons/messagesAll.png</iconset>
+                    </property>
+                   </item>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QPushButton" name="pushButtonClearBuffer_2">
-                   <property name="toolTip">
-                    <string>Clear manual input buffer</string>
-                   </property>
-                   <property name="text">
-                    <string/>
-                   </property>
-                   <property name="icon">
-                    <iconset resource="resources.qrc">
-                     <normaloff>:/images/icons/clearBuffer.png</normaloff>:/images/icons/clearBuffer.png</iconset>
-                   </property>
-                   <property name="iconSize">
-                    <size>
-                     <width>30</width>
-                     <height>30</height>
-                    </size>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="pushButtonClearReceivedList_2">
+                  <widget class="QPushButton" name="pushButtonClearReceivedList">
                    <property name="toolTip">
                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clear console&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                    </property>
@@ -7830,7 +7803,7 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QPushButton" name="pushButtonScrollDown_2">
+                  <widget class="QPushButton" name="pushButtonScrollDown">
                    <property name="minimumSize">
                     <size>
                      <width>0</width>
@@ -7861,28 +7834,15 @@
              </widget>
             </item>
             <item>
-             <widget class="QCheckBox" name="checkBoxSerialMonitor">
-              <property name="toolTip">
-               <string>Show serial monitor on connection tab (not recommended for large ammount of data)</string>
-              </property>
-              <property name="text">
-               <string>Serial monitor</string>
-              </property>
-              <property name="checked">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="checkBoxShowManualInput">
+             <widget class="QPushButton" name="pushButtonShowManualInput">
               <property name="toolTip">
                <string>Show manual input console on connection tab</string>
               </property>
               <property name="text">
-               <string>Manual input</string>
+               <string>Manual Data Input</string>
               </property>
               <property name="checked">
-               <bool>true</bool>
+               <bool>false</bool>
               </property>
              </widget>
             </item>
@@ -8609,17 +8569,8 @@
   <tabstop>pushButtonScrollDown_3</tabstop>
   <tabstop>plainTextEditConsole</tabstop>
   <tabstop>comboBoxOutputLevel</tabstop>
-  <tabstop>pushButtonViewBuffer</tabstop>
-  <tabstop>pushButtonClearBuffer</tabstop>
   <tabstop>pushButtonClearReceivedList</tabstop>
   <tabstop>pushButtonScrollDown</tabstop>
-  <tabstop>plainTextEditConsole_2</tabstop>
-  <tabstop>lineEditManualInput</tabstop>
-  <tabstop>pushButtonSendManual</tabstop>
-  <tabstop>pushButtonViewBuffer_2</tabstop>
-  <tabstop>pushButtonClearBuffer_2</tabstop>
-  <tabstop>pushButtonClearReceivedList_2</tabstop>
-  <tabstop>pushButtonScrollDown_2</tabstop>
   <tabstop>tabs_right</tabstop>
   <tabstop>pushButtonLog1</tabstop>
   <tabstop>radioButtonCSVComma</tabstop>
@@ -8649,28 +8600,12 @@
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1523</x>
-     <y>294</y>
+     <x>1492</x>
+     <y>846</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1500</x>
-     <y>81</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButtonClearReceivedList_2</sender>
-   <signal>clicked()</signal>
-   <receiver>plainTextEditConsole_2</receiver>
-   <slot>clear()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1506</x>
-     <y>792</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1500</x>
-     <y>578</y>
+     <x>1572</x>
+     <y>532</y>
     </hint>
    </hints>
   </connection>
@@ -8681,44 +8616,12 @@
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1484</x>
-     <y>544</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1500</x>
-     <y>329</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkBoxShowManualInput</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>frameManual</receiver>
-   <slot>setVisible(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1572</x>
-     <y>880</y>
+     <x>1492</x>
+     <y>463</y>
     </hint>
     <hint type="destinationlabel">
      <x>1572</x>
-     <y>822</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>checkBoxSerialMonitor</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>frameSerialMonitor</receiver>
-   <slot>setVisible(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1572</x>
-     <y>851</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1572</x>
-     <y>564</y>
+     <y>422</y>
     </hint>
    </hints>
   </connection>
@@ -8729,12 +8632,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>314</x>
-     <y>631</y>
+     <x>48</x>
+     <y>594</y>
     </hint>
     <hint type="destinationlabel">
-     <x>781</x>
-     <y>831</y>
+     <x>101</x>
+     <y>693</y>
     </hint>
    </hints>
   </connection>
@@ -8745,7 +8648,7 @@
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>275</x>
+     <x>268</x>
      <y>747</y>
     </hint>
     <hint type="destinationlabel">
@@ -8761,12 +8664,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>314</x>
-     <y>631</y>
+     <x>48</x>
+     <y>594</y>
     </hint>
     <hint type="destinationlabel">
-     <x>339</x>
-     <y>832</y>
+     <x>48</x>
+     <y>692</y>
     </hint>
    </hints>
   </connection>
@@ -8777,12 +8680,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>314</x>
-     <y>631</y>
+     <x>48</x>
+     <y>594</y>
     </hint>
     <hint type="destinationlabel">
-     <x>386</x>
-     <y>795</y>
+     <x>92</x>
+     <y>648</y>
     </hint>
    </hints>
   </connection>
@@ -8793,8 +8696,8 @@
    <slot>rangeTypeChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>314</x>
-     <y>719</y>
+     <x>48</x>
+     <y>597</y>
     </hint>
     <hint type="destinationlabel">
      <x>630</x>
@@ -8809,12 +8712,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>314</x>
-     <y>631</y>
+     <x>48</x>
+     <y>594</y>
     </hint>
     <hint type="destinationlabel">
-     <x>151</x>
-     <y>782</y>
+     <x>28</x>
+     <y>607</y>
     </hint>
    </hints>
   </connection>
@@ -8825,12 +8728,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>314</x>
-     <y>631</y>
+     <x>48</x>
+     <y>594</y>
     </hint>
     <hint type="destinationlabel">
-     <x>724</x>
-     <y>794</y>
+     <x>136</x>
+     <y>647</y>
     </hint>
    </hints>
   </connection>
@@ -8841,12 +8744,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>314</x>
-     <y>631</y>
+     <x>48</x>
+     <y>594</y>
     </hint>
     <hint type="destinationlabel">
-     <x>215</x>
-     <y>782</y>
+     <x>29</x>
+     <y>607</y>
     </hint>
    </hints>
   </connection>
@@ -8857,12 +8760,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>314</x>
-     <y>631</y>
+     <x>48</x>
+     <y>594</y>
     </hint>
     <hint type="destinationlabel">
-     <x>88</x>
-     <y>782</y>
+     <x>27</x>
+     <y>607</y>
     </hint>
    </hints>
   </connection>
@@ -8873,12 +8776,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>314</x>
-     <y>631</y>
+     <x>48</x>
+     <y>594</y>
     </hint>
     <hint type="destinationlabel">
-     <x>125</x>
-     <y>674</y>
+     <x>26</x>
+     <y>597</y>
     </hint>
    </hints>
   </connection>
@@ -8889,12 +8792,12 @@
    <slot>setHidden(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>119</x>
-     <y>650</y>
+     <x>48</x>
+     <y>596</y>
     </hint>
     <hint type="destinationlabel">
-     <x>119</x>
-     <y>710</y>
+     <x>48</x>
+     <y>599</y>
     </hint>
    </hints>
   </connection>
@@ -8905,12 +8808,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>314</x>
-     <y>631</y>
+     <x>48</x>
+     <y>594</y>
     </hint>
     <hint type="destinationlabel">
-     <x>118</x>
-     <y>618</y>
+     <x>31</x>
+     <y>595</y>
     </hint>
    </hints>
   </connection>
@@ -8921,8 +8824,8 @@
    <slot>rangeTypeChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>314</x>
-     <y>675</y>
+     <x>48</x>
+     <y>596</y>
     </hint>
     <hint type="destinationlabel">
      <x>507</x>
@@ -8937,12 +8840,12 @@
    <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>314</x>
-     <y>631</y>
+     <x>48</x>
+     <y>594</y>
     </hint>
     <hint type="destinationlabel">
-     <x>503</x>
-     <y>839</y>
+     <x>159</x>
+     <y>692</y>
     </hint>
    </hints>
   </connection>
@@ -8953,8 +8856,8 @@
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>105</x>
-     <y>828</y>
+     <x>33</x>
+     <y>610</y>
     </hint>
     <hint type="destinationlabel">
      <x>57</x>
@@ -8969,8 +8872,8 @@
    <slot>rangeTypeChanged()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>314</x>
-     <y>631</y>
+     <x>48</x>
+     <y>594</y>
     </hint>
     <hint type="destinationlabel">
      <x>385</x>
@@ -9021,8 +8924,8 @@
      <y>630</y>
     </hint>
     <hint type="destinationlabel">
-     <x>82</x>
-     <y>740</y>
+     <x>109</x>
+     <y>846</y>
     </hint>
    </hints>
   </connection>
@@ -9037,8 +8940,8 @@
      <y>614</y>
     </hint>
     <hint type="destinationlabel">
-     <x>322</x>
-     <y>609</y>
+     <x>326</x>
+     <y>847</y>
     </hint>
    </hints>
   </connection>
@@ -9053,8 +8956,8 @@
      <y>630</y>
     </hint>
     <hint type="destinationlabel">
-     <x>456</x>
-     <y>609</y>
+     <x>470</x>
+     <y>847</y>
     </hint>
    </hints>
   </connection>
@@ -9065,12 +8968,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>110</x>
-     <y>630</y>
+     <x>40</x>
+     <y>593</y>
     </hint>
     <hint type="destinationlabel">
-     <x>150</x>
-     <y>722</y>
+     <x>40</x>
+     <y>604</y>
     </hint>
    </hints>
   </connection>
@@ -9081,12 +8984,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>112</x>
-     <y>617</y>
+     <x>40</x>
+     <y>593</y>
     </hint>
     <hint type="destinationlabel">
-     <x>199</x>
-     <y>608</y>
+     <x>70</x>
+     <y>605</y>
     </hint>
    </hints>
   </connection>
@@ -9097,12 +9000,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>43</x>
-     <y>619</y>
+     <x>40</x>
+     <y>593</y>
     </hint>
     <hint type="destinationlabel">
-     <x>444</x>
-     <y>608</y>
+     <x>99</x>
+     <y>605</y>
     </hint>
    </hints>
   </connection>
@@ -9113,12 +9016,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>123</x>
-     <y>630</y>
+     <x>118</x>
+     <y>631</y>
     </hint>
     <hint type="destinationlabel">
-     <x>184</x>
-     <y>626</y>
+     <x>268</x>
+     <y>646</y>
     </hint>
    </hints>
   </connection>

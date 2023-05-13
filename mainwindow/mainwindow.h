@@ -33,6 +33,7 @@
 #include "communication/serialreader.h"
 #include "communication/serialsettingsdialog.h"
 #include "global.h"
+#include "manualinputdialog.h"
 #include "math/averager.h"
 #include "math/plotmath.h"
 #include "communication/serialreader.h"
@@ -63,6 +64,7 @@ private:
     SerialSettingsDialog* serialSettingsDialog;
     DeveloperOptions* developerOptions;
     FreqTimePlotDialog *freqTimePlotDialog;
+    ManualInputDialog *manualInputDialog;
     QTranslator* translator;
     QTimer portsRefreshTimer, activeChRefreshTimer, xyTimer, cursorRangeUpdateTimer, measureRefreshTimer1, measureRefreshTimer2, fftTimer1, fftTimer2, serialMonitorTimer, consoleTimer, interpolationTimer, triggerLineTimer;
     QList<QSerialPortInfo> portList;
@@ -179,7 +181,6 @@ private slots: // Autoconnect slots
     void on_radioButtonCz_toggled(bool checked);
     void on_pushButtonAllCSV_clicked() { exportCSV(EXPORT_ALL); }
     void on_doubleSpinBoxRangeVerticalRange_valueChanged(double arg1);
-    void on_lineEditManualInput_returnPressed();
     void on_pushButtonReset_clicked();
     void on_pushButtonAutoset_clicked();
     void on_pushButtonCSVXY_clicked() { exportCSV(EXPORT_XY); }
@@ -187,14 +188,7 @@ private slots: // Autoconnect slots
     void on_comboBoxHAxisType_currentIndexChanged(int index);
     void on_pushButtonOpenHelpCZ_clicked();
     void on_pushButtonScrollDown_clicked();
-    void on_pushButtonSendManual_clicked() { on_lineEditManualInput_returnPressed(); }
-    void on_pushButtonClearBuffer_clicked() { emit requestSerialBufferClear(); }
-    void on_pushButtonViewBuffer_clicked() { emit requestSerialBufferShow(); }
-    void on_pushButtonClearBuffer_2_clicked() { emit requestManualBufferClear(); }
-    void on_pushButtonViewBuffer_2_clicked() { emit requestManualBufferShow(); }
     void on_comboBoxOutputLevel_currentIndexChanged(int index);
-    void on_pushButtonScrollDown_2_clicked();
-    void on_checkBoxSerialMonitor_toggled(bool checked);
     void on_comboBoxSelectedChannel_currentIndexChanged(int index);
     void on_pushButtonResetChannels_clicked();
     void on_pushButtonLog1_toggled(bool checked) { emit setChDigital(1, checked ? ui->comboBoxLogic1->currentIndex() + 1 : 0); }
@@ -280,13 +274,18 @@ private slots: // Autoconnect slots
     void on_tabs_right_currentChanged(int index);
     void on_pushButtonRangeFit_clicked();
     void on_listWidgetCom_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
-    void on_pushButtonDevOptions_clicked() { developerOptions->open(); }
+    void on_pushButtonDevOptions_clicked() { developerOptions->show(); }
     void on_pushButtonSetPositive_clicked();
     void on_pushButtonSetCenter_clicked();
     void on_pushButtonSetNegative_clicked();
     void on_pushButtonFFT_FS_toggled(bool checked);
     void on_pushButtonXY_FS_toggled(bool checked);
     void on_pushButtonFvsT_clicked();
+    void on_pushButtonShowManualInput_clicked() { manualInputDialog->show(); }
+    void on_pushButtonSerialMonitor_toggled(bool checked);
+    void on_comboBoxXYStyle_currentIndexChanged(int index);
+    void on_comboBoxFFTStyle1_currentIndexChanged(int index);
+    void on_comboBoxFFTStyle2_currentIndexChanged(int index);
 
 public slots:
     void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumMessageTarget target);

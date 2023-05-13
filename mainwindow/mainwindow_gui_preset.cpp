@@ -83,8 +83,13 @@ void MainWindow::connectSignals() {
     connect(developerOptions->getUi()->pushButtonClearGraph, &QPushButton::clicked, this, &MainWindow::pushButtonClearGraph_clicked);
     connect(developerOptions->getUi()->checkBoxEchoReply, &QCheckBox::toggled, this, &MainWindow::checkBoxEchoReply_toggled);
     connect(developerOptions->getUi()->checkBoxMouseControls, &QCheckBox::toggled, this, &MainWindow::checkBoxMouseControls_toggled_new);
-
     connect(freqTimePlotDialog,&FreqTimePlotDialog::requestedCSVExport,this,&MainWindow::exportCSV);
+    connect(manualInputDialog, &ManualInputDialog::sendManualInput, this, &MainWindow::sendManualInput);
+    connect(manualInputDialog, &ManualInputDialog::requestManualBufferClear, this, &MainWindow::requestManualBufferClear);
+    connect(manualInputDialog, &ManualInputDialog::requestManualBufferShow, this, &MainWindow::requestManualBufferShow);
+    connect(developerOptions, &DeveloperOptions::requestSerialBufferClear, this, &MainWindow::requestSerialBufferClear);
+    connect(developerOptions, &DeveloperOptions::requestSerialBufferShow, this, &MainWindow::requestSerialBufferShow);
+    connect(&ansiTerminalModel, &AnsiTerminalModel::gridClickedSignal,developerOptions,&DeveloperOptions::addTerminalCursorPosCommand);
 }
 
 void MainWindow::setAdaptiveSpinBoxes() {
@@ -116,8 +121,7 @@ void MainWindow::startTimers() {
 }
 
 void MainWindow::setGuiDefaults() {
-    ui->checkBoxSerialMonitor->setChecked(false);
-    ui->checkBoxShowManualInput->setChecked(false);
+    ui->pushButtonSerialMonitor->setChecked(false);
     ui->tabs_right->setCurrentIndex(0);
     ui->tabsControll->setCurrentIndex(0);
     ui->comboBoxOutputLevel->setCurrentIndex((int)OutputLevel::warning);

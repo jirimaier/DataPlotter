@@ -21,15 +21,15 @@ public:
     Ui::DeveloperOptions *getUi();
     bool addColorToBlacklist(QByteArray code);
     void updateColorBlacklist();
-
     void addPathToList(QString fileName);
 
-    void retranslate();
+public slots:
+    void addTerminalCursorPosCommand(int x, int y);
+
 private slots:
     void on_pushButtonTerminalDebug_toggled(bool checked) { emit terminalDevToggled(checked); }
     void on_listWidgetTerminalCodeList_itemClicked(QListWidgetItem* item);
     void on_pushButtonTerminalDebugSend_clicked();
-    void on_textEditTerminalDebug_cursorPositionChanged();
     void on_lineEditTerminalBlacklist_returnPressed();
     void on_pushButtonTerminalBlacklistClear_clicked();
     void on_lineEditTerminalBlacklist_textChanged(const QString& arg1);
@@ -42,12 +42,19 @@ private slots:
     void on_comboBoxTerminalColorListMode_currentIndexChanged(int index);
     void on_pushButtonTerminalDebugShift_clicked();
     void on_listWidgetQMLFiles_itemClicked(QListWidgetItem *item);
+    void on_pushButtonClearBuffer_clicked() { emit requestSerialBufferClear(); }
+    void on_pushButtonViewBuffer_clicked() { emit requestSerialBufferShow(); }
+    void on_pushButtonClearAnsiTerminal_clicked();
+    void on_pushButtonTerminalInputCopy_clicked();
+    void on_textEditTerminalDebug_cursorPositionChanged();
 
 signals:
     void colorExceptionListChanged(QList<QColor> newlist, bool isBlacklist);
     void loadQmlFile(QUrl url);
     void terminalDevToggled(bool);
     void printToTerminal(QByteArray);
+    void requestSerialBufferClear();
+    void requestSerialBufferShow();
 
 private:
     Ui::DeveloperOptions *ui;

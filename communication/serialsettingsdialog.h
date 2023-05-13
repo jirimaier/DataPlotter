@@ -33,6 +33,7 @@ class SerialSettingsDialog : public QDialog {
  public:
   explicit SerialSettingsDialog(QWidget* parent = nullptr);
   ~SerialSettingsDialog();
+  Ui::SerialSettingsDialog *getUi();
 
   struct Settings {
     QSerialPort::DataBits dataBits;
@@ -42,8 +43,6 @@ class SerialSettingsDialog : public QDialog {
   };
 
   Settings settings() const;
-
-  void retranslate();
 
  private slots:
   void updateSettings();

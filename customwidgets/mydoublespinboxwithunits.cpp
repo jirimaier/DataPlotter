@@ -14,74 +14,56 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "mydoublespinboxwithunits.h"
+#include "global.h"
+#include "math/simpleexpressionparser.h"
+#include <QDebug>
 
-MyDoubleSpinBoxWithUnits::MyDoubleSpinBoxWithUnits(QWidget* parent) : QDoubleSpinBox(parent) {}
+MyDoubleSpinBoxWithUnits::MyDoubleSpinBoxWithUnits(QWidget* parent) : QDoubleSpinBox(parent) {
+}
 
 QValidator::State MyDoubleSpinBoxWithUnits::validate(QString& input, int& pos) const {
-  // Tato funkce kontroluje, jestli to co uživatel zadává je platná hodnota
-  input.replace(',', '.');
-  if (!input.isEmpty()) {
-    if (input.at(0) == '.')
-      input.push_front('0');
-  }
-  if (input.count('.') > 1)
-    return QValidator::State::Invalid;
-  QString inputCopy(input);
-  Q_UNUSED(pos)
-  inputCopy.remove(suffix());
-  for (int i = 0; i < inputCopy.length(); i++) {
-    if (inputCopy.at(i).isDigit())
-      continue;
-    if (i == 0 && (inputCopy.at(i) == '+' || inputCopy.at(i) == '-'))
-      continue;
-    if (i == inputCopy.length() - 1 && validchars.contains(inputCopy.at(i)))
-      continue;
-    if (i == inputCopy.length() - 2 && inputCopy.at(i) == ' ')
-      continue;
-    if (inputCopy.at(i) == '.')
-      continue;
-    if (inputCopy.at(i) == ' ')
-      continue;
-    return QValidator::State::Invalid;
-  }
-  return QValidator::State::Acceptable;
+    QJSEngine engine;
+
+    QString expr = input;
+    if(!suffix().isEmpty())
+        expr = expr.left(expr.lastIndexOf(suffix()));
+    if(expr.trimmed().isEmpty())
+        return QValidator::State::Intermediate;
+    SimpleExpressionParser parser;
+    if(!parser.validate(expr))
+        return QValidator::State::Invalid;
+    bool isOK;
+    (void) parser.evaluate(expr,&isOK);
+    return isOK ? QValidator::State::Acceptable : QValidator::State::Intermediate;
 }
 
 QString MyDoubleSpinBoxWithUnits::textFromValue(double val) const {
-  // Zobrazení hodnoty
-  if (suffix().length() == 0)
-    return (QString::number(val, 'g', 3));
-  if (suffix().length() >= 2) {
-    if (suffix().left(2) == "dB")
-      return (QString::number(val, 'g', 3) + " ");
-  }
+    if (suffix().length() == 0)
+        return (QString::number(val, 'g', 3));
+    if (suffix().length() >= 2) {
+        if (suffix().left(2) == "dB")
+            return (QString::number(val, 'g', 3) + " ");
+    }
 
-  return (floatToNiceString(val, 4, false, false, trimDecimalZeroes));
+    return (floatToNiceString(val, 4, false, false, trimDecimalZeroes));
 }
 
 double MyDoubleSpinBoxWithUnits::valueFromText(const QString& text) const {
-  // Zpracování hodnoty napsané uživatelem
-  if (text.isEmpty())
-    return emptyDefaultValue;
-
-  bool isok = false;
-  double val;
-  if (text.contains('k'))
-    val = 1e3 * text.left(text.indexOf('k')).toDouble(&isok);
-  else if (text.contains('M'))
-    val = 1e6 * text.left(text.indexOf('M')).toDouble(&isok);
-  else if (text.contains('m'))
-    val = 1e-3 * text.left(text.indexOf('m')).toDouble(&isok);
-  else if (text.contains('u'))
-    val = 1e-6 * text.left(text.indexOf('u')).toDouble(&isok);
-  else
-    val = text.left(text.indexOf(suffix())).toDouble(&isok);
-  if (!isok)
-    return emptyDefaultValue;
-  return val;
+    QString expr = text;
+    SimpleExpressionParser parser;
+    if(!suffix().isEmpty())
+        expr = expr.left(expr.lastIndexOf(suffix()));
+    bool isOK;
+    double newValue = parser.evaluate(expr,&isOK);
+    if(isOK)
+        return newValue;
+    else
+        return value();
 }
 
 void MyDoubleSpinBoxWithUnits::setUnit(QString suffix, bool useUnitPrefix) {
-  QDoubleSpinBox::setSuffix(suffix);
-  this->useUnitPrefix = useUnitPrefix;
+    QDoubleSpinBox::setSuffix(suffix);
+    this->useUnitPrefix = useUnitPrefix;
 }
+
+

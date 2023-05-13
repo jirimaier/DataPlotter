@@ -295,7 +295,7 @@ void MainWindow::updateInterpolation() {
 }
 
 void MainWindow::updateSerialMonitor() {
-    if (serialMonitor.isEmpty() || !ui->checkBoxSerialMonitor->isChecked())
+    if (serialMonitor.isEmpty() || !ui->pushButtonSerialMonitor->isChecked())
         return;
 
     serialMonitorTimer.stop();
@@ -331,7 +331,7 @@ void MainWindow::updateSerialMonitor() {
         scroll->setValue(lastVal);
 
     if (tmr.elapsed() > 100) {
-        ui->checkBoxSerialMonitor->setChecked(false);
+        ui->pushButtonSerialMonitor->setChecked(false);
         QMessageBox::warning(this, tr("Freeze prevention"), tr("Printing text takes too long, disabling serial monitor!"), QMessageBox::Ok, QMessageBox::Ok);
     }
 

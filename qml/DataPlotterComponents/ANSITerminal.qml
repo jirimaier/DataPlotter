@@ -19,6 +19,8 @@ Rectangle {
             width: terminalView.cellWidth
             height: terminalView.cellHeight
             color: backgroundColor
+            border.width: (ansiTerminalModel.showGrid) ? (index===ansiTerminalModel.cursorIndex?3:1):0
+            border.color: "gray"
 
             Text {
                 anchors.centerIn: parent
@@ -42,7 +44,7 @@ Rectangle {
 
             Rectangle {
                 id: buttonOverlap
-                visible: clickable
+                visible: clickable || (ansiTerminalModel.showGrid)
                 anchors.fill: parent
                 color: clickHighLightColor
                 opacity: buttonOverlap_ma.containsPress?0.5:buttonOverlap_ma.containsMouse?0.2:0
@@ -50,7 +52,11 @@ Rectangle {
                     id: buttonOverlap_ma
                     hoverEnabled: true
                     anchors.fill: parent
-                    onClicked: dataPlotter.transmitToSerial(character)
+                    onClicked: {
+                        if(ansiTerminalModel.showGrid)
+                            ansiTerminalModel.gridClicked(index)
+                        dataPlotter.transmitToSerial(character)
+                    }
                 }
             }
         }
