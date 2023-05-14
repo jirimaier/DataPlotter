@@ -32,6 +32,8 @@ private slots:
     void on_pushButtonScrollDown_2_clicked();
     void on_tableWidgetRollingSetup_cellChanged(int row, int column);
 
+    void on_pushButtonRollingResetTime_clicked();
+
 signals:
     void requestManualBufferClear();
     void requestManualBufferShow();
@@ -47,6 +49,7 @@ private:
     QJSEngine rollingEngine;
 
     void setRollingExprRows(int rows);
+    void initRollingTable();
 };
 
 #endif // MANUALINPUTDIALOG_H

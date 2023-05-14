@@ -142,9 +142,15 @@ class MyMainPlot : public MyPlot {
   /// Nastaví OpenGL a překreslí graf
   void setOpenGL(bool enable) {QCustomPlot::setOpenGl(enable); redraw();}
 
-  void setVposLock(int newVposLock);
+  double getMinT() const;
 
-private:
+  double getMaxT() const;
+
+  bool getRollingMode() const;
+
+  void setRollingMode(bool newRollingMode);
+
+  private:
   void redraw();
 
   QTimer plotUpdateTimer;
@@ -165,12 +171,8 @@ private:
 
   bool newData = true;
   double minT = 0.0, maxT = 1.0;
-  int shiftStep = 0;
-  double presetVRange = 10, presetVCenter = 0;
-  int vposLock = 0;
-  double rollingRange = 100;
-  int zoom = 1000;
-  double horizontalPos = 500;
+
+  bool xRangeUnknown = false;
 
   QList<QCPAxis*> analogAxis, logicGroupAxis;
   QVector<QSharedPointer<QCPGraphDataContainer>> pauseBuffer;
@@ -178,17 +180,19 @@ private:
   QVector<ChannelSettings_t> logicSettings;
   QVector<QCPItemLine*> zeroLines;
   PlotStatus::enumPlotStatus plottingStatus = PlotStatus::run;
-  PlotRange::enumPlotRange plotRangeType = PlotRange::fixedRange;
+  bool rollingMode = true;
   QCPItemLine* triggerLine;
   QCPGraph* triggerLineCh;
   bool triggerLineEnabled = false;
   QCPItemText* triggerLabel;
 
- private slots:
+  private slots:
   void update();
   void verticalAxisRangeChanged();
   void mouseMoved(QMouseEvent* event);
   void mousePressed(QMouseEvent* event);
+  void onXRangeChanged(QCPRange range);
+  void onYRangeChanged(QCPRange range);
 
  public slots:
   /// Přepne pauzu/běh
@@ -196,24 +200,6 @@ private:
 
   /// Vymaže kanály
   void resetChannels();
-
-  /// Nastaví typ rozsahu
-  void setRangeType(PlotRange::enumPlotRange type);
-
-  /// Nastaví délku rolling režimu
-  void setRollingRange(double value);
-
-  /// Nastavý pozici vodorovně (při zoomu)
-  void setHorizontalPos(double value);
-
-  /// Nastaví svislí rozsah
-  void setVerticalRange(double value);
-
-  /// Nastaví zoom
-  void setZoom(int value);
-
-  /// Nastaví svyslí střed
-  void setVerticalCenter(double value);
 
   /// Krok předbíhání rolling režimu v % délky
   void setShiftStep(int step);
@@ -236,6 +222,10 @@ private:
   /// Vymaže interpolaci kanálu
   void clearInterpolation(int interpolationID) {graph(INTERPOLATION_CHID(interpolationID))->data()->clear();}
 
+  void setVRange(QCPRange range);
+  void setHPos(double mid);
+  void setHLen(double len);
+
  signals:
   //void updateHPosSlider(double min, double max, int step);
 
@@ -247,6 +237,9 @@ private:
 
   /// Offset kanálu tažen myší
   void offsetChangedByMouse(int chid);
+  void vRangeChanged(QCPRange range);
+  void hRangeChanged(QCPRange range);
+  void rollingModeChanged();
 };
 
 #endif // MYMAINPLOT_H

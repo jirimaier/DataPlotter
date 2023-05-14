@@ -114,8 +114,7 @@ void MainWindow::on_pushButtonAutoset_clicked() {
         }
     }
     on_comboBoxSelectedChannel_currentIndexChanged(ui->comboBoxSelectedChannel->currentIndex());
-    if (lastUpdateWasPoint) {
-        ui->radioButtonRollingRange->setChecked(true);
+    if (ui->plot->getRollingMode()) {
         if (dataUpdates > 10)
             ui->doubleSpinBoxRangeHorizontal->setValue(10);
         else
@@ -123,7 +122,6 @@ void MainWindow::on_pushButtonAutoset_clicked() {
     } else {
         // Pevný režim
         ui->dialZoom->setValue(ui->dialZoom->maximum());// Zoom žádný
-        ui->radioButtonFixedRange->setChecked(true);
     }
 }
 
@@ -187,8 +185,7 @@ void MainWindow::on_pushButtonResetChannels_clicked() {
 
     on_comboBoxSelectedChannel_currentIndexChanged(ui->comboBoxSelectedChannel->currentIndex());
 
-    if (lastUpdateWasPoint) {
-        ui->radioButtonRollingRange->setChecked(true);
+    if (ui->plot->getRollingMode()) {
         if (dataUpdates > 10)
             ui->doubleSpinBoxRangeHorizontal->setValue(10);
         else
@@ -196,6 +193,5 @@ void MainWindow::on_pushButtonResetChannels_clicked() {
     } else {
         // Pevný režim
         ui->dialZoom->setValue(ui->dialZoom->maximum());// Zoom žádný
-        ui->radioButtonFixedRange->setChecked(true);
     }
 }

@@ -94,7 +94,6 @@ private:
     bool autoAutosetPending = false;
     bool colorUpdateNeeded = true;
     bool currentThemeDark = false;
-    int dataUpdates = 0;
     QMap<QString, QPair<QWidget*, bool>> setables;
     int interpolationsRunning = 0;
     bool lastUpdateWasLogic = false;
@@ -106,7 +105,7 @@ private:
     bool timeUseUnits = true;
     bool valuesUseUnits = true;
     bool freqUseUnits = true;
-    QTimer dataRateTimer;
+    int dataUpdates = 0;
 
 private:
     void setComboboxItemVisible(QComboBox& comboBox, int index, bool visible);
@@ -141,7 +140,6 @@ private slots:
     void setAdaptiveSpinBoxes();
     void updateDivs();
     void comRefresh();
-    void rangeTypeChanged();
     void plotLayoutChanged();
     void updateCursor(Cursors::enumCursors cursor, int selectedChannel, unsigned int sample, double& time, double& value, QByteArray& timeStr, QByteArray& valueStr, bool useValueCursor);
     void updateCursorRange();
@@ -151,7 +149,6 @@ private slots:
     void updateFFT2();
     void updateInterpolation();
     void updateSerialMonitor();
-    void updateDataRate();
     void horizontalSliderTimeCur1_realValueChanged(int arg1);
     void horizontalSliderTimeCur2_realValueChanged(int arg1);
     void updateUsedChannels();
@@ -286,6 +283,11 @@ private slots: // Autoconnect slots
     void on_comboBoxXYStyle_currentIndexChanged(int index);
     void on_comboBoxFFTStyle1_currentIndexChanged(int index);
     void on_comboBoxFFTStyle2_currentIndexChanged(int index);
+    void on_pushButtonModeRolling_toggled(bool checked);
+    void on_pushButtonModeFull_toggled(bool checked);
+    void on_doubleSpinBoxRangeHorizontal_valueChanged(double arg1);
+
+    void on_doubleSpinBoxViewCenter_valueChanged(double arg1);
 
 public slots:
     void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumMessageTarget target);
@@ -305,7 +307,7 @@ public slots:
     void valueCursorMovedByMouse(Cursors::enumCursors cursor, double value);
     void cursorSetByMouse(int chid, Cursors::enumCursors cursor, int sample);
     void offsetChangedByMouse(int chid);
-    void ch1WasUpdated(bool wasPoint, bool wasLogic,  HAxisType::enumHAxisType recommandedTimeBase);
+    void plotRecomendationChanged(bool wasPoint,  HAxisType::enumHAxisType recommandedTimeBase);
     void moveTimeCursorXY(Cursors::enumCursors cursor, double pos);
     void moveValueCursorXY(Cursors::enumCursors cursor, double pos);
     void setCursorPosXY(Cursors::enumCursors cursor, double x, double y);
@@ -317,6 +319,9 @@ public slots:
     void qmlDirectInput(QByteArray data);
     void setQmlProperty(QByteArray data);
     void loadQmlFile(QUrl url);
+    void dataRateUpdate(int dataUpdates);
+    void mainPlotHRangeChanged(QCPRange range);
+    void mainPlotVRangeChanged(QCPRange range);
 
 signals:
     void setChDigital(int chid, int target);

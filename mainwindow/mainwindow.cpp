@@ -217,7 +217,6 @@ void MainWindow::serialConnectResult(bool connected, QString message, QString de
         emit writeToSerial(developerOptions->getUi()->lineEditResetCmd->text().toLocal8Bit());
     }
 
-    dataRateTimer.start();
     autoAutosetPending = developerOptions->getUi()->checkBoxAutoAutoSet->isChecked();
 }
 
@@ -292,13 +291,6 @@ void MainWindow::printDeviceMessage(QByteArray message, bool warning, bool ended
     QScrollBar* scroll = ui->plainTextEditConsole->horizontalScrollBar();
     scroll->setValue(scroll->minimum());
     pendingDeviceMessage = !ended;
-}
-
-void MainWindow::ch1WasUpdated(bool wasPoint, bool wasLogic, HAxisType::enumHAxisType recommandedTimeBase) {
-    lastUpdateWasPoint = wasPoint;
-    lastUpdateWasLogic = wasLogic;
-    dataUpdates++;
-    recommandedAxisType = recommandedTimeBase;
 }
 
 void MainWindow::updateMathNow(int number) {
@@ -767,7 +759,6 @@ void MainWindow::on_pushButtonFvsT_clicked()
     ui->checkBoxFFTNoDC1->setChecked(true);
     ui->checkBoxFFTNoDC2->setChecked(true);
     ui->pushButtonFFT->setChecked(true);
-    ui->radioButtonFreeRange->setChecked(true);
     freqTimePlotDialog->show();
     ui->plotFFT->setOutputPeakValue(true);
 }
@@ -793,5 +784,37 @@ void MainWindow::on_comboBoxFFTStyle1_currentIndexChanged(int index)
 void MainWindow::on_comboBoxFFTStyle2_currentIndexChanged(int index)
 {
     ui->plotFFT->setStyle(1,index);
+}
+
+
+void MainWindow::on_pushButtonModeRolling_toggled(bool checked)
+{
+    if(checked) {
+        ui->plot->setRollingMode(true);
+        ui->pushButtonModeFull->setChecked(false);
+    }
+}
+
+
+void MainWindow::on_pushButtonModeFull_toggled(bool checked)
+{
+    if(checked) {
+        ui->plot->setRollingMode(false);
+        ui->pushButtonModeRolling->setChecked(false);
+    }
+}
+
+void MainWindow::on_doubleSpinBoxRangeHorizontal_valueChanged(double arg1)
+{
+    ui->plot->setHLen(arg1);
+    ui->dialRollingRange->updatePosition(arg1);
+}
+
+
+void MainWindow::on_doubleSpinBoxViewCenter_valueChanged(double arg1)
+{
+    auto range =ui->plot->getMaxZoomY();
+    range = QCPRange(arg1-range.size()/2,arg1+range.size()/2);
+    ui->plot->setVRange(range);
 }
 

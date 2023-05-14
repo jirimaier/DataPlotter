@@ -25,9 +25,16 @@ PlotData::PlotData(QObject* parent) : QObject(parent) {
     mathSeconds[i] = 0;
   }
   reset();
+
+  updatesCounter = new QTimer(this);
+  updatesCounter->start(1000);
+  connect(updatesCounter,&QTimer::timeout,this,&PlotData::updateCounterTimer);
 }
 
-PlotData::~PlotData() {}
+PlotData::~PlotData() {
+  updatesCounter->stop();
+  delete updatesCounter;
+}
 
 double PlotData::getValue(QPair<ValueType, QByteArray> value, bool& isok) {
   if (!value.first.isBinary) {
@@ -143,6 +150,32 @@ uint32_t PlotData::getBits(QPair<ValueType, QByteArray> value) {
   return 0;
 }
 
+HAxisType::enumHAxisType PlotData::getRecommandedAxisType() const
+{
+  return recommandedAxisType;
+}
+
+void PlotData::setRecommandedAxisType(HAxisType::enumHAxisType newRecommandedAxisType)
+{
+  if (recommandedAxisType == newRecommandedAxisType)
+    return;
+  recommandedAxisType = newRecommandedAxisType;
+  emit plotRecomendationChanged(plotShouldBeRolling,recommandedAxisType);
+}
+
+bool PlotData::getPlotShouldBeRolling() const
+{
+  return plotShouldBeRolling;
+}
+
+void PlotData::setPlotShouldBeRolling(bool newPlotShouldBeRolling)
+{
+  if (plotShouldBeRolling == newPlotShouldBeRolling)
+    return;
+  plotShouldBeRolling = newPlotShouldBeRolling;
+  emit plotRecomendationChanged(plotShouldBeRolling,recommandedAxisType);
+}
+
 void PlotData::addPoint(QList<QPair<ValueType, QByteArray>> data) {
   QString message;
   if (data.length() > ANALOG_COUNT) {
@@ -152,7 +185,7 @@ void PlotData::addPoint(QList<QPair<ValueType, QByteArray>> data) {
   }
   bool isok;
   double time;
-  lastRecommandedAxisType = HAxisType::normal;
+  HAxisType::enumHAxisType newRecommandedAxisType = HAxisType::normal;
   if (data.at(0).second.isEmpty()) {
     if (qIsInf(lastTime))
       time = 0;
@@ -163,7 +196,7 @@ void PlotData::addPoint(QList<QPair<ValueType, QByteArray>> data) {
       message.append(tr("Index (time): %1, ").arg(QString::number(time, 'g', 5)));
   } else if (data.at(0).second == "-tod") {
     time = qTime.currentTime().msecsSinceStartOfDay() / 1000.0;
-    lastRecommandedAxisType = HAxisType::HMS;
+    newRecommandedAxisType = HAxisType::HMS;
     if (debugLevel == OutputLevel::info)
       message.append(tr("Time (time of day): %1 s, ").arg(QString::number(time, 'g', 5)));
   } else if (data.at(0).second == "-auto") {
@@ -172,7 +205,7 @@ void PlotData::addPoint(QList<QPair<ValueType, QByteArray>> data) {
       timerRunning = 1;
     }
     time = elapsedTime.nsecsElapsed() * 1e-9;
-    lastRecommandedAxisType = time >= 3600 ? HAxisType::HMS : HAxisType::MS;
+    newRecommandedAxisType = time >= 3600 ? HAxisType::HMS : HAxisType::MS;
     if (debugLevel == OutputLevel::info)
       message.append(tr("Time (automatic): %1 s, ").arg(QString::number(time, 'g', 5)));
   } else {
@@ -218,8 +251,11 @@ void PlotData::addPoint(QList<QPair<ValueType, QByteArray>> data) {
       }
     }
 
-    if (ch == 1)
-      emit ch1dataUpdated(true, false, lastRecommandedAxisType);
+
+    // TODO
+    setPlotShouldBeRolling(true);
+    setRecommandedAxisType(newRecommandedAxisType);
+    updatesCounters[ch]++;
 
     emit setExpectedRange(ch - 1, false, 0, 0);
 
@@ -255,7 +291,7 @@ void PlotData::addPoint(QList<QPair<ValueType, QByteArray>> data) {
 void PlotData::addLogicPoint(QPair<ValueType, QByteArray> timeArray, QPair<ValueType, QByteArray> valueArray, unsigned int bits) {
   bool isok;
   double time;
-  lastRecommandedAxisType = HAxisType::normal;
+  HAxisType::enumHAxisType newRecommandedAxisType = HAxisType::normal;
   if (timeArray.second.isEmpty()) {
     if (qIsInf(lastTime))
       time = 0;
@@ -263,14 +299,14 @@ void PlotData::addLogicPoint(QPair<ValueType, QByteArray> timeArray, QPair<Value
       time = lastTime + defaultTimestep;
   } else if (timeArray.second == "-tod") {
     time = qTime.currentTime().msecsSinceStartOfDay() / 1000.0;
-    lastRecommandedAxisType = HAxisType::HMS;
+    newRecommandedAxisType = HAxisType::HMS;
   } else if (timeArray.second == "-auto") {
     if (!timerRunning) {
       elapsedTime.start();
       timerRunning = 1;
     }
     time = elapsedTime.nsecsElapsed() * 1e-9;
-    lastRecommandedAxisType = time >= 3600 ? HAxisType::HMS : HAxisType::MS;
+    newRecommandedAxisType = time >= 3600 ? HAxisType::HMS : HAxisType::MS;
   } else {
     time = getValue(timeArray, isok);
     if (!isok) {
@@ -285,8 +321,10 @@ void PlotData::addLogicPoint(QPair<ValueType, QByteArray> timeArray, QPair<Value
       double value = ((bool)((digitalValue) & ((uint32_t)1 << (bit)))) + bit * 3;
       emit addPointToPlot(getLogicChannelID(2, bit), time, value, time >= lastTime);
     }
-
-    emit ch1dataUpdated(true, true, lastRecommandedAxisType);
+    
+    setRecommandedAxisType(newRecommandedAxisType);
+    setPlotShouldBeRolling(true);
+    updatesCounters[-1]++;
   }
 
   if (debugLevel == OutputLevel::info)
@@ -382,8 +420,9 @@ void PlotData::addChannel(QPair<ValueType, QByteArray> data, unsigned int ch, QP
   else
     emit setExpectedRange(ch - 1, false, 0, 0);
 
-  if (ch == 1)
-    emit ch1dataUpdated(false, false, HAxisType::normal); // Aktualizuje počítadlo rychlosti přicházejících dat a nastavý fixed režim pro autoset
+  setRecommandedAxisType(HAxisType::normal);
+  setPlotShouldBeRolling(false);
+  updatesCounters[ch]++;
 
   if (averagerEnabled)
     emit addDataToAverager(ch - 1, timeStep, analogData);
@@ -435,8 +474,10 @@ void PlotData::addLogicChannel(QPair<ValueType, QByteArray> data, QPair<ValueTyp
     times.append(((i / data.first.bytes) - zeroIndex) * timeStep);
     valuesDigital.append(getBits(QPair<ValueType, QByteArray>(data.first, data.second.mid(i, data.first.bytes))));
   }
-
-  emit ch1dataUpdated(false, true, HAxisType::normal); // Aktualizuje počítadlo rychlosti přicházejících dat a nastavý fixed režim pro autoset
+  
+  setRecommandedAxisType(HAxisType::normal);
+  setPlotShouldBeRolling(false);
+  updatesCounters[-1]++;
 
   // Pošle do grafu logický kanál
   QVector<QSharedPointer<QCPGraphDataContainer>> digitalChannels;
@@ -470,6 +511,16 @@ void PlotData::setMathFirst(int math, int ch) {
 
 void PlotData::setMathSecond(int math, int ch) {
   mathSeconds[math - 1] = ch;
+}
+
+void PlotData::updateCounterTimer()
+{
+  int max = 0;
+  for(auto it = updatesCounters.begin(); it!=updatesCounters.end(); it++)
+    if(it.value()>max)
+      max = it.value();
+  updatesCounters.clear();
+  emit dataRateUpdate(max);
 }
 
 void PlotData::sendMessageIfAllowed(QString header, QByteArray message, MessageLevel::enumMessageLevel type) {

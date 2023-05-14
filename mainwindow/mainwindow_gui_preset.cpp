@@ -32,12 +32,6 @@ void MainWindow::connectSignals() {
     connect(ui->plotFFT, &MyPlot::moveValueCursor, this, &MainWindow::valueCursorMovedByMouse);
     connect(ui->plotxy, &MyXYPlot::setCursorPosXY, this, &MainWindow::setCursorPosXY);
     connect(ui->plotFFT, &MyPlot::setCursorPos, this, &MainWindow::cursorSetByMouse);
-    connect(ui->doubleSpinBoxRangeHorizontal, SIGNAL(valueChanged(double)), ui->plot, SLOT(setRollingRange(double)));
-    connect(ui->doubleSpinBoxRangeVerticalRange, SIGNAL(valueChanged(double)), ui->plot, SLOT(setVerticalRange(double)));
-    connect(ui->doubleSpinBoxRangeHorizontal, SIGNAL(valueChanged(double)), ui->dialRollingRange, SLOT(updatePosition(double)));
-    connect(ui->doubleSpinBoxRangeVerticalRange, SIGNAL(valueChanged(double)), ui->dialVerticalRange, SLOT(updatePosition(double)));
-    connect(ui->doubleSpinBoxViewCenter, SIGNAL(valueChanged(double)), ui->plot, SLOT(setVerticalCenter(double)));
-    connect(ui->horizontalScrollBarHorizontal, &QScrollBar::valueChanged, ui->plot, &MyMainPlot::setHorizontalPos);
     connect(ui->lineEditHtitle, &QLineEdit::textChanged, ui->plot, &MyPlot::setXTitle);
     connect(ui->lineEditVtitle, &QLineEdit::textChanged, ui->plot, &MyPlot::setYTitle);
     connect(ui->lineEditVtitle, &QLineEdit::textChanged, ui->plotxy, &MyPlot::setXTitle);
@@ -60,7 +54,6 @@ void MainWindow::connectSignals() {
     connect(&xyTimer, &QTimer::timeout, this, &::MainWindow::updateXY);
     connect(&serialMonitorTimer, &QTimer::timeout, this, &MainWindow::updateSerialMonitor);
     connect(&serialMonitorTimer, &QTimer::timeout, this, &MainWindow::updateConsole);
-    connect(&dataRateTimer, &QTimer::timeout, this, &MainWindow::updateDataRate);
     connect(&interpolationTimer, &QTimer::timeout, this, &MainWindow::updateInterpolation);
     connect(&triggerLineTimer, &QTimer::timeout, this, &MainWindow::turnOffTriggerLine);
 
@@ -90,6 +83,9 @@ void MainWindow::connectSignals() {
     connect(developerOptions, &DeveloperOptions::requestSerialBufferClear, this, &MainWindow::requestSerialBufferClear);
     connect(developerOptions, &DeveloperOptions::requestSerialBufferShow, this, &MainWindow::requestSerialBufferShow);
     connect(&ansiTerminalModel, &AnsiTerminalModel::gridClickedSignal,developerOptions,&DeveloperOptions::addTerminalCursorPosCommand);
+
+    connect(ui->plot,&MyMainPlot::vRangeChanged,this,&MainWindow::mainPlotVRangeChanged);
+    connect(ui->plot,&MyMainPlot::hRangeChanged,this,&MainWindow::mainPlotHRangeChanged);
 }
 
 void MainWindow::setAdaptiveSpinBoxes() {
@@ -115,7 +111,6 @@ void MainWindow::startTimers() {
     fftTimer2.start(50);
     xyTimer.start(50);
     serialMonitorTimer.start(500);
-    dataRateTimer.start(1000);
     interpolationTimer.start(50);
     consoleTimer.start(250);
 }
@@ -125,10 +120,11 @@ void MainWindow::setGuiDefaults() {
     ui->tabs_right->setCurrentIndex(0);
     ui->tabsControll->setCurrentIndex(0);
     ui->comboBoxOutputLevel->setCurrentIndex((int)OutputLevel::warning);
-    ui->radioButtonFixedRange->setChecked(true);
     ui->labelBuildDate->setText(tr("Build: ") + QString(__DATE__) + " " + QString(__TIME__));
     ui->pushButtonPause->setIcon(iconRun);
 
+    ui->pushButtonModeFull->setChecked(true);
+    ui->frameRollingRange->setVisible(false);
     plotLayoutChanged();
 
     on_lineEditHUnit_textChanged(ui->lineEditHUnit->text());

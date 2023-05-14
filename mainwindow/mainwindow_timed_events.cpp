@@ -356,16 +356,49 @@ void MainWindow::updateConsole() {
     consoleTimer.start();
 }
 
-void MainWindow::updateDataRate() {
+void MainWindow::dataRateUpdate(int dataUpdates) {
     if (dataUpdates > 0) {
         if (autoAutosetPending) {
-            on_pushButtonAutoset_clicked();
+            if(lastUpdateWasPoint)
+                on_pushButtonResetChannels_clicked();
+            else
+                on_pushButtonAutoset_clicked();
             autoAutosetPending = false;
         }
-        ui->labelUpdateRate->setText((lastUpdateWasLogic ? "Logic: " : "Ch1: ") + QString::number(dataUpdates) + " " + (lastUpdateWasPoint ? tr("points") : tr("updates")) + " / s");
+        ui->labelUpdateRate->setText(tr("Data rate: ") + QString::number(dataUpdates) + tr(" updates / s"));
     } else
         ui->labelUpdateRate->clear();
-    dataUpdates = 0;
+    this->dataUpdates = dataUpdates;
+}
+
+void MainWindow::mainPlotHRangeChanged(QCPRange range)
+{
+    /*if(ui->plot->getRollingMode()) {
+    ui->doubleSpinBoxRangeHorizontal->blockSignals(true);
+    ui->doubleSpinBoxRangeHorizontal->setValue(range.size());
+    ui->doubleSpinBoxRangeHorizontal->blockSignals(false);
+    } else {
+    double fullrange = ui->plot->getMaxT() - ui->plot->getMinT();
+    double sizeRatio = qBound(0.0,fullrange/range.size(),1.0);
+    double posRatio = qBound(0.0,fullrange/range.center(),1.0);
+    double zoomFactor = round(1000*sizeRatio);
+
+    ui->dialZoom->blockSignals(true);
+    ui->dialZoom->setValue(zoomFactor);
+    ui->dialZoom->blockSignals(false);
+
+    ui->horizontalScrollBarHorizontal->blockSignals(true);
+    ui->horizontalScrollBarHorizontal->setMinimum(zoomFactor / 2);
+    ui->horizontalScrollBarHorizontal->setMaximum(1000 - zoomFactor / 2);
+    ui->horizontalScrollBarHorizontal->setPageStep(zoomFactor);
+    ui->horizontalScrollBarHorizontal->setValue(zoomFactor / 2 + (1000 - zoomFactor)*round(1000*posRatio));
+    ui->horizontalScrollBarHorizontal->blockSignals(false);
+    }*/
+}
+
+void MainWindow::mainPlotVRangeChanged(QCPRange range)
+{
+
 }
 
 void MainWindow::updateXY() {

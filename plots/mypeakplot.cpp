@@ -17,7 +17,9 @@ MyPeakPlot::MyPeakPlot(QWidget* parent) : MyPlot(parent) {
     infoText->position->setCoords(0.5, 0.5);
     setInfoText();
     setXUnit("s", true);
-    setMouseControlls(true);
+
+    this->setInteraction(QCP::iRangeDrag, true);
+    this->setInteraction(QCP::iRangeZoom, true);
 }
 
 QPair<QVector<double>, QVector<double>> MyPeakPlot::getDataVector(int chID) {
@@ -188,7 +190,7 @@ void MyPeakPlot::autoset() {
 
         lastSignalEnd = xMax;
 
-        setMaxZoomX(QCPRange(xMin, xMax+xAxis->range().size()), firstAutoset || xMax>maxZoomX.upper || xMin<-maxZoomX.lower);
+        setMaxZoomX(QCPRange(xMin, xMax+xAxis->range().size()), firstAutoset || xMax>maxZoomX.upper || xMin<maxZoomX.lower);
         firstAutoset = false;
     }
 }

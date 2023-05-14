@@ -15,7 +15,6 @@ bool VariableExpressionParser::setExpression(QJSEngine &engine,QString expr)
     expr = replaceUnitPrefixes(expr);
     expr = replaceFunctionNames(expr);
     auto result = engine.evaluate(expr);
-    qDebug() << expr;
     if(result.isNumber()) {
         expression = expr;
         return true;

@@ -210,15 +210,6 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarg
                 ui->radioButtonCSVDot->setChecked(true);
         }
 
-        else if (type == "plotrange") {
-            if (value == "fix")
-                ui->radioButtonFixedRange->setChecked(true);
-            if (value == "free")
-                ui->radioButtonFreeRange->setChecked(true);
-            if (value == "roll")
-                ui->radioButtonRollingRange->setChecked(true);
-        }
-
         else if (type == "noclickclr" || type == "clickclr") {
             QByteArrayList list = value.replace('.', ';').split(',');
             developerOptions->getUi()->listWidgetTerminalBlacklist->clear();

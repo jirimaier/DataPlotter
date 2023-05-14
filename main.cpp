@@ -185,7 +185,8 @@ int main(int argc, char* argv[]) {
     QObject::connect(&mainWindow, &MainWindow::writeToSerial, serial1, &SerialReader::write);
     QObject::connect(&mainWindow, &MainWindow::sendManualInput, serialParserM, &NewSerialParser::parse);
     QObject::connect(plotData, &PlotData::sendMessage, &mainWindow, &MainWindow::printMessage);
-    QObject::connect(plotData, &PlotData::ch1dataUpdated, &mainWindow, &MainWindow::ch1WasUpdated);
+    QObject::connect(plotData, &PlotData::plotRecomendationChanged, &mainWindow, &MainWindow::plotRecomendationChanged);
+    QObject::connect(plotData, &PlotData::dataRateUpdate, &mainWindow, &MainWindow::dataRateUpdate);
     QObject::connect(plotData, &PlotData::setExpectedRange, &mainWindow, &MainWindow::setExpectedRange);
     QObject::connect(plotMath, &PlotMath::sendMessage, &mainWindow, &MainWindow::printMessage);
     QObject::connect(&mainWindow, &MainWindow::setChDigital, plotData, &PlotData::setDigitalChannel);

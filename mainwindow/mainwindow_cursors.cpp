@@ -493,6 +493,12 @@ void MainWindow::offsetChangedByMouse(int chid) {
     ui->doubleSpinBoxChOffset->setValue(ui->plot->getChOffset(chid));
 }
 
+void MainWindow::plotRecomendationChanged(bool wasPoint, HAxisType::enumHAxisType recommandedTimeBase)
+{
+  lastUpdateWasPoint = wasPoint;
+  this->recommandedAxisType = recommandedTimeBase;
+}
+
 void MainWindow::on_checkBoxYCur1_stateChanged(int arg1) {
   int selectedChannel = ui->comboBoxCursor1Channel->currentIndex();
 

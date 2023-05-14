@@ -65,6 +65,10 @@ MyMainPlot::MyMainPlot(QWidget* parent) : MyPlot(parent) {
     connect(this->yAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(verticalAxisRangeChanged()));
     connect(&plotUpdateTimer, &QTimer::timeout, this, &MyMainPlot::update);
     plotUpdateTimer.start(30);
+
+    this->setInteraction(QCP::iRangeDrag, true);
+    this->setInteraction(QCP::iRangeZoom, true);
+
     replot();
 }
 
@@ -136,10 +140,18 @@ void MyMainPlot::updateMinMaxTimes() {
     if (!firsts.isEmpty()) {
         minT = *std::min_element(firsts.begin(), firsts.end());
         maxT = *std::max_element(lasts.begin(), lasts.end());
+        if(rollingMode) {
+            setMaxZoomX(QCPRange(minT,maxT+xAxis->range().size()), xRangeUnknown || maxT>maxZoomX.upper || minT<maxZoomX.lower);
+        } else setMaxZoomX(QCPRange(minT,maxT), xRangeUnknown || maxT>maxZoomX.upper || minT<maxZoomX.lower);
+        xRangeUnknown = false;
     } else {
         minT = 0;
         maxT = 10;
+        setMaxZoomX(QCPRange(minT,MAX_PLOT_ZOOMOUT),false);
+        xAxis->setRange(QCPRange(minT,maxT));
+        xRangeUnknown = true;
     }
+
 }
 
 void MyMainPlot::reOffsetAndRescaleCH(int chID) {
@@ -401,21 +413,7 @@ void MyMainPlot::update() {
 }
 
 void MyMainPlot::redraw() {
-    if (plotRangeType != PlotRange::freeMove) {
-        double dataLenght = maxT - minT;
-        if (plotRangeType == PlotRange::fixedRange) {
-            this->xAxis->setRange(minT + dataLenght * 0.0005 * (2 * horizontalPos - zoom), minT + dataLenght * 0.0005 * (2 * horizontalPos + zoom));
-        } else if (plotRangeType == PlotRange::rolling) {
-            if (dataLenght < rollingRange) {
-                this->xAxis->setRange(minT, minT + rollingRange);
-            } else {
-                double maxTnew = maxT;
-                if (shiftStep > 0)
-                    maxTnew = ceil(maxT / (rollingRange * shiftStep / 100.0)) * (rollingRange * shiftStep / 100.0);
-                this->xAxis->setRange(maxTnew - rollingRange, maxTnew);
-            }
-        }
-    }
+
     emit requestCursorUpdate();
 
     // Přepsat text u traceru
@@ -423,21 +421,6 @@ void MyMainPlot::redraw() {
         updateTracerText(currentTracerIndex);
 
     this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
-}
-
-void MyMainPlot::setRangeType(PlotRange::enumPlotRange type) {
-    if (plotRangeType == PlotRange::freeMove && type != PlotRange::freeMove) {
-        this->yAxis->setRange(presetVCenter, presetVRange, Qt::AlignCenter);
-        this->yAxis->setRange(presetVCenter, yAxis->range().size(), Qt::AlignCenter);
-        this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
-    }
-    this->plotRangeType = type;
-    setMouseControlls(type == PlotRange::freeMove);
-    if (plotRangeType == PlotRange::rolling && shiftStep == 0)
-        plotUpdateTimer.setInterval(16);
-    else
-        plotUpdateTimer.setInterval(30);
-    redraw();
 }
 
 void MyMainPlot::pause() {
@@ -476,6 +459,11 @@ void MyMainPlot::resetChannels() {
     redraw();
 }
 
+void MyMainPlot::setShiftStep(int step)
+{
+
+}
+
 void MyMainPlot::newDataVector(int chID, QSharedPointer<QCPGraphDataContainer> data, bool ignorePause) {
     if (data->size() == 1) {
         newDataPoint(chID, data->at(0)->key, data->at(0)->value, data->at(0)->key > graph(chID)->data()->at(graph(chID)->data()->size() - 1)->key);
@@ -501,47 +489,35 @@ void MyMainPlot::newInterpolatedVector(int chID, QSharedPointer<QCPGraphDataCont
     newData = true;
 }
 
-void MyMainPlot::setRollingRange(double value) {
-    rollingRange = value;
-    redraw();
+void MyMainPlot::setVRange(QCPRange range)
+{
+    setMaxZoomY(range,true);
 }
 
-void MyMainPlot::setHorizontalPos(double value) {
-    horizontalPos = value;
-    redraw();
+void MyMainPlot::setHPos(double mid)
+{
+    double rangeLen = xAxis->range().size();
+    xAxis->setRange(mid-rangeLen/2,mid+rangeLen/2);
 }
 
-void MyMainPlot::setVerticalRange(double value) {
-    presetVRange = value;
-    if (plotRangeType != PlotRange::freeMove) {
-        if(vposLock>0)
-            this->yAxis->setRange(presetVCenter+value/2.0, value, Qt::AlignCenter);
-        else if(vposLock<0)
-            this->yAxis->setRange(presetVCenter-value/2.0, value, Qt::AlignCenter);
-        else
-            this->yAxis->setRange(presetVCenter, value, Qt::AlignCenter);
-        this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
+void MyMainPlot::setHLen(double len)
+{
+    auto range = xAxis->range();
+    if(getRollingMode()) {
+        if(getMaxT()-getMinT()>len) {
+        range.upper = getMaxT();
+        range.lower = getMaxT()-len;
+        }else{
+        range.upper = getMinT()+len;
+        range.lower = getMinT();
+        }
+
+    } else {
+        double ctr = range.center();
+        range.upper = ctr + len/2;
+        range.lower = ctr - len/2;
     }
-}
-
-void MyMainPlot::setZoom(int value) {
-    zoom = value;
-    redraw();
-}
-
-void MyMainPlot::setVerticalCenter(double value) {
-    presetVCenter = value;
-    setVerticalRange(presetVRange);
-}
-
-void MyMainPlot::setShiftStep(int step) {
-    shiftStep = step;
-    if (plotRangeType == PlotRange::rolling) {
-        if (step == 0)
-            plotUpdateTimer.setInterval(16);
-        else
-            plotUpdateTimer.setInterval(30);
-    }
+    xAxis->setRange(range);
 }
 
 void MyMainPlot::newDataPoint(int chID, double time, double value, bool append) {
@@ -804,6 +780,18 @@ void MyMainPlot::mousePressed(QMouseEvent* event) {
     }
 }
 
+void MyMainPlot::onXRangeChanged(QCPRange range)
+{
+    MyPlot::onXRangeChanged(range);
+    emit hRangeChanged(xAxis->range());
+}
+
+void MyMainPlot::onYRangeChanged(QCPRange range)
+{
+    MyPlot::onYRangeChanged(range);
+    emit vRangeChanged(yAxis->range());
+}
+
 void MyMainPlot::setMouseCursorStyle(QMouseEvent* event) {
     // Kursory svislé
     unsigned int cur1dist = UINT_MAX, cur2dist = UINT_MAX;
@@ -842,8 +830,27 @@ void MyMainPlot::setMouseCursorStyle(QMouseEvent* event) {
     this->QWidget::setCursor(defaultMouseCursor); // Cursor myši, ne ten grafový
 }
 
-void MyMainPlot::setVposLock(int newVposLock)
+void MyMainPlot::setRollingMode(bool newRollingMode)
 {
-    vposLock = newVposLock;
-    setVerticalRange(presetVRange);
+    if (rollingMode == newRollingMode)
+        return;
+    rollingMode = newRollingMode;
+    emit rollingModeChanged();
+    emit hRangeChanged(xAxis->range());
+    emit vRangeChanged(yAxis->range());
+}
+
+bool MyMainPlot::getRollingMode() const
+{
+    return rollingMode;
+}
+
+double MyMainPlot::getMaxT() const
+{
+    return maxT;
+}
+
+double MyMainPlot::getMinT() const
+{
+    return minT;
 }

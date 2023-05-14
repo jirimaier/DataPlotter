@@ -33,7 +33,6 @@ class MyPlot : public QCustomPlot {
   QSharedPointer<QCPAxisTickerTime> timeTickerX, longTimeTickerX;
   void setVerticalDiv(double value);
   void setHorizontalDiv(double value);
-  bool isFreeMove = false;
   enum TracerTextPos { TR, TL, BR, BL } tracerTextPos;
   void changeTracerTextPosition(TracerTextPos pos);
   QString xUnit, yUnit;
@@ -80,7 +79,6 @@ class MyPlot : public QCustomPlot {
   QCPLayer* tracerLayer;
   void initcursors();
   void initTracer();
-  void setMouseControlls(bool enabled);
   void checkIfTracerTextFits();
   enum MouseDrag { cursorX1, cursorX2, cursorY1, cursorY2, nothing, zeroline } mouseDrag = nothing; // Vyšší čísla jsou číslo kanálu pro nulo
   int cur1Graph = -1, cur2Graph = -1;

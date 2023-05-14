@@ -50,18 +50,32 @@ MyPlot::MyPlot(QWidget* parent) : QCustomPlot(parent) {
 }
 
 void MyPlot::onXRangeChanged(QCPRange range) {
-  bool changed = false;
-  if (range.lower < maxZoomX.lower) {
-      range.lower = maxZoomX.lower;
-      changed = true;
+  if (range.size()>maxZoomX.size()) {
+      xAxis->setRange(maxZoomX);
+  } else if (range.lower < maxZoomX.lower) {
+      double diff = range.lower-maxZoomX.lower;
+      xAxis->setRange(range.lower - diff, range.upper - diff);
   }
   if (range.upper > maxZoomX.upper) {
-      range.upper = maxZoomX.upper;
-      changed = true;
+      double diff = range.upper-maxZoomX.upper;
+      xAxis->setRange(range.lower - diff, range.upper - diff);
   }
-  if (changed)
-    this->xAxis->setRange(range);
   updateGridX();
+}
+
+void MyPlot::onYRangeChanged(QCPRange range) {
+  if (range.size()>maxZoomY.size()) {
+      yAxis->setRange(maxZoomY);
+  } else if (range.lower < maxZoomY.lower) {
+      double diff = range.lower-maxZoomY.lower;
+      yAxis->setRange(range.lower - diff, range.upper - diff);
+  }
+  if (range.upper > maxZoomY.upper) {
+      double diff = range.upper-maxZoomY.upper;
+      yAxis->setRange(range.lower - diff, range.upper - diff);
+  }
+
+  updateGridY();
 }
 
 void MyPlot::initTracer() {
@@ -80,21 +94,6 @@ void MyPlot::initTracer() {
   tracerText->setBrush(transparentWhite);
   tracerText->setFont(QFont("Courier New"));
   tracerText->setClipToAxisRect(false);
-}
-
-void MyPlot::onYRangeChanged(QCPRange range) {
-  bool changed = false;
-  if (range.lower < maxZoomY.lower) {
-    range.lower = maxZoomY.lower;
-    changed = true;
-  }
-  if (range.upper > maxZoomY.upper) {
-    range.upper = maxZoomY.upper;
-    changed = true;
-  }
-  if (changed)
-    this->yAxis->setRange(range);
-  updateGridY();
 }
 
 void MyPlot::updateTimeCursor(Cursors::enumCursors cursor, double cursorPosition, QString label, int graphIndex) {
@@ -232,17 +231,6 @@ void MyPlot::initcursors() {
   }
 }
 
-void MyPlot::setMouseControlls(bool enabled) {
-  if (enabled) {
-    this->setInteraction(QCP::iRangeDrag, true);
-    this->setInteraction(QCP::iRangeZoom, true);
-  } else {
-    this->setInteraction(QCP::iRangeDrag, false);
-    this->setInteraction(QCP::iRangeZoom, false);
-  }
-  isFreeMove = enabled;
-}
-
 void MyPlot::checkIfTracerTextFits() {
   int clearTop = tracer->position->pixelPosition().y();
   int clearRight = width() - tracer->position->pixelPosition().x();
@@ -335,9 +323,7 @@ int MyPlot::keyToNearestSample(QCPGraph* mGraph, double keyCoord) {
 void MyPlot::mouseReleased(QMouseEvent* event) {
   Q_UNUSED(event);
   mouseDrag = MouseDrag::nothing;
-  if (isFreeMove)
-    this->setInteraction(QCP::iRangeDrag, true);
-
+  this->setInteraction(QCP::iRangeDrag, true);
 }
 
 void MyPlot::mousePressed(QMouseEvent* event) {

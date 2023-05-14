@@ -4,33 +4,36 @@
 #include "qscrollbar.h"
 #include "ui_manualinputdialog.h"
 
-ManualInputDialog::ManualInputDialog(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::ManualInputDialog)
+void ManualInputDialog::initRollingTable()
 {
-    ui->setupUi(this);
-    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
-    iconRun = QIcon(":/images/icons/run.png");
-    iconPause = QIcon(":/images/icons/pause.png");
-    ui->pushButtonRolling->setIcon(iconPause);
-    connect(&rollingTimer,&QTimer::timeout,this,&ManualInputDialog::rollingDataTimerRoutine);
-
-    rollingEngine.globalObject().setProperty("t",0);
-
-    ui->tableWidgetRollingSetup->setRowCount(1);
+    QTableWidget &table = *ui->tableWidgetRollingSetup;
+    table.setRowCount(1);
     QHeaderView *headerView = ui->tableWidgetRollingSetup->horizontalHeader();
     headerView->setSectionResizeMode(QHeaderView::Stretch);
     headerView->setSectionResizeMode(1, QHeaderView::ResizeToContents);
-    QHBoxLayout *tableButtons = new QHBoxLayout();
-    tableButtons->setContentsMargins(0,0,0,0);
+
     QPushButton *addRowButton = new QPushButton(QIcon(":/images/icons/plus.png"),"",ui->tableWidgetRollingSetup);
     QPushButton *removeRowButton = new QPushButton(QIcon(":/images/icons/minus.png"),"",ui->tableWidgetRollingSetup);
-    tableButtons->addWidget(addRowButton);
-    tableButtons->addWidget(removeRowButton);
-    ui->tableWidgetRollingSetup->setCellWidget(0,0,new QWidget());
-    QWidget *cellWidget = ui->tableWidgetRollingSetup->cellWidget(0, 0);
-    cellWidget->setLayout(tableButtons);
-    //ui->tableWidgetRollingSetup->item(0,0)->setFlags(ui->tableWidgetRollingSetup->item(0,0)->flags() &  ~Qt::ItemIsEditable & ~Qt::ItemIsSelectable);
+
+    QHBoxLayout* layout = new QHBoxLayout();
+    layout->addWidget(addRowButton);
+    layout->addWidget(removeRowButton);
+    layout->setAlignment(Qt::AlignCenter);
+    layout->setContentsMargins(0, 0, 0, 0);
+
+    // Create a new QWidget object to contain the layout
+    QWidget* widget = new QWidget();
+    widget->setLayout(layout);
+    widget->setFocusPolicy(Qt::NoFocus);
+
+    // Set the widget as the cell's item
+    table.setCellWidget(0, 0, widget);
+
+
+    QTableWidgetItem *item = new QTableWidgetItem("");
+    item->setFlags(Qt::NoItemFlags);
+    table.setItem(0,1,item);
+
     connect(addRowButton, &QPushButton::clicked, [this]() {
         this->setRollingExprRows(ui->tableWidgetRollingSetup->rowCount()+1);
     });
@@ -44,8 +47,25 @@ ManualInputDialog::ManualInputDialog(QWidget *parent) :
     ui->tableWidgetRollingSetup->setItem(1,0, new QTableWidgetItem("2*cos(2*Pi*t) + 0.1*random()*sin(100*t)"));
 }
 
+ManualInputDialog::ManualInputDialog(QWidget *parent) :
+    QDialog(parent),
+    ui(new Ui::ManualInputDialog)
+{
+    ui->setupUi(this);
+    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+    iconRun = QIcon(":/images/icons/run.png");
+    iconPause = QIcon(":/images/icons/pause.png");
+    ui->pushButtonRolling->setIcon(iconPause);
+    connect(&rollingTimer,&QTimer::timeout,this,&ManualInputDialog::rollingDataTimerRoutine);
+
+    rollingEngine.globalObject().setProperty("t",0);
+
+    initRollingTable();
+}
+
 ManualInputDialog::~ManualInputDialog()
 {
+    rollingTimer.deleteLater();
     delete ui;
 }
 
@@ -106,8 +126,8 @@ void ManualInputDialog::on_tableWidgetRollingSetup_cellChanged(int row, int colu
     if(column==0) {
         auto txt = ui->tableWidgetRollingSetup->item(row,column)->text();
         bool ok = rollingChannelEvaluators.at(row)->setExpression(rollingEngine, txt);
-        QTableWidgetItem *item = new QTableWidgetItem(ok?"OK":txt.isEmpty()?"":"Error");
-        item->setFlags(item->flags() &  ~Qt::ItemIsEditable & ~Qt::ItemIsSelectable);
+        QTableWidgetItem *item = new QTableWidgetItem(ok?"OK":txt.isEmpty()?"Empty":"Error");
+        item->setFlags(Qt::NoItemFlags | Qt::ItemIsEnabled);
         ui->tableWidgetRollingSetup->setItem(row,1,item);
     }
 }
@@ -118,6 +138,9 @@ void ManualInputDialog::setRollingExprRows(int rows)
         int count = ui->tableWidgetRollingSetup->rowCount();
         if(rows>count) {
             ui->tableWidgetRollingSetup->insertRow(count-1);
+            QTableWidgetItem *item = new QTableWidgetItem("Empty");
+            item->setFlags(Qt::NoItemFlags | Qt::ItemIsEnabled);
+            ui->tableWidgetRollingSetup->setItem(count-1,1,item);
             rollingChannelEvaluators.append(new VariableExpressionParser());
         }
         else {
@@ -132,5 +155,11 @@ void ManualInputDialog::setRollingExprRows(int rows)
         names.append(QString("Ch%1").arg(i));
     names.append("");
     ui->tableWidgetRollingSetup->setVerticalHeaderLabels(names);
+}
+
+
+void ManualInputDialog::on_pushButtonRollingResetTime_clicked()
+{
+    rollingTimestamp = 0;
 }
 

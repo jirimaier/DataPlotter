@@ -22,7 +22,8 @@ MyFFTPlot::MyFFTPlot(QWidget* parent) : MyPlot(parent) {
     autoset();
     setGridHintX(-3);
     setGridHintY(-3);
-    setMouseControlls(true);
+    this->setInteraction(QCP::iRangeDrag, true);
+    this->setInteraction(QCP::iRangeZoom, true);
 }
 
 QPair<QVector<double>, QVector<double>> MyFFTPlot::getDataVector(int chID) {

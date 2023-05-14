@@ -17,20 +17,6 @@
 #include "ui_freqtimeplotdialog.h"
 #include "ui_manualinputdialog.h"
 
-void MainWindow::rangeTypeChanged() {
-  if (ui->radioButtonFixedRange->isChecked()) {
-    ui->plot->setRangeType(PlotRange::fixedRange);
-    ui->frameRollingRange->setHidden(true);
-    ui->frameZoom->setVisible(true);
-  } else if (ui->radioButtonFreeRange->isChecked())
-    ui->plot->setRangeType(PlotRange::freeMove);
-  else if (ui->radioButtonRollingRange->isChecked()) {
-    ui->plot->setRangeType(PlotRange::rolling);
-    ui->frameZoom->setHidden(true);
-    ui->frameRollingRange->setVisible(true);
-  }
-}
-
 void MainWindow::plotLayoutChanged()
 {
   bool fft = ui->pushButtonFFT->isChecked();
@@ -115,7 +101,8 @@ void MainWindow::on_doubleSpinBoxChScale_valueChanged(double arg1) {
 }
 
 void MainWindow::on_dialZoom_valueChanged(int value) {
-  ui->plot->setZoom(value);
+  double range = static_cast<double>(value)/1000.0 * (ui->plot->getMaxT() - ui->plot->getMinT());
+  ui->plot->setHLen(range);
   ui->horizontalScrollBarHorizontal->setMinimum(value / 2);
   ui->horizontalScrollBarHorizontal->setMaximum(1000 - value / 2);
   ui->horizontalScrollBarHorizontal->setPageStep(value);
@@ -457,6 +444,15 @@ void MainWindow::on_doubleSpinBoxRangeVerticalRange_valueChanged(double arg1) {
   ui->doubleSpinBoxChOffset->setSingleStep(pow(10.0, log10(arg1) - 2));
   ui->doubleSpinBoxYCur1->setSingleStep(pow(10.0, floor(log10(arg1)) - 2));
   ui->doubleSpinBoxYCur2->setSingleStep(pow(10.0, floor(log10(arg1)) - 2));
+  ui->dialVerticalRange->updatePosition(arg1);
+  auto range = ui->plot->getMaxZoomY();
+  if(qFuzzyIsNull(range.lower))
+    range.upper = arg1;
+  else if(qFuzzyIsNull(range.upper))
+    range.lower = -arg1;
+  else
+    range = QCPRange(range.center()-arg1/2,range.center()+arg1/2);
+  ui->plot->setVRange(range);
 }
 
 void MainWindow::pushButtonClearAll_clicked() {
