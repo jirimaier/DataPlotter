@@ -37,7 +37,9 @@ class MyPlot : public QCustomPlot {
   void changeTracerTextPosition(TracerTextPos pos);
   QString xUnit, yUnit;
 
- public:
+  bool clipRange(QCPRange &newRange, const QCPRange &limits);
+
+  public:
   explicit MyPlot(QWidget* parent = nullptr);
   void updateTimeCursor(Cursors::enumCursors cursor, double cursorPosition, QString label, int graphIndex);
   void updateValueCursor(Cursors::enumCursors cursor, double cursorPosition, QString label, QCPAxis* relativeToAxis);
@@ -110,8 +112,8 @@ class MyPlot : public QCustomPlot {
   void enableMouseCursorControll(bool enabled);
 
  protected slots:
-  virtual void onXRangeChanged(QCPRange range);
-  virtual void onYRangeChanged(QCPRange range);
+  virtual void onXRangeChanged(QCPRange newRange, QCPRange oldRange);
+  virtual void onYRangeChanged(QCPRange newRange, QCPRange oldRange);
 
  signals:
   void gridChanged();

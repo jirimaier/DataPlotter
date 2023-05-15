@@ -15,7 +15,7 @@
 
 #include "myplot.h"
 
-MyPlot::MyPlot(QWidget* parent) : QCustomPlot(parent) {
+MyPlot::MyPlot(QWidget *parent) : QCustomPlot(parent) {
   this->setAntialiasedElement(QCP::AntialiasedElement::aePlottables);
   this->addLayer("cursorLayer", 0, limAbove);
   this->addLayer("tracerLayer", 0, limAbove);
@@ -33,8 +33,8 @@ MyPlot::MyPlot(QWidget* parent) : QCustomPlot(parent) {
   unitTickerY->setScaleStrategy(QCPAxisTickerFixed::ssNone);
   timeTickerX->setTickStepStrategy(QCPAxisTickerTime::tssMeetTickCount);
   longTimeTickerX->setTickStepStrategy(QCPAxisTickerTime::tssMeetTickCount);
-  this->xAxis->setNumberFormat("gb"); // Formát s hezkým 10^něco
-  this->yAxis->setNumberFormat("gb"); // Formát s hezkým 10^něco
+  this->xAxis->setNumberFormat("gb");  // Formát s hezkým 10^něco
+  this->yAxis->setNumberFormat("gb");  // Formát s hezkým 10^něco
   this->xAxis->setTicker(unitTickerX);
   this->yAxis->setTicker(unitTickerY);
 
@@ -42,40 +42,45 @@ MyPlot::MyPlot(QWidget* parent) : QCustomPlot(parent) {
 
   initTracer();
 
-  connect(this->xAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(onXRangeChanged(QCPRange)));
-  connect(this->yAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(onYRangeChanged(QCPRange)));
+  // clang-format off
+  connect(this->xAxis, SIGNAL(rangeChanged(QCPRange,QCPRange)), this, SLOT(onXRangeChanged(QCPRange,QCPRange)));
+  connect(this->yAxis, SIGNAL(rangeChanged(QCPRange,QCPRange)), this, SLOT(onYRangeChanged(QCPRange,QCPRange)));
   connect(this, SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(mouseMoved(QMouseEvent*)));
   connect(this, SIGNAL(mousePress(QMouseEvent*)), this, SLOT(mousePressed(QMouseEvent*)));
   connect(this, SIGNAL(mouseRelease(QMouseEvent*)), this, SLOT(mouseReleased(QMouseEvent*)));
+  // clang-format on
 }
 
-void MyPlot::onXRangeChanged(QCPRange range) {
-  if (range.size()>maxZoomX.size()) {
-      xAxis->setRange(maxZoomX);
-  } else if (range.lower < maxZoomX.lower) {
-      double diff = range.lower-maxZoomX.lower;
-      xAxis->setRange(range.lower - diff, range.upper - diff);
+void MyPlot::onXRangeChanged(QCPRange newRange, QCPRange oldRange) {
+  if (qFuzzyCompare(newRange.upper, oldRange.upper) &&
+      qFuzzyCompare(newRange.lower, oldRange.lower)) {
+    return;
   }
-  if (range.upper > maxZoomX.upper) {
-      double diff = range.upper-maxZoomX.upper;
-      xAxis->setRange(range.lower - diff, range.upper - diff);
-  }
+  if (clipRange(newRange, maxZoomX)) xAxis->setRange(newRange);
   updateGridX();
 }
 
-void MyPlot::onYRangeChanged(QCPRange range) {
-  if (range.size()>maxZoomY.size()) {
-      yAxis->setRange(maxZoomY);
-  } else if (range.lower < maxZoomY.lower) {
-      double diff = range.lower-maxZoomY.lower;
-      yAxis->setRange(range.lower - diff, range.upper - diff);
+void MyPlot::onYRangeChanged(QCPRange newRange, QCPRange oldRange) {
+  if (qFuzzyCompare(newRange.upper, oldRange.upper) &&
+      qFuzzyCompare(newRange.lower, oldRange.lower)) {
+    return;
   }
-  if (range.upper > maxZoomY.upper) {
-      double diff = range.upper-maxZoomY.upper;
-      yAxis->setRange(range.lower - diff, range.upper - diff);
-  }
-
+  if (clipRange(newRange, maxZoomY)) yAxis->setRange(newRange);
   updateGridY();
+}
+
+bool MyPlot::clipRange(QCPRange &newRange, const QCPRange &limits) {
+  if (newRange.size() > limits.size()) {
+    newRange = limits;
+  } else if (newRange.lower < limits.lower) {
+    double diff = newRange.lower - limits.lower;
+    newRange = QCPRange(newRange.lower - diff, newRange.upper - diff);
+  } else if (newRange.upper > limits.upper) {
+    double diff = newRange.upper - limits.upper;
+    newRange = QCPRange(newRange.lower - diff, newRange.upper - diff);
+  } else
+    return false;
+  return true;
 }
 
 void MyPlot::initTracer() {
@@ -96,7 +101,9 @@ void MyPlot::initTracer() {
   tracerText->setClipToAxisRect(false);
 }
 
-void MyPlot::updateTimeCursor(Cursors::enumCursors cursor, double cursorPosition, QString label, int graphIndex) {
+void MyPlot::updateTimeCursor(Cursors::enumCursors cursor,
+                              double cursorPosition, QString label,
+                              int graphIndex) {
   Q_ASSERT((graphIndex >= 0 && graphIndex < graphCount()) || graphIndex == -1);
 
   cursorsKey.at(cursor)->start->setCoords(cursorPosition, 0);
@@ -104,10 +111,14 @@ void MyPlot::updateTimeCursor(Cursors::enumCursors cursor, double cursorPosition
   curKeys.at(cursor)->setText(label);
   cursorLayer->replot();
   if (cursor == Cursors::Cursor1)
-    cur1Graph = graphIndex; else cur2Graph = graphIndex;
+    cur1Graph = graphIndex;
+  else
+    cur2Graph = graphIndex;
 }
 
-void MyPlot::updateValueCursor(Cursors::enumCursors cursor, double cursorPosition, QString label, QCPAxis* relativeToAxis) {
+void MyPlot::updateValueCursor(Cursors::enumCursors cursor,
+                               double cursorPosition, QString label,
+                               QCPAxis *relativeToAxis) {
   cursorsVal.at(cursor)->start->setCoords(0, cursorPosition);
   cursorsVal.at(cursor)->end->setCoords(1, cursorPosition);
   cursorsVal.at(cursor)->start->setAxes(xAxis, relativeToAxis);
@@ -115,7 +126,9 @@ void MyPlot::updateValueCursor(Cursors::enumCursors cursor, double cursorPositio
   curVals.at(cursor)->setText(label);
   cursorLayer->replot();
   if (cursor == Cursors::Cursor1)
-    cur1YAxis = relativeToAxis; else cur2YAxis = relativeToAxis;
+    cur1YAxis = relativeToAxis;
+  else
+    cur2YAxis = relativeToAxis;
 }
 
 void MyPlot::setTimeCursorVisible(Cursors::enumCursors cursor, bool visible) {
@@ -136,7 +149,10 @@ void MyPlot::setValueCursorVisible(Cursors::enumCursors cursor, bool visible) {
 }
 
 void MyPlot::updateGridX() {
-  double newGrid = logaritmicSettings[MAX(indexOfStandardValuesCeil(xAxis->range().upper - xAxis->range().lower) + xGridHint, 0)];
+  double newGrid = logaritmicSettings[MAX(
+      indexOfStandardValuesCeil(xAxis->range().upper - xAxis->range().lower) +
+          xGridHint,
+      0)];
   if (newGrid != lastGridX) {
     lastGridX = newGrid;
     setHorizontalDiv(newGrid);
@@ -146,7 +162,10 @@ void MyPlot::updateGridX() {
 }
 
 void MyPlot::updateGridY() {
-  double newGrid = logaritmicSettings[MAX(indexOfStandardValuesCeil(yAxis->range().upper - yAxis->range().lower) + yGridHint, 0)];
+  double newGrid = logaritmicSettings[MAX(
+      indexOfStandardValuesCeil(yAxis->range().upper - yAxis->range().lower) +
+          yGridHint,
+      0)];
   if (newGrid != lastGridY) {
     lastGridY = newGrid;
     setVerticalDiv(newGrid);
@@ -179,7 +198,8 @@ void MyPlot::initcursors() {
     curNum->setLayer(cursorLayer);
     curNum->setText(i ? QString::fromUtf8("2") : QString::fromUtf8("1"));
     // Číslo v kroužku (Není moc hezké)
-    // curNum->setText(i ? QString::fromUtf8("\xe2\x91\xa1") : QString::fromUtf8("\xe2\x91\xa0"));
+    // curNum->setText(i ? QString::fromUtf8("\xe2\x91\xa1") :
+    // QString::fromUtf8("\xe2\x91\xa0"));
     curNum->setTextAlignment(Qt::AlignRight);
     curNum->setPositionAlignment(Qt::AlignTop | Qt::AlignRight);
     curNum->position->setParentAnchorX(line->start);
@@ -201,7 +221,6 @@ void MyPlot::initcursors() {
     curKey->setBrush(transparentWhite);
     curKey->setPadding(QMargins(2, 2, 2, 2));
     curKeys.append(curKey);
-
   }
   for (int i = 0; i < 2; i++) {
     // Vodorovný kursor
@@ -235,9 +254,12 @@ void MyPlot::checkIfTracerTextFits() {
   int clearTop = tracer->position->pixelPosition().y();
   int clearRight = width() - tracer->position->pixelPosition().x();
 
-  // takhle spočítaná šířka neodpovídá těm vypočteným vzdálenostem, nevím proč :-(
-  int textW = tracerText->bottomRight->pixelPosition().x() - tracerText->topLeft->pixelPosition().x();
-  int textH = tracerText->bottomRight->pixelPosition().y() - tracerText->topLeft->pixelPosition().y();
+  // takhle spočítaná šířka neodpovídá těm vypočteným vzdálenostem, nevím proč
+  // :-(
+  int textW = tracerText->bottomRight->pixelPosition().x() -
+              tracerText->topLeft->pixelPosition().x();
+  int textH = tracerText->bottomRight->pixelPosition().y() -
+              tracerText->topLeft->pixelPosition().y();
 
   // int textH = 30;
   // int textW = 50;
@@ -246,8 +268,7 @@ void MyPlot::checkIfTracerTextFits() {
   bool rightok = (textW <= clearRight);
 
   if (topok && rightok) {
-    if (!(tracerTextPos == TR))
-      changeTracerTextPosition(TR);
+    if (!(tracerTextPos == TR)) changeTracerTextPosition(TR);
   } else {
     int clearBottom = height() - tracer->position->pixelPosition().y();
     int clearLeft = tracer->position->pixelPosition().x();
@@ -256,79 +277,71 @@ void MyPlot::checkIfTracerTextFits() {
     bool leftok = (textW <= clearLeft);
 
     if (bottomok && leftok) {
-      if (!(tracerTextPos == BL))
-        changeTracerTextPosition(BL);
+      if (!(tracerTextPos == BL)) changeTracerTextPosition(BL);
     } else if (bottomok && rightok) {
-      if (!(tracerTextPos == BR))
-        changeTracerTextPosition(BR);
+      if (!(tracerTextPos == BR)) changeTracerTextPosition(BR);
     } else if (topok && leftok) {
-      if (!(tracerTextPos == TL))
-        changeTracerTextPosition(TL);
+      if (!(tracerTextPos == TL)) changeTracerTextPosition(TL);
     }
   }
 }
 
-void MyPlot::leaveEvent(QMouseEvent* event) {
+void MyPlot::leaveEvent(QMouseEvent *event) {
   Q_UNUSED(event)
   hideTracer();
 }
 
-QCPRange MyPlot::getMaxZoomY() const
-{
-  return maxZoomY;
-}
+QCPRange MyPlot::getMaxZoomY() const { return maxZoomY; }
 
-void MyPlot::setMaxZoomY(const QCPRange &newMaxZoomY, bool reset)
-{
+void MyPlot::setMaxZoomY(const QCPRange &newMaxZoomY, bool reset) {
   maxZoomY = newMaxZoomY;
-  onYRangeChanged(yAxis->range());
-  if(reset)
+  auto range = yAxis->range();
+  if (reset)
     yAxis->setRange(maxZoomY);
+  else if (clipRange(range, maxZoomY))
+    yAxis->setRange(range);
 }
 
-QCPRange MyPlot::getMaxZoomX() const
-{
-  return maxZoomX;
-}
+QCPRange MyPlot::getMaxZoomX() const { return maxZoomX; }
 
-void MyPlot::setMaxZoomX(const QCPRange &newMaxZoomX, bool reset)
-{
+void MyPlot::setMaxZoomX(const QCPRange &newMaxZoomX, bool reset) {
   maxZoomX = newMaxZoomX;
-  onXRangeChanged(xAxis->range());
-  if(reset)
+  auto range = xAxis->range();
+
+  if (reset)
     xAxis->setRange(maxZoomX);
+  else if (clipRange(range, maxZoomX))
+    xAxis->setRange(range);
 }
 
-int MyPlot::keyToNearestSample(QCPGraph* mGraph, double keyCoord) {
+int MyPlot::keyToNearestSample(QCPGraph *mGraph, double keyCoord) {
   // Převzato z funkce pro originální tracer v QCustomPlot a upraveno
 
-  auto begin =  mGraph->data()->constBegin();
+  auto begin = mGraph->data()->constBegin();
   auto end = mGraph->data()->constEnd();
 
-  QCPGraphDataContainer::const_iterator it = mGraph->data()->findBegin(keyCoord);
-  if (it == --end)
-    return mGraph->data()->size() - 1;
+  QCPGraphDataContainer::const_iterator it =
+      mGraph->data()->findBegin(keyCoord);
+  if (it == --end) return mGraph->data()->size() - 1;
 
   QCPGraphDataContainer::const_iterator prevIt = it;
-  ++it; // won't advance to constEnd because we handled that case
+  ++it;  // won't advance to constEnd because we handled that case
   // (mGraphKey >= last->key) before
 
   // find iterator with key closest to mGraphKey:
   if (keyCoord < (prevIt->key + it->key) * 0.5)
-    return prevIt - begin; // Vrátí index vzorku
+    return prevIt - begin;  // Vrátí index vzorku
   else
-    return it -  begin; // Vrátí index vzorku
+    return it - begin;  // Vrátí index vzorku
 }
 
-void MyPlot::mouseReleased(QMouseEvent* event) {
+void MyPlot::mouseReleased(QMouseEvent *event) {
   Q_UNUSED(event);
   mouseDrag = MouseDrag::nothing;
   this->setInteraction(QCP::iRangeDrag, true);
 }
 
-void MyPlot::mousePressed(QMouseEvent* event) {
-  mouseMoved(event);
-}
+void MyPlot::mousePressed(QMouseEvent *event) { mouseMoved(event); }
 
 void MyPlot::setGridHintX(int hint) {
   xGridHint = hint;
@@ -348,23 +361,29 @@ void MyPlot::hideTracer() {
 
 void MyPlot::enableMouseCursorControll(bool enabled) {
   if (enabled) {
+    // clang-format off
     connect(this, SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(mouseMoved(QMouseEvent*)));
     connect(this, SIGNAL(mousePress(QMouseEvent*)), this, SLOT(mousePressed(QMouseEvent*)));
     connect(this, SIGNAL(mouseRelease(QMouseEvent*)), this, SLOT(mouseReleased(QMouseEvent*)));
+    // clang-format on
   } else {
+    // clang-format off
     disconnect(this, SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(mouseMoved(QMouseEvent*)));
     disconnect(this, SIGNAL(mousePress(QMouseEvent*)), this, SLOT(mousePressed(QMouseEvent*)));
     disconnect(this, SIGNAL(mouseRelease(QMouseEvent*)), this, SLOT(mouseReleased(QMouseEvent*)));
+    // clang-format on
     this->setCursor(defaultMouseCursor);
   }
 }
 
-void MyPlot::setVerticalDiv(double value) { unitTickerY->setTickStep(value);}
+void MyPlot::setVerticalDiv(double value) { unitTickerY->setTickStep(value); }
 
 void MyPlot::setHorizontalDiv(double value) {
   unitTickerX->setTickStep(value);
-  timeTickerX->setTickCount((xAxis->range().upper - xAxis->range().lower) / value);
-  longTimeTickerX->setTickCount((xAxis->range().upper - xAxis->range().lower) / value);
+  timeTickerX->setTickCount((xAxis->range().upper - xAxis->range().lower) /
+                            value);
+  longTimeTickerX->setTickCount((xAxis->range().upper - xAxis->range().lower) /
+                                value);
 }
 
 void MyPlot::changeTracerTextPosition(MyPlot::TracerTextPos pos) {
@@ -396,12 +415,9 @@ void MyPlot::setShowHorizontalValues(int type) {
   this->xAxis->setBasePen(enabled ? Qt::SolidLine : Qt::NoPen);
 
   if (enabled) {
-    if (type == HAxisType::normal)
-      this->xAxis->setTicker(unitTickerX);
-    if (type == HAxisType::MS)
-      this->xAxis->setTicker(timeTickerX);
-    if (type == HAxisType::HMS)
-      this->xAxis->setTicker(longTimeTickerX);
+    if (type == HAxisType::normal) this->xAxis->setTicker(unitTickerX);
+    if (type == HAxisType::MS) this->xAxis->setTicker(timeTickerX);
+    if (type == HAxisType::HMS) this->xAxis->setTicker(longTimeTickerX);
   }
   replot();
 }
