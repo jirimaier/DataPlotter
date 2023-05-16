@@ -536,6 +536,8 @@ void MyMainPlot::resetChannels() {
 
 void MyMainPlot::setShiftStep(int step) {
   rollingStep = step;
+  if (getRollingMode() && mode == rolling)
+    mode = growing;
 }
 
 void MyMainPlot::newDataVector(int chID,
