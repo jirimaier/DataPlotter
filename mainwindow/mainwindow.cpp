@@ -34,7 +34,7 @@ MainWindow::MainWindow(QWidget* parent)
 
   developerOptions = new DeveloperOptions(this, ui->quickWidget);
   freqTimePlotDialog = new FreqTimePlotDialog(nullptr);
-  manualInputDialog = new ManualInputDialog(nullptr);
+  simulatedInputDialog.reset(new ManualInputDialog(nullptr));
 
   ui->doubleSpinBoxRangeVerticalRange->trimDecimalZeroes = true;
   ui->doubleSpinBoxRangeVerticalRange->emptyDefaultValue = 1;
@@ -77,11 +77,16 @@ MainWindow::MainWindow(QWidget* parent)
 
   this->resize(1024, 768);
   on_radioButtonDark_toggled(ui->radioButtonDark->isChecked());
+
+  auto newItem = new QListWidgetItem();
+  newItem->setText(tr("Simulated"));
+  newItem->setData(Qt::UserRole, "~SPECIAL~SIM");
+  ui->listWidgetCom->addItem(newItem);
 }
 
 void MainWindow::closeEvent(QCloseEvent* event) {
   freqTimePlotDialog->close();
-  manualInputDialog->close();
+  simulatedInputDialog->close();
   developerOptions->close();
   ui->quickWidget->setSource(QUrl());
   ui->quickWidget->engine()->clearComponentCache();
@@ -94,7 +99,6 @@ MainWindow::~MainWindow() {
   delete qmlTerminalInterface;
   delete developerOptions;
   delete freqTimePlotDialog;
-  delete manualInputDialog;
   delete ui;
 }
 
@@ -130,7 +134,7 @@ void MainWindow::setChStyleSelection(GraphType::enumGraphType type) {
 void MainWindow::init(QTranslator* translator,
                       const PlotData* plotData,
                       const PlotMath* plotMath,
-                      const SerialReader* serialReader,
+                      SerialReader* serialReader,
                       const Averager* avg) {
   // Načte ikony které se mění za běhu
   iconRun = QIcon(":/images/icons/run.png");
@@ -141,6 +145,8 @@ void MainWindow::init(QTranslator* translator,
   iconConnected = QIcon(":/images/icons/connected.png");
   iconNotConnected = QIcon(":/images/icons/disconnected.png");
   iconAbsoluteCursor = QIcon(":/images/icons/rangeTab.png");
+
+  serialReader->setSimInputDialog(simulatedInputDialog);
 
   fillChannelSelect();  // Vytvoří seznam kanálů pro výběr
 
@@ -191,7 +197,7 @@ void MainWindow::changeLanguage(QString code) {
   developerOptions->getUi()->retranslateUi(developerOptions);
   freqTimePlotDialog->getUi()->retranslateUi(freqTimePlotDialog);
   freqTimePlotDialog->getUi()->plotPeak->setInfoText();
-  manualInputDialog->getUi()->retranslateUi(manualInputDialog);
+  simulatedInputDialog->getUi()->retranslateUi(simulatedInputDialog.data());
 }
 
 void MainWindow::showPlotStatus(PlotStatus::enumPlotStatus type) {
@@ -691,11 +697,11 @@ void MainWindow::on_radioButtonDark_toggled(bool checked) {
     iconVisible = QPixmap::fromImage(ico);
 
     auto list1 = this->findChildren<QPushButton*>();
-    list1.append(manualInputDialog->findChildren<QPushButton*>());
+    list1.append(simulatedInputDialog->findChildren<QPushButton*>());
     list1.append(freqTimePlotDialog->findChildren<QPushButton*>());
     foreach (auto w, list1) {
       if (w == ui->pushButtonPause || w == ui->pushButtonConnect ||
-          w == manualInputDialog->getUi()->pushButtonRolling)
+          w == simulatedInputDialog->getUi()->pushButtonRolling)
         continue;
       auto icon = w->icon().pixmap(w->iconSize()).toImage();
       icon.invertPixels(QImage::InvertRgb);
@@ -703,7 +709,7 @@ void MainWindow::on_radioButtonDark_toggled(bool checked) {
     }
 
     auto list6 = this->findChildren<QRadioButton*>();
-    list6.append(manualInputDialog->findChildren<QRadioButton*>());
+    list6.append(simulatedInputDialog->findChildren<QRadioButton*>());
     list6.append(freqTimePlotDialog->findChildren<QRadioButton*>());
     foreach (auto w, list6) {
       if (w == ui->radioButtonCz || w == ui->radioButtonEn)
@@ -714,7 +720,7 @@ void MainWindow::on_radioButtonDark_toggled(bool checked) {
     }
 
     auto list2 = this->findChildren<QTabBar*>();
-    list2.append(manualInputDialog->findChildren<QTabBar*>());
+    list2.append(simulatedInputDialog->findChildren<QTabBar*>());
     list2.append(freqTimePlotDialog->findChildren<QTabBar*>());
     foreach (auto w, list2) {
       for (int i = 0; i < w->count(); i++) {
@@ -725,7 +731,7 @@ void MainWindow::on_radioButtonDark_toggled(bool checked) {
     }
 
     auto list3 = this->findChildren<QLabel*>();
-    list3.append(manualInputDialog->findChildren<QLabel*>());
+    list3.append(simulatedInputDialog->findChildren<QLabel*>());
     list3.append(freqTimePlotDialog->findChildren<QLabel*>());
     foreach (auto w, list3) {
       if (w == ui->labelLogo)

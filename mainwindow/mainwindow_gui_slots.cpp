@@ -869,3 +869,10 @@ void MainWindow::on_dialZoom_valueChanged(int position) {
                  (ui->plot->getMaxT() - ui->plot->getMinT());
   ui->plot->setHLen(range);
 }
+
+void MainWindow::on_listWidgetCom_itemClicked(QListWidgetItem* item) {
+  if (item->data(Qt::UserRole) == "~SPECIAL~SIM")
+    simulatedInputDialog->open();
+  else
+    simulatedInputDialog->close();
+}

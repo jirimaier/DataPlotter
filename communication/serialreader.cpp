@@ -23,19 +23,57 @@ SerialReader::~SerialReader() {
   delete serial;
 }
 
+void SerialReader::setSimInputDialog(QSharedPointer<ManualInputDialog> simIn) {
+  simulatedInputDialog = simIn;
+}
+
+void SerialReader::startSimulatedInput() {
+  connect(simulatedInputDialog.get(), &ManualInputDialog::sendManualInput, this,
+          &SerialReader::newData);
+  simConnected = true;
+}
+
+void SerialReader::newData(QByteArray data) {
+  emit sendData(data);
+  if (serialMonitor)
+    emit monitor(data);
+}
+
+void SerialReader::endSim() {
+  disconnect(simulatedInputDialog.get(), &ManualInputDialog::sendManualInput,
+             this, &SerialReader::newData);
+  simConnected = false;
+}
+
 void SerialReader::init() {
-  // QSerialPrort musí být vytvořen tady (fungkce init zavolána po spuštění vlákna), ne v konstruktoru, protože pak by SerialPort byl v GUI vláknu.
+  // QSerialPrort musí být vytvořen tady (fungkce init zavolána po spuštění
+  // vlákna), ne v konstruktoru, protože pak by SerialPort byl v GUI vláknu.
   serial = new QSerialPort;
-  connect(serial, &QSerialPort::bytesWritten, this, &SerialReader::finishedWriting);
+  connect(serial, &QSerialPort::bytesWritten, this,
+          &SerialReader::finishedWriting);
   // V starším Qt (Win XP) není signál pro error
 #if QT_VERSION >= 0x050800
-  connect(serial, &QSerialPort::errorOccurred, this, &SerialReader::errorOccurred);
+  connect(serial, &QSerialPort::errorOccurred, this,
+          &SerialReader::errorOccurred);
 #endif
 }
 
-void SerialReader::begin(QString portName, int baudRate, QSerialPort::DataBits dataBits, QSerialPort::Parity parity, QSerialPort::StopBits stopBits, QSerialPort::FlowControl flowControll) {
-  if (serial->isOpen())
-    end(); // Pokud je port otevřen, tak ho zavře
+void SerialReader::begin(QString portName,
+                         int baudRate,
+                         QSerialPort::DataBits dataBits,
+                         QSerialPort::Parity parity,
+                         QSerialPort::StopBits stopBits,
+                         QSerialPort::FlowControl flowControll) {
+  if (serial->isOpen() || simConnected)
+    end();  // Pokud je port otevřen, tak ho zavře
+
+  if (portName == "~SPECIAL~SIM") {
+    startSimulatedInput();
+    emit connectionResult(true, tr("Simulated Data"), "");
+    emit started();
+    return;
+  }
+
   serial->setPortName(portName);
   serial->setBaudRate(baudRate);
   serial->setDataBits(dataBits);
@@ -60,7 +98,8 @@ void SerialReader::begin(QString portName, int baudRate, QSerialPort::DataBits d
   if (serial->isOpen()) {
     serial->clear();
     serial->setDataTerminalReady(true);
-    emit started(); // Parser si vymaže buffer a odpoví že je připraven, teprve po odpovědi se začnou číst data.
+    emit started();  // Parser si vymaže buffer a odpoví že je připraven, teprve
+                     // po odpovědi se začnou číst data.
   }
 }
 
@@ -69,7 +108,9 @@ void SerialReader::write(QByteArray data) {
     serial->write(data);
 }
 
-void SerialReader::parserReady() { connect(serial, &QSerialPort::readyRead, this, &SerialReader::read); }
+void SerialReader::parserReady() {
+  connect(serial, &QSerialPort::readyRead, this, &SerialReader::read);
+}
 
 void SerialReader::changeBaud(qint32 baud) {
   if (!serial->isOpen())
@@ -92,11 +133,14 @@ void SerialReader::changeBaud(qint32 baud) {
   }
   if (serial->isOpen()) {
     serial->clear();
-    emit started(); // Parser si vymaže buffer a odpoví že je připraven, teprve po odpovědi se začnou číst data.
+    emit started();  // Parser si vymaže buffer a odpoví že je připraven, teprve
+                     // po odpovědi se začnou číst data.
   }
 }
 
 void SerialReader::end() {
+  if (simConnected)
+    endSim();
   disconnect(serial, &QSerialPort::readyRead, this, &SerialReader::read);
   emit connectionResult(false, tr("Not connected"), "");
   if (!serial->isOpen())
@@ -126,18 +170,18 @@ void SerialReader::errorOccurred() {
   emit connectionResult(false, errorText, serial->errorString());
 }
 
-void SerialReader::toggle(QString portName, int baudRate, QSerialPort::DataBits dataBits, QSerialPort::Parity parity, QSerialPort::StopBits stopBits, QSerialPort::FlowControl flowControll) {
-  if (!serial->isOpen())
+void SerialReader::toggle(QString portName,
+                          int baudRate,
+                          QSerialPort::DataBits dataBits,
+                          QSerialPort::Parity parity,
+                          QSerialPort::StopBits stopBits,
+                          QSerialPort::FlowControl flowControll) {
+  if (!serial->isOpen() && !simConnected)
     begin(portName, baudRate, dataBits, parity, stopBits, flowControll);
   else
     end();
 }
 
 void SerialReader::read() {
-  if (serialMonitor) {
-    QByteArray newdata = serial->readAll();
-    emit sendData(newdata);
-    emit monitor(newdata);
-  } else
-    emit sendData(serial->readAll());
+  newData(serial->readAll());
 }

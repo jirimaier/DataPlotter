@@ -16,21 +16,27 @@
 #ifndef SERIALREADER_H
 #define SERIALREADER_H
 
-#include "global.h"
 #include <QDebug>
 #include <QObject>
 #include <QSerialPort>
 #include <QThread>
+#include "manualinputdialog.h"
 
 class SerialReader : public QObject {
   Q_OBJECT
  public:
   explicit SerialReader(QObject* parent = nullptr);
   ~SerialReader();
+  void setSimInputDialog(QSharedPointer<ManualInputDialog> simIn);
 
  private:
   QSerialPort* serial;
   bool serialMonitor;
+  QSharedPointer<ManualInputDialog> simulatedInputDialog;
+  void startSimulatedInput();
+  void newData(QByteArray data);
+  void endSim();
+  bool simConnected = false;
 
  private slots:
   void read();
@@ -50,9 +56,19 @@ class SerialReader : public QObject {
   /// Vytvoří instanci QSerialPortu
   void init();
   /// Připojí nebo odpojí port
-  void toggle(QString portName, int baudRate, QSerialPort::DataBits dataBits, QSerialPort::Parity parity, QSerialPort::StopBits stopBits, QSerialPort::FlowControl flowControll);
+  void toggle(QString portName,
+              int baudRate,
+              QSerialPort::DataBits dataBits,
+              QSerialPort::Parity parity,
+              QSerialPort::StopBits stopBits,
+              QSerialPort::FlowControl flowControll);
   /// Pokusí se otevřít port
-  void begin(QString portName, int baudRate, QSerialPort::DataBits dataBits, QSerialPort::Parity parity, QSerialPort::StopBits stopBits, QSerialPort::FlowControl flowControll);
+  void begin(QString portName,
+             int baudRate,
+             QSerialPort::DataBits dataBits,
+             QSerialPort::Parity parity,
+             QSerialPort::StopBits stopBits,
+             QSerialPort::FlowControl flowControll);
   /// Zavře port
   void end();
   /// Zapíše data do portu
@@ -65,4 +81,4 @@ class SerialReader : public QObject {
   void changeBaud(qint32 baud);
 };
 
-#endif // SERIALREADER_H
+#endif  // SERIALREADER_H

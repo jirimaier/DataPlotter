@@ -57,7 +57,7 @@ class MainWindow : public QMainWindow {
   void init(QTranslator* translator,
             const PlotData* plotData,
             const PlotMath* plotMath,
-            const SerialReader* serialReader,
+            SerialReader* serialReader,
             const Averager* avg);
   ~MainWindow();
 
@@ -67,7 +67,7 @@ class MainWindow : public QMainWindow {
   SerialSettingsDialog* serialSettingsDialog;
   DeveloperOptions* developerOptions;
   FreqTimePlotDialog* freqTimePlotDialog;
-  ManualInputDialog* manualInputDialog;
+  QSharedPointer<ManualInputDialog> simulatedInputDialog;
   QTranslator* translator;
   QTimer portsRefreshTimer, activeChRefreshTimer, xyTimer,
       cursorRangeUpdateTimer, measureRefreshTimer1, measureRefreshTimer2,
@@ -310,7 +310,7 @@ class MainWindow : public QMainWindow {
   void on_pushButtonFFT_FS_toggled(bool checked);
   void on_pushButtonXY_FS_toggled(bool checked);
   void on_pushButtonFvsT_clicked();
-  void on_pushButtonShowManualInput_clicked() { manualInputDialog->show(); }
+  void on_pushButtonShowManualInput_clicked() { simulatedInputDialog->show(); }
   void on_pushButtonSerialMonitor_toggled(bool checked);
   void on_comboBoxXYStyle_currentIndexChanged(int index);
   void on_comboBoxFFTStyle1_currentIndexChanged(int index);
@@ -321,6 +321,8 @@ class MainWindow : public QMainWindow {
   void on_doubleSpinBoxViewCenter_valueChanged(double arg1);
   void on_horizontalScrollBarHorizontal_sliderMoved(int position);
   void on_dialZoom_valueChanged(int position);
+
+  void on_listWidgetCom_itemClicked(QListWidgetItem* item);
 
  public slots:
   void printMessage(QString messageHeader,
