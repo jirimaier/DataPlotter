@@ -313,7 +313,7 @@ void MainWindow::printMessage(QString messageHeader,
     consoleBuffer.append(color + QString(messageHeader) + "</font color>" +
                          (stringMessage.isEmpty() ? "" : ": ") + stringMessage);
   else
-    manualInputDialog->getUi()->plainTextEditConsole_2->appendHtml(
+    developerOptions->getUi()->plainTextEditConsole_2->appendHtml(
         color + QString(messageHeader) + "</font color>" +
         (stringMessage.isEmpty() ? "" : ": ") + stringMessage);
 }
