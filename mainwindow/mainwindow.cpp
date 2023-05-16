@@ -845,8 +845,12 @@ void MainWindow::mainPlotVRangeChanged(QCPRange range) {
   ui->verticalScrollBarVertical->blockSignals(false);
 }
 
-void MainWindow::on_dialZoom_valueChanged(int position) {
-  double range = static_cast<double>(position) / ui->dialZoom->maximum() *
-                 (ui->plot->getMaxT() - ui->plot->getMinT());
-  ui->plot->setHLen(range);
+void MainWindow::lastDataTypeWasPointChanged(bool wasPoint) {
+  if (autoAutosetPending) {
+    if (wasPoint)
+      on_pushButtonResetChannels_clicked();
+    else
+      on_pushButtonAutoset_clicked();
+    autoAutosetPending = false;
+  }
 }

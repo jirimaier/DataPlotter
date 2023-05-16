@@ -151,7 +151,10 @@ void MyMainPlot::updateMinMaxTimes() {
       setMaxZoomX(QCPRange(minT, maxT), xRangeUnknown ||
                                             maxT > maxZoomX.upper ||
                                             minT < maxZoomX.lower);
-    xRangeUnknown = false;
+    if (xRangeUnknown) {
+      emit lastDataTypeWasPointChanged(getLastDataTypeWasPoint());
+      xRangeUnknown = false;
+    }
   } else {
     minT = 0;
     maxT = 10;
@@ -167,8 +170,14 @@ void MyMainPlot::updateRollingState(double xMax) {
     mode = growing;
   } else if (mode == growing) {
     if (xMax > xAxis->range().upper) {
-      mode = rolling;
-      xAxis->setRange(xMax - xAxis->range().size(), xMax);
+      if (rollingStep) {
+        double newEnd = maxT + static_cast<double>(rollingStep) / 100.0 *
+                                   xAxis->range().size();
+        xAxis->setRange(newEnd - xAxis->range().size(), newEnd);
+      } else {
+        mode = rolling;
+        xAxis->setRange(xMax - xAxis->range().size(), xMax);
+      }
     }
   } else if (mode == free) {
     if (xMax < xAxis->range().upper)
@@ -183,6 +192,17 @@ void MyMainPlot::updateRollingState(double xMax) {
   }
 
   lastSignalEnd = xMax;
+}
+
+bool MyMainPlot::getLastDataTypeWasPoint() const {
+  return lastDataTypeWasPoint;
+}
+
+void MyMainPlot::setLastDataTypeWasPoint(bool newLastDataTypeWasPoint) {
+  if (lastDataTypeWasPoint == newLastDataTypeWasPoint)
+    return;
+  lastDataTypeWasPoint = newLastDataTypeWasPoint;
+  emit lastDataTypeWasPointChanged(newLastDataTypeWasPoint);
 }
 
 void MyMainPlot::reOffsetAndRescaleCH(int chID) {
@@ -514,7 +534,9 @@ void MyMainPlot::resetChannels() {
   redraw();
 }
 
-void MyMainPlot::setShiftStep(int step) {}
+void MyMainPlot::setShiftStep(int step) {
+  rollingStep = step;
+}
 
 void MyMainPlot::newDataVector(int chID,
                                QSharedPointer<QCPGraphDataContainer> data,
@@ -538,6 +560,7 @@ void MyMainPlot::newDataVector(int chID,
     this->graph(chID)->setData(data);
     newData = true;
   }
+  setLastDataTypeWasPoint(false);
 }
 
 void MyMainPlot::newInterpolatedVector(
@@ -549,6 +572,7 @@ void MyMainPlot::newInterpolatedVector(
     this->graph(chID)->setData(dataOriginal);
   this->graph(INTERPOLATION_CHID(chID))->setData(dataInterpolated);
   newData = true;
+  setLastDataTypeWasPoint(false);
 }
 
 void MyMainPlot::setVRange(QCPRange range) {
@@ -598,6 +622,7 @@ void MyMainPlot::newDataPoint(int chID,
       pauseBuffer.at(chID)->clear();
     pauseBuffer.at(chID)->add(QCPGraphData(time, value));
   }
+  setLastDataTypeWasPoint(false);
 }
 
 QByteArray MyMainPlot::exportChannelCSV(char separator,

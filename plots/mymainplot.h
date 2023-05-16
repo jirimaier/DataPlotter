@@ -169,6 +169,8 @@ class MyMainPlot : public MyPlot {
 
   void setRollingMode(bool newRollingMode);
 
+  bool getLastDataTypeWasPoint() const;
+
  private:
   void redraw();
 
@@ -187,6 +189,8 @@ class MyMainPlot : public MyPlot {
   void updateTracerText(int index);
   int currentTracerIndex = -1;
 
+  void setLastDataTypeWasPoint(bool newLastDataTypeWasPoint);
+
   int mouseDragChIndex = 0;
   void setMouseCursorStyle(QMouseEvent* event);
 
@@ -194,6 +198,8 @@ class MyMainPlot : public MyPlot {
   double minT = 0.0, maxT = 1.0;
 
   bool xRangeUnknown = false;
+
+  int rollingStep = 0;
 
   QList<QCPAxis*> analogAxis, logicGroupAxis;
   QVector<QSharedPointer<QCPGraphDataContainer>> pauseBuffer;
@@ -209,6 +215,7 @@ class MyMainPlot : public MyPlot {
   enum Mode { free, growing, rolling, empty, free_locked } mode = empty;
   double lastSignalEnd = 0;
   void updateRollingState(double xMax);
+  bool lastDataTypeWasPoint = false;
 
  private slots:
   void update();
@@ -273,6 +280,7 @@ class MyMainPlot : public MyPlot {
   void vRangeChanged(QCPRange range);
   void hRangeChanged(QCPRange range);
   void rollingModeChanged();
+  void lastDataTypeWasPointChanged(bool);
 };
 
 #endif  // MYMAINPLOT_H

@@ -144,6 +144,9 @@ void MainWindow::connectSignals() {
           &MainWindow::mainPlotVRangeChanged);
   connect(ui->plot, &MyMainPlot::hRangeChanged, this,
           &MainWindow::mainPlotHRangeChanged);
+
+  connect(ui->plot, &MyMainPlot::lastDataTypeWasPointChanged, this,
+          &MainWindow::lastDataTypeWasPointChanged);
 }
 
 void MainWindow::setAdaptiveSpinBoxes() {
@@ -188,7 +191,7 @@ void MainWindow::setGuiDefaults() {
                               QString(__TIME__));
   ui->pushButtonPause->setIcon(iconRun);
 
-  ui->pushButtonModeFull->setChecked(true);
+  on_pushButtonModeFull_clicked();
   ui->frameRollingRange->setVisible(false);
   plotLayoutChanged();
 

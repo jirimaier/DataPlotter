@@ -828,23 +828,22 @@ void MainWindow::on_comboBoxFFTStyle2_currentIndexChanged(int index) {
   ui->plotFFT->setStyle(1, index);
 }
 
-void MainWindow::on_pushButtonModeRolling_toggled(bool checked) {
-  if (checked) {
-    double hLen = ui->doubleSpinBoxRangeHorizontal->value();
-    ui->plot->setRollingMode(true);
-    ui->pushButtonModeFull->setChecked(false);
-    ui->plot->setHLen(hLen);
-  } else {
-    ui->pushButtonModeRolling->setChecked(true);
-  }
+void MainWindow::on_pushButtonModeRolling_clicked() {
+  double hLen = ui->doubleSpinBoxRangeHorizontal->value();
+  ui->pushButtonModeFull->setChecked(false);
+  ui->pushButtonModeRolling->setChecked(true);
+  ui->frameZoom->setVisible(false);
+  ui->frameRollingRange->setVisible(true);
+  ui->plot->setRollingMode(true);
+  ui->plot->setHLen(hLen);
 }
 
-void MainWindow::on_pushButtonModeFull_toggled(bool checked) {
-  if (checked) {
-    ui->plot->setRollingMode(false);
-    ui->pushButtonModeRolling->setChecked(false);
-  } else
-    ui->pushButtonModeFull->setChecked(true);
+void MainWindow::on_pushButtonModeFull_clicked() {
+  ui->pushButtonModeRolling->setChecked(false);
+  ui->pushButtonModeFull->setChecked(true);
+  ui->frameRollingRange->setVisible(false);
+  ui->frameZoom->setVisible(true);
+  ui->plot->setRollingMode(false);
 }
 
 void MainWindow::on_doubleSpinBoxRangeHorizontal_valueChanged(double arg1) {
@@ -863,4 +862,10 @@ void MainWindow::on_horizontalScrollBarHorizontal_sliderMoved(int position) {
   double minT = ui->plot->getMinT();
   double maxT = ui->plot->getMaxT();
   ui->plot->setHPos(minT + (maxT - minT) / m * position);
+}
+
+void MainWindow::on_dialZoom_valueChanged(int position) {
+  double range = static_cast<double>(position) / ui->dialZoom->maximum() *
+                 (ui->plot->getMaxT() - ui->plot->getMinT());
+  ui->plot->setHLen(range);
 }

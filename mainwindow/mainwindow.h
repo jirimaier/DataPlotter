@@ -104,7 +104,6 @@ class MainWindow : public QMainWindow {
   QMap<QString, QPair<QWidget*, bool>> setables;
   int interpolationsRunning = 0;
   bool lastUpdateWasLogic = false;
-  bool lastUpdateWasPoint = false;
   int lastSelectedChannel = 1;
   bool pendingDeviceMessage = false;
   HAxisType::enumHAxisType recommandedAxisType = HAxisType::normal;
@@ -144,6 +143,8 @@ class MainWindow : public QMainWindow {
   void resetQmlTerminal();
   void saveDefaultSettings();
   void closeEvent(QCloseEvent* event);
+
+  void autosetHrange();
 
  private slots:
   void updateCursors();
@@ -314,14 +315,11 @@ class MainWindow : public QMainWindow {
   void on_comboBoxXYStyle_currentIndexChanged(int index);
   void on_comboBoxFFTStyle1_currentIndexChanged(int index);
   void on_comboBoxFFTStyle2_currentIndexChanged(int index);
-  void on_pushButtonModeRolling_toggled(bool checked);
-  void on_pushButtonModeFull_toggled(bool checked);
+  void on_pushButtonModeRolling_clicked();
+  void on_pushButtonModeFull_clicked();
   void on_doubleSpinBoxRangeHorizontal_valueChanged(double arg1);
-
   void on_doubleSpinBoxViewCenter_valueChanged(double arg1);
-
   void on_horizontalScrollBarHorizontal_sliderMoved(int position);
-  
   void on_dialZoom_valueChanged(int position);
 
  public slots:
@@ -370,8 +368,8 @@ class MainWindow : public QMainWindow {
   void valueCursorMovedByMouse(Cursors::enumCursors cursor, double value);
   void cursorSetByMouse(int chid, Cursors::enumCursors cursor, int sample);
   void offsetChangedByMouse(int chid);
-  void plotRecomendationChanged(bool wasPoint,
-                                HAxisType::enumHAxisType recommandedTimeBase);
+  void plotRecomendedAxisTypeChanged(
+      HAxisType::enumHAxisType recommandedTimeBase);
   void moveTimeCursorXY(Cursors::enumCursors cursor, double pos);
   void moveValueCursorXY(Cursors::enumCursors cursor, double pos);
   void setCursorPosXY(Cursors::enumCursors cursor, double x, double y);
@@ -394,6 +392,7 @@ class MainWindow : public QMainWindow {
   void dataRateUpdate(int dataUpdates);
   void mainPlotHRangeChanged(QCPRange range);
   void mainPlotVRangeChanged(QCPRange range);
+  void lastDataTypeWasPointChanged(bool wasPoint);
 
  signals:
   void setChDigital(int chid, int target);

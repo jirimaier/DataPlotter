@@ -1157,6 +1157,12 @@
             </item>
             <item row="1" column="1" colspan="4">
              <widget class="QFrame" name="frame_5">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="frameShape">
                <enum>QFrame::NoFrame</enum>
               </property>
@@ -8643,12 +8649,12 @@
    <slot>setHidden(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>68</x>
-     <y>647</y>
+     <x>88</x>
+     <y>643</y>
     </hint>
     <hint type="destinationlabel">
-     <x>68</x>
-     <y>707</y>
+     <x>88</x>
+     <y>703</y>
     </hint>
    </hints>
   </connection>
@@ -8809,38 +8815,6 @@
     <hint type="destinationlabel">
      <x>268</x>
      <y>646</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButtonModeRolling</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>frameRollingRange</receiver>
-   <slot>setVisible(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>291</x>
-     <y>649</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>310</x>
-     <y>705</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButtonModeFull</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>frameZoom</receiver>
-   <slot>setVisible(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>380</x>
-     <y>675</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>752</x>
-     <y>713</y>
     </hint>
    </hints>
   </connection>

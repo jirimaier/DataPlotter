@@ -105,7 +105,8 @@ void MainWindow::updateChannelComboBox(QComboBox& combobox,
           developerOptions->getUi()->checkBoxSelUnused->isChecked() ||
           ui->plot->isChUsed(
               getLogicChannelID(i - ANALOG_COUNT - MATH_COUNT, 1));
-    if (willBeVisible) atLeastOneVisible = true;
+    if (willBeVisible)
+      atLeastOneVisible = true;
 
     item->setEnabled(willBeVisible);
     QListView* view = qobject_cast<QListView*>(combobox.view());
@@ -136,7 +137,8 @@ void MainWindow::updateMeasurements1() {
   if (ui->comboBoxMeasure1->currentIndex() !=
       ui->comboBoxMeasure1->count() - 1) {
     int chid = ui->comboBoxMeasure1->currentIndex();
-    if (ui->plot->graph(chid)->data()->isEmpty()) goto empty;
+    if (ui->plot->graph(chid)->data()->isEmpty())
+      goto empty;
     auto data = QSharedPointer<QCPGraphDataContainer>(
         new QCPGraphDataContainer(*ui->plot->graph(chid)->data()));
     if (ui->radioButtonSigPart->isChecked()) {
@@ -167,7 +169,8 @@ void MainWindow::updateMeasurements2() {
   if (ui->comboBoxMeasure2->currentIndex() !=
       ui->comboBoxMeasure2->count() - 1) {
     int chid = ui->comboBoxMeasure2->currentIndex();
-    if (ui->plot->graph(chid)->data()->isEmpty()) goto empty;
+    if (ui->plot->graph(chid)->data()->isEmpty())
+      goto empty;
     auto data = QSharedPointer<QCPGraphDataContainer>(
         new QCPGraphDataContainer(*ui->plot->graph(chid)->data()));
     if (ui->radioButtonSigPart->isChecked()) {
@@ -193,7 +196,8 @@ void MainWindow::updateMeasurements2() {
 }
 
 void MainWindow::updateFFT1() {
-  if (!ui->pushButtonFFT->isChecked()) return;
+  if (!ui->pushButtonFFT->isChecked())
+    return;
 
   if (ui->checkBoxFFTCh1->isChecked()) {
     int chid = ui->comboBoxFFTCh1->currentIndex();
@@ -247,7 +251,8 @@ void MainWindow::updateFFT1() {
 }
 
 void MainWindow::updateFFT2() {
-  if (!ui->pushButtonFFT->isChecked()) return;
+  if (!ui->pushButtonFFT->isChecked())
+    return;
 
   if (ui->checkBoxFFTCh2->isChecked()) {
     int chid = ui->comboBoxFFTCh2->currentIndex();
@@ -320,7 +325,8 @@ void MainWindow::updateInterpolation() {
     }
   }
 
-  if (interpolationsRunning > 0) interpolationTimer.stop();
+  if (interpolationsRunning > 0)
+    interpolationTimer.stop();
 }
 
 void MainWindow::updateSerialMonitor() {
@@ -346,7 +352,8 @@ void MainWindow::updateSerialMonitor() {
 
   QScrollBar* scroll = ui->plainTextEditConsole_3->verticalScrollBar();
   int lastVal = -1;
-  if (scroll->value() != scroll->maximum()) lastVal = scroll->value();
+  if (scroll->value() != scroll->maximum())
+    lastVal = scroll->value();
 
   auto cursor = ui->plainTextEditConsole_3->textCursor();
   cursor.movePosition(QTextCursor::End);
@@ -369,7 +376,8 @@ void MainWindow::updateSerialMonitor() {
 }
 
 void MainWindow::updateConsole() {
-  if (consoleBuffer.isEmpty()) return;
+  if (consoleBuffer.isEmpty())
+    return;
 
   consoleTimer.stop();
 
@@ -392,13 +400,6 @@ void MainWindow::updateConsole() {
 
 void MainWindow::dataRateUpdate(int dataUpdates) {
   if (dataUpdates > 0) {
-    if (autoAutosetPending) {
-      if (lastUpdateWasPoint)
-        on_pushButtonResetChannels_clicked();
-      else
-        on_pushButtonAutoset_clicked();
-      autoAutosetPending = false;
-    }
     ui->labelUpdateRate->setText(
         tr("Data rate: ") + QString::number(dataUpdates) + tr(" updates / s"));
   } else
