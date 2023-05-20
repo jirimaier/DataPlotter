@@ -194,6 +194,17 @@ void MyMainPlot::updateRollingState(double xMax) {
   lastSignalEnd = xMax;
 }
 
+bool MyMainPlot::getAutoVRage() const {
+  return autoVRage;
+}
+
+void MyMainPlot::setAutoVRage(bool newAutoVRage) {
+  if (autoVRage == newAutoVRage)
+    return;
+  autoVRage = newAutoVRage;
+  emit autoVRageChanged();
+}
+
 bool MyMainPlot::getLastDataTypeWasPoint() const {
   return lastDataTypeWasPoint;
 }
@@ -596,7 +607,7 @@ void MyMainPlot::setHLen(double len) {
         xAxis->setRange(maxT - len, maxT);
       } else {
         mode = growing;
-        setMaxZoomX(QCPRange(minT, maxT + len), true);
+        setMaxZoomX(QCPRange(minT, minT + len), true);
       }
     }
   } else {
@@ -623,6 +634,22 @@ void MyMainPlot::newDataPoint(int chID,
     if (!append)
       pauseBuffer.at(chID)->clear();
     pauseBuffer.at(chID)->add(QCPGraphData(time, value));
+  }
+  if (autoVRage) {
+    double absoluteValueCoord =
+        yAxis->pixelToCoord(graph(chID)->valueAxis()->coordToPixel(value));
+    if (absoluteValueCoord > maxZoomY.upper) {
+      setMaxZoomY(QCPRange(maxZoomY.lower, ceilToNiceValue(absoluteValueCoord)),
+                  qFuzzyCompare(yAxis->range().lower, maxZoomY.lower) &&
+                      qFuzzyCompare(yAxis->range().upper, maxZoomY.upper));
+      emit vRangeMaxChanged(maxZoomY);
+    } else if (absoluteValueCoord < maxZoomY.lower) {
+      setMaxZoomY(
+          QCPRange(floorToNiceValue(absoluteValueCoord), maxZoomY.upper),
+          qFuzzyCompare(yAxis->range().lower, maxZoomY.lower) &&
+              qFuzzyCompare(yAxis->range().upper, maxZoomY.upper));
+      emit vRangeMaxChanged(maxZoomY);
+    }
   }
   setLastDataTypeWasPoint(true);
 }

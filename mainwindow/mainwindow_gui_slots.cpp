@@ -604,6 +604,7 @@ void MainWindow::on_pushButtonFFT_toggled(bool checked) {
 }
 
 void MainWindow::on_doubleSpinBoxRangeVerticalRange_valueChanged(double arg1) {
+  ui->pushButtonRollingAutoRange->setChecked(false);
   ui->doubleSpinBoxChOffset->setSingleStep(pow(10.0, log10(arg1) - 2));
   ui->doubleSpinBoxYCur1->setSingleStep(pow(10.0, floor(log10(arg1)) - 2));
   ui->doubleSpinBoxYCur2->setSingleStep(pow(10.0, floor(log10(arg1)) - 2));

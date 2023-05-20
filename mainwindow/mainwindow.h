@@ -324,6 +324,8 @@ class MainWindow : public QMainWindow {
 
   void on_listWidgetCom_itemClicked(QListWidgetItem* item);
 
+  void on_pushButtonRollingAutoRange_toggled(bool checked);
+
  public slots:
   void printMessage(QString messageHeader,
                     QByteArray messageBody,
@@ -394,6 +396,7 @@ class MainWindow : public QMainWindow {
   void dataRateUpdate(int dataUpdates);
   void mainPlotHRangeChanged(QCPRange range);
   void mainPlotVRangeChanged(QCPRange range);
+  void mainPlotVRangeMaxChanged(QCPRange range);
   void lastDataTypeWasPointChanged(bool wasPoint);
 
  signals:

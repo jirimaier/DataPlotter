@@ -142,6 +142,8 @@ void MainWindow::connectSignals() {
 
   connect(ui->plot, &MyMainPlot::vRangeChanged, this,
           &MainWindow::mainPlotVRangeChanged);
+  connect(ui->plot, &MyMainPlot::vRangeMaxChanged, this,
+          &MainWindow::mainPlotVRangeMaxChanged);
   connect(ui->plot, &MyMainPlot::hRangeChanged, this,
           &MainWindow::mainPlotHRangeChanged);
 

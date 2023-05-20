@@ -1424,6 +1424,9 @@
                       <property name="text">
                        <string>Auto Range</string>
                       </property>
+                      <property name="checkable">
+                       <bool>true</bool>
+                      </property>
                      </widget>
                     </item>
                    </layout>

@@ -851,12 +851,28 @@ void MainWindow::mainPlotVRangeChanged(QCPRange range) {
   ui->verticalScrollBarVertical->blockSignals(false);
 }
 
+void MainWindow::mainPlotVRangeMaxChanged(QCPRange range) {
+  ui->doubleSpinBoxViewCenter->blockSignals(true);
+  ui->doubleSpinBoxRangeVerticalRange->blockSignals(true);
+  ui->doubleSpinBoxViewCenter->setValue(range.center());
+  ui->doubleSpinBoxRangeVerticalRange->setValue(range.size());
+  ui->dialVerticalRange->updatePosition(range.size());
+  ui->doubleSpinBoxViewCenter->blockSignals(false);
+  ui->doubleSpinBoxRangeVerticalRange->blockSignals(false);
+  mainPlotVRangeChanged(ui->plot->yAxis->range());
+}
+
 void MainWindow::lastDataTypeWasPointChanged(bool wasPoint) {
   if (autoAutosetPending) {
-    if (wasPoint)
+    if (wasPoint) {
       on_pushButtonResetChannels_clicked();
-    else
+      ui->pushButtonRollingAutoRange->setChecked(true);
+    } else
       on_pushButtonAutoset_clicked();
     autoAutosetPending = false;
   }
+}
+
+void MainWindow::on_pushButtonRollingAutoRange_toggled(bool checked) {
+  ui->plot->setAutoVRage(checked);
 }

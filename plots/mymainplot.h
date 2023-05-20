@@ -171,6 +171,9 @@ class MyMainPlot : public MyPlot {
 
   bool getLastDataTypeWasPoint() const;
 
+  bool getAutoVRage() const;
+  void setAutoVRage(bool newAutoVRage);
+
  private:
   void redraw();
 
@@ -216,6 +219,8 @@ class MyMainPlot : public MyPlot {
   double lastSignalEnd = 0;
   void updateRollingState(double xMax);
   bool lastDataTypeWasPoint = false;
+
+  bool autoVRage = false;
 
  private slots:
   void update();
@@ -278,9 +283,11 @@ class MyMainPlot : public MyPlot {
   /// Offset kanálu tažen myší
   void offsetChangedByMouse(int chid);
   void vRangeChanged(QCPRange range);
+  void vRangeMaxChanged(QCPRange range);
   void hRangeChanged(QCPRange range);
   void rollingModeChanged();
   void lastDataTypeWasPointChanged(bool);
+  void autoVRageChanged();
 };
 
 #endif  // MYMAINPLOT_H
