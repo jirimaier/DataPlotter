@@ -624,7 +624,7 @@ void MyMainPlot::newDataPoint(int chID,
       pauseBuffer.at(chID)->clear();
     pauseBuffer.at(chID)->add(QCPGraphData(time, value));
   }
-  setLastDataTypeWasPoint(false);
+  setLastDataTypeWasPoint(true);
 }
 
 QByteArray MyMainPlot::exportChannelCSV(char separator,
