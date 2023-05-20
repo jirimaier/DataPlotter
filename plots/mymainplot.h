@@ -285,6 +285,7 @@ class MyMainPlot : public MyPlot {
   void vRangeChanged(QCPRange range);
   void vRangeMaxChanged(QCPRange range);
   void hRangeChanged(QCPRange range);
+  void hRangeMaxChanged(QCPRange range);
   void rollingModeChanged();
   void lastDataTypeWasPointChanged(bool);
   void autoVRageChanged();

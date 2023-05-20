@@ -16,11 +16,11 @@
 #ifndef MYPLOT_H
 #define MYPLOT_H
 
+#include <QWidget>
 #include "global.h"
 #include "myaxistickerwithunit.h"
 #include "mymodifiedqcptracer.h"
 #include "plots/qcustomplot.h"
-#include <QWidget>
 
 class MyPlot : public QCustomPlot {
   Q_OBJECT
@@ -37,12 +37,18 @@ class MyPlot : public QCustomPlot {
   void changeTracerTextPosition(TracerTextPos pos);
   QString xUnit, yUnit;
 
-  bool clipRange(QCPRange &newRange, const QCPRange &limits);
+  bool clipRange(QCPRange& newRange, const QCPRange& limits);
 
-  public:
+ public:
   explicit MyPlot(QWidget* parent = nullptr);
-  void updateTimeCursor(Cursors::enumCursors cursor, double cursorPosition, QString label, int graphIndex);
-  void updateValueCursor(Cursors::enumCursors cursor, double cursorPosition, QString label, QCPAxis* relativeToAxis);
+  void updateTimeCursor(Cursors::enumCursors cursor,
+                        double cursorPosition,
+                        QString label,
+                        int graphIndex);
+  void updateValueCursor(Cursors::enumCursors cursor,
+                         double cursorPosition,
+                         QString label,
+                         QCPAxis* relativeToAxis);
   void setValueCursorVisible(Cursors::enumCursors cursor, bool visible);
   void setTimeCursorVisible(Cursors::enumCursors cursor, bool visible);
   double getVDiv() { return unitTickerY->tickStep(); }
@@ -61,18 +67,24 @@ class MyPlot : public QCustomPlot {
   }
   QString getXUnit() { return xUnit; }
   QString getYUnit() { return yUnit; }
-  double getValueCursorPosition(Cursors::enumCursors cursor) {return cursorsVal.at(cursor)->start->coords().y();}
-  bool getValueCursorVisible(Cursors::enumCursors cursor) {return cursorsVal.at(cursor)->visible();}
-  double getTimeCursorPosition(Cursors::enumCursors cursor) {return cursorsKey.at(cursor)->start->coords().x();}
+  double getValueCursorPosition(Cursors::enumCursors cursor) {
+    return cursorsVal.at(cursor)->start->coords().y();
+  }
+  bool getValueCursorVisible(Cursors::enumCursors cursor) {
+    return cursorsVal.at(cursor)->visible();
+  }
+  double getTimeCursorPosition(Cursors::enumCursors cursor) {
+    return cursorsKey.at(cursor)->start->coords().x();
+  }
   int keyToNearestSample(QCPGraph* graph, double keyCoord);
 
   QCPRange getMaxZoomX() const;
-  void setMaxZoomX(const QCPRange &newMaxZoomX, bool reset = false);
+  void setMaxZoomX(const QCPRange& newMaxZoomX, bool reset = false);
 
   QCPRange getMaxZoomY() const;
-  void setMaxZoomY(const QCPRange &newMaxZoomY, bool reset = false);
+  void setMaxZoomY(const QCPRange& newMaxZoomY, bool reset = false);
 
-  protected:
+ protected:
   QCPLayer* cursorLayer;
   QVector<QCPItemLine*> cursorsKey, cursorsVal;
   QVector<QCPItemText*> curNums, curKeys, curVals;
@@ -82,19 +94,26 @@ class MyPlot : public QCustomPlot {
   void initcursors();
   void initTracer();
   void checkIfTracerTextFits();
-  enum MouseDrag { cursorX1, cursorX2, cursorY1, cursorY2, nothing, zeroline } mouseDrag = nothing; // Vyšší čísla jsou číslo kanálu pro nulo
+  enum MouseDrag {
+    cursorX1,
+    cursorX2,
+    cursorY1,
+    cursorY2,
+    nothing,
+    zeroline
+  } mouseDrag = nothing;  // Vyšší čísla jsou číslo kanálu pro nulo
   int cur1Graph = -1, cur2Graph = -1;
-  QCPAxis* cur1YAxis = yAxis, *cur2YAxis = yAxis;
+  QCPAxis *cur1YAxis = yAxis, *cur2YAxis = yAxis;
   QCursor defaultMouseCursor = Qt::ArrowCursor;
 
   QColor transparentWhite = QColor::fromRgbF(1, 1, 1, 0.8);
 
   QSharedPointer<MyAxisTickerWithUnit> unitTickerX, unitTickerY;
 
-  virtual void leaveEvent(QMouseEvent* event);
+  virtual void leaveEvent(QEvent* event);
 
-  QCPRange maxZoomX = {-MAX_PLOT_ZOOMOUT,MAX_PLOT_ZOOMOUT};
-  QCPRange maxZoomY = {-MAX_PLOT_ZOOMOUT,MAX_PLOT_ZOOMOUT};
+  QCPRange maxZoomX = {-MAX_PLOT_ZOOMOUT, MAX_PLOT_ZOOMOUT};
+  QCPRange maxZoomY = {-MAX_PLOT_ZOOMOUT, MAX_PLOT_ZOOMOUT};
 
  protected slots:
   virtual void mouseMoved(QMouseEvent* event) = 0;
@@ -121,4 +140,4 @@ class MyPlot : public QCustomPlot {
   void moveValueCursor(Cursors::enumCursors cursor, double value);
   void setCursorPos(int chid, Cursors::enumCursors cursor, int sample);
 };
-#endif // MYPLOT_H
+#endif  // MYPLOT_H

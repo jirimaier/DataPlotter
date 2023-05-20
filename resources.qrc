@@ -81,18 +81,12 @@
         <file>icons/logicConvert.png</file>
         <file>icons/settingsLighter.png</file>
         <file>icons/deltaXLighter.png</file>
-        <file>icons/viewAll.png</file>
-        <file>icons/viewfft.png</file>
-        <file>icons/viewtime.png</file>
-        <file>icons/viewxy.png</file>
-        <file>icons/bigfont.png</file>
-        <file>icons/smallfont.png</file>
         <file>icons/freqtime.png</file>
         <file>icons/filter.png</file>
         <file>icons/qmlterminal.png</file>
-        <file>icons/sideHide.png</file>
-        <file>icons/sideNorm.png</file>
-        <file>icons/sideWide.png</file>
+        <file>icons/nospred.png</file>
+        <file>icons/maximize.png</file>
+        <file>icons/unmaximize.png</file>
     </qresource>
     <qresource prefix="/translations">
         <file>translations/translation_cz.qm</file>

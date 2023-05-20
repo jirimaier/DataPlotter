@@ -40,7 +40,7 @@ MyMainPlot::MyMainPlot(QWidget* parent) : MyPlot(parent) {
     logicGroupAxis.last()->setRange(yAxis->range());
     for (int j = 0; j < LOGIC_BITS; j++) {
       addGraph(xAxis, logicGroupAxis.last());
-      graph(graphCount() - 1)->setFillBase(j * 3);
+      // TODO: graph(graphCount() - 1)->setFillBase(j * 3);
     }
     logicGroupAxis.last()->setTicks(false);
     logicGroupAxis.last()->setBasePen(Qt::NoPen);
@@ -147,10 +147,13 @@ void MyMainPlot::updateMinMaxTimes() {
           QCPRange(minT, maxT + xAxis->range().size()),
           xRangeUnknown || maxT > maxZoomX.upper || minT < maxZoomX.lower);
       updateRollingState(maxT);
-    } else
-      setMaxZoomX(QCPRange(minT, maxT), xRangeUnknown ||
-                                            maxT > maxZoomX.upper ||
-                                            minT < maxZoomX.lower);
+    } else {
+      double diff = abs(maxT - maxZoomX.upper) / maxZoomX.upper +
+                    abs(minT - maxZoomX.lower) / maxZoomX.lower;
+      setMaxZoomX(QCPRange(minT, maxT), xRangeUnknown || diff > 0.1);
+      if (!qFuzzyIsNull(diff))
+        emit hRangeMaxChanged(maxZoomX);
+    }
     if (xRangeUnknown) {
       emit lastDataTypeWasPointChanged(getLastDataTypeWasPoint());
       xRangeUnknown = false;

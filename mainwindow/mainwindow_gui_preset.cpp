@@ -146,6 +146,8 @@ void MainWindow::connectSignals() {
           &MainWindow::mainPlotVRangeMaxChanged);
   connect(ui->plot, &MyMainPlot::hRangeChanged, this,
           &MainWindow::mainPlotHRangeChanged);
+  connect(ui->plot, &MyMainPlot::hRangeMaxChanged, this,
+          &MainWindow::mainPlotHRangeMaxChanged);
 
   connect(ui->plot, &MyMainPlot::lastDataTypeWasPointChanged, this,
           &MainWindow::lastDataTypeWasPointChanged);
@@ -195,7 +197,7 @@ void MainWindow::setGuiDefaults() {
 
   on_pushButtonModeFull_clicked();
   ui->frameRollingRange->setVisible(false);
-  plotLayoutChanged();
+  setPlotLayout("all");
 
   on_lineEditHUnit_textChanged(ui->lineEditHUnit->text());
   on_lineEditVUnit_textChanged(ui->lineEditVUnit->text());

@@ -17,48 +17,51 @@
 #include "ui_freqtimeplotdialog.h"
 #include "ui_manualinputdialog.h"
 
-void MainWindow::plotLayoutChanged() {
+void MainWindow::setPlotLayout(QString type) {
   bool fft = ui->pushButtonFFT->isChecked();
   bool xy = ui->pushButtonXY->isChecked();
-  bool fsfft = ui->pushButtonFFT_FS->isChecked();
-  bool fsxy = ui->pushButtonXY_FS->isChecked();
 
-  if (!fft)
-    ui->pushButtonFFT_FS->setChecked(false);
+  if (type == "all") {
+    ui->plot->setVisible(true);
+    ui->plotFFT->setVisible(fft);
+    ui->plotxy->setVisible(xy);
+    ui->frameUpperPlots->setVisible(fft || xy);
+    ui->pushButtonFFT_Maximize->setVisible(true);
+    ui->pushButtonXY_Maximize->setVisible(true);
+    hasMaximizedPlot = false;
+    return;
+  }
 
-  if (!xy)
-    ui->pushButtonXY_FS->setChecked(false);
-
-  Q_ASSERT(fsfft == false || fsxy == false);  // Cannot be both true
-
-  ui->plotFFT->setVisible(fft && !fsxy);
-  ui->plotxy->setVisible(xy && !fsfft);
-  ui->frameUpperPlots->setVisible(fft || xy);
-  ui->plot->setHidden(fsfft || fsxy);
+  if (type == "fft") {
+    ui->plot->setVisible(false);
+    ui->plotFFT->setVisible(true);
+    ui->plotxy->setVisible(false);
+    ui->frameUpperPlots->setVisible(true);
+  } else if (type == "xy") {
+    ui->plot->setVisible(false);
+    ui->plotFFT->setVisible(false);
+    ui->plotxy->setVisible(true);
+    ui->frameUpperPlots->setVisible(true);
+  } else
+    Q_ASSERT(true);
+  hasMaximizedPlot = true;
 }
 
 void MainWindow::on_doubleSpinBoxChOffset_valueChanged(double arg1) {
   if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT)
     ui->plot->setChOffset(ui->comboBoxSelectedChannel->currentIndex(), arg1);
   else
-    ui->plot->setLogicOffset(
-        ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT,
-        arg1);
+    ui->plot->setLogicOffset(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT, arg1);
 }
 
 void MainWindow::on_comboBoxGraphStyle_currentIndexChanged(int index) {
   if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT) {
     ui->plot->setChStyle(ui->comboBoxSelectedChannel->currentIndex(), index);
   } else {
-    if (recommendOpenGL &&
-        (index == GraphStyle::logicFilled ||
-         index == GraphStyle::logicSquareFilled) &&
-        !ui->checkBoxOpenGL->isChecked()) {
+    if (recommendOpenGL && (index == GraphStyle::logicFilled || index == GraphStyle::logicSquareFilled) && !ui->checkBoxOpenGL->isChecked()) {
       QMessageBox msgBox(this);
-      msgBox.setText(tr(
-          "It is recommended to enable OpenGL when using fill under graph."));
-      msgBox.setInformativeText(
-          tr("Enable OpenGL? (enabling may take a second or two)"));
+      msgBox.setText(tr("It is recommended to enable OpenGL when using fill under graph."));
+      msgBox.setInformativeText(tr("Enable OpenGL? (enabling may take a second or two)"));
       msgBox.setIcon(QMessageBox::Information);
       msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
       msgBox.setDefaultButton(QMessageBox::Yes);
@@ -72,8 +75,7 @@ void MainWindow::on_comboBoxGraphStyle_currentIndexChanged(int index) {
         ui->checkBoxOpenGL->setChecked(true);
       if (checkBox->isChecked()) {
         recommendOpenGL = false;
-        QString defaultName = QString(QCoreApplication::applicationDirPath()) +
-                              QString("/settings/default.cfg");
+        QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/settings/default.cfg");
         QFile file(defaultName);
         if (file.open(QFile::WriteOnly | QFile::Append)) {
           file.write("noopengldialog;\n");
@@ -86,19 +88,14 @@ void MainWindow::on_comboBoxGraphStyle_currentIndexChanged(int index) {
         }
       }
     }
-    ui->plot->setLogicStyle(
-        ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT,
-        index);
+    ui->plot->setLogicStyle(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT, index);
   }
 }
 
 void MainWindow::on_pushButtonConnect_clicked() {
   SerialSettingsDialog::Settings settings = serialSettingsDialog->settings();
   if (ui->listWidgetCom->currentItem() != NULL)
-    emit toggleSerialConnection(
-        ui->listWidgetCom->currentItem()->data(Qt::UserRole).toString(),
-        ui->comboBoxBaud->currentText().toInt(), settings.dataBits,
-        settings.parity, settings.stopBits, settings.flowControl);
+    emit toggleSerialConnection(ui->listWidgetCom->currentItem()->data(Qt::UserRole).toString(), ui->comboBoxBaud->currentText().toInt(), settings.dataBits, settings.parity, settings.stopBits, settings.flowControl);
   else
     emit disconnectSerial();
 }
@@ -107,9 +104,7 @@ void MainWindow::on_doubleSpinBoxChScale_valueChanged(double arg1) {
   if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT)
     ui->plot->setChScale(ui->comboBoxSelectedChannel->currentIndex(), arg1);
   else
-    ui->plot->setLogicScale(
-        ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT,
-        arg1);
+    ui->plot->setLogicScale(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT, arg1);
   updateChScale();
 }
 
@@ -124,7 +119,7 @@ void MainWindow::on_radioButtonCz_toggled(bool checked) {
 }
 
 void MainWindow::on_pushButtonScrollDown_clicked() {
-  QScrollBar* scroll = ui->plainTextEditConsole->verticalScrollBar();
+  QScrollBar *scroll = ui->plainTextEditConsole->verticalScrollBar();
   scroll->setValue(scroll->maximum());
   scroll = ui->plainTextEditConsole->horizontalScrollBar();
   scroll->setValue(scroll->minimum());
@@ -136,7 +131,7 @@ void MainWindow::on_comboBoxOutputLevel_currentIndexChanged(int index) {
 }
 
 void MainWindow::on_pushButtonScrollDown_3_clicked() {
-  QScrollBar* scroll = ui->plainTextEditConsole_3->verticalScrollBar();
+  QScrollBar *scroll = ui->plainTextEditConsole_3->verticalScrollBar();
   scroll->setValue(scroll->maximum());
   scroll = ui->plainTextEditConsole_3->horizontalScrollBar();
   scroll->setValue(scroll->minimum());
@@ -163,8 +158,7 @@ void MainWindow::on_comboBoxSelectedChannel_currentIndexChanged(int index) {
     // ui->dialChScale->updatePosition(scale);
     ui->pushButtonHideCh->setChecked(!ui->plot->isLogicVisible(group));
   } else {
-    setChStyleSelection(index >= ANALOG_COUNT ? GraphType::math
-                                              : GraphType::analog);
+    setChStyleSelection(index >= ANALOG_COUNT ? GraphType::math : GraphType::analog);
     ui->comboBoxGraphStyle->setCurrentIndex(ui->plot->getChStyle(index));
     double offset = ui->plot->getChOffset(index);
     double scale = ui->plot->getChScale(index);
@@ -222,21 +216,16 @@ void MainWindow::on_pushButtonOpenHelpCZ_clicked() {
 void MainWindow::on_pushButtonChangeChColor_clicked() {
   QColor oldColor;
   if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT)
-    oldColor =
-        ui->plot->getChColor(ui->comboBoxSelectedChannel->currentIndex());
+    oldColor = ui->plot->getChColor(ui->comboBoxSelectedChannel->currentIndex());
   else
-    oldColor =
-        ui->plot->getLogicColor(ui->comboBoxSelectedChannel->currentIndex() -
-                                ANALOG_COUNT - MATH_COUNT);
+    oldColor = ui->plot->getLogicColor(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT);
   QColor color = QColorDialog::getColor(oldColor);
   if (!color.isValid())
     return;
   if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT)
     ui->plot->setChColor(ui->comboBoxSelectedChannel->currentIndex(), color);
   else
-    ui->plot->setLogicColor(
-        ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT,
-        color);
+    ui->plot->setLogicColor(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT, color);
   colorUpdateNeeded = true;
   updateUsedChannels();
 }
@@ -252,7 +241,7 @@ void MainWindow::on_pushButtonXY_toggled(bool checked) {
   else
     updateXY();
 
-  plotLayoutChanged();
+  setPlotLayout("all");
 }
 
 void MainWindow::on_pushButtonHideCh_toggled(bool checked) {
@@ -262,293 +251,146 @@ void MainWindow::on_pushButtonHideCh_toggled(bool checked) {
     ui->pushButtonHideCh->setIcon(iconVisible);
 
   if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT)
-    ui->plot->setChVisible(ui->comboBoxSelectedChannel->currentIndex(),
-                           !checked);
+    ui->plot->setChVisible(ui->comboBoxSelectedChannel->currentIndex(), !checked);
   else
-    ui->plot->setLogicVisibility(
-        ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT,
-        !checked);
+    ui->plot->setLogicVisibility(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT, !checked);
 }
 
-void MainWindow::signalMeasurementsResult1(double period,
-                                           double freq,
-                                           double amp,
-                                           double min,
-                                           double max,
-                                           double vrms,
-                                           double dc,
-                                           double fs,
-                                           double rise,
-                                           double fall,
-                                           int samples) {
+void MainWindow::signalMeasurementsResult1(double period, double freq, double amp, double min, double max, double vrms, double dc, double fs, double rise, double fall, int samples) {
   if (recordingOfMeasurements1.isOpen()) {
     char decimal = ui->radioButtonCSVDot->isChecked() ? '.' : ',';
     char separator = ui->radioButtonCSVDot->isChecked() ? ',' : ';';
 
-    recordingOfMeasurements1.write(
-        QString::number(uptime.elapsed() / 1000.0, 'f',
-                        ui->spinBoxCSVPrecision->value())
-            .toLocal8Bit()
-            .replace('.', decimal));
+    recordingOfMeasurements1.write(QString::number(uptime.elapsed() / 1000.0, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
     recordingOfMeasurements1.write(QByteArray(&separator, 1));
-    recordingOfMeasurements1.write(
-        QString::number(period, 'f', ui->spinBoxCSVPrecision->value())
-            .toLocal8Bit()
-            .replace('.', decimal));
+    recordingOfMeasurements1.write(QString::number(period, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
     recordingOfMeasurements1.write(QByteArray(&separator, 1));
-    recordingOfMeasurements1.write(
-        QString::number(freq, 'f', ui->spinBoxCSVPrecision->value())
-            .toLocal8Bit()
-            .replace('.', decimal));
+    recordingOfMeasurements1.write(QString::number(freq, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
     recordingOfMeasurements1.write(QByteArray(&separator, 1));
-    recordingOfMeasurements1.write(
-        QString::number(amp, 'f', ui->spinBoxCSVPrecision->value())
-            .toLocal8Bit()
-            .replace('.', decimal));
+    recordingOfMeasurements1.write(QString::number(amp, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
     recordingOfMeasurements1.write(QByteArray(&separator, 1));
-    recordingOfMeasurements1.write(
-        QString::number(min, 'f', ui->spinBoxCSVPrecision->value())
-            .toLocal8Bit()
-            .replace('.', decimal));
+    recordingOfMeasurements1.write(QString::number(min, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
     recordingOfMeasurements1.write(QByteArray(&separator, 1));
-    recordingOfMeasurements1.write(
-        QString::number(max, 'f', ui->spinBoxCSVPrecision->value())
-            .toLocal8Bit()
-            .replace('.', decimal));
+    recordingOfMeasurements1.write(QString::number(max, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
     recordingOfMeasurements1.write(QByteArray(&separator, 1));
-    recordingOfMeasurements1.write(
-        QString::number(vrms, 'f', ui->spinBoxCSVPrecision->value())
-            .toLocal8Bit()
-            .replace('.', decimal));
+    recordingOfMeasurements1.write(QString::number(vrms, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
     recordingOfMeasurements1.write(QByteArray(&separator, 1));
-    recordingOfMeasurements1.write(
-        QString::number(dc, 'f', ui->spinBoxCSVPrecision->value())
-            .toLocal8Bit()
-            .replace('.', decimal));
+    recordingOfMeasurements1.write(QString::number(dc, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
     recordingOfMeasurements1.write(QByteArray(&separator, 1));
-    recordingOfMeasurements1.write(
-        QString::number(fs, 'f', ui->spinBoxCSVPrecision->value())
-            .toLocal8Bit()
-            .replace('.', decimal));
+    recordingOfMeasurements1.write(QString::number(fs, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
     recordingOfMeasurements1.write(QByteArray(&separator, 1));
-    recordingOfMeasurements1.write(
-        QString::number(rise, 'f', ui->spinBoxCSVPrecision->value())
-            .toLocal8Bit()
-            .replace('.', decimal));
+    recordingOfMeasurements1.write(QString::number(rise, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
     recordingOfMeasurements1.write(QByteArray(&separator, 1));
-    recordingOfMeasurements1.write(
-        QString::number(fall, 'f', ui->spinBoxCSVPrecision->value())
-            .toLocal8Bit()
-            .replace('.', decimal));
+    recordingOfMeasurements1.write(QString::number(fall, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
     recordingOfMeasurements1.write(QByteArray(&separator, 1));
-    recordingOfMeasurements1.write(
-        QString::number(samples, 'f', ui->spinBoxCSVPrecision->value())
-            .toLocal8Bit()
-            .replace('.', decimal));
+    recordingOfMeasurements1.write(QString::number(samples, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
     recordingOfMeasurements1.write("\n");
   }
 
   if (valuesUseUnits) {
-    ui->labelSig1Vrms->setText(floatToNiceString(vrms, 4, false, false) +
-                               ui->plot->getYUnit());
-    ui->labelSig1Min->setText(floatToNiceString(min, 4, false, false) +
-                              ui->plot->getYUnit());
-    ui->labelSig1Max->setText(floatToNiceString(max, 4, false, false) +
-                              ui->plot->getYUnit());
-    ui->labelSig1Dc->setText(floatToNiceString(dc, 4, false, false) +
-                             ui->plot->getYUnit());
-    ui->labelSig1Amp->setText(
-        floatToNiceString(amp, 4, false, false) +
-        (ui->plot->getYUnit() == "V" ? "Vpp" : ui->plot->getYUnit()));
+    ui->labelSig1Vrms->setText(floatToNiceString(vrms, 4, false, false) + ui->plot->getYUnit());
+    ui->labelSig1Min->setText(floatToNiceString(min, 4, false, false) + ui->plot->getYUnit());
+    ui->labelSig1Max->setText(floatToNiceString(max, 4, false, false) + ui->plot->getYUnit());
+    ui->labelSig1Dc->setText(floatToNiceString(dc, 4, false, false) + ui->plot->getYUnit());
+    ui->labelSig1Amp->setText(floatToNiceString(amp, 4, false, false) + (ui->plot->getYUnit() == "V" ? "Vpp" : ui->plot->getYUnit()));
   } else {
-    ui->labelSig1Vrms->setText(QString::number(vrms, 'g', 4) +
-                               ui->plot->getYUnit());
-    ui->labelSig1Min->setText(QString::number(min, 'g', 4) +
-                              ui->plot->getYUnit());
-    ui->labelSig1Max->setText(QString::number(max, 'g', 4) +
-                              ui->plot->getYUnit());
-    ui->labelSig1Dc->setText(QString::number(dc, 'g', 4) +
-                             ui->plot->getYUnit());
-    ui->labelSig1Amp->setText(QString::number(amp, 'g', 4) +
-                              ui->plot->getYUnit());
+    ui->labelSig1Vrms->setText(QString::number(vrms, 'g', 4) + ui->plot->getYUnit());
+    ui->labelSig1Min->setText(QString::number(min, 'g', 4) + ui->plot->getYUnit());
+    ui->labelSig1Max->setText(QString::number(max, 'g', 4) + ui->plot->getYUnit());
+    ui->labelSig1Dc->setText(QString::number(dc, 'g', 4) + ui->plot->getYUnit());
+    ui->labelSig1Amp->setText(QString::number(amp, 'g', 4) + ui->plot->getYUnit());
   }
 
   if (timeUseUnits) {
-    ui->labelSig1Period->setText(floatToNiceString(period, 4, false, false) +
-                                 ui->plot->getXUnit());
+    ui->labelSig1Period->setText(floatToNiceString(period, 4, false, false) + ui->plot->getXUnit());
     // Pokud je falltime nabo risetime menší než 2 periody vzorkování, je
     // považován za nepřesný (znaménko menší než)
-    ui->labelSig1rise->setText((rise < 2.0 / fs ? "<" : "") +
-                               floatToNiceString(rise, 4, false, false) +
-                               ui->plot->getXUnit());
-    ui->labelSig1fall->setText((fall < 2.0 / fs ? "<" : "") +
-                               floatToNiceString(fall, 4, false, false) +
-                               ui->plot->getXUnit());
+    ui->labelSig1rise->setText((rise < 2.0 / fs ? "<" : "") + floatToNiceString(rise, 4, false, false) + ui->plot->getXUnit());
+    ui->labelSig1fall->setText((fall < 2.0 / fs ? "<" : "") + floatToNiceString(fall, 4, false, false) + ui->plot->getXUnit());
   } else {
-    ui->labelSig1Period->setText(floatToNiceString(period, 4, false, false) +
-                                 ui->plot->getXUnit());
+    ui->labelSig1Period->setText(floatToNiceString(period, 4, false, false) + ui->plot->getXUnit());
     // Pokud je falltime nabo risetime menší než 2 periody vzorkování, je
     // považován za nepřesný (znaménko menší než)
-    ui->labelSig1rise->setText((rise < 2.0 / fs ? "<" : "") +
-                               QString::number(rise, 'g', 4) +
-                               ui->plot->getXUnit());
-    ui->labelSig1fall->setText((fall < 2.0 / fs ? "<" : "") +
-                               QString::number(fall, 'g', 4) +
-                               ui->plot->getXUnit());
+    ui->labelSig1rise->setText((rise < 2.0 / fs ? "<" : "") + QString::number(rise, 'g', 4) + ui->plot->getXUnit());
+    ui->labelSig1fall->setText((fall < 2.0 / fs ? "<" : "") + QString::number(fall, 'g', 4) + ui->plot->getXUnit());
   }
 
   if (freqUseUnits) {
-    ui->labelSig1Freq->setText(floatToNiceString(freq, 4, false, false) +
-                               ui->plotFFT->getXUnit());
-    ui->labelSig1fs->setText(floatToNiceString(fs, 4, false, false) +
-                             ui->plotFFT->getXUnit());
+    ui->labelSig1Freq->setText(floatToNiceString(freq, 4, false, false) + ui->plotFFT->getXUnit());
+    ui->labelSig1fs->setText(floatToNiceString(fs, 4, false, false) + ui->plotFFT->getXUnit());
   } else {
-    ui->labelSig1Freq->setText(QString::number(freq, 'g', 4) +
-                               ui->plotFFT->getXUnit());
-    ui->labelSig1fs->setText(QString::number(fs, 'g', 4) +
-                             ui->plotFFT->getXUnit());
+    ui->labelSig1Freq->setText(QString::number(freq, 'g', 4) + ui->plotFFT->getXUnit());
+    ui->labelSig1fs->setText(QString::number(fs, 'g', 4) + ui->plotFFT->getXUnit());
   }
 
   ui->labelSig1samples->setText(QString::number(samples));
   measureRefreshTimer1.start(250);
 }
-void MainWindow::signalMeasurementsResult2(double period,
-                                           double freq,
-                                           double amp,
-                                           double min,
-                                           double max,
-                                           double vrms,
-                                           double dc,
-                                           double fs,
-                                           double rise,
-                                           double fall,
-                                           int samples) {
+void MainWindow::signalMeasurementsResult2(double period, double freq, double amp, double min, double max, double vrms, double dc, double fs, double rise, double fall, int samples) {
   if (recordingOfMeasurements2.isOpen()) {
     char decimal = ui->radioButtonCSVDot->isChecked() ? '.' : ',';
     char separator = ui->radioButtonCSVDot->isChecked() ? ',' : ';';
 
-    recordingOfMeasurements2.write(
-        QString::number(uptime.elapsed() / 1000.0, 'f',
-                        ui->spinBoxCSVPrecision->value())
-            .toLocal8Bit()
-            .replace('.', decimal));
+    recordingOfMeasurements2.write(QString::number(uptime.elapsed() / 1000.0, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
     recordingOfMeasurements2.write(QByteArray(&separator, 1));
-    recordingOfMeasurements2.write(
-        QString::number(period, 'f', ui->spinBoxCSVPrecision->value())
-            .toLocal8Bit()
-            .replace('.', decimal));
+    recordingOfMeasurements2.write(QString::number(period, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
     recordingOfMeasurements2.write(QByteArray(&separator, 1));
-    recordingOfMeasurements2.write(
-        QString::number(freq, 'f', ui->spinBoxCSVPrecision->value())
-            .toLocal8Bit()
-            .replace('.', decimal));
+    recordingOfMeasurements2.write(QString::number(freq, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
     recordingOfMeasurements2.write(QByteArray(&separator, 1));
-    recordingOfMeasurements2.write(
-        QString::number(amp, 'f', ui->spinBoxCSVPrecision->value())
-            .toLocal8Bit()
-            .replace('.', decimal));
+    recordingOfMeasurements2.write(QString::number(amp, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
     recordingOfMeasurements2.write(QByteArray(&separator, 1));
-    recordingOfMeasurements2.write(
-        QString::number(min, 'f', ui->spinBoxCSVPrecision->value())
-            .toLocal8Bit()
-            .replace('.', decimal));
+    recordingOfMeasurements2.write(QString::number(min, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
     recordingOfMeasurements2.write(QByteArray(&separator, 1));
-    recordingOfMeasurements2.write(
-        QString::number(max, 'f', ui->spinBoxCSVPrecision->value())
-            .toLocal8Bit()
-            .replace('.', decimal));
+    recordingOfMeasurements2.write(QString::number(max, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
     recordingOfMeasurements2.write(QByteArray(&separator, 1));
-    recordingOfMeasurements2.write(
-        QString::number(vrms, 'f', ui->spinBoxCSVPrecision->value())
-            .toLocal8Bit()
-            .replace('.', decimal));
+    recordingOfMeasurements2.write(QString::number(vrms, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
     recordingOfMeasurements2.write(QByteArray(&separator, 1));
-    recordingOfMeasurements2.write(
-        QString::number(dc, 'f', ui->spinBoxCSVPrecision->value())
-            .toLocal8Bit()
-            .replace('.', decimal));
+    recordingOfMeasurements2.write(QString::number(dc, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
     recordingOfMeasurements2.write(QByteArray(&separator, 1));
-    recordingOfMeasurements2.write(
-        QString::number(fs, 'f', ui->spinBoxCSVPrecision->value())
-            .toLocal8Bit()
-            .replace('.', decimal));
+    recordingOfMeasurements2.write(QString::number(fs, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
     recordingOfMeasurements2.write(QByteArray(&separator, 1));
-    recordingOfMeasurements2.write(
-        QString::number(rise, 'f', ui->spinBoxCSVPrecision->value())
-            .toLocal8Bit()
-            .replace('.', decimal));
+    recordingOfMeasurements2.write(QString::number(rise, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
     recordingOfMeasurements2.write(QByteArray(&separator, 1));
-    recordingOfMeasurements2.write(
-        QString::number(fall, 'f', ui->spinBoxCSVPrecision->value())
-            .toLocal8Bit()
-            .replace('.', decimal));
+    recordingOfMeasurements2.write(QString::number(fall, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
     recordingOfMeasurements2.write(QByteArray(&separator, 1));
-    recordingOfMeasurements2.write(
-        QString::number(samples, 'f', ui->spinBoxCSVPrecision->value())
-            .toLocal8Bit()
-            .replace('.', decimal));
+    recordingOfMeasurements2.write(QString::number(samples, 'f', ui->spinBoxCSVPrecision->value()).toLocal8Bit().replace('.', decimal));
     recordingOfMeasurements2.write("\n");
   }
 
   if (valuesUseUnits) {
-    ui->labelSig2Vrms->setText(floatToNiceString(vrms, 4, false, false) +
-                               ui->plot->getYUnit());
-    ui->labelSig2Min->setText(floatToNiceString(min, 4, false, false) +
-                              ui->plot->getYUnit());
-    ui->labelSig2Max->setText(floatToNiceString(max, 4, false, false) +
-                              ui->plot->getYUnit());
-    ui->labelSig2Dc->setText(floatToNiceString(dc, 4, false, false) +
-                             ui->plot->getYUnit());
-    ui->labelSig2Amp->setText(
-        floatToNiceString(amp, 4, false, false) +
-        (ui->plot->getYUnit() == "V" ? "Vpp" : ui->plot->getYUnit()));
+    ui->labelSig2Vrms->setText(floatToNiceString(vrms, 4, false, false) + ui->plot->getYUnit());
+    ui->labelSig2Min->setText(floatToNiceString(min, 4, false, false) + ui->plot->getYUnit());
+    ui->labelSig2Max->setText(floatToNiceString(max, 4, false, false) + ui->plot->getYUnit());
+    ui->labelSig2Dc->setText(floatToNiceString(dc, 4, false, false) + ui->plot->getYUnit());
+    ui->labelSig2Amp->setText(floatToNiceString(amp, 4, false, false) + (ui->plot->getYUnit() == "V" ? "Vpp" : ui->plot->getYUnit()));
   } else {
-    ui->labelSig2Vrms->setText(QString::number(vrms, 'g', 4) +
-                               ui->plot->getYUnit());
-    ui->labelSig2Min->setText(QString::number(min, 'g', 4) +
-                              ui->plot->getYUnit());
-    ui->labelSig2Max->setText(QString::number(max, 'g', 4) +
-                              ui->plot->getYUnit());
-    ui->labelSig2Dc->setText(QString::number(dc, 'g', 4) +
-                             ui->plot->getYUnit());
-    ui->labelSig2Amp->setText(QString::number(amp, 'g', 4) +
-                              ui->plot->getYUnit());
+    ui->labelSig2Vrms->setText(QString::number(vrms, 'g', 4) + ui->plot->getYUnit());
+    ui->labelSig2Min->setText(QString::number(min, 'g', 4) + ui->plot->getYUnit());
+    ui->labelSig2Max->setText(QString::number(max, 'g', 4) + ui->plot->getYUnit());
+    ui->labelSig2Dc->setText(QString::number(dc, 'g', 4) + ui->plot->getYUnit());
+    ui->labelSig2Amp->setText(QString::number(amp, 'g', 4) + ui->plot->getYUnit());
   }
 
   if (timeUseUnits) {
-    ui->labelSig2Period->setText(floatToNiceString(period, 4, false, false) +
-                                 ui->plot->getXUnit());
+    ui->labelSig2Period->setText(floatToNiceString(period, 4, false, false) + ui->plot->getXUnit());
     // Pokud je falltime nabo risetime menší než 2 periody vzorkování, je
     // považován za nepřesný (znaménko menší než)
-    ui->labelSig2rise->setText((rise < 2.0 / fs ? "<" : "") +
-                               floatToNiceString(rise, 4, false, false) +
-                               ui->plot->getXUnit());
-    ui->labelSig2fall->setText((fall < 2.0 / fs ? "<" : "") +
-                               floatToNiceString(fall, 4, false, false) +
-                               ui->plot->getXUnit());
+    ui->labelSig2rise->setText((rise < 2.0 / fs ? "<" : "") + floatToNiceString(rise, 4, false, false) + ui->plot->getXUnit());
+    ui->labelSig2fall->setText((fall < 2.0 / fs ? "<" : "") + floatToNiceString(fall, 4, false, false) + ui->plot->getXUnit());
   } else {
-    ui->labelSig2Period->setText(floatToNiceString(period, 4, false, false) +
-                                 ui->plot->getXUnit());
+    ui->labelSig2Period->setText(floatToNiceString(period, 4, false, false) + ui->plot->getXUnit());
     // Pokud je falltime nabo risetime menší než 2 periody vzorkování, je
     // považován za nepřesný (znaménko menší než)
-    ui->labelSig2rise->setText((rise < 2.0 / fs ? "<" : "") +
-                               QString::number(rise, 'g', 4) +
-                               ui->plot->getXUnit());
-    ui->labelSig2fall->setText((fall < 2.0 / fs ? "<" : "") +
-                               QString::number(fall, 'g', 4) +
-                               ui->plot->getXUnit());
+    ui->labelSig2rise->setText((rise < 2.0 / fs ? "<" : "") + QString::number(rise, 'g', 4) + ui->plot->getXUnit());
+    ui->labelSig2fall->setText((fall < 2.0 / fs ? "<" : "") + QString::number(fall, 'g', 4) + ui->plot->getXUnit());
   }
 
   if (freqUseUnits) {
-    ui->labelSig2Freq->setText(floatToNiceString(freq, 4, false, false) +
-                               ui->plotFFT->getXUnit());
-    ui->labelSig2fs->setText(floatToNiceString(fs, 4, false, false) +
-                             ui->plotFFT->getXUnit());
+    ui->labelSig2Freq->setText(floatToNiceString(freq, 4, false, false) + ui->plotFFT->getXUnit());
+    ui->labelSig2fs->setText(floatToNiceString(fs, 4, false, false) + ui->plotFFT->getXUnit());
   } else {
-    ui->labelSig2Freq->setText(QString::number(freq, 'g', 4) +
-                               ui->plotFFT->getXUnit());
-    ui->labelSig2fs->setText(QString::number(fs, 'g', 4) +
-                             ui->plotFFT->getXUnit());
+    ui->labelSig2Freq->setText(QString::number(freq, 'g', 4) + ui->plotFFT->getXUnit());
+    ui->labelSig2fs->setText(QString::number(fs, 'g', 4) + ui->plotFFT->getXUnit());
   }
 
   ui->labelSig2samples->setText(QString::number(samples));
@@ -600,7 +442,7 @@ void MainWindow::on_pushButtonFFT_toggled(bool checked) {
   }
 
   ui->plotFFT->setOutputPeakValue(false);
-  plotLayoutChanged();
+  setPlotLayout("all");
 }
 
 void MainWindow::on_doubleSpinBoxRangeVerticalRange_valueChanged(double arg1) {
@@ -652,7 +494,7 @@ void MainWindow::on_comboBoxFFTType_currentIndexChanged(int index) {
   ui->spinBoxFFTSegments2->setVisible(index == FFTType::pwelch);
 }
 
-void MainWindow::on_lineEditVUnit_textChanged(const QString& arg1) {
+void MainWindow::on_lineEditVUnit_textChanged(const QString &arg1) {
   QString unit = arg1.simplified();
 
   QString prefixChars = "munkMG";
@@ -680,13 +522,11 @@ void MainWindow::on_lineEditVUnit_textChanged(const QString& arg1) {
   ui->doubleSpinBoxXYCurY1->setUnit(unit, valuesUseUnits);
   ui->doubleSpinBoxXYCurY2->setUnit(unit, valuesUseUnits);
 
-  updateDivs();     // Aby se aktualizovala jednotka u kroku mřížky
-  updateChScale();  // Aby se aktualizovala jednotka u měřítka
+  updateDivs();    // Aby se aktualizovala jednotka u kroku mřížky
+  updateChScale(); // Aby se aktualizovala jednotka u měřítka
 }
 
-void MainWindow::on_checkBoxOpenGL_toggled(bool checked) {
-  ui->plot->setOpenGl(checked);
-}
+void MainWindow::on_checkBoxOpenGL_toggled(bool checked) { ui->plot->setOpenGl(checked); }
 
 void MainWindow::checkBoxMouseControls_toggled_new(bool checked) {
   ui->plot->enableMouseCursorControll(checked);
@@ -696,25 +536,19 @@ void MainWindow::checkBoxMouseControls_toggled_new(bool checked) {
 }
 
 void MainWindow::on_checkBoxFFTCh1_toggled(bool checked) {
-  setComboboxItemVisible(*ui->comboBoxCursor1Channel, FFT_INDEX(0),
-                         checked && ui->pushButtonFFT->isChecked());
-  setComboboxItemVisible(*ui->comboBoxCursor2Channel, FFT_INDEX(0),
-                         checked && ui->pushButtonFFT->isChecked());
+  setComboboxItemVisible(*ui->comboBoxCursor1Channel, FFT_INDEX(0), checked && ui->pushButtonFFT->isChecked());
+  setComboboxItemVisible(*ui->comboBoxCursor2Channel, FFT_INDEX(0), checked && ui->pushButtonFFT->isChecked());
 }
 
 void MainWindow::on_checkBoxFFTCh2_toggled(bool checked) {
-  setComboboxItemVisible(*ui->comboBoxCursor1Channel, FFT_INDEX(1),
-                         checked && ui->pushButtonFFT->isChecked());
-  setComboboxItemVisible(*ui->comboBoxCursor2Channel, FFT_INDEX(1),
-                         checked && ui->pushButtonFFT->isChecked());
+  setComboboxItemVisible(*ui->comboBoxCursor1Channel, FFT_INDEX(1), checked && ui->pushButtonFFT->isChecked());
+  setComboboxItemVisible(*ui->comboBoxCursor2Channel, FFT_INDEX(1), checked && ui->pushButtonFFT->isChecked());
 }
 
 void MainWindow::on_pushButtonDolarNewline_toggled(bool checked) {
   QString str = ui->plainTextEditConsole_3->toPlainText();
   ui->plainTextEditConsole_3->clear();
-  ui->plainTextEditConsole_3->setLineWrapMode(
-      checked ? QPlainTextEdit::LineWrapMode::NoWrap
-              : QPlainTextEdit::LineWrapMode::WidgetWidth);
+  ui->plainTextEditConsole_3->setLineWrapMode(checked ? QPlainTextEdit::LineWrapMode::NoWrap : QPlainTextEdit::LineWrapMode::WidgetWidth);
   str.replace("\n$$", "$$");
   if (checked)
     str.replace("$$", "\n$$");
@@ -727,14 +561,11 @@ void MainWindow::on_pushButtonDolarNewline_toggled(bool checked) {
 void MainWindow::on_pushButtonInterpolate_toggled(bool checked) {
   int chid = ui->comboBoxSelectedChannel->currentIndex();
 
-  if (chid <
-      ANALOG_COUNT + MATH_COUNT) {  // Když není vybrán analogový, nemělo by být
-                                    // možné zaškrtnout, ale pro jistotu...
-    if (checked &&
-        ui->comboBoxGraphStyle->currentIndex() == GraphStyle::linePoint)
-      ui->comboBoxGraphStyle->setCurrentIndex(
-          GraphStyle::point);  // Radši přepne na styl point, aby nebyl zmatek,
-                               // že v linepoint se pořád spojují body
+  if (chid < ANALOG_COUNT + MATH_COUNT) { // Když není vybrán analogový, nemělo by být
+                                          // možné zaškrtnout, ale pro jistotu...
+    if (checked && ui->comboBoxGraphStyle->currentIndex() == GraphStyle::linePoint)
+      ui->comboBoxGraphStyle->setCurrentIndex(GraphStyle::point); // Radši přepne na styl point, aby nebyl zmatek,
+                                                                  // že v linepoint se pořád spojují body
     ui->plot->setChInterpolate(chid, checked);
     emit setInterpolation(chid, checked);
   }
@@ -752,17 +583,12 @@ void MainWindow::on_pushButtonRangeFit_clicked() {
   on_pushButtonResetChannels_clicked();
   QCPRange chRange;
   bool zbytrecnaPromena;
-  chRange = ui->plot->graph(ui->comboBoxSelectedChannel->currentIndex())
-                ->getValueRange(zbytrecnaPromena, QCP::sdBoth,
-                                ui->plot->xAxis->range());
+  chRange = ui->plot->graph(ui->comboBoxSelectedChannel->currentIndex())->getValueRange(zbytrecnaPromena, QCP::sdBoth, ui->plot->xAxis->range());
   ui->doubleSpinBoxViewCenter->setValue(chRange.center());
-  ui->doubleSpinBoxRangeVerticalRange->setValue(
-      ceilToNiceValue(chRange.size()));
+  ui->doubleSpinBoxRangeVerticalRange->setValue(ceilToNiceValue(chRange.size()));
 }
 
-void MainWindow::on_listWidgetCom_currentItemChanged(
-    QListWidgetItem* current,
-    QListWidgetItem* previous) {
+void MainWindow::on_listWidgetCom_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous) {
   if (current == NULL) {
     emit disconnectSerial();
     return;
@@ -770,37 +596,14 @@ void MainWindow::on_listWidgetCom_currentItemChanged(
 
   SerialSettingsDialog::Settings settings = serialSettingsDialog->settings();
   attemptReconnectPort = "";
-  emit beginSerialConnection(current->data(Qt::UserRole).toString(),
-                             ui->comboBoxBaud->currentText().toInt(),
-                             settings.dataBits, settings.parity,
-                             settings.stopBits, settings.flowControl);
+  emit beginSerialConnection(current->data(Qt::UserRole).toString(), ui->comboBoxBaud->currentText().toInt(), settings.dataBits, settings.parity, settings.stopBits, settings.flowControl);
 }
 
-void MainWindow::on_pushButtonSetPositive_clicked() {
-  ui->doubleSpinBoxViewCenter->setValue(
-      ui->doubleSpinBoxRangeVerticalRange->value() / 2);
-}
+void MainWindow::on_pushButtonSetPositive_clicked() { ui->doubleSpinBoxViewCenter->setValue(ui->doubleSpinBoxRangeVerticalRange->value() / 2); }
 
-void MainWindow::on_pushButtonSetCenter_clicked() {
-  ui->doubleSpinBoxViewCenter->setValue(0);
-}
+void MainWindow::on_pushButtonSetCenter_clicked() { ui->doubleSpinBoxViewCenter->setValue(0); }
 
-void MainWindow::on_pushButtonSetNegative_clicked() {
-  ui->doubleSpinBoxViewCenter->setValue(
-      -ui->doubleSpinBoxRangeVerticalRange->value() / 2);
-}
-
-void MainWindow::on_pushButtonFFT_FS_toggled(bool checked) {
-  if (checked)
-    ui->pushButtonXY_FS->setChecked(false);
-  plotLayoutChanged();
-}
-
-void MainWindow::on_pushButtonXY_FS_toggled(bool checked) {
-  if (checked)
-    ui->pushButtonFFT_FS->setChecked(false);
-  plotLayoutChanged();
-}
+void MainWindow::on_pushButtonSetNegative_clicked() { ui->doubleSpinBoxViewCenter->setValue(-ui->doubleSpinBoxRangeVerticalRange->value() / 2); }
 
 void MainWindow::on_pushButtonFvsT_clicked() {
   ui->spinBoxFFTSamples1->setValue(ui->spinBoxFFTSamples1->maximum());
@@ -817,17 +620,11 @@ void MainWindow::on_pushButtonSerialMonitor_toggled(bool checked) {
   emit enableSerialMonitor(checked);
 }
 
-void MainWindow::on_comboBoxXYStyle_currentIndexChanged(int index) {
-  ui->plotxy->setStyle(index);
-}
+void MainWindow::on_comboBoxXYStyle_currentIndexChanged(int index) { ui->plotxy->setStyle(index); }
 
-void MainWindow::on_comboBoxFFTStyle1_currentIndexChanged(int index) {
-  ui->plotFFT->setStyle(0, index);
-}
+void MainWindow::on_comboBoxFFTStyle1_currentIndexChanged(int index) { ui->plotFFT->setStyle(0, index); }
 
-void MainWindow::on_comboBoxFFTStyle2_currentIndexChanged(int index) {
-  ui->plotFFT->setStyle(1, index);
-}
+void MainWindow::on_comboBoxFFTStyle2_currentIndexChanged(int index) { ui->plotFFT->setStyle(1, index); }
 
 void MainWindow::on_pushButtonModeRolling_clicked() {
   double hLen = ui->doubleSpinBoxRangeHorizontal->value();
@@ -866,12 +663,11 @@ void MainWindow::on_horizontalScrollBarHorizontal_sliderMoved(int position) {
 }
 
 void MainWindow::on_dialZoom_valueChanged(int position) {
-  double range = static_cast<double>(position) / ui->dialZoom->maximum() *
-                 (ui->plot->getMaxT() - ui->plot->getMinT());
+  double range = static_cast<double>(position) / ui->dialZoom->maximum() * (ui->plot->getMaxT() - ui->plot->getMinT());
   ui->plot->setHLen(range);
 }
 
-void MainWindow::on_listWidgetCom_itemClicked(QListWidgetItem* item) {
+void MainWindow::on_listWidgetCom_itemClicked(QListWidgetItem *item) {
   if (item->data(Qt::UserRole) == "~SPECIAL~SIM")
     simulatedInputDialog->open();
   else

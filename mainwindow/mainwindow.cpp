@@ -20,17 +20,12 @@
 #include "ui_manualinputdialog.h"
 #include "ui_serialsettingsdialog.h"
 
-MainWindow::MainWindow(QWidget* parent)
-    : QMainWindow(parent),
-      ui(new Ui::MainWindow),
-      serialSettingsDialog(new SerialSettingsDialog(this)) {
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), serialSettingsDialog(new SerialSettingsDialog(this)) {
   ui->setupUi(this);
   qApp->setStyle("Fusion");
   this->setAttribute(Qt::WA_NativeWindow);
 
-  configFilePath =
-      QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) +
-      "/config.ini";
+  configFilePath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/config.ini";
 
   developerOptions = new DeveloperOptions(this, ui->quickWidget);
   freqTimePlotDialog = new FreqTimePlotDialog(nullptr);
@@ -84,7 +79,7 @@ MainWindow::MainWindow(QWidget* parent)
   ui->listWidgetCom->addItem(newItem);
 }
 
-void MainWindow::closeEvent(QCloseEvent* event) {
+void MainWindow::closeEvent(QCloseEvent *event) {
   freqTimePlotDialog->close();
   simulatedInputDialog->close();
   developerOptions->close();
@@ -102,40 +97,26 @@ MainWindow::~MainWindow() {
   delete ui;
 }
 
-void MainWindow::setComboboxItemVisible(QComboBox& comboBox,
-                                        int index,
-                                        bool visible) {
-  auto* model = qobject_cast<QStandardItemModel*>(comboBox.model());
-  auto* item = model->item(index);
+void MainWindow::setComboboxItemVisible(QComboBox &comboBox, int index, bool visible) {
+  auto *model = qobject_cast<QStandardItemModel *>(comboBox.model());
+  auto *item = model->item(index);
   item->setEnabled(visible);
-  QListView* view = qobject_cast<QListView*>(comboBox.view());
+  QListView *view = qobject_cast<QListView *>(comboBox.view());
   view->setRowHidden(index, !visible);
 }
 
 void MainWindow::setChStyleSelection(GraphType::enumGraphType type) {
-  setComboboxItemVisible(*ui->comboBoxGraphStyle, GraphStyle::line,
-                         type == GraphType::analog || type == GraphType::math);
-  setComboboxItemVisible(*ui->comboBoxGraphStyle, GraphStyle::point,
-                         type == GraphType::analog || type == GraphType::math);
-  setComboboxItemVisible(*ui->comboBoxGraphStyle, GraphStyle::linePoint,
-                         type == GraphType::analog || type == GraphType::math);
-  setComboboxItemVisible(*ui->comboBoxGraphStyle, GraphStyle::logic,
-                         type == GraphType::logic);
-  setComboboxItemVisible(*ui->comboBoxGraphStyle, GraphStyle::logicFilled,
-                         type == GraphType::logic);
-  setComboboxItemVisible(*ui->comboBoxGraphStyle, GraphStyle::logicpoints,
-                         type == GraphType::logic);
-  setComboboxItemVisible(*ui->comboBoxGraphStyle, GraphStyle::logicSquare,
-                         type == GraphType::logic);
-  setComboboxItemVisible(*ui->comboBoxGraphStyle, GraphStyle::logicSquareFilled,
-                         type == GraphType::logic);
+  setComboboxItemVisible(*ui->comboBoxGraphStyle, GraphStyle::line, type == GraphType::analog || type == GraphType::math);
+  setComboboxItemVisible(*ui->comboBoxGraphStyle, GraphStyle::point, type == GraphType::analog || type == GraphType::math);
+  setComboboxItemVisible(*ui->comboBoxGraphStyle, GraphStyle::linePoint, type == GraphType::analog || type == GraphType::math);
+  setComboboxItemVisible(*ui->comboBoxGraphStyle, GraphStyle::logic, type == GraphType::logic);
+  setComboboxItemVisible(*ui->comboBoxGraphStyle, GraphStyle::logicFilled, type == GraphType::logic);
+  setComboboxItemVisible(*ui->comboBoxGraphStyle, GraphStyle::logicpoints, type == GraphType::logic);
+  setComboboxItemVisible(*ui->comboBoxGraphStyle, GraphStyle::logicSquare, type == GraphType::logic);
+  setComboboxItemVisible(*ui->comboBoxGraphStyle, GraphStyle::logicSquareFilled, type == GraphType::logic);
 }
 
-void MainWindow::init(QTranslator* translator,
-                      const PlotData* plotData,
-                      const PlotMath* plotMath,
-                      SerialReader* serialReader,
-                      const Averager* avg) {
+void MainWindow::init(QTranslator *translator, const PlotData *plotData, const PlotMath *plotMath, SerialReader *serialReader, const Averager *avg) {
   // Načte ikony které se mění za běhu
   iconRun = QIcon(":/images/icons/run.png");
   iconPause = QIcon(":/images/icons/pause.png");
@@ -145,31 +126,24 @@ void MainWindow::init(QTranslator* translator,
   iconConnected = QIcon(":/images/icons/connected.png");
   iconNotConnected = QIcon(":/images/icons/disconnected.png");
   iconAbsoluteCursor = QIcon(":/images/icons/rangeTab.png");
+  iconMaximize = QIcon(":/images/icons/maximize.png");
+  iconUnMaximize = QIcon(":/images/icons/unmaximize.png");
 
   serialReader->setSimInputDialog(simulatedInputDialog);
 
-  fillChannelSelect();  // Vytvoří seznam kanálů pro výběr
+  fillChannelSelect(); // Vytvoří seznam kanálů pro výběr
 
-  QObject::connect(plotMath, &PlotMath::sendResult, ui->plot,
-                   &MyMainPlot::newDataVector);
-  QObject::connect(plotData, &PlotData::addVectorToPlot, ui->plot,
-                   &MyMainPlot::newDataVector);
-  QObject::connect(plotData, &PlotData::addPointToPlot, ui->plot,
-                   &MyMainPlot::newDataPoint);
-  QObject::connect(plotData, &PlotData::clearLogic, ui->plot,
-                   &MyMainPlot::clearLogicGroup);
-  QObject::connect(&fileSender, &FileSender::transmit, serialReader,
-                   &SerialReader::write);
-  QObject::connect(qmlTerminalInterface, &QmlTerminalInterface::dataTransmitted,
-                   serialReader, &SerialReader::write);
-  QObject::connect(avg, &Averager::addVectorToPlot, ui->plot,
-                   &MyMainPlot::newDataVector);
-  QObject::connect(avg, &Averager::addPointToPlot, ui->plot,
-                   &MyMainPlot::newDataPoint);
+  QObject::connect(plotMath, &PlotMath::sendResult, ui->plot, &MyMainPlot::newDataVector);
+  QObject::connect(plotData, &PlotData::addVectorToPlot, ui->plot, &MyMainPlot::newDataVector);
+  QObject::connect(plotData, &PlotData::addPointToPlot, ui->plot, &MyMainPlot::newDataPoint);
+  QObject::connect(plotData, &PlotData::clearLogic, ui->plot, &MyMainPlot::clearLogicGroup);
+  QObject::connect(&fileSender, &FileSender::transmit, serialReader, &SerialReader::write);
+  QObject::connect(qmlTerminalInterface, &QmlTerminalInterface::dataTransmitted, serialReader, &SerialReader::write);
+  QObject::connect(avg, &Averager::addVectorToPlot, ui->plot, &MyMainPlot::newDataVector);
+  QObject::connect(avg, &Averager::addPointToPlot, ui->plot, &MyMainPlot::newDataPoint);
 
   // Odpojit port když se změní pokročilá nastavení
-  QObject::connect(serialSettingsDialog, &SerialSettingsDialog::settingChanged,
-                   serialReader, &SerialReader::end);
+  QObject::connect(serialSettingsDialog, &SerialSettingsDialog::settingChanged, serialReader, &SerialReader::end);
 
   this->translator = translator;
   setGuiArrays();
@@ -184,11 +158,8 @@ void MainWindow::init(QTranslator* translator,
 }
 
 void MainWindow::changeLanguage(QString code) {
-  if (!translator->load(
-          QString(":/translations/translations/translation_%1.qm").arg(code))) {
-    qDebug()
-        << "Can not load "
-        << QString(":/translations/translations/translation_%1.qm").arg(code);
+  if (!translator->load(QString(":/translations/translations/translation_%1.qm").arg(code))) {
+    qDebug() << "Can not load " << QString(":/translations/translations/translation_%1.qm").arg(code);
     return;
   }
   qApp->installTranslator(translator);
@@ -212,26 +183,20 @@ void MainWindow::showPlotStatus(PlotStatus::enumPlotStatus type) {
 
 void MainWindow::updateChScale() {
   if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT) {
-    double perDiv =
-        ui->plot->getCHDiv(ui->comboBoxSelectedChannel->currentIndex());
+    double perDiv = ui->plot->getCHDiv(ui->comboBoxSelectedChannel->currentIndex());
     if (valuesUseUnits)
-      ui->labelChScale->setText(floatToNiceString(perDiv, 3, true, false) +
-                                ui->plot->getYUnit() + tr(" / Div"));
+      ui->labelChScale->setText(floatToNiceString(perDiv, 3, true, false) + ui->plot->getYUnit() + tr(" / Div"));
     else
-      ui->labelChScale->setText(QString::number(perDiv, 'g', 3) +
-                                ui->plot->getYUnit() + tr(" / Div"));
+      ui->labelChScale->setText(QString::number(perDiv, 'g', 3) + ui->plot->getYUnit() + tr(" / Div"));
   } else
     ui->labelChScale->setText("---");
 }
 
-void MainWindow::serialConnectResult(bool connected,
-                                     QString message,
-                                     QString details) {
+void MainWindow::serialConnectResult(bool connected, QString message, QString details) {
   ui->pushButtonConnect->setIcon(connected ? iconConnected : iconNotConnected);
   ui->labelPortInfo->setText(message);
   ui->labelPortInfo->setToolTip(details);
-  if (connected &&
-      developerOptions->getUi()->checkBoxClearOnReconnect->isChecked()) {
+  if (connected && developerOptions->getUi()->checkBoxClearOnReconnect->isChecked()) {
     ui->plot->resetChannels();
     ui->plotxy->clear();
     ui->plotFFT->clear(0);
@@ -250,20 +215,15 @@ void MainWindow::serialConnectResult(bool connected,
     resetQmlTerminal();
     pendingMessagePart.clear();
   }
-  if (connected &&
-      !developerOptions->getUi()->lineEditResetCmd->text().isEmpty()) {
+  if (connected && !developerOptions->getUi()->lineEditResetCmd->text().isEmpty()) {
     // Poslat reset příkaz
-    QByteArray data = developerOptions->getUi()
-                          ->textEditTerminalDebug->toPlainText()
-                          .toLocal8Bit();
+    QByteArray data = developerOptions->getUi()->textEditTerminalDebug->toPlainText().toLocal8Bit();
     data.replace("\\n", "\n");
     data.replace("\\r", "\r");
-    emit writeToSerial(
-        developerOptions->getUi()->lineEditResetCmd->text().toLocal8Bit());
+    emit writeToSerial(developerOptions->getUi()->lineEditResetCmd->text().toLocal8Bit());
   }
 
-  autoAutosetPending =
-      developerOptions->getUi()->checkBoxAutoAutoSet->isChecked();
+  autoAutosetPending = developerOptions->getUi()->checkBoxAutoAutoSet->isChecked();
 }
 
 void MainWindow::updateDivs() {
@@ -271,43 +231,34 @@ void MainWindow::updateDivs() {
   if (ui->labelHDiv->isEnabled()) {
     QString unit = ui->plot->getXUnit();
     if (timeUseUnits)
-      ui->labelHDiv->setText(
-          floatToNiceString(ui->plot->getHDiv(), 1, false, false) + unit +
-          tr("/Div"));
+      ui->labelHDiv->setText(floatToNiceString(ui->plot->getHDiv(), 1, false, false) + unit + tr("/Div"));
     else
-      ui->labelHDiv->setText(QString::number(ui->plot->getHDiv(), 'g', 3) +
-                             tr("/Div"));
+      ui->labelHDiv->setText(QString::number(ui->plot->getHDiv(), 'g', 3) + tr("/Div"));
 
   } else
     ui->labelHDiv->setText("---");
 
   QString unit = ui->plot->getYUnit();
   if (valuesUseUnits)
-    ui->labelVDiv->setText(
-        floatToNiceString(ui->plot->getVDiv(), 1, false, false) + unit +
-        tr("/Div"));
+    ui->labelVDiv->setText(floatToNiceString(ui->plot->getVDiv(), 1, false, false) + unit + tr("/Div"));
   else
-    ui->labelVDiv->setText(QString::number(ui->plot->getVDiv(), 'g', 3) + unit +
-                           tr("/Div"));
+    ui->labelVDiv->setText(QString::number(ui->plot->getVDiv(), 'g', 3) + unit + tr("/Div"));
 }
 
-void MainWindow::printMessage(QString messageHeader,
-                              QByteArray messageBody,
-                              int type,
-                              MessageTarget::enumMessageTarget target) {
+void MainWindow::printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumMessageTarget target) {
   QString color = "<font color=gray>";
   switch (type) {
-    case MessageLevel::warning:
-      color = "<font color=orange>";
-      break;
-    case MessageLevel::error:
-      color = "<font color=red>";
-      break;
-    case MessageLevel::info:
-      color = "<font color=green>";
-      break;
-    default:
-      color = "<font color=gray>";
+  case MessageLevel::warning:
+    color = "<font color=orange>";
+    break;
+  case MessageLevel::error:
+    color = "<font color=red>";
+    break;
+  case MessageLevel::info:
+    color = "<font color=green>";
+    break;
+  default:
+    color = "<font color=gray>";
   }
 
   QString stringMessage;
@@ -316,29 +267,22 @@ void MainWindow::printMessage(QString messageHeader,
   if (target == MessageTarget::serial1)
     // ui->plainTextEditConsole->appendHtml(color + QString(messageHeader) +
     // "</font color>" + (stringMessage.isEmpty() ? "" : ": ") + stringMessage);
-    consoleBuffer.append(color + QString(messageHeader) + "</font color>" +
-                         (stringMessage.isEmpty() ? "" : ": ") + stringMessage);
+    consoleBuffer.append(color + QString(messageHeader) + "</font color>" + (stringMessage.isEmpty() ? "" : ": ") + stringMessage);
   else
-    developerOptions->getUi()->plainTextEditConsole_2->appendHtml(
-        color + QString(messageHeader) + "</font color>" +
-        (stringMessage.isEmpty() ? "" : ": ") + stringMessage);
+    developerOptions->getUi()->plainTextEditConsole_2->appendHtml(color + QString(messageHeader) + "</font color>" + (stringMessage.isEmpty() ? "" : ": ") + stringMessage);
 }
 
-void MainWindow::printDeviceMessage(QByteArray message,
-                                    bool warning,
-                                    bool ended) {
+void MainWindow::printDeviceMessage(QByteArray message, bool warning, bool ended) {
   if (message.contains('\a')) {
-    QApplication::beep();  // Bell character
+    QApplication::beep(); // Bell character
     message.replace('\a', "");
   }
 
   if (!pendingDeviceMessage && !message.isEmpty()) {
     if (warning)
-      ui->plainTextEditConsole->appendHtml(
-          tr("<font color=darkred>Device warning:</font color> "));
+      ui->plainTextEditConsole->appendHtml(tr("<font color=darkred>Device warning:</font color> "));
     else
-      ui->plainTextEditConsole->appendHtml(
-          tr("<font color=darkgreen>Device message:</font color> "));
+      ui->plainTextEditConsole->appendHtml(tr("<font color=darkgreen>Device message:</font color> "));
     pendingMessageType = warning;
   }
 
@@ -351,64 +295,42 @@ void MainWindow::printDeviceMessage(QByteArray message,
   ui->plainTextEditConsole->moveCursor(QTextCursor::End);
   ui->plainTextEditConsole->insertPlainText(message);
   ui->plainTextEditConsole->moveCursor(QTextCursor::End);
-  QScrollBar* scroll = ui->plainTextEditConsole->horizontalScrollBar();
+  QScrollBar *scroll = ui->plainTextEditConsole->horizontalScrollBar();
   scroll->setValue(scroll->minimum());
   pendingDeviceMessage = !ended;
 }
 
 void MainWindow::updateMathNow(int number) {
-  emit setMathFirst(number, mathEn[number - 1]->isChecked()
-                                ? mathFirst[number - 1]->currentIndex() + 1
-                                : 0);
-  emit setMathSecond(number, mathEn[number - 1]->isChecked()
-                                 ? mathSecond[number - 1]->currentIndex() + 1
-                                 : 0);
+  emit setMathFirst(number, mathEn[number - 1]->isChecked() ? mathFirst[number - 1]->currentIndex() + 1 : 0);
+  emit setMathSecond(number, mathEn[number - 1]->isChecked() ? mathSecond[number - 1]->currentIndex() + 1 : 0);
   emit clearMath(number);
   ui->plot->clearCh(getAnalogChId(number, ChannelType::math));
   if (mathEn[number - 1]->isChecked()) {
-    MathOperations::enumMathOperations operation =
-        (MathOperations::enumMathOperations)mathOp[number - 1]->currentIndex();
+    MathOperations::enumMathOperations operation = (MathOperations::enumMathOperations)mathOp[number - 1]->currentIndex();
     QSharedPointer<QCPGraphDataContainer> in1, in2;
 
     if (mathFirst[number - 1]->currentIndex() < ANALOG_COUNT)
-      in1 = ui->plot
-                ->graph(getAnalogChId(mathFirst[number - 1]->currentIndex() + 1,
-                                      ChannelType::analog))
-                ->data();
+      in1 = ui->plot->graph(getAnalogChId(mathFirst[number - 1]->currentIndex() + 1, ChannelType::analog))->data();
     else
       in1 = ui->plot->graph(getAnalogChId(1, ChannelType::analog))->data();
 
     if (mathSecond[number - 1]->currentIndex() < ANALOG_COUNT)
-      in2 =
-          ui->plot
-              ->graph(getAnalogChId(mathSecond[number - 1]->currentIndex() + 1,
-                                    ChannelType::analog))
-              ->data();
+      in2 = ui->plot->graph(getAnalogChId(mathSecond[number - 1]->currentIndex() + 1, ChannelType::analog))->data();
     else
       in2 = ui->plot->graph(getAnalogChId(1, ChannelType::analog))->data();
 
-    emit resetMath(number, operation, in1, in2,
-                   mathFirst[number - 1]->currentIndex() == ANALOG_COUNT,
-                   mathSecond[number - 1]->currentIndex() == ANALOG_COUNT,
-                   mathScalarFirst[number - 1]->value(),
-                   mathScalarSecond[number - 1]->value());
+    emit resetMath(number, operation, in1, in2, mathFirst[number - 1]->currentIndex() == ANALOG_COUNT, mathSecond[number - 1]->currentIndex() == ANALOG_COUNT, mathScalarFirst[number - 1]->value(), mathScalarSecond[number - 1]->value());
   }
 }
 
-void MainWindow::interpolationResult(
-    int chID,
-    QSharedPointer<QCPGraphDataContainer> dataOriginal,
-    QSharedPointer<QCPGraphDataContainer> dataInterpolated,
-    bool dataIsFromInterpolationBuffer) {
-  ui->plot->newInterpolatedVector(chID, dataOriginal, dataInterpolated,
-                                  dataIsFromInterpolationBuffer);
+void MainWindow::interpolationResult(int chID, QSharedPointer<QCPGraphDataContainer> dataOriginal, QSharedPointer<QCPGraphDataContainer> dataInterpolated, bool dataIsFromInterpolationBuffer) {
+  ui->plot->newInterpolatedVector(chID, dataOriginal, dataInterpolated, dataIsFromInterpolationBuffer);
   interpolationsRunning--;
   if (interpolationsRunning == 0)
     interpolationTimer.start();
 }
 
-void MainWindow::deviceError(QByteArray message,
-                             MessageTarget::enumMessageTarget source) {
+void MainWindow::deviceError(QByteArray message, MessageTarget::enumMessageTarget source) {
   if (source == MessageTarget::manual) {
     QMessageBox msgBox(this);
     msgBox.setInformativeText(message);
@@ -428,9 +350,7 @@ void MainWindow::deviceError(QByteArray message,
   }
 }
 
-void MainWindow::on_pushButtonSerialSetting_clicked() {
-  serialSettingsDialog->show();
-}
+void MainWindow::on_pushButtonSerialSetting_clicked() { serialSettingsDialog->show(); }
 
 void MainWindow::on_pushButtonSerialMoreInfo_clicked() {
   QString portinfo;
@@ -440,7 +360,7 @@ void MainWindow::on_pushButtonSerialMoreInfo_clicked() {
 
   if (ui->listWidgetCom->currentItem() != NULL) {
     auto name = ui->listWidgetCom->currentItem()->data(Qt::UserRole);
-    for (const auto& prt : qAsConst(portlist)) {
+    for (const auto &prt : qAsConst(portlist)) {
       if (name == prt.portName()) {
         port = prt;
       }
@@ -462,7 +382,7 @@ void MainWindow::on_pushButtonSerialMoreInfo_clicked() {
   msgBox.exec();
 }
 
-void MainWindow::on_comboBoxBaud_editTextChanged(const QString& arg1) {
+void MainWindow::on_comboBoxBaud_editTextChanged(const QString &arg1) {
   for (int i = 0; i < arg1.length(); i++) {
     if (!arg1.at(i).isDigit()) {
       ui->comboBoxBaud->setEditText(arg1.left(i));
@@ -515,9 +435,7 @@ void MainWindow::on_comboBoxAvgIndividualCh_currentIndexChanged(int arg1) {
   ui->spinBoxAvg->blockSignals(false);
 }
 
-void MainWindow::checkBoxTriggerLineEn_stateChanged(int arg1) {
-  ui->plot->setTriggerLineVisible(arg1 == Qt::Checked);
-}
+void MainWindow::checkBoxTriggerLineEn_stateChanged(int arg1) { ui->plot->setTriggerLineVisible(arg1 == Qt::Checked); }
 
 void MainWindow::pushButtonClearGraph_clicked() {
   int chid = developerOptions->getUi()->comboBoxChClear->currentIndex();
@@ -528,7 +446,7 @@ void MainWindow::pushButtonClearGraph_clicked() {
     ui->plot->clearCh(chid);
 }
 
-void MainWindow::on_lineEditHUnit_textChanged(const QString& arg1) {
+void MainWindow::on_lineEditHUnit_textChanged(const QString &arg1) {
   QString unit = arg1.simplified();
 
   QString prefixChars = "munkMG";
@@ -551,8 +469,7 @@ void MainWindow::on_lineEditHUnit_textChanged(const QString& arg1) {
   freqUseUnits = (unit == "s");
 
   ui->plotFFT->setXUnit(freqUseUnits ? "Hz" : "", freqUseUnits);
-  freqTimePlotDialog->getUi()->plotPeak->setYUnit(freqUseUnits ? "Hz" : "",
-                                                  freqUseUnits);
+  freqTimePlotDialog->getUi()->plotPeak->setYUnit(freqUseUnits ? "Hz" : "", freqUseUnits);
 
   if (unit != "s") {
     if (ui->comboBoxHAxisType->currentIndex() > HAxisType::normal) {
@@ -560,12 +477,11 @@ void MainWindow::on_lineEditHUnit_textChanged(const QString& arg1) {
     }
   }
 
-  updateDivs();  // Aby se aktualizovala jednotka u kroku mřížky
+  updateDivs(); // Aby se aktualizovala jednotka u kroku mřížky
 }
 
 void MainWindow::on_pushButtonProtocolGuideCZ_clicked() {
-  QString helpFile =
-      QCoreApplication::applicationDirPath() + ("/Data protocol guide cz.pdf");
+  QString helpFile = QCoreApplication::applicationDirPath() + ("/Data protocol guide cz.pdf");
   if (!QDesktopServices::openUrl(QUrl::fromLocalFile(helpFile))) {
     QMessageBox msgBox(this);
     msgBox.setText(tr("Cant open file."));
@@ -576,8 +492,7 @@ void MainWindow::on_pushButtonProtocolGuideCZ_clicked() {
 }
 
 void MainWindow::on_pushButtonProtocolGuideEN_clicked() {
-  QString helpFile =
-      QCoreApplication::applicationDirPath() + ("/Data protocol guide en.pdf");
+  QString helpFile = QCoreApplication::applicationDirPath() + ("/Data protocol guide en.pdf");
   if (!QDesktopServices::openUrl(QUrl::fromLocalFile(helpFile))) {
     QMessageBox msgBox(this);
     msgBox.setText(tr("Cant open file."));
@@ -587,37 +502,30 @@ void MainWindow::on_pushButtonProtocolGuideEN_clicked() {
   }
 }
 
-void MainWindow::on_pushButtonIntroVideoCZ_clicked() {
-  QDesktopServices::openUrl(
-      QUrl("https://www.youtube.com/watch?v=TpJgz6kfPvA"));
-}
+void MainWindow::on_pushButtonIntroVideoCZ_clicked() { QDesktopServices::openUrl(QUrl("https://www.youtube.com/watch?v=TpJgz6kfPvA")); }
 
-void MainWindow::on_labelLogo_clicked() {
-  QDesktopServices::openUrl(QUrl("https://embedded.fel.cvut.cz/platformy"));
-}
+void MainWindow::on_labelLogo_clicked() { QDesktopServices::openUrl(QUrl("https://embedded.fel.cvut.cz/platformy")); }
 
 void MainWindow::on_comboBoxFIR_currentIndexChanged(int index) {
   switch (index) {
-    case 0:
-      emit setInterpolationFilter("hamm_x8", 8);
-      break;
-    case 1:
-      emit setInterpolationFilter("kaiser_x8", 8);
-      break;
-    case 2:
-      emit setInterpolationFilter("kaiser_x16", 16);
-      break;
-    case 3:
-      emit setInterpolationFilter("kaiser_x32", 32);
-      break;
+  case 0:
+    emit setInterpolationFilter("hamm_x8", 8);
+    break;
+  case 1:
+    emit setInterpolationFilter("kaiser_x8", 8);
+    break;
+  case 2:
+    emit setInterpolationFilter("kaiser_x16", 16);
+    break;
+  case 3:
+    emit setInterpolationFilter("kaiser_x32", 32);
+    break;
   }
 }
 
-void MainWindow::checkBoxEchoReply_toggled(bool checked) {
-  emit replyEcho(checked);
-}
+void MainWindow::checkBoxEchoReply_toggled(bool checked) { emit replyEcho(checked); }
 
-void MainWindow::on_comboBoxBaud_currentTextChanged(const QString& arg1) {
+void MainWindow::on_comboBoxBaud_currentTextChanged(const QString &arg1) {
   bool isok;
   qint32 baud = arg1.toUInt(&isok);
   if (isok)
@@ -629,30 +537,22 @@ void MainWindow::on_pushButtonRecordMeasurements1_clicked() {
     recordingOfMeasurements1.close();
     recordingOfMeasurements1.setFileName("");
   } else {
-    if (ui->comboBoxMeasure1->currentIndex() ==
-        ui->comboBoxMeasure1->count() - 1)
+    if (ui->comboBoxMeasure1->currentIndex() == ui->comboBoxMeasure1->count() - 1)
       return;
-    QString defaultName =
-        QString(QCoreApplication::applicationDirPath()) +
-        QString("/%1 measurements")
-            .arg(getChName(ui->comboBoxMeasure1->currentIndex()));
-    QString fileName = QFileDialog::getSaveFileName(
-        this, tr("Record measurements"), defaultName,
-        tr("Comma separated values (*.csv)"));
+    QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/%1 measurements").arg(getChName(ui->comboBoxMeasure1->currentIndex()));
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Record measurements"), defaultName, tr("Comma separated values (*.csv)"));
     if (fileName.isEmpty())
       return;
     recordingOfMeasurements1.setFileName(fileName);
     if (recordingOfMeasurements1.open(QFile::WriteOnly | QFile::Truncate)) {
       char separator = ui->radioButtonCSVDot->isChecked() ? ',' : ';';
-      recordingOfMeasurements1.write(
-          QByteArray("timestamp,period,freq,amp,min,max,vrms,dc,fs,rise,fall,"
-                     "samples\n")
-              .replace(',', separator));
+      recordingOfMeasurements1.write(QByteArray("timestamp,period,freq,amp,min,max,vrms,dc,fs,rise,fall,"
+                                                "samples\n")
+                                         .replace(',', separator));
     }
   }
 
-  ui->pushButtonRecordMeasurements1->setText(
-      recordingOfMeasurements1.isOpen() ? tr("Stop") : tr("Record"));
+  ui->pushButtonRecordMeasurements1->setText(recordingOfMeasurements1.isOpen() ? tr("Stop") : tr("Record"));
 }
 
 void MainWindow::on_pushButtonRecordMeasurements2_clicked() {
@@ -660,79 +560,82 @@ void MainWindow::on_pushButtonRecordMeasurements2_clicked() {
     recordingOfMeasurements2.close();
     recordingOfMeasurements2.setFileName("");
   } else {
-    if (ui->comboBoxMeasure1->currentIndex() ==
-        ui->comboBoxMeasure1->count() - 1)
+    if (ui->comboBoxMeasure1->currentIndex() == ui->comboBoxMeasure1->count() - 1)
       return;
-    QString defaultName =
-        QString(QCoreApplication::applicationDirPath()) +
-        QString("/%1 measurements")
-            .arg(getChName(ui->comboBoxMeasure1->currentIndex()));
-    QString fileName = QFileDialog::getSaveFileName(
-        this, tr("Record measurements"), defaultName,
-        tr("Comma separated values (*.csv)"));
+    QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/%1 measurements").arg(getChName(ui->comboBoxMeasure1->currentIndex()));
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Record measurements"), defaultName, tr("Comma separated values (*.csv)"));
     if (fileName.isEmpty())
       return;
     recordingOfMeasurements2.setFileName(fileName);
     if (recordingOfMeasurements2.open(QFile::WriteOnly | QFile::Truncate)) {
       char separator = ui->radioButtonCSVDot->isChecked() ? ',' : ';';
-      recordingOfMeasurements2.write(
-          QByteArray("timestamp,period,freq,amp,min,max,vrms,dc,fs,rise,fall,"
-                     "samples\n")
-              .replace(',', separator));
+      recordingOfMeasurements2.write(QByteArray("timestamp,period,freq,amp,min,max,vrms,dc,fs,rise,fall,"
+                                                "samples\n")
+                                         .replace(',', separator));
     }
   }
 
-  ui->pushButtonRecordMeasurements1->setText(
-      recordingOfMeasurements2.isOpen() ? tr("Stop") : tr("Record"));
+  ui->pushButtonRecordMeasurements1->setText(recordingOfMeasurements2.isOpen() ? tr("Stop") : tr("Record"));
+}
+
+QIcon MainWindow::invertIconLightness(const QIcon &icon, QSize size) {
+  QPixmap originalPixmap = icon.pixmap(size);
+  QImage image = originalPixmap.toImage();
+
+  for (int y = 0; y < image.height(); ++y) {
+    for (int x = 0; x < image.width(); ++x) {
+      QColor color = image.pixelColor(x, y);
+      if (color.hslSaturation() == 0) {
+        double invertedLightness = 1.0 - color.lightnessF();
+        color.setHsvF(color.hslHueF(), color.hslSaturationF(), invertedLightness, color.alphaF());
+      }
+      image.setPixelColor(x, y, color);
+    }
+  }
+
+  QPixmap invertedPixmap = QPixmap::fromImage(image);
+  return QIcon(invertedPixmap);
 }
 
 void MainWindow::on_radioButtonDark_toggled(bool checked) {
   if (currentThemeDark != checked) {
     currentThemeDark = checked;
-    auto ico = iconHidden.pixmap(ui->pushButtonHideCh->iconSize()).toImage();
-    ico.invertPixels();
-    iconHidden = QPixmap::fromImage(ico);
-    ico = iconVisible.pixmap(ui->pushButtonHideCh->iconSize()).toImage();
-    ico.invertPixels();
-    iconVisible = QPixmap::fromImage(ico);
 
-    auto list1 = this->findChildren<QPushButton*>();
-    list1.append(simulatedInputDialog->findChildren<QPushButton*>());
-    list1.append(freqTimePlotDialog->findChildren<QPushButton*>());
-    foreach (auto w, list1) {
-      if (w == ui->pushButtonPause || w == ui->pushButtonConnect ||
-          w == simulatedInputDialog->getUi()->pushButtonRolling)
-        continue;
-      auto icon = w->icon().pixmap(w->iconSize()).toImage();
-      icon.invertPixels(QImage::InvertRgb);
-      w->setIcon(QPixmap::fromImage(icon));
-    }
+    iconHidden = invertIconLightness(iconHidden, ui->pushButtonHideCh->iconSize());
+    iconVisible = invertIconLightness(iconVisible, ui->pushButtonHideCh->iconSize());
+    iconMaximize = invertIconLightness(iconMaximize, ui->pushButtonFFT_Maximize->iconSize());
+    iconUnMaximize = invertIconLightness(iconUnMaximize, ui->pushButtonFFT_Maximize->iconSize());
+    iconPause = invertIconLightness(iconPause, ui->pushButtonPause->iconSize());
+    iconRun = invertIconLightness(iconRun, ui->pushButtonPause->iconSize());
+    iconConnected = invertIconLightness(iconConnected, ui->pushButtonConnect->iconSize());
+    iconNotConnected = invertIconLightness(iconNotConnected, ui->pushButtonConnect->iconSize());
+    iconCross = invertIconLightness(iconCross, ui->comboBoxMeasure1->iconSize());
+    iconAbsoluteCursor = invertIconLightness(iconAbsoluteCursor, ui->comboBoxCursor1Channel->iconSize());
 
-    auto list6 = this->findChildren<QRadioButton*>();
-    list6.append(simulatedInputDialog->findChildren<QRadioButton*>());
-    list6.append(freqTimePlotDialog->findChildren<QRadioButton*>());
-    foreach (auto w, list6) {
-      if (w == ui->radioButtonCz || w == ui->radioButtonEn)
-        continue;
-      auto icon = w->icon().pixmap(w->iconSize()).toImage();
-      icon.invertPixels(QImage::InvertRgb);
-      w->setIcon(QPixmap::fromImage(icon));
-    }
+    auto list1 = this->findChildren<QPushButton *>();
+    list1.append(simulatedInputDialog->findChildren<QPushButton *>());
+    list1.append(freqTimePlotDialog->findChildren<QPushButton *>());
+    foreach (auto w, list1)
+      w->setIcon(invertIconLightness(w->icon(), w->iconSize()));
 
-    auto list2 = this->findChildren<QTabBar*>();
-    list2.append(simulatedInputDialog->findChildren<QTabBar*>());
-    list2.append(freqTimePlotDialog->findChildren<QTabBar*>());
+    auto list6 = this->findChildren<QRadioButton *>();
+    list6.append(simulatedInputDialog->findChildren<QRadioButton *>());
+    list6.append(freqTimePlotDialog->findChildren<QRadioButton *>());
+    foreach (auto w, list6)
+      if (w != ui->radioButtonCz && w != ui->radioButtonEn)
+        w->setIcon(invertIconLightness(w->icon(), w->iconSize()));
+
+    auto list2 = this->findChildren<QTabBar *>();
+    list2.append(simulatedInputDialog->findChildren<QTabBar *>());
+    list2.append(freqTimePlotDialog->findChildren<QTabBar *>());
     foreach (auto w, list2) {
-      for (int i = 0; i < w->count(); i++) {
-        auto icon = w->tabIcon(i).pixmap(w->iconSize()).toImage();
-        icon.invertPixels(QImage::InvertRgb);
-        w->setTabIcon(i, QPixmap::fromImage(icon));
-      }
+      for (int i = 0; i < w->count(); i++)
+        w->setTabIcon(i, invertIconLightness(w->tabIcon(i), w->iconSize()));
     }
 
-    auto list3 = this->findChildren<QLabel*>();
-    list3.append(simulatedInputDialog->findChildren<QLabel*>());
-    list3.append(freqTimePlotDialog->findChildren<QLabel*>());
+    auto list3 = this->findChildren<QLabel *>();
+    list3.append(simulatedInputDialog->findChildren<QLabel *>());
+    list3.append(freqTimePlotDialog->findChildren<QLabel *>());
     foreach (auto w, list3) {
       if (w == ui->labelLogo)
         continue;
@@ -747,8 +650,8 @@ void MainWindow::on_radioButtonDark_toggled(bool checked) {
     QColor bck = checked ? QColor::fromRgb(67, 67, 67) : Qt::white;
     QColor fnt = !checked ? QColor::fromRgb(67, 67, 67) : Qt::white;
 
-    auto list4 = this->findChildren<QCustomPlot*>();
-    list4.append(freqTimePlotDialog->findChildren<QCustomPlot*>());
+    auto list4 = this->findChildren<QCustomPlot *>();
+    list4.append(freqTimePlotDialog->findChildren<QCustomPlot *>());
     foreach (auto plot, list4) {
       plot->setBackground(bck);
       plot->axisRect()->setBackground(bck);
@@ -764,45 +667,41 @@ void MainWindow::on_radioButtonDark_toggled(bool checked) {
       plot->yAxis->setTickPen(fnt);
       plot->yAxis->setSubTickPen(fnt);
 
-      plot->replot();
+      plot->replot(QCustomPlot::rpQueuedReplot);
     }
 
-    QList<QComboBox*> list5;
+    QList<QComboBox *> list5;
     list5.append(ui->comboBoxFFTStyle1);
     list5.append(ui->comboBoxFFTStyle2);
     list5.append(ui->comboBoxXYStyle);
     list5.append(ui->comboBoxGraphStyle);
+    list5.append(ui->comboBoxCursor1Channel);
+    list5.append(ui->comboBoxCursor2Channel);
+    list5.append(ui->comboBoxMeasure1);
+    list5.append(ui->comboBoxMeasure2);
+    list5.append(ui->comboBoxMath1Op);
+    list5.append(ui->comboBoxMath2Op);
+    list5.append(ui->comboBoxMath3Op);
     foreach (auto w, list5) {
-      for (int i = 0; i < w->count(); i++) {
-        auto icon = w->itemIcon(i).pixmap(w->iconSize()).toImage();
-        icon.invertPixels(QImage::InvertRgb);
-        w->setItemIcon(i, QPixmap::fromImage(icon));
-      }
+      for (int i = 0; i < w->count(); i++)
+        w->setItemIcon(i, invertIconLightness(w->itemIcon(i), w->iconSize()));
     }
   }
 
-  setStyleSheet(
-      QString(checked
-                  ? "QFrame {background-color: rgb(67, 67, 67);}"
-                    "QMessageBox {background-color: rgb(67, 67, 67);}"
-                    "QInputDialog {background-color: rgb(67, 67, 67);}"
-                  : "QFrame {background-color: rgb(255, 255, 255);}"
-                    "QMessageBox {background-color: rgb(255, 255, 255);}"
-                    "QInputDialog {background-color: rgb(255, 255, 255);}") +
-      "QWidget#widget {background-color: " +
-      qApp->palette().color(QPalette::Window).name() + ";}" +
-      +"QWidget#widget_2 {background-color: " +
-      qApp->palette().color(QPalette::Window).name() + ";}" +
-      "QSplitter#splitter {background-color: " +
-      qApp->palette().color(QPalette::Window).name() + ";}");
+  setStyleSheet(QString(checked ? "QFrame {background-color: rgb(67, 67, 67);}"
+                                  "QMessageBox {background-color: rgb(67, 67, 67);}"
+                                  "QInputDialog {background-color: rgb(67, 67, 67);}"
+                                : "QFrame {background-color: rgb(255, 255, 255);}"
+                                  "QMessageBox {background-color: rgb(255, 255, 255);}"
+                                  "QInputDialog {background-color: rgb(255, 255, 255);}") +
+                "QWidget#widget {background-color: " + qApp->palette().color(QPalette::Window).name() + ";}" + +"QWidget#widget_2 {background-color: " + qApp->palette().color(QPalette::Window).name() + ";}" + "QSplitter#splitter {background-color: " + qApp->palette().color(QPalette::Window).name() +
+                ";}");
 
   qmlTerminalInterface->setDarkThemeIsUsed(checked);
   qmlTerminalInterface->setTabBackground(checked ? "#434343" : "#ffffff");
 }
 
-void MainWindow::printSerialMonitor(QByteArray data) {
-  serialMonitor.append(QString::fromStdString(data.toStdString()));
-}
+void MainWindow::printSerialMonitor(QByteArray data) { serialMonitor.append(QString::fromStdString(data.toStdString())); }
 
 void MainWindow::mainPlotHRangeChanged(QCPRange range) {
   if (ui->plot->getRollingMode()) {
@@ -832,14 +731,35 @@ void MainWindow::mainPlotHRangeChanged(QCPRange range) {
   }
 }
 
+void MainWindow::mainPlotHRangeMaxChanged(QCPRange range) {
+  range = ui->plot->xAxis->range();
+  int m = ui->dialZoom->maximum();
+  double fullrange = ui->plot->getMaxT() - ui->plot->getMinT();
+  double sizeRatio = qBound(0.0, range.size() / fullrange, 1.0);
+  int zoomFactor = round(m * sizeRatio);
+
+  ui->dialZoom->blockSignals(true);
+  ui->dialZoom->setValue(zoomFactor);
+  ui->dialZoom->blockSignals(false);
+
+  double posRatio = (range.center() - ui->plot->getMinT()) / fullrange;
+  double posFactor = round(m * qBound(0.0, posRatio, 1.0));
+  ui->horizontalScrollBarHorizontal->blockSignals(true);
+  ui->horizontalScrollBarHorizontal->setPageStep(zoomFactor);
+  ui->horizontalScrollBarHorizontal->setMinimum(zoomFactor / 2);
+  ui->horizontalScrollBarHorizontal->setMaximum(m - zoomFactor / 2);
+  ui->horizontalScrollBarHorizontal->setValue(posFactor);
+  ui->horizontalScrollBarHorizontal->setSliderPosition(posFactor);
+  ui->horizontalScrollBarHorizontal->blockSignals(false);
+}
+
 void MainWindow::mainPlotVRangeChanged(QCPRange range) {
   int m = ui->dialZoom->maximum();
   double fullrange = ui->doubleSpinBoxRangeVerticalRange->value();
   double sizeRatio = qBound(0.0, range.size() / fullrange, 1.0);
   int zoomFactor = round(m * sizeRatio);
 
-  double min = ui->doubleSpinBoxViewCenter->value() -
-               ui->doubleSpinBoxRangeVerticalRange->value() / 2;
+  double min = ui->doubleSpinBoxViewCenter->value() - ui->doubleSpinBoxRangeVerticalRange->value() / 2;
   double posRatio = (range.center() - min) / fullrange;
   double posFactor = round(m * qBound(0.0, posRatio, 1.0));
   ui->verticalScrollBarVertical->blockSignals(true);
@@ -873,6 +793,14 @@ void MainWindow::lastDataTypeWasPointChanged(bool wasPoint) {
   }
 }
 
-void MainWindow::on_pushButtonRollingAutoRange_toggled(bool checked) {
-  ui->plot->setAutoVRage(checked);
+void MainWindow::on_pushButtonRollingAutoRange_toggled(bool checked) { ui->plot->setAutoVRage(checked); }
+
+void MainWindow::plotMaximizeButtonClicked(QString id) {
+  setPlotLayout(hasMaximizedPlot ? "all" : id);
+  ui->pushButtonFFT_Maximize->setIcon(hasMaximizedPlot ? iconUnMaximize : iconMaximize);
+  ui->pushButtonXY_Maximize->setIcon(hasMaximizedPlot ? iconUnMaximize : iconMaximize);
 }
+
+void MainWindow::on_pushButtonFFT_Maximize_clicked() { plotMaximizeButtonClicked("fft"); }
+
+void MainWindow::on_pushButtonXY_Maximize_clicked() { plotMaximizeButtonClicked("xy"); }
