@@ -15,7 +15,6 @@
 
 #include "mainwindow.h"
 #include "ui_freqtimeplotdialog.h"
-#include "ui_manualinputdialog.h"
 
 void MainWindow::setPlotLayout(QString type) {
   bool fft = ui->pushButtonFFT->isChecked();
@@ -572,7 +571,8 @@ void MainWindow::on_pushButtonInterpolate_toggled(bool checked) {
 }
 
 void MainWindow::on_tabs_right_currentChanged(int index) {
-// TODO
+  // TODO
+  Q_UNUSED(index);
 #if QT_VERSION < 0x050C00
   if (index == -1)
     on_radioButtonDark_toggled(ui->radioButtonDark->isChecked());
@@ -589,6 +589,7 @@ void MainWindow::on_pushButtonRangeFit_clicked() {
 }
 
 void MainWindow::on_listWidgetCom_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous) {
+  Q_UNUSED(previous);
   if (current == NULL) {
     emit disconnectSerial();
     return;
@@ -655,13 +656,6 @@ void MainWindow::on_doubleSpinBoxViewCenter_valueChanged(double arg1) {
   ui->plot->setVRange(range);
 }
 
-void MainWindow::on_horizontalScrollBarHorizontal_sliderMoved(int position) {
-  int m = ui->dialZoom->maximum();
-  double minT = ui->plot->getMinT();
-  double maxT = ui->plot->getMaxT();
-  ui->plot->setHPos(minT + (maxT - minT) / m * position);
-}
-
 void MainWindow::on_dialZoom_valueChanged(int position) {
   double range = static_cast<double>(position) / ui->dialZoom->maximum() * (ui->plot->getMaxT() - ui->plot->getMinT());
   ui->plot->setHLen(range);
@@ -673,3 +667,22 @@ void MainWindow::on_listWidgetCom_itemClicked(QListWidgetItem *item) {
   else
     simulatedInputDialog->close();
 }
+
+void MainWindow::on_pushButtonFFT_Maximize_clicked() { plotMaximizeButtonClicked("fft"); }
+
+void MainWindow::on_pushButtonXY_Maximize_clicked() { plotMaximizeButtonClicked("xy"); }
+
+void MainWindow::on_verticalScrollBarVertical_valueChanged(int value) {
+  int m = ui->dialZoom->maximum();
+  auto fr = ui->plot->getMaxZoomY();
+  ui->plot->setVPos(fr.lower + (fr.size()) / m * value);
+}
+
+void MainWindow::on_horizontalScrollBarHorizontal_valueChanged(int value) {
+  int m = ui->dialZoom->maximum();
+  double minT = ui->plot->getMinT();
+  double maxT = ui->plot->getMaxT();
+  ui->plot->setHPos(minT + (maxT - minT) / m * value);
+}
+
+void MainWindow::on_pushButtonRollingAutoRange_toggled(bool checked) { ui->plot->setAutoVRage(checked); }

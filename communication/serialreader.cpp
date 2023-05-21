@@ -15,7 +15,7 @@
 
 #include "serialreader.h"
 
-SerialReader::SerialReader(QObject* parent) : QObject(parent) {}
+SerialReader::SerialReader(QObject *parent) : QObject(parent) {}
 
 SerialReader::~SerialReader() {
   if (serial->isOpen())
@@ -25,11 +25,11 @@ SerialReader::~SerialReader() {
 
 void SerialReader::setSimInputDialog(QSharedPointer<ManualInputDialog> simIn) {
   simulatedInputDialog = simIn;
+  connect(this, &SerialReader::stopManualInputData, simulatedInputDialog.get(), &ManualInputDialog::stopAll);
 }
 
 void SerialReader::startSimulatedInput() {
-  connect(simulatedInputDialog.get(), &ManualInputDialog::sendManualInput, this,
-          &SerialReader::newData);
+  connect(simulatedInputDialog.get(), &ManualInputDialog::sendManualInput, this, &SerialReader::newData);
   simConnected = true;
 }
 
@@ -40,37 +40,43 @@ void SerialReader::newData(QByteArray data) {
 }
 
 void SerialReader::endSim() {
-  disconnect(simulatedInputDialog.get(), &ManualInputDialog::sendManualInput,
-             this, &SerialReader::newData);
+  emit stopManualInputData();
+  disconnect(simulatedInputDialog.get(), &ManualInputDialog::sendManualInput, this, &SerialReader::newData);
   simConnected = false;
 }
 
 void SerialReader::init() {
   // QSerialPrort musí být vytvořen tady (fungkce init zavolána po spuštění
   // vlákna), ne v konstruktoru, protože pak by SerialPort byl v GUI vláknu.
-  serial = new QSerialPort;
-  connect(serial, &QSerialPort::bytesWritten, this,
-          &SerialReader::finishedWriting);
+  serial = new QSerialPort(this);
+  telnet = new TelnetServer(this);
+  connect(serial, &QSerialPort::bytesWritten, this, &SerialReader::finishedWriting);
   // V starším Qt (Win XP) není signál pro error
 #if QT_VERSION >= 0x050800
-  connect(serial, &QSerialPort::errorOccurred, this,
-          &SerialReader::errorOccurred);
+  connect(serial, &QSerialPort::errorOccurred, this, &SerialReader::errorOccurred);
 #endif
 }
 
-void SerialReader::begin(QString portName,
-                         int baudRate,
-                         QSerialPort::DataBits dataBits,
-                         QSerialPort::Parity parity,
-                         QSerialPort::StopBits stopBits,
-                         QSerialPort::FlowControl flowControll) {
-  if (serial->isOpen() || simConnected)
-    end();  // Pokud je port otevřen, tak ho zavře
+void SerialReader::begin(QString portName, int baudRate, QSerialPort::DataBits dataBits, QSerialPort::Parity parity, QSerialPort::StopBits stopBits, QSerialPort::FlowControl flowControll) {
+  if (serial->isOpen() || simConnected || telnetConnected)
+    end(); // Pokud je port otevřen, tak ho zavře
 
   if (portName == "~SPECIAL~SIM") {
     startSimulatedInput();
     emit connectionResult(true, tr("Simulated Data"), "");
     emit started();
+    return;
+  }
+
+  if (portName == "~SPECIAL~TELNET") {
+    int port = telnet->connect(1234);
+    if (port >= 0) {
+      emit connectionResult(true, tr("Port %1").arg(port), "");
+      connect(telnet, &TelnetServer::messageReceived, this, &SerialReader::newData);
+      telnetConnected = true;
+      emit started();
+    } else
+      emit connectionResult(false, tr("Error"), "");
     return;
   }
 
@@ -98,19 +104,19 @@ void SerialReader::begin(QString portName,
   if (serial->isOpen()) {
     serial->clear();
     serial->setDataTerminalReady(true);
-    emit started();  // Parser si vymaže buffer a odpoví že je připraven, teprve
-                     // po odpovědi se začnou číst data.
+    emit started(); // Parser si vymaže buffer a odpoví že je připraven, teprve
+                    // po odpovědi se začnou číst data.
   }
 }
 
 void SerialReader::write(QByteArray data) {
   if (serial->isOpen())
     serial->write(data);
+  if (telnetConnected)
+    telnet->write(data);
 }
 
-void SerialReader::parserReady() {
-  connect(serial, &QSerialPort::readyRead, this, &SerialReader::read);
-}
+void SerialReader::parserReady() { connect(serial, &QSerialPort::readyRead, this, &SerialReader::read); }
 
 void SerialReader::changeBaud(qint32 baud) {
   if (!serial->isOpen())
@@ -133,15 +139,19 @@ void SerialReader::changeBaud(qint32 baud) {
   }
   if (serial->isOpen()) {
     serial->clear();
-    emit started();  // Parser si vymaže buffer a odpoví že je připraven, teprve
-                     // po odpovědi se začnou číst data.
+    emit started(); // Parser si vymaže buffer a odpoví že je připraven, teprve
+                    // po odpovědi se začnou číst data.
   }
 }
 
 void SerialReader::end() {
   if (simConnected)
     endSim();
+  if (telnetConnected)
+    telnet->disconnect();
+  telnetConnected = false;
   disconnect(serial, &QSerialPort::readyRead, this, &SerialReader::read);
+  disconnect(telnet, &TelnetServer::messageReceived, this, &SerialReader::newData);
   emit connectionResult(false, tr("Not connected"), "");
   if (!serial->isOpen())
     return;
@@ -170,18 +180,11 @@ void SerialReader::errorOccurred() {
   emit connectionResult(false, errorText, serial->errorString());
 }
 
-void SerialReader::toggle(QString portName,
-                          int baudRate,
-                          QSerialPort::DataBits dataBits,
-                          QSerialPort::Parity parity,
-                          QSerialPort::StopBits stopBits,
-                          QSerialPort::FlowControl flowControll) {
-  if (!serial->isOpen() && !simConnected)
+void SerialReader::toggle(QString portName, int baudRate, QSerialPort::DataBits dataBits, QSerialPort::Parity parity, QSerialPort::StopBits stopBits, QSerialPort::FlowControl flowControll) {
+  if (!serial->isOpen() && !simConnected && !telnetConnected)
     begin(portName, baudRate, dataBits, parity, stopBits, flowControll);
   else
     end();
 }
 
-void SerialReader::read() {
-  newData(serial->readAll());
-}
+void SerialReader::read() { newData(serial->readAll()); }

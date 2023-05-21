@@ -23,8 +23,8 @@
 
 class MyMainPlot : public MyPlot {
   Q_OBJECT
- public:
-  explicit MyMainPlot(QWidget* parent = nullptr);
+public:
+  explicit MyMainPlot(QWidget *parent = nullptr);
   ~MyMainPlot();
   void init();
 
@@ -38,22 +38,16 @@ class MyMainPlot : public MyPlot {
   int getLogicBitsUsed(int group);
 
   /// Počet jednotek na krok mřížky
-  double getCHDiv(int chID) {
-    return (getVDiv() / channelSettings.at(chID).scale);
-  }
+  double getCHDiv(int chID) { return (getVDiv() / channelSettings.at(chID).scale); }
 
   /// Vrátí zvětšení kanálu
-  double getChScale(int chID) {
-    return std::abs(channelSettings.at(chID).scale);
-  }
+  double getChScale(int chID) { return std::abs(channelSettings.at(chID).scale); }
 
   /// Je převrácený?
   bool isChInverted(int chID) { return channelSettings.at(chID).inverted; }
 
   /// Je zapnuta interpolace?
-  bool isChInterpolated(int chID) {
-    return channelSettings.at(chID).interpolate;
-  }
+  bool isChInterpolated(int chID) { return channelSettings.at(chID).interpolate; }
 
   /// Vrátí offset kanálu
   double getChOffset(int chID) { return channelSettings.at(chID).offset; }
@@ -129,28 +123,16 @@ class MyMainPlot : public MyPlot {
   bool isLogicVisible(int group) { return logicSettings.at(group).visible; }
 
   /// Exportuje jeden analogový kanál
-  QByteArray exportChannelCSV(char separator,
-                              char decimal,
-                              int chID,
-                              int precision,
-                              bool onlyInView);
+  QByteArray exportChannelCSV(char separator, char decimal, int chID, int precision, bool onlyInView);
 
   /// Exportuje skupinu logických kanálů
-  QByteArray exportLogicCSV(char separator,
-                            char decimal,
-                            int group,
-                            int precision,
-                            bool onlyInView);
+  QByteArray exportLogicCSV(char separator, char decimal, int group, int precision, bool onlyInView);
 
   /// Exportuje vše (včetně logických)
-  QByteArray exportAllCSV(char separator,
-                          char decimal,
-                          int precision,
-                          bool onlyInView,
-                          bool includeHidden);
+  QByteArray exportAllCSV(char separator, char decimal, int precision, bool onlyInView, bool includeHidden);
 
   /// Vrátí osu hodnot zadaného kanálu
-  QCPAxis* getAnalogAxis(int chID) const { return analogAxis.at(chID); }
+  QCPAxis *getAnalogAxis(int chID) const { return analogAxis.at(chID); }
 
   /// Fronta kanálů pro interpolování
   QVector<QSharedPointer<QCPGraphDataContainer>> dataToBeInterpolated;
@@ -174,7 +156,7 @@ class MyMainPlot : public MyPlot {
   bool getAutoVRage() const;
   void setAutoVRage(bool newAutoVRage);
 
- private:
+private:
   void redraw();
 
   QTimer plotUpdateTimer;
@@ -186,16 +168,14 @@ class MyMainPlot : public MyPlot {
   void updateMinMaxTimes();
   void reOffsetAndRescaleCH(int chID);
   void reOffsetAndRescaleLogic(int chID);
-  QPair<QVector<double>, QVector<double>> getDataVector(
-      int chID,
-      bool onlyInView = false);
+  QPair<QVector<double>, QVector<double>> getDataVector(int chID, bool onlyInView = false);
   void updateTracerText(int index);
   int currentTracerIndex = -1;
 
   void setLastDataTypeWasPoint(bool newLastDataTypeWasPoint);
 
   int mouseDragChIndex = 0;
-  void setMouseCursorStyle(QMouseEvent* event);
+  void setMouseCursorStyle(QMouseEvent *event);
 
   bool newData = true;
   double minT = 0.0, maxT = 1.0;
@@ -204,17 +184,17 @@ class MyMainPlot : public MyPlot {
 
   int rollingStep = 0;
 
-  QList<QCPAxis*> analogAxis, logicGroupAxis;
+  QList<QCPAxis *> analogAxis, logicGroupAxis;
   QVector<QSharedPointer<QCPGraphDataContainer>> pauseBuffer;
   QVector<ChannelSettings_t> channelSettings;
   QVector<ChannelSettings_t> logicSettings;
-  QVector<QCPItemLine*> zeroLines;
+  QVector<QCPItemLine *> zeroLines;
   PlotStatus::enumPlotStatus plottingStatus = PlotStatus::run;
   bool rollingMode = true;
-  QCPItemLine* triggerLine;
-  QCPGraph* triggerLineCh;
+  QCPItemLine *triggerLine;
+  QCPGraph *triggerLineCh;
   bool triggerLineEnabled = false;
-  QCPItemText* triggerLabel;
+  QCPItemText *triggerLabel;
   enum Mode { free, growing, rolling, empty, free_locked } mode = empty;
   double lastSignalEnd = 0;
   void updateRollingState(double xMax);
@@ -222,15 +202,15 @@ class MyMainPlot : public MyPlot {
 
   bool autoVRage = false;
 
- private slots:
+private slots:
   void update();
   void verticalAxisRangeChanged();
-  void mouseMoved(QMouseEvent* event);
-  void mousePressed(QMouseEvent* event);
+  void mouseMoved(QMouseEvent *event);
+  void mousePressed(QMouseEvent *event);
   void onXRangeChanged(QCPRange newRange, QCPRange oldRange);
   void onYRangeChanged(QCPRange newRange, QCPRange oldRange);
 
- public slots:
+public slots:
   /// Přepne pauzu/běh
   void togglePause();
 
@@ -251,27 +231,20 @@ class MyMainPlot : public MyPlot {
 
   /// Přepíše data v kanálu, pokud je zde jen jeden bod, přidá ho jako bod
   /// (nepřepíše původní).
-  void newDataVector(int chID,
-                     QSharedPointer<QCPGraphDataContainer> data,
-                     bool ignorePause = false);
+  void newDataVector(int chID, QSharedPointer<QCPGraphDataContainer> data, bool ignorePause = false);
 
   /// Přepíše graf interpolace a graf s kanálem který je interpolován
-  void newInterpolatedVector(
-      int chID,
-      QSharedPointer<QCPGraphDataContainer> dataOriginal,
-      QSharedPointer<QCPGraphDataContainer> dataInterpolated,
-      bool dataIsFromInterpolationBuffer);
+  void newInterpolatedVector(int chID, QSharedPointer<QCPGraphDataContainer> dataOriginal, QSharedPointer<QCPGraphDataContainer> dataInterpolated, bool dataIsFromInterpolationBuffer);
 
   /// Vymaže interpolaci kanálu
-  void clearInterpolation(int interpolationID) {
-    graph(INTERPOLATION_CHID(interpolationID))->data()->clear();
-  }
+  void clearInterpolation(int interpolationID) { graph(INTERPOLATION_CHID(interpolationID))->data()->clear(); }
 
   void setVRange(QCPRange range);
+  void setVPos(double mid);
   void setHPos(double mid);
   void setHLen(double len);
 
- signals:
+signals:
   // void updateHPosSlider(double min, double max, int step);
 
   /// Změnil se stav (běží/pauza)
@@ -291,4 +264,4 @@ class MyMainPlot : public MyPlot {
   void autoVRageChanged();
 };
 
-#endif  // MYMAINPLOT_H
+#endif // MYMAINPLOT_H

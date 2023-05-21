@@ -18,52 +18,51 @@
 #include "math/simpleexpressionparser.h"
 #include <QDebug>
 
-MyDoubleSpinBoxWithUnits::MyDoubleSpinBoxWithUnits(QWidget* parent) : QDoubleSpinBox(parent) {
-}
+MyDoubleSpinBoxWithUnits::MyDoubleSpinBoxWithUnits(QWidget *parent) : QDoubleSpinBox(parent) {}
 
-QValidator::State MyDoubleSpinBoxWithUnits::validate(QString& input, int& pos) const {
-    QJSEngine engine;
+QValidator::State MyDoubleSpinBoxWithUnits::validate(QString &input, int &pos) const {
+  Q_UNUSED(pos);
 
-    QString expr = input;
-    if(!suffix().isEmpty())
-        expr = expr.left(expr.lastIndexOf(suffix()));
-    if(expr.trimmed().isEmpty())
-        return QValidator::State::Intermediate;
-    SimpleExpressionParser parser;
-    if(!parser.validate(expr))
-        return QValidator::State::Invalid;
-    bool isOK;
-    (void) parser.evaluate(expr,&isOK);
-    return isOK ? QValidator::State::Acceptable : QValidator::State::Intermediate;
+  QJSEngine engine;
+
+  QString expr = input;
+  if (!suffix().isEmpty())
+    expr = expr.left(expr.lastIndexOf(suffix()));
+  if (expr.trimmed().isEmpty())
+    return QValidator::State::Intermediate;
+  SimpleExpressionParser parser;
+  if (!parser.validate(expr))
+    return QValidator::State::Invalid;
+  bool isOK;
+  (void)parser.evaluate(expr, &isOK);
+  return isOK ? QValidator::State::Acceptable : QValidator::State::Intermediate;
 }
 
 QString MyDoubleSpinBoxWithUnits::textFromValue(double val) const {
-    if (suffix().length() == 0)
-        return (QString::number(val, 'g', 3));
-    if (suffix().length() >= 2) {
-        if (suffix().left(2) == "dB")
-            return (QString::number(val, 'g', 3) + " ");
-    }
+  if (suffix().length() == 0)
+    return (QString::number(val, 'g', 3));
+  if (suffix().length() >= 2) {
+    if (suffix().left(2) == "dB")
+      return (QString::number(val, 'g', 3) + " ");
+  }
 
-    return (floatToNiceString(val, 4, false, false, trimDecimalZeroes));
+  return (floatToNiceString(val, 4, false, false, trimDecimalZeroes));
 }
 
-double MyDoubleSpinBoxWithUnits::valueFromText(const QString& text) const {
-    QString expr = text;
-    SimpleExpressionParser parser;
-    if(!suffix().isEmpty())
-        expr = expr.left(expr.lastIndexOf(suffix()));
-    bool isOK;
-    double newValue = parser.evaluate(expr,&isOK);
-    if(isOK)
-        return newValue;
-    else
-        return value();
+double MyDoubleSpinBoxWithUnits::valueFromText(const QString &text) const {
+  QString expr = text;
+  SimpleExpressionParser parser;
+  if (!suffix().isEmpty())
+    expr = expr.left(expr.lastIndexOf(suffix()));
+  bool isOK;
+  double newValue = parser.evaluate(expr, &isOK);
+  if (isOK)
+    return newValue;
+  else
+    return value();
 }
 
 void MyDoubleSpinBoxWithUnits::setUnit(QString suffix, bool useUnitPrefix) {
-    QDoubleSpinBox::setSuffix(suffix);
-    this->useUnitPrefix = useUnitPrefix;
+  QDoubleSpinBox::setSuffix(suffix);
+  this->useUnitPrefix = useUnitPrefix;
 }
-
-

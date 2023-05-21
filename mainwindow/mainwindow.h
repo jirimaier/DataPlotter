@@ -288,16 +288,13 @@ private slots: // Autoconnect slots
   void on_pushButtonModeFull_clicked();
   void on_doubleSpinBoxRangeHorizontal_valueChanged(double arg1);
   void on_doubleSpinBoxViewCenter_valueChanged(double arg1);
-  void on_horizontalScrollBarHorizontal_sliderMoved(int position);
   void on_dialZoom_valueChanged(int position);
-
   void on_listWidgetCom_itemClicked(QListWidgetItem *item);
-
   void on_pushButtonRollingAutoRange_toggled(bool checked);
-
   void on_pushButtonFFT_Maximize_clicked();
-
   void on_pushButtonXY_Maximize_clicked();
+  void on_verticalScrollBarVertical_valueChanged(int value);
+  void on_horizontalScrollBarHorizontal_valueChanged(int value);
 
 public slots:
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumMessageTarget target);

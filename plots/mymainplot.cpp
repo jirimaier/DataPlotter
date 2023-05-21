@@ -15,7 +15,7 @@
 
 #include "mymainplot.h"
 
-MyMainPlot::MyMainPlot(QWidget* parent) : MyPlot(parent) {
+MyMainPlot::MyMainPlot(QWidget *parent) : MyPlot(parent) {
   xAxis->setSubTicks(false);
   yAxis->setSubTicks(false);
   yAxis->setRange(0, 10, Qt::AlignCenter);
@@ -62,8 +62,7 @@ MyMainPlot::MyMainPlot(QWidget* parent) : MyPlot(parent) {
   dataToBeInterpolated.resize(ANALOG_COUNT + MATH_COUNT);
 
   // Propojení musí být až po skončení inicializace!
-  connect(this->yAxis, SIGNAL(rangeChanged(QCPRange)), this,
-          SLOT(verticalAxisRangeChanged()));
+  connect(this->yAxis, SIGNAL(rangeChanged(QCPRange)), this, SLOT(verticalAxisRangeChanged()));
   connect(&plotUpdateTimer, &QTimer::timeout, this, &MyMainPlot::update);
   plotUpdateTimer.start(30);
 
@@ -81,7 +80,7 @@ void MyMainPlot::initZeroLines() {
   zeroPen.setStyle(Qt::DotLine);
   for (int i = 0; i < ANALOG_COUNT + MATH_COUNT; i++) {
     zeroPen.setColor(channelSettings.at(i).color);
-    QCPItemLine& zeroLine = *zeroLines.at(i);
+    QCPItemLine &zeroLine = *zeroLines.at(i);
     zeroLine.setPen(zeroPen);
     zeroLine.start->setTypeY(QCPItemPosition::ptPlotCoords);
     zeroLine.start->setTypeX(QCPItemPosition::ptViewportRatio);
@@ -133,8 +132,7 @@ void MyMainPlot::updateMinMaxTimes() {
       lasts.append((graph(i)->data()->end() - 1)->key);
     }
   for (int i = 0; i < LOGIC_GROUPS; i++)
-    if (!this->graph(getLogicChannelID(i, 0))->data()->isEmpty() &&
-        logicSettings.at(i).visible) {
+    if (!this->graph(getLogicChannelID(i, 0))->data()->isEmpty() && logicSettings.at(i).visible) {
       int chID = getLogicChannelID(i, 0);
       firsts.append(graph(chID)->data()->begin()->key);
       lasts.append((graph(chID)->data()->end() - 1)->key);
@@ -143,13 +141,10 @@ void MyMainPlot::updateMinMaxTimes() {
     minT = *std::min_element(firsts.begin(), firsts.end());
     maxT = *std::max_element(lasts.begin(), lasts.end());
     if (rollingMode) {
-      setMaxZoomX(
-          QCPRange(minT, maxT + xAxis->range().size()),
-          xRangeUnknown || maxT > maxZoomX.upper || minT < maxZoomX.lower);
+      setMaxZoomX(QCPRange(minT, maxT + xAxis->range().size()), xRangeUnknown || maxT > maxZoomX.upper || minT < maxZoomX.lower);
       updateRollingState(maxT);
     } else {
-      double diff = abs(maxT - maxZoomX.upper) / maxZoomX.upper +
-                    abs(minT - maxZoomX.lower) / maxZoomX.lower;
+      double diff = abs(maxT - maxZoomX.upper) / maxZoomX.upper + abs(minT - maxZoomX.lower) / maxZoomX.lower;
       setMaxZoomX(QCPRange(minT, maxT), xRangeUnknown || diff > 0.1);
       if (!qFuzzyIsNull(diff))
         emit hRangeMaxChanged(maxZoomX);
@@ -174,8 +169,7 @@ void MyMainPlot::updateRollingState(double xMax) {
   } else if (mode == growing) {
     if (xMax > xAxis->range().upper) {
       if (rollingStep) {
-        double newEnd = maxT + static_cast<double>(rollingStep) / 100.0 *
-                                   xAxis->range().size();
+        double newEnd = maxT + static_cast<double>(rollingStep) / 100.0 * xAxis->range().size();
         xAxis->setRange(newEnd - xAxis->range().size(), newEnd);
       } else {
         mode = rolling;
@@ -197,9 +191,7 @@ void MyMainPlot::updateRollingState(double xMax) {
   lastSignalEnd = xMax;
 }
 
-bool MyMainPlot::getAutoVRage() const {
-  return autoVRage;
-}
+bool MyMainPlot::getAutoVRage() const { return autoVRage; }
 
 void MyMainPlot::setAutoVRage(bool newAutoVRage) {
   if (autoVRage == newAutoVRage)
@@ -208,9 +200,7 @@ void MyMainPlot::setAutoVRage(bool newAutoVRage) {
   emit autoVRageChanged();
 }
 
-bool MyMainPlot::getLastDataTypeWasPoint() const {
-  return lastDataTypeWasPoint;
-}
+bool MyMainPlot::getLastDataTypeWasPoint() const { return lastDataTypeWasPoint; }
 
 void MyMainPlot::setLastDataTypeWasPoint(bool newLastDataTypeWasPoint) {
   if (lastDataTypeWasPoint == newLastDataTypeWasPoint)
@@ -220,8 +210,7 @@ void MyMainPlot::setLastDataTypeWasPoint(bool newLastDataTypeWasPoint) {
 }
 
 void MyMainPlot::reOffsetAndRescaleCH(int chID) {
-  double center = (yAxis->range().center() - channelSettings.at(chID).offset) /
-                  channelSettings.at(chID).scale;
+  double center = (yAxis->range().center() - channelSettings.at(chID).offset) / channelSettings.at(chID).scale;
   if (channelSettings.at(chID).inverted)
     center *= (-1);
   double range = yAxis->range().size() / channelSettings.at(chID).scale;
@@ -229,8 +218,7 @@ void MyMainPlot::reOffsetAndRescaleCH(int chID) {
 }
 
 void MyMainPlot::reOffsetAndRescaleLogic(int group) {
-  double center = (yAxis->range().center() - logicSettings.at(group).offset) /
-                  logicSettings.at(group).scale;
+  double center = (yAxis->range().center() - logicSettings.at(group).offset) / logicSettings.at(group).scale;
   if (logicSettings.at(group).inverted)
     center *= (-1);
   double range = yAxis->range().size() / logicSettings.at(group).scale;
@@ -253,14 +241,10 @@ void MyMainPlot::togglePause() {
     resume();
 }
 
-QPair<QVector<double>, QVector<double>> MyMainPlot::getDataVector(
-    int chID,
-    bool onlyInView) {
+QPair<QVector<double>, QVector<double>> MyMainPlot::getDataVector(int chID, bool onlyInView) {
   QVector<double> keys, values;
-  for (QCPGraphDataContainer::iterator it = graph(chID)->data()->begin();
-       it != graph(chID)->data()->end(); it++) {
-    if (!onlyInView || (it->key >= this->xAxis->range().lower &&
-                        it->key <= this->xAxis->range().upper)) {
+  for (QCPGraphDataContainer::iterator it = graph(chID)->data()->begin(); it != graph(chID)->data()->end(); it++) {
+    if (!onlyInView || (it->key >= this->xAxis->range().lower && it->key <= this->xAxis->range().upper)) {
       keys.append(it->key);
       if (IS_LOGIC_CH(chID))
         values.append((int)round(it->value) % 3);
@@ -275,8 +259,7 @@ void MyMainPlot::updateTracerText(int index) {
   QString tracerTextStr;
   tracerTextStr.append(" " + getChName(index) + "\n");
   if (IS_LOGIC_CH(index)) {
-    tracerTextStr.append(
-        QString("=%1, ").arg((uint32_t)(1 << ChID_TO_LOGIC_GROUP_BIT(index))));
+    tracerTextStr.append(QString("=%1, ").arg((uint32_t)(1 << ChID_TO_LOGIC_GROUP_BIT(index))));
     if ((int)tracer->position->value() % 3)
       tracerTextStr.append("HIGH");
     else
@@ -284,20 +267,15 @@ void MyMainPlot::updateTracerText(int index) {
     tracerTextStr.append("\n");
   } else {
     if (unitTickerY->usePrefix)
-      tracerTextStr.append(
-          floatToNiceString(tracer->position->value(), 4, true, false) +
-          getYUnit() + "\n");
+      tracerTextStr.append(floatToNiceString(tracer->position->value(), 4, true, false) + getYUnit() + "\n");
     else
-      tracerTextStr.append(QString::number(tracer->position->value(), 'g', 4) +
-                           " " + getYUnit() + "\n");
+      tracerTextStr.append(QString::number(tracer->position->value(), 'g', 4) + " " + getYUnit() + "\n");
   }
 
   if (getXUnit().isEmpty())
     tracerTextStr.append(QString::number(tracer->position->key(), 'g', 4));
   else
-    tracerTextStr.append(
-        floatToNiceString(tracer->position->key(), 4, true, false) +
-        getXUnit());
+    tracerTextStr.append(floatToNiceString(tracer->position->key(), 4, true, false) + getXUnit());
 
   tracerText->setText(tracerTextStr);
   checkIfTracerTextFits();
@@ -336,7 +314,7 @@ void MyMainPlot::setLogicStyle(int group, int style) {
       this->graph(chID)->setScatterStyle(QCPScatterStyle::ssNone);
       this->graph(chID)->setLineStyle(QCPGraph::lsStepCenter);
       this->graph(chID)->setBrush(logicSettings.at(group).color);
-    } else {  // Logic line no-fill
+    } else { // Logic line no-fill
       this->graph(chID)->setScatterStyle(QCPScatterStyle::ssNone);
       this->graph(chID)->setLineStyle(QCPGraph::lsLine);
       this->graph(chID)->setBrush(Qt::NoBrush);
@@ -349,8 +327,7 @@ void MyMainPlot::setLogicColor(int group, QColor color) {
   logicSettings[group].color = color;
   for (int bit = 0; bit < LOGIC_BITS; bit++) {
     this->graph(getLogicChannelID(group, bit))->setPen(QPen(color));
-    if (logicSettings.at(group).style == GraphStyle::logicFilled ||
-        logicSettings.at(group).style == GraphStyle::logicSquareFilled) {
+    if (logicSettings.at(group).style == GraphStyle::logicFilled || logicSettings.at(group).style == GraphStyle::logicSquareFilled) {
       this->graph(getLogicChannelID(group, bit))->setBrush(color);
     }
   }
@@ -398,13 +375,11 @@ int MyMainPlot::getLogicBitsUsed(int group) {
   return LOGIC_BITS;
 }
 
-QPair<unsigned int, unsigned int> MyMainPlot::getChVisibleSamplesRange(
-    int chID) {
+QPair<unsigned int, unsigned int> MyMainPlot::getChVisibleSamplesRange(int chID) {
   if (graph(chID)->data()->isEmpty())
     return (QPair<unsigned int, unsigned int>(0, 0));
   unsigned int min = graph(chID)->findBegin(xAxis->range().lower, false);
-  unsigned int max = graph(chID)->findEnd(xAxis->range().upper, false) -
-                     1;  // end je za posledním, snížit o 1
+  unsigned int max = graph(chID)->findEnd(xAxis->range().upper, false) - 1; // end je za posledním, snížit o 1
   return (QPair<unsigned int, unsigned int>(min, max));
 }
 
@@ -416,7 +391,7 @@ void MyMainPlot::setChStyle(int chID, int style) {
   } else if (style == GraphStyle::point) {
     this->graph(chID)->setScatterStyle(POINT_STYLE);
     this->graph(chID)->setLineStyle(QCPGraph::lsNone);
-  } else {  // Line
+  } else { // Line
     this->graph(chID)->setScatterStyle(QCPScatterStyle::ssNone);
     if (channelSettings.at(chID).interpolate)
       this->graph(chID)->setLineStyle(QCPGraph::lsNone);
@@ -431,8 +406,7 @@ void MyMainPlot::setChColor(int chID, QColor color) {
   zeroLines.at(chID)->setPen(QPen(color, 1, Qt::DashLine));
   this->graph(chID)->setPen(QPen(color));
   this->graph(INTERPOLATION_CHID(chID))->setPen(QPen(color));
-  if (channelSettings.at(chID).style == GraphStyle::logicFilled ||
-      channelSettings.at(chID).style == GraphStyle::logicSquareFilled)
+  if (channelSettings.at(chID).style == GraphStyle::logicFilled || channelSettings.at(chID).style == GraphStyle::logicSquareFilled)
     this->graph(chID)->setBrush(color);
   this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
 }
@@ -461,17 +435,14 @@ void MyMainPlot::setChInvert(int chID, bool inverted) {
 
 void MyMainPlot::setChInterpolate(int chID, bool enabled) {
   channelSettings[chID].interpolate = enabled;
-  graph(INTERPOLATION_CHID(chID))
-      ->setVisible(enabled && channelSettings.at(chID).visible);
-  setChStyle(chID, channelSettings.at(chID).style);  // Updatuje styl čáry
+  graph(INTERPOLATION_CHID(chID))->setVisible(enabled && channelSettings.at(chID).visible);
+  setChStyle(chID, channelSettings.at(chID).style); // Updatuje styl čáry
 }
 
 void MyMainPlot::setChVisible(int chID, bool visible) {
   channelSettings[chID].visible = visible;
-  graph(INTERPOLATION_CHID(chID))
-      ->setVisible(visible && channelSettings.at(chID).interpolate);
-  zeroLines.at(chID)->setVisible(visible &&
-                                 channelSettings.at(chID).offset != 0);
+  graph(INTERPOLATION_CHID(chID))->setVisible(visible && channelSettings.at(chID).interpolate);
+  zeroLines.at(chID)->setVisible(visible && channelSettings.at(chID).offset != 0);
   this->graph(chID)->setVisible(visible);
   this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
   if (triggerLineCh == graph(chID))
@@ -509,8 +480,7 @@ void MyMainPlot::redraw() {
 
 void MyMainPlot::pause() {
   for (int i = 0; i < ALL_COUNT; i++)
-    pauseBuffer.append(QSharedPointer<QCPGraphDataContainer>(
-        new QCPGraphDataContainer(*graph(i)->data())));
+    pauseBuffer.append(QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer(*graph(i)->data())));
   plottingStatus = PlotStatus::pause;
   emit showPlotStatus(plottingStatus);
 }
@@ -524,16 +494,13 @@ void MyMainPlot::clearLogicGroup(int number, int fromBit) {
 }
 
 void MyMainPlot::clearCh(int chID) {
-  this->graph(chID)->data().data()->clear();  // Odstraní kanál
+  this->graph(chID)->data().data()->clear(); // Odstraní kanál
   if (chID < ANALOG_COUNT + MATH_COUNT)
-    this->graph(INTERPOLATION_CHID(chID))
-        ->data()
-        .data()
-        ->clear();  // Odstraní graf interpolace
+    this->graph(INTERPOLATION_CHID(chID))->data().data()->clear(); // Odstraní graf interpolace
   if (plottingStatus == PlotStatus::pause)
-    pauseBuffer.at(chID)->clear();  // Vymaže i z paměti pro pauzu (jinak by se
-                                    // po ukončení pauzy načetl zpět)
-  newData = true;  // Aby se překreslil graf
+    pauseBuffer.at(chID)->clear(); // Vymaže i z paměti pro pauzu (jinak by se
+                                   // po ukončení pauzy načetl zpět)
+  newData = true;                  // Aby se překreslil graf
 }
 
 void MyMainPlot::resetChannels() {
@@ -554,14 +521,9 @@ void MyMainPlot::setShiftStep(int step) {
     mode = growing;
 }
 
-void MyMainPlot::newDataVector(int chID,
-                               QSharedPointer<QCPGraphDataContainer> data,
-                               bool ignorePause) {
+void MyMainPlot::newDataVector(int chID, QSharedPointer<QCPGraphDataContainer> data, bool ignorePause) {
   if (data->size() == 1) {
-    newDataPoint(
-        chID, data->at(0)->key, data->at(0)->value,
-        data->at(0)->key >
-            graph(chID)->data()->at(graph(chID)->data()->size() - 1)->key);
+    newDataPoint(chID, data->at(0)->key, data->at(0)->value, data->at(0)->key > graph(chID)->data()->at(graph(chID)->data()->size() - 1)->key);
     return;
   }
   if (plottingStatus != PlotStatus::pause || ignorePause) {
@@ -579,11 +541,7 @@ void MyMainPlot::newDataVector(int chID,
   setLastDataTypeWasPoint(false);
 }
 
-void MyMainPlot::newInterpolatedVector(
-    int chID,
-    QSharedPointer<QCPGraphDataContainer> dataOriginal,
-    QSharedPointer<QCPGraphDataContainer> dataInterpolated,
-    bool dataIsFromInterpolationBuffer) {
+void MyMainPlot::newInterpolatedVector(int chID, QSharedPointer<QCPGraphDataContainer> dataOriginal, QSharedPointer<QCPGraphDataContainer> dataInterpolated, bool dataIsFromInterpolationBuffer) {
   if (dataIsFromInterpolationBuffer)
     this->graph(chID)->setData(dataOriginal);
   this->graph(INTERPOLATION_CHID(chID))->setData(dataInterpolated);
@@ -591,13 +549,18 @@ void MyMainPlot::newInterpolatedVector(
   setLastDataTypeWasPoint(false);
 }
 
-void MyMainPlot::setVRange(QCPRange range) {
-  setMaxZoomY(range, true);
+void MyMainPlot::setVRange(QCPRange range) { setMaxZoomY(range, true); }
+
+void MyMainPlot::setVPos(double mid) {
+  double rangeLen = yAxis->range().size();
+  yAxis->setRange(mid - rangeLen / 2, mid + rangeLen / 2);
 }
 
 void MyMainPlot::setHPos(double mid) {
   double rangeLen = xAxis->range().size();
   xAxis->setRange(mid - rangeLen / 2, mid + rangeLen / 2);
+  if (rollingMode)
+    updateRollingState(maxT);
 }
 
 void MyMainPlot::setHLen(double len) {
@@ -613,6 +576,7 @@ void MyMainPlot::setHLen(double len) {
         setMaxZoomX(QCPRange(minT, minT + len), true);
       }
     }
+    updateRollingState(maxT);
   } else {
     auto range = xAxis->range();
     double ctr = range.center();
@@ -622,10 +586,7 @@ void MyMainPlot::setHLen(double len) {
   }
 }
 
-void MyMainPlot::newDataPoint(int chID,
-                              double time,
-                              double value,
-                              bool append) {
+void MyMainPlot::newDataPoint(int chID, double time, double value, bool append) {
   if (plottingStatus != PlotStatus::pause) {
     if (!append) {
       this->graph(chID)->data()->clear();
@@ -639,55 +600,34 @@ void MyMainPlot::newDataPoint(int chID,
     pauseBuffer.at(chID)->add(QCPGraphData(time, value));
   }
   if (autoVRage) {
-    double absoluteValueCoord =
-        yAxis->pixelToCoord(graph(chID)->valueAxis()->coordToPixel(value));
+    double absoluteValueCoord = yAxis->pixelToCoord(graph(chID)->valueAxis()->coordToPixel(value));
     if (absoluteValueCoord > maxZoomY.upper) {
-      setMaxZoomY(QCPRange(maxZoomY.lower, ceilToNiceValue(absoluteValueCoord)),
-                  qFuzzyCompare(yAxis->range().lower, maxZoomY.lower) &&
-                      qFuzzyCompare(yAxis->range().upper, maxZoomY.upper));
+      setMaxZoomY(QCPRange(maxZoomY.lower, ceilToNiceValue(absoluteValueCoord)), qFuzzyCompare(yAxis->range().lower, maxZoomY.lower) && qFuzzyCompare(yAxis->range().upper, maxZoomY.upper));
       emit vRangeMaxChanged(maxZoomY);
     } else if (absoluteValueCoord < maxZoomY.lower) {
-      setMaxZoomY(
-          QCPRange(floorToNiceValue(absoluteValueCoord), maxZoomY.upper),
-          qFuzzyCompare(yAxis->range().lower, maxZoomY.lower) &&
-              qFuzzyCompare(yAxis->range().upper, maxZoomY.upper));
+      setMaxZoomY(QCPRange(floorToNiceValue(absoluteValueCoord), maxZoomY.upper), qFuzzyCompare(yAxis->range().lower, maxZoomY.lower) && qFuzzyCompare(yAxis->range().upper, maxZoomY.upper));
       emit vRangeMaxChanged(maxZoomY);
     }
   }
   setLastDataTypeWasPoint(true);
 }
 
-QByteArray MyMainPlot::exportChannelCSV(char separator,
-                                        char decimal,
-                                        int chID,
-                                        int precision,
-                                        bool onlyInView) {
+QByteArray MyMainPlot::exportChannelCSV(char separator, char decimal, int chID, int precision, bool onlyInView) {
   if (graph(chID)->data()->isEmpty())
     return "";
-  QByteArray output =
-      (QString("time%1%2\n").arg(separator).arg(getChName(chID))).toUtf8();
-  for (QCPGraphDataContainer::iterator it = graph(chID)->data()->begin();
-       it != graph(chID)->data()->end(); it++) {
-    if (!onlyInView || (it->key >= this->xAxis->range().lower &&
-                        it->key <= this->xAxis->range().upper)) {
-      output.append(QString::number(it->key, 'f', precision)
-                        .replace('.', decimal)
-                        .toUtf8());
+  QByteArray output = (QString("time%1%2\n").arg(separator).arg(getChName(chID))).toUtf8();
+  for (QCPGraphDataContainer::iterator it = graph(chID)->data()->begin(); it != graph(chID)->data()->end(); it++) {
+    if (!onlyInView || (it->key >= this->xAxis->range().lower && it->key <= this->xAxis->range().upper)) {
+      output.append(QString::number(it->key, 'f', precision).replace('.', decimal).toUtf8());
       output.append(separator);
-      output.append(QString::number(it->value, 'f', precision)
-                        .replace('.', decimal)
-                        .toUtf8());
+      output.append(QString::number(it->value, 'f', precision).replace('.', decimal).toUtf8());
       output.append('\n');
     }
   }
   return output;
 }
 
-QByteArray MyMainPlot::exportLogicCSV(char separator,
-                                      char decimal,
-                                      int group,
-                                      int precision,
-                                      bool onlyInView) {
+QByteArray MyMainPlot::exportLogicCSV(char separator, char decimal, int group, int precision, bool onlyInView) {
   int bits = getLogicBitsUsed(group);
   if (bits == 0)
     return "";
@@ -701,17 +641,12 @@ QByteArray MyMainPlot::exportLogicCSV(char separator,
   output.append('\n');
   for (int i = 0; i < graph(getLogicChannelID(group, 0))->dataCount(); i++) {
     double time = graph(getLogicChannelID(group, 0))->data()->at(i)->key;
-    if (!onlyInView || (time >= this->xAxis->range().lower &&
-                        time <= this->xAxis->range().upper)) {
+    if (!onlyInView || (time >= this->xAxis->range().lower && time <= this->xAxis->range().upper)) {
       output.append(QString::number(time, 'f', precision).toUtf8());
       for (int bit = 0; bit < bits; bit++) {
         output.append(separator);
         int chID = getLogicChannelID(group, bit);
-        output.append(
-            QString((((int)round(graph(chID)->data()->at(i)->value)) % 3) ? "1"
-                                                                          : "0")
-                .replace('.', decimal)
-                .toUtf8());
+        output.append(QString((((int)round(graph(chID)->data()->at(i)->value)) % 3) ? "1" : "0").replace('.', decimal).toUtf8());
       }
       output.append('\n');
     }
@@ -719,17 +654,12 @@ QByteArray MyMainPlot::exportLogicCSV(char separator,
   return output;
 }
 
-QByteArray MyMainPlot::exportAllCSV(char separator,
-                                    char decimal,
-                                    int precision,
-                                    bool onlyInView,
-                                    bool includeHidden) {
+QByteArray MyMainPlot::exportAllCSV(char separator, char decimal, int precision, bool onlyInView, bool includeHidden) {
   QByteArray output = "";
   QVector<QPair<QVector<double>, QVector<double>>> channels;
   bool firstNonEmpty = true;
   for (int i = 0; i < ALL_COUNT; i++) {
-    if (!graph(i)->data()->isEmpty() &&
-        (graph(i)->visible() || includeHidden)) {
+    if (!graph(i)->data()->isEmpty() && (graph(i)->visible() || includeHidden)) {
       if (firstNonEmpty) {
         firstNonEmpty = false;
         output.append(tr("time").toUtf8());
@@ -740,9 +670,7 @@ QByteArray MyMainPlot::exportAllCSV(char separator,
     }
   }
   QList<double> times;
-  for (QVector<QPair<QVector<double>, QVector<double>>>::iterator it =
-           channels.begin();
-       it != channels.end(); it++)
+  for (QVector<QPair<QVector<double>, QVector<double>>>::iterator it = channels.begin(); it != channels.end(); it++)
     foreach (double time, it->first)
       if (!times.contains(time))
         times.append(time);
@@ -750,17 +678,12 @@ QByteArray MyMainPlot::exportAllCSV(char separator,
 
   foreach (double time, times) {
     output.append('\n');
-    output.append(
-        QString::number(time, 'f', precision).replace('.', decimal).toUtf8());
-    for (QVector<QPair<QVector<double>, QVector<double>>>::iterator it =
-             channels.begin();
-         it != channels.end(); it++) {
+    output.append(QString::number(time, 'f', precision).replace('.', decimal).toUtf8());
+    for (QVector<QPair<QVector<double>, QVector<double>>>::iterator it = channels.begin(); it != channels.end(); it++) {
       output.append(separator);
       if (!it->first.isEmpty())
         if (it->first.first() == time) {
-          output.append(QString::number(it->second.first(), 'f', precision)
-                            .replace('.', decimal)
-                            .toUtf8());
+          output.append(QString::number(it->second.first(), 'f', precision).replace('.', decimal).toUtf8());
           it->first.pop_front();
           it->second.pop_front();
         }
@@ -769,7 +692,7 @@ QByteArray MyMainPlot::exportAllCSV(char separator,
   return output;
 }
 
-void MyMainPlot::mouseMoved(QMouseEvent* event) {
+void MyMainPlot::mouseMoved(QMouseEvent *event) {
   if (mouseDrag == MouseDrag::nothing) {
     // Nic není taženo, zobrazí tracer
 
@@ -779,8 +702,7 @@ void MyMainPlot::mouseMoved(QMouseEvent* event) {
     unsigned int nearestDistance = TRACER_MOUSE_DISTANCE;
     for (int i = 0; i < ALL_COUNT; i++) {
       if (graph(i)->visible()) {
-        unsigned int distance =
-            (unsigned int)graph(i)->selectTest(event->pos(), false);
+        unsigned int distance = (unsigned int)graph(i)->selectTest(event->pos(), false);
         if (distance < nearestDistance) {
           nearestIndex = i;
           nearestDistance = distance;
@@ -793,8 +715,7 @@ void MyMainPlot::mouseMoved(QMouseEvent* event) {
       nearestDistance = TRACER_MOUSE_DISTANCE;
       for (int i = 0; i < ANALOG_COUNT + MATH_COUNT; i++) {
         if (graph(INTERPOLATION_CHID(i))->visible()) {
-          unsigned int distance = (unsigned int)graph(INTERPOLATION_CHID(i))
-                                      ->selectTest(event->pos(), false);
+          unsigned int distance = (unsigned int)graph(INTERPOLATION_CHID(i))->selectTest(event->pos(), false);
           if (distance < nearestDistance) {
             nearestIndex = i;
             nearestDistance = distance;
@@ -803,7 +724,7 @@ void MyMainPlot::mouseMoved(QMouseEvent* event) {
       }
     }
 
-    if (nearestIndex != -1) {  // Myš je na grafu
+    if (nearestIndex != -1) { // Myš je na grafu
       tracer->setVisible(true);
       tracerText->setVisible(true);
       tracer->setGraph(graph(nearestIndex));
@@ -811,8 +732,7 @@ void MyMainPlot::mouseMoved(QMouseEvent* event) {
       tracer->setPoint(event->pos());
       updateTracerText(nearestIndex);
       currentTracerIndex = nearestIndex;
-      this->QWidget::setCursor(
-          defaultMouseCursor);  // Cursor myši, ne ten grafový
+      this->QWidget::setCursor(defaultMouseCursor); // Cursor myši, ne ten grafový
     } else {
       if (tracer->visible())
         hideTracer();
@@ -822,42 +742,27 @@ void MyMainPlot::mouseMoved(QMouseEvent* event) {
     if (tracer->visible())
       hideTracer();
 
-    if (mouseDrag == MouseDrag::zeroline) {  // Je tažen offset
+    if (mouseDrag == MouseDrag::zeroline) { // Je tažen offset
       setChOffset(mouseDragChIndex, yAxis->pixelToCoord(event->pos().y()));
       emit offsetChangedByMouse(mouseDragChIndex);
     } else if (mouseDrag == MouseDrag::cursorY1)
-      emit moveValueCursor(Cursors::Cursor1,
-                           cur1YAxis->pixelToCoord(event->pos().y()));
+      emit moveValueCursor(Cursors::Cursor1, cur1YAxis->pixelToCoord(event->pos().y()));
     else if (mouseDrag == MouseDrag::cursorY2)
-      emit moveValueCursor(Cursors::Cursor2,
-                           cur2YAxis->pixelToCoord(event->pos().y()));
+      emit moveValueCursor(Cursors::Cursor2, cur2YAxis->pixelToCoord(event->pos().y()));
     else if (mouseDrag == MouseDrag::cursorX1)
-      emit moveTimeCursor(
-          Cursors::Cursor1,
-          cur1Graph == -1
-              ? 0
-              : keyToNearestSample(graph(cur1Graph),
-                                   xAxis->pixelToCoord(event->pos().x())),
-          xAxis->pixelToCoord(event->pos().x()));
+      emit moveTimeCursor(Cursors::Cursor1, cur1Graph == -1 ? 0 : keyToNearestSample(graph(cur1Graph), xAxis->pixelToCoord(event->pos().x())), xAxis->pixelToCoord(event->pos().x()));
     else if (mouseDrag == MouseDrag::cursorX2)
-      emit moveTimeCursor(
-          Cursors::Cursor2,
-          cur2Graph == -1
-              ? 0
-              : keyToNearestSample(graph(cur2Graph),
-                                   xAxis->pixelToCoord(event->pos().x())),
-          xAxis->pixelToCoord(event->pos().x()));
+      emit moveTimeCursor(Cursors::Cursor2, cur2Graph == -1 ? 0 : keyToNearestSample(graph(cur2Graph), xAxis->pixelToCoord(event->pos().x())), xAxis->pixelToCoord(event->pos().x()));
   }
 }
 
-void MyMainPlot::mousePressed(QMouseEvent* event) {
+void MyMainPlot::mousePressed(QMouseEvent *event) {
   // Kanál
   int nearestIndex = -1;
   unsigned int nearestDistance = TRACER_MOUSE_DISTANCE;
   for (int i = 0; i < ALL_COUNT; i++) {
     if (graph(i)->visible()) {
-      unsigned int distance =
-          (unsigned int)graph(i)->selectTest(event->pos(), false);
+      unsigned int distance = (unsigned int)graph(i)->selectTest(event->pos(), false);
       if (distance < nearestDistance) {
         nearestIndex = i;
         nearestDistance = distance;
@@ -870,8 +775,7 @@ void MyMainPlot::mousePressed(QMouseEvent* event) {
     nearestDistance = PLOT_ELEMENTS_MOUSE_DISTANCE;
     for (int i = 0; i < ANALOG_COUNT + MATH_COUNT; i++) {
       if (graph(INTERPOLATION_CHID(i))->visible()) {
-        unsigned int distance = (unsigned int)graph(INTERPOLATION_CHID(i))
-                                    ->selectTest(event->pos(), false);
+        unsigned int distance = (unsigned int)graph(INTERPOLATION_CHID(i))->selectTest(event->pos(), false);
         if (distance < nearestDistance) {
           nearestIndex = i;
           nearestDistance = distance;
@@ -886,8 +790,7 @@ void MyMainPlot::mousePressed(QMouseEvent* event) {
     tracer->setPoint(event->pos());
     tracer->updatePosition();
     if (IS_LOGIC_CH(nearestIndex))
-      nearestIndex =
-          LOGIC_GROUP_TO_CH_LIST_INDEX(ChID_TO_LOGIC_GROUP(nearestIndex));
+      nearestIndex = LOGIC_GROUP_TO_CH_LIST_INDEX(ChID_TO_LOGIC_GROUP(nearestIndex));
     if (event->button() == Qt::RightButton) {
       mouseDrag = MouseDrag::cursorX2;
       this->setInteraction(QCP::iRangeDrag, false);
@@ -903,11 +806,9 @@ void MyMainPlot::mousePressed(QMouseEvent* event) {
   // Kursory svislé
   unsigned int cur1dist = UINT_MAX, cur2dist = UINT_MAX;
   if (cursorsKey.at(Cursors::Cursor1)->visible())
-    cur1dist = (unsigned int)cursorsKey.at(Cursors::Cursor1)
-                   ->selectTest(event->pos(), false);
+    cur1dist = (unsigned int)cursorsKey.at(Cursors::Cursor1)->selectTest(event->pos(), false);
   if (cursorsKey.at(Cursors::Cursor2)->visible())
-    cur2dist = (unsigned int)cursorsKey.at(Cursors::Cursor2)
-                   ->selectTest(event->pos(), false);
+    cur2dist = (unsigned int)cursorsKey.at(Cursors::Cursor2)->selectTest(event->pos(), false);
   if (cur1dist <= cur2dist) {
     if (cur1dist < PLOT_ELEMENTS_MOUSE_DISTANCE) {
       mouseDrag = MouseDrag::cursorX1;
@@ -923,11 +824,9 @@ void MyMainPlot::mousePressed(QMouseEvent* event) {
   // Kursory vodorovné
   cur1dist = UINT_MAX, cur2dist = UINT_MAX;
   if (cursorsVal.at(Cursors::Cursor1)->visible())
-    cur1dist = (unsigned int)cursorsVal.at(Cursors::Cursor1)
-                   ->selectTest(event->pos(), false);
+    cur1dist = (unsigned int)cursorsVal.at(Cursors::Cursor1)->selectTest(event->pos(), false);
   if (cursorsVal.at(Cursors::Cursor2)->visible())
-    cur2dist = (unsigned int)cursorsVal.at(Cursors::Cursor2)
-                   ->selectTest(event->pos(), false);
+    cur2dist = (unsigned int)cursorsVal.at(Cursors::Cursor2)->selectTest(event->pos(), false);
   if (cur1dist <= cur2dist) {
     if (cur1dist < PLOT_ELEMENTS_MOUSE_DISTANCE) {
       mouseDrag = MouseDrag::cursorY1;
@@ -945,8 +844,7 @@ void MyMainPlot::mousePressed(QMouseEvent* event) {
   nearestDistance = PLOT_ELEMENTS_MOUSE_DISTANCE;
   for (int i = 0; i < zeroLines.count(); i++) {
     if (zeroLines.at(i)->visible() || isChUsed(i)) {
-      unsigned int distance =
-          (unsigned int)zeroLines.at(i)->selectTest(event->pos(), false);
+      unsigned int distance = (unsigned int)zeroLines.at(i)->selectTest(event->pos(), false);
       if (distance < nearestDistance) {
         nearestIndex = i;
         nearestDistance = distance;
@@ -973,50 +871,42 @@ void MyMainPlot::onYRangeChanged(QCPRange newRange, QCPRange oldRange) {
   emit vRangeChanged(yAxis->range());
 }
 
-void MyMainPlot::setMouseCursorStyle(QMouseEvent* event) {
+void MyMainPlot::setMouseCursorStyle(QMouseEvent *event) {
   // Kursory svislé
   unsigned int cur1dist = UINT_MAX, cur2dist = UINT_MAX;
   if (cursorsKey.at(Cursors::Cursor1)->visible())
-    cur1dist = (unsigned int)cursorsKey.at(Cursors::Cursor1)
-                   ->selectTest(event->pos(), false);
+    cur1dist = (unsigned int)cursorsKey.at(Cursors::Cursor1)->selectTest(event->pos(), false);
   if (cursorsKey.at(Cursors::Cursor2)->visible())
-    cur2dist = (unsigned int)cursorsKey.at(Cursors::Cursor2)
-                   ->selectTest(event->pos(), false);
-  if (cur1dist < PLOT_ELEMENTS_MOUSE_DISTANCE ||
-      cur2dist < PLOT_ELEMENTS_MOUSE_DISTANCE) {
-    this->QWidget::setCursor(Qt::SizeHorCursor);  // Cursor myši, ne ten grafový
+    cur2dist = (unsigned int)cursorsKey.at(Cursors::Cursor2)->selectTest(event->pos(), false);
+  if (cur1dist < PLOT_ELEMENTS_MOUSE_DISTANCE || cur2dist < PLOT_ELEMENTS_MOUSE_DISTANCE) {
+    this->QWidget::setCursor(Qt::SizeHorCursor); // Cursor myši, ne ten grafový
     return;
   }
 
   // Kursory vodorovné
   cur1dist = UINT_MAX, cur2dist = UINT_MAX;
   if (cursorsVal.at(Cursors::Cursor1)->visible())
-    cur1dist = (unsigned int)cursorsVal.at(Cursors::Cursor1)
-                   ->selectTest(event->pos(), false);
+    cur1dist = (unsigned int)cursorsVal.at(Cursors::Cursor1)->selectTest(event->pos(), false);
   if (cursorsVal.at(Cursors::Cursor2)->visible())
-    cur2dist = (unsigned int)cursorsVal.at(Cursors::Cursor2)
-                   ->selectTest(event->pos(), false);
-  if (cur1dist < PLOT_ELEMENTS_MOUSE_DISTANCE ||
-      cur2dist < PLOT_ELEMENTS_MOUSE_DISTANCE) {
-    this->QWidget::setCursor(Qt::SizeVerCursor);  // Cursor myši, ne ten grafový
+    cur2dist = (unsigned int)cursorsVal.at(Cursors::Cursor2)->selectTest(event->pos(), false);
+  if (cur1dist < PLOT_ELEMENTS_MOUSE_DISTANCE || cur2dist < PLOT_ELEMENTS_MOUSE_DISTANCE) {
+    this->QWidget::setCursor(Qt::SizeVerCursor); // Cursor myši, ne ten grafový
     return;
   }
 
   // Offset
   for (int i = 0; i < zeroLines.count(); i++) {
     if (zeroLines.at(i)->visible() || isChUsed(i)) {
-      unsigned int distance =
-          (unsigned int)zeroLines.at(i)->selectTest(event->pos(), false);
+      unsigned int distance = (unsigned int)zeroLines.at(i)->selectTest(event->pos(), false);
       if (distance < PLOT_ELEMENTS_MOUSE_DISTANCE) {
-        this->QWidget::setCursor(
-            Qt::SizeVerCursor);  // Cursor myši, ne ten grafový
+        this->QWidget::setCursor(Qt::SizeVerCursor); // Cursor myši, ne ten grafový
         return;
       }
     }
   }
 
   // Nic
-  this->QWidget::setCursor(defaultMouseCursor);  // Cursor myši, ne ten grafový
+  this->QWidget::setCursor(defaultMouseCursor); // Cursor myši, ne ten grafový
 }
 
 void MyMainPlot::setRollingMode(bool newRollingMode) {
@@ -1032,14 +922,8 @@ void MyMainPlot::setRollingMode(bool newRollingMode) {
   emit vRangeChanged(yAxis->range());
 }
 
-bool MyMainPlot::getRollingMode() const {
-  return rollingMode;
-}
+bool MyMainPlot::getRollingMode() const { return rollingMode; }
 
-double MyMainPlot::getMaxT() const {
-  return maxT;
-}
+double MyMainPlot::getMaxT() const { return maxT; }
 
-double MyMainPlot::getMinT() const {
-  return minT;
-}
+double MyMainPlot::getMinT() const { return minT; }

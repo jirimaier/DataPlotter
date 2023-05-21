@@ -77,6 +77,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
   newItem->setText(tr("Simulated"));
   newItem->setData(Qt::UserRole, "~SPECIAL~SIM");
   ui->listWidgetCom->addItem(newItem);
+
+  auto newItem2 = new QListWidgetItem();
+  newItem2->setText(tr("Telnet"));
+  newItem2->setData(Qt::UserRole, "~SPECIAL~TELNET");
+  ui->listWidgetCom->addItem(newItem2);
 }
 
 void MainWindow::closeEvent(QCloseEvent *event) {
@@ -793,14 +798,8 @@ void MainWindow::lastDataTypeWasPointChanged(bool wasPoint) {
   }
 }
 
-void MainWindow::on_pushButtonRollingAutoRange_toggled(bool checked) { ui->plot->setAutoVRage(checked); }
-
 void MainWindow::plotMaximizeButtonClicked(QString id) {
   setPlotLayout(hasMaximizedPlot ? "all" : id);
   ui->pushButtonFFT_Maximize->setIcon(hasMaximizedPlot ? iconUnMaximize : iconMaximize);
   ui->pushButtonXY_Maximize->setIcon(hasMaximizedPlot ? iconUnMaximize : iconMaximize);
 }
-
-void MainWindow::on_pushButtonFFT_Maximize_clicked() { plotMaximizeButtonClicked("fft"); }
-
-void MainWindow::on_pushButtonXY_Maximize_clicked() { plotMaximizeButtonClicked("xy"); }

@@ -1,11 +1,11 @@
 #ifndef MANUALINPUTDIALOG_H
 #define MANUALINPUTDIALOG_H
 
-#include <QDialog>
 #include "global.h"
 #include "math/variableexpressionparser.h"
 #include "qicon.h"
 #include "qtimer.h"
+#include <QDialog>
 
 namespace Ui {
 class ManualInputDialog;
@@ -14,28 +14,31 @@ class ManualInputDialog;
 class ManualInputDialog : public QDialog {
   Q_OBJECT
 
- public:
-  explicit ManualInputDialog(QWidget* parent = nullptr);
+public:
+  explicit ManualInputDialog(QWidget *parent = nullptr);
   ~ManualInputDialog();
 
-  Ui::ManualInputDialog* getUi() const;
+  Ui::ManualInputDialog *getUi() const;
 
- private slots:
+public slots:
+  void stopAll();
+
+private slots:
   void on_doubleSpinBoxRollingFreq_valueChanged(double arg1);
   void on_pushButtonRolling_clicked();
   void rollingDataTimerRoutine();
   void on_tableWidgetRollingSetup_cellChanged(int row, int column);
   void on_pushButtonRollingResetTime_clicked();
 
- signals:
+signals:
   void sendManualInput(QByteArray bytes);
 
- private:
-  Ui::ManualInputDialog* ui;
+private:
+  Ui::ManualInputDialog *ui;
   QTimer rollingTimer;
   QIcon iconRun;
   QIcon iconPause;
-  QList<VariableExpressionParser*> rollingChannelEvaluators;
+  QList<VariableExpressionParser *> rollingChannelEvaluators;
   double rollingTimestamp = 0;
   QJSEngine rollingEngine;
 
@@ -43,4 +46,4 @@ class ManualInputDialog : public QDialog {
   void initRollingTable();
 };
 
-#endif  // MANUALINPUTDIALOG_H
+#endif // MANUALINPUTDIALOG_H
