@@ -66,3 +66,23 @@ void MyDoubleSpinBoxWithUnits::setUnit(QString suffix, bool useUnitPrefix) {
   QDoubleSpinBox::setSuffix(suffix);
   this->useUnitPrefix = useUnitPrefix;
 }
+
+void MyDoubleSpinBoxWithUnits::showEvent(QShowEvent *event) {
+  // Call the base class implementation
+  QWidget::showEvent(event);
+
+  setDecimals(12);
+  if (!qFuzzyIsNull(maximum())) {
+    if (maximum() > 0)
+      setMaximum(1e30);
+    else
+      setMaximum(-1e-11);
+  }
+
+  if (!qFuzzyIsNull(minimum())) {
+    if (minimum() < 0)
+      setMinimum(-1e30);
+    else
+      setMinimum(1e-11);
+  }
+}

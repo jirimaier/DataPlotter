@@ -55,7 +55,7 @@ enum enumPlotRange { freeMove = 0, fixedRange = 1, rolling = 2 };
 }
 
 namespace GraphStyle {
-enum enumGraphStyle { line = 0, point = 1, linePoint = 2, logic = 3, logicFilled = 4, logicpoints = 5, logicSquare = 6, logicSquareFilled = 7};
+enum enumGraphStyle { line = 0, point = 1, linePoint = 2, logic = 3, logicFilled = 4, logicpoints = 5, logicSquare = 6, logicSquareFilled = 7 };
 }
 
 namespace GraphType {
@@ -99,6 +99,7 @@ enum enumTerminalMode { none, debug, clicksend, select };
 }
 
 struct ValueType {
+  ValueType(bool bin = true) : isBinary(bin) {}
   bool isBinary = true;
   enum Type { unsignedint, integer, floatingpoint, invalid, incomplete } type = incomplete;
   bool bigEndian = false;
@@ -106,7 +107,7 @@ struct ValueType {
   double multiplier = 1.0;
 };
 
-inline ValueType readValuePrefix(QByteArray& buffer, int& detectedPrefixLength) {
+inline ValueType readValuePrefix(QByteArray &buffer, int &detectedPrefixLength) {
   ValueType valType;
   if (buffer.length() < 2)
     return valType; // Incomplete
@@ -115,81 +116,81 @@ inline ValueType readValuePrefix(QByteArray& buffer, int& detectedPrefixLength) 
     if (buffer.length() < 3)
       return valType; // Incomplete
     switch (buffer.at(0)) {
-      case 'T':
-        valType.multiplier = 1e12;
-        break;
-      case 'G':
-        valType.multiplier = 1e9;
-        break;
-      case 'M':
-        valType.multiplier = 1e6;
-        break;
-      case 'k':
-        valType.multiplier = 1e3;
-        break;
-      case 'h':
-        valType.multiplier = 1e2;
-        break;
-      case 'D':
-        valType.multiplier = 1e1;
-        break;
-      case 'd':
-        valType.multiplier = 1e-1;
-        break;
-      case 'c':
-        valType.multiplier = 1e-2;
-        break;
-      case 'm':
-        valType.multiplier = 1e-3;
-        break;
-      case 'u':
-        valType.multiplier = 1e-6;
-        break;
-      case 'n':
-        valType.multiplier = 1e-9;
-        break;
-      case 'p':
-        valType.multiplier = 1e-12;
-        break;
-      case 'f':
-        valType.multiplier = 1e-15;
-        break;
-      case 'a':
-        valType.multiplier = 1e-18;
-        break;
-      default:
-        valType.type = ValueType::invalid;
-        return valType; // Invalid
+    case 'T':
+      valType.multiplier = 1e12;
+      break;
+    case 'G':
+      valType.multiplier = 1e9;
+      break;
+    case 'M':
+      valType.multiplier = 1e6;
+      break;
+    case 'k':
+      valType.multiplier = 1e3;
+      break;
+    case 'h':
+      valType.multiplier = 1e2;
+      break;
+    case 'D':
+      valType.multiplier = 1e1;
+      break;
+    case 'd':
+      valType.multiplier = 1e-1;
+      break;
+    case 'c':
+      valType.multiplier = 1e-2;
+      break;
+    case 'm':
+      valType.multiplier = 1e-3;
+      break;
+    case 'u':
+      valType.multiplier = 1e-6;
+      break;
+    case 'n':
+      valType.multiplier = 1e-9;
+      break;
+    case 'p':
+      valType.multiplier = 1e-12;
+      break;
+    case 'f':
+      valType.multiplier = 1e-15;
+      break;
+    case 'a':
+      valType.multiplier = 1e-18;
+      break;
+    default:
+      valType.type = ValueType::invalid;
+      return valType; // Invalid
     }
   } else
     detectedPrefixLength = 2;
 
 #define unitPosition 0
-#define typePosition detectedPrefixLength-2
-#define bytesPosition detectedPrefixLength-1
+#define typePosition detectedPrefixLength - 2
+#define bytesPosition detectedPrefixLength - 1
 
   switch (tolower(buffer.at(typePosition))) {
-    case 'u':
-      valType.type = ValueType::unsignedint;
-      valType.bytes = buffer.at(bytesPosition) - '0';
-      if (valType.bytes != 1 && valType.bytes != 2 && valType.bytes != 3 && valType.bytes != 4)
-        valType.type = ValueType::invalid;
-      break;
-    case 'i':
-      valType.type = ValueType::integer;
-      valType.bytes = buffer.at(bytesPosition) - '0';
-      if (valType.bytes != 1 && valType.bytes != 2 && valType.bytes != 4)
-        valType.type = ValueType::invalid;
-      break;
-    case 'f':
-      valType.type = ValueType::floatingpoint;
-      valType.bytes = buffer.at(bytesPosition) - '0';
-      if (valType.bytes != 4 && valType.bytes != 8)
-        valType.type = ValueType::invalid;
-      break;
-    default:
+  case 'u':
+    valType.type = ValueType::unsignedint;
+    valType.bytes = buffer.at(bytesPosition) - '0';
+    if (valType.bytes != 1 && valType.bytes != 2 && valType.bytes != 3 && valType.bytes != 4)
       valType.type = ValueType::invalid;
-      return valType; // Invalid
+    break;
+  case 'i':
+    valType.type = ValueType::integer;
+    valType.bytes = buffer.at(bytesPosition) - '0';
+    if (valType.bytes != 1 && valType.bytes != 2 && valType.bytes != 4)
+      valType.type = ValueType::invalid;
+    break;
+  case 'f':
+    valType.type = ValueType::floatingpoint;
+    valType.bytes = buffer.at(bytesPosition) - '0';
+    if (valType.bytes != 4 && valType.bytes != 8)
+      valType.type = ValueType::invalid;
+    break;
+  default:
+    valType.type = ValueType::invalid;
+    return valType; // Invalid
   }
   valType.bigEndian = (buffer.at(typePosition) == toupper(buffer.at(typePosition)));
   return valType;
@@ -200,21 +201,21 @@ inline QString valueTypeToString(ValueType val) {
     QString description;
     description = QString::number(val.bytes * 8) + "-bit ";
     switch (val.type) {
-      case ValueType::Type::invalid:
-        return "Invalid data";
-      case ValueType::Type::incomplete:
-        return "Incomplete data";
-      case ValueType::Type::integer:
-        description += "signed integer";
-        break;
-      case ValueType::Type::unsignedint:
-        description += "unsigned integer";
-        break;
-      case ValueType::Type::floatingpoint:
-        description += "floating point";
-        break;
-      default:
-        break;
+    case ValueType::Type::invalid:
+      return "Invalid data";
+    case ValueType::Type::incomplete:
+      return "Incomplete data";
+    case ValueType::Type::integer:
+      description += "signed integer";
+      break;
+    case ValueType::Type::unsignedint:
+      description += "unsigned integer";
+      break;
+    case ValueType::Type::floatingpoint:
+      description += "floating point";
+      break;
+    default:
+      break;
     }
     if (val.bigEndian)
       description.append(" (big endian)");
@@ -239,11 +240,11 @@ inline QString valueTypeToString(ValueType val) {
 #define PLOT_ELEMENTS_MOUSE_DISTANCE 10
 #define TRACER_MOUSE_DISTANCE 20
 
-#define CURSOR_ABSOLUTE ANALOG_COUNT+MATH_COUNT+LOGIC_GROUPS+2
-#define FFT_INDEX(a) (ANALOG_COUNT + MATH_COUNT + LOGIC_GROUPS +a)
-#define IS_LOGIC_INDEX(index) ((index>=ANALOG_COUNT + MATH_COUNT)&&!IS_FFT_INDEX(index)&&index!=CURSOR_ABSOLUTE)
-#define IS_FFT_INDEX(chID) (chID==FFT_INDEX(0)||chID==FFT_INDEX(1))
-#define INDEX_TO_FFT_CHID(chID)(chID-FFT_INDEX(0))
+#define CURSOR_ABSOLUTE ANALOG_COUNT + MATH_COUNT + LOGIC_GROUPS + 2
+#define FFT_INDEX(a) (ANALOG_COUNT + MATH_COUNT + LOGIC_GROUPS + a)
+#define IS_LOGIC_INDEX(index) ((index >= ANALOG_COUNT + MATH_COUNT) && !IS_FFT_INDEX(index) && index != CURSOR_ABSOLUTE)
+#define IS_FFT_INDEX(chID) (chID == FFT_INDEX(0) || chID == FFT_INDEX(1))
+#define INDEX_TO_FFT_CHID(chID) (chID - FFT_INDEX(0))
 
 #define INTERPOLATION_CHID(a) (ALL_COUNT + a)
 
@@ -256,7 +257,7 @@ inline QString valueTypeToString(ValueType val) {
 #define EXPORT_FREQTIME -4
 
 #define IS_ANALOG_OR_MATH(ch) (ch < ANALOG_COUNT + MATH_COUNT)
-#define IS_ANALOG_OR_MATH_OR_LOGIC(ch) (ch < ANALOG_COUNT + MATH_COUNT+LOGIC_GROUPS)
+#define IS_ANALOG_OR_MATH_OR_LOGIC(ch) (ch < ANALOG_COUNT + MATH_COUNT + LOGIC_GROUPS)
 #define IS_LOGIC_CH(ch) ((ch >= ANALOG_COUNT + MATH_COUNT))
 #define CH_LIST_INDEX_TO_LOGIC_GROUP(group) (group - ANALOG_COUNT - MATH_COUNT)
 #define LOGIC_GROUP_TO_CH_LIST_INDEX(group) (group + ANALOG_COUNT + MATH_COUNT)
@@ -271,30 +272,43 @@ const static double logaritmicSettings[LOG_SET_SIZE] = {1e-9, 2e-9, 5e-9, 1e-8, 
                                                         // 24 25    26    27   28   29   30   31   32   33   34   35   36   37   38   39   40   41   42   43   44   45   46   47   48   49   50   51
                                                         1e-1, 2e-1, 5e-1, 1e0, 2e0, 5e0, 1e1, 2e1, 5e1, 1e2, 2e2, 5e2, 1e3, 2e3, 5e3, 1e4, 2e4, 5e4, 1e5, 2e5, 5e5, 1e6, 2e6, 5e6, 1e7, 2e7, 5e7, 1e7,
                                                         // 52 53  54   55   56   57   58   59   60
-                                                        2e7, 5e7, 1e8, 2e8, 5e8, 1e9, 2e9, 5e9, 1e10
-                                                       };
-
-inline int indexOfStandardValuesCeil(double value) {
-  for (int i = 0; i < LOG_SET_SIZE; i++)
-    if (value <= logaritmicSettings[i])
-      return i;
-  return (LOG_SET_SIZE - 1);
-}
-
+                                                        2e7, 5e7, 1e8, 2e8, 5e8, 1e9, 2e9, 5e9, 1e10};
 inline double ceilToNiceValue(double value) {
-  if (value > 0)
-    return (logaritmicSettings[indexOfStandardValuesCeil(value)]);
-  else if (value < 0)
-    return (-logaritmicSettings[MAX(indexOfStandardValuesCeil(-value) - 1, 0)]);
+  if (value > 0) {
+    auto power = floor(log10(value));
+    double one = pow(10, power);
+    double two = 2.0 * one;
+    double five = 5.0 * one;
+    double ten = 10.0 * one;
+    if (qFuzzyCompare(value, one))
+      return one;
+    if (value < two || qFuzzyCompare(value, two))
+      return two;
+    if (value < five || qFuzzyCompare(value, five))
+      return five;
+    return ten;
+  } else if (value < 0)
+    return (-ceilToNiceValue(-value));
   else
     return 0;
 }
 
 inline double floorToNiceValue(double value) {
-  if (value > 0)
-    return (logaritmicSettings[MAX(indexOfStandardValuesCeil(value) - 1, 0)]);
-  else if (value < 0)
-    return (-logaritmicSettings[indexOfStandardValuesCeil(-value)]);
+  if (value > 0) {
+    auto power = floor(log10(value));
+    double one = pow(10, power);
+    double two = 2.0 * one;
+    double five = 5.0 * one;
+    double ten = 10.0 * one;
+    if (qFuzzyCompare(value, ten))
+      return ten;
+    if (value > five || qFuzzyCompare(value, five))
+      return five;
+    if (value > two || qFuzzyCompare(value, two))
+      return two;
+    return one;
+  } else if (value < 0)
+    return (-floorToNiceValue(-value));
   else
     return 0;
 }
@@ -308,7 +322,7 @@ inline int getAnalogChId(int number, ChannelType::enumChannelType type) {
 }
 
 /// Skupina od 0, bit od 0, Vrátí chID
-inline int getLogicChannelID(int group, int bit) { return (ANALOG_COUNT + MATH_COUNT + (group) * LOGIC_BITS + bit); }
+inline int getLogicChannelID(int group, int bit) { return (ANALOG_COUNT + MATH_COUNT + (group)*LOGIC_BITS + bit); }
 
 /// Chid od 0
 inline QString getChName(int chid) {
@@ -322,30 +336,23 @@ inline QString getChName(int chid) {
 }
 
 static int intLog10(double x) {
-  if (x == 0) // - nekonečno
-    return -324; // Tohle by vyšlo, tak to vrátím rovnou, ať se to nezdržuje v tom for cyklu
-  if (x == 1) // Mezní případ co by ve for loopech mohl dělat problém
-    return 0;
-  if (x == INFINITY || x == -INFINITY)
+  if (qFuzzyIsNull(x)) // - nekonečno
+    return -1000;
+  if (qIsInf(x) || qIsInf(-x))
     return 100;
-  if (x == NAN)
+  if (qIsNaN(x))
     return 0;
   x = std::abs(x);
-  int result = 0;
-  if (x > 1)
-    for (double d = 10.0; d <= x; d *= 10, result++);
-  else
-    for (double d = 1; d > x; d /= 10, result--);
-  return result;
-}
+  double result = log10(x);
 
-static int myPow10(int n) {
-  if (n == 0)
-    return 1;
-  if (n > 0)
-    return 10 * myPow10(n - 1);
+  // Exact power of 10 can be floored to one lower because of numeric inacccuracy
+  // Check if not rounded result is close to rounded
+  double fr = floor(result);
+  double rr = round(result);
+  if (qFuzzyCompare(rr, result))
+    return rr;
   else
-    return myPow10(n + 1) / 10;
+    return fr;
 }
 
 /// Nejbližší vyšší (nebo rovná) mocnina 2
@@ -358,24 +365,28 @@ inline int nextPow2(int number) {
 /// Převede číslo na text s (prec) platnými ciframi
 /// TrimZeroes odstraní nuly na konci desetinych míst
 /// (např. namísto 1.200 zobrazí jako 1.2)
-static QString toSignificantDigits(double x, double prec, bool trimZeroes = false) {
-  if (x == 0) {
-    if (trimZeroes)
+static QString toSignificantDigits(double x, int prec, bool trimZeroes = false) {
+  Q_ASSERT(prec > 0);
+
+  if (qFuzzyIsNull(x)) {
+    if (trimZeroes || prec == 1)
       return "0";
-    QString zero = "0.0000000000";
-    return zero.left(prec + 1);
+    QByteArray zeroes = "0.";
+    for (int i = 1; i < prec; i++)
+      zeroes.append('0');
+    return zeroes;
   }
 
   // Vlivem zaokrouhlní může hodnota být trochu menší než měla být,
   // například 1.000000 se může změnit na 0.99999999, proto je číslo mírně
   // zvětšeno, aby se zajistilo, že rád nevfijde o jedna mensí než měl být.
-  int log10ofX = intLog10(x * 1.0000001);
+  int log10ofX = intLog10(x);
 
   if (log10ofX >= prec - 1) {
     return QString::number((int)round(x));
   } else {
     // Převedu na text jako celé číslo
-    QString result = QString::number((int)round(x * (myPow10(prec - log10ofX - 1))));
+    QString result = QString::number((int)round(x * (pow(10, prec - log10ofX - 1))));
 
     // Na příslušné místo vloží desetinnou tečku
     int decimalPoint = result.length() - prec + log10ofX + 1;
@@ -410,9 +421,14 @@ inline QString floatToNiceString(double d, int significantDigits, bool justify, 
   else if (qIsNaN(d))
     text = "--- ";
   else {
-    int order = intLog10(d * 1.0000001); // Někdy je trošku menší než má být, trochu zvýšit, aby vyšla požadované hodnota
+    int order = intLog10(d); // Někdy je trošku menší než má být, trochu zvýšit, aby vyšla požadované hodnota
 
-    if (order >= 18) {
+    if (qFuzzyIsNull(d)) {
+      d = 0;
+      postfix = justify ? "  " : " ";
+    } else if (order >= 21)
+      return QString::number(d, 'g', significantDigits);
+    else if (order >= 18) {
       postfix = " E";
       d /= 1e18;
     } else if (order >= 15) {
@@ -448,8 +464,7 @@ inline QString floatToNiceString(double d, int significantDigits, bool justify, 
       postfix = " f";
       d /= 1e-15;
     } else {
-      d = 0;
-      postfix = justify ? "  " : " ";
+      return QString::number(d, 'g', significantDigits);
     }
     text = toSignificantDigits(d, significantDigits, noDecimalsIfInteger);
   }
@@ -461,15 +476,9 @@ inline QString floatToNiceString(double d, int significantDigits, bool justify, 
     return text;
 }
 
-inline double ceilToMultipleOf(double value, double multipleOf) {
-  return (std::ceil(value / multipleOf) * multipleOf);
-}
+inline double ceilToMultipleOf(double value, double multipleOf) { return (std::ceil(value / multipleOf) * multipleOf); }
 
-inline bool operator==(const QSerialPortInfo &lhs, const QSerialPortInfo &rhs) {
-  return lhs.portName() == rhs.portName() &&
-         lhs.serialNumber() == rhs.serialNumber() &&
-         lhs.description() == rhs.description();
-}
+inline bool operator==(const QSerialPortInfo &lhs, const QSerialPortInfo &rhs) { return lhs.portName() == rhs.portName() && lhs.serialNumber() == rhs.serialNumber() && lhs.description() == rhs.description(); }
 
 struct ChannelSettings_t {
   QColor color = QColor(Qt::black);

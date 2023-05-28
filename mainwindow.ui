@@ -781,13 +781,16 @@
                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                </property>
                <property name="decimals">
-                <number>10</number>
+                <number>3</number>
                </property>
                <property name="minimum">
                 <double>0.001000000000000</double>
                </property>
                <property name="maximum">
-                <double>1000.000000000000000</double>
+                <double>10000.000000000000000</double>
+               </property>
+               <property name="singleStep">
+                <double>10000.000000000000000</double>
                </property>
                <property name="value">
                 <double>1.000000000000000</double>
@@ -861,13 +864,13 @@
                 <string notr="true">V</string>
                </property>
                <property name="decimals">
-                <number>10</number>
+                <number>3</number>
                </property>
                <property name="minimum">
-                <double>-1000000.000000000000000</double>
+                <double>-10000.000000000000000</double>
                </property>
                <property name="maximum">
-                <double>1000000.000000000000000</double>
+                <double>10000.000000000000000</double>
                </property>
               </widget>
              </item>
@@ -1862,16 +1865,16 @@
                     <string notr="true">V</string>
                    </property>
                    <property name="decimals">
-                    <number>6</number>
+                    <number>3</number>
                    </property>
                    <property name="minimum">
-                    <double>0.000001000000000</double>
+                    <double>0.001000000000000</double>
                    </property>
                    <property name="maximum">
-                    <double>1000000.000000000000000</double>
+                    <double>10000.000000000000000</double>
                    </property>
                    <property name="value">
-                    <double>10.000000000000000</double>
+                    <double>1.000000000000000</double>
                    </property>
                   </widget>
                  </item>
@@ -1935,13 +1938,13 @@
                       <string notr="true">V</string>
                      </property>
                      <property name="decimals">
-                      <number>10</number>
+                      <number>3</number>
                      </property>
                      <property name="minimum">
-                      <double>-1000000.000000000000000</double>
+                      <double>-10000.000000000000000</double>
                      </property>
                      <property name="maximum">
-                      <double>1000000.000000000000000</double>
+                      <double>10000.000000000000000</double>
                      </property>
                     </widget>
                    </item>

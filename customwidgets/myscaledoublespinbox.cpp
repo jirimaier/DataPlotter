@@ -15,9 +15,9 @@
 
 #include "myscaledoublespinbox.h"
 
-MyScaleDoubleSpinBox::MyScaleDoubleSpinBox(QWidget* parent) : QDoubleSpinBox(parent) {}
+MyScaleDoubleSpinBox::MyScaleDoubleSpinBox(QWidget *parent) : QDoubleSpinBox(parent) {}
 
-QValidator::State MyScaleDoubleSpinBox::validate(QString& input, int& pos) const {
+QValidator::State MyScaleDoubleSpinBox::validate(QString &input, int &pos) const {
   // Tato funkce kontroluje, jestli to co uživatel zadává je platná hodnota
   input.replace(',', '.');
   if (!input.isEmpty()) {
@@ -60,11 +60,13 @@ void MyScaleDoubleSpinBox::stepBy(int steps) {
   // Chování při přechodu mezi násobením a dělením je řešeno samostatně
   if (steps < 0) {
     if (value() >= 1.0 && value() < 1.1) {
-      setValue(1.0 / 1.1); return;
+      setValue(1.0 / 1.1);
+      return;
     }
   } else {
     if (value() < 1.0 && value() >= 1.0 / 1.1) {
-      setValue(1.0); return;
+      setValue(1.0);
+      return;
     }
   }
 
@@ -98,7 +100,27 @@ void MyScaleDoubleSpinBox::stepBy(int steps) {
   setValue(val);
 }
 
-double MyScaleDoubleSpinBox::valueFromText(const QString& text) const {
+void MyScaleDoubleSpinBox::showEvent(QShowEvent *event) {
+  // Call the base class implementation
+  QWidget::showEvent(event);
+
+  setDecimals(12);
+  if (!qFuzzyIsNull(maximum())) {
+    if (maximum() > 0)
+      setMaximum(1e30);
+    else
+      setMaximum(-1e-11);
+  }
+
+  if (!qFuzzyIsNull(minimum())) {
+    if (minimum() < 0)
+      setMinimum(-1e30);
+    else
+      setMinimum(1e-11);
+  }
+}
+
+double MyScaleDoubleSpinBox::valueFromText(const QString &text) const {
   if (text.isEmpty())
     return 1;
 
@@ -109,9 +131,9 @@ double MyScaleDoubleSpinBox::valueFromText(const QString& text) const {
   QChar first = text.at(0);
   if (!first.isDigit()) {
     if (first == '/' || first == DIVIDE)
-      val = 1.0 / text.mid(1).toDouble(&isok);
+      val = 1.0 / text.midRef(1).toDouble(&isok);
     else if (first == '*' || first == MULTIPLY)
-      val = text.mid(1).toDouble(&isok);
+      val = text.midRef(1).toDouble(&isok);
     else
       isok = false;
   } else {

@@ -18,15 +18,15 @@
 
 #include "math/expressionparser.h"
 #include <QDoubleSpinBox>
-#include <QWidget>
 #include <QJSEngine>
 #include <QJSValue>
+#include <QWidget>
 
 /// Double spin box, který zobrazuje předpony jednotek (milli, mikro ...). Samotná jednotka se nastaví jako suffix.
 class MyDoubleSpinBoxWithUnits : public QDoubleSpinBox {
   Q_OBJECT
- public:
-  explicit MyDoubleSpinBoxWithUnits(QWidget* parent = nullptr);
+public:
+  explicit MyDoubleSpinBoxWithUnits(QWidget *parent = nullptr);
 
   /// Pokud jsou v počtu zobrazených cifer na konci jen nuly (např. 5.100), je zobrazeno (5.1)
   bool trimDecimalZeroes = false;
@@ -37,13 +37,16 @@ class MyDoubleSpinBoxWithUnits : public QDoubleSpinBox {
   /// Nastaví jednotku
   void setUnit(QString suffix, bool useUnitPrefix);
 
- private:
-  QValidator::State validate(QString& input, int& pos) const;
+protected:
+  void showEvent(QShowEvent *event) override;
+
+private:
+  QValidator::State validate(QString &input, int &pos) const;
   QString textFromValue(double val) const;
-  double valueFromText(const QString& text) const;
+  double valueFromText(const QString &text) const;
   bool useUnitPrefix = true;
   QString replaceUnitPrefixes(QString expr) const;
-  signals:
+signals:
 };
 
 #endif // MYDOUBLESPINBOXWITHUNITS_H

@@ -25,19 +25,21 @@
 
 class MyScaleDoubleSpinBox : public QDoubleSpinBox {
   Q_OBJECT
- public:
-  explicit MyScaleDoubleSpinBox(QWidget* parent = nullptr);
+public:
+  explicit MyScaleDoubleSpinBox(QWidget *parent = nullptr);
 
- private slots:
+private slots:
   void stepBy(int steps);
 
- private:
-  QValidator::State validate(QString& input, int& pos) const;
+protected:
+  void showEvent(QShowEvent *event) override;
+
+private:
+  QValidator::State validate(QString &input, int &pos) const;
   QString textFromValue(double val) const;
-  double valueFromText(const QString& text) const;
+  double valueFromText(const QString &text) const;
 
- signals:
-
+signals:
 };
 
 #endif // MYSCALEDOUBLESPINBOX_H

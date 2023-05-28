@@ -5,7 +5,7 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 
-UpdateChecker::UpdateChecker(QObject *parent) : QObject(parent) { qDebug() << QSslSocket::sslLibraryVersionString(); }
+UpdateChecker::UpdateChecker(QObject *parent) : QObject(parent) { qDebug() << "Using open SSL: " << QSslSocket::sslLibraryVersionString(); }
 
 void UpdateChecker::checkForUpdates(bool showOnlyPositiveResult) {
   onlyPosRes = showOnlyPositiveResult;

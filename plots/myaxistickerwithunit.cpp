@@ -15,11 +15,12 @@
 
 #include "myaxistickerwithunit.h"
 
-QString MyAxisTickerWithUnit::getTickLabel(double tick, const QLocale& locale, QChar formatChar, int precision) {
+QString MyAxisTickerWithUnit::getTickLabel(double tick, const QLocale &locale, QChar formatChar, int precision) {
   if (unit.isEmpty())
     return (locale.toString(tick, formatChar.toLatin1(), precision));
 
   if (!usePrefix) {
+  noPrefix:
     return (locale.toString(tick, formatChar.toLatin1(), precision) + " " + unit);
   }
 
@@ -33,12 +34,16 @@ QString MyAxisTickerWithUnit::getTickLabel(double tick, const QLocale& locale, Q
 
   // Pokud je řád o jedna menší než násobek 3 (desetiny, stovky),
   // je nutné zobrazit desetiny (0.1,0.2kilo), jindy ne (100, 100kilo)
-  // +33 je kvůli tomu aby to nebylo záporné číslo
-  if (((tickStepOrder + 33) % 3) != 2)
+  // +3000 je kvůli tomu aby to nebylo záporné číslo
+  if (((tickStepOrder + 3000) % 3) != 2)
     showTenths = false;
 
-
-  if (unitOrder >= 18) {
+  if (qFuzzyIsNull(tick)) {
+    tick = 0;
+    postfix = " ";
+  } else if (unitOrder >= 21)
+    goto noPrefix;
+  else if (unitOrder >= 18) {
     postfix = " E";
     tick /= 1e18;
   } else if (unitOrder >= 15) {
@@ -77,8 +82,7 @@ QString MyAxisTickerWithUnit::getTickLabel(double tick, const QLocale& locale, Q
     postfix = " a";
     tick /= 1e-18;
   } else {
-    tick = 0;
-    postfix = " ";
+    goto noPrefix;
   }
   text = QString::number(tick, 'f', showTenths ? 1 : 0);
 
@@ -88,7 +92,7 @@ QString MyAxisTickerWithUnit::getTickLabel(double tick, const QLocale& locale, Q
 }
 
 void MyAxisTickerWithUnit::setTickStep(double value) {
-  tickStepOrder = intLog10(value * 1.0000001);
+  tickStepOrder = intLog10(value);
 
   this->QCPAxisTickerFixed::setTickStep(value);
 }

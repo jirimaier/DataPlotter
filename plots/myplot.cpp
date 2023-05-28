@@ -52,7 +52,7 @@ MyPlot::MyPlot(QWidget *parent) : QCustomPlot(parent) {
 
   regularUpdateTimer = new QTimer(this);
   connect(regularUpdateTimer, &QTimer::timeout, [this]() { this->replot(rpQueuedReplot); });
-  regularUpdateTimer->start(250);
+  // regularUpdateTimer->start(1000);
 }
 
 MyPlot::~MyPlot() {
@@ -154,7 +154,7 @@ void MyPlot::setValueCursorVisible(Cursors::enumCursors cursor, bool visible) {
 }
 
 void MyPlot::updateGridX() {
-  double newGrid = logaritmicSettings[MAX(indexOfStandardValuesCeil(xAxis->range().upper - xAxis->range().lower) + xGridHint, 0)];
+  double newGrid = ceilToNiceValue(xAxis->range().size() * pow(2, xGridHint));
   if (newGrid != lastGridX) {
     lastGridX = newGrid;
     setHorizontalDiv(newGrid);
@@ -164,7 +164,7 @@ void MyPlot::updateGridX() {
 }
 
 void MyPlot::updateGridY() {
-  double newGrid = logaritmicSettings[MAX(indexOfStandardValuesCeil(yAxis->range().upper - yAxis->range().lower) + yGridHint, 0)];
+  double newGrid = ceilToNiceValue(yAxis->range().size() * pow(2, yGridHint));
   if (newGrid != lastGridY) {
     lastGridY = newGrid;
     setVerticalDiv(newGrid);
