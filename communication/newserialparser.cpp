@@ -15,7 +15,7 @@
 
 #include "newserialparser.h"
 
-NewSerialParser::NewSerialParser(MessageTarget::enumMessageTarget target, QObject* parent) : QObject(parent) {
+NewSerialParser::NewSerialParser(MessageTarget::enumMessageTarget target, QObject *parent) : QObject(parent) {
   this->target = target;
   resetChHeader();
 }
@@ -109,7 +109,7 @@ void NewSerialParser::parse(QByteArray newData) {
         try {
           result = bufferReadPoint(pendingPointBuffer);
         } catch (QString msg) {
-          throw (tr("Error reading point: ") + msg);
+          throw(tr("Error reading point: ") + msg);
         }
 
         if (result == incomplete)
@@ -136,7 +136,7 @@ void NewSerialParser::parse(QByteArray newData) {
         try {
           result = bufferReadPoint(pendingPointBuffer);
         } catch (QString msg) {
-          throw (tr("Error reading logic point: ") + msg);
+          throw(tr("Error reading logic point: ") + msg);
         }
 
         if (result == incomplete)
@@ -155,8 +155,8 @@ void NewSerialParser::parse(QByteArray newData) {
         if (pendingPointBuffer.length() == 3) {
           try {
             bits = arrayToUint(pendingPointBuffer.at(2));
-          }  catch (QString msg) {
-            throw (tr("Invallid logic point: ") + tr("Invalid number of bits - ") + msg);
+          } catch (QString msg) {
+            throw(tr("Invallid logic point: ") + tr("Invalid number of bits - ") + msg);
           }
         } else
           bits = pendingPointBuffer.at(1).first.bytes * 8;
@@ -206,7 +206,7 @@ void NewSerialParser::parse(QByteArray newData) {
                   }
                 }
               } catch (QString msg) {
-                throw (tr("Invallid channel: ") + tr("Invalid channel number - ") + msg);
+                throw(tr("Invallid channel: ") + tr("Invalid channel number - ") + msg);
               }
 
               channelTime = pendingPointBuffer.at(1);
@@ -214,7 +214,7 @@ void NewSerialParser::parse(QByteArray newData) {
               try {
                 channelLength = arrayToUint(pendingPointBuffer.at(2));
               } catch (QString msg) {
-                throw (tr("Invallid channel: ") + tr("Invalid channel length - ") + msg);
+                throw(tr("Invallid channel: ") + tr("Invalid channel length - ") + msg);
               }
 
               for (int i = 3; i < pendingPointBuffer.length(); i++) {
@@ -224,7 +224,7 @@ void NewSerialParser::parse(QByteArray newData) {
               pendingPointBuffer.clear();
 
             } else
-              throw (tr("Invallid channel: ") + tr("Wrong header length (%1 entries)").arg(pendingPointBuffer.length()));
+              throw(tr("Invallid channel: ") + tr("Wrong header length (%1 entries)").arg(pendingPointBuffer.length()));
           }
           if (result == incomplete)
             break;
@@ -237,7 +237,7 @@ void NewSerialParser::parse(QByteArray newData) {
           try {
             result = bufferPullChannel(channel);
           } catch (QString msg) {
-            throw (tr("Error reading channel: ") + msg);
+            throw(tr("Error reading channel: ") + msg);
           }
 
           if (result == incomplete)
@@ -270,10 +270,10 @@ void NewSerialParser::parse(QByteArray newData) {
                   zeroIndex = arrayToUint(aditionalHeaderParameters.first());
                   pendingPointBuffer.clear();
                 } catch (QString msg) {
-                  throw (tr("Invallid channel: ") + tr("Invalid zero position - ") + msg);
+                  throw(tr("Invallid channel: ") + tr("Invalid zero position - ") + msg);
                 }
               } else
-                throw (tr("Invallid channel: ") + tr("To many header entries for floating point type"));
+                throw(tr("Invallid channel: ") + tr("To many header entries for floating point type"));
             }
           } else if (channel.first.type == ValueType::Type::unsignedint) {
             if (aditionalHeaderParameters.length() == 1) {
@@ -281,14 +281,14 @@ void NewSerialParser::parse(QByteArray newData) {
                 zeroIndex = arrayToUint(aditionalHeaderParameters.at(0));
                 pendingPointBuffer.clear();
               } catch (QString msg) {
-                throw (tr("Invallid channel: ") + tr("Invalid zero position - ") + msg);
+                throw(tr("Invallid channel: ") + tr("Invalid zero position - ") + msg);
               }
             }
             if (aditionalHeaderParameters.length() >= 2) {
               try {
                 channelBits = arrayToUint(aditionalHeaderParameters.at(0));
               } catch (QString msg) {
-                throw (tr("Invallid channel: ") + tr("Invalid number of bits - ") + msg);
+                throw(tr("Invallid channel: ") + tr("Invalid number of bits - ") + msg);
               }
             }
             if (aditionalHeaderParameters.length() == 2)
@@ -302,7 +302,7 @@ void NewSerialParser::parse(QByteArray newData) {
                 zeroIndex = arrayToUint(aditionalHeaderParameters.at(3));
                 pendingPointBuffer.clear();
               } catch (QString msg) {
-                throw (tr("Invallid channel: ") + tr("Invalid zero position - ") + msg);
+                throw(tr("Invallid channel: ") + tr("Invalid zero position - ") + msg);
               }
             }
             // Delší by neprošlo kontrolou při čtení záhlaví
@@ -313,10 +313,10 @@ void NewSerialParser::parse(QByteArray newData) {
                   zeroIndex = arrayToUint(aditionalHeaderParameters.first());
                   pendingPointBuffer.clear();
                 } catch (QString msg) {
-                  throw (tr("Invallid channel: ") + tr("Invalid zero position - ") + msg);
+                  throw(tr("Invallid channel: ") + tr("Invalid zero position - ") + msg);
                 }
               } else
-                throw (tr("Invallid channel: ") + tr("To many header entries for signed integer type"));
+                throw(tr("Invallid channel: ") + tr("To many header entries for signed integer type"));
             }
           }
           if (channelNumber.size() == 1)
@@ -347,7 +347,7 @@ void NewSerialParser::parse(QByteArray newData) {
               try {
                 channelLength = arrayToUint(pendingPointBuffer.at(1));
               } catch (QString msg) {
-                throw (tr("Invallid logic channel: ") + tr("Invalid channel length - ") + msg);
+                throw(tr("Invallid logic channel: ") + tr("Invalid channel length - ") + msg);
               }
 
               for (int i = 2; i < pendingPointBuffer.length(); i++) {
@@ -357,7 +357,7 @@ void NewSerialParser::parse(QByteArray newData) {
               pendingPointBuffer.clear();
 
             } else
-              throw (tr("Invallid logic channel: ") + tr("Wrong header length (%1 entries)").arg(pendingPointBuffer.length()));
+              throw(tr("Invallid logic channel: ") + tr("Wrong header length (%1 entries)").arg(pendingPointBuffer.length()));
           }
           if (result == incomplete)
             break;
@@ -370,7 +370,7 @@ void NewSerialParser::parse(QByteArray newData) {
           try {
             result = bufferPullChannel(channel);
           } catch (QString msg) {
-            throw (tr("Error reading logic channel: ") + msg);
+            throw(tr("Error reading logic channel: ") + msg);
           }
 
           if (result == incomplete)
@@ -401,7 +401,7 @@ void NewSerialParser::parse(QByteArray newData) {
             try {
               channelBits = arrayToUint(aditionalHeaderParameters.first());
             } catch (QString msg) {
-              throw (tr("Invallid logic channel: ") + tr("Invalid number of bits - ") + msg);
+              throw(tr("Invallid logic channel: ") + tr("Invalid number of bits - ") + msg);
             }
           }
           if (aditionalHeaderParameters.length() == 2) {
@@ -409,7 +409,7 @@ void NewSerialParser::parse(QByteArray newData) {
               zeroIndex = arrayToUint(aditionalHeaderParameters.at(1));
               pendingPointBuffer.clear();
             } catch (QString msg) {
-              throw (tr("Invallid logic channel: ") + tr("Invalid zero position - ") + msg);
+              throw(tr("Invallid logic channel: ") + tr("Invalid zero position - ") + msg);
             }
           }
           // Delší by neprošlo kontrolou při čtení záhlaví
@@ -566,18 +566,60 @@ void NewSerialParser::parse(QByteArray newData) {
   }
 }
 
-NewSerialParser::readResult NewSerialParser::bufferReadPoint(QList<QPair<ValueType, QByteArray>>& result) {
+NewSerialParser::readResult NewSerialParser::bufferReadPoint(QList<QPair<ValueType, QByteArray>> &result) {
   while (!buffer.isEmpty()) {
     // Textové číslo
-    if (buffer.at(0) == ',' || buffer.at(0) == ' ') {
+    if (buffer.at(0) == ' ') {
       buffer.remove(0, 1);
       continue;
     }
+
+    if (buffer.at(0) == ',') {
+      if (buffer.length() > 1) {
+        if (buffer.at(1) == ',') {
+          ValueType valType(false);
+          result.append(QPair<ValueType, QByteArray>(valType, ""));
+        }
+        buffer.remove(0, 1);
+      } else
+        continue;
+    }
+
+    // NaN or Inf
+    if (buffer.at(0) == 'n' || buffer.at(0) == 'N' || buffer.at(0) == 'i' || buffer.at(0) == 'I') {
+      if (buffer.length() == 1)
+        return incomplete;
+      if (buffer.length() == 2 && (buffer.at(1) == 'a' || buffer.at(1) != 'A' || buffer.at(1) == 'n' || buffer.at(1) != 'N'))
+        return incomplete;
+
+      if (buffer.left(3).toLower() == "nan") {
+        ValueType valType(false);
+        result.append(QPair<ValueType, QByteArray>(valType, ""));
+        sendMessageIfAllowed(tr("Received NaN"), tr("Treated as no value"), MessageLevel::warning);
+        buffer.remove(0, 3);
+      } else if (buffer.left(3).toLower() == "inf") {
+        ValueType valType(false);
+        result.append(QPair<ValueType, QByteArray>(valType, ""));
+        sendMessageIfAllowed(tr("Received Inf"), tr("Treated as no value"), MessageLevel::warning);
+        buffer.remove(0, 3);
+      }
+
+      if (buffer.isEmpty())
+        continue;
+      if (buffer.at(0) == ';') {
+        buffer.remove(0, 1);
+        return complete;
+      }
+      if (buffer.length() >= 2)
+        if (buffer.left(2) == "$$")
+          return notProperlyEnded;
+      continue;
+    }
+
     if (IS_NUMERIC_CHAR(buffer.at(0))) {
       // Hledám který znak je nejblýž: , ; nebo $
       // Pokud se nevyskytuje, funkce vrátí -1, což se v unsigned int zmení na max hodnotu int a tedy rozhodně nebude nejblýže
-      ValueType valType;
-      valType.isBinary = false;
+      ValueType valType(false);
       unsigned int comma = buffer.indexOf(',');
       unsigned int semicolon = buffer.indexOf(';');
       unsigned int dollar = buffer.indexOf('$');
@@ -587,6 +629,10 @@ NewSerialParser::readResult NewSerialParser::bufferReadPoint(QList<QPair<ValueTy
         // Samotná pomlčka se považuje za vynechaní kanál
         if (value == "-")
           value.clear();
+        if (value.toLower() == "-inf") {
+          value.clear();
+          sendMessageIfAllowed(tr("Received -Inf"), tr("Treated as no value"), MessageLevel::warning);
+        }
         result.append(QPair<ValueType, QByteArray>(valType, value));
         buffer.remove(0, comma + 1);
         continue;
@@ -594,6 +640,10 @@ NewSerialParser::readResult NewSerialParser::bufferReadPoint(QList<QPair<ValueTy
         QByteArray value = buffer.left(semicolon);
         if (value == "-")
           value.clear();
+        if (value.toLower() == "-inf") {
+          value.clear();
+          sendMessageIfAllowed(tr("Received -Inf"), tr("Treated as no value"), MessageLevel::warning);
+        }
         result.append(QPair<ValueType, QByteArray>(valType, value));
         buffer.remove(0, semicolon + 1);
         return complete;
@@ -601,19 +651,20 @@ NewSerialParser::readResult NewSerialParser::bufferReadPoint(QList<QPair<ValueTy
         QByteArray value = buffer.left(dollar);
         if (value == "-")
           value.clear();
+        if (value.toLower() == "-inf") {
+          value.clear();
+          sendMessageIfAllowed(tr("Received -Inf"), tr("Treated as no value"), MessageLevel::warning);
+        }
         result.append(QPair<ValueType, QByteArray>(valType, value));
         buffer.remove(0, dollar);
         return notProperlyEnded;
       } else
         // Žádné není nejmenší (jsou si rovny a jsou na maximu, tedy znak není)
         return incomplete;
-    }
-
-    else {
-      // Binární data
+    } else {
       if (buffer.length() == 1) {
         if (buffer.at(0) == ';') {
-          // Konec bodu
+          // End of point
           buffer.remove(0, 1);
           return complete;
         } else
@@ -621,10 +672,11 @@ NewSerialParser::readResult NewSerialParser::bufferReadPoint(QList<QPair<ValueTy
           return incomplete;
       }
 
+      // Binary data
       int prefixLength = 0;
       ValueType valType = readValuePrefix(buffer, prefixLength);
       if (valType.type == ValueType::Type::invalid) {
-        throw (tr("Expected value, but \"%1\" found.").arg(QString(buffer.left(prefixLength))));
+        throw(tr("Expected value, but \"%1\" found.").arg(QString(buffer.left(prefixLength))));
       }
       if (buffer.length() < valType.bytes + prefixLength || valType.type == ValueType::Type::incomplete)
         return incomplete;
@@ -665,13 +717,13 @@ uint32_t NewSerialParser::arrayToUint(QPair<ValueType, QByteArray> value) {
       return (double)((uint8_t)value.second.at(0));
     } else if (value.first.bytes == 2) { // unsigned int 16
       char bytes[2] = {value.second.at(1), value.second.at(0)};
-      return (double) * ((uint16_t*)bytes);
+      return (double)*((uint16_t *)bytes);
     } else if (value.first.bytes == 3) { // unsigned int 32
       char bytes[4] = {value.second.at(2), value.second.at(1), value.second.at(0), 0};
-      return (double) * ((uint32_t*)bytes);
+      return (double)*((uint32_t *)bytes);
     } else if (value.first.bytes == 4) { // unsigned int 32
       char bytes[4] = {value.second.at(3), value.second.at(2), value.second.at(1), value.second.at(0)};
-      return (double) * ((uint32_t*)bytes);
+      return (double)*((uint32_t *)bytes);
     }
   } else {
     // Little endian
@@ -679,13 +731,13 @@ uint32_t NewSerialParser::arrayToUint(QPair<ValueType, QByteArray> value) {
       return (double)((uint8_t)value.second.at(0));
     } else if (value.first.bytes == 2) { // unsigned int 16
       char bytes[2] = {value.second.at(0), value.second.at(1)};
-      return (double) * ((uint16_t*)bytes);
+      return (double)*((uint16_t *)bytes);
     } else if (value.first.bytes == 3) { // unsigned int 32
       char bytes[4] = {value.second.at(0), value.second.at(1), value.second.at(2), 0};
-      return (double) * ((uint32_t*)bytes);
+      return (double)*((uint32_t *)bytes);
     } else if (value.first.bytes == 4) { // unsigned int 32
       char bytes[4] = {value.second.at(0), value.second.at(1), value.second.at(2), value.second.at(3)};
-      return (double) * ((uint32_t*)bytes);
+      return (double)*((uint32_t *)bytes);
     }
   }
   return 0;
@@ -740,14 +792,14 @@ void NewSerialParser::parseMode(QChar modeChar) {
   resetChHeader();
 }
 
-NewSerialParser::readResult NewSerialParser::bufferPullFull(QByteArray& result) {
+NewSerialParser::readResult NewSerialParser::bufferPullFull(QByteArray &result) {
   if (buffer.contains("$$")) {
     result.push_back(buffer.left(buffer.indexOf("$$")));
     buffer.remove(0, buffer.indexOf("$$"));
     return complete;
   } else {
     if (buffer.at(buffer.length() - 1) == '$') {
-      result.push_back(buffer.left(buffer.length() - 1)) ;
+      result.push_back(buffer.left(buffer.length() - 1));
       buffer.remove(0, buffer.length() - 1);
     } else {
       result.push_back(buffer);
@@ -757,7 +809,7 @@ NewSerialParser::readResult NewSerialParser::bufferPullFull(QByteArray& result) 
   }
 }
 
-NewSerialParser::readResult NewSerialParser::bufferPullBeforeSemicolumn(QByteArray& result, bool removeNewline) {
+NewSerialParser::readResult NewSerialParser::bufferPullBeforeSemicolumn(QByteArray &result, bool removeNewline) {
   int end;
   delimiter ending = none;
   if (buffer.contains(';')) {
@@ -785,7 +837,7 @@ NewSerialParser::readResult NewSerialParser::bufferPullBeforeSemicolumn(QByteArr
   return notProperlyEnded;
 }
 
-NewSerialParser::readResult NewSerialParser::bufferPullBeforeNull(QByteArray& result) {
+NewSerialParser::readResult NewSerialParser::bufferPullBeforeNull(QByteArray &result) {
   int end;
   bool ended = false;
   if (buffer.contains('\0')) {
@@ -801,7 +853,7 @@ NewSerialParser::readResult NewSerialParser::bufferPullBeforeNull(QByteArray& re
   return complete;
 }
 
-NewSerialParser::readResult NewSerialParser::bufferPullChannel(QPair<ValueType, QByteArray>& result) {
+NewSerialParser::readResult NewSerialParser::bufferPullChannel(QPair<ValueType, QByteArray> &result) {
   int prefixLength = 0;
   ValueType valType = readValuePrefix(buffer, prefixLength);
 
