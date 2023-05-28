@@ -1,7 +1,4 @@
 #include "developeroptions.h"
-#include <QColorDialog>
-#include <QFileDialog>
-#include <QInputDialog>
 #include "communication/cobs.h"
 #include "qcheckbox.h"
 #include "qclipboard.h"
@@ -10,8 +7,12 @@
 #include "qqmlerror.h"
 #include "qscrollbar.h"
 #include "ui_developeroptions.h"
+#include <QColorDialog>
+#include <QDesktopServices>
+#include <QFileDialog>
+#include <QInputDialog>
 
-QString addSpacesToCamelCase(const QString& input) {
+QString addSpacesToCamelCase(const QString &input) {
   QString output;
   for (int i = 0; i < input.length(); ++i) {
     const QChar currentChar = input.at(i);
@@ -23,45 +24,32 @@ QString addSpacesToCamelCase(const QString& input) {
   return output;
 }
 
-DeveloperOptions::DeveloperOptions(QWidget* parent, QQuickWidget* qQuickWidget)
-    : QDialog(parent),
-      ui(new Ui::DeveloperOptions),
-      qQuickWidget(qQuickWidget) {
+DeveloperOptions::DeveloperOptions(QWidget *parent, QQuickWidget *qQuickWidget) : QDialog(parent), ui(new Ui::DeveloperOptions), qQuickWidget(qQuickWidget) {
   ui->setupUi(this);
 
   Q_ASSERT(qQuickWidget != nullptr);
-  connect(qQuickWidget, &QQuickWidget::statusChanged, this,
-          &DeveloperOptions::quickWidget_statusChanged);
+  connect(qQuickWidget, &QQuickWidget::statusChanged, this, &DeveloperOptions::quickWidget_statusChanged);
 
   setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
   addColorToBlacklist("40");
   updateColorBlacklist();
 
-  QStringList files = {":/qml/DefaultQmlTerminal.qml",
-                       ":/qml/ExampleQmlTerminal.qml"};
+  QStringList files = {":/qml/DefaultQmlTerminal.qml", ":/qml/ExampleQmlTerminal.qml"};
 
-  for (const QString& file : files) {
+  for (const QString &file : files) {
     auto newItem = new QListWidgetItem();
-    newItem->setText(
-        addSpacesToCamelCase(
-            file.mid(file.lastIndexOf('/') + 1).replace(".qml", ""))
-            .replace("qml", "QML", Qt::CaseInsensitive));
+    newItem->setText(addSpacesToCamelCase(file.mid(file.lastIndexOf('/') + 1).replace(".qml", "")).replace("qml", "QML", Qt::CaseInsensitive));
     newItem->setData(Qt::UserRole, file);
     ui->listWidgetQMLFiles->addItem(newItem);
   }
 }
 
-DeveloperOptions::~DeveloperOptions() {
-  delete ui;
-}
+DeveloperOptions::~DeveloperOptions() { delete ui; }
 
-Ui::DeveloperOptions* DeveloperOptions::getUi() {
-  return ui;
-}
+Ui::DeveloperOptions *DeveloperOptions::getUi() { return ui; }
 
 void DeveloperOptions::on_lineEditTerminalBlacklist_returnPressed() {
-  if (addColorToBlacklist(
-          ui->lineEditTerminalBlacklist->text().toLocal8Bit().trimmed())) {
+  if (addColorToBlacklist(ui->lineEditTerminalBlacklist->text().toLocal8Bit().trimmed())) {
     ui->lineEditTerminalBlacklist->clear();
     ui->lineEditTerminalBlacklist->setStyleSheet("");
     updateColorBlacklist();
@@ -85,8 +73,7 @@ bool DeveloperOptions::addColorToBlacklist(QByteArray code) {
   if (valid) {
     QPixmap colour = QPixmap(12, 12);
     colour.fill(clr);
-    ui->listWidgetTerminalBlacklist->addItem(new QListWidgetItem(
-        QIcon(colour), code, ui->listWidgetTerminalBlacklist));
+    ui->listWidgetTerminalBlacklist->addItem(new QListWidgetItem(QIcon(colour), code, ui->listWidgetTerminalBlacklist));
   }
   return valid;
 }
@@ -94,13 +81,11 @@ bool DeveloperOptions::addColorToBlacklist(QByteArray code) {
 void DeveloperOptions::updateColorBlacklist() {
   QList<QColor> list;
   for (int i = 0; i < ui->listWidgetTerminalBlacklist->count(); i++) {
-    QPixmap pixmap =
-        ui->listWidgetTerminalBlacklist->item(i)->icon().pixmap(1, 1);
+    QPixmap pixmap = ui->listWidgetTerminalBlacklist->item(i)->icon().pixmap(1, 1);
     list.append(pixmap.toImage().pixel(0, 0));
   }
 
-  emit colorExceptionListChanged(
-      list, ui->comboBoxTerminalColorListMode->currentIndex() == 0);
+  emit colorExceptionListChanged(list, ui->comboBoxTerminalColorListMode->currentIndex() == 0);
 }
 
 void DeveloperOptions::on_pushButtonTerminalBlacklistClear_clicked() {
@@ -108,32 +93,24 @@ void DeveloperOptions::on_pushButtonTerminalBlacklistClear_clicked() {
   if (selection.isEmpty())
     ui->listWidgetTerminalBlacklist->clear();
   else {
-    foreach (QListWidgetItem* item,
-             ui->listWidgetTerminalBlacklist->selectedItems()) {
-      delete ui->listWidgetTerminalBlacklist->takeItem(
-          ui->listWidgetTerminalBlacklist->row(item));
+    foreach (QListWidgetItem *item, ui->listWidgetTerminalBlacklist->selectedItems()) {
+      delete ui->listWidgetTerminalBlacklist->takeItem(ui->listWidgetTerminalBlacklist->row(item));
     }
   }
   updateColorBlacklist();
 }
 
-void DeveloperOptions::on_lineEditTerminalBlacklist_textChanged(
-    const QString& arg1) {
+void DeveloperOptions::on_lineEditTerminalBlacklist_textChanged(const QString &arg1) {
   if (arg1.isEmpty())
     ui->lineEditTerminalBlacklist->setStyleSheet("");
 }
 
 void DeveloperOptions::on_pushButtonTerminalBlacklistCopy_clicked() {
-  QClipboard* clipboard = QGuiApplication ::clipboard();
+  QClipboard *clipboard = QGuiApplication ::clipboard();
   QString settingsEntry;
-  settingsEntry.append(ui->comboBoxTerminalColorListMode->currentIndex() == 0
-                           ? "noclickclr:"
-                           : "clickclr:");
+  settingsEntry.append(ui->comboBoxTerminalColorListMode->currentIndex() == 0 ? "noclickclr:" : "clickclr:");
   for (int i = 0; i < ui->listWidgetTerminalBlacklist->count(); i++)
-    settingsEntry.append(
-        ui->listWidgetTerminalBlacklist->item(i)->text().toLocal8Bit().replace(
-            ';', '.') +
-        ',');
+    settingsEntry.append(ui->listWidgetTerminalBlacklist->item(i)->text().toLocal8Bit().replace(';', '.') + ',');
   settingsEntry.remove(settingsEntry.length() - 1, 1);
   settingsEntry.append(";\n");
   clipboard->setText(settingsEntry);
@@ -141,9 +118,7 @@ void DeveloperOptions::on_pushButtonTerminalBlacklistCopy_clicked() {
 
 void DeveloperOptions::on_pushButtonTerminalDebugShift_clicked() {
   bool ok;
-  int i = QInputDialog::getInt(this, "", tr("Shift content verticaly"), 0,
-                               -1000, 1000, 1, &ok,
-                               Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
+  int i = QInputDialog::getInt(this, "", tr("Shift content verticaly"), 0, -1000, 1000, 1, &ok, Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
   if (!ok)
     return;
 
@@ -172,15 +147,13 @@ void DeveloperOptions::on_pushButtonTerminalDebugShift_clicked() {
   on_pushButtonTerminalDebugSend_clicked();
 }
 
-void DeveloperOptions::on_comboBoxTerminalColorListMode_currentIndexChanged(
-    int index) {
+void DeveloperOptions::on_comboBoxTerminalColorListMode_currentIndexChanged(int index) {
   Q_UNUSED(index);
   updateColorBlacklist();
 }
 
 void DeveloperOptions::on_pushButtonQmlLoad_clicked() {
-  QString fileName = QFileDialog::getOpenFileName(
-      this, tr("Load file"), "", tr("Qml file (*.qml);;Any file (*.*)"));
+  QString fileName = QFileDialog::getOpenFileName(this, tr("Load file"), "", tr("Qml file (*.qml);;Any file (*.*)"));
   if (fileName.isEmpty())
     return;
 
@@ -191,7 +164,7 @@ void DeveloperOptions::on_pushButtonQmlLoad_clicked() {
 
 void DeveloperOptions::on_pushButtonTerminalDebugSend_clicked() {
   QByteArray data = ui->textEditTerminalDebug->toPlainText().toUtf8();
-  data.replace("\n", "\r\n");  // Odřádkování v textovém poli
+  data.replace("\n", "\r\n"); // Odřádkování v textovém poli
   data.replace("\\n", "\n");
   data.replace("\\e", "\u001b");
   data.replace("\\r", "\r");
@@ -204,8 +177,7 @@ void DeveloperOptions::on_pushButtonTerminalDebugSend_clicked() {
 
 void DeveloperOptions::on_textEditTerminalDebug_cursorPositionChanged() {
   if (ui->textEditTerminalDebug->textCursor().selectedText().isEmpty())
-    ui->textEditTerminalDebug->setTextColor(
-        ui->textEditTerminalDebug->palette().color(QPalette::Text));
+    ui->textEditTerminalDebug->setTextColor(ui->textEditTerminalDebug->palette().color(QPalette::Text));
 }
 
 void DeveloperOptions::on_pushButtonTerminalBlacklisAddSelect_clicked() {
@@ -229,14 +201,11 @@ void DeveloperOptions::addPathToList(QString fileName) {
   ui->listWidgetQMLFiles->addItem(newItem);
 }
 
-void DeveloperOptions::addTerminalCursorPosCommand(int x, int y) {
-  insertInTerminalDebug(QString("\\e[%1;%2H").arg(y).arg(x), Qt::green);
-}
+void DeveloperOptions::addTerminalCursorPosCommand(int x, int y) { insertInTerminalDebug(QString("\\e[%1;%2H").arg(y).arg(x), Qt::green); }
 
 void DeveloperOptions::on_pushButtonQmlSave_clicked() {
   QString defaultName = QString("terminal.qml");
-  QString fileName = QFileDialog::getSaveFileName(
-      this, tr("Save QML terminal"), defaultName, tr("QML file (*.qml)"));
+  QString fileName = QFileDialog::getSaveFileName(this, tr("Save QML terminal"), defaultName, tr("QML file (*.qml)"));
   if (fileName.isEmpty())
     return;
   QFile file(fileName);
@@ -250,16 +219,14 @@ void DeveloperOptions::on_pushButtonQmlSave_clicked() {
     } else {
       QMessageBox msgBox(this);
       msgBox.setText(tr("Cannot read file"));
-      msgBox.setInformativeText(
-          tr("Source file with currently loaded QML cannot be opened."));
+      msgBox.setInformativeText(tr("Source file with currently loaded QML cannot be opened."));
       msgBox.setIcon(QMessageBox::Critical);
       msgBox.exec();
     }
   } else {
     QMessageBox msgBox(this);
     msgBox.setText(tr("Cant write to file."));
-    msgBox.setInformativeText(
-        tr("This may be because file is opened in another program."));
+    msgBox.setInformativeText(tr("This may be because file is opened in another program."));
     msgBox.setIcon(QMessageBox::Critical);
     msgBox.exec();
   }
@@ -269,8 +236,7 @@ void DeveloperOptions::qmlExport() {
   QMessageBox msgBox(this);
   msgBox.setText(tr("Export qml in compressed format"));
   msgBox.setIcon(QMessageBox::Question);
-  msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::Ok |
-                            QMessageBox::Cancel);
+  msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::Ok | QMessageBox::Cancel);
   msgBox.setDefaultButton(QMessageBox::Yes);
   msgBox.setButtonText(QMessageBox::Yes, tr("To clipboard"));
   msgBox.setButtonText(QMessageBox::Ok, tr("To file"));
@@ -291,10 +257,7 @@ void DeveloperOptions::qmlExport() {
 
   if (checkBox->isChecked()) {
     QByteArray newData;
-    newData.append(
-        QString("const unsigned char terminalQml[%1] = {'$','$','Q',")
-            .arg(data.length() + 3)
-            .toLocal8Bit());
+    newData.append(QString("const unsigned char terminalQml[%1] = {'$','$','Q',").arg(data.length() + 3).toLocal8Bit());
     for (auto it = data.begin(); it != data.end(); it++) {
       newData.append(QString::number((quint8)*it).toLocal8Bit());
       newData.append(",");
@@ -305,13 +268,11 @@ void DeveloperOptions::qmlExport() {
   }
 
   if (returnValue == QMessageBox::Yes) {
-    QClipboard* clipboard = QGuiApplication::clipboard();
+    QClipboard *clipboard = QGuiApplication::clipboard();
     clipboard->setText(data);
   } else if (returnValue == QMessageBox::Ok) {
     QString defaultName = QString("terminal.txt");
-    QString fileName = QFileDialog::getSaveFileName(
-        this, tr("Export qml in compressed format"), defaultName,
-        tr("Text file (*.*)"));
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Export qml in compressed format"), defaultName, tr("Text file (*.*)"));
     if (fileName.isEmpty())
       return;
     QFile file(fileName);
@@ -321,16 +282,14 @@ void DeveloperOptions::qmlExport() {
     } else {
       QMessageBox msgBox(this);
       msgBox.setText(tr("Cant write to file."));
-      msgBox.setInformativeText(
-          tr("This may be because file is opened in another program."));
+      msgBox.setInformativeText(tr("This may be because file is opened in another program."));
       msgBox.setIcon(QMessageBox::Critical);
       msgBox.exec();
     }
   }
 }
 
-void DeveloperOptions::on_listWidgetTerminalCodeList_itemClicked(
-    QListWidgetItem* item) {
+void DeveloperOptions::on_listWidgetTerminalCodeList_itemClicked(QListWidgetItem *item) {
   QString code = "";
   if (item->text().contains(" "))
     code = item->text().left(item->text().indexOf(" "));
@@ -363,40 +322,30 @@ void DeveloperOptions::on_listWidgetTerminalCodeList_itemClicked(
 void DeveloperOptions::insertInTerminalDebug(QString text, QColor textColor) {
   ui->textEditTerminalDebug->setTextColor(textColor);
   ui->textEditTerminalDebug->textCursor().insertText(text);
-  ui->textEditTerminalDebug->setTextColor(
-      ui->textEditTerminalDebug->palette().color(QPalette::Text));
+  ui->textEditTerminalDebug->setTextColor(ui->textEditTerminalDebug->palette().color(QPalette::Text));
 }
 
-void DeveloperOptions::on_listWidgetQMLFiles_itemClicked(
-    QListWidgetItem* item) {
-  emit loadQmlFile(QUrl::fromLocalFile(item->data(Qt::UserRole).toString()));
-}
+void DeveloperOptions::on_listWidgetQMLFiles_itemClicked(QListWidgetItem *item) { emit loadQmlFile(QUrl::fromLocalFile(item->data(Qt::UserRole).toString())); }
 
 void DeveloperOptions::qmlReload() {
   QUrl url = qQuickWidget->source();
   emit loadQmlFile(url);
 }
 
-void DeveloperOptions::quickWidget_statusChanged(
-    const QQuickWidget::Status& arg1) {
+void DeveloperOptions::quickWidget_statusChanged(const QQuickWidget::Status &arg1) {
   if (arg1 == QQuickWidget::Error) {
     auto errors = qQuickWidget->errors();
-    for (const auto& error : qAsConst(errors))
-      ui->plainTextEditQmlLog->appendHtml("<font color=red>" +
-                                          error.toString() + "<\font color>");
+    for (const auto &error : qAsConst(errors))
+      ui->plainTextEditQmlLog->appendHtml("<font color=red>" + error.toString() + "<\font color>");
   } else if (arg1 == QQuickWidget::Ready) {
-    ui->plainTextEditQmlLog->appendHtml("<font color=green>" +
-                                        tr("File loaded") + "<\font color>");
+    ui->plainTextEditQmlLog->appendHtml("<font color=green>" + tr("File loaded") + "<\font color>");
   }
 }
 
-void DeveloperOptions::on_pushButtonClearAnsiTerminal_clicked() {
-  emit printToTerminal("\e[2J");
-}
+void DeveloperOptions::on_pushButtonClearAnsiTerminal_clicked() { emit printToTerminal("\e[2J"); }
 
 void DeveloperOptions::on_pushButtonTerminalInputCopy_clicked() {
-  QByteArray bytes =
-      ui->textEditTerminalDebug->toPlainText().replace('\n', "\\r\\n").toUtf8();
+  QByteArray bytes = ui->textEditTerminalDebug->toPlainText().replace('\n', "\\r\\n").toUtf8();
   for (unsigned char ch = 0;; ch++) {
     if (ch == 32)
       ch = 127;
@@ -417,8 +366,10 @@ void DeveloperOptions::on_lineEditManualInput_returnPressed() {
 }
 
 void DeveloperOptions::on_pushButtonScrollDown_2_clicked() {
-  QScrollBar* scroll = ui->plainTextEditConsole_2->verticalScrollBar();
+  QScrollBar *scroll = ui->plainTextEditConsole_2->verticalScrollBar();
   scroll->setValue(scroll->maximum());
   scroll = ui->plainTextEditConsole_2->horizontalScrollBar();
   scroll->setValue(scroll->minimum());
 }
+
+void DeveloperOptions::on_pushButtonOpenConfig_clicked() { QDesktopServices::openUrl(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)); }

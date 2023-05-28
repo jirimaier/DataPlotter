@@ -1,5 +1,5 @@
 QT += core gui serialport widgets printsupport opengl qml quickwidgets \
-    quick quickcontrols2
+    quick quickcontrols2 network
 
 LIBS += -lOpenGL32
 
@@ -41,6 +41,8 @@ HEADERS += \
     freqtimeplotdialog.h \
     global.h \
     mainwindow/mainwindow.h \
+    mainwindow/updatechecker.h \
+    mainwindow/version.h \
     manualinputdialog.h \
     math/averager.h \
     math/expressionparser.h \
@@ -93,6 +95,7 @@ SOURCES += \
     mainwindow/mainwindow_save_load.cpp \
     mainwindow/mainwindow_send_file.cpp \
     mainwindow/mainwindow_timed_events.cpp \
+    mainwindow/updatechecker.cpp \
     manualinputdialog.cpp \
     math/averager.cpp \
     math/expressionparser.cpp \

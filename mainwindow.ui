@@ -7245,7 +7245,7 @@
            </size>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
           <property name="iconSize">
            <size>
@@ -8426,6 +8426,13 @@
               </property>
               <property name="text">
                <string>Video: features overview (Czech)</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButtonCheckForUpdates">
+              <property name="text">
+               <string>Check For Updates</string>
               </property>
              </widget>
             </item>

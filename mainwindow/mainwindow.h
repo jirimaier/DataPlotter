@@ -35,6 +35,7 @@
 #include "developeroptions.h"
 #include "freqtimeplotdialog.h"
 #include "global.h"
+#include "mainwindow/updatechecker.h"
 #include "manualinputdialog.h"
 #include "math/averager.h"
 #include "math/plotmath.h"
@@ -107,6 +108,8 @@ private:
   bool freqUseUnits = true;
   int dataUpdates = 0;
   bool hasMaximizedPlot = false;
+  UpdateChecker updateChecker;
+  bool checkForUpdatesAtStartup = false;
 
 private:
   void setComboboxItemVisible(QComboBox &comboBox, int index, bool visible);
@@ -135,11 +138,12 @@ private:
   void resetQmlTerminal();
   void saveDefaultSettings();
   void closeEvent(QCloseEvent *event);
-
   void autosetHrange();
 
   QIcon invertIconLightness(const QIcon &icon, QSize size);
-private slots:
+  void openResourceFileCopiedToLocal(QString file);
+  
+  private slots:
   void updateCursors();
   void setAdaptiveSpinBoxes();
   void updateDivs();
@@ -296,6 +300,8 @@ private slots: // Autoconnect slots
   void on_verticalScrollBarVertical_valueChanged(int value);
   void on_horizontalScrollBarHorizontal_valueChanged(int value);
 
+  void on_pushButtonCheckForUpdates_clicked();
+
 public slots:
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumMessageTarget target);
   void showPlotStatus(PlotStatus::enumPlotStatus type);
@@ -336,6 +342,7 @@ public slots:
   void mainPlotVRangeChanged(QCPRange range);
   void mainPlotVRangeMaxChanged(QCPRange range);
   void lastDataTypeWasPointChanged(bool wasPoint);
+  void checkedVersion(bool isNew, QString message);
 
 signals:
   void setChDigital(int chid, int target);

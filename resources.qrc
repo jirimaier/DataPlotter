@@ -107,4 +107,10 @@
         <file>qml/DataPlotterComponents/MessageConsole.qml</file>
         <file>qml/DataPlotterComponents/SerialSender.qml</file>
     </qresource>
+    <qresource prefix="/docs">
+        <file>documentation/Data protocol guide cz.pdf</file>
+        <file>documentation/Data protocol guide en.pdf</file>
+        <file>documentation/license.txt</file>
+        <file>documentation/Manual.pdf</file>
+    </qresource>
 </RCC>

@@ -15,6 +15,7 @@
 
 #include "mainwindow.h"
 
+#include "mainwindow/version.h"
 #include "ui_developeroptions.h"
 #include "ui_freqtimeplotdialog.h"
 #include "ui_manualinputdialog.h"
@@ -25,7 +26,28 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
   qApp->setStyle("Fusion");
   this->setAttribute(Qt::WA_NativeWindow);
 
+  bool versionCahnged = true;
   configFilePath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/config.ini";
+  QFile version(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/version.txt");
+  QByteArray versionstring;
+  for (int i : ApplicationVersion)
+    versionstring.append(QString(QString::number(i) + ".").toUtf8());
+  versionstring.remove(versionstring.length() - 1, 1);
+  if (version.open(QIODevice::ReadOnly)) {
+    if (version.readAll() == versionstring)
+      versionCahnged = false;
+    version.close();
+  }
+  if (versionCahnged) {
+    qDebug() << "Version changed";
+    QDir dir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
+    dir.removeRecursively();
+    dir.mkpath(".");
+    if (version.open(QIODevice::WriteOnly)) {
+      version.write(versionstring);
+      version.close();
+    }
+  }
 
   developerOptions = new DeveloperOptions(this, ui->quickWidget);
   freqTimePlotDialog = new FreqTimePlotDialog(nullptr);
@@ -485,46 +507,20 @@ void MainWindow::on_lineEditHUnit_textChanged(const QString &arg1) {
   updateDivs(); // Aby se aktualizovala jednotka u kroku mřížky
 }
 
-void MainWindow::on_pushButtonProtocolGuideCZ_clicked() {
-  QString helpFile = QCoreApplication::applicationDirPath() + ("/Data protocol guide cz.pdf");
-  if (!QDesktopServices::openUrl(QUrl::fromLocalFile(helpFile))) {
+void MainWindow::on_pushButtonProtocolGuideCZ_clicked() { openResourceFileCopiedToLocal(":/docs/documentation/Data protocol guide cz.pdf"); }
+
+void MainWindow::openResourceFileCopiedToLocal(QString file) {
+  QFile resource(file);
+  QString local = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + file.mid(file.lastIndexOf('/'));
+  resource.open(QIODevice::ReadOnly);
+  QFile::remove(local);
+  resource.copy(local);
+  if (!QDesktopServices::openUrl(QUrl::fromLocalFile(local))) {
     QMessageBox msgBox(this);
     msgBox.setText(tr("Cant open file."));
-    msgBox.setInformativeText(helpFile);
+    msgBox.setInformativeText(local);
     msgBox.setIcon(QMessageBox::Critical);
     msgBox.exec();
-  }
-}
-
-void MainWindow::on_pushButtonProtocolGuideEN_clicked() {
-  QString helpFile = QCoreApplication::applicationDirPath() + ("/Data protocol guide en.pdf");
-  if (!QDesktopServices::openUrl(QUrl::fromLocalFile(helpFile))) {
-    QMessageBox msgBox(this);
-    msgBox.setText(tr("Cant open file."));
-    msgBox.setInformativeText(helpFile);
-    msgBox.setIcon(QMessageBox::Critical);
-    msgBox.exec();
-  }
-}
-
-void MainWindow::on_pushButtonIntroVideoCZ_clicked() { QDesktopServices::openUrl(QUrl("https://www.youtube.com/watch?v=TpJgz6kfPvA")); }
-
-void MainWindow::on_labelLogo_clicked() { QDesktopServices::openUrl(QUrl("https://embedded.fel.cvut.cz/platformy")); }
-
-void MainWindow::on_comboBoxFIR_currentIndexChanged(int index) {
-  switch (index) {
-  case 0:
-    emit setInterpolationFilter("hamm_x8", 8);
-    break;
-  case 1:
-    emit setInterpolationFilter("kaiser_x8", 8);
-    break;
-  case 2:
-    emit setInterpolationFilter("kaiser_x16", 16);
-    break;
-  case 3:
-    emit setInterpolationFilter("kaiser_x32", 32);
-    break;
   }
 }
 
@@ -798,8 +794,28 @@ void MainWindow::lastDataTypeWasPointChanged(bool wasPoint) {
   }
 }
 
+void MainWindow::checkedVersion(bool isNew, QString message) {
+  QMessageBox msgBox(this);
+  msgBox.setText(message);
+  msgBox.setIcon(QMessageBox::Information);
+  msgBox.setStandardButtons(isNew ? (QMessageBox::Yes | QMessageBox::No) : QMessageBox::Ok);
+  msgBox.setDefaultButton(isNew ? QMessageBox::Yes : QMessageBox::Ok);
+  msgBox.setButtonText(QMessageBox::Yes, tr("Download"));
+  msgBox.setButtonText(QMessageBox::No, tr("Close"));
+  auto checkBox = new QCheckBox(&msgBox);
+  checkBox->setText(tr("Check for updates at startup"));
+  checkBox->setChecked(checkForUpdatesAtStartup);
+  msgBox.setCheckBox(checkBox);
+  int returnValue = msgBox.exec();
+  if (returnValue == QMessageBox::Yes)
+    QDesktopServices::openUrl(DownloadUrl);
+  checkForUpdatesAtStartup = checkBox->isChecked();
+}
+
 void MainWindow::plotMaximizeButtonClicked(QString id) {
   setPlotLayout(hasMaximizedPlot ? "all" : id);
   ui->pushButtonFFT_Maximize->setIcon(hasMaximizedPlot ? iconUnMaximize : iconMaximize);
   ui->pushButtonXY_Maximize->setIcon(hasMaximizedPlot ? iconUnMaximize : iconMaximize);
 }
+
+void MainWindow::on_pushButtonCheckForUpdates_clicked() { updateChecker.checkForUpdates(false); }

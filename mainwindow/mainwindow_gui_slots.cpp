@@ -74,17 +74,6 @@ void MainWindow::on_comboBoxGraphStyle_currentIndexChanged(int index) {
         ui->checkBoxOpenGL->setChecked(true);
       if (checkBox->isChecked()) {
         recommendOpenGL = false;
-        QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/settings/default.cfg");
-        QFile file(defaultName);
-        if (file.open(QFile::WriteOnly | QFile::Append)) {
-          file.write("noopengldialog;\n");
-        } else {
-          QMessageBox msgBox(this);
-          msgBox.setText(tr("Can not write to default settings file"));
-          msgBox.setDetailedText(defaultName);
-          msgBox.setIcon(QMessageBox::Critical);
-          msgBox.exec();
-        }
       }
     }
     ui->plot->setLogicStyle(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT, index);
@@ -201,14 +190,28 @@ void MainWindow::on_comboBoxHAxisType_currentIndexChanged(int index) {
   ui->plot->setShowHorizontalValues(index);
 }
 
-void MainWindow::on_pushButtonOpenHelpCZ_clicked() {
-  QString helpFile = QCoreApplication::applicationDirPath() + "/Manual.pdf";
-  if (!QDesktopServices::openUrl(QUrl::fromLocalFile(helpFile))) {
-    QMessageBox msgBox(this);
-    msgBox.setText(tr("Cant open file."));
-    msgBox.setInformativeText(helpFile);
-    msgBox.setIcon(QMessageBox::Critical);
-    msgBox.exec();
+void MainWindow::on_pushButtonOpenHelpCZ_clicked() { openResourceFileCopiedToLocal(":/docs/documentation/Manual.pdf"); }
+
+void MainWindow::on_pushButtonProtocolGuideEN_clicked() { openResourceFileCopiedToLocal(":/docs/documentation/Data protocol guide en.pdf"); }
+
+void MainWindow::on_pushButtonIntroVideoCZ_clicked() { QDesktopServices::openUrl(QUrl("https://www.youtube.com/watch?v=TpJgz6kfPvA")); }
+
+void MainWindow::on_labelLogo_clicked() { QDesktopServices::openUrl(QUrl("https://embedded.fel.cvut.cz/platformy")); }
+
+void MainWindow::on_comboBoxFIR_currentIndexChanged(int index) {
+  switch (index) {
+  case 0:
+    emit setInterpolationFilter("hamm_x8", 8);
+    break;
+  case 1:
+    emit setInterpolationFilter("kaiser_x8", 8);
+    break;
+  case 2:
+    emit setInterpolationFilter("kaiser_x16", 16);
+    break;
+  case 3:
+    emit setInterpolationFilter("kaiser_x32", 32);
+    break;
   }
 }
 

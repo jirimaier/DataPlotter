@@ -18,157 +18,95 @@
 #include "ui_freqtimeplotdialog.h"
 
 void MainWindow::connectSignals() {
-  connect(ui->pushButtonPause, &QPushButton::clicked, ui->plot,
-          &MyMainPlot::togglePause);
-  connect(ui->checkBoxVerticalValues, &QCheckBox::toggled, ui->plot,
-          &MyPlot::setShowVerticalValues);
-  connect(ui->plot, &MyMainPlot::showPlotStatus, this,
-          &MainWindow::showPlotStatus);
+  connect(ui->pushButtonPause, &QPushButton::clicked, ui->plot, &MyMainPlot::togglePause);
+  connect(ui->checkBoxVerticalValues, &QCheckBox::toggled, ui->plot, &MyPlot::setShowVerticalValues);
+  connect(ui->plot, &MyMainPlot::showPlotStatus, this, &MainWindow::showPlotStatus);
   connect(ui->plot, &MyPlot::gridChanged, this, &MainWindow::updateDivs);
-  connect(ui->plot, &MyPlot::moveTimeCursor, this,
-          &MainWindow::timeCursorMovedByMouse);
-  connect(ui->plot, &MyPlot::moveValueCursor, this,
-          &MainWindow::valueCursorMovedByMouse);
+  connect(ui->plot, &MyPlot::moveTimeCursor, this, &MainWindow::timeCursorMovedByMouse);
+  connect(ui->plot, &MyPlot::moveValueCursor, this, &MainWindow::valueCursorMovedByMouse);
   connect(ui->plot, &MyPlot::setCursorPos, this, &MainWindow::cursorSetByMouse);
-  connect(ui->plot, &MyMainPlot::offsetChangedByMouse, this,
-          &MainWindow::offsetChangedByMouse);
-  connect(ui->plotxy, &MyXYPlot::moveTimeCursorXY, this,
-          &MainWindow::moveTimeCursorXY);
-  connect(ui->plotFFT, &MyPlot::moveTimeCursor, this,
-          &MainWindow::timeCursorMovedByMouse);
-  connect(ui->plotxy, &MyPlot::moveValueCursor, this,
-          &MainWindow::moveValueCursorXY);
-  connect(ui->plotFFT, &MyPlot::moveValueCursor, this,
-          &MainWindow::valueCursorMovedByMouse);
-  connect(ui->plotxy, &MyXYPlot::setCursorPosXY, this,
-          &MainWindow::setCursorPosXY);
-  connect(ui->plotFFT, &MyPlot::setCursorPos, this,
-          &MainWindow::cursorSetByMouse);
-  connect(ui->lineEditHtitle, &QLineEdit::textChanged, ui->plot,
-          &MyPlot::setXTitle);
-  connect(ui->lineEditVtitle, &QLineEdit::textChanged, ui->plot,
-          &MyPlot::setYTitle);
-  connect(ui->lineEditVtitle, &QLineEdit::textChanged, ui->plotxy,
-          &MyPlot::setXTitle);
-  connect(ui->lineEditVtitle, &QLineEdit::textChanged, ui->plotxy,
-          &MyPlot::setYTitle);
-  connect(ui->horizontalSliderVGrid, &QDial::valueChanged, ui->plot,
-          &MyPlot::setGridHintY);
-  connect(ui->horizontalSliderHGrid, &QDial::valueChanged, ui->plot,
-          &MyPlot::setGridHintX);
-  connect(ui->spinBoxShiftStep, SIGNAL(valueChanged(int)), ui->plot,
-          SLOT(setShiftStep(int)));
-  connect(ui->plot, &MyMainPlot::requestCursorUpdate, this,
-          &MainWindow::updateCursors);
-  connect(ui->pushButtonFFTHoldMax1, &QPushButton::toggled, ui->plotFFT,
-          &MyFFTPlot::setHoldMax1);
-  connect(ui->pushButtonFFTHoldMax2, &QPushButton::toggled, ui->plotFFT,
-          &MyFFTPlot::setHoldMax2);
+  connect(ui->plot, &MyMainPlot::offsetChangedByMouse, this, &MainWindow::offsetChangedByMouse);
+  connect(ui->plotxy, &MyXYPlot::moveTimeCursorXY, this, &MainWindow::moveTimeCursorXY);
+  connect(ui->plotFFT, &MyPlot::moveTimeCursor, this, &MainWindow::timeCursorMovedByMouse);
+  connect(ui->plotxy, &MyPlot::moveValueCursor, this, &MainWindow::moveValueCursorXY);
+  connect(ui->plotFFT, &MyPlot::moveValueCursor, this, &MainWindow::valueCursorMovedByMouse);
+  connect(ui->plotxy, &MyXYPlot::setCursorPosXY, this, &MainWindow::setCursorPosXY);
+  connect(ui->plotFFT, &MyPlot::setCursorPos, this, &MainWindow::cursorSetByMouse);
+  connect(ui->lineEditHtitle, &QLineEdit::textChanged, ui->plot, &MyPlot::setXTitle);
+  connect(ui->lineEditVtitle, &QLineEdit::textChanged, ui->plot, &MyPlot::setYTitle);
+  connect(ui->lineEditVtitle, &QLineEdit::textChanged, ui->plotxy, &MyPlot::setXTitle);
+  connect(ui->lineEditVtitle, &QLineEdit::textChanged, ui->plotxy, &MyPlot::setYTitle);
+  connect(ui->horizontalSliderVGrid, &QDial::valueChanged, ui->plot, &MyPlot::setGridHintY);
+  connect(ui->horizontalSliderHGrid, &QDial::valueChanged, ui->plot, &MyPlot::setGridHintX);
+  connect(ui->spinBoxShiftStep, SIGNAL(valueChanged(int)), ui->plot, SLOT(setShiftStep(int)));
+  connect(ui->plot, &MyMainPlot::requestCursorUpdate, this, &MainWindow::updateCursors);
+  connect(ui->pushButtonFFTHoldMax1, &QPushButton::toggled, ui->plotFFT, &MyFFTPlot::setHoldMax1);
+  connect(ui->pushButtonFFTHoldMax2, &QPushButton::toggled, ui->plotFFT, &MyFFTPlot::setHoldMax2);
 
-  connect(&ansiTerminalModel, &AnsiTerminalModel::sendMessage, this,
-          &MainWindow::printMessage);
+  connect(&ansiTerminalModel, &AnsiTerminalModel::sendMessage, this, &MainWindow::printMessage);
   connect(&portsRefreshTimer, &QTimer::timeout, this, &MainWindow::comRefresh);
-  connect(&activeChRefreshTimer, &QTimer::timeout, this,
-          &MainWindow::updateUsedChannels);
-  connect(&cursorRangeUpdateTimer, &QTimer::timeout, this,
-          &MainWindow::updateCursorRange);
-  connect(&measureRefreshTimer1, &QTimer::timeout, this,
-          &MainWindow::updateMeasurements1);
-  connect(&measureRefreshTimer2, &QTimer::timeout, this,
-          &MainWindow::updateMeasurements2);
+  connect(&activeChRefreshTimer, &QTimer::timeout, this, &MainWindow::updateUsedChannels);
+  connect(&cursorRangeUpdateTimer, &QTimer::timeout, this, &MainWindow::updateCursorRange);
+  connect(&measureRefreshTimer1, &QTimer::timeout, this, &MainWindow::updateMeasurements1);
+  connect(&measureRefreshTimer2, &QTimer::timeout, this, &MainWindow::updateMeasurements2);
   connect(&fftTimer1, &QTimer::timeout, this, &::MainWindow::updateFFT1);
   connect(&fftTimer2, &QTimer::timeout, this, &::MainWindow::updateFFT2);
   connect(&xyTimer, &QTimer::timeout, this, &::MainWindow::updateXY);
-  connect(&serialMonitorTimer, &QTimer::timeout, this,
-          &MainWindow::updateSerialMonitor);
-  connect(&serialMonitorTimer, &QTimer::timeout, this,
-          &MainWindow::updateConsole);
-  connect(&interpolationTimer, &QTimer::timeout, this,
-          &MainWindow::updateInterpolation);
-  connect(&triggerLineTimer, &QTimer::timeout, this,
-          &MainWindow::turnOffTriggerLine);
+  connect(&serialMonitorTimer, &QTimer::timeout, this, &MainWindow::updateSerialMonitor);
+  connect(&serialMonitorTimer, &QTimer::timeout, this, &MainWindow::updateConsole);
+  connect(&interpolationTimer, &QTimer::timeout, this, &MainWindow::updateInterpolation);
+  connect(&triggerLineTimer, &QTimer::timeout, this, &MainWindow::turnOffTriggerLine);
 
-  connect(ui->horizontalSliderTimeCur1, &myCursorSlider::realValueChanged, this,
-          &MainWindow::horizontalSliderTimeCur1_realValueChanged);
-  connect(ui->horizontalSliderTimeCur2, &myCursorSlider::realValueChanged, this,
-          &MainWindow::horizontalSliderTimeCur2_realValueChanged);
+  connect(ui->horizontalSliderTimeCur1, &myCursorSlider::realValueChanged, this, &MainWindow::horizontalSliderTimeCur1_realValueChanged);
+  connect(ui->horizontalSliderTimeCur2, &myCursorSlider::realValueChanged, this, &MainWindow::horizontalSliderTimeCur2_realValueChanged);
 
-  connect(ui->plotFFT, &MyFFTPlot::newPeakValues,
-          freqTimePlotDialog->getUi()->plotPeak, &MyPeakPlot::newData);
+  connect(ui->plotFFT, &MyFFTPlot::newPeakValues, freqTimePlotDialog->getUi()->plotPeak, &MyPeakPlot::newData);
 
-  connect(qmlTerminalInterface, &QmlTerminalInterface::dataSentToParser, this,
-          &MainWindow::sendManualInput);
+  connect(qmlTerminalInterface, &QmlTerminalInterface::dataSentToParser, this, &MainWindow::sendManualInput);
 
-  connect(developerOptions, &DeveloperOptions::colorExceptionListChanged,
-          &ansiTerminalModel, &AnsiTerminalModel::setColorExceptionList);
-  connect(developerOptions, &DeveloperOptions::loadQmlFile, this,
-          &MainWindow::loadQmlFile);
-  connect(developerOptions, &DeveloperOptions::terminalDevToggled,
-          &ansiTerminalModel, &AnsiTerminalModel::setShowGrid);
-  connect(developerOptions, &DeveloperOptions::printToTerminal, this,
-          &MainWindow::printToTerminal);
+  connect(developerOptions, &DeveloperOptions::colorExceptionListChanged, &ansiTerminalModel, &AnsiTerminalModel::setColorExceptionList);
+  connect(developerOptions, &DeveloperOptions::loadQmlFile, this, &MainWindow::loadQmlFile);
+  connect(developerOptions, &DeveloperOptions::terminalDevToggled, &ansiTerminalModel, &AnsiTerminalModel::setShowGrid);
+  connect(developerOptions, &DeveloperOptions::printToTerminal, this, &MainWindow::printToTerminal);
   // connect(developerOptions->getUi()->pushButtonLoadFile,
   // &QPushButton::clicked, this, &MainWindow::opushButtonLoadFile_clicked);
   // connect(developerOptions->getUi()->pushButtonDefaults,
   // &QPushButton::clicked, this, &MainWindow::pushButtonDefaults_clicked);
   // connect(developerOptions->getUi()->pushButtonSaveSettings,
   // &QPushButton::clicked, this, &MainWindow::pushButtonSaveSettings_clicked);
-  connect(developerOptions->getUi()->pushButtonClearAll, &QPushButton::clicked,
-          this, &MainWindow::pushButtonClearAll_clicked);
-  connect(developerOptions->getUi()->checkBoxTriggerLineEn,
-          &QCheckBox::stateChanged, this,
-          &MainWindow::checkBoxTriggerLineEn_stateChanged);
-  connect(developerOptions->getUi()->pushButtonClearGraph,
-          &QPushButton::clicked, this,
-          &MainWindow::pushButtonClearGraph_clicked);
-  connect(developerOptions->getUi()->checkBoxEchoReply, &QCheckBox::toggled,
-          this, &MainWindow::checkBoxEchoReply_toggled);
-  connect(developerOptions->getUi()->checkBoxMouseControls, &QCheckBox::toggled,
-          this, &MainWindow::checkBoxMouseControls_toggled_new);
-  connect(freqTimePlotDialog, &FreqTimePlotDialog::requestedCSVExport, this,
-          &MainWindow::exportCSV);
-  connect(developerOptions, &DeveloperOptions::sendManualInput, this,
-          &MainWindow::sendManualInput);
-  connect(developerOptions, &DeveloperOptions::requestManualBufferClear, this,
-          &MainWindow::requestManualBufferClear);
-  connect(developerOptions, &DeveloperOptions::requestManualBufferShow, this,
-          &MainWindow::requestManualBufferShow);
-  connect(developerOptions, &DeveloperOptions::requestSerialBufferClear, this,
-          &MainWindow::requestSerialBufferClear);
-  connect(developerOptions, &DeveloperOptions::requestSerialBufferShow, this,
-          &MainWindow::requestSerialBufferShow);
-  connect(&ansiTerminalModel, &AnsiTerminalModel::gridClickedSignal,
-          developerOptions, &DeveloperOptions::addTerminalCursorPosCommand);
+  connect(developerOptions->getUi()->pushButtonClearAll, &QPushButton::clicked, this, &MainWindow::pushButtonClearAll_clicked);
+  connect(developerOptions->getUi()->checkBoxTriggerLineEn, &QCheckBox::stateChanged, this, &MainWindow::checkBoxTriggerLineEn_stateChanged);
+  connect(developerOptions->getUi()->pushButtonClearGraph, &QPushButton::clicked, this, &MainWindow::pushButtonClearGraph_clicked);
+  connect(developerOptions->getUi()->checkBoxEchoReply, &QCheckBox::toggled, this, &MainWindow::checkBoxEchoReply_toggled);
+  connect(developerOptions->getUi()->checkBoxMouseControls, &QCheckBox::toggled, this, &MainWindow::checkBoxMouseControls_toggled_new);
+  connect(freqTimePlotDialog, &FreqTimePlotDialog::requestedCSVExport, this, &MainWindow::exportCSV);
+  connect(developerOptions, &DeveloperOptions::sendManualInput, this, &MainWindow::sendManualInput);
+  connect(developerOptions, &DeveloperOptions::requestManualBufferClear, this, &MainWindow::requestManualBufferClear);
+  connect(developerOptions, &DeveloperOptions::requestManualBufferShow, this, &MainWindow::requestManualBufferShow);
+  connect(developerOptions, &DeveloperOptions::requestSerialBufferClear, this, &MainWindow::requestSerialBufferClear);
+  connect(developerOptions, &DeveloperOptions::requestSerialBufferShow, this, &MainWindow::requestSerialBufferShow);
+  connect(&ansiTerminalModel, &AnsiTerminalModel::gridClickedSignal, developerOptions, &DeveloperOptions::addTerminalCursorPosCommand);
 
-  connect(ui->plot, &MyMainPlot::vRangeChanged, this,
-          &MainWindow::mainPlotVRangeChanged);
-  connect(ui->plot, &MyMainPlot::vRangeMaxChanged, this,
-          &MainWindow::mainPlotVRangeMaxChanged);
-  connect(ui->plot, &MyMainPlot::hRangeChanged, this,
-          &MainWindow::mainPlotHRangeChanged);
-  connect(ui->plot, &MyMainPlot::hRangeMaxChanged, this,
-          &MainWindow::mainPlotHRangeMaxChanged);
+  connect(ui->plot, &MyMainPlot::vRangeChanged, this, &MainWindow::mainPlotVRangeChanged);
+  connect(ui->plot, &MyMainPlot::vRangeMaxChanged, this, &MainWindow::mainPlotVRangeMaxChanged);
+  connect(ui->plot, &MyMainPlot::hRangeChanged, this, &MainWindow::mainPlotHRangeChanged);
+  connect(ui->plot, &MyMainPlot::hRangeMaxChanged, this, &MainWindow::mainPlotHRangeMaxChanged);
 
-  connect(ui->plot, &MyMainPlot::lastDataTypeWasPointChanged, this,
-          &MainWindow::lastDataTypeWasPointChanged);
+  connect(ui->plot, &MyMainPlot::lastDataTypeWasPointChanged, this, &MainWindow::lastDataTypeWasPointChanged);
+
+  connect(&updateChecker, &UpdateChecker::checkedVersion, this, &MainWindow::checkedVersion);
 }
 
 void MainWindow::setAdaptiveSpinBoxes() {
   // Adaptivní krok není v starším Qt (Win XP)
 #if QT_VERSION >= 0x050C00
-  ui->doubleSpinBoxRangeHorizontal->setStepType(
-      QAbstractSpinBox::AdaptiveDecimalStepType);
-  ui->doubleSpinBoxRangeVerticalRange->setStepType(
-      QAbstractSpinBox::AdaptiveDecimalStepType);
+  ui->doubleSpinBoxRangeHorizontal->setStepType(QAbstractSpinBox::AdaptiveDecimalStepType);
+  ui->doubleSpinBoxRangeVerticalRange->setStepType(QAbstractSpinBox::AdaptiveDecimalStepType);
 
-  ui->doubleSpinBoxXYCurX1->setStepType(
-      QAbstractSpinBox::AdaptiveDecimalStepType);
-  ui->doubleSpinBoxXYCurX2->setStepType(
-      QAbstractSpinBox::AdaptiveDecimalStepType);
-  ui->doubleSpinBoxXYCurY1->setStepType(
-      QAbstractSpinBox::AdaptiveDecimalStepType);
-  ui->doubleSpinBoxXYCurY2->setStepType(
-      QAbstractSpinBox::AdaptiveDecimalStepType);
+  ui->doubleSpinBoxXYCurX1->setStepType(QAbstractSpinBox::AdaptiveDecimalStepType);
+  ui->doubleSpinBoxXYCurX2->setStepType(QAbstractSpinBox::AdaptiveDecimalStepType);
+  ui->doubleSpinBoxXYCurY1->setStepType(QAbstractSpinBox::AdaptiveDecimalStepType);
+  ui->doubleSpinBoxXYCurY2->setStepType(QAbstractSpinBox::AdaptiveDecimalStepType);
 #endif
 }
 
@@ -191,8 +129,7 @@ void MainWindow::setGuiDefaults() {
   ui->tabs_right->setCurrentIndex(0);
   ui->tabsControll->setCurrentIndex(0);
   ui->comboBoxOutputLevel->setCurrentIndex((int)OutputLevel::warning);
-  ui->labelBuildDate->setText(tr("Build: ") + QString(__DATE__) + " " +
-                              QString(__TIME__));
+  ui->labelBuildDate->setText(tr("Build: ") + QString(__DATE__) + " " + QString(__TIME__));
   ui->pushButtonPause->setIcon(iconRun);
 
   on_pushButtonModeFull_clicked();
@@ -204,10 +141,8 @@ void MainWindow::setGuiDefaults() {
 
   on_comboBoxFFTType_currentIndexChanged(ui->comboBoxFFTType->currentIndex());
 
-  ui->spinBoxFFTSegments1->setVisible(ui->comboBoxFFTType->currentIndex() ==
-                                      FFTType::pwelch);
-  ui->spinBoxFFTSegments2->setVisible(ui->comboBoxFFTType->currentIndex() ==
-                                      FFTType::pwelch);
+  ui->spinBoxFFTSegments1->setVisible(ui->comboBoxFFTType->currentIndex() == FFTType::pwelch);
+  ui->spinBoxFFTSegments2->setVisible(ui->comboBoxFFTType->currentIndex() == FFTType::pwelch);
   ui->checkBoxFFTCh1->setChecked(true);
   ui->comboBoxFFTCh1->setCurrentIndex(0);
   ui->comboBoxFFTCh2->setCurrentIndex(1);
@@ -238,8 +173,7 @@ void MainWindow::setGuiDefaults() {
   ui->plotFFT->setGridHintX(ui->horizontalSliderGridFFTH->value());
   ui->plotFFT->setGridHintY(ui->horizontalSliderGridFFTV->value());
 
-  on_doubleSpinBoxRangeVerticalRange_valueChanged(
-      ui->doubleSpinBoxRangeVerticalRange->value());
+  on_doubleSpinBoxRangeVerticalRange_valueChanged(ui->doubleSpinBoxRangeVerticalRange->value());
 
   ui->doubleSpinBoxXCur1->setVisible(false);
   ui->doubleSpinBoxXCur2->setVisible(false);
@@ -251,11 +185,10 @@ void MainWindow::setGuiDefaults() {
   triggerLineTimer.setSingleShot(true);
   triggerLineTimer.setInterval(2000);
 
-  developerOptions->getUi()->checkBoxTriggerLineEn->setCheckState(
-      Qt::PartiallyChecked);
+  developerOptions->getUi()->checkBoxTriggerLineEn->setCheckState(Qt::PartiallyChecked);
 
   ui->comboBoxFIR->setCurrentIndex(0);
-  on_comboBoxFIR_currentIndexChanged(0);  // Interpolátor načte filtr
+  on_comboBoxFIR_currentIndexChanged(0); // Interpolátor načte filtr
 }
 
 void MainWindow::setGuiArrays() {
@@ -354,10 +287,8 @@ void MainWindow::fillChannelSelect() {
 
   ui->comboBoxCursor1Channel->addItem(iconAbsoluteCursor, tr("Absolute"));
   ui->comboBoxCursor2Channel->addItem(iconAbsoluteCursor, tr("Absolute"));
-  ui->comboBoxCursor1Channel->setCurrentIndex(
-      ui->comboBoxCursor1Channel->count() - 1);
-  ui->comboBoxCursor2Channel->setCurrentIndex(
-      ui->comboBoxCursor2Channel->count() - 1);
+  ui->comboBoxCursor1Channel->setCurrentIndex(ui->comboBoxCursor1Channel->count() - 1);
+  ui->comboBoxCursor2Channel->setCurrentIndex(ui->comboBoxCursor2Channel->count() - 1);
 
   // Skryje FFT kanály z nabýdky.
   setComboboxItemVisible(*ui->comboBoxCursor1Channel, FFT_INDEX(0), false);
