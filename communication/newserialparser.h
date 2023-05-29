@@ -19,17 +19,19 @@
 #include <QDebug>
 #include <QObject>
 #include <QThread>
+#include <QTimer>
 
 #include "global.h"
+#include "qtimer.h"
 
 class NewSerialParser : public QObject {
   Q_OBJECT
 
- public:
-  explicit NewSerialParser(MessageTarget::enumMessageTarget target, QObject* parent = nullptr);
+public:
+  explicit NewSerialParser(MessageTarget::enumMessageTarget target, QObject *parent = nullptr);
   ~NewSerialParser();
 
- signals:
+signals:
   /// Pošle zprávu do záznamu
   void sendDeviceMessage(QByteArray header, bool warning, bool ended);
   /// Předá zprávu od zařízení
@@ -65,7 +67,7 @@ class NewSerialParser : public QObject {
 
   void sendQmlVar(QByteArray data);
 
- private:
+private:
   MessageTarget::enumMessageTarget target;
   void resetChHeader();
   bool channelHeaderRead = false;
@@ -80,21 +82,29 @@ class NewSerialParser : public QObject {
   void sendMessageIfAllowed(QString header, QString message, MessageLevel::enumMessageLevel type);
   DataMode::enumDataMode currentMode = DataMode::unknown;
   OutputLevel::enumOutputLevel debugLevel = OutputLevel::info;
+  enum PrintUnknownToTerminal { puttNo, puttYes, puttPending } printUnknownToTerminal = puttNo;
+  QByteArray printUnknownToTerminalBuffer;
+  QTimer *printUnknownToTerminalTimer = nullptr;
   QByteArray buffer;
   QByteArray pendingDataBuffer;
   QList<QPair<ValueType, QByteArray>> pendingPointBuffer;
   void parseMode(QChar modeChar);
-  readResult bufferPullFull(QByteArray& result);
+  readResult bufferPullFull(QByteArray &result);
   void changeMode(DataMode::enumDataMode mode, DataMode::enumDataMode previousMode, QByteArray modeName);
-  readResult bufferPullBeforeSemicolumn(QByteArray& result, bool removeNewline = false);
-  readResult bufferReadPoint(QList<QPair<ValueType, QByteArray>>& result);
+  readResult bufferPullBeforeSemicolumn(QByteArray &result, bool removeNewline = false);
+  readResult bufferReadPoint(QList<QPair<ValueType, QByteArray>> &result);
   uint32_t arrayToUint(QPair<ValueType, QByteArray> value);
-  readResult bufferPullChannel(QPair<ValueType, QByteArray>& result);
+  readResult bufferPullChannel(QPair<ValueType, QByteArray> &result);
   bool replyToEcho = true;
-  //bool removeCommaRightAfterTypeID = false;
+  bool initialEchoPending = false;
+  // bool removeCommaRightAfterTypeID = false;
 
-  NewSerialParser::readResult bufferPullBeforeNull(QByteArray& result);
- public slots:
+  NewSerialParser::readResult bufferPullBeforeNull(QByteArray &result);
+
+private slots:
+  void printUnknownToTerminalTimerSlot();
+
+public slots:
   /// Zpracuje data
   void parse(QByteArray newData);
   /// Clear buffers
@@ -106,7 +116,7 @@ class NewSerialParser : public QObject {
   /// Vymaže buffer a potvrdí připravenost
   void getReady();
   /// Nastaví jestli se má posílad odpověď na echo
-  void replyEcho(bool enabled) {replyToEcho = enabled;}
+  void replyEcho(bool enabled) { replyToEcho = enabled; }
 };
 
 #endif // NEWSERIALPARSER_H

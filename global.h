@@ -63,7 +63,7 @@ enum enumGraphType { analog, math, logic };
 }
 
 namespace DataMode {
-enum enumDataMode { unknown, terminal, info, warning, settings, point, channel, echo, logicChannel, logicPoint, deviceerror, requestfile, qml, qmldirect, qmlvar, savefile };
+enum enumDataMode { unknown, terminal, info, warning, settings, point, channel, echo, initialEcho, logicChannel, logicPoint, deviceerror, requestfile, qml, qmldirect, qmlvar, savefile };
 }
 
 namespace OutputLevel {

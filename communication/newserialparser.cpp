@@ -20,7 +20,10 @@ NewSerialParser::NewSerialParser(MessageTarget::enumMessageTarget target, QObjec
   resetChHeader();
 }
 
-NewSerialParser::~NewSerialParser() {}
+NewSerialParser::~NewSerialParser() {
+  if (printUnknownToTerminalTimer != nullptr)
+    delete printUnknownToTerminalTimer;
+}
 
 void NewSerialParser::resetChHeader() {
   channelHeaderRead = false;
@@ -65,6 +68,17 @@ void NewSerialParser::showBuffer() {
 
 void NewSerialParser::getReady() {
   clearBuffer();
+  initialEchoPending = true;
+  printUnknownToTerminalBuffer.clear();
+  printUnknownToTerminal = puttPending;
+  if (printUnknownToTerminalTimer == nullptr) {
+    printUnknownToTerminalTimer = new QTimer(this);
+    connect(printUnknownToTerminalTimer, &QTimer::timeout, this, &NewSerialParser::printUnknownToTerminalTimerSlot);
+  }
+  printUnknownToTerminalTimer->setSingleShot(true);
+
+  printUnknownToTerminalTimer->start(1000);
+
   emit ready();
 }
 
@@ -87,6 +101,8 @@ void NewSerialParser::parse(QByteArray newData) {
         if (buffer.left(2) == "$$") {
           if (currentMode == DataMode::info || currentMode == DataMode::warning)
             emit sendDeviceMessage("", false, true); // Pokud byl předchozí režim výpis zprávy, ohlásí její konec
+          if (currentMode == DataMode::initialEcho)
+            initialEchoPending = false;
           parseMode(buffer.at(2));
           buffer.remove(0, 3);
           continue;
@@ -175,13 +191,25 @@ void NewSerialParser::parse(QByteArray newData) {
       }
 
       if (currentMode == DataMode::unknown) {
-        QByteArray dropped;
-        readResult result = bufferPullFull(dropped);
-        if (!dropped.isEmpty())
-          sendMessageIfAllowed(tr("Unknown"), dropped, MessageLevel::info);
-        if (result == complete)
-          continue;
-        break;
+
+        if (printUnknownToTerminal == puttYes) {
+          QByteArray data;
+          readResult result = bufferPullFull(data);
+          emit sendTerminal(data);
+          if (result == complete)
+            continue;
+          break;
+        } else {
+          QByteArray dropped;
+          readResult result = bufferPullFull(dropped);
+          if (printUnknownToTerminal == puttPending)
+            printUnknownToTerminalBuffer.append(dropped);
+          else if (!dropped.isEmpty())
+            sendMessageIfAllowed(tr("Unknown"), dropped, MessageLevel::info);
+          if (result == complete)
+            continue;
+          break;
+        }
       }
 
       if (currentMode == DataMode::channel) {
@@ -449,6 +477,16 @@ void NewSerialParser::parse(QByteArray newData) {
         break;
       }
 
+      if (currentMode == DataMode::initialEcho) {
+        QByteArray data;
+        readResult result = bufferPullFull(data);
+        if (replyToEcho && initialEchoPending)
+          emit sendEcho(data);
+        if (result == complete)
+          continue;
+        break;
+      }
+
       if (currentMode == DataMode::settings) {
         readResult result = bufferPullBeforeSemicolumn(pendingDataBuffer, true);
         if (result == complete) {
@@ -582,7 +620,7 @@ NewSerialParser::readResult NewSerialParser::bufferReadPoint(QList<QPair<ValueTy
         }
         buffer.remove(0, 1);
       } else
-        continue;
+        return incomplete;
     }
 
     // NaN or Inf
@@ -765,6 +803,8 @@ void NewSerialParser::parseMode(QChar modeChar) {
     changeMode(DataMode::unknown, previousMode, tr("Unknown").toUtf8());
   else if (modeIdent == 'E')
     changeMode(DataMode::echo, previousMode, tr("Echo").toUtf8());
+  else if (modeIdent == 'A')
+    changeMode(DataMode::initialEcho, previousMode, tr("Initial Echo").toUtf8());
   else if (modeIdent == 'L')
     changeMode(DataMode::logicChannel, previousMode, tr("Logic channel").toUtf8());
   else if (modeIdent == 'B')
@@ -853,6 +893,17 @@ NewSerialParser::readResult NewSerialParser::bufferPullBeforeNull(QByteArray &re
   return complete;
 }
 
+void NewSerialParser::printUnknownToTerminalTimerSlot() {
+  if (printUnknownToTerminal == puttPending) {
+    printUnknownToTerminal = puttYes;
+    if (!printUnknownToTerminalBuffer.isEmpty())
+      emit sendTerminal(printUnknownToTerminalBuffer);
+  }
+  if (!printUnknownToTerminalBuffer.isEmpty())
+    sendMessageIfAllowed(tr("Unknown"), printUnknownToTerminalBuffer, MessageLevel::info);
+  printUnknownToTerminalBuffer.clear();
+}
+
 NewSerialParser::readResult NewSerialParser::bufferPullChannel(QPair<ValueType, QByteArray> &result) {
   int prefixLength = 0;
   ValueType valType = readValuePrefix(buffer, prefixLength);
@@ -877,6 +928,8 @@ NewSerialParser::readResult NewSerialParser::bufferPullChannel(QPair<ValueType, 
 void NewSerialParser::changeMode(DataMode::enumDataMode mode, DataMode::enumDataMode previousMode, QByteArray modeName) {
   if (mode == previousMode)
     return;
+  if (printUnknownToTerminal == puttPending && mode != DataMode::unknown)
+    printUnknownToTerminal = puttNo;
   currentMode = mode;
   sendMessageIfAllowed(tr("New data"), modeName, MessageLevel::info);
 }
