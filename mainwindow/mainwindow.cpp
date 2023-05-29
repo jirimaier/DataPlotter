@@ -112,7 +112,7 @@ void MainWindow::closeEvent(QCloseEvent *event) {
   developerOptions->close();
   ui->quickWidget->setSource(QUrl());
   ui->quickWidget->engine()->clearComponentCache();
-  saveDefaultSettings();
+  saveSettings();
   event->accept();
 }
 
@@ -180,7 +180,7 @@ void MainWindow::init(QTranslator *translator, const PlotData *plotData, const P
   setGuiDefaults();
   updateChScale();
   setAdaptiveSpinBoxes();
-  setUp();
+  loadSettings();
   startTimers();
 }
 

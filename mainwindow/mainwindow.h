@@ -119,7 +119,7 @@ private:
   void applyGuiElementSettings(QWidget *, QString value);
   QByteArray readGuiElementSettings(QWidget *target);
   void connectSignals();
-  void setUp();
+  void loadSettings();
   void startTimers();
   void setGuiDefaults();
   void setGuiArrays();
@@ -136,14 +136,14 @@ private:
   void updateCursorMeasurementsText();
   void initQmlTerminal();
   void resetQmlTerminal();
-  void saveDefaultSettings();
+  void saveSettings();
   void closeEvent(QCloseEvent *event);
   void autosetHrange();
 
   QIcon invertIconLightness(const QIcon &icon, QSize size);
   void openResourceFileCopiedToLocal(QString file);
-  
-  private slots:
+
+private slots:
   void updateCursors();
   void setAdaptiveSpinBoxes();
   void updateDivs();
@@ -164,9 +164,6 @@ private:
   void updateConsole();
 
 private slots:
-  void pushButtonLoadFile_clicked_new();
-  void pushButtonDefaults_clicked_new();
-  void pushButtonSaveSettings_clicked();
   void pushButtonClearAll_clicked();
   void checkBoxTriggerLineEn_stateChanged(int arg1);
   void pushButtonClearGraph_clicked();
