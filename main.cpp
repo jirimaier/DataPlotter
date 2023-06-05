@@ -80,7 +80,7 @@ Q_DECLARE_METATYPE(QSerialPort::StopBits);
 Q_DECLARE_METATYPE(QSerialPort::Parity);
 Q_DECLARE_METATYPE(QSerialPort::FlowControl);
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
   QGuiApplication::setAttribute(Qt::AA_DisableHighDpiScaling);
   QQuickStyle::setStyle("Material");
   QApplication application(argc, argv);
@@ -111,197 +111,114 @@ int main(int argc, char* argv[]) {
 
   // Vytvoří instance hlavních objektů
   MainWindow mainWindow;
-  QTranslator translator;  // Musí být zde aby dokázal přeložit i texty v
-                           // objektech jiných než MainWindow
-  PlotData* plotData = new PlotData();
-  NewSerialParser* serialParser = new NewSerialParser(MessageTarget::serial1);
-  NewSerialParser* serialParserM = new NewSerialParser(MessageTarget::manual);
-  SerialReader* serial1 = new SerialReader();
-  PlotMath* plotMath = new PlotMath();
-  XYMode* xyMode = new XYMode();
-  SignalProcessing* signalProcessing1 = new SignalProcessing();
-  SignalProcessing* signalProcessing2 = new SignalProcessing();
-  SignalProcessing* signalProcessingFFT1 = new SignalProcessing();
-  SignalProcessing* signalProcessingFFT2 = new SignalProcessing();
-  Interpolator* interpolator = new Interpolator();
-  Averager* averager = new Averager();
+  QTranslator translator; // Musí být zde aby dokázal přeložit i texty v
+                          // objektech jiných než MainWindow
+  PlotData *plotData = new PlotData();
+  NewSerialParser *serialParser = new NewSerialParser(MessageTarget::serial1);
+  NewSerialParser *serialParserM = new NewSerialParser(MessageTarget::manual);
+  SerialReader *serial1 = new SerialReader();
+  PlotMath *plotMath = new PlotMath();
+  XYMode *xyMode = new XYMode();
+  SignalProcessing *signalProcessing1 = new SignalProcessing();
+  SignalProcessing *signalProcessing2 = new SignalProcessing();
+  SignalProcessing *signalProcessingFFT1 = new SignalProcessing();
+  SignalProcessing *signalProcessingFFT2 = new SignalProcessing();
+  Interpolator *interpolator = new Interpolator();
+  Averager *averager = new Averager();
 
   // Vytvoří vlákna
   // QThread plotDataThread;
   QThread serialParserThread;
   QThread plotMathThread;
   QThread serialReaderThread;
-  QThread signalProcessing1Thread, signalProcessing2Thread,
-      signalProcessingFFT1Thread, signalProcessingFFT2Thread;
+  QThread signalProcessing1Thread, signalProcessing2Thread, signalProcessingFFT1Thread, signalProcessingFFT2Thread;
   QThread interpolatorThread;
   QThread averagerThread;
   QThread xyThread;
 
   // Propojí signály
-  QObject::connect(serial1, &SerialReader::sendData, serialParser,
-                   &NewSerialParser::parse);
-  QObject::connect(serial1, &SerialReader::started, serialParser,
-                   &NewSerialParser::getReady);
-  QObject::connect(serialParser, &NewSerialParser::ready, serial1,
-                   &SerialReader::parserReady);
-  QObject::connect(serial1, &SerialReader::connectionResult, &mainWindow,
-                   &MainWindow::serialConnectResult);
-  QObject::connect(serialParser, &NewSerialParser::sendMessage, &mainWindow,
-                   &MainWindow::printMessage);
-  QObject::connect(serialParser, &NewSerialParser::sendDeviceMessage,
-                   &mainWindow, &MainWindow::printDeviceMessage);
-  QObject::connect(serialParser, &NewSerialParser::sendSettings, &mainWindow,
-                   &MainWindow::useSettings);
-  QObject::connect(serialParser, &NewSerialParser::sendFileRequest, &mainWindow,
-                   &MainWindow::fileRequest);
-  QObject::connect(serialParser, &NewSerialParser::sendQmlCode, &mainWindow,
-                   &MainWindow::loadCompressedQml);
-  QObject::connect(serialParser, &NewSerialParser::deviceError, &mainWindow,
-                   &MainWindow::deviceError);
-  QObject::connect(serialParser, &NewSerialParser::sendTerminal, &mainWindow,
-                   &MainWindow::printToTerminal);
-  QObject::connect(serialParser, &NewSerialParser::sendPoint, plotData,
-                   &PlotData::addPoint);
-  QObject::connect(serialParser, &NewSerialParser::sendLogicPoint, plotData,
-                   &PlotData::addLogicPoint);
-  QObject::connect(serialParser, &NewSerialParser::sendChannel, plotData,
-                   &PlotData::addChannel);
-  QObject::connect(serialParser, &NewSerialParser::sendLogicChannel, plotData,
-                   &PlotData::addLogicChannel);
-  QObject::connect(serialParser, &NewSerialParser::sendEcho, serial1,
-                   &SerialReader::write);
-  QObject::connect(serialParser, &NewSerialParser::sendFileToSave, &mainWindow,
-                   &MainWindow::saveToFile);
-  QObject::connect(serialParser, &NewSerialParser::sendQmlDirectInput,
-                   &mainWindow, &MainWindow::qmlDirectInput);
-  QObject::connect(serialParser, &NewSerialParser::sendQmlVar, &mainWindow,
-                   &MainWindow::setQmlProperty);
-  QObject::connect(&mainWindow, &MainWindow::requestSerialBufferClear,
-                   serialParser, &NewSerialParser::clearBuffer);
-  QObject::connect(&mainWindow, &MainWindow::requestSerialBufferShow,
-                   serialParser, &NewSerialParser::showBuffer);
-  QObject::connect(&mainWindow, &MainWindow::setSerialMessageLevel,
-                   serialParser, &NewSerialParser::setMsgLevel);
-  QObject::connect(&mainWindow, &MainWindow::setSerialMessageLevel, plotData,
-                   &PlotData::setDebugLevel);
-  QObject::connect(&mainWindow, &MainWindow::enableSerialMonitor, serial1,
-                   &SerialReader::enableMonitoring);
-  QObject::connect(serial1, &SerialReader::monitor, &mainWindow,
-                   &MainWindow::printSerialMonitor);
-  QObject::connect(serialParserM, &NewSerialParser::sendMessage, &mainWindow,
-                   &MainWindow::printMessage);
-  QObject::connect(serialParserM, &NewSerialParser::sendDeviceMessage,
-                   &mainWindow, &MainWindow::printDeviceMessage);
-  QObject::connect(serialParserM, &NewSerialParser::sendSettings, &mainWindow,
-                   &MainWindow::useSettings);
-  QObject::connect(serialParserM, &NewSerialParser::deviceError, &mainWindow,
-                   &MainWindow::deviceError);
-  QObject::connect(serialParserM, &NewSerialParser::sendTerminal, &mainWindow,
-                   &MainWindow::printToTerminal);
-  QObject::connect(serialParserM, &NewSerialParser::sendPoint, plotData,
-                   &PlotData::addPoint);
-  QObject::connect(serialParserM, &NewSerialParser::sendLogicPoint, plotData,
-                   &PlotData::addLogicPoint);
-  QObject::connect(serialParserM, &NewSerialParser::sendChannel, plotData,
-                   &PlotData::addChannel);
-  QObject::connect(serialParserM, &NewSerialParser::sendLogicChannel, plotData,
-                   &PlotData::addLogicChannel);
-  QObject::connect(serialParserM, &NewSerialParser::sendFileRequest,
-                   &mainWindow, &MainWindow::fileRequest);
-  QObject::connect(serialParserM, &NewSerialParser::sendQmlCode, &mainWindow,
-                   &MainWindow::loadCompressedQml);
-  QObject::connect(serialParserM, &NewSerialParser::sendFileToSave, &mainWindow,
-                   &MainWindow::saveToFile);
-  QObject::connect(serialParserM, &NewSerialParser::sendQmlDirectInput,
-                   &mainWindow, &MainWindow::qmlDirectInput);
-  QObject::connect(serialParserM, &NewSerialParser::sendQmlVar, &mainWindow,
-                   &MainWindow::setQmlProperty);
-  QObject::connect(&mainWindow, &MainWindow::requestManualBufferClear,
-                   serialParserM, &NewSerialParser::clearBuffer);
-  QObject::connect(&mainWindow, &MainWindow::requestManualBufferShow,
-                   serialParserM, &NewSerialParser::showBuffer);
-  QObject::connect(&mainWindow, &MainWindow::setManualMessageLevel,
-                   serialParserM, &NewSerialParser::setMsgLevel);
-  QObject::connect(&mainWindow, &MainWindow::beginSerialConnection, serial1,
-                   &SerialReader::begin);
-  QObject::connect(&mainWindow, &MainWindow::toggleSerialConnection, serial1,
-                   &SerialReader::toggle);
-  QObject::connect(&mainWindow, &MainWindow::disconnectSerial, serial1,
-                   &SerialReader::end);
-  QObject::connect(&mainWindow, &MainWindow::resetChannels, plotData,
-                   &PlotData::reset);
-  QObject::connect(&mainWindow, &MainWindow::writeToSerial, serial1,
-                   &SerialReader::write);
-  QObject::connect(&mainWindow, &MainWindow::sendManualInput, serialParserM,
-                   &NewSerialParser::parse);
-  QObject::connect(plotData, &PlotData::sendMessage, &mainWindow,
-                   &MainWindow::printMessage);
-  QObject::connect(plotData, &PlotData::plotRecommendedXAxisTypeChanged,
-                   &mainWindow, &MainWindow::plotRecomendedAxisTypeChanged);
-  QObject::connect(plotData, &PlotData::dataRateUpdate, &mainWindow,
-                   &MainWindow::dataRateUpdate);
-  QObject::connect(plotData, &PlotData::setExpectedRange, &mainWindow,
-                   &MainWindow::setExpectedRange);
-  QObject::connect(plotMath, &PlotMath::sendMessage, &mainWindow,
-                   &MainWindow::printMessage);
-  QObject::connect(&mainWindow, &MainWindow::setChDigital, plotData,
-                   &PlotData::setDigitalChannel);
-  QObject::connect(&mainWindow, &MainWindow::setLogicBits, plotData,
-                   &PlotData::setLogicBits);
-  QObject::connect(&mainWindow, &MainWindow::resetMath, plotMath,
-                   &PlotMath::resetMath);
-  QObject::connect(&mainWindow, &MainWindow::requestXY, xyMode,
-                   &XYMode::calculateXY);
-  QObject::connect(plotData, &PlotData::addMathData, plotMath,
-                   &PlotMath::addMathData);
-  QObject::connect(&mainWindow, &MainWindow::setMathFirst, plotData,
-                   &PlotData::setMathFirst);
-  QObject::connect(&mainWindow, &MainWindow::setMathSecond, plotData,
-                   &PlotData::setMathSecond);
-  QObject::connect(&mainWindow, &MainWindow::clearMath, plotMath,
-                   &PlotMath::clearMath);
-  QObject::connect(&mainWindow, &MainWindow::requstMeasurements1,
-                   signalProcessing1, &SignalProcessing::process);
-  QObject::connect(&mainWindow, &MainWindow::requstMeasurements2,
-                   signalProcessing2, &SignalProcessing::process);
-  QObject::connect(&mainWindow, &MainWindow::requestFFT1, signalProcessingFFT1,
-                   &SignalProcessing::getFFTPlot);
-  QObject::connect(&mainWindow, &MainWindow::requestFFT2, signalProcessingFFT2,
-                   &SignalProcessing::getFFTPlot);
-  QObject::connect(signalProcessing1, &SignalProcessing::result, &mainWindow,
-                   &MainWindow::signalMeasurementsResult1);
-  QObject::connect(signalProcessing2, &SignalProcessing::result, &mainWindow,
-                   &MainWindow::signalMeasurementsResult2);
-  QObject::connect(signalProcessingFFT1, &SignalProcessing::fftResult,
-                   &mainWindow, &MainWindow::fftResult1);
-  QObject::connect(signalProcessingFFT2, &SignalProcessing::fftResult,
-                   &mainWindow, &MainWindow::fftResult2);
-  QObject::connect(xyMode, &XYMode::sendResultXY, &mainWindow,
-                   &MainWindow::xyResult);
-  QObject::connect(&mainWindow, &MainWindow::interpolate, interpolator,
-                   &Interpolator::interpolate);
-  QObject::connect(interpolator, &Interpolator::interpolationResult,
-                   &mainWindow, &MainWindow::interpolationResult);
-  QObject::connect(&mainWindow, &MainWindow::setAverager, plotData,
-                   &PlotData::setAverager);
-  QObject::connect(&mainWindow, &MainWindow::resetAverager, averager,
-                   &Averager::reset);
-  QObject::connect(&mainWindow, &MainWindow::setAveragerCount, averager,
-                   &Averager::setCount);
-  QObject::connect(plotData, &PlotData::addDataToAverager, averager,
-                   &Averager::newDataVector);
-  QObject::connect(plotData, &PlotData::addPointToAverager, averager,
-                   &Averager::newDataPoint);
-  QObject::connect(&mainWindow, &MainWindow::setInterpolationFilter,
-                   interpolator, &Interpolator::loadFilterFromFile);
-  QObject::connect(&mainWindow, &MainWindow::replyEcho, serialParser,
-                   &NewSerialParser::replyEcho);
-  QObject::connect(&mainWindow, &MainWindow::changeSerialBaud, serial1,
-                   &SerialReader::changeBaud);
+  QObject::connect(serial1, &SerialReader::sendData, serialParser, &NewSerialParser::parse);
+  QObject::connect(serial1, &SerialReader::started, serialParser, &NewSerialParser::getReady);
+  QObject::connect(serialParser, &NewSerialParser::ready, serial1, &SerialReader::parserReady);
+  QObject::connect(serial1, &SerialReader::connectionResult, &mainWindow, &MainWindow::serialConnectResult);
+  QObject::connect(serialParser, &NewSerialParser::sendMessage, &mainWindow, &MainWindow::printMessage);
+  QObject::connect(serialParser, &NewSerialParser::sendDeviceMessage, &mainWindow, &MainWindow::printDeviceMessage);
+  QObject::connect(serialParser, &NewSerialParser::sendSettings, &mainWindow, &MainWindow::useSettings);
+  QObject::connect(serialParser, &NewSerialParser::sendFileRequest, &mainWindow, &MainWindow::fileRequest);
+  QObject::connect(serialParser, &NewSerialParser::sendQmlCode, &mainWindow, &MainWindow::loadCompressedQml);
+  QObject::connect(serialParser, &NewSerialParser::deviceError, &mainWindow, &MainWindow::deviceError);
+  QObject::connect(serialParser, &NewSerialParser::sendTerminal, &mainWindow, &MainWindow::printToTerminal);
+  QObject::connect(serialParser, &NewSerialParser::sendPoint, plotData, &PlotData::addPoint);
+  QObject::connect(serialParser, &NewSerialParser::sendLogicPoint, plotData, &PlotData::addLogicPoint);
+  QObject::connect(serialParser, &NewSerialParser::sendChannel, plotData, &PlotData::addChannel);
+  QObject::connect(serialParser, &NewSerialParser::sendLogicChannel, plotData, &PlotData::addLogicChannel);
+  QObject::connect(serialParser, &NewSerialParser::sendEcho, serial1, &SerialReader::write);
+  QObject::connect(serialParser, &NewSerialParser::sendFileToSave, &mainWindow, &MainWindow::saveToFile);
+  QObject::connect(serialParser, &NewSerialParser::sendQmlDirectInput, &mainWindow, &MainWindow::qmlDirectInput);
+  QObject::connect(serialParser, &NewSerialParser::sendQmlVar, &mainWindow, &MainWindow::setQmlProperty);
+  QObject::connect(&mainWindow, &MainWindow::requestSerialBufferClear, serialParser, &NewSerialParser::clearBuffer);
+  QObject::connect(&mainWindow, &MainWindow::requestSerialBufferShow, serialParser, &NewSerialParser::showBuffer);
+  QObject::connect(&mainWindow, &MainWindow::setSerialMessageLevel, serialParser, &NewSerialParser::setMsgLevel);
+  QObject::connect(&mainWindow, &MainWindow::setSerialMessageLevel, plotData, &PlotData::setDebugLevel);
+  QObject::connect(&mainWindow, &MainWindow::enableSerialMonitor, serial1, &SerialReader::enableMonitoring);
+  QObject::connect(serial1, &SerialReader::monitor, &mainWindow, &MainWindow::printSerialMonitor);
+  QObject::connect(serialParserM, &NewSerialParser::sendMessage, &mainWindow, &MainWindow::printMessage);
+  QObject::connect(serialParserM, &NewSerialParser::sendDeviceMessage, &mainWindow, &MainWindow::printDeviceMessage);
+  QObject::connect(serialParserM, &NewSerialParser::sendSettings, &mainWindow, &MainWindow::useSettings);
+  QObject::connect(serialParserM, &NewSerialParser::deviceError, &mainWindow, &MainWindow::deviceError);
+  QObject::connect(serialParserM, &NewSerialParser::sendTerminal, &mainWindow, &MainWindow::printToTerminal);
+  QObject::connect(serialParserM, &NewSerialParser::sendPoint, plotData, &PlotData::addPoint);
+  QObject::connect(serialParserM, &NewSerialParser::sendLogicPoint, plotData, &PlotData::addLogicPoint);
+  QObject::connect(serialParserM, &NewSerialParser::sendChannel, plotData, &PlotData::addChannel);
+  QObject::connect(serialParserM, &NewSerialParser::sendLogicChannel, plotData, &PlotData::addLogicChannel);
+  QObject::connect(serialParserM, &NewSerialParser::sendFileRequest, &mainWindow, &MainWindow::fileRequest);
+  QObject::connect(serialParserM, &NewSerialParser::sendQmlCode, &mainWindow, &MainWindow::loadCompressedQml);
+  QObject::connect(serialParserM, &NewSerialParser::sendFileToSave, &mainWindow, &MainWindow::saveToFile);
+  QObject::connect(serialParserM, &NewSerialParser::sendQmlDirectInput, &mainWindow, &MainWindow::qmlDirectInput);
+  QObject::connect(serialParserM, &NewSerialParser::sendQmlVar, &mainWindow, &MainWindow::setQmlProperty);
+  QObject::connect(&mainWindow, &MainWindow::requestManualBufferClear, serialParserM, &NewSerialParser::clearBuffer);
+  QObject::connect(&mainWindow, &MainWindow::requestManualBufferShow, serialParserM, &NewSerialParser::showBuffer);
+  QObject::connect(&mainWindow, &MainWindow::setManualMessageLevel, serialParserM, &NewSerialParser::setMsgLevel);
+  QObject::connect(&mainWindow, &MainWindow::beginSerialConnection, serial1, &SerialReader::begin);
+  QObject::connect(&mainWindow, &MainWindow::toggleSerialConnection, serial1, &SerialReader::toggle);
+  QObject::connect(&mainWindow, &MainWindow::disconnectSerial, serial1, &SerialReader::end);
+  QObject::connect(&mainWindow, &MainWindow::resetChannels, plotData, &PlotData::reset);
+  QObject::connect(&mainWindow, &MainWindow::writeToSerial, serial1, &SerialReader::write);
+  QObject::connect(&mainWindow, &MainWindow::sendManualInput, serialParserM, &NewSerialParser::parse);
+  QObject::connect(plotData, &PlotData::sendMessage, &mainWindow, &MainWindow::printMessage);
+  QObject::connect(plotData, &PlotData::dataRateUpdate, &mainWindow, &MainWindow::dataRateUpdate);
+  QObject::connect(plotData, &PlotData::setExpectedRange, &mainWindow, &MainWindow::setExpectedRange);
+  QObject::connect(plotMath, &PlotMath::sendMessage, &mainWindow, &MainWindow::printMessage);
+  QObject::connect(&mainWindow, &MainWindow::setChDigital, plotData, &PlotData::setDigitalChannel);
+  QObject::connect(&mainWindow, &MainWindow::setLogicBits, plotData, &PlotData::setLogicBits);
+  QObject::connect(&mainWindow, &MainWindow::resetMath, plotMath, &PlotMath::resetMath);
+  QObject::connect(&mainWindow, &MainWindow::requestXY, xyMode, &XYMode::calculateXY);
+  QObject::connect(plotData, &PlotData::addMathData, plotMath, &PlotMath::addMathData);
+  QObject::connect(&mainWindow, &MainWindow::setMathFirst, plotData, &PlotData::setMathFirst);
+  QObject::connect(&mainWindow, &MainWindow::setMathSecond, plotData, &PlotData::setMathSecond);
+  QObject::connect(&mainWindow, &MainWindow::clearMath, plotMath, &PlotMath::clearMath);
+  QObject::connect(&mainWindow, &MainWindow::requstMeasurements1, signalProcessing1, &SignalProcessing::process);
+  QObject::connect(&mainWindow, &MainWindow::requstMeasurements2, signalProcessing2, &SignalProcessing::process);
+  QObject::connect(&mainWindow, &MainWindow::requestFFT1, signalProcessingFFT1, &SignalProcessing::getFFTPlot);
+  QObject::connect(&mainWindow, &MainWindow::requestFFT2, signalProcessingFFT2, &SignalProcessing::getFFTPlot);
+  QObject::connect(signalProcessing1, &SignalProcessing::result, &mainWindow, &MainWindow::signalMeasurementsResult1);
+  QObject::connect(signalProcessing2, &SignalProcessing::result, &mainWindow, &MainWindow::signalMeasurementsResult2);
+  QObject::connect(signalProcessingFFT1, &SignalProcessing::fftResult, &mainWindow, &MainWindow::fftResult1);
+  QObject::connect(signalProcessingFFT2, &SignalProcessing::fftResult, &mainWindow, &MainWindow::fftResult2);
+  QObject::connect(xyMode, &XYMode::sendResultXY, &mainWindow, &MainWindow::xyResult);
+  QObject::connect(&mainWindow, &MainWindow::interpolate, interpolator, &Interpolator::interpolate);
+  QObject::connect(interpolator, &Interpolator::interpolationResult, &mainWindow, &MainWindow::interpolationResult);
+  QObject::connect(&mainWindow, &MainWindow::setAverager, plotData, &PlotData::setAverager);
+  QObject::connect(&mainWindow, &MainWindow::resetAverager, averager, &Averager::reset);
+  QObject::connect(&mainWindow, &MainWindow::setAveragerCount, averager, &Averager::setCount);
+  QObject::connect(plotData, &PlotData::addDataToAverager, averager, &Averager::newDataVector);
+  QObject::connect(plotData, &PlotData::addPointToAverager, averager, &Averager::newDataPoint);
+  QObject::connect(&mainWindow, &MainWindow::setInterpolationFilter, interpolator, &Interpolator::loadFilterFromFile);
+  QObject::connect(&mainWindow, &MainWindow::replyEcho, serialParser, &NewSerialParser::replyEcho);
+  QObject::connect(&mainWindow, &MainWindow::changeSerialBaud, serial1, &SerialReader::changeBaud);
 
   // Funkce init je zavolána až z nového vlákna
-  QObject::connect(&serialReaderThread, &QThread::started, serial1,
-                   &SerialReader::init);
+  QObject::connect(&serialReaderThread, &QThread::started, serial1, &SerialReader::init);
 
   // Přesuny do vláken
   serial1->moveToThread(&serialReaderThread);

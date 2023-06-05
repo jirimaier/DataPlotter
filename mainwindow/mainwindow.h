@@ -101,7 +101,6 @@ private:
   bool lastUpdateWasLogic = false;
   int lastSelectedChannel = 1;
   bool pendingDeviceMessage = false;
-  HAxisType::enumHAxisType recommandedAxisType = HAxisType::normal;
   bool recommendOpenGL = true;
   bool timeUseUnits = true;
   bool valuesUseUnits = true;
@@ -317,7 +316,6 @@ public slots:
   void valueCursorMovedByMouse(Cursors::enumCursors cursor, double value);
   void cursorSetByMouse(int chid, Cursors::enumCursors cursor, int sample);
   void offsetChangedByMouse(int chid);
-  void plotRecomendedAxisTypeChanged(HAxisType::enumHAxisType recommandedTimeBase);
   void moveTimeCursorXY(Cursors::enumCursors cursor, double pos);
   void moveValueCursorXY(Cursors::enumCursors cursor, double pos);
   void setCursorPosXY(Cursors::enumCursors cursor, double x, double y);

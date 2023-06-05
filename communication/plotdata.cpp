@@ -150,15 +150,6 @@ uint32_t PlotData::getBits(QPair<ValueType, QByteArray> value) {
   return 0;
 }
 
-HAxisType::enumHAxisType PlotData::getRecommandedAxisType() const { return recommandedAxisType; }
-
-void PlotData::setRecommandedAxisType(HAxisType::enumHAxisType newRecommandedAxisType) {
-  if (recommandedAxisType == newRecommandedAxisType)
-    return;
-  recommandedAxisType = newRecommandedAxisType;
-  emit plotRecommendedXAxisTypeChanged(newRecommandedAxisType);
-}
-
 void PlotData::addPoint(QList<QPair<ValueType, QByteArray>> data) {
   QString message;
   if (data.length() > ANALOG_COUNT) {
@@ -234,7 +225,6 @@ void PlotData::addPoint(QList<QPair<ValueType, QByteArray>> data) {
       }
     }
 
-    setRecommandedAxisType(newRecommandedAxisType);
     updatesCounters[ch]++;
 
     emit setExpectedRange(ch - 1, false, 0, 0);
@@ -301,7 +291,6 @@ void PlotData::addLogicPoint(QPair<ValueType, QByteArray> timeArray, QPair<Value
       emit addPointToPlot(getLogicChannelID(2, bit), time, value, time >= lastTime);
     }
 
-    setRecommandedAxisType(newRecommandedAxisType);
     updatesCounters[-1]++;
   }
 
@@ -398,7 +387,6 @@ void PlotData::addChannel(QPair<ValueType, QByteArray> data, unsigned int ch, QP
   else
     emit setExpectedRange(ch - 1, false, 0, 0);
 
-  setRecommandedAxisType(HAxisType::normal);
   updatesCounters[ch]++;
 
   if (averagerEnabled)
@@ -452,7 +440,6 @@ void PlotData::addLogicChannel(QPair<ValueType, QByteArray> data, QPair<ValueTyp
     valuesDigital.append(getBits(QPair<ValueType, QByteArray>(data.first, data.second.mid(i, data.first.bytes))));
   }
 
-  setRecommandedAxisType(HAxisType::normal);
   updatesCounters[-1]++;
 
   // Pošle do grafu logický kanál
@@ -468,7 +455,10 @@ void PlotData::addLogicChannel(QPair<ValueType, QByteArray> data, QPair<ValueTyp
                          digitalChannels.at(bit)); // Posláno jako poslední logické skupina
 }
 
-void PlotData::reset() { lastTime = INFINITY; }
+void PlotData::reset() {
+  lastTime = INFINITY;
+  timerRunning = false;
+}
 
 void PlotData::setDigitalChannel(int logicGroup, int ch) {
   logicTargets[logicGroup - 1] = ch;
