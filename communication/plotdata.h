@@ -30,22 +30,19 @@
 
 class PlotData : public QObject {
   Q_OBJECT
- public:
-  explicit PlotData(QObject* parent = nullptr);
+public:
+  explicit PlotData(QObject *parent = nullptr);
   ~PlotData();
-
-  HAxisType::enumHAxisType getRecommandedAxisType() const;
-  void setRecommandedAxisType(HAxisType::enumHAxisType newRecommandedAxisType);
 
   int getUpdatesPerSecond() const;
   void setUpdatesPerSecond(int newUpdatesPerSecond);
 
- private:
+private:
   QTime qTime;
   QElapsedTimer elapsedTime;
   bool timerRunning;
 
-  QTimer* updatesCounter;
+  QTimer *updatesCounter;
   QMap<int, int> updatesCounters;
 
   unsigned int logicTargets[LOGIC_GROUPS - 1];
@@ -56,41 +53,24 @@ class PlotData : public QObject {
   bool averagerEnabled = false;
 
   // unsigned int xyFirst, xySecond;
-  double getValue(QPair<ValueType, QByteArray> value, bool& isok);
+  double getValue(QPair<ValueType, QByteArray> value, bool &isok);
   OutputLevel::enumOutputLevel debugLevel = OutputLevel::info;
   double lastTime;
   double defaultTimestep = 1;
-  void sendMessageIfAllowed(QString header,
-                            QByteArray message,
-                            MessageLevel::enumMessageLevel type);
+  void sendMessageIfAllowed(QString header, QByteArray message, MessageLevel::enumMessageLevel type);
   uint32_t getBits(QPair<ValueType, QByteArray> value);
   double unitToMultiple(char unit);
 
-  HAxisType::enumHAxisType recommandedAxisType = HAxisType::normal;
-
- public slots:
+public slots:
   void addPoint(QList<QPair<ValueType, QByteArray>> data);
-  void addLogicPoint(QPair<ValueType, QByteArray> timeArray,
-                     QPair<ValueType, QByteArray> valueArray,
-                     unsigned int bits);
-  void addChannel(QPair<ValueType, QByteArray> data,
-                  unsigned int ch,
-                  QPair<ValueType, QByteArray> timeRaw,
-                  int zeroIndex,
-                  int bits,
-                  QPair<ValueType, QByteArray> min,
-                  QPair<ValueType, QByteArray> max);
-  void addLogicChannel(QPair<ValueType, QByteArray> data,
-                       QPair<ValueType, QByteArray> timeRaw,
-                       int bits,
-                       int zeroIndex);
+  void addLogicPoint(QPair<ValueType, QByteArray> timeArray, QPair<ValueType, QByteArray> valueArray, unsigned int bits);
+  void addChannel(QPair<ValueType, QByteArray> data, unsigned int ch, QPair<ValueType, QByteArray> timeRaw, int zeroIndex, int bits, QPair<ValueType, QByteArray> min, QPair<ValueType, QByteArray> max);
+  void addLogicChannel(QPair<ValueType, QByteArray> data, QPair<ValueType, QByteArray> timeRaw, int bits, int zeroIndex);
 
   void reset();
 
   /// Nastavý úroveň výpisu
-  void setDebugLevel(OutputLevel::enumOutputLevel debugLevel) {
-    this->debugLevel = debugLevel;
-  }
+  void setDebugLevel(OutputLevel::enumOutputLevel debugLevel) { this->debugLevel = debugLevel; }
 
   void setDigitalChannel(int logicGroup, int ch);
 
@@ -101,36 +81,25 @@ class PlotData : public QObject {
 
   void setAverager(bool enabled) { averagerEnabled = enabled; }
 
- private slots:
+private slots:
   void updateCounterTimer();
 
- signals:
+signals:
   /// Pošle zprávu do výpisu
-  void sendMessage(
-      QString header,
-      QByteArray message,
-      MessageLevel::enumMessageLevel type,
-      MessageTarget::enumMessageTarget target = MessageTarget::serial1);
+  void sendMessage(QString header, QByteArray message, MessageLevel::enumMessageLevel type, MessageTarget::enumMessageTarget target = MessageTarget::serial1);
 
   /// Předá data do grafu
-  void addVectorToPlot(int ch,
-                       QSharedPointer<QCPGraphDataContainer>,
-                       bool isMath = false);
+  void addVectorToPlot(int ch, QSharedPointer<QCPGraphDataContainer>, bool isMath = false);
 
   /// Předá data do grafu
   void addPointToPlot(int ch, double time, double value, bool append);
   void clearLogic(int group, int fromBit);
-  void addMathData(int mathNumber,
-                   bool isFirst,
-                   QSharedPointer<QCPGraphDataContainer> in,
-                   bool shouldIgnorePause = false);
-  void addDataToAverager(int chID,
-                         double samplingRate,
-                         QSharedPointer<QCPGraphDataContainer> data);
+  void addMathData(int mathNumber, bool isFirst, QSharedPointer<QCPGraphDataContainer> in, bool shouldIgnorePause = false);
+  void addDataToAverager(int chID, double samplingRate, QSharedPointer<QCPGraphDataContainer> data);
   void addPointToAverager(int ch, double time, double value, bool append);
   void setExpectedRange(int chID, bool known, double min, double max);
   void plotRecommendedXAxisTypeChanged(HAxisType::enumHAxisType recommandedAxisType);
   void dataRateUpdate(int perSec);
 };
 
-#endif  // PLOTTING_H
+#endif // PLOTTING_H
