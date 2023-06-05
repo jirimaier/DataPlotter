@@ -7254,7 +7254,7 @@
            </size>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>3</number>
           </property>
           <property name="iconSize">
            <size>
@@ -8510,7 +8510,7 @@
               <item row="3" column="0" colspan="2">
                <widget class="QLabel" name="label_signature">
                 <property name="text">
-                 <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;©2020 - 2022 Jiří Maier&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;©2020 - 2023 Jiří Maier&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>
