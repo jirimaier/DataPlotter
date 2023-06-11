@@ -540,8 +540,8 @@ void MainWindow::on_pushButtonRecordMeasurements1_clicked() {
   } else {
     if (ui->comboBoxMeasure1->currentIndex() == ui->comboBoxMeasure1->count() - 1)
       return;
-    QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/%1 measurements").arg(getChName(ui->comboBoxMeasure1->currentIndex()));
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Record measurements"), defaultName, tr("Comma separated values (*.csv)"));
+    QString defaultName = QString("/%1 measurements").arg(getChName(ui->comboBoxMeasure1->currentIndex()));
+    QString fileName = DefaultPathManager::getInstance().requestSaveFile(this, tr("Record measurements"), "path_export", defaultName, tr("Comma separated values (*.csv)"));
     if (fileName.isEmpty())
       return;
     recordingOfMeasurements1.setFileName(fileName);
@@ -563,8 +563,8 @@ void MainWindow::on_pushButtonRecordMeasurements2_clicked() {
   } else {
     if (ui->comboBoxMeasure1->currentIndex() == ui->comboBoxMeasure1->count() - 1)
       return;
-    QString defaultName = QString(QCoreApplication::applicationDirPath()) + QString("/%1 measurements").arg(getChName(ui->comboBoxMeasure1->currentIndex()));
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Record measurements"), defaultName, tr("Comma separated values (*.csv)"));
+    QString defaultName = QString("/%1 measurements").arg(getChName(ui->comboBoxMeasure1->currentIndex()));
+    QString fileName = DefaultPathManager::getInstance().requestSaveFile(this, tr("Record measurements"), "path_export", defaultName, tr("Comma separated values (*.csv)"));
     if (fileName.isEmpty())
       return;
     recordingOfMeasurements2.setFileName(fileName);

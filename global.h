@@ -16,8 +16,13 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
+#include "defaultpathmanager.h"
+#include "qmessagebox.h"
 #include "qserialportinfo.h"
+#include "qstandardpaths.h"
 #include <QColor>
+#include <QFileDialog>
+#include <QMap>
 #include <QObject>
 #include <QVector>
 #include <cmath>

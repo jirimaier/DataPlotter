@@ -51,7 +51,6 @@ private slots:
   void on_pushButtonClearBuffer_2_clicked() { emit requestManualBufferClear(); }
   void on_pushButtonViewBuffer_2_clicked() { emit requestManualBufferShow(); }
   void on_pushButtonScrollDown_2_clicked();
-
   void on_pushButtonOpenConfig_clicked();
 
 signals:

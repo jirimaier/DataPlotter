@@ -62,7 +62,7 @@ void MainWindow::exportCSV(int ch) {
     return;
   }
 
-  QWidget *dialogParent = (ch == EXPORT_FREQTIME) ? static_cast<QWidget*>(freqTimePlotDialog) : this;
+  QWidget *dialogParent = (ch == EXPORT_FREQTIME) ? static_cast<QWidget *>(freqTimePlotDialog) : this;
   QMessageBox msgBox(dialogParent);
   msgBox.setText(tr("Export %1 as table").arg(name));
   msgBox.setIcon(QMessageBox::Question);
@@ -77,11 +77,11 @@ void MainWindow::exportCSV(int ch) {
 
   if (toClipboard) {
     data.replace(separator, '\t'); // V Excelovském formátu tabulky jsou hodnoty oddělené tabulátory
-    QClipboard* clipboard = QGuiApplication::clipboard();
+    QClipboard *clipboard = QGuiApplication::clipboard();
     clipboard->setText(data);
   } else {
-    QString defaultName = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation) + QString("%1.csv").arg(name);
-    QString fileName = QFileDialog::getSaveFileName(dialogParent, tr("Export %1").arg(name), defaultName, tr("Comma separated values (*.csv)"));
+    QString defaultName = QString("%1.csv").arg(name);
+    QString fileName = DefaultPathManager::getInstance().requestSaveFile(dialogParent, tr("Export %1").arg(name), "path_export", defaultName, tr("Comma separated values (*.csv)"));
     if (fileName.isEmpty())
       return;
     QFile file(fileName);
@@ -89,11 +89,7 @@ void MainWindow::exportCSV(int ch) {
       file.write(data);
       file.close();
     } else {
-      QMessageBox msgBox(this);
-      msgBox.setText(tr("Cant write to file."));
-      msgBox.setInformativeText(tr("This may be because file is opened in another program."));
-      msgBox.setIcon(QMessageBox::Critical);
-      msgBox.exec();
+      qCritical() << "Cannot write to file" << fileName;
     }
   }
 }
@@ -109,11 +105,11 @@ void MainWindow::on_pushButtonPlotImage_clicked() {
   int returnValue = msgBox.exec();
 
   if (returnValue == QMessageBox::Yes) {
-    QClipboard* clipboard = QGuiApplication::clipboard();
+    QClipboard *clipboard = QGuiApplication::clipboard();
     clipboard->setImage(ui->plot->toPixmap().toImage());
   } else if (returnValue == QMessageBox::Ok) {
-    QString defaultName = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation) + QString("plot.png");
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Export main plot as image"), defaultName, tr("PNG image (*.png);;Vector graphics (*.pdf);;JPEG image (*.jpg);;BMP image (*.bmp)"));
+    QString defaultName = QString("plot.png");
+    QString fileName = DefaultPathManager::getInstance().requestSaveFile(this, tr("Export main plot as image"), "path_export", defaultName, tr("PNG image (*.png);;Vector graphics (*.pdf);;JPEG image (*.jpg);;BMP image (*.bmp)"));
     if (fileName.isEmpty())
       return;
 
@@ -131,11 +127,7 @@ void MainWindow::on_pushButtonPlotImage_clicked() {
       isOK = ui->plot->savePng(fileName);
 
     if (!isOK) {
-      QMessageBox msgBox(this);
-      msgBox.setText(tr("Cant write to file."));
-      msgBox.setInformativeText(tr("This may be because file is opened in another program."));
-      msgBox.setIcon(QMessageBox::Critical);
-      msgBox.exec();
+      qCritical() << "Cannot write to file" << fileName;
     }
   }
 }
@@ -151,11 +143,11 @@ void MainWindow::on_pushButtonXYImage_clicked() {
   int returnValue = msgBox.exec();
 
   if (returnValue == QMessageBox::Yes) {
-    QClipboard* clipboard = QGuiApplication::clipboard();
+    QClipboard *clipboard = QGuiApplication::clipboard();
     clipboard->setImage(ui->plotxy->toPixmap().toImage());
   } else if (returnValue == QMessageBox::Ok) {
-    QString defaultName = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation) + QString("xy.png");
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Export XY plot as image"), defaultName,  tr("PNG image (*.png);;Vector graphics (*.pdf);;JPEG image (*.jpg);;BMP image (*.bmp)"));
+    QString defaultName = QString("xy.png");
+    QString fileName = DefaultPathManager::getInstance().requestSaveFile(this, tr("Export XY plot as image"), "path_export", defaultName, tr("PNG image (*.png);;Vector graphics (*.pdf);;JPEG image (*.jpg);;BMP image (*.bmp)"));
     if (fileName.isEmpty())
       return;
 
@@ -173,11 +165,7 @@ void MainWindow::on_pushButtonXYImage_clicked() {
       isOK = ui->plotxy->savePng(fileName);
 
     if (!isOK) {
-      QMessageBox msgBox(this);
-      msgBox.setText(tr("Cant write to file."));
-      msgBox.setInformativeText(tr("This may be because file is opened in another program."));
-      msgBox.setIcon(QMessageBox::Critical);
-      msgBox.exec();
+      qCritical() << "Cannot write to file" << fileName;
     }
   }
 }
@@ -193,11 +181,11 @@ void MainWindow::on_pushButtonFFTImage_clicked() {
   int returnValue = msgBox.exec();
 
   if (returnValue == QMessageBox::Yes) {
-    QClipboard* clipboard = QGuiApplication::clipboard();
+    QClipboard *clipboard = QGuiApplication::clipboard();
     clipboard->setImage(ui->plotFFT->toPixmap().toImage());
   } else if (returnValue == QMessageBox::Ok) {
-    QString defaultName = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation) + QString("fft.png");
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Export FFT plot as image"), defaultName,  tr("PNG image (*.png);;Vector graphics (*.pdf);;JPEG image (*.jpg);;BMP image (*.bmp)"));
+    QString defaultName = QString("fft.png");
+    QString fileName = DefaultPathManager::getInstance().requestSaveFile(this, tr("Export FFT plot as image"), "path_export", defaultName, tr("PNG image (*.png);;Vector graphics (*.pdf);;JPEG image (*.jpg);;BMP image (*.bmp)"));
     if (fileName.isEmpty())
       return;
 
@@ -215,11 +203,7 @@ void MainWindow::on_pushButtonFFTImage_clicked() {
       isOK = ui->plotFFT->savePng(fileName);
 
     if (!isOK) {
-      QMessageBox msgBox(this);
-      msgBox.setText(tr("Cant write to file."));
-      msgBox.setInformativeText(tr("This may be because file is opened in another program."));
-      msgBox.setIcon(QMessageBox::Critical);
-      msgBox.exec();
+      qCritical() << "Cannot write to file" << fileName;
     }
   }
 }

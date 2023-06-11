@@ -153,7 +153,7 @@ void DeveloperOptions::on_comboBoxTerminalColorListMode_currentIndexChanged(int 
 }
 
 void DeveloperOptions::on_pushButtonQmlLoad_clicked() {
-  QString fileName = QFileDialog::getOpenFileName(this, tr("Load file"), "", tr("Qml file (*.qml);;Any file (*.*)"));
+  QString fileName = DefaultPathManager::getInstance().requestOpenFile(this, tr("Load file"), "path_lqml", tr("Qml file (*.qml);;Any file (*.*)"));
   if (fileName.isEmpty())
     return;
 
@@ -205,7 +205,7 @@ void DeveloperOptions::addTerminalCursorPosCommand(int x, int y) { insertInTermi
 
 void DeveloperOptions::on_pushButtonQmlSave_clicked() {
   QString defaultName = QString("terminal.qml");
-  QString fileName = QFileDialog::getSaveFileName(this, tr("Save QML terminal"), defaultName, tr("QML file (*.qml)"));
+  QString fileName = DefaultPathManager::getInstance().requestSaveFile(this, tr("Save QML terminal"), "path_sqml", defaultName, tr("QML file (*.qml)"));
   if (fileName.isEmpty())
     return;
   QFile file(fileName);
@@ -217,19 +217,10 @@ void DeveloperOptions::on_pushButtonQmlSave_clicked() {
       file.write(data);
       file.close();
     } else {
-      QMessageBox msgBox(this);
-      msgBox.setText(tr("Cannot read file"));
-      msgBox.setInformativeText(tr("Source file with currently loaded QML cannot be opened."));
-      msgBox.setIcon(QMessageBox::Critical);
-      msgBox.exec();
+      qCritical() << "Unable to read current qml file" << qQuickWidget->source().toLocalFile();
     }
-  } else {
-    QMessageBox msgBox(this);
-    msgBox.setText(tr("Cant write to file."));
-    msgBox.setInformativeText(tr("This may be because file is opened in another program."));
-    msgBox.setIcon(QMessageBox::Critical);
-    msgBox.exec();
-  }
+  } else
+    qCritical() << "Cannot save qml file" << fileName;
 }
 
 void DeveloperOptions::qmlExport() {
@@ -272,20 +263,15 @@ void DeveloperOptions::qmlExport() {
     clipboard->setText(data);
   } else if (returnValue == QMessageBox::Ok) {
     QString defaultName = QString("terminal.txt");
-    QString fileName = QFileDialog::getSaveFileName(this, tr("Export qml in compressed format"), defaultName, tr("Text file (*.*)"));
+    QString fileName = DefaultPathManager::getInstance().requestSaveFile(this, tr("Export qml in compressed format"), "path_eqml", defaultName, tr("Text file (*.*)"));
     if (fileName.isEmpty())
       return;
     QFile file(fileName);
     if (file.open(QFile::WriteOnly | QFile::Truncate)) {
       file.write(data);
       file.close();
-    } else {
-      QMessageBox msgBox(this);
-      msgBox.setText(tr("Cant write to file."));
-      msgBox.setInformativeText(tr("This may be because file is opened in another program."));
-      msgBox.setIcon(QMessageBox::Critical);
-      msgBox.exec();
     }
+    qDebug() << "Cannot write to file" << fileName;
   }
 }
 
@@ -328,8 +314,12 @@ void DeveloperOptions::insertInTerminalDebug(QString text, QColor textColor) {
 void DeveloperOptions::on_listWidgetQMLFiles_itemClicked(QListWidgetItem *item) { emit loadQmlFile(QUrl::fromLocalFile(item->data(Qt::UserRole).toString())); }
 
 void DeveloperOptions::qmlReload() {
-  QUrl url = qQuickWidget->source();
-  emit loadQmlFile(url);
+  if (!ui->listWidgetQMLFiles->selectedItems().isEmpty())
+    emit loadQmlFile(QUrl::fromLocalFile(ui->listWidgetQMLFiles->selectedItems().first()->data(Qt::UserRole).toString()));
+  else {
+    QUrl url = qQuickWidget->source();
+    emit loadQmlFile(url);
+  }
 }
 
 void DeveloperOptions::quickWidget_statusChanged(const QQuickWidget::Status &arg1) {

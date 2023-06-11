@@ -130,6 +130,10 @@ QByteArray MainWindow::getSettings() {
     settings.append(";\n");
   }
 
+  auto defaultPaths = DefaultPathManager::getInstance().get();
+  for (auto it = defaultPaths.begin(); it != defaultPaths.end(); it++)
+    settings.append(QString("%1:%2;\n").arg(it.key()).arg(it.value()).toUtf8());
+
   return settings;
 }
 
@@ -162,6 +166,9 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarg
 
     if (setables.contains(type))
       applyGuiElementSettings(setables[type].first, value);
+
+    else if (type.startsWith("path_"))
+      DefaultPathManager::getInstance().add(type, value);
 
     else if (type == "baud") {
       ui->comboBoxBaud->setEditText(QString::number(value.toUInt()));
@@ -334,7 +341,7 @@ void MainWindow::loadSettings() {
 }
 
 void MainWindow::saveToFile(QByteArray data) {
-  QString fileName = QFileDialog::getSaveFileName(this, tr("Save file"), "", tr("Text file (*.txt);;Any file (*.*)"));
+  QString fileName = DefaultPathManager::getInstance().requestSaveFile(this, tr("Save file"), "path_sffd", "", tr("Text file (*.txt);;Any file (*.*)"));
   if (fileName.isEmpty())
     return;
   QFile file(fileName);
@@ -342,10 +349,7 @@ void MainWindow::saveToFile(QByteArray data) {
     file.write(data);
     file.close();
   } else {
-    QMessageBox msgBox(this);
-    msgBox.setText(tr("Unable to write to this file."));
-    msgBox.setIcon(QMessageBox::Critical);
-    msgBox.exec();
+    qCritical() << "Cannot write to file" << fileName;
   }
 }
 void MainWindow::saveSettings() {

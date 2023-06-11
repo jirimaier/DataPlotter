@@ -1,19 +1,19 @@
-#include "mainwindow.h"
 #include "communication/cobs.h"
-#include "qml/messagemodel.h"
+#include "mainwindow.h"
 #include "qml/ansiterminalmodel.h"
+#include "qml/messagemodel.h"
 #include "ui_developeroptions.h"
 
 void MainWindow::initQmlTerminal() {
   qmlTerminalInterface = new QmlTerminalInterface();
 
-  QQmlContext* context = ui->quickWidget->rootContext();
+  QQmlContext *context = ui->quickWidget->rootContext();
   context->setContextProperty("dataPlotter", qmlTerminalInterface);
   context->setContextProperty("messageModel", &messageModel);
   context->setContextProperty("ansiTerminalModel", &ansiTerminalModel);
 
   // Get the QQmlEngine instance from the widget
-  QQmlEngine* engine = ui->quickWidget->engine();
+  QQmlEngine *engine = ui->quickWidget->engine();
 
   // Add the import path to the directory where the QML file is located
   engine->addImportPath(":/qml/GenericComponents");
@@ -21,12 +21,12 @@ void MainWindow::initQmlTerminal() {
   qmlRegisterType<MessageModel>("DataPlotter", 1, 0, "MessageModel");
   qmlRegisterType<AnsiTerminalModel>("DataPlotter", 1, 0, "ANSITerminalModel");
 
+  engine->rootContext()->setContextProperty("_locale", locale());
+
   resetQmlTerminal();
 }
 
-void MainWindow::resetQmlTerminal() {
-  loadQmlFile(QUrl::fromLocalFile(":/qml/DefaultQmlTerminal.qml"));
-}
+void MainWindow::resetQmlTerminal() { loadQmlFile(QUrl::fromLocalFile(":/qml/DefaultQmlTerminal.qml")); }
 
 void MainWindow::loadCompressedQml(QByteArray data) {
   data = COBS::decode(data);
@@ -64,9 +64,7 @@ void MainWindow::loadQmlFile(QUrl url) {
   ui->quickWidget->setSource(url);
 }
 
-void MainWindow::qmlDirectInput(QByteArray data) {
-  qmlTerminalInterface->directInput(data);
-}
+void MainWindow::qmlDirectInput(QByteArray data) { qmlTerminalInterface->directInput(data); }
 
 void MainWindow::setQmlProperty(QByteArray data) {
   QByteArrayList l = data.split(':');

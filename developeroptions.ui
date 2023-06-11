@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>456</width>
+    <width>711</width>
     <height>603</height>
    </rect>
   </property>
@@ -23,7 +23,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab_3">
       <attribute name="title">
@@ -138,10 +138,13 @@
        <item row="1" column="0" colspan="2">
         <widget class="QListWidget" name="listWidgetQMLFiles">
          <property name="selectionMode">
-          <enum>QAbstractItemView::NoSelection</enum>
+          <enum>QAbstractItemView::SingleSelection</enum>
          </property>
          <property name="textElideMode">
           <enum>Qt::ElideLeft</enum>
+         </property>
+         <property name="selectionRectVisible">
+          <bool>true</bool>
          </property>
         </widget>
        </item>

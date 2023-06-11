@@ -37,6 +37,7 @@ HEADERS += \
     customwidgets/myframewithresizesignal.h \
     customwidgets/mypow2spinbox.h \
     customwidgets/myscaledoublespinbox.h \
+    defaultpathmanager.h \
     developeroptions.h \
     freqtimeplotdialog.h \
     global.h \
@@ -81,6 +82,7 @@ SOURCES += \
     customwidgets/myframewithresizesignal.cpp \
     customwidgets/mypow2spinbox.cpp \
     customwidgets/myscaledoublespinbox.cpp \
+    defaultpathmanager.cpp \
     developeroptions.cpp \
     freqtimeplotdialog.cpp \
     main.cpp \
