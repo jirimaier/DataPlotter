@@ -903,7 +903,7 @@
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
           <property name="iconSize">
            <size>
@@ -3467,7 +3467,7 @@
                  <item>
                   <widget class="QComboBox" name="comboBoxMeasure1">
                    <property name="sizePolicy">
-                    <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                      <horstretch>0</horstretch>
                      <verstretch>0</verstretch>
                     </sizepolicy>
@@ -3489,7 +3489,7 @@
                  <item>
                   <widget class="QPushButton" name="pushButtonRecordMeasurements1">
                    <property name="sizePolicy">
-                    <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                      <horstretch>0</horstretch>
                      <verstretch>0</verstretch>
                     </sizepolicy>
@@ -4239,7 +4239,7 @@
                  <item>
                   <widget class="QComboBox" name="comboBoxMeasure2">
                    <property name="sizePolicy">
-                    <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                      <horstretch>0</horstretch>
                      <verstretch>0</verstretch>
                     </sizepolicy>
@@ -4261,7 +4261,7 @@
                  <item>
                   <widget class="QPushButton" name="pushButtonRecordMeasurements2">
                    <property name="sizePolicy">
-                    <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                      <horstretch>0</horstretch>
                      <verstretch>0</verstretch>
                     </sizepolicy>
