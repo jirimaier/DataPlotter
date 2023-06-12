@@ -15,13 +15,59 @@
 
 #include "myaxistickerwithunit.h"
 
-QString MyAxisTickerWithUnit::getTickLabel(double tick, const QLocale &locale, QChar formatChar, int precision) {
-  if (unit.isEmpty())
-    return (locale.toString(tick, formatChar.toLatin1(), precision));
+void MyAxisTickerWithUnit::setUnit(QString unit, UnitMode::enumUnitMode mode) {
+  this->unit = unit;
+  this->unitMode = mode;
 
-  if (!usePrefix) {
+  if (unitMode == UnitMode::time) {
+    this->unit = "s";
+    QRegularExpression regex("\\(([^)]+)\\)");
+    QRegularExpressionMatch match = regex.match(unit);
+
+    if (match.hasMatch()) {
+      timeUnitFormat = match.captured(1);
+    } else {
+      timeUnitFormat = ""; // Empty string if no brackets found
+    }
+  }
+}
+
+QString MyAxisTickerWithUnit::getTickLabel(double tick, const QLocale &locale, QChar formatChar, int precision) {
+
+  if (unitMode == UnitMode::noPrefix) {
   noPrefix:
+    if (unit.isEmpty())
+      return (locale.toString(tick, formatChar.toLatin1(), precision));
     return (locale.toString(tick, formatChar.toLatin1(), precision) + " " + unit);
+  }
+
+  if (unitMode == UnitMode::index) {
+    if (qFuzzyCompare(round(tick), tick))
+      return QString::number(static_cast<long>(tick));
+    else
+      return "";
+  }
+
+  if (unitMode == UnitMode::time && timeUnitFormat.isEmpty()) {
+    if (tick > 60.0 || qFuzzyCompare(tick, 60)) {
+      int minutes;
+
+      double rounded = qRound(tick);
+      if (qFuzzyCompare(rounded, tick))
+        minutes = rounded / 60;
+      else
+        minutes = floor(tick) / 60;
+      double sec = (tick - static_cast<double>(minutes) * 60);
+      int hours = minutes / 60;
+      minutes = minutes % 60;
+
+      QString HH = hours == 0 ? "" : QString("%1:").arg(hours, 2, 10, QLatin1Char('0'));
+      QString MM = QString("%1:").arg(minutes, 2, 10, QLatin1Char('0'));
+      QString SS = locale.toString(sec, formatChar.toLatin1(), precision);
+      if (SS.length() < 2 || SS.at(1) == '.')
+        SS.prepend('0');
+      return HH + MM + SS;
+    }
   }
 
   QString text = "", postfix = "";

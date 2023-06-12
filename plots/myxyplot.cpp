@@ -94,12 +94,12 @@ void MyXYPlot::autoset() {
 
 void MyXYPlot::updateTracerText() {
   QString tracerTextStr;
-  if (unitTickerX->usePrefix)
+  if (true) // TODO
     tracerTextStr.append("X: " + floatToNiceString(tracer->position->key(), 4, true, false) + getXUnit() + "\n");
   else
     tracerTextStr.append("X: " + QString::number(+tracer->position->key(), 'g', 4) + " " + getXUnit() + "\n");
 
-  if (unitTickerY->usePrefix)
+  if (true) // TODO
     tracerTextStr.append("Y: " + floatToNiceString(tracer->position->value(), 4, true, false) + getYUnit() + "\n");
   else
     tracerTextStr.append("Y: " + QString::number(tracer->position->value(), 'g', 4) + " " + getYUnit() + "\n");

@@ -19,9 +19,9 @@
      <property name="currentIndex">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="tab">
+     <widget class="QWidget" name="Rolling">
       <attribute name="title">
-       <string>Tab 1</string>
+       <string>Rolling</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
@@ -105,6 +105,28 @@
           </widget>
          </item>
          <item>
+          <widget class="QDoubleSpinBox" name="doubleSpinBoxTimeScale">
+           <property name="prefix">
+            <string>Time: </string>
+           </property>
+           <property name="suffix">
+            <string>×</string>
+           </property>
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="minimum">
+            <double>0.001000000000000</double>
+           </property>
+           <property name="maximum">
+            <double>9999.000000000000000</double>
+           </property>
+           <property name="value">
+            <double>1.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QPushButton" name="pushButtonRolling">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -163,11 +185,6 @@
         </layout>
        </item>
       </layout>
-     </widget>
-     <widget class="QWidget" name="tab_2">
-      <attribute name="title">
-       <string>Tab 2</string>
-      </attribute>
      </widget>
     </widget>
    </item>

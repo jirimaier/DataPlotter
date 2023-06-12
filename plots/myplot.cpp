@@ -25,14 +25,8 @@ MyPlot::MyPlot(QWidget *parent) : QCustomPlot(parent) {
   tracerLayer->setMode(QCPLayer::lmBuffered);
   unitTickerX = QSharedPointer<MyAxisTickerWithUnit>(new MyAxisTickerWithUnit);
   unitTickerY = QSharedPointer<MyAxisTickerWithUnit>(new MyAxisTickerWithUnit);
-  timeTickerX = QSharedPointer<QCPAxisTickerTime>(new QCPAxisTickerTime);
-  longTimeTickerX = QSharedPointer<QCPAxisTickerTime>(new QCPAxisTickerTime);
-  timeTickerX->setTimeFormat("%m:%s");
-  longTimeTickerX->setTimeFormat("%h:%m:%s");
   unitTickerX->setScaleStrategy(QCPAxisTickerFixed::ssNone);
   unitTickerY->setScaleStrategy(QCPAxisTickerFixed::ssNone);
-  timeTickerX->setTickStepStrategy(QCPAxisTickerTime::tssMeetTickCount);
-  longTimeTickerX->setTickStepStrategy(QCPAxisTickerTime::tssMeetTickCount);
   this->xAxis->setNumberFormat("gb"); // Formát s hezkým 10^něco
   this->yAxis->setNumberFormat("gb"); // Formát s hezkým 10^něco
   this->xAxis->setTicker(unitTickerX);
@@ -143,6 +137,23 @@ void MyPlot::setTimeCursorVisible(Cursors::enumCursors cursor, bool visible) {
     curKeys.at(cursor)->setVisible(visible);
     cursorLayer->replot();
   }
+}
+
+void MyPlot::setXUnit(QString unit, UnitMode::enumUnitMode unitMode) {
+  if (unitMode == UnitMode::index)
+    xUnit = "";
+  else if (unitMode == UnitMode::time)
+    xUnit = "s";
+  else
+    xUnit = unit;
+  unitTickerX->setUnit(unit, unitMode);
+  replot();
+}
+
+void MyPlot::setYUnit(QString unit, UnitMode::enumUnitMode unitMode) {
+  yUnit = unit;
+  unitTickerY->setUnit(unit, unitMode);
+  replot();
 }
 
 void MyPlot::setValueCursorVisible(Cursors::enumCursors cursor, bool visible) {
@@ -381,11 +392,7 @@ void MyPlot::enableMouseCursorControll(bool enabled) {
 
 void MyPlot::setVerticalDiv(double value) { unitTickerY->setTickStep(value); }
 
-void MyPlot::setHorizontalDiv(double value) {
-  unitTickerX->setTickStep(value);
-  timeTickerX->setTickCount((xAxis->range().upper - xAxis->range().lower) / value);
-  longTimeTickerX->setTickCount((xAxis->range().upper - xAxis->range().lower) / value);
-}
+void MyPlot::setHorizontalDiv(double value) { unitTickerX->setTickStep(value); }
 
 void MyPlot::changeTracerTextPosition(MyPlot::TracerTextPos pos) {
   if (pos == TR) {
@@ -410,19 +417,9 @@ void MyPlot::setShowVerticalValues(bool enabled) {
   replot();
 }
 
-void MyPlot::setShowHorizontalValues(int type) {
-  bool enabled = type != 0;
+void MyPlot::setShowHorizontalValues(bool enabled) {
   this->xAxis->setTicks(enabled);
   this->xAxis->setBasePen(enabled ? Qt::SolidLine : Qt::NoPen);
-
-  if (enabled) {
-    if (type == HAxisType::normal)
-      this->xAxis->setTicker(unitTickerX);
-    if (type == HAxisType::MS)
-      this->xAxis->setTicker(timeTickerX);
-    if (type == HAxisType::HMS)
-      this->xAxis->setTicker(longTimeTickerX);
-  }
   replot();
 }
 

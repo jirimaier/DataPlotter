@@ -20,6 +20,7 @@
 void MainWindow::connectSignals() {
   connect(ui->pushButtonPause, &QPushButton::clicked, ui->plot, &MyMainPlot::togglePause);
   connect(ui->checkBoxVerticalValues, &QCheckBox::toggled, ui->plot, &MyPlot::setShowVerticalValues);
+  connect(ui->checkBoxHorizontalValues, &QCheckBox::toggled, ui->plot, &MyPlot::setShowHorizontalValues);
   connect(ui->plot, &MyMainPlot::showPlotStatus, this, &MainWindow::showPlotStatus);
   connect(ui->plot, &MyPlot::gridChanged, this, &MainWindow::updateDivs);
   connect(ui->plot, &MyPlot::moveTimeCursor, this, &MainWindow::timeCursorMovedByMouse);

@@ -483,32 +483,31 @@ void MainWindow::on_lineEditHUnit_textChanged(const QString &arg1) {
   QString unit = arg1.simplified();
 
   QString prefixChars = "munkMG";
-  timeUseUnits = true;
-  if (unit.isEmpty())
-    timeUseUnits = false;
-  if (unit.length() >= 2) {
+  auto xunitmode = UnitMode::usePrefix;
+  if (unit.startsWith("time"))
+    xunitmode = UnitMode::time;
+  else if (unit == "index")
+    xunitmode = UnitMode::index;
+  else if (unit.isEmpty())
+    xunitmode = UnitMode::noPrefix;
+  else if (unit.length() >= 2) {
     if (prefixChars.contains(unit.at(0))) {
-      timeUseUnits = false;
+      xunitmode = UnitMode::noPrefix;
       unit.push_front(' ');
     }
   }
 
-  ui->plot->setXUnit(unit, timeUseUnits);
+  ui->plot->setXUnit(unit, xunitmode);
+
   ui->plotxy->tUnit = unit;
   ui->doubleSpinBoxRangeHorizontal->setUnit(unit, timeUseUnits);
   ui->doubleSpinBoxXCur1->setUnit(unit, timeUseUnits);
   ui->doubleSpinBoxXCur2->setUnit(unit, timeUseUnits);
 
-  freqUseUnits = (unit == "s");
+  freqUseUnits = (unit == "s" || xunitmode == UnitMode::time);
 
-  ui->plotFFT->setXUnit(freqUseUnits ? "Hz" : "", freqUseUnits);
-  freqTimePlotDialog->getUi()->plotPeak->setYUnit(freqUseUnits ? "Hz" : "", freqUseUnits);
-
-  if (unit != "s") {
-    if (ui->comboBoxHAxisType->currentIndex() > HAxisType::normal) {
-      ui->comboBoxHAxisType->setCurrentIndex(HAxisType::normal);
-    }
-  }
+  ui->plotFFT->setXUnit(freqUseUnits ? "Hz" : "", freqUseUnits ? UnitMode::usePrefix : UnitMode::noPrefix);
+  freqTimePlotDialog->getUi()->plotPeak->setYUnit(freqUseUnits ? "Hz" : "", freqUseUnits ? UnitMode::usePrefix : UnitMode::noPrefix);
 
   updateDivs(); // Aby se aktualizovala jednotka u kroku mřížky
 }

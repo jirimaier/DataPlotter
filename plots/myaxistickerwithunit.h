@@ -21,13 +21,15 @@
 
 /// Verze axisTickeru která zobrazuje jednotky s předponami (milli, mikro...)
 class MyAxisTickerWithUnit : public QCPAxisTickerFixed {
- private:
+private:
   int tickStepOrder = 0;
-
- public:
   QString unit = "";
-  bool usePrefix = false;
-  QString getTickLabel(double tick, const QLocale& locale, QChar formatChar, int precision);
+  UnitMode::enumUnitMode unitMode = UnitMode::usePrefix;
+  QString timeUnitFormat = "";
+
+public:
+  void setUnit(QString unit, UnitMode::enumUnitMode mode);
+  QString getTickLabel(double tick, const QLocale &locale, QChar formatChar, int precision);
   void setTickStep(double value);
 };
 

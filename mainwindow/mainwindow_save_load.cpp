@@ -24,7 +24,7 @@ void MainWindow::initSetables() {
 
   // Plot settings
   setables["vaxis"] = {ui->checkBoxVerticalValues, false};
-  setables["haxis"] = {ui->comboBoxHAxisType, false};
+  setables["haxis"] = {ui->checkBoxHorizontalValues, false};
   setables["hlabel"] = {ui->lineEditHtitle, false};
   setables["hunit"] = {ui->lineEditHUnit, false};
   setables["vlabel"] = {ui->lineEditVtitle, false};

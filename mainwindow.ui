@@ -8180,56 +8180,26 @@
                 </widget>
                </item>
                <item>
-                <layout class="QHBoxLayout" name="horizontalLayout_17">
-                 <item>
-                  <widget class="QLabel" name="label_25">
-                   <property name="font">
-                    <font>
-                     <pointsize>9</pointsize>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>Horizontal axis</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QComboBox" name="comboBoxHAxisType">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="toolTip">
-                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Style of time values&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                   </property>
-                   <property name="currentIndex">
-                    <number>1</number>
-                   </property>
-                   <item>
-                    <property name="text">
-                     <string>Hidden</string>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>Normal</string>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>MM:SS</string>
-                    </property>
-                   </item>
-                   <item>
-                    <property name="text">
-                     <string>HH:MM:SS</string>
-                    </property>
-                   </item>
-                  </widget>
-                 </item>
-                </layout>
+                <widget class="QCheckBox" name="checkBoxHorizontalValues">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>Show horizontal Axis</string>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>16</width>
+                   <height>16</height>
+                  </size>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
+                 </property>
+                </widget>
                </item>
                <item>
                 <layout class="QHBoxLayout" name="horizontalLayout_12" stretch="2,1">
@@ -8283,7 +8253,7 @@
                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Unit of values on horizontal axis. Use base unit without any prefix. If 's' is set as a unit, reciprocal of value has units of 'Hz'.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                    </property>
                    <property name="text">
-                    <string>s</string>
+                    <string>time</string>
                    </property>
                    <property name="placeholderText">
                     <string>unit</string>

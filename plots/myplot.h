@@ -30,7 +30,6 @@ private:
   int xGridHint = -3;
   int yGridHint = -3;
   double lastGridX = 0, lastGridY = 0;
-  QSharedPointer<QCPAxisTickerTime> timeTickerX, longTimeTickerX;
   void setVerticalDiv(double value);
   void setHorizontalDiv(double value);
   enum TracerTextPos { TR, TL, BR, BL } tracerTextPos;
@@ -50,18 +49,8 @@ public:
   void setTimeCursorVisible(Cursors::enumCursors cursor, bool visible);
   double getVDiv() { return unitTickerY->tickStep(); }
   double getHDiv() { return unitTickerX->tickStep(); }
-  void setXUnit(QString unit, bool usePrefix) {
-    xUnit = unit;
-    unitTickerX->unit = unit;
-    unitTickerX->usePrefix = usePrefix;
-    replot();
-  }
-  void setYUnit(QString unit, bool usePrefix) {
-    yUnit = unit;
-    unitTickerY->unit = unit;
-    unitTickerY->usePrefix = usePrefix;
-    replot();
-  }
+  void setXUnit(QString unit, UnitMode::enumUnitMode unitMode);
+  void setYUnit(QString unit, UnitMode::enumUnitMode unitMode);
   QString getXUnit() { return xUnit; }
   QString getYUnit() { return yUnit; }
   double getValueCursorPosition(Cursors::enumCursors cursor) { return cursorsVal.at(cursor)->start->coords().y(); }
@@ -106,7 +95,7 @@ protected slots:
 
 public slots:
   void setShowVerticalValues(bool enabled);
-  void setShowHorizontalValues(int type);
+  void setShowHorizontalValues(bool enabled);
   void setXTitle(QString title);
   void setYTitle(QString title);
   void setGridHintX(int hint);

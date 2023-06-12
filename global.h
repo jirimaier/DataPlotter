@@ -103,6 +103,10 @@ namespace TerminalMode {
 enum enumTerminalMode { none, debug, clicksend, select };
 }
 
+namespace UnitMode {
+enum enumUnitMode { usePrefix, noPrefix, index, time };
+}
+
 struct ValueType {
   ValueType(bool bin = true) : isBinary(bin) {}
   bool isBinary = true;

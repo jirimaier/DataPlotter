@@ -77,7 +77,7 @@ void ManualInputDialog::on_pushButtonRolling_clicked() {
 }
 
 void ManualInputDialog::rollingDataTimerRoutine() {
-  rollingTimestamp += static_cast<double>(rollingTimer.interval()) / 1000.0;
+  rollingTimestamp += static_cast<double>(rollingTimer.interval()) / 1000.0 * ui->doubleSpinBoxTimeScale->value();
   QString data = "$$P" + QString::number(rollingTimestamp, 'g', 10);
   rollingEngine.globalObject().setProperty("t", rollingTimestamp);
   for (auto &ch : rollingChannelEvaluators) {

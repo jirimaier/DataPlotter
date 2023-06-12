@@ -266,7 +266,7 @@ void MyMainPlot::updateTracerText(int index) {
       tracerTextStr.append("LOW");
     tracerTextStr.append("\n");
   } else {
-    if (unitTickerY->usePrefix)
+    if (true) // TODO
       tracerTextStr.append(floatToNiceString(tracer->position->value(), 4, true, false) + getYUnit() + "\n");
     else
       tracerTextStr.append(QString::number(tracer->position->value(), 'g', 4) + " " + getYUnit() + "\n");

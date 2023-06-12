@@ -474,13 +474,13 @@ void MainWindow::on_pushButtonChangeXYColor_clicked() {
 
 void MainWindow::on_comboBoxFFTType_currentIndexChanged(int index) {
   if (index != FFTType::spectrum) {
-    ui->plotFFT->setYUnit("dB", false);
+    ui->plotFFT->setYUnit("dB", UnitMode::noPrefix);
     if (IS_FFT_INDEX(ui->comboBoxCursor1Channel->currentIndex()))
       ui->doubleSpinBoxYCur1->setSuffix("dB");
     if (IS_FFT_INDEX(ui->comboBoxCursor2Channel->currentIndex()))
       ui->doubleSpinBoxYCur2->setSuffix("dB");
   } else {
-    ui->plotFFT->setYUnit(ui->plot->getYUnit(), false);
+    ui->plotFFT->setYUnit(ui->plot->getYUnit(), UnitMode::noPrefix);
     if (IS_FFT_INDEX(ui->comboBoxCursor1Channel->currentIndex()))
       ui->doubleSpinBoxYCur1->setSuffix("");
     if (IS_FFT_INDEX(ui->comboBoxCursor2Channel->currentIndex()))
@@ -508,10 +508,10 @@ void MainWindow::on_lineEditVUnit_textChanged(const QString &arg1) {
     }
   }
 
-  ui->plot->setYUnit(unit, valuesUseUnits);
-  ui->plotFFT->setYUnit(unit, valuesUseUnits);
-  ui->plotxy->setYUnit(unit, valuesUseUnits);
-  ui->plotxy->setXUnit(unit, valuesUseUnits);
+  ui->plot->setYUnit(unit, valuesUseUnits ? UnitMode::usePrefix : UnitMode::noPrefix);
+  ui->plotFFT->setYUnit(unit, valuesUseUnits ? UnitMode::usePrefix : UnitMode::noPrefix);
+  ui->plotxy->setYUnit(unit, valuesUseUnits ? UnitMode::usePrefix : UnitMode::noPrefix);
+  ui->plotxy->setXUnit(unit, valuesUseUnits ? UnitMode::usePrefix : UnitMode::noPrefix);
   ui->doubleSpinBoxRangeVerticalRange->setUnit(unit, valuesUseUnits);
   ui->doubleSpinBoxChOffset->setUnit(unit, valuesUseUnits);
   ui->doubleSpinBoxYCur1->setUnit(unit, valuesUseUnits);
