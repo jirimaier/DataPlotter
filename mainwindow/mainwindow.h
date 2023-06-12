@@ -138,10 +138,17 @@ private:
   void saveSettings();
   void closeEvent(QCloseEvent *event);
   void autosetHrange();
-
   QIcon invertIconLightness(const QIcon &icon, QSize size);
   void openResourceFileCopiedToLocal(QString file);
 
+  void on_pushButtonRecordMeasurementsXXX_clicked(int n);
+  void on_checkBoxCurXXXVisible_stateChanged(int n, int arg1);
+  void on_comboBoxCursorXXXChannel_currentIndexChanged(int n, int index);
+  void on_checkBoxYCurXXX_stateChanged(int n, int arg1);
+  void on_doubleSpinBoxXCurXXX_valueChanged(int n, double arg1);
+  void on_doubleSpinBoxYCurXXX_valueChanged(int n, double arg1);
+
+  void horizontalSliderTimeCurXXX_realValueChanged(int n, int arg1);
 private slots:
   void updateCursors();
   void setAdaptiveSpinBoxes();
@@ -156,8 +163,8 @@ private slots:
   void updateFFT2();
   void updateInterpolation();
   void updateSerialMonitor();
-  void horizontalSliderTimeCur1_realValueChanged(int arg1);
-  void horizontalSliderTimeCur2_realValueChanged(int arg1);
+  void horizontalSliderTimeCur1_realValueChanged(int arg1) { horizontalSliderTimeCurXXX_realValueChanged(1, arg1); }
+  void horizontalSliderTimeCur2_realValueChanged(int arg1) { horizontalSliderTimeCurXXX_realValueChanged(2, arg1); }
   void updateUsedChannels();
   void turnOffTriggerLine() { ui->plot->setTriggerLineVisible(false); }
   void updateConsole();
@@ -199,8 +206,8 @@ private slots: // Autoconnect slots
   void on_comboBoxLogic2_currentIndexChanged(int index) { emit setChDigital(2, ui->pushButtonLog2->isChecked() ? index + 1 : 0); }
   void on_pushButtonPlotImage_clicked();
   void on_pushButtonXYImage_clicked();
-  void on_checkBoxCur1Visible_stateChanged(int arg1);
-  void on_checkBoxCur2Visible_stateChanged(int arg1);
+  void on_checkBoxCur1Visible_stateChanged(int arg1) { on_checkBoxCurXXXVisible_stateChanged(1, arg1); }
+  void on_checkBoxCur2Visible_stateChanged(int arg1) { on_checkBoxCurXXXVisible_stateChanged(2, arg1); }
   void on_pushButtonChangeChColor_clicked();
   void on_pushButtonInvert_toggled(bool checked);
   void on_pushButtonHideCh_toggled(bool checked);
@@ -224,8 +231,8 @@ private slots: // Autoconnect slots
   void on_doubleSpinBoxMathScalar2_3_valueChanged(double) { updateMathNow(3); }
   void on_horizontalSliderXYGrid_valueChanged(int value);
   void on_pushButtonXY_toggled(bool checked);
-  void on_comboBoxCursor1Channel_currentIndexChanged(int index);
-  void on_comboBoxCursor2Channel_currentIndexChanged(int index);
+  void on_comboBoxCursor1Channel_currentIndexChanged(int index) { on_comboBoxCursorXXXChannel_currentIndexChanged(1, index); }
+  void on_comboBoxCursor2Channel_currentIndexChanged(int index) { on_comboBoxCursorXXXChannel_currentIndexChanged(2, index); }
   void on_pushButtonFFT_toggled(bool checked);
   void on_pushButtonFFTImage_clicked();
   void on_pushButtonChangeXYColor_clicked();
@@ -236,12 +243,12 @@ private slots: // Autoconnect slots
   void on_lineEditVUnit_textChanged(const QString &arg1);
   void on_pushButtonClearReceivedList_3_clicked() { serialMonitor.clear(); }
   void on_pushButtonScrollDown_3_clicked();
-  void on_checkBoxYCur1_stateChanged(int arg1);
-  void on_checkBoxYCur2_stateChanged(int arg1);
-  void on_doubleSpinBoxYCur2_valueChanged(double arg1);
-  void on_doubleSpinBoxYCur1_valueChanged(double arg1);
-  void on_doubleSpinBoxXCur2_valueChanged(double arg1);
-  void on_doubleSpinBoxXCur1_valueChanged(double arg1);
+  void on_checkBoxYCur1_stateChanged(int arg1) { on_checkBoxYCurXXX_stateChanged(1, arg1); }
+  void on_checkBoxYCur2_stateChanged(int arg1) { on_checkBoxYCurXXX_stateChanged(2, arg1); }
+  void on_doubleSpinBoxYCur1_valueChanged(double arg1) { on_doubleSpinBoxYCurXXX_valueChanged(1, arg1); }
+  void on_doubleSpinBoxYCur2_valueChanged(double arg1) { on_doubleSpinBoxYCurXXX_valueChanged(2, arg1); }
+  void on_doubleSpinBoxXCur1_valueChanged(double arg1) { on_doubleSpinBoxXCurXXX_valueChanged(1, arg1); }
+  void on_doubleSpinBoxXCur2_valueChanged(double arg1) { on_doubleSpinBoxXCurXXX_valueChanged(2, arg1); }
   void on_checkBoxFFTCh1_toggled(bool checked);
   void on_checkBoxFFTCh2_toggled(bool checked);
   void on_checkBoxXYCur1_toggled(bool checked);
@@ -268,8 +275,8 @@ private slots: // Autoconnect slots
   void on_labelLogo_clicked();
   void on_comboBoxFIR_currentIndexChanged(int index);
   void on_comboBoxBaud_currentTextChanged(const QString &arg1);
-  void on_pushButtonRecordMeasurements1_clicked();
-  void on_pushButtonRecordMeasurements2_clicked();
+  void on_pushButtonRecordMeasurements1_clicked() { on_pushButtonRecordMeasurementsXXX_clicked(1); }
+  void on_pushButtonRecordMeasurements2_clicked() { on_pushButtonRecordMeasurementsXXX_clicked(2); }
   void on_radioButtonDark_toggled(bool checked);
   void on_tabs_right_currentChanged(int index);
   void on_pushButtonRangeFit_clicked();
@@ -295,7 +302,6 @@ private slots: // Autoconnect slots
   void on_pushButtonXY_Maximize_clicked();
   void on_verticalScrollBarVertical_valueChanged(int value);
   void on_horizontalScrollBarHorizontal_valueChanged(int value);
-
   void on_pushButtonCheckForUpdates_clicked();
 
 public slots:

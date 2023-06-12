@@ -219,6 +219,7 @@ void MyPlot::initcursors() {
     curKey->setVisible(false);
     curKey->setBrush(transparentWhite);
     curKey->setPadding(QMargins(2, 2, 2, 2));
+    curKey->setText("");
     curKeys.append(curKey);
   }
   for (int i = 0; i < 2; i++) {
@@ -245,6 +246,7 @@ void MyPlot::initcursors() {
     curVal->setVisible(false);
     curVal->setBrush(transparentWhite);
     curVal->setPadding(QMargins(2, 2, 2, 2));
+    curVal->setText("");
     curVals.append(curVal);
   }
 }

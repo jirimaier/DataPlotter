@@ -533,50 +533,39 @@ void MainWindow::on_comboBoxBaud_currentTextChanged(const QString &arg1) {
     emit changeSerialBaud(baud);
 }
 
-void MainWindow::on_pushButtonRecordMeasurements1_clicked() {
-  if (recordingOfMeasurements1.isOpen()) {
-    recordingOfMeasurements1.close();
-    recordingOfMeasurements1.setFileName("");
+void MainWindow::on_pushButtonRecordMeasurementsXXX_clicked(int n) {
+  Q_ASSERT(n == 1 || n == 2);
+
+  auto rom = &recordingOfMeasurements1;
+  auto com = ui->comboBoxMeasure1;
+  auto pbrm = ui->pushButtonRecordMeasurements1;
+
+  if (n == 2) {
+    rom = &recordingOfMeasurements2;
+    com = ui->comboBoxMeasure2;
+    pbrm = ui->pushButtonRecordMeasurements2;
+  }
+
+  if (rom->isOpen()) {
+    rom->close();
+    rom->setFileName("");
   } else {
-    if (ui->comboBoxMeasure1->currentIndex() == ui->comboBoxMeasure1->count() - 1)
+    if (com->currentIndex() == com->count() - 1)
       return;
-    QString defaultName = QString("/%1 measurements").arg(getChName(ui->comboBoxMeasure1->currentIndex()));
+    QString defaultName = QString("/%1 measurements").arg(getChName(com->currentIndex()));
     QString fileName = DefaultPathManager::getInstance().requestSaveFile(this, tr("Record measurements"), "path_export", defaultName, tr("Comma separated values (*.csv)"));
     if (fileName.isEmpty())
       return;
-    recordingOfMeasurements1.setFileName(fileName);
-    if (recordingOfMeasurements1.open(QFile::WriteOnly | QFile::Truncate)) {
+    rom->setFileName(fileName);
+    if (rom->open(QFile::WriteOnly | QFile::Truncate)) {
       char separator = ui->radioButtonCSVDot->isChecked() ? ',' : ';';
-      recordingOfMeasurements1.write(QByteArray("timestamp,period,freq,amp,min,max,vrms,dc,fs,rise,fall,"
-                                                "samples\n")
-                                         .replace(',', separator));
+      rom->write(QByteArray("timestamp,period,freq,amp,min,max,vrms,dc,fs,rise,fall,"
+                            "samples\n")
+                     .replace(',', separator));
     }
   }
 
-  ui->pushButtonRecordMeasurements1->setText(recordingOfMeasurements1.isOpen() ? tr("Stop") : tr("Record"));
-}
-
-void MainWindow::on_pushButtonRecordMeasurements2_clicked() {
-  if (recordingOfMeasurements2.isOpen()) {
-    recordingOfMeasurements2.close();
-    recordingOfMeasurements2.setFileName("");
-  } else {
-    if (ui->comboBoxMeasure1->currentIndex() == ui->comboBoxMeasure1->count() - 1)
-      return;
-    QString defaultName = QString("/%1 measurements").arg(getChName(ui->comboBoxMeasure1->currentIndex()));
-    QString fileName = DefaultPathManager::getInstance().requestSaveFile(this, tr("Record measurements"), "path_export", defaultName, tr("Comma separated values (*.csv)"));
-    if (fileName.isEmpty())
-      return;
-    recordingOfMeasurements2.setFileName(fileName);
-    if (recordingOfMeasurements2.open(QFile::WriteOnly | QFile::Truncate)) {
-      char separator = ui->radioButtonCSVDot->isChecked() ? ',' : ';';
-      recordingOfMeasurements2.write(QByteArray("timestamp,period,freq,amp,min,max,vrms,dc,fs,rise,fall,"
-                                                "samples\n")
-                                         .replace(',', separator));
-    }
-  }
-
-  ui->pushButtonRecordMeasurements1->setText(recordingOfMeasurements2.isOpen() ? tr("Stop") : tr("Record"));
+  pbrm->setText(rom->isOpen() ? tr("Stop") : tr("Record"));
 }
 
 QIcon MainWindow::invertIconLightness(const QIcon &icon, QSize size) {
