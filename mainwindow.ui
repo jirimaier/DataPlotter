@@ -789,9 +789,6 @@
                <property name="maximum">
                 <double>10000.000000000000000</double>
                </property>
-               <property name="singleStep">
-                <double>10000.000000000000000</double>
-               </property>
                <property name="value">
                 <double>1.000000000000000</double>
                </property>
@@ -906,7 +903,7 @@
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>0</number>
           </property>
           <property name="iconSize">
            <size>
@@ -2309,9 +2306,6 @@
                       <property name="maximum">
                        <double>1000000.000000000000000</double>
                       </property>
-                      <property name="singleStep">
-                       <double>1.000000000000000</double>
-                      </property>
                      </widget>
                     </item>
                    </layout>
@@ -2530,9 +2524,6 @@
                       </property>
                       <property name="maximum">
                        <double>1000000.000000000000000</double>
-                      </property>
-                      <property name="singleStep">
-                       <double>1.000000000000000</double>
                       </property>
                      </widget>
                     </item>
@@ -3063,9 +3054,6 @@
                       <property name="maximum">
                        <double>1000000.000000000000000</double>
                       </property>
-                      <property name="singleStep">
-                       <double>1.000000000000000</double>
-                      </property>
                      </widget>
                     </item>
                    </layout>
@@ -3297,9 +3285,6 @@
                       </property>
                       <property name="maximum">
                        <double>1000000.000000000000000</double>
-                      </property>
-                      <property name="singleStep">
-                       <double>1.000000000000000</double>
                       </property>
                      </widget>
                     </item>
@@ -7254,7 +7239,7 @@
            </size>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
           <property name="iconSize">
            <size>

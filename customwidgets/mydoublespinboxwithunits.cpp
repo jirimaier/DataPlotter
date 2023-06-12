@@ -62,6 +62,31 @@ double MyDoubleSpinBoxWithUnits::valueFromText(const QString &text) const {
     return value();
 }
 
+void MyDoubleSpinBoxWithUnits::stepBy(int steps) {
+  if (!adaptiveStep()) {
+    QDoubleSpinBox::stepBy(steps);
+    return;
+  }
+
+  // Get the current value
+  double currentValue = value();
+
+  // Calculate the adaptive step based on the current value
+  Q_ASSERT(!qFuzzyIsNull(currentValue));
+
+  // Calculate the magnitude of the current value
+  double magnitude = std::pow(10, std::floor(std::log10(std::fabs(currentValue * 1.000001))));
+
+  // Calculate the adaptive step as one order of magnitude less than the value
+  double adaptiveStep = magnitude / 10.0;
+
+  // Adjust the step value by the adaptive step
+  setSingleStep(adaptiveStep);
+
+  // Call the base class implementation to perform the step
+  QDoubleSpinBox::stepBy(steps);
+}
+
 void MyDoubleSpinBoxWithUnits::setUnit(QString suffix, bool useUnitPrefix) {
   QDoubleSpinBox::setSuffix(suffix);
   this->useUnitPrefix = useUnitPrefix;
@@ -86,3 +111,9 @@ void MyDoubleSpinBoxWithUnits::showEvent(QShowEvent *event) {
       setMinimum(1e-11);
   }
 }
+
+bool MyDoubleSpinBoxWithUnits::adaptiveStep() const { return m_adaptiveStep; }
+
+void MyDoubleSpinBoxWithUnits::setAdaptiveStep(bool newAdaptiveStep) { m_adaptiveStep = newAdaptiveStep; }
+
+void MyDoubleSpinBoxWithUnits::setStepRelativeToRange(double range, int ordersBelow) { setSingleStep(pow(10.0, std::floor(log10(range * 1.000001) - ordersBelow))); }

@@ -98,16 +98,8 @@ void MainWindow::connectSignals() {
 }
 
 void MainWindow::setAdaptiveSpinBoxes() {
-  // Adaptivní krok není v starším Qt (Win XP)
-#if QT_VERSION >= 0x050C00
-  ui->doubleSpinBoxRangeHorizontal->setStepType(QAbstractSpinBox::AdaptiveDecimalStepType);
-  ui->doubleSpinBoxRangeVerticalRange->setStepType(QAbstractSpinBox::AdaptiveDecimalStepType);
-
-  ui->doubleSpinBoxXYCurX1->setStepType(QAbstractSpinBox::AdaptiveDecimalStepType);
-  ui->doubleSpinBoxXYCurX2->setStepType(QAbstractSpinBox::AdaptiveDecimalStepType);
-  ui->doubleSpinBoxXYCurY1->setStepType(QAbstractSpinBox::AdaptiveDecimalStepType);
-  ui->doubleSpinBoxXYCurY2->setStepType(QAbstractSpinBox::AdaptiveDecimalStepType);
-#endif
+  ui->doubleSpinBoxRangeHorizontal->setAdaptiveStep(true);
+  ui->doubleSpinBoxRangeVerticalRange->setAdaptiveStep(true);
 }
 
 void MainWindow::startTimers() {

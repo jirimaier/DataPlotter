@@ -377,6 +377,12 @@ void MainWindow::deviceError(QByteArray message, MessageTarget::enumMessageTarge
   }
 }
 
+void MainWindow::setExpectedRange(int chID, bool known, double min, double max) {
+  channelExpectedRanges[chID].maximum = max;
+  channelExpectedRanges[chID].minimum = min;
+  channelExpectedRanges[chID].unknown = !known;
+}
+
 void MainWindow::on_pushButtonSerialSetting_clicked() { serialSettingsDialog->show(); }
 
 void MainWindow::on_pushButtonSerialMoreInfo_clicked() {
@@ -719,6 +725,8 @@ void MainWindow::mainPlotHRangeChanged(QCPRange range) {
     ui->horizontalScrollBarHorizontal->setSliderPosition(posFactor);
     ui->horizontalScrollBarHorizontal->blockSignals(false);
   }
+  ui->doubleSpinBoxXCur1->setStepRelativeToRange(range.size());
+  ui->doubleSpinBoxXCur2->setStepRelativeToRange(range.size());
 }
 
 void MainWindow::mainPlotHRangeMaxChanged(QCPRange range) {
@@ -759,6 +767,8 @@ void MainWindow::mainPlotVRangeChanged(QCPRange range) {
   ui->verticalScrollBarVertical->setValue(posFactor);
   ui->verticalScrollBarVertical->setSliderPosition(posFactor);
   ui->verticalScrollBarVertical->blockSignals(false);
+  ui->doubleSpinBoxYCur1->setStepRelativeToRange(range.size());
+  ui->doubleSpinBoxYCur2->setStepRelativeToRange(range.size());
 }
 
 void MainWindow::mainPlotVRangeMaxChanged(QCPRange range) {
@@ -770,6 +780,8 @@ void MainWindow::mainPlotVRangeMaxChanged(QCPRange range) {
   ui->doubleSpinBoxViewCenter->blockSignals(false);
   ui->doubleSpinBoxRangeVerticalRange->blockSignals(false);
   mainPlotVRangeChanged(ui->plot->yAxis->range());
+  ui->doubleSpinBoxChOffset->setStepRelativeToRange(range.size());
+  ui->doubleSpinBoxViewCenter->setStepRelativeToRange(range.size());
 }
 
 void MainWindow::lastDataTypeWasPointChanged(bool wasPoint) {

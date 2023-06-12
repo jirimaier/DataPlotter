@@ -37,8 +37,15 @@ public:
   /// Nastaví jednotku
   void setUnit(QString suffix, bool useUnitPrefix);
 
+  bool adaptiveStep() const;
+  void setAdaptiveStep(bool newAdaptiveStep);
+
+  void setStepRelativeToRange(double range, int ordersBelow = 2);
+
 protected:
   void showEvent(QShowEvent *event) override;
+  virtual void stepBy(int steps) override;
+  bool m_adaptiveStep = false;
 
 private:
   QValidator::State validate(QString &input, int &pos) const;
@@ -46,6 +53,7 @@ private:
   double valueFromText(const QString &text) const;
   bool useUnitPrefix = true;
   QString replaceUnitPrefixes(QString expr) const;
+
 signals:
 };
 

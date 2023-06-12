@@ -327,11 +327,7 @@ public slots:
   void setCursorPosXY(Cursors::enumCursors cursor, double x, double y);
   void interpolationResult(int chID, QSharedPointer<QCPGraphDataContainer> dataOriginal, QSharedPointer<QCPGraphDataContainer> dataInterpolated, bool dataIsFromInterpolationBuffer);
   void deviceError(QByteArray message, MessageTarget::enumMessageTarget source);
-  void setExpectedRange(int chID, bool known, double min, double max) {
-    channelExpectedRanges[chID].maximum = max;
-    channelExpectedRanges[chID].minimum = min;
-    channelExpectedRanges[chID].unknown = !known;
-  }
+  void setExpectedRange(int chID, bool known, double min, double max);
   void loadCompressedQml(QByteArray data);
   void saveToFile(QByteArray data);
   void qmlDirectInput(QByteArray data);

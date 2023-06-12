@@ -449,9 +449,6 @@ void MainWindow::on_pushButtonFFT_toggled(bool checked) {
 
 void MainWindow::on_doubleSpinBoxRangeVerticalRange_valueChanged(double arg1) {
   ui->pushButtonRollingAutoRange->setChecked(false);
-  ui->doubleSpinBoxChOffset->setSingleStep(pow(10.0, log10(arg1) - 2));
-  ui->doubleSpinBoxYCur1->setSingleStep(pow(10.0, floor(log10(arg1)) - 2));
-  ui->doubleSpinBoxYCur2->setSingleStep(pow(10.0, floor(log10(arg1)) - 2));
   ui->dialVerticalRange->updatePosition(arg1);
   auto range = ui->plot->getMaxZoomY();
   if (qFuzzyIsNull(range.lower))
@@ -654,6 +651,7 @@ void MainWindow::on_doubleSpinBoxRangeHorizontal_valueChanged(double arg1) {
 }
 
 void MainWindow::on_doubleSpinBoxViewCenter_valueChanged(double arg1) {
+  ui->pushButtonRollingAutoRange->setChecked(false);
   auto range = ui->plot->getMaxZoomY();
   range = QCPRange(arg1 - range.size() / 2, arg1 + range.size() / 2);
   ui->plot->setVRange(range);
