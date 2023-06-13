@@ -201,7 +201,7 @@ void MyFFTPlot::autoset() {
   double xMax = *std::max_element(xMaxs.begin(), xMaxs.end());
   double xMin = *std::max_element(xMins.begin(), xMins.end());
 
-  if (getYUnit() == "dB") {
+  if (getYUnit().text == "dB") {
     yMax = ceil(yMax / 10.0) * 10.0 + 10;
     yMin = yMax - 120;
   } else {
@@ -246,14 +246,14 @@ void MyFFTPlot::updateTracerText(int index) {
   tracerTextStr.append(getChName(chSourceChannel[index]) + "\n");
 
   if (true) // TODO
-    tracerTextStr.append(floatToNiceString(tracer->position->value(), 4, true, false) + getYUnit() + "\n");
+    tracerTextStr.append(floatToNiceString(tracer->position->value(), 4, true, false) + getYUnit().text + "\n");
   else
-    tracerTextStr.append(QString::number(tracer->position->value(), 'g', 4) + " " + getYUnit() + "\n");
+    tracerTextStr.append(QString::number(tracer->position->value(), 'g', 4) + " " + getYUnit().text + "\n");
 
-  if (getXUnit().isEmpty())
+  if (getXUnit().text.isEmpty())
     tracerTextStr.append(QString::number(tracer->position->key(), 'g', 4));
   else
-    tracerTextStr.append(floatToNiceString(tracer->position->key(), 4, true, false) + getXUnit());
+    tracerTextStr.append(floatToNiceString(tracer->position->key(), 4, true, false) + getXUnit().text);
 
   tracerText->setText(tracerTextStr);
   checkIfTracerTextFits();

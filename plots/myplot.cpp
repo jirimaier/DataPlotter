@@ -139,20 +139,14 @@ void MyPlot::setTimeCursorVisible(Cursors::enumCursors cursor, bool visible) {
   }
 }
 
-void MyPlot::setXUnit(QString unit, UnitMode::enumUnitMode unitMode) {
-  if (unitMode == UnitMode::index)
-    xUnit = "";
-  else if (unitMode == UnitMode::time)
-    xUnit = "s";
-  else
-    xUnit = unit;
-  unitTickerX->setUnit(unit, unitMode);
+void MyPlot::setXUnit(UnitOfMeasure unit) {
+  unitTickerX->setUnit(unit);
   replot();
 }
 
-void MyPlot::setYUnit(QString unit, UnitMode::enumUnitMode unitMode) {
+void MyPlot::setYUnit(UnitOfMeasure unit) {
   yUnit = unit;
-  unitTickerY->setUnit(unit, unitMode);
+  unitTickerY->setUnit(unit);
   replot();
 }
 

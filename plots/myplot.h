@@ -34,7 +34,7 @@ private:
   void setHorizontalDiv(double value);
   enum TracerTextPos { TR, TL, BR, BL } tracerTextPos;
   void changeTracerTextPosition(TracerTextPos pos);
-  QString xUnit, yUnit;
+  UnitOfMeasure xUnit, yUnit;
 
   bool clipRange(QCPRange &newRange, const QCPRange &limits);
 
@@ -49,10 +49,10 @@ public:
   void setTimeCursorVisible(Cursors::enumCursors cursor, bool visible);
   double getVDiv() { return unitTickerY->tickStep(); }
   double getHDiv() { return unitTickerX->tickStep(); }
-  void setXUnit(QString unit, UnitMode::enumUnitMode unitMode);
-  void setYUnit(QString unit, UnitMode::enumUnitMode unitMode);
-  QString getXUnit() { return xUnit; }
-  QString getYUnit() { return yUnit; }
+  void setXUnit(UnitOfMeasure unit);
+  void setYUnit(UnitOfMeasure unit);
+  UnitOfMeasure getXUnit() { return xUnit; }
+  UnitOfMeasure getYUnit() { return yUnit; }
   double getValueCursorPosition(Cursors::enumCursors cursor) { return cursorsVal.at(cursor)->start->coords().y(); }
   bool getValueCursorVisible(Cursors::enumCursors cursor) { return cursorsVal.at(cursor)->visible(); }
   double getTimeCursorPosition(Cursors::enumCursors cursor) { return cursorsKey.at(cursor)->start->coords().x(); }

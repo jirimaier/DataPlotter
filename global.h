@@ -18,6 +18,7 @@
 
 #include "defaultpathmanager.h"
 #include "qmessagebox.h"
+#include "qregularexpression.h"
 #include "qserialportinfo.h"
 #include "qstandardpaths.h"
 #include <QColor>
@@ -100,10 +101,6 @@ enum enumMessageTarget { manual, serial1 };
 
 namespace TerminalMode {
 enum enumTerminalMode { none, debug, clicksend, select };
-}
-
-namespace UnitMode {
-enum enumUnitMode { usePrefix, noPrefix, index, time };
 }
 
 struct ValueType {
@@ -502,6 +499,44 @@ struct ChannelExpectedRange {
   double maximum = 0;
   double minimum = 0;
   bool unknown = true;
+};
+
+struct UnitOfMeasure {
+  UnitOfMeasure() {}
+  UnitOfMeasure(QString rawUnit) {
+
+    QString prefixChars = "munkMG";
+
+    if (rawUnit.isEmpty())
+      mode = noPrefix;
+    else if (rawUnit.startsWith("-")) {
+      mode = usePrefix;
+      text = rawUnit.mid(1);
+    } else if (rawUnit.startsWith("!")) {
+      mode = noPrefix;
+      text = rawUnit.mid(1);
+    } else if (rawUnit == "index") {
+      mode = index;
+    } else if (rawUnit.startsWith("time")) {
+      mode = time;
+      text = "s";
+      QRegularExpression regex("\\(([^)]+)\\)");
+      QRegularExpressionMatch match = regex.match(rawUnit);
+      if (match.hasMatch())
+        special = match.captured(1);
+    } else if (rawUnit.length() >= 2) {
+      if (rawUnit.left(2) == "dB" || prefixChars.contains(rawUnit.at(0))) {
+        mode = noPrefix;
+        text = rawUnit;
+      }
+    } else {
+      text = rawUnit;
+      mode = usePrefix;
+    }
+  }
+  enum Mode { usePrefix, noPrefix, index, time } mode = noPrefix;
+  QString text = "";
+  QString special = "";
 };
 
 #endif // GLOBAL_H

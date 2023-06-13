@@ -87,9 +87,9 @@ void MyDoubleSpinBoxWithUnits::stepBy(int steps) {
   QDoubleSpinBox::stepBy(steps);
 }
 
-void MyDoubleSpinBoxWithUnits::setUnit(QString suffix, bool useUnitPrefix) {
-  QDoubleSpinBox::setSuffix(suffix);
-  this->useUnitPrefix = useUnitPrefix;
+void MyDoubleSpinBoxWithUnits::setUnit(UnitOfMeasure unit) {
+  QDoubleSpinBox::setSuffix(unit.text);
+  this->useUnitPrefix = unit.mode == UnitOfMeasure::time || UnitOfMeasure::usePrefix;
 }
 
 void MyDoubleSpinBoxWithUnits::showEvent(QShowEvent *event) {

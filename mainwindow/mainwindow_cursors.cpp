@@ -122,7 +122,7 @@ void MainWindow::updateCursorMeasurementsText() {
     // dB FFT
     if (IS_FFT_INDEX(ch1) && IS_FFT_INDEX(ch2) && ui->comboBoxFFTType->currentIndex() != FFTType::spectrum) {
       if (freqUseUnits)
-        ui->labelCurDeltaTime->setText(floatToNiceString(dt, 4, true, false) + ui->plotFFT->getXUnit());
+        ui->labelCurDeltaTime->setText(floatToNiceString(dt, 4, true, false) + ui->plotFFT->getXUnit().text);
       else
         ui->labelCurDeltaTime->setText(QString::number(dt, 'g', 3));
       ui->labelCurDeltaValue->setText(QString::number(dy, 'f', 3).rightJustified(7) + " dB");
@@ -131,7 +131,7 @@ void MainWindow::updateCursorMeasurementsText() {
     // linear FFT
     else if (IS_FFT_INDEX(ch1) && IS_FFT_INDEX(ch2) && ui->comboBoxFFTType->currentIndex() == FFTType::spectrum) {
       if (freqUseUnits)
-        ui->labelCurDeltaTime->setText(floatToNiceString(dt, 4, true, false) + ui->plotFFT->getXUnit());
+        ui->labelCurDeltaTime->setText(floatToNiceString(dt, 4, true, false) + ui->plotFFT->getXUnit().text);
       else
         ui->labelCurDeltaTime->setText(QString::number(dt, 'g', 3));
       ui->labelCurDeltaValue->setText(floatToNiceString(dy, 4, true, true));
@@ -143,19 +143,19 @@ void MainWindow::updateCursorMeasurementsText() {
       if (IS_ANALOG_OR_MATH(ch1) && IS_ANALOG_OR_MATH(ch2)) {
         // Both analog
         if (timeUseUnits)
-          ui->labelCurDeltaTime->setText(floatToNiceString(dt, 4, true, true) + ui->plot->getXUnit());
+          ui->labelCurDeltaTime->setText(floatToNiceString(dt, 4, true, true) + ui->plot->getXUnit().text);
         else
           ui->labelCurDeltaTime->setText(QString::number(dt, 'g', 3));
 
         if (ui->plot->getValueCursorVisible(Cursor1) || ui->plot->getValueCursorVisible(Cursor2)) {
-          QString YUnit = ui->plot->getYUnit();
+          QString YUnit = ui->plot->getYUnit().text;
           if (valuesUseUnits) {
             ui->labelCurDeltaValue->setText(floatToNiceString(dy, 4, true, true) + YUnit);
             ui->labelCurRatio->setText(floatToNiceString(value1 / value2, 4, true, true) + YUnit + "/" + YUnit);
 
             QString slope = floatToNiceString(dy / dt, 4, true, true);
-            if (QString(" mnpfa" + QString::fromUtf8("\xc2\xb5")).contains(slope.at(slope.length() - 1)) || ui->plot->getXUnit().isEmpty()) {
-              slope = slope + YUnit + "/" + (ui->plot->getXUnit().isEmpty() ? "1" : ui->plot->getXUnit());
+            if (QString(" mnpfa" + QString::fromUtf8("\xc2\xb5")).contains(slope.at(slope.length() - 1)) || ui->plot->getXUnit().text.isEmpty()) {
+              slope = slope + YUnit + "/" + (ui->plot->getXUnit().text.isEmpty() ? "1" : ui->plot->getXUnit().text);
             } else {
               // Předělání hodnot ve stylu "kV/s" na "V/ms"
               QChar prefix = slope.at(slope.length() - 1);
@@ -174,40 +174,40 @@ void MainWindow::updateCursorMeasurementsText() {
               else if (prefix == 'E')
                 prefix = 'a';
 
-              slope = slope + YUnit + "/" + prefix + ui->plot->getXUnit();
+              slope = slope + YUnit + "/" + prefix + ui->plot->getXUnit().text;
             }
 
             ui->labelCurSlope->setText(slope);
           } else {
             ui->labelCurDeltaValue->setText(QString::number(dy, 'g', 3) + YUnit);
             ui->labelCurRatio->setText(QString::number(value1 / value2, 'g', 3) + (YUnit.isEmpty() ? "" : (YUnit + "/" + YUnit)));
-            ui->labelCurSlope->setText(QString::number(dy / dt, 'g', 3) + (YUnit.isEmpty() && ui->plot->getXUnit().isEmpty() ? "" : (YUnit + "/" + ui->plot->getXUnit())));
+            ui->labelCurSlope->setText(QString::number(dy / dt, 'g', 3) + (YUnit.isEmpty() && ui->plot->getXUnit().text.isEmpty() ? "" : (YUnit + "/" + ui->plot->getXUnit().text)));
           }
         }
 
         if (freqUseUnits)
-          ui->labelCurFreq->setText(floatToNiceString(std::abs(1.0 / dt), 4, true, true) + ui->plotFFT->getXUnit());
+          ui->labelCurFreq->setText(floatToNiceString(std::abs(1.0 / dt), 4, true, true) + ui->plotFFT->getXUnit().text);
         else
           ui->labelCurFreq->setText(QString::number(std::abs(1.0 / dt), 'g', 3));
       } else if (IS_ANALOG_OR_MATH(ch1) || IS_ANALOG_OR_MATH(ch2)) {
         // Analog and Logic
         if (timeUseUnits)
-          ui->labelCurDeltaTime->setText(floatToNiceString(dt, 4, true, false) + ui->plot->getXUnit());
+          ui->labelCurDeltaTime->setText(floatToNiceString(dt, 4, true, false) + ui->plot->getXUnit().text);
         else
           ui->labelCurDeltaTime->setText(QString::number(dt, 'g', 3));
 
         if (freqUseUnits)
-          ui->labelCurFreq->setText(floatToNiceString(std::abs(1.0 / dt), 4, true, false) + ui->plotFFT->getXUnit());
+          ui->labelCurFreq->setText(floatToNiceString(std::abs(1.0 / dt), 4, true, false) + ui->plotFFT->getXUnit().text);
         else
           ui->labelCurFreq->setText(QString::number(std::abs(1.0 / dt), 'g', 3));
       } else {
         if (timeUseUnits)
-          ui->labelCurDeltaTime->setText(floatToNiceString(dt, 4, true, false) + ui->plot->getXUnit());
+          ui->labelCurDeltaTime->setText(floatToNiceString(dt, 4, true, false) + ui->plot->getXUnit().text);
         else
           ui->labelCurDeltaTime->setText(QString::number(dt, 'g', 3));
 
         if (freqUseUnits)
-          ui->labelCurFreq->setText(floatToNiceString(std::abs(1.0 / dt), 4, true, false) + ui->plotFFT->getXUnit());
+          ui->labelCurFreq->setText(floatToNiceString(std::abs(1.0 / dt), 4, true, false) + ui->plotFFT->getXUnit().text);
         else
           ui->labelCurFreq->setText(QString::number(std::abs(1.0 / dt), 'g', 3));
       }
@@ -222,11 +222,11 @@ void MainWindow::updateCursor(Cursors::enumCursors cursor, int selectedChannel, 
     value = ui->plot->graph(selectedChannel)->data()->at(sample)->value;
 
     if (timeUseUnits)
-      timeStr = QString(floatToNiceString(time, 5, true, false) + ui->plot->getXUnit()).toUtf8();
+      timeStr = QString(floatToNiceString(time, 5, true, false) + ui->plot->getXUnit().text).toUtf8();
     else
       timeStr = QString(QString::number(time, 'g', 5)).toUtf8();
 
-    QString unit = ui->plotxy->getYUnit();
+    QString unit = ui->plotxy->getYUnit().text;
     if (valuesUseUnits)
       valueStr = QString(floatToNiceString(value, 5, true, false) + unit).toUtf8();
     else
@@ -243,11 +243,11 @@ void MainWindow::updateCursor(Cursors::enumCursors cursor, int selectedChannel, 
     value = ui->plotFFT->graph(INDEX_TO_FFT_CHID(selectedChannel))->data()->at(sample)->value;
 
     if (freqUseUnits)
-      timeStr = QString(floatToNiceString(freq, 5, true, false) + ui->plotFFT->getXUnit()).toUtf8();
+      timeStr = QString(floatToNiceString(freq, 5, true, false) + ui->plotFFT->getXUnit().text).toUtf8();
     else
       timeStr = QString(QString::number(freq, 'g', 5)).toUtf8();
 
-    valueStr = (QString::number(value, 'f', 3).rightJustified(8) + " " + ui->plotFFT->getYUnit()).toUtf8();
+    valueStr = (QString::number(value, 'f', 3).rightJustified(8) + " " + ui->plotFFT->getYUnit().text).toUtf8();
     time = freq;
     if (useValueCursor) {
       ui->plotFFT->updateValueCursor(cursor, value, valueStr, ui->plotFFT->yAxis);
@@ -280,7 +280,7 @@ void MainWindow::updateCursor(Cursors::enumCursors cursor, int selectedChannel, 
       bits = bits.mid(1);
 
     if (timeUseUnits)
-      timeStr = QString(floatToNiceString(time, 5, true, false) + ui->plot->getXUnit()).toUtf8();
+      timeStr = QString(floatToNiceString(time, 5, true, false) + ui->plot->getXUnit().text).toUtf8();
     else
       timeStr = QString(QString::number(time, 'g', 5)).toUtf8();
 

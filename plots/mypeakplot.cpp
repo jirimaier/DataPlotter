@@ -16,7 +16,7 @@ MyPeakPlot::MyPeakPlot(QWidget *parent) : MyPlot(parent) {
   infoText->position->setType(QCPItemPosition::ptViewportRatio);
   infoText->position->setCoords(0.5, 0.5);
   setInfoText();
-  setXUnit("time", UnitMode::time);
+  setXUnit(QString("time"));
 
   this->setInteraction(QCP::iRangeDrag, true);
   this->setInteraction(QCP::iRangeZoom, true);
@@ -225,11 +225,11 @@ void MyPeakPlot::updateTracerText(int index) {
   tracerTextStr.append(" " + getChName(chSourceChannel[index]) + "\n");
 
   if (true) // TODO
-    tracerTextStr.append(floatToNiceString(tracer->position->value(), 4, true, false) + getYUnit() + "\n");
+    tracerTextStr.append(floatToNiceString(tracer->position->value(), 4, true, false) + getYUnit().text + "\n");
   else
-    tracerTextStr.append(QString::number(tracer->position->value(), 'g', 4) + " " + getYUnit() + "\n");
+    tracerTextStr.append(QString::number(tracer->position->value(), 'g', 4) + " " + getYUnit().text + "\n");
 
-  tracerTextStr.append(floatToNiceString(tracer->position->key(), 4, true, false) + getXUnit());
+  tracerTextStr.append(floatToNiceString(tracer->position->key(), 4, true, false) + getXUnit().text);
 
   tracerText->setText(tracerTextStr);
   checkIfTracerTextFits();

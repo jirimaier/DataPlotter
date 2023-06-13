@@ -23,14 +23,13 @@
 class MyAxisTickerWithUnit : public QCPAxisTickerFixed {
 private:
   int tickStepOrder = 0;
-  QString unit = "";
-  UnitMode::enumUnitMode unitMode = UnitMode::usePrefix;
-  QString timeUnitFormat = "";
+  UnitOfMeasure unit;
 
 public:
-  void setUnit(QString unit, UnitMode::enumUnitMode mode);
   QString getTickLabel(double tick, const QLocale &locale, QChar formatChar, int precision);
   void setTickStep(double value);
+  UnitOfMeasure getUnit() const;
+  void setUnit(const UnitOfMeasure &newUnit);
 };
 
 #endif // MYAXISTICKERWITHUNIT_H

@@ -212,9 +212,9 @@ void MainWindow::updateChScale() {
   if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT) {
     double perDiv = ui->plot->getCHDiv(ui->comboBoxSelectedChannel->currentIndex());
     if (valuesUseUnits)
-      ui->labelChScale->setText(floatToNiceString(perDiv, 3, true, false) + ui->plot->getYUnit() + tr(" / Div"));
+      ui->labelChScale->setText(floatToNiceString(perDiv, 3, true, false) + ui->plot->getYUnit().text + tr(" / Div"));
     else
-      ui->labelChScale->setText(QString::number(perDiv, 'g', 3) + ui->plot->getYUnit() + tr(" / Div"));
+      ui->labelChScale->setText(QString::number(perDiv, 'g', 3) + ui->plot->getYUnit().text + tr(" / Div"));
   } else
     ui->labelChScale->setText("---");
 }
@@ -256,7 +256,7 @@ void MainWindow::serialConnectResult(bool connected, QString message, QString de
 void MainWindow::updateDivs() {
   updateChScale();
   if (ui->labelHDiv->isEnabled()) {
-    QString unit = ui->plot->getXUnit();
+    QString unit = ui->plot->getXUnit().text;
     if (timeUseUnits)
       ui->labelHDiv->setText(floatToNiceString(ui->plot->getHDiv(), 1, false, false) + unit + tr("/Div"));
     else
@@ -265,7 +265,7 @@ void MainWindow::updateDivs() {
   } else
     ui->labelHDiv->setText("---");
 
-  QString unit = ui->plot->getYUnit();
+  QString unit = ui->plot->getYUnit().text;
   if (valuesUseUnits)
     ui->labelVDiv->setText(floatToNiceString(ui->plot->getVDiv(), 1, false, false) + unit + tr("/Div"));
   else
@@ -480,34 +480,21 @@ void MainWindow::pushButtonClearGraph_clicked() {
 }
 
 void MainWindow::on_lineEditHUnit_textChanged(const QString &arg1) {
-  QString unit = arg1.simplified();
+  QString rawUnit = arg1.simplified();
 
-  QString prefixChars = "munkMG";
-  auto xunitmode = UnitMode::usePrefix;
-  if (unit.startsWith("time"))
-    xunitmode = UnitMode::time;
-  else if (unit == "index")
-    xunitmode = UnitMode::index;
-  else if (unit.isEmpty())
-    xunitmode = UnitMode::noPrefix;
-  else if (unit.length() >= 2) {
-    if (prefixChars.contains(unit.at(0))) {
-      xunitmode = UnitMode::noPrefix;
-      unit.push_front(' ');
-    }
-  }
+  UnitOfMeasure unit(rawUnit);
 
-  ui->plot->setXUnit(unit, xunitmode);
+  ui->plot->setXUnit(unit);
 
-  ui->plotxy->tUnit = unit;
-  ui->doubleSpinBoxRangeHorizontal->setUnit(unit, timeUseUnits);
-  ui->doubleSpinBoxXCur1->setUnit(unit, timeUseUnits);
-  ui->doubleSpinBoxXCur2->setUnit(unit, timeUseUnits);
+  ui->plotxy->tUnit = unit.text;
+  ui->doubleSpinBoxRangeHorizontal->setUnit(unit);
+  ui->doubleSpinBoxXCur1->setUnit(unit);
+  ui->doubleSpinBoxXCur2->setUnit(unit);
 
-  freqUseUnits = (unit == "s" || xunitmode == UnitMode::time);
+  freqUseUnits = (unit.text == "s" || unit.mode == UnitOfMeasure::time);
 
-  ui->plotFFT->setXUnit(freqUseUnits ? "Hz" : "", freqUseUnits ? UnitMode::usePrefix : UnitMode::noPrefix);
-  freqTimePlotDialog->getUi()->plotPeak->setYUnit(freqUseUnits ? "Hz" : "", freqUseUnits ? UnitMode::usePrefix : UnitMode::noPrefix);
+  ui->plotFFT->setXUnit(QString(freqUseUnits ? "-Hz" : "!"));
+  freqTimePlotDialog->getUi()->plotPeak->setYUnit(ui->plotFFT->getYUnit());
 
   updateDivs(); // Aby se aktualizovala jednotka u kroku mřížky
 }

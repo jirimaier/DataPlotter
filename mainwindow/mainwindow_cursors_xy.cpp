@@ -84,10 +84,10 @@ void MainWindow::updateXYCursorsCalculations() {
     double dx = abs(ui->doubleSpinBoxXYCurX2->value() - ui->doubleSpinBoxXYCurX1->value());
     double dy = abs(ui->doubleSpinBoxXYCurY1->value() - ui->doubleSpinBoxXYCurY2->value());
 
-    QString unit = ui->plotxy->getYUnit();
+    QString unit = ui->plotxy->getYUnit().text;
     if (valuesUseUnits) {
-      ui->labelXYDeltaX->setText(floatToNiceString(dx, 4, true, true) + ui->plotxy->getYUnit());
-      ui->labelXYDeltaY->setText(floatToNiceString(dy, 4, true, true) + ui->plotxy->getYUnit());
+      ui->labelXYDeltaX->setText(floatToNiceString(dx, 4, true, true) + ui->plotxy->getYUnit().text);
+      ui->labelXYDeltaY->setText(floatToNiceString(dy, 4, true, true) + ui->plotxy->getYUnit().text);
     } else {
       ui->labelXYDeltaX->setText(QString::number(dx, 'g', 3) + unit);
       ui->labelXYDeltaY->setText(QString::number(dy, 'g', 3) + unit);

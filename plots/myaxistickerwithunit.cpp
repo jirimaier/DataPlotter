@@ -15,40 +15,26 @@
 
 #include "myaxistickerwithunit.h"
 
-void MyAxisTickerWithUnit::setUnit(QString unit, UnitMode::enumUnitMode mode) {
-  this->unit = unit;
-  this->unitMode = mode;
+UnitOfMeasure MyAxisTickerWithUnit::getUnit() const { return unit; }
 
-  if (unitMode == UnitMode::time) {
-    this->unit = "s";
-    QRegularExpression regex("\\(([^)]+)\\)");
-    QRegularExpressionMatch match = regex.match(unit);
-
-    if (match.hasMatch()) {
-      timeUnitFormat = match.captured(1);
-    } else {
-      timeUnitFormat = ""; // Empty string if no brackets found
-    }
-  }
-}
+void MyAxisTickerWithUnit::setUnit(const UnitOfMeasure &newUnit) { unit = newUnit; }
 
 QString MyAxisTickerWithUnit::getTickLabel(double tick, const QLocale &locale, QChar formatChar, int precision) {
-
-  if (unitMode == UnitMode::noPrefix) {
+  if (unit.mode == UnitOfMeasure::noPrefix) {
   noPrefix:
-    if (unit.isEmpty())
+    if (unit.text.isEmpty())
       return (locale.toString(tick, formatChar.toLatin1(), precision));
-    return (locale.toString(tick, formatChar.toLatin1(), precision) + " " + unit);
+    return (locale.toString(tick, formatChar.toLatin1(), precision) + " " + unit.text);
   }
 
-  if (unitMode == UnitMode::index) {
+  if (unit.mode == UnitOfMeasure::index) {
     if (qFuzzyCompare(round(tick), tick))
       return QString::number(static_cast<long>(tick));
     else
       return "";
   }
 
-  if (unitMode == UnitMode::time && timeUnitFormat.isEmpty()) {
+  if (unit.mode == UnitOfMeasure::time && unit.special.isEmpty()) {
     if (tick > 60.0 || qFuzzyCompare(tick, 60)) {
       int minutes;
 
@@ -133,7 +119,7 @@ QString MyAxisTickerWithUnit::getTickLabel(double tick, const QLocale &locale, Q
   text = QString::number(tick, 'f', showTenths ? 1 : 0);
 
   text.append(postfix);
-  text.append(unit);
+  text.append(unit.text);
   return text;
 }
 

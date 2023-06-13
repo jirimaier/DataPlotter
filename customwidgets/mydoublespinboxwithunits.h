@@ -16,6 +16,7 @@
 #ifndef MYDOUBLESPINBOXWITHUNITS_H
 #define MYDOUBLESPINBOXWITHUNITS_H
 
+#include "global.h"
 #include "math/expressionparser.h"
 #include <QDoubleSpinBox>
 #include <QJSEngine>
@@ -35,7 +36,7 @@ public:
   double emptyDefaultValue = 0;
 
   /// Nastaví jednotku
-  void setUnit(QString suffix, bool useUnitPrefix);
+  void setUnit(UnitOfMeasure unit);
 
   bool adaptiveStep() const;
   void setAdaptiveStep(bool newAdaptiveStep);
