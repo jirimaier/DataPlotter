@@ -37,6 +37,9 @@
 
 #define TERMINAL_CLICK_BLINK_TIME 100
 
+#define TERMINAL_DEFAULT_WIDTH 14 + 1
+#define TERMINAL_DEFAULT_HEIGHT 10
+
 //**********************************************
 
 namespace PlotStatus {
