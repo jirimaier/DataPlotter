@@ -181,15 +181,6 @@ void MainWindow::on_pushButtonInvert_toggled(bool checked) {
     ui->plot->setChInvert(ui->comboBoxSelectedChannel->currentIndex(), checked);
 }
 
-void MainWindow::on_comboBoxHAxisType_currentIndexChanged(int index) {
-  ui->labelHDiv->setEnabled(index <= 1);
-  if (index > HAxisType::normal) {
-    ui->lineEditHUnit->setText("s");
-  }
-  updateDivs();
-  ui->plot->setShowHorizontalValues(index);
-}
-
 void MainWindow::on_pushButtonOpenHelpCZ_clicked() { openResourceFileCopiedToLocal(":/docs/documentation/Manual.pdf"); }
 
 void MainWindow::on_pushButtonProtocolGuideEN_clicked() { openResourceFileCopiedToLocal(":/docs/documentation/Data protocol guide en.pdf"); }

@@ -79,7 +79,7 @@ private:
   QDoubleSpinBox *mathScalarFirst[3];
   QDoubleSpinBox *mathScalarSecond[3];
   QIcon iconRun, iconPause, iconHidden, iconVisible, iconConnected, iconNotConnected, iconCross, iconAbsoluteCursor, iconMaximize, iconUnMaximize;
-  QByteArray serialMonitor;
+  QString serialMonitor;
   QStringList consoleBuffer;
   QString configFilePath;
   int averagerCounts[ANALOG_COUNT];
@@ -192,7 +192,6 @@ private slots: // Autoconnect slots
   void on_pushButtonAutoset_clicked();
   void on_pushButtonCSVXY_clicked() { exportCSV(EXPORT_XY); }
   void on_pushButtonCSVFFT_clicked() { exportCSV(EXPORT_FFT); }
-  void on_comboBoxHAxisType_currentIndexChanged(int index);
   void on_pushButtonOpenHelpCZ_clicked();
   void on_pushButtonScrollDown_clicked();
   void on_comboBoxOutputLevel_currentIndexChanged(int index);

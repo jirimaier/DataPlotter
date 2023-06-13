@@ -71,7 +71,6 @@ Q_DECLARE_METATYPE(QSharedPointer<QCPCurveDataContainer>);
 Q_DECLARE_METATYPE(MathOperations::enumMathOperations);
 Q_DECLARE_METATYPE(FFTWindow::enumFFTWindow);
 Q_DECLARE_METATYPE(FFTType::enumFFTType);
-Q_DECLARE_METATYPE(HAxisType::enumHAxisType);
 Q_DECLARE_METATYPE(Cursors::enumCursors);
 Q_DECLARE_METATYPE(ValueType);
 Q_DECLARE_METATYPE(QCPRange);
@@ -99,7 +98,6 @@ int main(int argc, char *argv[]) {
   qRegisterMetaType<MathOperations::enumMathOperations>();
   qRegisterMetaType<FFTWindow::enumFFTWindow>();
   qRegisterMetaType<FFTType::enumFFTType>();
-  qRegisterMetaType<HAxisType::enumHAxisType>();
   qRegisterMetaType<Cursors::enumCursors>();
   qRegisterMetaType<QPair<ValueType, QByteArray>>();
   qRegisterMetaType<QList<QPair<ValueType, QByteArray>>>();

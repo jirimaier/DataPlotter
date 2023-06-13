@@ -98,7 +98,6 @@ signals:
   void addDataToAverager(int chID, double samplingRate, QSharedPointer<QCPGraphDataContainer> data);
   void addPointToAverager(int ch, double time, double value, bool append);
   void setExpectedRange(int chID, bool known, double min, double max);
-  void plotRecommendedXAxisTypeChanged(HAxisType::enumHAxisType recommandedAxisType);
   void dataRateUpdate(int perSec);
 };
 

@@ -86,10 +86,6 @@ namespace DataLineType {
 enum enumDataLineType { command, dataEnded, dataTimeouted, dataImplicitEnded, debugMessage };
 }
 
-namespace HAxisType {
-enum enumHAxisType { none = 0, normal = 1, MS = 2, HMS = 3 };
-}
-
 namespace MessageLevel {
 enum enumMessageLevel { deviceInfo = -1, deviceWarning = 0, error = 1, warning = 2, info = 3 };
 }

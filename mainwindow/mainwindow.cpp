@@ -696,7 +696,24 @@ void MainWindow::on_radioButtonDark_toggled(bool checked) {
   qmlTerminalInterface->setTabBackground(checked ? "#434343" : "#ffffff");
 }
 
-void MainWindow::printSerialMonitor(QByteArray data) { serialMonitor.append(QString::fromStdString(data.toStdString())); }
+void MainWindow::printSerialMonitor(QByteArray byteArray) {
+  QString result;
+  result.reserve(byteArray.size()); // Reserve memory for efficiency
+
+  const char *data = byteArray.constData();
+  const int size = byteArray.size();
+
+  for (int i = 0; i < size; ++i) {
+    char byte = data[i];
+    if (byte >= 32 && byte <= 126) {
+      result += byte; // Append character directly
+    } else {
+      result += QString("\\x%1").arg(static_cast<quint8>(byte), 2, 16, QChar('0'));
+    }
+  }
+
+  serialMonitor.append(result);
+}
 
 void MainWindow::mainPlotHRangeChanged(QCPRange range) {
   if (ui->plot->getRollingMode()) {

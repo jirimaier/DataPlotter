@@ -2,7 +2,6 @@
 
 MyPeakPlot::MyPeakPlot(QWidget *parent) : MyPlot(parent) {
   this->yAxis->setNumberFormat("gb"); // Formát s hezkým 10^něco
-  this->setShowHorizontalValues(HAxisType::MS);
   addGraph(xAxis, yAxis);
   addGraph(xAxis, yAxis);
   xAxis->setSubTicks(false);
