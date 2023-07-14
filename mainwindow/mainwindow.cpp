@@ -387,26 +387,35 @@ void MainWindow::on_pushButtonSerialSetting_clicked() { serialSettingsDialog->sh
 
 void MainWindow::on_pushButtonSerialMoreInfo_clicked() {
   QString portinfo;
+  bool special = false;
 
   auto portlist = QSerialPortInfo::availablePorts();
   QSerialPortInfo port;
 
   if (ui->listWidgetCom->currentItem() != NULL) {
     auto name = ui->listWidgetCom->currentItem()->data(Qt::UserRole);
-    for (const auto &prt : qAsConst(portlist)) {
-      if (name == prt.portName()) {
-        port = prt;
+    special = name.toString().startsWith("~SPECIAL");
+
+    if (!special) {
+      for (const auto &prt : qAsConst(portlist)) {
+        if (name == prt.portName()) {
+          port = prt;
+        }
       }
+      auto port = portlist.at(ui->listWidgetCom->currentRow());
     }
-    auto port = portlist.at(ui->listWidgetCom->currentRow());
   }
 
-  portinfo.append(tr("Description: %1\n").arg(port.description()));
-  portinfo.append(tr("Manufacturer: %1\n").arg(port.manufacturer()));
-  portinfo.append(tr("Serial number: %1\n").arg(port.serialNumber()));
-  portinfo.append(tr("Location: %1\n").arg(port.systemLocation()));
-  portinfo.append(tr("Vendor Identifier: %1\n").arg(port.vendorIdentifier()));
-  portinfo.append(tr("Product Identifier: %1").arg(port.productIdentifier()));
+  if (special) {
+    portinfo = tr("Virtual device, special function");
+  } else {
+    portinfo.append(tr("Description: %1\n").arg(port.description()));
+    portinfo.append(tr("Manufacturer: %1\n").arg(port.manufacturer()));
+    portinfo.append(tr("Serial number: %1\n").arg(port.serialNumber()));
+    portinfo.append(tr("Location: %1\n").arg(port.systemLocation()));
+    portinfo.append(tr("Vendor Identifier: %1\n").arg(port.vendorIdentifier()));
+    portinfo.append(tr("Product Identifier: %1").arg(port.productIdentifier()));
+  }
 
   QMessageBox msgBox(this);
   msgBox.setWindowTitle(port.portName());
