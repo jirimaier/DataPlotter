@@ -448,6 +448,11 @@ void MainWindow::on_doubleSpinBoxRangeVerticalRange_valueChanged(double arg1) {
     range.lower = -arg1;
   else
     range = QCPRange(range.center() - arg1 / 2, range.center() + arg1 / 2);
+
+  ui->doubleSpinBoxViewCenter->blockSignals(true);
+  ui->doubleSpinBoxViewCenter->setValue(range.center());
+  ui->doubleSpinBoxViewCenter->blockSignals(false);
+
   ui->plot->setVRange(range);
 }
 
