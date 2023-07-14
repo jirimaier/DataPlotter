@@ -6,7 +6,12 @@ void QmlTerminalInterface::transmitToSerial(QVariant data, const int bytes) {
   qDebug() << data.toList();
   qDebug() << data.toByteArray();
 
-  char buffer[bytes];
+  char buffer[16];
+
+  if (bytes > 16 || bytes < 0) {
+    qWarning() << "transmitToSerial method received invalid value of bytes";
+    return;
+  }
 
   if (bytes > 0) {
     qDebug() << data.constData();
