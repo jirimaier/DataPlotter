@@ -26,28 +26,37 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
   qApp->setStyle("Fusion");
   this->setAttribute(Qt::WA_NativeWindow);
 
-  bool versionCahnged = true;
-  configFilePath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/config.ini";
-  QFile version(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/version.txt");
-  QByteArray versionstring;
+  QFileInfo fileInfo(QCoreApplication::applicationDirPath() + "/config.ini");
+  writeConfigInAppDirectory = fileInfo.exists();
+
   for (int i : ApplicationVersion)
     versionstring.append(QString(QString::number(i) + ".").toUtf8());
   versionstring.remove(versionstring.length() - 1, 1);
-  if (version.open(QIODevice::ReadOnly)) {
-    if (version.readAll() == versionstring)
-      versionCahnged = false;
-    version.close();
-  }
-  if (versionCahnged) {
-    qDebug() << "Version changed";
-    QDir dir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
-    dir.removeRecursively();
-    dir.mkpath(".");
-    if (version.open(QIODevice::WriteOnly)) {
-      version.write(versionstring);
+
+  if (!writeConfigInAppDirectory) {
+    bool versionCahnged = true;
+    configFilePath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/config.ini";
+    QFile version(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/version.txt");
+
+    if (version.open(QIODevice::ReadOnly)) {
+      if (version.readAll() == versionstring)
+        versionCahnged = false;
       version.close();
     }
+    if (versionCahnged) {
+      qDebug() << "Version changed";
+      QDir dir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
+      dir.removeRecursively();
+      dir.mkpath(".");
+      if (version.open(QIODevice::WriteOnly)) {
+        version.write(versionstring);
+        version.close();
+      }
+    }
+  } else {
+    configFilePath = fileInfo.absoluteFilePath();
   }
+  qDebug() << "Config file:" << configFilePath;
 
   developerOptions = new DeveloperOptions(this, ui->quickWidget);
   freqTimePlotDialog = new FreqTimePlotDialog(nullptr);

@@ -109,6 +109,8 @@ private:
   bool hasMaximizedPlot = false;
   UpdateChecker updateChecker;
   bool checkForUpdatesAtStartup = false;
+  bool writeConfigInAppDirectory = false;
+  QByteArray versionstring;
 
 private:
   void setComboboxItemVisible(QComboBox &comboBox, int index, bool visible);
