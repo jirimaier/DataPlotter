@@ -2,12 +2,13 @@
 
 QmlTerminalInterface::QmlTerminalInterface(QObject *parent) : QObject(parent) {}
 
-void QmlTerminalInterface::transmitToSerial(QVariant data, int bytes) {
+void QmlTerminalInterface::transmitToSerial(QVariant data, const int bytes) {
   qDebug() << data.toList();
   qDebug() << data.toByteArray();
 
+  char buffer[bytes];
+
   if (bytes > 0) {
-    char buffer[bytes];
     qDebug() << data.constData();
     memcpy(&buffer, data.constData(), bytes);
   }

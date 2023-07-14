@@ -53,6 +53,7 @@ void AnsiTerminalModel::addItem(const GridItem &item) {
 }
 
 int AnsiTerminalModel::columns() const { return m_columns; }
+int AnsiTerminalModel::rows() { return rowCount() / m_columns; }
 
 void AnsiTerminalModel::setColumns(int newColumns) {
   if (m_columns == newColumns)
@@ -148,7 +149,7 @@ void AnsiTerminalModel::moveCursorAbsolute(int16_t x, int16_t y) {
 
   while (cursorX >= columns())
     appendColumn();
-  while (cursorY >= rowCount() / columns())
+  while (cursorY >= rows())
     appendRow();
 
   setCursorIndex(x + y * columns());
@@ -178,7 +179,7 @@ void AnsiTerminalModel::clearLineRight() {
 
 void AnsiTerminalModel::clearDown() {
   clearLineRight();
-  for (uint16_t i = cursorY + 1; i < (cursorY <= rowCount() / columns()); i++)
+  for (uint16_t i = cursorY + 1; i < rows(); i++)
     clearLine(i);
 }
 
@@ -430,7 +431,7 @@ void AnsiTerminalModel::setActive(bool newActive) {
 
 void AnsiTerminalModel::clearUp() {
   clearLineLeft();
-  for (uint16_t i = 0; i < cursorX; i++)
+  for (uint16_t i = 0; i < cursorY; i++)
     clearLine(i);
 }
 

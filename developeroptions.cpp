@@ -128,7 +128,7 @@ void DeveloperOptions::on_pushButtonTerminalDebugShift_clicked() {
   while (true) {
     QRegularExpressionMatch match = re.match(input);
     if (match.hasMatch()) {
-      output.append(input.left(match.capturedStart()));
+      output.append(input.leftRef(match.capturedStart()));
       QString a = match.captured();
       a = a.mid(3, a.length() - 4);
       auto b = a.split(';');
@@ -201,7 +201,7 @@ void DeveloperOptions::addPathToList(QString fileName) {
   ui->listWidgetQMLFiles->addItem(newItem);
 }
 
-void DeveloperOptions::addTerminalCursorPosCommand(int x, int y) { insertInTerminalDebug(QString("\\e[%1;%2H").arg(y).arg(x), Qt::green); }
+void DeveloperOptions::addTerminalCursorPosCommand(int x, int y) { insertInTerminalDebug(QString("\\e[%1;%2H").arg(y + 1).arg(x + 1), Qt::green); }
 
 void DeveloperOptions::on_pushButtonQmlSave_clicked() {
   QString defaultName = QString("terminal.qml");
@@ -332,7 +332,7 @@ void DeveloperOptions::quickWidget_statusChanged(const QQuickWidget::Status &arg
   }
 }
 
-void DeveloperOptions::on_pushButtonClearAnsiTerminal_clicked() { emit printToTerminal("\e[2J"); }
+void DeveloperOptions::on_pushButtonClearAnsiTerminal_clicked() { emit printToTerminal("\u001b[2J\u001b[0m"); }
 
 void DeveloperOptions::on_pushButtonTerminalInputCopy_clicked() {
   QByteArray bytes = ui->textEditTerminalDebug->toPlainText().replace('\n', "\\r\\n").toUtf8();

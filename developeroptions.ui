@@ -23,7 +23,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab_3">
       <attribute name="title">
@@ -350,12 +350,12 @@
          </item>
          <item>
           <property name="text">
-           <string>E Line up</string>
+           <string>E Next line</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>F Line down</string>
+           <string>F Previous line</string>
           </property>
          </item>
          <item>
@@ -1152,11 +1152,27 @@
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>275</x>
-     <y>553</y>
+     <x>521</x>
+     <y>581</y>
     </hint>
     <hint type="destinationlabel">
      <x>269</x>
+     <y>387</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonTerminalInputClear</sender>
+   <signal>clicked()</signal>
+   <receiver>textEditTerminalDebug</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>245</x>
+     <y>569</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>158</x>
      <y>387</y>
     </hint>
    </hints>

@@ -11,7 +11,7 @@ public:
   explicit QmlTerminalInterface(QObject *parent = nullptr);
   ~QmlTerminalInterface() {}
 
-  Q_INVOKABLE void transmitToSerial(QVariant data, int bytes = 0);
+  Q_INVOKABLE void transmitToSerial(QVariant data, const int bytes = 0);
   // Q_INVOKABLE void writeToSerial(QVariant data, int bytes);
   Q_INVOKABLE void sendToParser(QVariant data);
 

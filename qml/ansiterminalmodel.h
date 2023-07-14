@@ -49,6 +49,8 @@ public:
   int columns() const;
   void setColumns(int newColumns);
 
+  inline int rows();
+
   void appendColumn();
   void appendRow();
 
