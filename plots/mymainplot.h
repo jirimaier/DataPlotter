@@ -56,7 +56,10 @@ public:
   int getChStyle(int chID) { return channelSettings.at(chID).style; }
 
   /// Vrátí byrvu kanálu
-  QColor getChColor(int chID) { return channelSettings.at(chID).color; }
+  QColor getChColor(int chID) { return channelSettings.at(chID).color(chClrTheme); }
+
+  /// Vrátí byrvu kanálu
+  QColor getChColorForTheme(int chID, int theme) { return channelSettings.at(chID).color(theme); }
 
   /// Je kanál viditelný/skrytý?
   bool isChVisible(int chID) { return channelSettings.at(chID).visible; }
@@ -65,7 +68,7 @@ public:
   void setChStyle(int chID, int style);
 
   /// Nastaví barvu
-  void setChColor(int chID, QColor color);
+  void setChColor(int chID, QColor color, int themeIndex);
 
   /// Nastaví offset
   void setChOffset(int chID, double offset);
@@ -78,7 +81,6 @@ public:
 
   /// Nastaví interpolaci
   void setChInterpolate(int chID, bool enabled);
-  ;
 
   /// Nastaví zobrazení/skrytí
   void setChVisible(int chID, bool visible);
@@ -93,7 +95,7 @@ public:
   void setLogicStyle(int group, int style);
 
   /// Nastaví barvu
-  void setLogicColor(int group, QColor color);
+  void setLogicColor(int group, QColor color, int themeIndex);
 
   /// Nastaví zobrazení/skrytí
   void setLogicVisibility(int group, bool visible);
@@ -117,7 +119,7 @@ public:
   int getLogicStyle(int group) { return logicSettings.at(group).style; }
 
   /// Vrátí barvu
-  QColor getLogicColor(int group) { return logicSettings.at(group).color; }
+  QColor getLogicColor(int group) { return logicSettings.at(group).color(chClrTheme); }
 
   /// Je zobrazený/skrytý?
   bool isLogicVisible(int group) { return logicSettings.at(group).visible; }
@@ -262,6 +264,10 @@ signals:
   void rollingModeChanged();
   void lastDataTypeWasPointChanged(bool);
   void autoVRageChanged();
+
+  // MyPlot interface
+  public:
+  void setTheme(QColor fnt, QColor bck, int chClrThemeId);
 };
 
 #endif // MYMAINPLOT_H

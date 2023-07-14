@@ -64,6 +64,8 @@ public:
   QCPRange getMaxZoomY() const;
   void setMaxZoomY(const QCPRange &newMaxZoomY, bool reset = false);
 
+  virtual void setTheme(QColor fnt, QColor bck, int chClrThemeId);
+
 protected:
   QCPLayer *cursorLayer;
   QVector<QCPItemLine *> cursorsKey, cursorsVal;
@@ -79,14 +81,14 @@ protected:
   QCPAxis *cur1YAxis = yAxis, *cur2YAxis = yAxis;
   QCursor defaultMouseCursor = Qt::ArrowCursor;
 
-  QColor transparentWhite = QColor::fromRgbF(1, 1, 1, 0.8);
-
   QSharedPointer<MyAxisTickerWithUnit> unitTickerX, unitTickerY;
 
   virtual void leaveEvent(QEvent *event);
 
   QCPRange maxZoomX = {-MAX_PLOT_ZOOMOUT, MAX_PLOT_ZOOMOUT};
   QCPRange maxZoomY = {-MAX_PLOT_ZOOMOUT, MAX_PLOT_ZOOMOUT};
+
+  int chClrTheme = 1;
 
 protected slots:
   virtual void mouseMoved(QMouseEvent *event) = 0;

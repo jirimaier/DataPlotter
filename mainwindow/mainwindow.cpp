@@ -625,6 +625,12 @@ void MainWindow::on_radioButtonDark_toggled(bool checked) {
       if (w != ui->radioButtonCz && w != ui->radioButtonEn)
         w->setIcon(invertIconLightness(w->icon(), w->iconSize()));
 
+    auto list7 = this->findChildren<QCheckBox *>();
+    list7.append(simulatedInputDialog->findChildren<QCheckBox *>());
+    list7.append(freqTimePlotDialog->findChildren<QCheckBox *>());
+    foreach (auto w, list7)
+      w->setIcon(invertIconLightness(w->icon(), w->iconSize()));
+
     auto list2 = this->findChildren<QTabBar *>();
     list2.append(simulatedInputDialog->findChildren<QTabBar *>());
     list2.append(freqTimePlotDialog->findChildren<QTabBar *>());
@@ -648,26 +654,12 @@ void MainWindow::on_radioButtonDark_toggled(bool checked) {
 
     qApp->setPalette(checked ? darkPalette : lightPalette);
     QColor bck = checked ? QColor::fromRgb(67, 67, 67) : Qt::white;
-    QColor fnt = !checked ? QColor::fromRgb(67, 67, 67) : Qt::white;
+    QColor fnt = !checked ? QColor::fromRgb(67, 67, 67) : QColor::fromRgb(232, 232, 232);
 
-    auto list4 = this->findChildren<QCustomPlot *>();
-    list4.append(freqTimePlotDialog->findChildren<QCustomPlot *>());
+    auto list4 = this->findChildren<MyPlot *>();
+    list4.append(freqTimePlotDialog->findChildren<MyPlot *>());
     foreach (auto plot, list4) {
-      plot->setBackground(bck);
-      plot->axisRect()->setBackground(bck);
-      plot->xAxis->setBasePen(fnt);
-      plot->xAxis->setLabelColor(fnt);
-      plot->xAxis->setTickLabelColor(fnt);
-      plot->xAxis->setTickPen(fnt);
-      plot->xAxis->setSubTickPen(fnt);
-
-      plot->yAxis->setBasePen(fnt);
-      plot->yAxis->setLabelColor(fnt);
-      plot->yAxis->setTickLabelColor(fnt);
-      plot->yAxis->setTickPen(fnt);
-      plot->yAxis->setSubTickPen(fnt);
-
-      plot->replot(QCustomPlot::rpQueuedReplot);
+      plot->setTheme(fnt, bck, checked ? 2 : 1);
     }
 
     QList<QComboBox *> list5;
@@ -699,6 +691,8 @@ void MainWindow::on_radioButtonDark_toggled(bool checked) {
 
   qmlTerminalInterface->setDarkThemeIsUsed(checked);
   qmlTerminalInterface->setTabBackground(checked ? "#434343" : "#ffffff");
+
+  colorUpdateNeeded = true;
 }
 
 void MainWindow::printSerialMonitor(QByteArray byteArray) {

@@ -216,9 +216,9 @@ void MainWindow::on_pushButtonChangeChColor_clicked() {
   if (!color.isValid())
     return;
   if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT)
-    ui->plot->setChColor(ui->comboBoxSelectedChannel->currentIndex(), color);
+    ui->plot->setChColor(ui->comboBoxSelectedChannel->currentIndex(), color, currentThemeDark ? 2 : 1);
   else
-    ui->plot->setLogicColor(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT, color);
+    ui->plot->setLogicColor(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT, color, currentThemeDark ? 2 : 1);
   colorUpdateNeeded = true;
   updateUsedChannels();
 }
@@ -465,7 +465,7 @@ void MainWindow::pushButtonClearAll_clicked() {
 void MainWindow::on_pushButtonChangeXYColor_clicked() {
   QColor color = QColorDialog::getColor(ui->plotxy->graphXY->pen().color());
   if (color.isValid())
-    ui->plotxy->graphXY->setPen(QColor(color));
+    ui->plotxy->setColor(color, currentThemeDark ? 2 : 1);
 }
 
 void MainWindow::on_comboBoxFFTType_currentIndexChanged(int index) {

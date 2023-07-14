@@ -79,7 +79,7 @@ void MyMainPlot::initZeroLines() {
   zeroPen.setWidth(1);
   zeroPen.setStyle(Qt::DotLine);
   for (int i = 0; i < ANALOG_COUNT + MATH_COUNT; i++) {
-    zeroPen.setColor(channelSettings.at(i).color);
+    zeroPen.setColor(channelSettings.at(i).color(chClrTheme));
     QCPItemLine &zeroLine = *zeroLines.at(i);
     zeroLine.setPen(zeroPen);
     zeroLine.start->setTypeY(QCPItemPosition::ptPlotCoords);
@@ -119,7 +119,7 @@ void MyMainPlot::initTriggerLine() {
   triggerLabel->position->setTypeX(QCPItemPosition::ptAxisRectRatio);
   triggerLabel->position->setCoords(1, -2);
   triggerLabel->setVisible(false);
-  triggerLabel->setBrush(transparentWhite);
+  triggerLabel->setBrush(QColor::fromRgbF(1, 1, 1, 0.8));
   triggerLabel->setPadding(QMargins(2, 2, 2, 2));
   triggerLabel->setText(tr("Trigger"));
 }
@@ -305,7 +305,7 @@ void MyMainPlot::setLogicStyle(int group, int style) {
     } else if (style == GraphStyle::logicFilled) {
       this->graph(chID)->setScatterStyle(QCPScatterStyle::ssNone);
       this->graph(chID)->setLineStyle(QCPGraph::lsLine);
-      this->graph(chID)->setBrush(logicSettings.at(group).color);
+      this->graph(chID)->setBrush(logicSettings.at(group).color(chClrTheme));
     } else if (style == GraphStyle::logicSquare) {
       this->graph(chID)->setScatterStyle(QCPScatterStyle::ssNone);
       this->graph(chID)->setLineStyle(QCPGraph::lsStepCenter);
@@ -313,7 +313,7 @@ void MyMainPlot::setLogicStyle(int group, int style) {
     } else if (style == GraphStyle::logicSquareFilled) {
       this->graph(chID)->setScatterStyle(QCPScatterStyle::ssNone);
       this->graph(chID)->setLineStyle(QCPGraph::lsStepCenter);
-      this->graph(chID)->setBrush(logicSettings.at(group).color);
+      this->graph(chID)->setBrush(logicSettings.at(group).color(chClrTheme));
     } else { // Logic line no-fill
       this->graph(chID)->setScatterStyle(QCPScatterStyle::ssNone);
       this->graph(chID)->setLineStyle(QCPGraph::lsLine);
@@ -323,15 +323,20 @@ void MyMainPlot::setLogicStyle(int group, int style) {
   this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
 }
 
-void MyMainPlot::setLogicColor(int group, QColor color) {
-  logicSettings[group].color = color;
-  for (int bit = 0; bit < LOGIC_BITS; bit++) {
-    this->graph(getLogicChannelID(group, bit))->setPen(QPen(color));
-    if (logicSettings.at(group).style == GraphStyle::logicFilled || logicSettings.at(group).style == GraphStyle::logicSquareFilled) {
-      this->graph(getLogicChannelID(group, bit))->setBrush(color);
+void MyMainPlot::setLogicColor(int group, QColor color, int themeIndex) {
+  if (themeIndex == 1)
+    logicSettings[group].color1 = color;
+  if (themeIndex == 2)
+    logicSettings[group].color2 = color;
+  if (themeIndex == chClrTheme) {
+    for (int bit = 0; bit < LOGIC_BITS; bit++) {
+      this->graph(getLogicChannelID(group, bit))->setPen(QPen(color));
+      if (logicSettings.at(group).style == GraphStyle::logicFilled || logicSettings.at(group).style == GraphStyle::logicSquareFilled) {
+        this->graph(getLogicChannelID(group, bit))->setBrush(color);
+      }
     }
+    this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
   }
-  this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
 }
 
 void MyMainPlot::setLogicVisibility(int group, bool visible) {
@@ -401,14 +406,19 @@ void MyMainPlot::setChStyle(int chID, int style) {
   this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
 }
 
-void MyMainPlot::setChColor(int chID, QColor color) {
-  channelSettings[chID].color = color;
-  zeroLines.at(chID)->setPen(QPen(color, 1, Qt::DashLine));
-  this->graph(chID)->setPen(QPen(color));
-  this->graph(INTERPOLATION_CHID(chID))->setPen(QPen(color));
-  if (channelSettings.at(chID).style == GraphStyle::logicFilled || channelSettings.at(chID).style == GraphStyle::logicSquareFilled)
-    this->graph(chID)->setBrush(color);
-  this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
+void MyMainPlot::setChColor(int chID, QColor color, int themeIndex) {
+  if (themeIndex == 1)
+    channelSettings[chID].color1 = color;
+  if (themeIndex == 2)
+    channelSettings[chID].color2 = color;
+  if (themeIndex == chClrTheme) {
+    zeroLines.at(chID)->setPen(QPen(color, 1, Qt::DashLine));
+    this->graph(chID)->setPen(QPen(color));
+    this->graph(INTERPOLATION_CHID(chID))->setPen(QPen(color));
+    if (channelSettings.at(chID).style == GraphStyle::logicFilled || channelSettings.at(chID).style == GraphStyle::logicSquareFilled)
+      this->graph(chID)->setBrush(color);
+    this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
+  }
 }
 
 void MyMainPlot::setChOffset(int chID, double offset) {
@@ -584,6 +594,25 @@ void MyMainPlot::setHLen(double len) {
     range.lower = ctr - len / 2;
     xAxis->setRange(range);
   }
+}
+
+void MyMainPlot::setTheme(QColor fnt, QColor bck, int chClrThemeId) {
+  MyPlot::setTheme(fnt, bck, chClrThemeId);
+  for (int i = 0; i < ANALOG_COUNT + MATH_COUNT; i++)
+    setChColor(i, channelSettings.at(i).color(chClrThemeId), chClrThemeId);
+  for (int i = 0; i < LOGIC_GROUPS; i++)
+    setLogicColor(i, logicSettings.at(i).color(chClrThemeId), chClrThemeId);
+
+  QVector<QCPItemText *> labels;
+  labels << triggerLabel;
+  for (auto item : qAsConst(labels)) {
+    auto b = item->brush();
+    b.setColor(QColor::fromRgbF(bck.redF(), bck.greenF(), bck.blueF(), 0.8));
+    item->setBrush(b);
+    item->setColor(fnt);
+  }
+
+  this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
 }
 
 void MyMainPlot::newDataPoint(int chID, double time, double value, bool append) {

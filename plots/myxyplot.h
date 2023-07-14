@@ -20,33 +20,43 @@
 
 class MyXYPlot : public MyPlot {
   Q_OBJECT
- public:
-  explicit MyXYPlot(QWidget* parent = nullptr);
+public:
+  explicit MyXYPlot(QWidget *parent = nullptr);
   ~MyXYPlot();
   QByteArray exportCSV(char separator, char decimal, int precision);
-  QCPCurve* graphXY;
+  QCPCurve *graphXY;
   QString tUnit = "s";
 
- private:
+  QColor getClr1() const;
+  QColor getClr2() const;
+
+private:
   QSharedPointer<QCPCurveDataContainer> pauseBuffer;
   bool autoSize = true;
   void autoset();
   void updateTracerText();
   bool rangeUnknown = true;
 
-  void setMouseCursorStyle(QMouseEvent* event);
- private slots:
-  void mouseMoved(QMouseEvent* event);
-  void mousePressed(QMouseEvent* event);
+  void setMouseCursorStyle(QMouseEvent *event);
+  QColor clr1, clr2;
 
- public slots:
+private slots:
+  void mouseMoved(QMouseEvent *event);
+  void mousePressed(QMouseEvent *event);
+
+public slots:
   void newData(QSharedPointer<QCPCurveDataContainer> data);
   void clear();
   void setStyle(int style);
+  void setColor(QColor clr, int theme);
 
- signals:
+signals:
   void moveTimeCursorXY(Cursors::enumCursors cursor, double pos);
   void setCursorPosXY(Cursors::enumCursors cursor, double x, double y);
+
+  // MyPlot interface
+public:
+  void setTheme(QColor fnt, QColor bck, int chClrThemeId);
 };
 
 #endif // MYXYPLOT_H

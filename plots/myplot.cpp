@@ -99,7 +99,7 @@ void MyPlot::initTracer() {
   tracerText->setTextAlignment(Qt::AlignLeft);
   tracerText->setPadding(QMargins(2, 2, 2, 2));
   changeTracerTextPosition(TR);
-  tracerText->setBrush(transparentWhite);
+  tracerText->setBrush(QColor::fromRgbF(1, 1, 1, 0.8));
   tracerText->setFont(QFont("Courier New"));
   tracerText->setClipToAxisRect(false);
 }
@@ -210,7 +210,7 @@ void MyPlot::initcursors() {
     curNum->position->setTypeY(QCPItemPosition::ptAxisRectRatio);
     curNum->position->setCoords(-2, 0);
     curNum->setVisible(false);
-    curNum->setBrush(transparentWhite);
+    curNum->setBrush(QColor::fromRgbF(1, 1, 1, 0.8));
     curNum->setPadding(QMargins(2, 2, 2, 2));
     curNums.append(curNum);
 
@@ -222,7 +222,7 @@ void MyPlot::initcursors() {
     curKey->position->setTypeY(QCPItemPosition::ptAxisRectRatio);
     curKey->position->setCoords(4, 0);
     curKey->setVisible(false);
-    curKey->setBrush(transparentWhite);
+    curKey->setBrush(QColor::fromRgbF(1, 1, 1, 0.8));
     curKey->setPadding(QMargins(2, 2, 2, 2));
     curKey->setText("");
     curKeys.append(curKey);
@@ -249,7 +249,7 @@ void MyPlot::initcursors() {
     curVal->position->setTypeX(QCPItemPosition::ptAxisRectRatio);
     curVal->position->setCoords(1, -2);
     curVal->setVisible(false);
-    curVal->setBrush(transparentWhite);
+    curVal->setBrush(QColor::fromRgbF(1, 1, 1, 0.8));
     curVal->setPadding(QMargins(2, 2, 2, 2));
     curVal->setText("");
     curVals.append(curVal);
@@ -308,6 +308,47 @@ void MyPlot::setMaxZoomY(const QCPRange &newMaxZoomY, bool reset) {
     yAxis->setRange(maxZoomY);
   else if (clipRange(range, maxZoomY))
     yAxis->setRange(range);
+}
+
+void MyPlot::setTheme(QColor fnt, QColor bck, int chClrThemeId) {
+  chClrTheme = chClrThemeId;
+
+  setBackground(bck);
+  axisRect()->setBackground(bck);
+  xAxis->setBasePen(fnt);
+  xAxis->setLabelColor(fnt);
+  xAxis->setTickLabelColor(fnt);
+  xAxis->setTickPen(fnt);
+  xAxis->setSubTickPen(fnt);
+
+  yAxis->setBasePen(fnt);
+  yAxis->setLabelColor(fnt);
+  yAxis->setTickLabelColor(fnt);
+  yAxis->setTickPen(fnt);
+  yAxis->setSubTickPen(fnt);
+
+  QVector<QCPItemText *> labels;
+  labels << curKeys << curVals << curNums << tracerText;
+  for (auto item : qAsConst(labels)) {
+    auto b = item->brush();
+    b.setColor(QColor::fromRgbF(bck.redF(), bck.greenF(), bck.blueF(), 0.8));
+    item->setBrush(b);
+    item->setColor(fnt);
+  }
+
+  QVector<QCPItemLine *> lines;
+  lines << cursorsKey << cursorsVal;
+  for (auto item : qAsConst(lines)) {
+    auto p = item->pen();
+    p.setColor(fnt);
+    item->setPen(p);
+  }
+
+  auto p = tracer->pen();
+  p.setColor(fnt);
+  tracer->setPen(p);
+
+  replot(QCustomPlot::rpQueuedReplot);
 }
 
 QCPRange MyPlot::getMaxZoomX() const { return maxZoomX; }

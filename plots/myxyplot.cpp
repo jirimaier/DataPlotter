@@ -63,6 +63,23 @@ void MyXYPlot::setStyle(int style) {
   this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
 }
 
+void MyXYPlot::setColor(QColor clr, int theme) {
+  if (theme == 1)
+    clr1 = clr;
+  if (theme == 2)
+    clr2 = clr;
+  if (theme == chClrTheme) {
+    graphXY->setPen(clr);
+    this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
+  }
+}
+
+void MyXYPlot::setTheme(QColor fnt, QColor bck, int chClrThemeId) {
+  MyPlot::setTheme(fnt, bck, chClrThemeId);
+  graphXY->setPen(chClrTheme == 1 ? clr1 : clr2);
+  this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
+}
+
 QByteArray MyXYPlot::exportCSV(char separator, char decimal, int precision) {
   if (graphXY->data()->isEmpty())
     return "";
@@ -220,3 +237,7 @@ void MyXYPlot::setMouseCursorStyle(QMouseEvent *event) {
   // Nic
   this->QWidget::setCursor(defaultMouseCursor); // Cursor myši, ne ten grafový
 }
+
+QColor MyXYPlot::getClr2() const { return clr2; }
+
+QColor MyXYPlot::getClr1() const { return clr1; }

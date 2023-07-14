@@ -486,13 +486,15 @@ inline double ceilToMultipleOf(double value, double multipleOf) { return (std::c
 inline bool operator==(const QSerialPortInfo &lhs, const QSerialPortInfo &rhs) { return lhs.portName() == rhs.portName() && lhs.serialNumber() == rhs.serialNumber() && lhs.description() == rhs.description(); }
 
 struct ChannelSettings_t {
-  QColor color = QColor(Qt::black);
+  QColor color1 = QColor(Qt::black);
+  QColor color2 = QColor(Qt::white);
   int style = GraphStyle::line;
   double offset = 0;
   double scale = 1;
   bool inverted = false;
   bool visible = true;
   bool interpolate = false;
+  QColor color(int theme) const { return theme == 1 ? color1 : color2; }
 };
 
 struct ChannelExpectedRange {

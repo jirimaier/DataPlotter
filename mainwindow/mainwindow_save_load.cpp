@@ -112,14 +112,16 @@ QByteArray MainWindow::getSettings() {
   settings.append(ui->radioButtonLight->isChecked() ? "theme:light" : "theme:dark");
   settings.append(";\n");
 
-  QColor xyclr = ui->plotxy->graphXY->pen().color();
-  settings.append(QString("xyclr:%1,%2,%3").arg(xyclr.red()).arg(xyclr.green()).arg(xyclr.blue()).toUtf8());
+  QColor xyclr1 = ui->plotxy->getClr1();
+  QColor xyclr2 = ui->plotxy->getClr2();
+  settings.append(QString("xyclr:%1,%2,%3,%4,%5,%6").arg(xyclr1.red()).arg(xyclr1.green()).arg(xyclr1.blue()).arg(xyclr2.red()).arg(xyclr2.green()).arg(xyclr2.blue()).toUtf8());
   settings.append(";\n");
 
   for (int i = 0; i < ANALOG_COUNT + MATH_COUNT; i++) {
     settings.append("ch:" + QString::number(i + 1).toUtf8());
-    QColor clr = ui->plot->getChColor(i);
-    settings.append(QString(":clr:%1,%2,%3").arg(clr.red()).arg(clr.green()).arg(clr.blue()).toUtf8());
+    QColor clr1 = ui->plot->getChColorForTheme(i, 1);
+    QColor clr2 = ui->plot->getChColorForTheme(i, 2);
+    settings.append(QString(":clr:%1,%2,%3,%4,%5,%6").arg(clr1.red()).arg(clr1.green()).arg(clr1.blue()).arg(clr2.red()).arg(clr2.green()).arg(clr2.blue()).toUtf8());
     settings.append(";\n");
   }
 
@@ -243,13 +245,17 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarg
 
     else if (type == "xyclr") {
       QByteArrayList rgb = value.split(',');
-      if (rgb.length() != 3) {
+      if (rgb.length() != 3 && rgb.length() != 6) {
         if (source == MessageTarget::manual || ui->comboBoxOutputLevel->currentIndex() >= MessageLevel::error)
-          printMessage(tr("Invalid color: ").toUtf8(), settings, MessageLevel::error, source);
+          printMessage(tr("Invalid color").toUtf8(), settings, MessageLevel::error, source);
         return;
       }
-      QColor clr = QColor(rgb.at(0).toInt(), rgb.at(1).toInt(), rgb.at(2).toInt());
-      ui->plotxy->graphXY->setPen(clr);
+      QColor clr1 = QColor(rgb.at(0).toInt(), rgb.at(1).toInt(), rgb.at(2).toInt());
+      QColor clr2 = clr1;
+      if (rgb.length() == 6)
+        clr2 = QColor(rgb.at(3).toInt(), rgb.at(4).toInt(), rgb.at(5).toInt());
+      ui->plotxy->setColor(clr1, 1);
+      ui->plotxy->setColor(clr2, 2);
     }
 
     else if (type == "ch") {
@@ -269,13 +275,17 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarg
         ui->plot->setChStyle(ch, subvalue.toUInt());
       else if (subtype == "clr") {
         QByteArrayList rgb = subvalue.mid(subvalue.indexOf(':')).split(',');
-        if (rgb.length() != 3) {
+        if (rgb.length() != 3 && rgb.length() != 6) {
           if (source == MessageTarget::manual || ui->comboBoxOutputLevel->currentIndex() >= MessageLevel::error)
-            printMessage(tr("Invalid color: ").toUtf8(), settings, MessageLevel::error, source);
+            printMessage(tr("Invalid color").toUtf8(), settings, MessageLevel::error, source);
           return;
         }
-        QColor clr = QColor(rgb.at(0).toInt(), rgb.at(1).toInt(), rgb.at(2).toInt());
-        ui->plot->setChColor(ch, clr);
+        QColor clr1 = QColor(rgb.at(0).toInt(), rgb.at(1).toInt(), rgb.at(2).toInt());
+        QColor clr2 = clr1;
+        if (rgb.length() == 6)
+          clr2 = QColor(rgb.at(3).toInt(), rgb.at(4).toInt(), rgb.at(5).toInt());
+        ui->plot->setChColor(ch, clr1, 1);
+        ui->plot->setChColor(ch, clr2, 2);
         colorUpdateNeeded = true;
       }
       if (ui->comboBoxSelectedChannel->currentIndex() == ch)
@@ -297,13 +307,17 @@ void MainWindow::useSettings(QByteArray settings, MessageTarget::enumMessageTarg
         ui->plot->setLogicStyle(group, subvalue.toUInt());
       else if (subtype == "clr") {
         QByteArrayList rgb = subvalue.mid(subvalue.indexOf(':')).split(',');
-        if (rgb.length() != 3) {
+        if (rgb.length() != 3 && rgb.length() != 6) {
           if (source == MessageTarget::manual || ui->comboBoxOutputLevel->currentIndex() >= MessageLevel::error)
-            printMessage(tr("Invalid color: ").toUtf8(), settings, MessageLevel::error, source);
+            printMessage(tr("Invalid color").toUtf8(), settings, MessageLevel::error, source);
           return;
         }
-        QColor clr = QColor(rgb.at(0).toInt(), rgb.at(1).toInt(), rgb.at(2).toInt());
-        ui->plot->setLogicColor(group, clr);
+        QColor clr1 = QColor(rgb.at(0).toInt(), rgb.at(1).toInt(), rgb.at(2).toInt());
+        QColor clr2 = clr1;
+        if (rgb.length() == 6)
+          clr2 = QColor(rgb.at(3).toInt(), rgb.at(4).toInt(), rgb.at(5).toInt());
+        ui->plot->setLogicColor(group, clr1, 1);
+        ui->plot->setLogicColor(group, clr2, 2);
         colorUpdateNeeded = true;
       }
       if (ui->comboBoxSelectedChannel->currentIndex() == group + ANALOG_COUNT + MATH_COUNT)
