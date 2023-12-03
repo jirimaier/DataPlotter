@@ -1,7 +1,9 @@
 QT += core gui serialport widgets printsupport opengl qml quickwidgets \
     quick quickcontrols2 network
 
-LIBS += -lOpenGL32
+win32{
+    LIBS += -lOpenGL32
+}
 
 RC_ICONS = icons/icon.ico
 
