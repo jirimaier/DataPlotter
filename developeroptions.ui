@@ -234,12 +234,6 @@
          <property name="horizontalScrollBarPolicy">
           <enum>Qt::ScrollBarAlwaysOff</enum>
          </property>
-         <property name="autoFormatting">
-          <set>QTextEdit::AutoNone</set>
-         </property>
-         <property name="markdown">
-          <string/>
-         </property>
          <property name="acceptRichText">
           <bool>false</bool>
          </property>

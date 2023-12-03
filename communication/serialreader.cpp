@@ -25,11 +25,11 @@ SerialReader::~SerialReader() {
 
 void SerialReader::setSimInputDialog(QSharedPointer<ManualInputDialog> simIn) {
   simulatedInputDialog = simIn;
-  connect(this, &SerialReader::stopManualInputData, simulatedInputDialog.get(), &ManualInputDialog::stopAll);
+  connect(this, &SerialReader::stopManualInputData, simulatedInputDialog.data(), &ManualInputDialog::stopAll);
 }
 
 void SerialReader::startSimulatedInput() {
-  connect(simulatedInputDialog.get(), &ManualInputDialog::sendManualInput, this, &SerialReader::newData);
+  connect(simulatedInputDialog.data(), &ManualInputDialog::sendManualInput, this, &SerialReader::newData);
   simConnected = true;
 }
 
@@ -41,7 +41,7 @@ void SerialReader::newData(QByteArray data) {
 
 void SerialReader::endSim() {
   emit stopManualInputData();
-  disconnect(simulatedInputDialog.get(), &ManualInputDialog::sendManualInput, this, &SerialReader::newData);
+  disconnect(simulatedInputDialog.data(), &ManualInputDialog::sendManualInput, this, &SerialReader::newData);
   simConnected = false;
 }
 

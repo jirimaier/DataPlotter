@@ -21,17 +21,19 @@ Rectangle {
             height: msg.implicitHeight
             color: index % 2 === 0 ? "transparent" : (darkThemeIsUsed?"darkgray":"lightgray")  // Set alternating row colors
 
-            Label {
+            Rectangle {
+                color: type === 'w' ? "red" : type === 'i' ? "darkgreen" : "blue"
+                anchors.fill: ts
+            }
+
+            Text {
                 id:ts
                 text: time
                 color: "white"
-                background: Rectangle {
-                    color: type === 'w' ? "red" : type === 'i' ? "darkgreen" : "blue"
-                }
                 anchors.left: parent.left
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                height: parent.height
+                height: msg.implicitHeight
                 width: implicitWidth * 1.2
                 font.pointSize: 6
             }
@@ -64,6 +66,16 @@ Rectangle {
             autoScroll = false;
         }
 
-        ScrollIndicator.vertical: ScrollIndicator {onPositionChanged: if(visualPosition+visualSize == 1) messageList.autoScroll = true }
+        ScrollIndicator.vertical: ScrollIndicator {
+            onPositionChanged: {
+                if(Qt.version >= "5.12.0") {
+                    if(visualPosition+visualSize >= 1)
+                        messageList.autoScroll = true;
+                } else {
+                    if(position >= 1-size)
+                        messageList.autoScroll = true;
+                }
+            }
+        }
     }
 }

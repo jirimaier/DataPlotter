@@ -2,6 +2,7 @@
 #include "communication/cobs.h"
 #include "qcheckbox.h"
 #include "qclipboard.h"
+#include "qdebug.h"
 #include "qmessagebox.h"
 #include "qml/ansiterminalmodel.h"
 #include "qqmlerror.h"

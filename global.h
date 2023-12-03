@@ -88,7 +88,7 @@ enum enumDataLineType { command, dataEnded, dataTimeouted, dataImplicitEnded, de
 }
 
 namespace MessageLevel {
-enum enumMessageLevel { deviceInfo = -1, deviceWarning = 0, error = 1, warning = 2, info = 3 };
+enum enumMessageLevel : int { deviceInfo = -1, deviceWarning = 0, error = 1, warning = 2, info = 3 };
 }
 
 namespace Cursors {

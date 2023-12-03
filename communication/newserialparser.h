@@ -16,13 +16,11 @@
 #ifndef NEWSERIALPARSER_H
 #define NEWSERIALPARSER_H
 
+#include "global.h"
 #include <QDebug>
 #include <QObject>
 #include <QThread>
 #include <QTimer>
-
-#include "global.h"
-#include "qtimer.h"
 
 class NewSerialParser : public QObject {
   Q_OBJECT
@@ -97,7 +95,6 @@ private:
   readResult bufferPullChannel(QPair<ValueType, QByteArray> &result);
   bool replyToEcho = true;
   bool initialEchoPending = false;
-  // bool removeCommaRightAfterTypeID = false;
 
   NewSerialParser::readResult bufferPullBeforeNull(QByteArray &result);
 

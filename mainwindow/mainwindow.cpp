@@ -645,9 +645,10 @@ void MainWindow::on_radioButtonDark_toggled(bool checked) {
     foreach (auto w, list3) {
       if (w == ui->labelLogo)
         continue;
-      if (!w->pixmap(Qt::ReturnByValue))
+      // if (!w->pixmap(Qt::ReturnByValue))
+      if (!w->pixmap())
         continue;
-      auto icon = w->pixmap(Qt::ReturnByValue).toImage();
+      auto icon = w->pixmap()->toImage();
       icon.invertPixels(QImage::InvertRgb);
       w->setPixmap(QPixmap::fromImage(icon));
     }

@@ -69,6 +69,8 @@ void MainWindow::qmlDirectInput(QByteArray data) { qmlTerminalInterface->directI
 void MainWindow::setQmlProperty(QByteArray data) {
   QByteArrayList l = data.split(':');
   if (l.length() == 2) {
-    ui->quickWidget->rootObject()->setProperty(l.at(0), l.at(1));
+    auto ro = ui->quickWidget->rootObject();
+    if (ro != nullptr)
+      ro->setProperty(l.at(0), l.at(1));
   }
 }

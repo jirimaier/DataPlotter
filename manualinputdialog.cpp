@@ -51,6 +51,10 @@ ManualInputDialog::ManualInputDialog(QWidget *parent) : QDialog(parent), ui(new 
 
   rollingEngine.globalObject().setProperty("t", 0);
 
+#if QT_VERSION > QT_VERSION_CHECK(5, 10, 0)
+  ui->doubleSpinBoxRollingFreq->setStepType(QAbstractSpinBox::AdaptiveDecimalStepType);
+#endif
+
   initRollingTable();
 }
 

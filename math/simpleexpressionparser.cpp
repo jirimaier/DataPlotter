@@ -10,14 +10,14 @@ double SimpleExpressionParser::evaluate(const QString &expression, bool *isOK) {
   QString expr = expression.trimmed();
   expr.replace(",", ".");
   expr.replace(QString::fromUtf8("\xc2\xb5"), "u");
-  if (expr.at(0) == "/")
+  if (expr.at(0) == '/')
     expr.prepend("1");
   for (auto it = prefixes.begin(); it != prefixes.end(); it++)
     expr.replace(it.key(), "*" + prefixes[it.key()]);
   auto result = engine.evaluate(expr);
 
   if (isOK != nullptr)
-    *isOK = (result.errorType() == 0);
+    *isOK = !result.isError();
   if (result.isNumber())
     return result.toNumber();
   else

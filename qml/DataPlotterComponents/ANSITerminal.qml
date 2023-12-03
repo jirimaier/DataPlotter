@@ -62,7 +62,12 @@ Rectangle {
         }
         boundsBehavior: Flickable.StopAtBounds
         ScrollBar.vertical: ScrollBar {
-            policy: ScrollBar.AlwaysOn
+            Component.onCompleted: {
+                if(Qt.version >= "5.9.0") {
+                    policy=ScrollBar.AlwaysOn
+                }
+            }
+
             width: parent.cellWidth
             anchors.right: parent.right
         }

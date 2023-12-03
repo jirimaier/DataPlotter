@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>490</width>
+    <width>541</width>
     <height>581</height>
    </rect>
   </property>
@@ -95,9 +95,6 @@
            </property>
            <property name="maximum">
             <double>1000.000000000000000</double>
-           </property>
-           <property name="stepType">
-            <enum>QAbstractSpinBox::AdaptiveDecimalStepType</enum>
            </property>
            <property name="value">
             <double>100.000000000000000</double>

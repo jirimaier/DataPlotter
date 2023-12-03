@@ -537,7 +537,7 @@ void MainWindow::on_pushButtonDolarNewline_toggled(bool checked) {
   str.replace("\n$$", "$$");
   if (checked)
     str.replace("$$", "\n$$");
-  if (str.at(0) == "\n")
+  if (str.at(0) == '\n')
     str.remove(0, 1);
   ui->plainTextEditConsole_3->setPlainText(str);
   on_pushButtonScrollDown_3_clicked();
