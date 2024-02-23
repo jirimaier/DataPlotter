@@ -36,7 +36,7 @@ void UpdateChecker::onRequestFinished(QNetworkReply *reply) {
       if (gitVersion > curVersion) {
         emit checkedVersion(true, tr("New version available: %1").arg(latestVersion));
         return;
-      } else if (gitVersion < curVersion) {
+      } else if (gitVersion <= curVersion) {
         if (!onlyPosRes)
           emit checkedVersion(false, tr("You have the latest version."));
         return;
