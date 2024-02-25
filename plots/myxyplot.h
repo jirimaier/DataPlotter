@@ -25,7 +25,7 @@ public:
   ~MyXYPlot();
   QByteArray exportCSV(char separator, char decimal, int precision);
   QCPCurve *graphXY;
-  QString tUnit = "s";
+  UnitOfMeasure tUnit = UnitOfMeasure("s");
 
   QColor getClr1() const;
   QColor getClr2() const;

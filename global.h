@@ -103,6 +103,48 @@ namespace TerminalMode {
 enum enumTerminalMode { none, debug, clicksend, select };
 }
 
+struct UnitOfMeasure {
+  UnitOfMeasure() {}
+  UnitOfMeasure(QString rawUnit) {
+
+    QString prefixChars = "munkMG";
+
+    if (rawUnit.isEmpty())
+      mode = noPrefix;
+    else if (rawUnit.startsWith("-")) {
+      mode = usePrefix;
+      text = rawUnit.mid(1);
+    } else if (rawUnit.startsWith("!")) {
+      mode = noPrefix;
+      text = rawUnit.mid(1);
+    } else if (rawUnit == "index") {
+      mode = index;
+    } else if (rawUnit.startsWith("time")) {
+      mode = time;
+      text = "s";
+      QRegularExpression regex("\\(([^)]+)\\)");
+      QRegularExpressionMatch match = regex.match(rawUnit);
+      if (match.hasMatch())
+        special = match.captured(1);
+    } else if (rawUnit.length() >= 2 && (rawUnit.left(2) == "dB" || prefixChars.contains(rawUnit.at(0)))) {
+      mode = noPrefix;
+      text = rawUnit;
+    } else {
+      text = rawUnit;
+      mode = usePrefix;
+    }
+  }
+  enum Mode { usePrefix, noPrefix, index, time } mode = noPrefix;
+  QString text = "";
+  QString special = "";
+  UnitOfMeasure reciprocal() {
+    if (text == "s")
+      return UnitOfMeasure("-Hz");
+    else
+      return UnitOfMeasure("!/" + text);
+  }
+};
+
 struct ValueType {
   ValueType(bool bin = true) : isBinary(bin) {}
   bool isBinary = true;
@@ -418,21 +460,36 @@ static QString toSignificantDigits(double x, int prec, bool trimZeroes = false) 
   }
 }
 
-inline QString floatToNiceString(double d, int significantDigits, bool justify, bool justifyUnit, bool noDecimalsIfInteger = false) {
+inline QString floatToNiceString(double d, int significantDigits, bool justify, bool justifyUnit, bool noDecimalsIfInteger = false, UnitOfMeasure unit = UnitOfMeasure("")) {
   QString text = "";
   QString postfix = "";
-  if (qIsInf(d))
-    text = "\xe2\x88\x9e "; // Nekonečno
-  else if (qIsNaN(d))
-    text = "--- ";
-  else {
-    int order = intLog10(d); // Někdy je trošku menší než má být, trochu zvýšit, aby vyšla požadované hodnota
+
+  if (qIsInf(d)) {
+    text = justifyUnit ? "\xe2\x88\x9e  " : "\xe2\x88\x9e "; // Infinity
+    goto final_justify;
+  } else if (qIsNaN(d)) {
+    text = justifyUnit ? "---  " : "--- ";
+    goto final_justify;
+  } else {
+
+    if (unit.mode == UnitOfMeasure::noPrefix) {
+    noPrefix:
+      text = QString::number(d, 'g', significantDigits) + (justifyUnit ? "  " : " ");
+      goto final_justify;
+    }
+
+    if (unit.mode == UnitOfMeasure::index) {
+      text = QString::number(floor(d), 'f', 0);
+      goto final_justify;
+    }
+
+    int order = intLog10(d);
 
     if (qFuzzyIsNull(d)) {
       d = 0;
       postfix = justify ? "  " : " ";
     } else if (order >= 21)
-      return QString::number(d, 'g', significantDigits);
+      goto noPrefix;
     else if (order >= 18) {
       postfix = " E";
       d /= 1e18;
@@ -452,7 +509,7 @@ inline QString floatToNiceString(double d, int significantDigits, bool justify, 
       postfix = " k";
       d /= 1e3;
     } else if (order >= 0) {
-      postfix = justifyUnit ? "  " : " ";
+      goto noPrefix;
     } else if (order >= -3) {
       postfix = " m";
       d /= 1e-3;
@@ -469,16 +526,17 @@ inline QString floatToNiceString(double d, int significantDigits, bool justify, 
       postfix = " f";
       d /= 1e-15;
     } else {
-      return QString::number(d, 'g', significantDigits);
+      goto noPrefix;
     }
     text = toSignificantDigits(d, significantDigits, noDecimalsIfInteger);
   }
 
   text.append(postfix);
+final_justify:
   if (justify) {
-    return text.rightJustified(significantDigits + ((text.right(1) == " " && !justifyUnit) ? 3 : 4));
+    return text.rightJustified(significantDigits + ((text.right(1) == " " && !justifyUnit) ? 3 : 4)) + unit.text;
   } else
-    return text;
+    return text + unit.text;
 }
 
 inline double ceilToMultipleOf(double value, double multipleOf) { return (std::ceil(value / multipleOf) * multipleOf); }
@@ -501,44 +559,6 @@ struct ChannelExpectedRange {
   double maximum = 0;
   double minimum = 0;
   bool unknown = true;
-};
-
-struct UnitOfMeasure {
-  UnitOfMeasure() {}
-  UnitOfMeasure(QString rawUnit) {
-
-    QString prefixChars = "munkMG";
-
-    if (rawUnit.isEmpty())
-      mode = noPrefix;
-    else if (rawUnit.startsWith("-")) {
-      mode = usePrefix;
-      text = rawUnit.mid(1);
-    } else if (rawUnit.startsWith("!")) {
-      mode = noPrefix;
-      text = rawUnit.mid(1);
-    } else if (rawUnit == "index") {
-      mode = index;
-    } else if (rawUnit.startsWith("time")) {
-      mode = time;
-      text = "s";
-      QRegularExpression regex("\\(([^)]+)\\)");
-      QRegularExpressionMatch match = regex.match(rawUnit);
-      if (match.hasMatch())
-        special = match.captured(1);
-    } else if (rawUnit.length() >= 2) {
-      if (rawUnit.left(2) == "dB" || prefixChars.contains(rawUnit.at(0))) {
-        mode = noPrefix;
-        text = rawUnit;
-      }
-    } else {
-      text = rawUnit;
-      mode = usePrefix;
-    }
-  }
-  enum Mode { usePrefix, noPrefix, index, time } mode = noPrefix;
-  QString text = "";
-  QString special = "";
 };
 
 #endif // GLOBAL_H

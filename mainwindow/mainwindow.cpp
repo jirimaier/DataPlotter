@@ -220,10 +220,7 @@ void MainWindow::showPlotStatus(PlotStatus::enumPlotStatus type) {
 void MainWindow::updateChScale() {
   if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT) {
     double perDiv = ui->plot->getCHDiv(ui->comboBoxSelectedChannel->currentIndex());
-    if (valuesUseUnits)
-      ui->labelChScale->setText(floatToNiceString(perDiv, 3, true, false) + ui->plot->getYUnit().text + tr(" / Div"));
-    else
-      ui->labelChScale->setText(QString::number(perDiv, 'g', 3) + ui->plot->getYUnit().text + tr(" / Div"));
+    ui->labelChScale->setText(floatToNiceString(perDiv, 3, true, false, false, ui->plot->getYUnit()) + tr(" / Div"));
   } else
     ui->labelChScale->setText("---");
 }
@@ -264,21 +261,12 @@ void MainWindow::serialConnectResult(bool connected, QString message, QString de
 
 void MainWindow::updateDivs() {
   updateChScale();
-  if (ui->labelHDiv->isEnabled()) {
-    QString unit = ui->plot->getXUnit().text;
-    if (timeUseUnits)
-      ui->labelHDiv->setText(floatToNiceString(ui->plot->getHDiv(), 1, false, false) + unit + tr("/Div"));
-    else
-      ui->labelHDiv->setText(QString::number(ui->plot->getHDiv(), 'g', 3) + tr("/Div"));
-
-  } else
+  if (ui->labelHDiv->isEnabled())
+    ui->labelHDiv->setText(floatToNiceString(ui->plot->getHDiv(), 1, false, false, false, ui->plot->getXUnit()) + tr("/Div"));
+  else
     ui->labelHDiv->setText("---");
 
-  QString unit = ui->plot->getYUnit().text;
-  if (valuesUseUnits)
-    ui->labelVDiv->setText(floatToNiceString(ui->plot->getVDiv(), 1, false, false) + unit + tr("/Div"));
-  else
-    ui->labelVDiv->setText(QString::number(ui->plot->getVDiv(), 'g', 3) + unit + tr("/Div"));
+  ui->labelVDiv->setText(floatToNiceString(ui->plot->getVDiv(), 1, false, false, false, ui->plot->getYUnit()) + tr("/Div"));
 }
 
 void MainWindow::printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumMessageTarget target) {
@@ -509,9 +497,7 @@ void MainWindow::on_lineEditHUnit_textChanged(const QString &arg1) {
   ui->doubleSpinBoxXCur1->setUnit(unit);
   ui->doubleSpinBoxXCur2->setUnit(unit);
 
-  freqUseUnits = (unit.text == "s" || unit.mode == UnitOfMeasure::time);
-
-  ui->plotFFT->setXUnit(QString(freqUseUnits ? "-Hz" : "!"));
+  ui->plotFFT->setXUnit(ui->plot->getXUnit().reciprocal());
   freqTimePlotDialog->getUi()->plotPeak->setYUnit(ui->plotFFT->getYUnit());
 
   updateDivs(); // Aby se aktualizovala jednotka u kroku mřížky
@@ -687,8 +673,7 @@ void MainWindow::on_radioButtonDark_toggled(bool checked) {
                                 : "QFrame {background-color: rgb(255, 255, 255);}"
                                   "QMessageBox {background-color: rgb(255, 255, 255);}"
                                   "QInputDialog {background-color: rgb(255, 255, 255);}") +
-                "QWidget#widget {background-color: " + qApp->palette().color(QPalette::Window).name() + ";}" + +"QWidget#widget_2 {background-color: " + qApp->palette().color(QPalette::Window).name() + ";}" + "QSplitter#splitter {background-color: " + qApp->palette().color(QPalette::Window).name() +
-                ";}");
+                "QWidget#widget {background-color: " + qApp->palette().color(QPalette::Window).name() + ";}" + +"QWidget#widget_2 {background-color: " + qApp->palette().color(QPalette::Window).name() + ";}" + "QSplitter#splitter {background-color: " + qApp->palette().color(QPalette::Window).name() + ";}");
 
   qmlTerminalInterface->setDarkThemeIsUsed(checked);
   qmlTerminalInterface->setTabBackground(checked ? "#434343" : "#ffffff");

@@ -69,12 +69,6 @@ void MainWindow::connectSignals() {
   connect(developerOptions, &DeveloperOptions::loadQmlFile, this, &MainWindow::loadQmlFile);
   connect(developerOptions, &DeveloperOptions::terminalDevToggled, &ansiTerminalModel, &AnsiTerminalModel::setShowGrid);
   connect(developerOptions, &DeveloperOptions::printToTerminal, this, &MainWindow::printToTerminal);
-  // connect(developerOptions->getUi()->pushButtonLoadFile,
-  // &QPushButton::clicked, this, &MainWindow::opushButtonLoadFile_clicked);
-  // connect(developerOptions->getUi()->pushButtonDefaults,
-  // &QPushButton::clicked, this, &MainWindow::pushButtonDefaults_clicked);
-  // connect(developerOptions->getUi()->pushButtonSaveSettings,
-  // &QPushButton::clicked, this, &MainWindow::pushButtonSaveSettings_clicked);
   connect(developerOptions->getUi()->pushButtonClearAll, &QPushButton::clicked, this, &MainWindow::pushButtonClearAll_clicked);
   connect(developerOptions->getUi()->checkBoxTriggerLineEn, &QCheckBox::stateChanged, this, &MainWindow::checkBoxTriggerLineEn_stateChanged);
   connect(developerOptions->getUi()->pushButtonClearGraph, &QPushButton::clicked, this, &MainWindow::pushButtonClearGraph_clicked);

@@ -42,7 +42,7 @@ QString MyDoubleSpinBoxWithUnits::textFromValue(double val) const {
   if (suffix().length() == 0)
     return (QString::number(val, 'g', 3));
   if (suffix().length() >= 2) {
-    if (suffix().left(2) == "dB")
+    if (suffix().trimmed().left(2) == "dB")
       return (QString::number(val, 'g', 3) + " ");
   }
 

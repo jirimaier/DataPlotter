@@ -189,6 +189,8 @@ void MyMainPlot::updateRollingState(double xMax) {
   }
 
   lastSignalEnd = xMax;
+
+  // qDebug() << mode;
 }
 
 bool MyMainPlot::getAutoVRage() const { return autoVRage; }
@@ -266,16 +268,10 @@ void MyMainPlot::updateTracerText(int index) {
       tracerTextStr.append("LOW");
     tracerTextStr.append("\n");
   } else {
-    if (true) // TODO
-      tracerTextStr.append(floatToNiceString(tracer->position->value(), 4, true, false) + getYUnit().text + "\n");
-    else
-      tracerTextStr.append(QString::number(tracer->position->value(), 'g', 4) + " " + getYUnit().text + "\n");
+    tracerTextStr.append(floatToNiceString(tracer->position->value(), 4, true, false, false, getYUnit()) + "\n");
   }
 
-  if (getXUnit().text.isEmpty())
-    tracerTextStr.append(QString::number(tracer->position->key(), 'g', 4));
-  else
-    tracerTextStr.append(floatToNiceString(tracer->position->key(), 4, true, false) + getXUnit().text);
+  tracerTextStr.append(floatToNiceString(tracer->position->key(), 4, true, false, false, getXUnit()));
 
   tracerText->setText(tracerTextStr);
   checkIfTracerTextFits();

@@ -140,6 +140,7 @@ void MyPlot::setTimeCursorVisible(Cursors::enumCursors cursor, bool visible) {
 }
 
 void MyPlot::setXUnit(UnitOfMeasure unit) {
+  xUnit = unit;
   unitTickerX->setUnit(unit);
   replot();
 }

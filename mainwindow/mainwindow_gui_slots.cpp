@@ -57,7 +57,7 @@ void MainWindow::on_comboBoxGraphStyle_currentIndexChanged(int index) {
   if (ui->comboBoxSelectedChannel->currentIndex() < ANALOG_COUNT + MATH_COUNT) {
     ui->plot->setChStyle(ui->comboBoxSelectedChannel->currentIndex(), index);
   } else {
-    if (recommendOpenGL && (index == GraphStyle::logicFilled || index == GraphStyle::logicSquareFilled) && !ui->checkBoxOpenGL->isChecked()) {
+    if (settings->recommendOpenGL && (index == GraphStyle::logicFilled || index == GraphStyle::logicSquareFilled) && !ui->checkBoxOpenGL->isChecked()) {
       QMessageBox msgBox(this);
       msgBox.setText(tr("It is recommended to enable OpenGL when using fill under graph."));
       msgBox.setInformativeText(tr("Enable OpenGL? (enabling may take a second or two)"));
@@ -73,7 +73,7 @@ void MainWindow::on_comboBoxGraphStyle_currentIndexChanged(int index) {
       if (returnValue == QMessageBox::Yes)
         ui->checkBoxOpenGL->setChecked(true);
       if (checkBox->isChecked()) {
-        recommendOpenGL = false;
+        settings->recommendOpenGL = false;
       }
     }
     ui->plot->setLogicStyle(ui->comboBoxSelectedChannel->currentIndex() - ANALOG_COUNT - MATH_COUNT, index);
@@ -280,41 +280,20 @@ void MainWindow::signalMeasurementsResult1(double period, double freq, double am
     recordingOfMeasurements1.write("\n");
   }
 
-  if (valuesUseUnits) {
-    ui->labelSig1Vrms->setText(floatToNiceString(vrms, 4, false, false) + ui->plot->getYUnit().text);
-    ui->labelSig1Min->setText(floatToNiceString(min, 4, false, false) + ui->plot->getYUnit().text);
-    ui->labelSig1Max->setText(floatToNiceString(max, 4, false, false) + ui->plot->getYUnit().text);
-    ui->labelSig1Dc->setText(floatToNiceString(dc, 4, false, false) + ui->plot->getYUnit().text);
-    ui->labelSig1Amp->setText(floatToNiceString(amp, 4, false, false) + (ui->plot->getYUnit().text == "V" ? "Vpp" : ui->plot->getYUnit().text));
-  } else {
-    ui->labelSig1Vrms->setText(QString::number(vrms, 'g', 4) + ui->plot->getYUnit().text);
-    ui->labelSig1Min->setText(QString::number(min, 'g', 4) + ui->plot->getYUnit().text);
-    ui->labelSig1Max->setText(QString::number(max, 'g', 4) + ui->plot->getYUnit().text);
-    ui->labelSig1Dc->setText(QString::number(dc, 'g', 4) + ui->plot->getYUnit().text);
-    ui->labelSig1Amp->setText(QString::number(amp, 'g', 4) + ui->plot->getYUnit().text);
-  }
+  ui->labelSig1Vrms->setText(floatToNiceString(vrms, 4, false, false, false, ui->plot->getYUnit()));
+  ui->labelSig1Min->setText(floatToNiceString(min, 4, false, false, false, ui->plot->getYUnit()));
+  ui->labelSig1Max->setText(floatToNiceString(max, 4, false, false, false, ui->plot->getYUnit()));
+  ui->labelSig1Dc->setText(floatToNiceString(dc, 4, false, false, false, ui->plot->getYUnit()));
+  ui->labelSig1Amp->setText(floatToNiceString(amp, 4, false, false, false, ui->plot->getYUnit()) + "pp");
 
-  if (timeUseUnits) {
-    ui->labelSig1Period->setText(floatToNiceString(period, 4, false, false) + ui->plot->getXUnit().text);
-    // Pokud je falltime nabo risetime menší než 2 periody vzorkování, je
-    // považován za nepřesný (znaménko menší než)
-    ui->labelSig1rise->setText((rise < 2.0 / fs ? "<" : "") + floatToNiceString(rise, 4, false, false) + ui->plot->getXUnit().text);
-    ui->labelSig1fall->setText((fall < 2.0 / fs ? "<" : "") + floatToNiceString(fall, 4, false, false) + ui->plot->getXUnit().text);
-  } else {
-    ui->labelSig1Period->setText(floatToNiceString(period, 4, false, false) + ui->plot->getXUnit().text);
-    // Pokud je falltime nabo risetime menší než 2 periody vzorkování, je
-    // považován za nepřesný (znaménko menší než)
-    ui->labelSig1rise->setText((rise < 2.0 / fs ? "<" : "") + QString::number(rise, 'g', 4) + ui->plot->getXUnit().text);
-    ui->labelSig1fall->setText((fall < 2.0 / fs ? "<" : "") + QString::number(fall, 'g', 4) + ui->plot->getXUnit().text);
-  }
+  ui->labelSig1Period->setText(floatToNiceString(period, 4, false, false, false, ui->plot->getXUnit()));
+  // Pokud je falltime nabo risetime menší než 2 periody vzorkování, je
+  // považován za nepřesný (znaménko menší než)
+  ui->labelSig1rise->setText((rise < 2.0 / fs ? "<" : "") + floatToNiceString(rise, 4, false, false, false, ui->plot->getXUnit()));
+  ui->labelSig1fall->setText((fall < 2.0 / fs ? "<" : "") + floatToNiceString(fall, 4, false, false, false, ui->plot->getXUnit()));
 
-  if (freqUseUnits) {
-    ui->labelSig1Freq->setText(floatToNiceString(freq, 4, false, false) + ui->plotFFT->getXUnit().text);
-    ui->labelSig1fs->setText(floatToNiceString(fs, 4, false, false) + ui->plotFFT->getXUnit().text);
-  } else {
-    ui->labelSig1Freq->setText(QString::number(freq, 'g', 4) + ui->plotFFT->getXUnit().text);
-    ui->labelSig1fs->setText(QString::number(fs, 'g', 4) + ui->plotFFT->getXUnit().text);
-  }
+  ui->labelSig1Freq->setText(floatToNiceString(freq, 4, false, false, false, ui->plotFFT->getXUnit()));
+  ui->labelSig1fs->setText(floatToNiceString(fs, 4, false, false, false, ui->plotFFT->getXUnit()));
 
   ui->labelSig1samples->setText(QString::number(samples));
   measureRefreshTimer1.start(250);
@@ -350,41 +329,20 @@ void MainWindow::signalMeasurementsResult2(double period, double freq, double am
     recordingOfMeasurements2.write("\n");
   }
 
-  if (valuesUseUnits) {
-    ui->labelSig2Vrms->setText(floatToNiceString(vrms, 4, false, false) + ui->plot->getYUnit().text);
-    ui->labelSig2Min->setText(floatToNiceString(min, 4, false, false) + ui->plot->getYUnit().text);
-    ui->labelSig2Max->setText(floatToNiceString(max, 4, false, false) + ui->plot->getYUnit().text);
-    ui->labelSig2Dc->setText(floatToNiceString(dc, 4, false, false) + ui->plot->getYUnit().text);
-    ui->labelSig2Amp->setText(floatToNiceString(amp, 4, false, false) + (ui->plot->getYUnit().text == "V" ? "Vpp" : ui->plot->getYUnit().text));
-  } else {
-    ui->labelSig2Vrms->setText(QString::number(vrms, 'g', 4) + ui->plot->getYUnit().text);
-    ui->labelSig2Min->setText(QString::number(min, 'g', 4) + ui->plot->getYUnit().text);
-    ui->labelSig2Max->setText(QString::number(max, 'g', 4) + ui->plot->getYUnit().text);
-    ui->labelSig2Dc->setText(QString::number(dc, 'g', 4) + ui->plot->getYUnit().text);
-    ui->labelSig2Amp->setText(QString::number(amp, 'g', 4) + ui->plot->getYUnit().text);
-  }
+  ui->labelSig2Vrms->setText(floatToNiceString(vrms, 4, false, false, false, ui->plot->getYUnit()));
+  ui->labelSig2Min->setText(floatToNiceString(min, 4, false, false, false, ui->plot->getYUnit()));
+  ui->labelSig2Max->setText(floatToNiceString(max, 4, false, false, false, ui->plot->getYUnit()));
+  ui->labelSig2Dc->setText(floatToNiceString(dc, 4, false, false, false, ui->plot->getYUnit()));
+  ui->labelSig2Amp->setText(floatToNiceString(amp, 4, false, false, false, ui->plot->getYUnit()) + "pp");
 
-  if (timeUseUnits) {
-    ui->labelSig2Period->setText(floatToNiceString(period, 4, false, false) + ui->plot->getXUnit().text);
-    // Pokud je falltime nabo risetime menší než 2 periody vzorkování, je
-    // považován za nepřesný (znaménko menší než)
-    ui->labelSig2rise->setText((rise < 2.0 / fs ? "<" : "") + floatToNiceString(rise, 4, false, false) + ui->plot->getXUnit().text);
-    ui->labelSig2fall->setText((fall < 2.0 / fs ? "<" : "") + floatToNiceString(fall, 4, false, false) + ui->plot->getXUnit().text);
-  } else {
-    ui->labelSig2Period->setText(floatToNiceString(period, 4, false, false) + ui->plot->getXUnit().text);
-    // Pokud je falltime nabo risetime menší než 2 periody vzorkování, je
-    // považován za nepřesný (znaménko menší než)
-    ui->labelSig2rise->setText((rise < 2.0 / fs ? "<" : "") + QString::number(rise, 'g', 4) + ui->plot->getXUnit().text);
-    ui->labelSig2fall->setText((fall < 2.0 / fs ? "<" : "") + QString::number(fall, 'g', 4) + ui->plot->getXUnit().text);
-  }
+  ui->labelSig2Period->setText(floatToNiceString(period, 4, false, false, false, ui->plot->getXUnit()));
+  // Pokud je falltime nabo risetime menší než 2 periody vzorkování, je
+  // považován za nepřesný (znaménko menší než)
+  ui->labelSig2rise->setText((rise < 2.0 / fs ? "<" : "") + floatToNiceString(rise, 4, false, false, false, ui->plot->getXUnit()));
+  ui->labelSig2fall->setText((fall < 2.0 / fs ? "<" : "") + floatToNiceString(fall, 4, false, false, false, ui->plot->getXUnit()));
 
-  if (freqUseUnits) {
-    ui->labelSig2Freq->setText(floatToNiceString(freq, 4, false, false) + ui->plotFFT->getXUnit().text);
-    ui->labelSig2fs->setText(floatToNiceString(fs, 4, false, false) + ui->plotFFT->getXUnit().text);
-  } else {
-    ui->labelSig2Freq->setText(QString::number(freq, 'g', 4) + ui->plotFFT->getXUnit().text);
-    ui->labelSig2fs->setText(QString::number(fs, 'g', 4) + ui->plotFFT->getXUnit().text);
-  }
+  ui->labelSig2Freq->setText(floatToNiceString(freq, 4, false, false, false, ui->plotFFT->getXUnit()));
+  ui->labelSig2fs->setText(floatToNiceString(fs, 4, false, false, false, ui->plotFFT->getXUnit()));
 
   ui->labelSig2samples->setText(QString::number(samples));
   measureRefreshTimer2.start(250);
@@ -673,3 +631,5 @@ void MainWindow::on_horizontalScrollBarHorizontal_valueChanged(int value) {
 }
 
 void MainWindow::on_pushButtonRollingAutoRange_toggled(bool checked) { ui->plot->setAutoVRage(checked); }
+
+void MainWindow::on_pushButtonReset_clicked() { settings->resetSettings(); }

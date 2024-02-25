@@ -35,6 +35,7 @@
 #include "developeroptions.h"
 #include "freqtimeplotdialog.h"
 #include "global.h"
+#include "mainwindow/appsettings.h"
 #include "mainwindow/updatechecker.h"
 #include "manualinputdialog.h"
 #include "math/averager.h"
@@ -53,6 +54,8 @@ QT_END_NAMESPACE
 class MainWindow : public QMainWindow {
   Q_OBJECT
 
+  friend class AppSettings;
+
 public:
   explicit MainWindow(QWidget *parent = nullptr);
   void init(QTranslator *translator, const PlotData *plotData, const PlotMath *plotMath, SerialReader *serialReader, const Averager *avg);
@@ -62,6 +65,7 @@ public:
 
 private:
   Ui::MainWindow *ui;
+  AppSettings *settings;
   QmlTerminalInterface *qmlTerminalInterface;
   SerialSettingsDialog *serialSettingsDialog;
   DeveloperOptions *developerOptions;
@@ -71,6 +75,7 @@ private:
   QTimer portsRefreshTimer, activeChRefreshTimer, xyTimer, cursorRangeUpdateTimer, measureRefreshTimer1, measureRefreshTimer2, fftTimer1, fftTimer2, serialMonitorTimer, consoleTimer, interpolationTimer, triggerLineTimer;
   QList<QSerialPortInfo> portList;
   FileSender fileSender;
+  QString configFilePath;
   QPalette darkPalette, lightPalette;
   QPushButton *mathEn[3];
   QComboBox *mathFirst[3];
@@ -81,7 +86,6 @@ private:
   QIcon iconRun, iconPause, iconHidden, iconVisible, iconConnected, iconNotConnected, iconCross, iconAbsoluteCursor, iconMaximize, iconUnMaximize;
   QString serialMonitor;
   QStringList consoleBuffer;
-  QString configFilePath;
   int averagerCounts[ANALOG_COUNT];
   QStringList autoConnectPortNames;
   QString attemptReconnectPort;
@@ -96,31 +100,23 @@ private:
   bool autoAutosetPending = false;
   bool colorUpdateNeeded = true;
   bool currentThemeDark = false;
-  QMap<QString, QPair<QWidget *, bool>> setables;
   int interpolationsRunning = 0;
   bool lastUpdateWasLogic = false;
   int lastSelectedChannel = 1;
   bool pendingDeviceMessage = false;
-  bool recommendOpenGL = true;
-  bool timeUseUnits = true;
-  bool valuesUseUnits = true;
-  bool freqUseUnits = true;
   int dataUpdates = 0;
   bool hasMaximizedPlot = false;
   UpdateChecker updateChecker;
-  bool checkForUpdatesAtStartup = false;
+
   bool writeConfigInAppDirectory = false;
   QByteArray versionstring;
 
 private:
   void setComboboxItemVisible(QComboBox &comboBox, int index, bool visible);
   void setChStyleSelection(GraphType::enumGraphType type);
-  void initSetables();
-  QByteArray getSettings();
   void applyGuiElementSettings(QWidget *, QString value);
   QByteArray readGuiElementSettings(QWidget *target);
   void connectSignals();
-  void loadSettings();
   void startTimers();
   void setGuiDefaults();
   void setGuiArrays();
@@ -137,7 +133,6 @@ private:
   void updateCursorMeasurementsText();
   void initQmlTerminal();
   void resetQmlTerminal();
-  void saveSettings();
   void closeEvent(QCloseEvent *event);
   void autosetHrange();
   QIcon invertIconLightness(const QIcon &icon, QSize size);
@@ -310,7 +305,7 @@ public slots:
   void showPlotStatus(PlotStatus::enumPlotStatus type);
   void serialConnectResult(bool connected, QString message, QString details);
   void printToTerminal(QByteArray data) { ansiTerminalModel.printToTerminal(data); }
-  void useSettings(QByteArray settings, MessageTarget::enumMessageTarget source);
+  void useSettings(QByteArray settings, MessageTarget::enumMessageTarget source) { this->settings->useSettings(settings, source); }
   void fileRequest(QByteArray message, MessageTarget::enumMessageTarget source);
   void printDeviceMessage(QByteArray message, bool warning, bool ended);
   void printSerialMonitor(QByteArray data);
