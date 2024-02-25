@@ -282,7 +282,6 @@ private slots: // Autoconnect slots
   void on_pushButtonSetCenter_clicked();
   void on_pushButtonSetNegative_clicked();
   void on_pushButtonFvsT_clicked();
-  void on_pushButtonShowManualInput_clicked() { simulatedInputDialog->show(); }
   void on_pushButtonSerialMonitor_toggled(bool checked);
   void on_comboBoxXYStyle_currentIndexChanged(int index);
   void on_comboBoxFFTStyle1_currentIndexChanged(int index);

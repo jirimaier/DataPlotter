@@ -7534,7 +7534,7 @@
            <attribute name="title">
             <string/>
            </attribute>
-           <layout class="QVBoxLayout" name="verticalLayout_44" stretch="0,0,0,0,0">
+           <layout class="QVBoxLayout" name="verticalLayout_44" stretch="0,0,0,0">
             <property name="spacing">
              <number>3</number>
             </property>
@@ -7905,19 +7905,6 @@
                 </layout>
                </item>
               </layout>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="pushButtonShowManualInput">
-              <property name="toolTip">
-               <string>Show manual input console on connection tab</string>
-              </property>
-              <property name="text">
-               <string>Manual Data Input</string>
-              </property>
-              <property name="checked">
-               <bool>false</bool>
-              </property>
              </widget>
             </item>
            </layout>
