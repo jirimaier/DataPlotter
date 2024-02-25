@@ -608,6 +608,14 @@ void MyMainPlot::setTheme(QColor fnt, QColor bck, int chClrThemeId) {
     item->setColor(fnt);
   }
 
+  QVector<QCPItemLine *> lines;
+  lines << triggerLine;
+  for (auto item : qAsConst(lines)) {
+    auto p = item->pen();
+    p.setColor(fnt);
+    item->setPen(p);
+  }
+
   this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
 }
 
