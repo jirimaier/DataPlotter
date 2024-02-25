@@ -43,6 +43,8 @@ QString addSpacesToCamelCase(const QString &input) {
 DeveloperOptions::DeveloperOptions(QWidget *parent, QQuickWidget *qQuickWidget) : QDialog(parent), ui(new Ui::DeveloperOptions), qQuickWidget(qQuickWidget) {
   ui->setupUi(this);
 
+  ui->tabWidget->setCurrentIndex(0);
+
   Q_ASSERT(qQuickWidget != nullptr);
   connect(qQuickWidget, &QQuickWidget::statusChanged, this, &DeveloperOptions::quickWidget_statusChanged);
 
