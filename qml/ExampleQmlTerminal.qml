@@ -80,7 +80,7 @@ Rectangle {
                     id: title
                     anchors.centerIn: parent
                     horizontalAlignment: Text.AlignHCenter
-                    text: "Welcome to new terminal!"
+                    text: "Welcome to QML terminal!"
                 }
             }
 
