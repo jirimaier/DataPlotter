@@ -121,7 +121,7 @@ void MainWindow::closeEvent(QCloseEvent *event) {
   developerOptions->close();
   ui->quickWidget->setSource(QUrl());
   ui->quickWidget->engine()->clearComponentCache();
-  saveSettings();
+  settings->saveSettings();
   event->accept();
 }
 
@@ -183,13 +183,13 @@ void MainWindow::init(QTranslator *translator, const PlotData *plotData, const P
 
   this->translator = translator;
   setGuiArrays();
-  initSetables();
+  settings = new AppSettings(this);
   connectSignals();
   changeLanguage();
   setGuiDefaults();
   updateChScale();
   setAdaptiveSpinBoxes();
-  loadSettings();
+  settings->loadSettings();
   startTimers();
 }
 
@@ -821,12 +821,12 @@ void MainWindow::checkedVersion(bool isNew, QString message) {
   msgBox.setButtonText(QMessageBox::No, tr("Close"));
   auto checkBox = new QCheckBox(&msgBox);
   checkBox->setText(tr("Check for updates at startup"));
-  checkBox->setChecked(checkForUpdatesAtStartup);
+  checkBox->setChecked(settings->checkForUpdatesAtStartup);
   msgBox.setCheckBox(checkBox);
   int returnValue = msgBox.exec();
   if (returnValue == QMessageBox::Yes)
     QDesktopServices::openUrl(DownloadUrl);
-  checkForUpdatesAtStartup = checkBox->isChecked();
+  settings->checkForUpdatesAtStartup = checkBox->isChecked();
 }
 
 void MainWindow::plotMaximizeButtonClicked(QString id) {
@@ -836,3 +836,16 @@ void MainWindow::plotMaximizeButtonClicked(QString id) {
 }
 
 void MainWindow::on_pushButtonCheckForUpdates_clicked() { updateChecker.checkForUpdates(false); }
+
+void MainWindow::saveToFile(QByteArray data) {
+  QString fileName = DefaultPathManager::getInstance().requestSaveFile(this, tr("Save file"), "path_sffd", "", tr("Text file (*.txt);;Any file (*.*)"));
+  if (fileName.isEmpty())
+    return;
+  QFile file(fileName);
+  if (file.open(QFile::WriteOnly | QFile::Truncate)) {
+    file.write(data);
+    file.close();
+  } else {
+    qCritical() << "Cannot write to file" << fileName;
+  }
+}

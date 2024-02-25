@@ -43,6 +43,7 @@ HEADERS += \
     developeroptions.h \
     freqtimeplotdialog.h \
     global.h \
+    mainwindow/appsettings.h \
     mainwindow/mainwindow.h \
     mainwindow/updatechecker.h \
     mainwindow/version.h \
@@ -88,6 +89,7 @@ SOURCES += \
     developeroptions.cpp \
     freqtimeplotdialog.cpp \
     main.cpp \
+    mainwindow/appsettings.cpp \
     mainwindow/mainwindow.cpp \
     mainwindow/mainwindow_autoset.cpp \
     mainwindow/mainwindow_cursors.cpp \
@@ -96,7 +98,6 @@ SOURCES += \
     mainwindow/mainwindow_gui_preset.cpp \
     mainwindow/mainwindow_gui_slots.cpp \
     mainwindow/mainwindow_qml.cpp \
-    mainwindow/mainwindow_save_load.cpp \
     mainwindow/mainwindow_send_file.cpp \
     mainwindow/mainwindow_timed_events.cpp \
     mainwindow/updatechecker.cpp \
