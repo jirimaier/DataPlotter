@@ -101,7 +101,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
   darkPalette.setColor(QPalette::Disabled, QPalette::Text, gray);
   darkPalette.setColor(QPalette::Disabled, QPalette::Light, darkGray);
 
-  this->resize(1024, 768);
+  QSize screenSize = QApplication::primaryScreen()->size();
+  if (screenSize.width() <= 1024)
+    this->resize(1024, 768);
+  else
+    this->resize(1365, 1024);
   on_radioButtonDark_toggled(ui->radioButtonDark->isChecked());
 
   auto newItem = new QListWidgetItem();
