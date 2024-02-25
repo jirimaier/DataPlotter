@@ -19,9 +19,22 @@ Rectangle {
     Material.elevation: 1
     color: dataPlotter.tabBackground
 
-    function send(data) {
+    function send(data, format = "string") {
         // Use this function to send data to serial port
-        dataPlotter.transmitToSerial(data);
+
+        // Defoult format is "string" (numbers converted to string)
+
+        // To transmit binary data, use following format codes:
+        // int8, int16, int32, int64 (signed integer)
+        // uint8, uint16, uint32, uint64 (unsigned integers)
+        // float, double
+        // Numbers will be little-endian
+
+        // To use Big-endian, use uppercase letter in the code
+        // e.g. Int32 in big endian 32-bit integer
+
+        // You may only use first letter of the code (e.g. u16)
+        dataPlotter.transmitToSerial(data,format);
     }
 
     function sendToParser(data) {
@@ -89,6 +102,7 @@ Rectangle {
             }
 
             RowLayout {
+                Layout.fillWidth: true
                 Button{
                     text: "Send:"
                     onClicked: send(txText.text)
@@ -96,8 +110,62 @@ Rectangle {
                 TextField {
                     id: txText
                     Layout.fillWidth: true
-                    Layout.preferredWidth: 10000
                     text: "Hello World"
+                    selectByMouse: true
+                }
+            }
+
+            Label {
+                text: 'You can create controlls that will send binary data to the device.'
+                width: parent.width
+                font.pointSize: 9
+                horizontalAlignment: Text.AlignJustify
+                wrapMode: Text.WordWrap
+            }
+
+            Button{
+                text: "Send (as uint16):"
+                onClicked: send(txNumber.value,"u16")
+            }
+            SpinBox {
+                id: txNumber
+                Layout.fillWidth: true
+                from: 0
+                to: 65535
+                value: 258
+                editable: true
+            }
+
+            Label {
+                text: 'You can even obtain numeric value as text and send it as binary value.'
+                width: parent.width
+                font.pointSize: 9
+                horizontalAlignment: Text.AlignJustify
+                wrapMode: Text.WordWrap
+            }
+
+            GridLayout {
+                columns: 2
+                Layout.fillWidth: true
+                Button{
+                    text: "Send:"
+                    onClicked: send(txText2.text,txText2Format.text)
+                }
+                TextField {
+                    id: txText2
+                    text: "258"
+                    selectByMouse: true
+                }
+
+                Label {
+                    text: "as "
+                    horizontalAlignment: Text.AlignRight
+                }
+
+                TextField {
+                    id: txText2Format
+                    text: "Uint16"
+                    selectByMouse: true
                 }
             }
 
