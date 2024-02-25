@@ -29,19 +29,23 @@ void UpdateChecker::onRequestFinished(QNetworkReply *reply) {
     latestVersion.remove("v", Qt::CaseInsensitive);
     QList<QString> version = latestVersion.split('.');
 
-    for (int i = 0; i < qMax(ApplicationVersion.length(), version.length()); i++) {
+    int ApplicationVersion_length = sizeof(ApplicationVersion) / sizeof(ApplicationVersion[0]);
+    for (int i = 0; i < ApplicationVersion_length; i++) {
       int gitVersion = version.length() >= i ? version.at(i).toInt() : 0;
-      int curVersion = ApplicationVersion.length() >= i ? ApplicationVersion.at(i) : 0;
+      int curVersion = ApplicationVersion_length >= i ? ApplicationVersion[i] : 0;
 
       if (gitVersion > curVersion) {
         emit checkedVersion(true, tr("New version available: %1").arg(latestVersion));
         return;
-      } else if (gitVersion <= curVersion) {
+      } else if (gitVersion < curVersion) {
         if (!onlyPosRes)
-          emit checkedVersion(false, tr("You have the latest version."));
+          emit checkedVersion(false, tr("Your version is higher than latest official release."));
         return;
       }
     }
+    if (!onlyPosRes)
+      emit checkedVersion(false, tr("You have the latest version."));
+    return;
     reply->deleteLater();
   } else if (!onlyPosRes)
     emit checkedVersion(false, tr("Version check failed."));
