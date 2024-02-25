@@ -1,4 +1,4 @@
-//  Copyright (C) 2020-2021  Jiří Maier
+//  Copyright (C) 2020-2024  Jiří Maier
 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ MyPlot::MyPlot(QWidget *parent) : QCustomPlot(parent) {
   // clang-format on
 
   regularUpdateTimer = new QTimer(this);
-  connect(regularUpdateTimer, &QTimer::timeout, [this]() { this->replot(rpQueuedReplot); });
+  connect(regularUpdateTimer, &QTimer::timeout, this, [this]() { this->replot(rpQueuedReplot); });
   // regularUpdateTimer->start(1000);
 }
 

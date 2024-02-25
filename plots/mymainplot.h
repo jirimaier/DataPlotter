@@ -1,4 +1,4 @@
-//  Copyright (C) 2020-2021  Jiří Maier
+//  Copyright (C) 2020-2024  Jiří Maier
 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -266,7 +266,7 @@ signals:
   void autoVRageChanged();
 
   // MyPlot interface
-  public:
+public:
   void setTheme(QColor fnt, QColor bck, int chClrThemeId);
 };
 

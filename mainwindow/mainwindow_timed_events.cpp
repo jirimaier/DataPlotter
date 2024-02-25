@@ -1,4 +1,4 @@
-//  Copyright (C) 2020-2021  Jiří Maier
+//  Copyright (C) 2020-2024  Jiří Maier
 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ void MainWindow::comRefresh() {
   bool change = false;
 
   // Remove
-  for (QSerialPortInfo port : portList) {
+  for (QSerialPortInfo port : qAsConst(portList)) {
     if (!newPorts.contains(port)) {
       auto toremove = ui->listWidgetCom->findItems(
           port.portName() + " - " + port.description(), Qt::MatchExactly);
@@ -40,7 +40,7 @@ void MainWindow::comRefresh() {
   }
 
   // Add
-  for (QSerialPortInfo port : newPorts) {
+  for (QSerialPortInfo port : qAsConst(newPorts)) {
     if (!portList.contains(port)) {
       auto newItem = new QListWidgetItem();
       newItem->setText(port.portName() + " - " + port.description());

@@ -1,3 +1,18 @@
+//  Copyright (C) 2020-2024  Jiří Maier
+
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+
+//  You should have received a copy of the GNU General Public License
+//  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 #ifndef DEVELOPEROPTIONS_H
 #define DEVELOPEROPTIONS_H
 
@@ -34,10 +49,10 @@ private slots:
   void on_lineEditTerminalBlacklist_textChanged(const QString &arg1);
   void on_pushButtonTerminalBlacklistCopy_clicked();
   void on_pushButtonTerminalBlacklisAddSelect_clicked();
-  void on_pushButtonQmlReload_clicked() { emit qmlReload(); }
+  void on_pushButtonQmlReload_clicked() { qmlReload(); }
   void on_pushButtonQmlSave_clicked();
   void on_pushButtonQmlLoad_clicked();
-  void on_pushButtonQmlExport_clicked() { emit qmlExport(); }
+  void on_pushButtonQmlExport_clicked() { qmlExport(); }
   void on_comboBoxTerminalColorListMode_currentIndexChanged(int index);
   void on_pushButtonTerminalDebugShift_clicked();
   void on_listWidgetQMLFiles_itemClicked(QListWidgetItem *item);

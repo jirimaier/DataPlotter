@@ -1,3 +1,18 @@
+//  Copyright (C) 2020-2024  Jiří Maier
+
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU General Public License for more details.
+
+//  You should have received a copy of the GNU General Public License
+//  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 #ifndef FREQTIMEPLOTDIALOG_H
 #define FREQTIMEPLOTDIALOG_H
 
@@ -8,32 +23,31 @@ namespace Ui {
 class FreqTimePlotDialog;
 }
 
-class FreqTimePlotDialog : public QDialog
-{
-    Q_OBJECT
+class FreqTimePlotDialog : public QDialog {
+  Q_OBJECT
 
 public:
-    explicit FreqTimePlotDialog(QWidget *parent = nullptr);
-    ~FreqTimePlotDialog();
+  explicit FreqTimePlotDialog(QWidget *parent = nullptr);
+  ~FreqTimePlotDialog();
 
-    Ui::FreqTimePlotDialog *getUi() const;
+  Ui::FreqTimePlotDialog *getUi() const;
 
 private slots:
-    void on_pushButtonPeakPlotClear_clicked();
+  void on_pushButtonPeakPlotClear_clicked();
 
-    void on_pushButtonEXportFreqTimeCSV_clicked();
+  void on_pushButtonEXportFreqTimeCSV_clicked();
 
-    void on_pushButtonSaveImage_clicked();
+  void on_pushButtonSaveImage_clicked();
 
-    void on_horizontalSliderGridFreqtimeH_valueChanged(int value);
+  void on_horizontalSliderGridFreqtimeH_valueChanged(int value);
 
-    void on_horizontalSliderGridFreqtimeV_valueChanged(int value);
+  void on_horizontalSliderGridFreqtimeV_valueChanged(int value);
 
 private:
-    Ui::FreqTimePlotDialog *ui;
+  Ui::FreqTimePlotDialog *ui;
 
 signals:
-    void requestedCSVExport(int ch = EXPORT_FREQTIME);
+  void requestedCSVExport(int ch = EXPORT_FREQTIME);
 };
 
 #endif // FREQTIMEPLOTDIALOG_H

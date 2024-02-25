@@ -1,4 +1,4 @@
-//  Copyright (C) 2020-2021  Jiří Maier
+//  Copyright (C) 2020-2024  Jiří Maier
 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ MyMainPlot::MyMainPlot(QWidget *parent) : MyPlot(parent) {
     logicGroupAxis.last()->setRange(yAxis->range());
     for (int j = 0; j < LOGIC_BITS; j++) {
       addGraph(xAxis, logicGroupAxis.last());
-      // TODO: graph(graphCount() - 1)->setFillBase(j * 3);
+      // graph(graphCount() - 1)->setFillBase(j * 3);
     }
     logicGroupAxis.last()->setTicks(false);
     logicGroupAxis.last()->setBasePen(Qt::NoPen);

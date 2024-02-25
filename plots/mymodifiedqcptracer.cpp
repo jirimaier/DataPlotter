@@ -1,4 +1,4 @@
-//  Copyright (C) 2020-2021  Jiří Maier
+//  Copyright (C) 2020-2024  Jiří Maier
 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -49,7 +49,7 @@ void MyModifiedQCPTracer::updatePosition() {
         QCPCurveDataContainer::const_iterator nearest = mCurve->data()->at(0);
         double nearestDist = Q_INFINITY;
         double dist, difx, dify;
-        for (auto it = mCurve->data()->begin(); it != mCurve->data()->end(); it++) {
+        for (auto it = mCurve->data()->constBegin(); it != mCurve->data()->constEnd(); it++) {
           difx = parentPlot()->xAxis->coordToPixel(it->key) - mPoint.x();
           dify = verticalAxis->coordToPixel(it->value) - mPoint.y();
           dist = difx * difx + dify * dify;

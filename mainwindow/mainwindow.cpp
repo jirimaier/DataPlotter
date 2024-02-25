@@ -1,4 +1,4 @@
-//  Copyright (C) 2020-2021  Jiří Maier
+//  Copyright (C) 2020-2024  Jiří Maier
 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -631,10 +631,9 @@ void MainWindow::on_radioButtonDark_toggled(bool checked) {
     foreach (auto w, list3) {
       if (w == ui->labelLogo)
         continue;
-      // if (!w->pixmap(Qt::ReturnByValue))
-      if (!w->pixmap())
+      if (!w->pixmap(Qt::ReturnByValue))
         continue;
-      auto icon = w->pixmap()->toImage();
+      auto icon = w->pixmap(Qt::ReturnByValue).toImage();
       icon.invertPixels(QImage::InvertRgb);
       w->setPixmap(QPixmap::fromImage(icon));
     }
@@ -810,7 +809,7 @@ void MainWindow::checkedVersion(bool isNew, QString message) {
   msgBox.setCheckBox(checkBox);
   int returnValue = msgBox.exec();
   if (returnValue == QMessageBox::Yes)
-    QDesktopServices::openUrl(DownloadUrl);
+    QDesktopServices::openUrl(QString(DownloadUrl));
   settings->checkForUpdatesAtStartup = checkBox->isChecked();
 }
 

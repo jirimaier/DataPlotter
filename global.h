@@ -1,4 +1,4 @@
-//  Copyright (C) 2020-2021  Jiří Maier
+//  Copyright (C) 2020-2024  Jiří Maier
 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -122,7 +122,7 @@ struct UnitOfMeasure {
     } else if (rawUnit.startsWith("time")) {
       mode = time;
       text = "s";
-      QRegularExpression regex("\\(([^)]+)\\)");
+      static QRegularExpression regex("\\(([^)]+)\\)");
       QRegularExpressionMatch match = regex.match(rawUnit);
       if (match.hasMatch())
         special = match.captured(1);
