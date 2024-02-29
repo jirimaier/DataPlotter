@@ -192,9 +192,13 @@ void NewSerialParser::parse(QByteArray newData) {
 
       if (currentMode == DataMode::unknown) {
 
-        if (printUnknownToTerminal == puttYes) {
+        if (printUnknownToTerminal == puttYesLF || printUnknownToTerminal == puttYesCRLF) {
           QByteArray data;
           readResult result = bufferPullFull(data);
+          if (printUnknownToTerminal == puttYesLF && !data.contains('\r'))
+            data.replace('\n', "\r\n");
+          else
+            printUnknownToTerminal = puttYesCRLF;
           emit sendTerminal(data);
           if (result == complete)
             continue;
@@ -895,7 +899,7 @@ NewSerialParser::readResult NewSerialParser::bufferPullBeforeNull(QByteArray &re
 
 void NewSerialParser::printUnknownToTerminalTimerSlot() {
   if (printUnknownToTerminal == puttPending) {
-    printUnknownToTerminal = puttYes;
+    printUnknownToTerminal = puttYesLF;
     if (!printUnknownToTerminalBuffer.isEmpty())
       emit sendTerminal(printUnknownToTerminalBuffer);
   }

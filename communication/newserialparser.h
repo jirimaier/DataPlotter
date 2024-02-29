@@ -80,7 +80,7 @@ private:
   void sendMessageIfAllowed(QString header, QString message, MessageLevel::enumMessageLevel type);
   DataMode::enumDataMode currentMode = DataMode::unknown;
   OutputLevel::enumOutputLevel debugLevel = OutputLevel::info;
-  enum PrintUnknownToTerminal { puttNo, puttYes, puttPending } printUnknownToTerminal = puttNo;
+  enum PrintUnknownToTerminal { puttNo, puttYesLF, puttYesCRLF, puttPending } printUnknownToTerminal = puttNo;
   QByteArray printUnknownToTerminalBuffer;
   QTimer *printUnknownToTerminalTimer = nullptr;
   QByteArray buffer;
