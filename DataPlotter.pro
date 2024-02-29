@@ -68,7 +68,8 @@ HEADERS += \
     plots/qcustomplot.h \
     qml/ansiterminalmodel.h \
     qml/messagemodel.h \
-    qml/qmlterminalinterface.h
+    qml/qmlterminalinterface.h \
+    utils.h
 
 SOURCES += \
     communication/cobs.cpp \
@@ -122,6 +123,7 @@ SOURCES += \
     plots/qcustomplot.cpp \
     qml/ansiterminalmodel.cpp \
     qml/messagemodel.cpp \
-    qml/qmlterminalinterface.cpp
+    qml/qmlterminalinterface.cpp \
+    utils.cpp
 
 

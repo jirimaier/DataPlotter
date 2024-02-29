@@ -14,6 +14,7 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "freqtimeplotdialog.h"
+#include "defaultpathmanager.h"
 #include "ui_freqtimeplotdialog.h"
 
 FreqTimePlotDialog::FreqTimePlotDialog(QWidget *parent) : QDialog(parent), ui(new Ui::FreqTimePlotDialog) {

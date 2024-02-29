@@ -15,6 +15,7 @@
 
 #include "developeroptions.h"
 #include "communication/cobs.h"
+#include "defaultpathmanager.h"
 #include "qcheckbox.h"
 #include "qclipboard.h"
 #include "qdebug.h"
