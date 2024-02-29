@@ -15,7 +15,6 @@
 
 #include "mainwindow.h"
 
-#include "mainwindow/version.h"
 #include "ui_developeroptions.h"
 #include "ui_freqtimeplotdialog.h"
 #include "ui_manualinputdialog.h"
@@ -29,27 +28,23 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
   QFileInfo fileInfo(QCoreApplication::applicationDirPath() + "/config.ini");
   writeConfigInAppDirectory = fileInfo.exists();
 
-  for (int i : ApplicationVersion)
-    versionstring.append(QString(QString::number(i) + ".").toUtf8());
-  versionstring.remove(versionstring.length() - 1, 1);
-
   if (!writeConfigInAppDirectory) {
-    bool versionCahnged = true;
     configFilePath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/config.ini";
     QFile version(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/version.txt");
 
+    QVersionNumber configVersion(0, 0, 0);
+    QVersionNumber appVersion = QVersionNumber::fromString(QCoreApplication::applicationVersion());
     if (version.open(QIODevice::ReadOnly)) {
-      if (version.readAll() == versionstring)
-        versionCahnged = false;
+      configVersion = QVersionNumber::fromString(version.readAll());
       version.close();
     }
-    if (versionCahnged) {
-      qDebug() << "Version changed";
+    if (appVersion.majorVersion() != configVersion.majorVersion() || appVersion.minorVersion() != configVersion.minorVersion()) {
+      qDebug() << "Version changed, configuration will be reset";
       QDir dir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
       dir.removeRecursively();
       dir.mkpath(".");
       if (version.open(QIODevice::WriteOnly)) {
-        version.write(versionstring);
+        version.write(QCoreApplication::applicationVersion().toLocal8Bit());
         version.close();
       }
     }

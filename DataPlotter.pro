@@ -1,3 +1,5 @@
+VERSION = 3.1.2.0
+
 QT += core gui serialport widgets printsupport opengl qml quickwidgets \
     quick quickcontrols2 network
 
@@ -46,7 +48,6 @@ HEADERS += \
     mainwindow/appsettings.h \
     mainwindow/mainwindow.h \
     mainwindow/updatechecker.h \
-    mainwindow/version.h \
     manualinputdialog.h \
     math/averager.h \
     math/expressionparser.h \

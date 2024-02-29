@@ -903,7 +903,7 @@
            <enum>QTabWidget::Rounded</enum>
           </property>
           <property name="currentIndex">
-           <number>5</number>
+           <number>0</number>
           </property>
           <property name="iconSize">
            <size>
@@ -7080,6 +7080,19 @@
                    </property>
                   </widget>
                  </item>
+                 <item>
+                  <spacer name="verticalSpacer_11">
+                   <property name="orientation">
+                    <enum>Qt::Vertical</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>20</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
                 </layout>
                </item>
                <item>
@@ -7242,7 +7255,7 @@
            </size>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>3</number>
           </property>
           <property name="iconSize">
            <size>
@@ -8436,7 +8449,7 @@
             </item>
             <item>
              <layout class="QGridLayout" name="gridLayout_2">
-              <item row="7" column="0" colspan="2">
+              <item row="8" column="0" colspan="2">
                <widget class="QLabel" name="labelBuildDate">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
@@ -8452,10 +8465,20 @@
                 </property>
                </widget>
               </item>
+              <item row="6" column="0" colspan="2">
+               <widget class="QLabel" name="label_58">
+                <property name="text">
+                 <string>maierjir@fel.cvut.cz</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
               <item row="3" column="0" colspan="2">
                <widget class="QLabel" name="label_signature">
                 <property name="text">
-                 <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;©2020 - 2023 Jiří Maier&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;©2020 - 2024 Jiří Maier&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>
@@ -8472,10 +8495,16 @@
                 </property>
                </widget>
               </item>
-              <item row="6" column="0" colspan="2">
-               <widget class="QLabel" name="label_58">
+              <item row="7" column="0" colspan="2">
+               <widget class="QLabel" name="labelVersion">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
                 <property name="text">
-                 <string>maierjir@fel.cvut.cz</string>
+                 <string notr="true">Version:  ???</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>

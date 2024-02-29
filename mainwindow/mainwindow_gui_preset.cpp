@@ -117,6 +117,7 @@ void MainWindow::setGuiDefaults() {
   ui->tabsControll->setCurrentIndex(0);
   ui->comboBoxOutputLevel->setCurrentIndex((int)OutputLevel::warning);
   ui->labelBuildDate->setText(tr("Build: ") + QString(__DATE__) + " " + QString(__TIME__));
+  ui->labelVersion->setText(tr("Version: ") + QCoreApplication::applicationVersion());
   ui->pushButtonPause->setIcon(iconRun);
 
   on_pushButtonModeFull_clicked();

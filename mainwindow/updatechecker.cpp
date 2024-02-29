@@ -14,13 +14,21 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "updatechecker.h"
-#include "mainwindow/version.h"
+#include "global.h"
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
+#include <QVersionNumber>
+#include <qcoreapplication.h>
 
-UpdateChecker::UpdateChecker(QObject *parent) : QObject(parent) { qDebug() << "Using open SSL: " << QSslSocket::sslLibraryVersionString(); }
+UpdateChecker::UpdateChecker(QObject *parent) : QObject(parent) {
+
+  if (QSslSocket::sslLibraryVersionString().isEmpty())
+    qDebug() << "OpenSSL dll not found";
+  else
+    qDebug() << "Using OpenSSL: " << QSslSocket::sslLibraryVersionString();
+}
 
 void UpdateChecker::checkForUpdates(bool showOnlyPositiveResult) {
   onlyPosRes = showOnlyPositiveResult;
@@ -37,31 +45,26 @@ void UpdateChecker::checkForUpdates(bool showOnlyPositiveResult) {
 void UpdateChecker::onRequestFinished(QNetworkReply *reply) {
   if (reply->error() == QNetworkReply::NoError) {
     QByteArray response = reply->readAll();
+    reply->deleteLater();
     QJsonDocument doc = QJsonDocument::fromJson(response);
     QJsonObject obj = doc.object();
 
-    QString latestVersion = obj.value("tag_name").toString();
-    latestVersion.remove("v", Qt::CaseInsensitive);
-    QList<QString> version = latestVersion.split('.');
+    QString latestVersionTag = obj.value("tag_name").toString();
+    latestVersionTag.remove("v", Qt::CaseInsensitive);
+    auto latestVersion = QVersionNumber::fromString(latestVersionTag);
 
-    int ApplicationVersion_length = sizeof(ApplicationVersion) / sizeof(ApplicationVersion[0]);
-    for (int i = 0; i < ApplicationVersion_length; i++) {
-      int gitVersion = version.length() >= i ? version.at(i).toInt() : 0;
-      int curVersion = ApplicationVersion_length >= i ? ApplicationVersion[i] : 0;
+    auto appVersion = QVersionNumber::fromString(QCoreApplication::applicationVersion());
 
-      if (gitVersion > curVersion) {
-        emit checkedVersion(true, tr("New version available: %1").arg(latestVersion));
-        return;
-      } else if (gitVersion < curVersion) {
-        if (!onlyPosRes)
-          emit checkedVersion(false, tr("Your version is higher than latest official release."));
-        return;
-      }
+    if (latestVersion > appVersion) {
+      emit checkedVersion(true, tr("New version available: %1\n Current version: %2").arg(latestVersion.toString(), appVersion.toString()));
+      return;
+    } else if (!onlyPosRes) {
+      if (latestVersion == appVersion)
+        emit checkedVersion(false, tr("You have the latest version (%1).").arg(appVersion.toString()));
+      else
+        emit checkedVersion(false, tr("Your version (%1) is higher than latest official release (%2).").arg(latestVersion.toString(), appVersion.toString()));
     }
-    if (!onlyPosRes)
-      emit checkedVersion(false, tr("You have the latest version."));
-    return;
-    reply->deleteLater();
+
   } else if (!onlyPosRes)
     emit checkedVersion(false, tr("Version check failed."));
 }
