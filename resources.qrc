@@ -100,12 +100,14 @@
         <file>fir/kaiser_x32.csv</file>
     </qresource>
     <qresource prefix="/">
-        <file>qml/ExampleQmlTerminal.qml</file>
+        <file>qml/ExampleQmlTerminalWindowsXPCompatible.qml</file>
         <file>qml/DefaultQmlTerminal.qml</file>
         <file>qml/DataPlotterComponents/ANSITerminal.qml</file>
         <file>qml/DataPlotterComponents/qmldir</file>
         <file>qml/DataPlotterComponents/MessageConsole.qml</file>
         <file>qml/DataPlotterComponents/SerialSender.qml</file>
+        <file>qml/ExampleQmlTerminal.qml</file>
+        <file>qml/DefaultQmlTerminalWindowsXPCompatible.qml</file>
     </qresource>
     <qresource prefix="/docs">
         <file>documentation/Data protocol guide cz.pdf</file>

@@ -1,8 +1,9 @@
-import QtQuick 2.15
-import QtQml 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Controls.Material 2.15
-import QtQuick.Layouts 1.15
+// These are maximum versions on Windows XP (Qt 5.7.1)
+import QtQuick 2.7
+import QtQml 2.0
+import QtQuick.Controls 2.0
+import QtQuick.Controls.Material 2.0
+import QtQuick.Layouts 1.2
 
 import "qrc:/qml/DataPlotterComponents"
 

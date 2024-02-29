@@ -53,12 +53,15 @@ DeveloperOptions::DeveloperOptions(QWidget *parent, QQuickWidget *qQuickWidget) 
   addColorToBlacklist("40");
   updateColorBlacklist();
 
-  QStringList files = {":/qml/DefaultQmlTerminal.qml", ":/qml/ExampleQmlTerminal.qml"};
+  QDir dir(":/qml/");
+  const QFileInfoList files = dir.entryInfoList(QStringList() << "*.qml", QDir::Files);
 
-  for (const QString &file : files) {
+  for (const auto &file : files) {
     auto newItem = new QListWidgetItem();
-    newItem->setText(addSpacesToCamelCase(file.mid(file.lastIndexOf('/') + 1).replace(".qml", "")).replace("qml", "QML", Qt::CaseInsensitive));
-    newItem->setData(Qt::UserRole, file);
+    newItem->setText(addSpacesToCamelCase(file.fileName().mid(file.fileName().lastIndexOf('/') + 1).replace(".qml", "")).replace("qml", "QML", Qt::CaseInsensitive));
+    newItem->setText(newItem->text().replace("Windows X P", "Windows XP"));
+    newItem->setText(newItem->text().replace("Win X P", "WinXP"));
+    newItem->setData(Qt::UserRole, file.absoluteFilePath());
     ui->listWidgetQMLFiles->addItem(newItem);
   }
 }

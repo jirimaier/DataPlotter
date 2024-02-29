@@ -41,7 +41,13 @@ void MainWindow::initQmlTerminal() {
   resetQmlTerminal();
 }
 
-void MainWindow::resetQmlTerminal() { loadQmlFile(QUrl::fromLocalFile(":/qml/DefaultQmlTerminal.qml")); }
+void MainWindow::resetQmlTerminal() {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
+  loadQmlFile(QUrl::fromLocalFile(":/qml/DefaultQmlTerminal.qml"));
+#else
+  loadQmlFile(QUrl::fromLocalFile(":/qml/DefaultQmlTerminalWindowsXPCompatible.qml"));
+#endif
+}
 
 void MainWindow::loadCompressedQml(QByteArray data) {
   data = COBS::decode(data);
