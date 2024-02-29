@@ -234,6 +234,9 @@ void MainWindow::on_pushButtonXY_toggled(bool checked) {
   else
     updateXY();
 
+  double range = 1.5 * qMax(ui->plot->yAxis->range().upper, -ui->plot->yAxis->range().lower);
+  ui->plotxy->setMaxZoomX(QCPRange(-range, range), true);
+  ui->plotxy->setMaxZoomY(QCPRange(-range, range), true);
   setPlotLayout("all");
 }
 
@@ -412,6 +415,10 @@ void MainWindow::on_doubleSpinBoxRangeVerticalRange_valueChanged(double arg1) {
   ui->doubleSpinBoxViewCenter->blockSignals(false);
 
   ui->plot->setVRange(range);
+
+  double xyrange = 1.5 * qMax(ui->plot->yAxis->range().upper, -ui->plot->yAxis->range().lower);
+  ui->plotxy->setMaxZoomX(QCPRange(-xyrange, xyrange), false);
+  ui->plotxy->setMaxZoomY(QCPRange(-xyrange, xyrange), false);
 }
 
 void MainWindow::pushButtonClearAll_clicked() {

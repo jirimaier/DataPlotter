@@ -32,8 +32,6 @@ public:
 
 private:
   QSharedPointer<QCPCurveDataContainer> pauseBuffer;
-  bool autoSize = true;
-  void autoset();
   void updateTracerText();
   bool rangeUnknown = true;
 

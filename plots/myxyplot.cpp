@@ -32,8 +32,6 @@ MyXYPlot::~MyXYPlot() {}
 
 void MyXYPlot::newData(QSharedPointer<QCPCurveDataContainer> data) {
   graphXY->setData(data);
-  if (autoSize)
-    autoset();
   this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
 
   // Přepsat text u traceru
@@ -91,22 +89,6 @@ QByteArray MyXYPlot::exportCSV(char separator, char decimal, int precision) {
     output.append('\n');
   }
   return output;
-}
-
-void MyXYPlot::autoset() {
-  bool foundrange, foundrange2;
-  QCPRange yRange = graphXY->data()->valueRange(foundrange);
-  QCPRange xRange = graphXY->data()->keyRange(foundrange2);
-  if (foundrange && foundrange2) {
-    yRange.lower = floorToNiceValue(yRange.lower);
-    yRange.upper = ceilToNiceValue(yRange.upper);
-    xRange.lower = floorToNiceValue(xRange.lower);
-    xRange.upper = ceilToNiceValue(xRange.upper);
-    setMaxZoomX(xRange, rangeUnknown || xRange.lower < maxZoomX.lower || xRange.upper > maxZoomX.upper);
-    setMaxZoomY(yRange, rangeUnknown || yRange.lower < maxZoomY.lower || yRange.upper > maxZoomY.upper);
-    rangeUnknown = false;
-  } else
-    rangeUnknown = true;
 }
 
 void MyXYPlot::updateTracerText() {
