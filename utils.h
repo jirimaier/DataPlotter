@@ -81,6 +81,7 @@ struct UnitOfMeasure {
     else
       return UnitOfMeasure("!/" + text);
   }
+  bool isDecibell() { return text.left(2) == "dB"; }
 };
 
 struct ValueType {

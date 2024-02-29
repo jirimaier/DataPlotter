@@ -201,11 +201,11 @@ void MyFFTPlot::autoset() {
   double xMax = *std::max_element(xMaxs.begin(), xMaxs.end());
   double xMin = *std::max_element(xMins.begin(), xMins.end());
 
-  if (getYUnit().text == "dB") {
-    yMax = ceil(yMax / 10.0) * 10.0 + 10;
+  if (getYUnit().isDecibell()) {
+    yMax = ceil(yMax / 10.0) * 10.0 + 20;
     yMin = yMax - 120;
   } else {
-    yMax = ceilToNiceValue(yMax);
+    yMax = ceilToNiceValue(1.5 * yMax);
     yMin = 0;
   }
 
