@@ -99,8 +99,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
   QSize screenSize = QApplication::primaryScreen()->size();
   if (screenSize.width() <= 1024)
     this->resize(1024, 768);
-  else
+  else {
     this->resize(1365, 1024);
+    // This has no exact effect, but ensures that the width of tab panels is enough (to not change when switching tabs)
+    ui->splitter->setSizes(QList<int>({9, 1}));
+  }
   on_radioButtonDark_toggled(ui->radioButtonDark->isChecked());
 
   auto newItem = new QListWidgetItem();
