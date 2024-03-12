@@ -294,7 +294,7 @@ QString floatToNiceString(double d, int significantDigits, bool justify, bool ju
 
     if (unit.mode == UnitOfMeasure::noPrefix) {
     noPrefix:
-      text = QString::number(d, 'g', significantDigits) + (justifyUnit ? "  " : " ");
+      text = toSignificantDigits(d, significantDigits, noDecimalsIfInteger) + (justifyUnit ? "  " : " ");
       goto final_justify;
     }
 
