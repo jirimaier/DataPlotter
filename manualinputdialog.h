@@ -19,6 +19,7 @@
 #include "global.h"
 #include "math/variableexpressionparser.h"
 #include "qicon.h"
+#include "qtablewidget.h"
 #include "qtimer.h"
 #include <QDialog>
 
@@ -41,9 +42,13 @@ public slots:
 private slots:
   void on_doubleSpinBoxRollingFreq_valueChanged(double arg1);
   void on_pushButtonRolling_clicked();
+  void on_pushButtonOsc_clicked();
   void rollingDataTimerRoutine();
+  void oscDataTimerRoutine();
   void on_tableWidgetRollingSetup_cellChanged(int row, int column);
+  void on_tableWidgetOscSetup_cellChanged(int row, int column);
   void on_pushButtonRollingResetTime_clicked();
+  void initTable(QTableWidget &table);
 
 signals:
   void sendManualInput(QByteArray bytes);
@@ -51,14 +56,19 @@ signals:
 private:
   Ui::ManualInputDialog *ui;
   QTimer rollingTimer;
+  QTimer oscTimer;
   QIcon iconRun;
   QIcon iconPause;
   QList<VariableExpressionParser *> rollingChannelEvaluators;
+  QList<VariableExpressionParser *> oscChannelEvaluators;
   double rollingTimestamp = 0;
+  double oscTimestamp = 0;
   QJSEngine rollingEngine;
+  QJSEngine oscEngine;
 
-  void setRollingExprRows(int rows);
+  void setExprRows(QTableWidget *table, int rows);
   void initRollingTable();
+  void initOscTable();
 };
 
 #endif // MANUALINPUTDIALOG_H
