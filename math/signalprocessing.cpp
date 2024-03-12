@@ -15,9 +15,7 @@
 
 #include "signalprocessing.h"
 
-SignalProcessing::SignalProcessing(QObject* parent) : QObject(parent) {
-
-}
+SignalProcessing::SignalProcessing(QObject *parent) : QObject(parent) {}
 
 void SignalProcessing::resizeHamming(int length) {
   if (hamming.size() != length) {
@@ -123,8 +121,8 @@ void SignalProcessing::getFFTPlot(QSharedPointer<QCPGraphDataContainer> data, FF
   else if (type == FFTType::pwelch) {
     // Výpočet periodogramu Welchovou metodou
 
-    //Rozdělení na segmenty s 50% překryvem
-    // Kolik půl-segmentů se vejde?
+    // Rozdělení na segmenty s 50% překryvem
+    //  Kolik půl-segmentů se vejde?
     int halfSegmentLength = data->size() / segmentCount;
     // Pokud je počet půlsegmentů sudý, poslední překryvný se nevejde, bude o jeden méně, než se chtělo
     // |___ ___ ___ ___ ___ _|
@@ -141,7 +139,7 @@ void SignalProcessing::getFFTPlot(QSharedPointer<QCPGraphDataContainer> data, FF
     QVector<QVector<std::complex<double>>> segments;
     segments.resize(segmentCount);
     for (int i = 0; i < segments.size(); i++) {
-      for (int j = i * halfSegmentLength; j < (i + 2)*halfSegmentLength; j++)
+      for (int j = i * halfSegmentLength; j < (i + 2) * halfSegmentLength; j++)
         segments[i].append(std::complex<double>(data->at(j)->value, 0));
     }
 
@@ -173,7 +171,7 @@ void SignalProcessing::getFFTPlot(QSharedPointer<QCPGraphDataContainer> data, FF
       for (int j = 0; j < segments.size(); j++)
         // Přičte k value |x|^2, Výpočet |x|^2 jako x * komplexně sdružené x;
         value += (segments.at(j).at(i) * std::complex<double>(segments.at(j).at(i).real(), -segments.at(j).at(i).imag())).real();
-      //Přidá do výsledku bod - součet hodnot ze segmentů dělený nfft a počtem segmentů. V dB.
+      // Přidá do výsledku bod - součet hodnot ze segmentů dělený nfft a počtem segmentů. V dB.
       result->add(QCPGraphData(freq, 10 * log10(value / normalizationSquared / segments.size())));
     }
     emit fftResult(result);
@@ -205,10 +203,28 @@ QVector<std::complex<double>> SignalProcessing::calculateSpectrum(QVector<std::c
 
 void SignalProcessing::process(QSharedPointer<QCPGraphDataContainer> data) {
   bool rangefound = false; // Nevyužité, ale je potřeba do funkcí co hledají max/min
-  double max = data->valueRange(rangefound).upper;
-  double min = data->valueRange(rangefound).lower;
+  auto valRange = data->valueRange(rangefound);
+  double max = valRange.upper;
+  double min = valRange.lower;
+
+  double dc_full = 0;
+  for (QCPGraphDataContainer::iterator it = data->begin(); it != data->end(); it++)
+    dc_full += it->value;
+  dc_full /= data->size();
 
   double fs = (data->size() - 1) / (data->at(data->size() - 1)->key - data->at(0)->key);
+
+  double freq = getStrongestFreq(data, dc_full, fs);
+
+  double period = 1.0 / freq;
+
+  int samples = data->size();
+
+  // Remove non-integer period part from beginning of signal
+  auto keyRange = data->keyRange(rangefound);
+  double N_periods = floor(keyRange.size() / period);
+  if (!qIsNull(N_periods) && !qIsInf(N_periods))
+    data->removeBefore(data->at(data->size() - 1)->key - N_periods * period);
 
   // Stejnosměrná složka
   double dc = 0;
@@ -223,14 +239,9 @@ void SignalProcessing::process(QSharedPointer<QCPGraphDataContainer> data) {
   vrms /= data->size();
   vrms = sqrt(vrms);
 
-  double freq = getStrongestFreq(data, dc, fs);
-
-  double period = 1.0 / freq;
-
-  int samples = data->size();
-
-  // Od teď se počítá jen v posledními dvěma periodami !!!
-  data->removeBefore(data->at(data->size() - 1)->key - 2.0 * period);
+  // Od teď se počítá jen s posledními dvěma periodami !!!
+  if (N_periods > 2 && !qIsInf(N_periods))
+    data->removeBefore(data->at(data->size() - 1)->key - 2.0 * period);
 
   auto risefall = getRiseFall(data);
 
@@ -238,7 +249,6 @@ void SignalProcessing::process(QSharedPointer<QCPGraphDataContainer> data) {
 }
 
 double SignalProcessing::getStrongestFreq(QSharedPointer<QCPGraphDataContainer> data, double dc, double fs) {
-
 
   // Prostě udělám FFT (po odečtení DC) a najdu globální maximum
   QVector<std::complex<double>> acValues;
@@ -268,7 +278,7 @@ double SignalProcessing::getStrongestFreq(QSharedPointer<QCPGraphDataContainer> 
     int aproxIndex = fs / freq;
     int aproxMin = (aproxIndex * 90) / 100;
     int aproxMax = (aproxIndex * 110) / 100;
-    acValues.resize(data->size()); //Odstranění doplněných nul
+    acValues.resize(data->size()); // Odstranění doplněných nul
 
     int N = acValues.size();
 
@@ -346,4 +356,3 @@ QPair<double, double> SignalProcessing::getRiseFall(QSharedPointer<QCPGraphDataC
   }
   return risefall;
 }
-
