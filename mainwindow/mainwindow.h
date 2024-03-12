@@ -203,8 +203,8 @@ private slots: // Autoconnect slots
   void on_comboBoxLogic2_currentIndexChanged(int index) { emit setChDigital(2, ui->pushButtonLog2->isChecked() ? index + 1 : 0); }
   void on_pushButtonPlotImage_clicked();
   void on_pushButtonXYImage_clicked();
-  void on_checkBoxCur1Visible_stateChanged(int arg1) { on_checkBoxCurXXXVisible_stateChanged(1, arg1); }
-  void on_checkBoxCur2Visible_stateChanged(int arg1) { on_checkBoxCurXXXVisible_stateChanged(2, arg1); }
+  void on_checkBoxCur1XMode_stateChanged(int arg1) { on_checkBoxCurXXXVisible_stateChanged(1, arg1); }
+  void on_checkBoxCur2XMode_stateChanged(int arg1) { on_checkBoxCurXXXVisible_stateChanged(2, arg1); }
   void on_pushButtonChangeChColor_clicked();
   void on_pushButtonInvert_toggled(bool checked);
   void on_pushButtonHideCh_toggled(bool checked);
@@ -240,8 +240,8 @@ private slots: // Autoconnect slots
   void on_lineEditVUnit_textChanged(const QString &arg1);
   void on_pushButtonClearReceivedList_3_clicked() { serialMonitor.clear(); }
   void on_pushButtonScrollDown_3_clicked();
-  void on_checkBoxYCur1_stateChanged(int arg1) { on_checkBoxYCurXXX_stateChanged(1, arg1); }
-  void on_checkBoxYCur2_stateChanged(int arg1) { on_checkBoxYCurXXX_stateChanged(2, arg1); }
+  void on_checkBoxCur1YMode_stateChanged(int arg1) { on_checkBoxYCurXXX_stateChanged(1, arg1); }
+  void on_checkBoxCur2YMode_stateChanged(int arg1) { on_checkBoxYCurXXX_stateChanged(2, arg1); }
   void on_doubleSpinBoxYCur1_valueChanged(double arg1) { on_doubleSpinBoxYCurXXX_valueChanged(1, arg1); }
   void on_doubleSpinBoxYCur2_valueChanged(double arg1) { on_doubleSpinBoxYCurXXX_valueChanged(2, arg1); }
   void on_doubleSpinBoxXCur1_valueChanged(double arg1) { on_doubleSpinBoxXCurXXX_valueChanged(1, arg1); }

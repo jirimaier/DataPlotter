@@ -433,13 +433,13 @@ void MainWindow::on_comboBoxBaud_editTextChanged(const QString &arg1) {
 }
 
 void MainWindow::on_pushButtonHideCur1_clicked() {
-  ui->checkBoxCur1Visible->setCheckState(Qt::CheckState::Unchecked);
-  ui->checkBoxYCur1->setCheckState(Qt::CheckState::Unchecked);
+  ui->checkBoxCur1XMode->setCheckState(Qt::CheckState::Unchecked);
+  ui->checkBoxCur1YMode->setCheckState(Qt::CheckState::Unchecked);
 }
 
 void MainWindow::on_pushButtonHideCur2_clicked() {
-  ui->checkBoxCur2Visible->setCheckState(Qt::CheckState::Unchecked);
-  ui->checkBoxYCur2->setCheckState(Qt::CheckState::Unchecked);
+  ui->checkBoxCur2XMode->setCheckState(Qt::CheckState::Unchecked);
+  ui->checkBoxCur2YMode->setCheckState(Qt::CheckState::Unchecked);
 }
 
 void MainWindow::on_pushButtonAvg_toggled(bool checked) {

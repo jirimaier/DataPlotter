@@ -22,14 +22,14 @@ void MainWindow::updateCursorRange() {
     auto hstc = ui->horizontalSliderTimeCur1;
     auto cbc = ui->comboBoxCursor1Channel;
     auto dsbx = ui->doubleSpinBoxXCur1;
-    auto cbcv = ui->checkBoxCur1Visible;
+    auto cbcv = ui->checkBoxCur1XMode;
     auto cur = Cursor1;
 
     if (n == 2) {
       hstc = ui->horizontalSliderTimeCur2;
       cbc = ui->comboBoxCursor2Channel;
       dsbx = ui->doubleSpinBoxXCur2;
-      cbcv = ui->checkBoxCur2Visible;
+      cbcv = ui->checkBoxCur2XMode;
       cur = Cursor2;
     }
 
@@ -70,19 +70,19 @@ void MainWindow::updateCursors() {
   for (int n : {1, 2}) {
     auto cbcc = ui->comboBoxCursor1Channel;
     auto hstc = ui->horizontalSliderTimeCur1;
-    auto cbyc = ui->checkBoxYCur1;
+    auto cbyc = ui->checkBoxCur1YMode;
     auto lct = ui->labelCur1Time;
     auto lcv = ui->labelCur1Val;
-    auto cbcv = ui->checkBoxCur1Visible;
+    auto cbcv = ui->checkBoxCur1XMode;
     auto cursor = Cursor1;
 
     if (n == 2) {
       cbcc = ui->comboBoxCursor2Channel;
       hstc = ui->horizontalSliderTimeCur2;
-      cbyc = ui->checkBoxYCur2;
+      cbyc = ui->checkBoxCur2YMode;
       lct = ui->labelCur2Time;
       lcv = ui->labelCur2Val;
-      cbcv = ui->checkBoxCur2Visible;
+      cbcv = ui->checkBoxCur2XMode;
       cursor = Cursor2;
     }
 
@@ -112,7 +112,7 @@ void MainWindow::updateCursorMeasurementsText() {
 
   int ch1 = ui->comboBoxCursor1Channel->currentIndex();
   int ch2 = ui->comboBoxCursor2Channel->currentIndex();
-  if (ui->checkBoxCur1Visible->checkState() != Qt::CheckState::Unchecked && ui->checkBoxCur2Visible->checkState() != Qt::CheckState::Unchecked) {
+  if (ui->checkBoxCur1XMode->checkState() != Qt::CheckState::Unchecked && ui->checkBoxCur2XMode->checkState() != Qt::CheckState::Unchecked) {
     double time1 = IS_FFT_INDEX(ch1) ? ui->plotFFT->getTimeCursorPosition(Cursor1) : ui->plot->getTimeCursorPosition(Cursor1);
     double time2 = IS_FFT_INDEX(ch2) ? ui->plotFFT->getTimeCursorPosition(Cursor2) : ui->plot->getTimeCursorPosition(Cursor2);
     double value1 = IS_FFT_INDEX(ch1) ? ui->plotFFT->getValueCursorPosition(Cursor1) : ui->plot->getValueCursorPosition(Cursor1);
@@ -253,8 +253,8 @@ void MainWindow::on_checkBoxCurXXXVisible_stateChanged(int n, int arg1) {
   Q_ASSERT(n == 1 || n == 2);
 
   auto cbcc = ui->comboBoxCursor1Channel;
-  auto cbcv = ui->checkBoxCur1Visible;
-  auto cbyc = ui->checkBoxYCur1;
+  auto cbcv = ui->checkBoxCur1XMode;
+  auto cbyc = ui->checkBoxCur1YMode;
   auto dsbxc = ui->doubleSpinBoxXCur1;
   auto hstc = ui->horizontalSliderTimeCur1;
   auto lct = ui->labelCur1Time;
@@ -263,8 +263,8 @@ void MainWindow::on_checkBoxCurXXXVisible_stateChanged(int n, int arg1) {
 
   if (n == 2) {
     cbcc = ui->comboBoxCursor2Channel;
-    cbcv = ui->checkBoxCur2Visible;
-    cbyc = ui->checkBoxYCur2;
+    cbcv = ui->checkBoxCur2XMode;
+    cbyc = ui->checkBoxCur2YMode;
     dsbxc = ui->doubleSpinBoxXCur2;
     hstc = ui->horizontalSliderTimeCur2;
     lct = ui->labelCur2Time;
@@ -306,16 +306,16 @@ void MainWindow::on_checkBoxCurXXXVisible_stateChanged(int n, int arg1) {
 void MainWindow::on_comboBoxCursorXXXChannel_currentIndexChanged(int n, int index) {
   Q_ASSERT(n == 1 || n == 2);
 
-  auto cbcv = ui->checkBoxCur1Visible;
-  auto cbyc = ui->checkBoxYCur1;
+  auto cbcv = ui->checkBoxCur1XMode;
+  auto cbyc = ui->checkBoxCur1YMode;
   auto dsbxc = ui->doubleSpinBoxXCur1;
   auto hstc = ui->horizontalSliderTimeCur1;
   auto dsby = ui->doubleSpinBoxYCur1;
   auto cur = Cursor1;
 
   if (n == 2) {
-    cbcv = ui->checkBoxCur2Visible;
-    cbyc = ui->checkBoxYCur2;
+    cbcv = ui->checkBoxCur2XMode;
+    cbyc = ui->checkBoxCur1YMode;
     dsbxc = ui->doubleSpinBoxXCur2;
     hstc = ui->horizontalSliderTimeCur2;
     dsby = ui->doubleSpinBoxYCur2;
@@ -330,13 +330,13 @@ void MainWindow::on_comboBoxCursorXXXChannel_currentIndexChanged(int n, int inde
   setCursorsVisibility(cur, index, cbcv->checkState() != Qt::CheckState::Unchecked, cbyc->checkState());
   if (IS_FFT_INDEX(index)) {
     dsbxc->setSuffix(tr("Hz"));
-    cbcv->setText(tr("Frequency"));
+    // cbcv->setText(tr("Frequency"));
     if (ui->comboBoxFFTType->currentIndex() == FFTType::spectrum)
       dsby->setSuffix("");
     else
       dsby->setSuffix("dB");
   } else {
-    cbcv->setText(tr("Time"));
+    // cbcv->setText(tr("Time"));
     dsbxc->setSuffix(tr("s"));
     dsby->setSuffix(ui->lineEditVUnit->text());
   }
@@ -353,11 +353,11 @@ void MainWindow::horizontalSliderTimeCurXXX_realValueChanged(int n, int arg1) {
   Q_ASSERT(n == 1 || n == 2);
 
   auto lcs = ui->labelCur1Sample;
-  auto cbcv = ui->checkBoxCur1Visible;
+  auto cbcv = ui->checkBoxCur1XMode;
 
   if (n == 2) {
     lcs = ui->labelCur2Sample;
-    cbcv = ui->checkBoxCur2Visible;
+    cbcv = ui->checkBoxCur2XMode;
   }
 
   lcs->setText(QString::number(arg1));
@@ -366,12 +366,12 @@ void MainWindow::horizontalSliderTimeCurXXX_realValueChanged(int n, int arg1) {
 }
 
 void MainWindow::timeCursorMovedByMouse(Cursors::enumCursors cursor, int sample, double value) {
-  auto cbcv = ui->checkBoxCur1Visible;
+  auto cbcv = ui->checkBoxCur1XMode;
   auto hstc = ui->horizontalSliderTimeCur1;
   auto dsbc = ui->doubleSpinBoxXCur1;
 
   if (cursor == Cursor2) {
-    cbcv = ui->checkBoxCur2Visible;
+    cbcv = ui->checkBoxCur2XMode;
     hstc = ui->horizontalSliderTimeCur2;
     dsbc = ui->doubleSpinBoxXCur2;
   }
@@ -383,11 +383,11 @@ void MainWindow::timeCursorMovedByMouse(Cursors::enumCursors cursor, int sample,
 }
 
 void MainWindow::valueCursorMovedByMouse(enumCursors cursor, double value) {
-  auto cbyc = ui->checkBoxYCur1;
+  auto cbyc = ui->checkBoxCur1YMode;
   auto dsby = ui->doubleSpinBoxYCur1;
 
   if (cursor == Cursor2) {
-    cbyc = ui->checkBoxYCur2;
+    cbyc = ui->checkBoxCur2YMode;
     dsby = ui->doubleSpinBoxYCur2;
   }
 
@@ -400,14 +400,14 @@ void MainWindow::cursorSetByMouse(int chid, Cursors::enumCursors cursor, int sam
   int n = (cursor == Cursor1 ? 1 : 2);
 
   auto cbcc = ui->comboBoxCursor1Channel;
-  auto cbcv = ui->checkBoxCur1Visible;
-  auto cbyc = ui->checkBoxYCur1;
+  auto cbcv = ui->checkBoxCur1XMode;
+  auto cbyc = ui->checkBoxCur1YMode;
   auto hstc = ui->horizontalSliderTimeCur1;
 
   if (n == 2) {
     cbcc = ui->comboBoxCursor2Channel;
-    cbcv = ui->checkBoxCur2Visible;
-    cbyc = ui->checkBoxYCur2;
+    cbcv = ui->checkBoxCur2XMode;
+    cbyc = ui->checkBoxCur2YMode;
     hstc = ui->horizontalSliderTimeCur2;
   }
 
@@ -434,16 +434,16 @@ void MainWindow::on_checkBoxYCurXXX_stateChanged(int n, int arg1) {
   Q_ASSERT(n == 1 || n == 2);
 
   auto cbcc = ui->comboBoxCursor1Channel;
-  auto cbcv = ui->checkBoxCur1Visible;
-  auto cbyc = ui->checkBoxYCur1;
+  auto cbcv = ui->checkBoxCur1XMode;
+  auto cbyc = ui->checkBoxCur1YMode;
   auto lcv = ui->labelCur1Val;
   auto dsby = ui->doubleSpinBoxYCur1;
   auto cur = Cursor1;
 
   if (n == 2) {
     cbcc = ui->comboBoxCursor2Channel;
-    cbcv = ui->checkBoxCur2Visible;
-    cbyc = ui->checkBoxYCur2;
+    cbcv = ui->checkBoxCur2XMode;
+    cbyc = ui->checkBoxCur2YMode;
     lcv = ui->labelCur2Val;
     dsby = ui->doubleSpinBoxYCur2;
     cur = Cursor2;

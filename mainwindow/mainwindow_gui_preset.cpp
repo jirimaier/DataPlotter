@@ -177,6 +177,11 @@ void MainWindow::setGuiDefaults() {
 
   ui->comboBoxFIR->setCurrentIndex(0);
   on_comboBoxFIR_currentIndexChanged(0); // Interpolátor načte filtr
+
+  ui->checkBoxCur1XMode->setLabels(tr("OFF"), tr("Sample"), tr("Free"));
+  ui->checkBoxCur2XMode->setLabels(tr("OFF"), tr("Sample"), tr("Free"));
+  ui->checkBoxCur1YMode->setLabels(tr("OFF"), tr("Track"), tr("Free"));
+  ui->checkBoxCur2YMode->setLabels(tr("OFF"), tr("Track"), tr("Free"));
 }
 
 void MainWindow::setGuiArrays() {

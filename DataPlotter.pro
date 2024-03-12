@@ -33,6 +33,7 @@ HEADERS += \
     communication/serialreader.h \
     communication/serialsettingsdialog.h \
     communication/telnetserver.h \
+    customwidgets/checkbuttons.h \
     customwidgets/clickablelabel.h \
     customwidgets/mycursorslider.h \
     customwidgets/mydial.h \
@@ -79,6 +80,7 @@ SOURCES += \
     communication/serialreader.cpp \
     communication/serialsettingsdialog.cpp \
     communication/telnetserver.cpp \
+    customwidgets/checkbuttons.cpp \
     customwidgets/clickablelabel.cpp \
     customwidgets/mycursorslider.cpp \
     customwidgets/mydial.cpp \
