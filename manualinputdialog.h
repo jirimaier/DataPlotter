@@ -50,6 +50,8 @@ private slots:
   void on_pushButtonRollingResetTime_clicked();
   void initTable(QTableWidget &table);
 
+  void on_pushButton_clicked();
+
 signals:
   void sendManualInput(QByteArray bytes);
 

@@ -18,15 +18,18 @@
 #include "ui_manualinputdialog.h"
 
 void ManualInputDialog::initRollingTable() {
+  ui->tabWidget->setCurrentIndex(0);
+
   initTable(*ui->tableWidgetRollingSetup);
   setExprRows(ui->tableWidgetRollingSetup, 3);
   ui->tableWidgetRollingSetup->setItem(0, 0, new QTableWidgetItem("5*sin(2*Pi*t)"));
   ui->tableWidgetRollingSetup->setItem(1, 0, new QTableWidgetItem("2*cos(2*Pi*t) + 0.1*random()*sin(100*t)"));
 
   initTable(*ui->tableWidgetOscSetup);
-  setExprRows(ui->tableWidgetOscSetup, 3);
+  setExprRows(ui->tableWidgetOscSetup, 4);
   ui->tableWidgetOscSetup->setItem(0, 0, new QTableWidgetItem("5*sin(2*Pi*1e3*t)"));
   ui->tableWidgetOscSetup->setItem(1, 0, new QTableWidgetItem("2*cos(2*Pi*2e3*t + time)"));
+  ui->tableWidgetOscSetup->setItem(2, 0, new QTableWidgetItem("sin(time) // \"time\" counts seconds since start of simulation"));
 }
 
 ManualInputDialog::ManualInputDialog(QWidget *parent) : QDialog(parent), ui(new Ui::ManualInputDialog) {
@@ -57,7 +60,9 @@ ManualInputDialog::~ManualInputDialog() {
 
 void ManualInputDialog::stopAll() {
   rollingTimer.stop();
+  oscTimer.stop();
   ui->pushButtonRolling->setIcon(iconPause);
+  ui->pushButtonOsc->setIcon(iconPause);
 }
 
 Ui::ManualInputDialog *ManualInputDialog::getUi() const { return ui; }
@@ -78,6 +83,7 @@ void ManualInputDialog::on_pushButtonOsc_clicked() {
   else
     oscTimer.start(100);
   ui->pushButtonOsc->setIcon(oscTimer.isActive() ? iconRun : iconPause);
+  oscTimestamp = 0;
 }
 
 void ManualInputDialog::rollingDataTimerRoutine() {
@@ -202,4 +208,13 @@ void ManualInputDialog::initTable(QTableWidget &table) {
     if (table.rowCount() > 2)
       this->setExprRows(&table, table.rowCount() - 1);
   });
+}
+
+void ManualInputDialog::on_pushButton_clicked() {
+  int len = 256 * 2;
+  QByteArray data = QString("$$L,1,%1;U1").arg(len).toLocal8Bit();
+  for (int i = 0; i < len; i++)
+    data.append(static_cast<char>(i));
+  data.append(";");
+  emit sendManualInput(data);
 }
