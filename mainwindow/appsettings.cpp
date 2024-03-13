@@ -22,7 +22,7 @@ AppSettings::AppSettings(MainWindow *parent) : QObject{parent} {
   mainwindow = parent; // Range
   setables["vrange"] = {mainwindow->ui->doubleSpinBoxRangeVerticalRange, false};
   setables["hrange"] = {mainwindow->ui->doubleSpinBoxRangeHorizontal, false};
-  setables["vcenter"] = {mainwindow->ui->doubleSpinBoxChOffset, false};
+  setables["vcenter"] = {mainwindow->ui->doubleSpinBoxViewCenter, false};
 
   // Plot settings
   setables["vaxis"] = {mainwindow->ui->checkBoxVerticalValues, false};
