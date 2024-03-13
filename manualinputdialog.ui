@@ -13,11 +13,11 @@
   <property name="windowTitle">
    <string>Simulated data input</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout_4">
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>2</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="Rolling">
       <attribute name="title">
@@ -370,6 +370,13 @@
        </item>
       </layout>
      </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="pushButtonClearAll">
+     <property name="text">
+      <string>Clear plot</string>
+     </property>
     </widget>
    </item>
   </layout>

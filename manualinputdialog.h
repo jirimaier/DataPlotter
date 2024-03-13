@@ -52,6 +52,8 @@ private slots:
 
   void on_pushButton_clicked();
 
+  void on_pushButtonClearAll_clicked();
+
 signals:
   void sendManualInput(QByteArray bytes);
 

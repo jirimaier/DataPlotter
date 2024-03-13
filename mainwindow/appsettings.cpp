@@ -149,6 +149,10 @@ void AppSettings::useSettings(QByteArray settings, MessageTarget::enumMessageTar
     mainwindow->ui->plot->clearLogicGroup(2, 0);
   }
 
+  else if (settings == "clearall") {
+    dynamic_cast<MainWindow *>(parent())->pushButtonClearAll_clicked();
+  }
+
   else if (settings == "noopengldialog") {
     recommendOpenGL = false;
   }

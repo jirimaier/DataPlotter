@@ -113,6 +113,7 @@
         <file>documentation/Data protocol guide cz.pdf</file>
         <file>documentation/Data protocol guide en.pdf</file>
         <file>documentation/license.txt</file>
-        <file>documentation/Manual.pdf</file>
+        <file>documentation/Manual cz.pdf</file>
+        <file>documentation/Manual en.pdf</file>
     </qresource>
 </RCC>

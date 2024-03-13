@@ -218,3 +218,5 @@ void ManualInputDialog::on_pushButton_clicked() {
   data.append(";");
   emit sendManualInput(data);
 }
+
+void ManualInputDialog::on_pushButtonClearAll_clicked() { emit sendManualInput("$$Sclearall;"); }
