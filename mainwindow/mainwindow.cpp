@@ -509,7 +509,7 @@ void MainWindow::on_pushButtonProtocolGuideCZ_clicked() { openResourceFileCopied
 
 void MainWindow::openResourceFileCopiedToLocal(QString file) {
   QFile resource(file);
-  QString local = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + file.mid(file.lastIndexOf('/'));
+  QString local = configFilePath.left(configFilePath.lastIndexOf('/') + 1) + file.mid(file.lastIndexOf('/'));
   resource.open(QIODevice::ReadOnly);
   QFile::remove(local);
   resource.copy(local);
