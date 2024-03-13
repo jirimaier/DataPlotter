@@ -59,7 +59,7 @@ QString DefaultPathManager::requestSaveFile(QWidget *dialogParent, QString title
     QMessageBox msgBox(dialogParent);
     msgBox.setText(QObject::tr("File is not writable!"));
     msgBox.setInformativeText(QObject::tr("This may be because file is opened in another program. Or the application "
-                                          "does not have permittion to write to this directory."));
+                                          "does not have permission to write to this directory."));
     msgBox.setDetailedText(fileName);
     msgBox.setIcon(QMessageBox::Critical);
     msgBox.exec();

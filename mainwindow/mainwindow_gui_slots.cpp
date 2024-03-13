@@ -67,7 +67,7 @@ void MainWindow::on_comboBoxGraphStyle_currentIndexChanged(int index) {
       msgBox.setButtonText(QMessageBox::Yes, tr("Yes"));
       msgBox.setButtonText(QMessageBox::No, tr("No"));
       auto checkBox = new QCheckBox(&msgBox);
-      checkBox->setText(tr("Dont show again"));
+      checkBox->setText(tr("Do not show again"));
       msgBox.setCheckBox(checkBox);
       int returnValue = msgBox.exec();
       if (returnValue == QMessageBox::Yes)

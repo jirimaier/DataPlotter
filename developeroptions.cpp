@@ -140,7 +140,7 @@ void DeveloperOptions::on_pushButtonTerminalBlacklistCopy_clicked() {
 
 void DeveloperOptions::on_pushButtonTerminalDebugShift_clicked() {
   bool ok;
-  int i = QInputDialog::getInt(this, "", tr("Shift content verticaly"), 0, -1000, 1000, 1, &ok, Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
+  int i = QInputDialog::getInt(this, "", tr("Shift content vertically"), 0, -1000, 1000, 1, &ok, Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
   if (!ok)
     return;
 

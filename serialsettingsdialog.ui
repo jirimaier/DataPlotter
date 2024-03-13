@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Aditional port settings</string>
+   <string>Additional port settings</string>
   </property>
   <property name="styleSheet">
    <string notr="true">QLabel {background-color: &quot;transparent&quot;}</string>

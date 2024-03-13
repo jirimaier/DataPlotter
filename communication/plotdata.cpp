@@ -313,7 +313,7 @@ void PlotData::addChannel(QPair<ValueType, QByteArray> data, unsigned int ch, QP
   double minimum = 0;
   if (!min.second.isEmpty()) {
     if (!remap)
-      sendMessageIfAllowed(tr("Minumum value is stated, but maximum is not").toUtf8(), tr("Value will not be remaped!").toUtf8(), MessageLevel::warning);
+      sendMessageIfAllowed(tr("Minimum value is stated, but maximum is not").toUtf8(), tr("Value will not be remapped!").toUtf8(), MessageLevel::warning);
     minimum = getValue(min, isok);
     if (!isok) {
       sendMessageIfAllowed(tr("Can not parse minimum value").toUtf8(), min.second, MessageLevel::error);

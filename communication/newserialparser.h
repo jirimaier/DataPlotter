@@ -70,7 +70,7 @@ private:
   void resetChHeader();
   bool channelHeaderRead = false;
   QPair<ValueType, QByteArray> channelTime;
-  QList<QPair<ValueType, QByteArray>> aditionalHeaderParameters;
+  QList<QPair<ValueType, QByteArray>> additionalHeaderParameters;
   uint32_t channelLength;
   QList<int> channelNumber;
   void fatalError(QString header, QByteArray message);
@@ -89,7 +89,7 @@ private:
   void parseMode(QChar modeChar);
   readResult bufferPullFull(QByteArray &result);
   void changeMode(DataMode::enumDataMode mode, DataMode::enumDataMode previousMode, QByteArray modeName);
-  readResult bufferPullBeforeSemicolumn(QByteArray &result, bool removeNewline = false);
+  readResult bufferPullBeforeSemicolon(QByteArray &result, bool removeNewline = false);
   readResult bufferReadPoint(QList<QPair<ValueType, QByteArray>> &result);
   uint32_t arrayToUint(QPair<ValueType, QByteArray> value);
   readResult bufferPullChannel(QPair<ValueType, QByteArray> &result);

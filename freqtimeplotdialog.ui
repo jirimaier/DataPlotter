@@ -150,7 +150,7 @@
          <item>
           <widget class="QPushButton" name="pushButtonSaveImage">
            <property name="text">
-            <string>Save as Inage</string>
+            <string>Save as Image</string>
            </property>
            <property name="icon">
             <iconset resource="resources.qrc">

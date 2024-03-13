@@ -30,7 +30,7 @@ void NewSerialParser::resetChHeader() {
   channelLength = 0;
   channelNumber.clear();
   channelTime.second.clear();
-  aditionalHeaderParameters.clear();
+  additionalHeaderParameters.clear();
 }
 
 void NewSerialParser::sendMessageIfAllowed(QString header, QByteArray message, MessageLevel::enumMessageLevel type) {
@@ -140,7 +140,7 @@ void NewSerialParser::parse(QByteArray newData) {
           continue;
         }
         if (result == notProperlyEnded) {
-          sendMessageIfAllowed(tr("Missing semicolumn ?"), pendingPointBuffer.last().second, MessageLevel::warning);
+          sendMessageIfAllowed(tr("Missing semicolon ?"), pendingPointBuffer.last().second, MessageLevel::warning);
           emit sendPoint(pendingPointBuffer);
           pendingPointBuffer.clear();
           continue;
@@ -172,7 +172,7 @@ void NewSerialParser::parse(QByteArray newData) {
           try {
             bits = arrayToUint(pendingPointBuffer.at(2));
           } catch (QString msg) {
-            throw(tr("Invallid logic point: ") + tr("Invalid number of bits - ") + msg);
+            throw(tr("Invalid logic point: ") + tr("Invalid number of bits - ") + msg);
           }
         } else
           bits = pendingPointBuffer.at(1).first.bytes * 8;
@@ -183,7 +183,7 @@ void NewSerialParser::parse(QByteArray newData) {
           continue;
         }
         if (result == notProperlyEnded) {
-          sendMessageIfAllowed(tr("Missing semicolumn ?"), pendingPointBuffer.last().second, MessageLevel::warning);
+          sendMessageIfAllowed(tr("Missing semicolon ?"), pendingPointBuffer.last().second, MessageLevel::warning);
           emit sendLogicPoint(pendingPointBuffer.at(0), pendingPointBuffer.at(1), bits);
           pendingPointBuffer.clear();
           continue;
@@ -238,7 +238,7 @@ void NewSerialParser::parse(QByteArray newData) {
                   }
                 }
               } catch (QString msg) {
-                throw(tr("Invallid channel: ") + tr("Invalid channel number - ") + msg);
+                throw(tr("Invalid channel: ") + tr("Invalid channel number - ") + msg);
               }
 
               channelTime = pendingPointBuffer.at(1);
@@ -246,22 +246,22 @@ void NewSerialParser::parse(QByteArray newData) {
               try {
                 channelLength = arrayToUint(pendingPointBuffer.at(2));
               } catch (QString msg) {
-                throw(tr("Invallid channel: ") + tr("Invalid channel length - ") + msg);
+                throw(tr("Invalid channel: ") + tr("Invalid channel length - ") + msg);
               }
 
               for (int i = 3; i < pendingPointBuffer.length(); i++) {
-                aditionalHeaderParameters.append(pendingPointBuffer.at(i));
+                additionalHeaderParameters.append(pendingPointBuffer.at(i));
               }
 
               pendingPointBuffer.clear();
 
             } else
-              throw(tr("Invallid channel: ") + tr("Wrong header length (%1 entries)").arg(pendingPointBuffer.length()));
+              throw(tr("Invalid channel: ") + tr("Wrong header length (%1 entries)").arg(pendingPointBuffer.length()));
           }
           if (result == incomplete)
             break;
           if (result == notProperlyEnded)
-            throw(tr("Invallid channel: ") + tr("Header not properly ended"));
+            throw(tr("Invalid channel: ") + tr("Header not properly ended"));
         }
         if (channelHeaderRead) {
           QPair<ValueType, QByteArray> channel;
@@ -276,79 +276,79 @@ void NewSerialParser::parse(QByteArray newData) {
             break;
 
           if (result == notProperlyEnded && debugLevel >= OutputLevel::warning) {
-            QByteArray semicolumPositionMessage = tr("(enable info messages to show nearest semicolum position)").toUtf8();
+            QByteArray semicolonPositionMessage = tr("(enable info messages to show nearest semicolon position)").toUtf8();
             if (debugLevel == OutputLevel::info) {
-              semicolumPositionMessage = tr("No semicolum found").toUtf8();
+              semicolonPositionMessage = tr("No semicolon found").toUtf8();
               if (buffer.contains(';') && channel.second.contains(';'))
-                semicolumPositionMessage = tr("There are semicolums %1 byte before and %2 after end.").arg(buffer.indexOf(';')).arg(channel.second.length() - channel.second.lastIndexOf(';')).toUtf8();
+                semicolonPositionMessage = tr("There are semicolons %1 byte before and %2 after end.").arg(buffer.indexOf(';')).arg(channel.second.length() - channel.second.lastIndexOf(';')).toUtf8();
               else {
                 if (channel.second.contains(';'))
-                  semicolumPositionMessage = tr("There is semicolum %1 bytes before end.").arg(channel.second.length() - channel.second.lastIndexOf(';')).toUtf8();
+                  semicolonPositionMessage = tr("There is semicolon %1 bytes before end.").arg(channel.second.length() - channel.second.lastIndexOf(';')).toUtf8();
                 if (buffer.contains(';'))
-                  semicolumPositionMessage = tr("There is semicolum %1 bytes after end.").arg(buffer.indexOf(';')).toUtf8();
+                  semicolonPositionMessage = tr("There is semicolon %1 bytes after end.").arg(buffer.indexOf(';')).toUtf8();
               }
             }
 
-            emit sendMessage(tr("Channel not ended with ';'"), semicolumPositionMessage, MessageLevel::warning, target);
+            emit sendMessage(tr("Channel not ended with ';'"), semicolonPositionMessage, MessageLevel::warning, target);
           }
 
           int zeroIndex = 0, channelBits = channel.first.bytes * 8;
           QPair<ValueType, QByteArray> channelMin, channelMax;
 
           if (channel.first.type == ValueType::Type::floatingpoint) {
-            if (!aditionalHeaderParameters.isEmpty()) {
-              if (aditionalHeaderParameters.size() == 1) {
+            if (!additionalHeaderParameters.isEmpty()) {
+              if (additionalHeaderParameters.size() == 1) {
                 try {
-                  zeroIndex = arrayToUint(aditionalHeaderParameters.first());
+                  zeroIndex = arrayToUint(additionalHeaderParameters.first());
                   pendingPointBuffer.clear();
                 } catch (QString msg) {
-                  throw(tr("Invallid channel: ") + tr("Invalid zero position - ") + msg);
+                  throw(tr("Invalid channel: ") + tr("Invalid zero position - ") + msg);
                 }
               } else
-                throw(tr("Invallid channel: ") + tr("To many header entries for floating point type"));
+                throw(tr("Invalid channel: ") + tr("To many header entries for floating point type"));
             }
           } else if (channel.first.type == ValueType::Type::unsignedint) {
-            if (aditionalHeaderParameters.length() == 1) {
+            if (additionalHeaderParameters.length() == 1) {
               try {
-                zeroIndex = arrayToUint(aditionalHeaderParameters.at(0));
+                zeroIndex = arrayToUint(additionalHeaderParameters.at(0));
                 pendingPointBuffer.clear();
               } catch (QString msg) {
-                throw(tr("Invallid channel: ") + tr("Invalid zero position - ") + msg);
+                throw(tr("Invalid channel: ") + tr("Invalid zero position - ") + msg);
               }
             }
-            if (aditionalHeaderParameters.length() >= 2) {
+            if (additionalHeaderParameters.length() >= 2) {
               try {
-                channelBits = arrayToUint(aditionalHeaderParameters.at(0));
+                channelBits = arrayToUint(additionalHeaderParameters.at(0));
               } catch (QString msg) {
-                throw(tr("Invallid channel: ") + tr("Invalid number of bits - ") + msg);
+                throw(tr("Invalid channel: ") + tr("Invalid number of bits - ") + msg);
               }
             }
-            if (aditionalHeaderParameters.length() == 2)
-              channelMax = aditionalHeaderParameters.at(1);
-            if (aditionalHeaderParameters.length() >= 3) {
-              channelMin = aditionalHeaderParameters.at(1);
-              channelMax = aditionalHeaderParameters.at(2);
+            if (additionalHeaderParameters.length() == 2)
+              channelMax = additionalHeaderParameters.at(1);
+            if (additionalHeaderParameters.length() >= 3) {
+              channelMin = additionalHeaderParameters.at(1);
+              channelMax = additionalHeaderParameters.at(2);
             }
-            if (aditionalHeaderParameters.length() == 4) {
+            if (additionalHeaderParameters.length() == 4) {
               try {
-                zeroIndex = arrayToUint(aditionalHeaderParameters.at(3));
+                zeroIndex = arrayToUint(additionalHeaderParameters.at(3));
                 pendingPointBuffer.clear();
               } catch (QString msg) {
-                throw(tr("Invallid channel: ") + tr("Invalid zero position - ") + msg);
+                throw(tr("Invalid channel: ") + tr("Invalid zero position - ") + msg);
               }
             }
             // Delší by neprošlo kontrolou při čtení záhlaví
           } else if (channel.first.type == ValueType::Type::integer) {
-            if (!aditionalHeaderParameters.isEmpty()) {
-              if (aditionalHeaderParameters.size() == 1) {
+            if (!additionalHeaderParameters.isEmpty()) {
+              if (additionalHeaderParameters.size() == 1) {
                 try {
-                  zeroIndex = arrayToUint(aditionalHeaderParameters.first());
+                  zeroIndex = arrayToUint(additionalHeaderParameters.first());
                   pendingPointBuffer.clear();
                 } catch (QString msg) {
-                  throw(tr("Invallid channel: ") + tr("Invalid zero position - ") + msg);
+                  throw(tr("Invalid channel: ") + tr("Invalid zero position - ") + msg);
                 }
               } else
-                throw(tr("Invallid channel: ") + tr("To many header entries for signed integer type"));
+                throw(tr("Invalid channel: ") + tr("To many header entries for signed integer type"));
             }
           }
           if (channelNumber.size() == 1)
@@ -379,22 +379,22 @@ void NewSerialParser::parse(QByteArray newData) {
               try {
                 channelLength = arrayToUint(pendingPointBuffer.at(1));
               } catch (QString msg) {
-                throw(tr("Invallid logic channel: ") + tr("Invalid channel length - ") + msg);
+                throw(tr("Invalid logic channel: ") + tr("Invalid channel length - ") + msg);
               }
 
               for (int i = 2; i < pendingPointBuffer.length(); i++) {
-                aditionalHeaderParameters.append(pendingPointBuffer.at(i));
+                additionalHeaderParameters.append(pendingPointBuffer.at(i));
               }
 
               pendingPointBuffer.clear();
 
             } else
-              throw(tr("Invallid logic channel: ") + tr("Wrong header length (%1 entries)").arg(pendingPointBuffer.length()));
+              throw(tr("Invalid logic channel: ") + tr("Wrong header length (%1 entries)").arg(pendingPointBuffer.length()));
           }
           if (result == incomplete)
             break;
           if (result == notProperlyEnded)
-            throw(tr("Invallid logic channel: ") + tr("Header not properly ended"));
+            throw(tr("Invalid logic channel: ") + tr("Header not properly ended"));
         }
         if (channelHeaderRead) {
           QPair<ValueType, QByteArray> channel;
@@ -409,19 +409,19 @@ void NewSerialParser::parse(QByteArray newData) {
             break;
 
           if (result == notProperlyEnded && debugLevel >= OutputLevel::warning) {
-            QByteArray semicolumPositionMessage = tr("(enable info messages to show nearest semicolum position)").toUtf8();
+            QByteArray semicolonPositionMessage = tr("(enable info messages to show nearest semicolon position)").toUtf8();
             if (debugLevel == OutputLevel::info) {
-              semicolumPositionMessage = tr("No semicolum found").toUtf8();
+              semicolonPositionMessage = tr("No semicolon found").toUtf8();
               if (buffer.contains(';') && channel.second.contains(';'))
-                semicolumPositionMessage = tr("There are semicolums %1 byte before and %2 after end.").arg(buffer.indexOf(';')).arg(channel.second.length() - channel.second.lastIndexOf(';')).toUtf8();
+                semicolonPositionMessage = tr("There are semicolons %1 byte before and %2 after end.").arg(buffer.indexOf(';')).arg(channel.second.length() - channel.second.lastIndexOf(';')).toUtf8();
               else {
                 if (channel.second.contains(';'))
-                  semicolumPositionMessage = tr("There is semicolum %1 bytes before end.").arg(channel.second.length() - channel.second.lastIndexOf(';')).toUtf8();
+                  semicolonPositionMessage = tr("There is semicolon %1 bytes before end.").arg(channel.second.length() - channel.second.lastIndexOf(';')).toUtf8();
                 if (buffer.contains(';'))
-                  semicolumPositionMessage = tr("There is semicolum %1 bytes after end.").arg(buffer.indexOf(';')).toUtf8();
+                  semicolonPositionMessage = tr("There is semicolon %1 bytes after end.").arg(buffer.indexOf(';')).toUtf8();
               }
             }
-            emit sendMessage(tr("Logic channel not ended with ';'"), semicolumPositionMessage, MessageLevel::warning, target);
+            emit sendMessage(tr("Logic channel not ended with ';'"), semicolonPositionMessage, MessageLevel::warning, target);
           }
 
           int zeroIndex = 0, channelBits = channel.first.bytes * 8;
@@ -429,19 +429,19 @@ void NewSerialParser::parse(QByteArray newData) {
           if (!(channel.first.type == ValueType::Type::unsignedint))
             emit sendMessage(tr("Logic channel warning"), tr("data are not designated as unsigned integer").toUtf8(), MessageLevel::warning, target);
 
-          if (!aditionalHeaderParameters.isEmpty()) {
+          if (!additionalHeaderParameters.isEmpty()) {
             try {
-              channelBits = arrayToUint(aditionalHeaderParameters.first());
+              channelBits = arrayToUint(additionalHeaderParameters.first());
             } catch (QString msg) {
-              throw(tr("Invallid logic channel: ") + tr("Invalid number of bits - ") + msg);
+              throw(tr("Invalid logic channel: ") + tr("Invalid number of bits - ") + msg);
             }
           }
-          if (aditionalHeaderParameters.length() == 2) {
+          if (additionalHeaderParameters.length() == 2) {
             try {
-              zeroIndex = arrayToUint(aditionalHeaderParameters.at(1));
+              zeroIndex = arrayToUint(additionalHeaderParameters.at(1));
               pendingPointBuffer.clear();
             } catch (QString msg) {
-              throw(tr("Invallid logic channel: ") + tr("Invalid zero position - ") + msg);
+              throw(tr("Invalid logic channel: ") + tr("Invalid zero position - ") + msg);
             }
           }
           // Delší by neprošlo kontrolou při čtení záhlaví
@@ -492,7 +492,7 @@ void NewSerialParser::parse(QByteArray newData) {
       }
 
       if (currentMode == DataMode::settings) {
-        readResult result = bufferPullBeforeSemicolumn(pendingDataBuffer, true);
+        readResult result = bufferPullBeforeSemicolon(pendingDataBuffer, true);
         if (result == complete) {
           if (!pendingDataBuffer.isEmpty()) {
             emit sendSettings(pendingDataBuffer, target);
@@ -503,7 +503,7 @@ void NewSerialParser::parse(QByteArray newData) {
         if (result == notProperlyEnded) {
           if (!pendingDataBuffer.isEmpty()) {
             emit sendSettings(pendingDataBuffer, target);
-            sendMessageIfAllowed(tr("Missing semicolumn ?"), pendingDataBuffer, MessageLevel::warning);
+            sendMessageIfAllowed(tr("Missing semicolon ?"), pendingDataBuffer, MessageLevel::warning);
             pendingDataBuffer.clear();
             continue;
           }
@@ -512,7 +512,7 @@ void NewSerialParser::parse(QByteArray newData) {
       }
 
       if (currentMode == DataMode::qmlvar) {
-        readResult result = bufferPullBeforeSemicolumn(pendingDataBuffer, true);
+        readResult result = bufferPullBeforeSemicolon(pendingDataBuffer, true);
         if (result == complete) {
           if (!pendingDataBuffer.isEmpty()) {
             emit sendQmlVar(pendingDataBuffer);
@@ -523,7 +523,7 @@ void NewSerialParser::parse(QByteArray newData) {
         if (result == notProperlyEnded) {
           if (!pendingDataBuffer.isEmpty()) {
             emit sendQmlVar(pendingDataBuffer);
-            sendMessageIfAllowed(tr("Missing semicolumn ?"), pendingDataBuffer, MessageLevel::warning);
+            sendMessageIfAllowed(tr("Missing semicolon ?"), pendingDataBuffer, MessageLevel::warning);
             pendingDataBuffer.clear();
             continue;
           }
@@ -532,7 +532,7 @@ void NewSerialParser::parse(QByteArray newData) {
       }
 
       if (currentMode == DataMode::requestfile) {
-        readResult result = bufferPullBeforeSemicolumn(pendingDataBuffer, true);
+        readResult result = bufferPullBeforeSemicolon(pendingDataBuffer, true);
         if (result == complete) {
           emit sendFileRequest(pendingDataBuffer, target);
           pendingDataBuffer.clear();
@@ -540,7 +540,7 @@ void NewSerialParser::parse(QByteArray newData) {
         }
         if (result == notProperlyEnded) {
           emit sendFileRequest(pendingDataBuffer, target);
-          sendMessageIfAllowed(tr("Missing semicolumn ?"), pendingDataBuffer, MessageLevel::warning);
+          sendMessageIfAllowed(tr("Missing semicolon ?"), pendingDataBuffer, MessageLevel::warning);
           pendingDataBuffer.clear();
           continue;
         }
@@ -578,11 +578,11 @@ void NewSerialParser::parse(QByteArray newData) {
       }
 
       if (currentMode == DataMode::deviceerror) {
-        readResult result = bufferPullBeforeSemicolumn(pendingDataBuffer, true);
+        readResult result = bufferPullBeforeSemicolon(pendingDataBuffer, true);
         if (result == incomplete)
           break;
         if (result == notProperlyEnded)
-          sendMessageIfAllowed(tr("Missing semicolumn ?"), pendingDataBuffer, MessageLevel::warning);
+          sendMessageIfAllowed(tr("Missing semicolon ?"), pendingDataBuffer, MessageLevel::warning);
         emit deviceError(pendingDataBuffer, target);
         pendingDataBuffer.clear();
         continue;
@@ -853,7 +853,7 @@ NewSerialParser::readResult NewSerialParser::bufferPullFull(QByteArray &result) 
   }
 }
 
-NewSerialParser::readResult NewSerialParser::bufferPullBeforeSemicolumn(QByteArray &result, bool removeNewline) {
+NewSerialParser::readResult NewSerialParser::bufferPullBeforeSemicolon(QByteArray &result, bool removeNewline) {
   int end;
   delimiter ending = none;
   if (buffer.contains(';')) {
