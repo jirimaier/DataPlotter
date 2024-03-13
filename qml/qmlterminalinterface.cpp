@@ -28,6 +28,7 @@ void QmlTerminalInterface::transmitToSerial(QVariant data, QString type) {
       emit dataTransmitted(element.toByteArray());
       qDebug() << "QML terminal transmitted: " << element.toByteArray();
     }
+    return;
   }
 
   bool bigendian = type.at(0).isUpper();
