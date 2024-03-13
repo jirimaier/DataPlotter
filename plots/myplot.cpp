@@ -309,6 +309,7 @@ void MyPlot::setMaxZoomY(const QCPRange &newMaxZoomY, bool reset) {
     yAxis->setRange(maxZoomY);
   else if (clipRange(range, maxZoomY))
     yAxis->setRange(range);
+  this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
 }
 
 void MyPlot::setTheme(QColor fnt, QColor bck, int chClrThemeId) {
@@ -362,6 +363,7 @@ void MyPlot::setMaxZoomX(const QCPRange &newMaxZoomX, bool reset) {
     xAxis->setRange(maxZoomX);
   else if (clipRange(range, maxZoomX))
     xAxis->setRange(range);
+  this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
 }
 
 int MyPlot::keyToNearestSample(QCPGraph *mGraph, double keyCoord) {

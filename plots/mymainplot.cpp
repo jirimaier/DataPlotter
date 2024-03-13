@@ -560,6 +560,7 @@ void MyMainPlot::setVRange(QCPRange range) { setMaxZoomY(range, true); }
 void MyMainPlot::setVPos(double mid) {
   double rangeLen = yAxis->range().size();
   yAxis->setRange(mid - rangeLen / 2, mid + rangeLen / 2);
+  this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
 }
 
 void MyMainPlot::setHPos(double mid) {
@@ -567,6 +568,7 @@ void MyMainPlot::setHPos(double mid) {
   xAxis->setRange(mid - rangeLen / 2, mid + rangeLen / 2);
   if (rollingMode)
     updateRollingState(maxT);
+  this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
 }
 
 void MyMainPlot::setHLen(double len) {
@@ -590,6 +592,7 @@ void MyMainPlot::setHLen(double len) {
     range.lower = ctr - len / 2;
     xAxis->setRange(range);
   }
+  this->replot(QCustomPlot::RefreshPriority::rpQueuedReplot);
 }
 
 void MyMainPlot::setTheme(QColor fnt, QColor bck, int chClrThemeId) {
