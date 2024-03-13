@@ -300,6 +300,8 @@ private slots: // Autoconnect slots
   void on_horizontalScrollBarHorizontal_valueChanged(int value);
   void on_pushButtonCheckForUpdates_clicked();
 
+  void on_pushButtonOpenHelpEN_clicked();
+
 public slots:
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumMessageTarget target);
   void showPlotStatus(PlotStatus::enumPlotStatus type);

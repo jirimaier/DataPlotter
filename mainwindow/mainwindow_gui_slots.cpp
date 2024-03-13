@@ -181,7 +181,8 @@ void MainWindow::on_pushButtonInvert_toggled(bool checked) {
     ui->plot->setChInvert(ui->comboBoxSelectedChannel->currentIndex(), checked);
 }
 
-void MainWindow::on_pushButtonOpenHelpCZ_clicked() { openResourceFileCopiedToLocal(":/docs/documentation/Manual.pdf"); }
+void MainWindow::on_pushButtonOpenHelpCZ_clicked() { openResourceFileCopiedToLocal(":/docs/documentation/Manual cz.pdf"); }
+void MainWindow::on_pushButtonOpenHelpEN_clicked() { openResourceFileCopiedToLocal(":/docs/documentation/Manual en.pdf"); }
 
 void MainWindow::on_pushButtonProtocolGuideEN_clicked() { openResourceFileCopiedToLocal(":/docs/documentation/Data protocol guide en.pdf"); }
 

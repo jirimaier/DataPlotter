@@ -8383,6 +8383,16 @@
              </widget>
             </item>
             <item>
+             <widget class="QPushButton" name="pushButtonOpenHelpEN">
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Click to open in external PDF browser&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="text">
+               <string>Open user manual (English)</string>
+              </property>
+             </widget>
+            </item>
+            <item>
              <widget class="QPushButton" name="pushButtonProtocolGuideEN">
               <property name="toolTip">
                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Click to open in external PDF browser&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
