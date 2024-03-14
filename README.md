@@ -18,3 +18,5 @@ Some characters have good meaning on the buttons (e.g. + - / <>), but if you run
 
 Another way of dynamically creating instrument controls is QML (QtQuick language). The QML code can be sent to DataPlotter by the instrument (microcontroller) and the new GUI will be shown.
 There is a minimalistic (easy-to-use) interface for sending and receiving data from the QML code. This offers almost endless possibilities for customization.
+
+More info (in Czech language): https://embedded.fel.cvut.cz/platformy/dataplotter
