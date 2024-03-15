@@ -7,6 +7,10 @@ win32{
     LIBS += -lOpenGL32
 }
 
+linux-g++* {
+    LIBS += -lssl -lcrypto
+}
+
 RC_ICONS = icons/icon.ico
 
 DEFINES += QT_DEPRECATED_WARNINGS QCUSTOMPLOT_USE_OPENGL
