@@ -218,7 +218,7 @@
     <message>
         <location filename="../developeroptions.ui" line="357"/>
         <source>s Save position</source>
-        <translation type="unfinished"></translation>
+        <translation>s Save position</translation>
     </message>
     <message>
         <location filename="../developeroptions.ui" line="362"/>
@@ -443,7 +443,7 @@
     <message>
         <location filename="../developeroptions.ui" line="805"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Normaly, only nonempty channel are shown in channel selection, this allows to show all available channels.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Normaly, only nonempty channel are shown in channel selection, this allows to show all available channels.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../developeroptions.ui" line="808"/>
@@ -543,7 +543,7 @@
     <message>
         <location filename="../developeroptions.cpp" line="143"/>
         <source>Shift content vertically</source>
-        <translation type="unfinished"></translation>
+        <translation>Shift content vertically</translation>
     </message>
     <message>
         <location filename="../developeroptions.cpp" line="178"/>
@@ -645,7 +645,7 @@
     <message>
         <location filename="../freqtimeplotdialog.ui" line="153"/>
         <source>Save as Image</source>
-        <translation type="unfinished"></translation>
+        <translation>Save as Image</translation>
     </message>
     <message>
         <location filename="../freqtimeplotdialog.ui" line="164"/>
@@ -722,10 +722,10 @@
         <translation>Scale:</translation>
     </message>
     <message>
-        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="181"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="182"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="183"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="184"/>
+        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="185"/>
         <source>Free</source>
         <translation>Free</translation>
     </message>
@@ -776,8 +776,8 @@
     <message>
         <location filename="../mainwindow.ui" line="2333"/>
         <location filename="../mainwindow.ui" line="3097"/>
-        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="181"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="182"/>
+        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="183"/>
         <source>Sample</source>
         <translation>Sample</translation>
     </message>
@@ -1287,7 +1287,7 @@
     <message>
         <location filename="../mainwindow.ui" line="1991"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Symmetric positive and negative&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Symmetric positive and negative&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="2054"/>
@@ -1532,7 +1532,7 @@
     <message>
         <location filename="../mainwindow.ui" line="7575"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Capture serial port traffic (not recommended for large amount of data)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Capture serial port traffic (not recommended for large amount of data)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="8302"/>
@@ -1593,12 +1593,22 @@
         <translation>Check For Updates</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="8546"/>
+        <location filename="../mainwindow.ui" line="8425"/>
+        <source>Open GitHub Repository</source>
+        <translation>Open GitHub Repository</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="8432"/>
+        <source>Open Project Webpage</source>
+        <translation>Open Project Webpage</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="8560"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This program comes with absolutely no warranty. This is free software, and you are welcome to redistribute it under certain conditions. See the &lt;a href=&quot;https://www.gnu.org/licenses/gpl-3.0.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#007af4;&quot;&gt;GNU General Public License&lt;/span&gt;&lt;/a&gt; for more details.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This program comes with absolutely no warranty. This is free software, and you are welcome to redistribute it under certain conditions. See the &lt;a href=&quot;https://www.gnu.org/licenses/gpl-3.0.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#007af4;&quot;&gt;GNU General Public License&lt;/span&gt;&lt;/a&gt; for more details.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="8487"/>
+        <location filename="../mainwindow.ui" line="8501"/>
         <source>maierjir@fel.cvut.cz</source>
         <translation>maierjir@fel.cvut.cz</translation>
     </message>
@@ -1710,17 +1720,17 @@
         <translation>Stop</translation>
     </message>
     <message>
-        <location filename="../mainwindow/mainwindow.cpp" line="806"/>
+        <location filename="../mainwindow/mainwindow.cpp" line="812"/>
         <source>Download</source>
         <translation>Download</translation>
     </message>
     <message>
-        <location filename="../mainwindow/mainwindow.cpp" line="807"/>
+        <location filename="../mainwindow/mainwindow.cpp" line="813"/>
         <source>Close</source>
         <translation>Close</translation>
     </message>
     <message>
-        <location filename="../mainwindow/mainwindow.cpp" line="809"/>
+        <location filename="../mainwindow/mainwindow.cpp" line="815"/>
         <source>Check for updates at startup</source>
         <translation>Check for updates at startup</translation>
     </message>
@@ -1735,48 +1745,48 @@
         <translation>Version: </translation>
     </message>
     <message>
-        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="181"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="182"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="183"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="184"/>
+        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="185"/>
         <source>OFF</source>
         <translation>OFF</translation>
     </message>
     <message>
-        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="183"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="184"/>
+        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="185"/>
         <source>Track</source>
         <translation>Track</translation>
     </message>
     <message>
-        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="259"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="260"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="261"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="262"/>
+        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="263"/>
         <source>Logic %1</source>
         <translation>Logic %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="266"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="267"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="268"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="269"/>
+        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="270"/>
         <source>Logic</source>
         <translation>Logic</translation>
     </message>
     <message>
-        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="281"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="282"/>
+        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="283"/>
         <source>Absolute</source>
         <translation>Absolute</translation>
     </message>
     <message>
-        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="292"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="293"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="294"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="295"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="296"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="297"/>
+        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="298"/>
         <source>Constant</source>
         <translation>Constant</translation>
     </message>
@@ -1900,12 +1910,12 @@
         <translation>Cannot open file.</translation>
     </message>
     <message>
-        <location filename="../mainwindow/mainwindow.cpp" line="827"/>
+        <location filename="../mainwindow/mainwindow.cpp" line="833"/>
         <source>Save file</source>
         <translation>Save file</translation>
     </message>
     <message>
-        <location filename="../mainwindow/mainwindow.cpp" line="827"/>
+        <location filename="../mainwindow/mainwindow.cpp" line="833"/>
         <source>Text file (*.txt);;Any file (*.*)</source>
         <translation>Text file (*.txt);;Any file (*.*)</translation>
     </message>
@@ -2367,7 +2377,7 @@
     <message>
         <location filename="../communication/newserialparser.cpp" line="175"/>
         <source>Invalid logic point: </source>
-        <translation type="unfinished"></translation>
+        <translation>Invalid logic point: </translation>
     </message>
     <message>
         <location filename="../communication/newserialparser.cpp" line="241"/>
@@ -2382,7 +2392,7 @@
         <location filename="../communication/newserialparser.cpp" line="348"/>
         <location filename="../communication/newserialparser.cpp" line="351"/>
         <source>Invalid channel: </source>
-        <translation type="unfinished"></translation>
+        <translation>Invalid channel: </translation>
     </message>
     <message>
         <location filename="../communication/newserialparser.cpp" line="382"/>
@@ -2391,7 +2401,7 @@
         <location filename="../communication/newserialparser.cpp" line="436"/>
         <location filename="../communication/newserialparser.cpp" line="444"/>
         <source>Invalid logic channel: </source>
-        <translation type="unfinished"></translation>
+        <translation>Invalid logic channel: </translation>
     </message>
     <message>
         <location filename="../communication/newserialparser.cpp" line="721"/>
@@ -2529,7 +2539,7 @@
     <message>
         <location filename="../communication/plotdata.cpp" line="316"/>
         <source>Minimum value is stated, but maximum is not</source>
-        <translation type="unfinished"></translation>
+        <translation>Minimum value is stated, but maximum is not</translation>
     </message>
     <message>
         <location filename="../communication/plotdata.cpp" line="342"/>
@@ -2810,24 +2820,24 @@
 <context>
     <name>UpdateChecker</name>
     <message>
-        <location filename="../mainwindow/updatechecker.cpp" line="59"/>
+        <location filename="../mainwindow/updatechecker.cpp" line="61"/>
         <source>New version available: %1
  Current version: %2</source>
         <translation>New version available: %1
  Current version: %2</translation>
     </message>
     <message>
-        <location filename="../mainwindow/updatechecker.cpp" line="63"/>
+        <location filename="../mainwindow/updatechecker.cpp" line="65"/>
         <source>You have the latest version (%1).</source>
         <translation>You have the latest version (%1).</translation>
     </message>
     <message>
-        <location filename="../mainwindow/updatechecker.cpp" line="65"/>
+        <location filename="../mainwindow/updatechecker.cpp" line="67"/>
         <source>Your version (%1) is higher than latest official release (%2).</source>
         <translation>Your version (%1) is higher than latest official release (%2).</translation>
     </message>
     <message>
-        <location filename="../mainwindow/updatechecker.cpp" line="69"/>
+        <location filename="../mainwindow/updatechecker.cpp" line="71"/>
         <source>Version check failed.</source>
         <translation>Version check failed.</translation>
     </message>

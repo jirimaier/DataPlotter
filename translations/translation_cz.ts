@@ -722,10 +722,10 @@
         <translation>Zvětšení:</translation>
     </message>
     <message>
-        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="181"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="182"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="183"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="184"/>
+        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="185"/>
         <source>Free</source>
         <translation>Volný</translation>
     </message>
@@ -776,8 +776,8 @@
     <message>
         <location filename="../mainwindow.ui" line="2333"/>
         <location filename="../mainwindow.ui" line="3097"/>
-        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="181"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="182"/>
+        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="183"/>
         <source>Sample</source>
         <translation>Vzorek</translation>
     </message>
@@ -1593,12 +1593,22 @@
         <translation>Zkontrolovat aktualizace</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="8546"/>
+        <location filename="../mainwindow.ui" line="8425"/>
+        <source>Open GitHub Repository</source>
+        <translation>Otevřít stránku na GitHubu</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="8432"/>
+        <source>Open Project Webpage</source>
+        <translation>Otevřít stránku projektu</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="8560"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This program comes with absolutely no warranty. This is free software, and you are welcome to redistribute it under certain conditions. See the &lt;a href=&quot;https://www.gnu.org/licenses/gpl-3.0.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#007af4;&quot;&gt;GNU General Public License&lt;/span&gt;&lt;/a&gt; for more details.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Tento program je absolutně bez záruky. Jde o svobodný software a jeho šíření je za určitých podmínek vítáno. Pro více informací: &lt;a href=&quot;https://www.gnu.org/licenses/gpl-3.0.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#007af4;&quot;&gt;GNU General Public License&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="8487"/>
+        <location filename="../mainwindow.ui" line="8501"/>
         <source>maierjir@fel.cvut.cz</source>
         <translation>maierjir@fel.cvut.cz</translation>
     </message>
@@ -1710,17 +1720,17 @@
         <translation>Stop</translation>
     </message>
     <message>
-        <location filename="../mainwindow/mainwindow.cpp" line="806"/>
+        <location filename="../mainwindow/mainwindow.cpp" line="812"/>
         <source>Download</source>
         <translation>Stáhnout</translation>
     </message>
     <message>
-        <location filename="../mainwindow/mainwindow.cpp" line="807"/>
+        <location filename="../mainwindow/mainwindow.cpp" line="813"/>
         <source>Close</source>
         <translation>Zavřít</translation>
     </message>
     <message>
-        <location filename="../mainwindow/mainwindow.cpp" line="809"/>
+        <location filename="../mainwindow/mainwindow.cpp" line="815"/>
         <source>Check for updates at startup</source>
         <translation>Kontrolovat aktualizace při spuštění</translation>
     </message>
@@ -1735,48 +1745,48 @@
         <translation>Verze: </translation>
     </message>
     <message>
-        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="181"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="182"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="183"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="184"/>
+        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="185"/>
         <source>OFF</source>
         <translation>OFF</translation>
     </message>
     <message>
-        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="183"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="184"/>
+        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="185"/>
         <source>Track</source>
         <translation>Sledovat</translation>
     </message>
     <message>
-        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="259"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="260"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="261"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="262"/>
+        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="263"/>
         <source>Logic %1</source>
         <translation>Logika %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="266"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="267"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="268"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="269"/>
+        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="270"/>
         <source>Logic</source>
         <translation>Logika</translation>
     </message>
     <message>
-        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="281"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="282"/>
+        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="283"/>
         <source>Absolute</source>
         <translation>Absolutní</translation>
     </message>
     <message>
-        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="292"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="293"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="294"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="295"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="296"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="297"/>
+        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="298"/>
         <source>Constant</source>
         <translation>Konstantní</translation>
     </message>
@@ -1900,12 +1910,12 @@
         <translation>Nelze otevřít soubor.</translation>
     </message>
     <message>
-        <location filename="../mainwindow/mainwindow.cpp" line="827"/>
+        <location filename="../mainwindow/mainwindow.cpp" line="833"/>
         <source>Save file</source>
         <translation>Uložit soubor</translation>
     </message>
     <message>
-        <location filename="../mainwindow/mainwindow.cpp" line="827"/>
+        <location filename="../mainwindow/mainwindow.cpp" line="833"/>
         <source>Text file (*.txt);;Any file (*.*)</source>
         <translation>Textový soubor (*.txt);;Všechny soubory (*.*)</translation>
     </message>
@@ -2812,24 +2822,24 @@
 <context>
     <name>UpdateChecker</name>
     <message>
-        <location filename="../mainwindow/updatechecker.cpp" line="59"/>
+        <location filename="../mainwindow/updatechecker.cpp" line="61"/>
         <source>New version available: %1
  Current version: %2</source>
         <translation>Je k dispozici nová verze: %1
  Současná verze: %2</translation>
     </message>
     <message>
-        <location filename="../mainwindow/updatechecker.cpp" line="63"/>
+        <location filename="../mainwindow/updatechecker.cpp" line="65"/>
         <source>You have the latest version (%1).</source>
         <translation>Máte nejnovější verzi (%1).</translation>
     </message>
     <message>
-        <location filename="../mainwindow/updatechecker.cpp" line="65"/>
+        <location filename="../mainwindow/updatechecker.cpp" line="67"/>
         <source>Your version (%1) is higher than latest official release (%2).</source>
         <translation>Vaše verze (%1) je vyšší nej oficiálně vydaná verze (%2).</translation>
     </message>
     <message>
-        <location filename="../mainwindow/updatechecker.cpp" line="69"/>
+        <location filename="../mainwindow/updatechecker.cpp" line="71"/>
         <source>Version check failed.</source>
         <translation>Nepodařilo se zkontrolovat verzi.</translation>
     </message>
