@@ -118,6 +118,7 @@ void MainWindow::setGuiDefaults() {
   ui->comboBoxOutputLevel->setCurrentIndex((int)OutputLevel::warning);
   ui->labelBuildDate->setText(tr("Build: ") + QString(__DATE__) + " " + QString(__TIME__));
   ui->labelVersion->setText(tr("Version: ") + QCoreApplication::applicationVersion());
+  ui->pushButtonCheckForUpdates->setVisible(updateChecker.getCanCheckforUpdates());
   ui->pushButtonPause->setIcon(iconRun);
 
   on_pushButtonModeFull_clicked();

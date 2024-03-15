@@ -7261,7 +7261,7 @@
            </size>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>3</number>
           </property>
           <property name="iconSize">
            <size>
@@ -8416,6 +8416,20 @@
              <widget class="QPushButton" name="pushButtonCheckForUpdates">
               <property name="text">
                <string>Check For Updates</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButtonGitHub">
+              <property name="text">
+               <string>Open GitHub Repository</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="pushButtonHomePage">
+              <property name="text">
+               <string>Open Project Webpage</string>
               </property>
              </widget>
             </item>

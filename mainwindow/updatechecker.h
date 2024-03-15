@@ -29,12 +29,15 @@ public:
 
   void checkForUpdates(bool showOnlyPositiveResult);
 
+  bool getCanCheckforUpdates() const { return canCheckForUpdates; };
+
 private slots:
   void onRequestFinished(QNetworkReply *reply);
 
 private:
   QNetworkAccessManager *m_networkManager;
   bool onlyPosRes = false;
+  bool canCheckForUpdates = true;
 
 signals:
   void checkedVersion(bool isNew, QString message);

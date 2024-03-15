@@ -23,14 +23,16 @@
 #include <qcoreapplication.h>
 
 UpdateChecker::UpdateChecker(QObject *parent) : QObject(parent) {
-
-  if (QSslSocket::sslLibraryVersionString().isEmpty())
-    qDebug() << "OpenSSL dll not found";
-  else
+  if (QSslSocket::sslLibraryVersionString().isEmpty()) {
+    qDebug() << "OpenSSL dll not found (will not check for updates)";
+    canCheckForUpdates = false;
+  } else
     qDebug() << "Using OpenSSL: " << QSslSocket::sslLibraryVersionString();
 }
 
 void UpdateChecker::checkForUpdates(bool showOnlyPositiveResult) {
+  if (!canCheckForUpdates)
+    return;
   onlyPosRes = showOnlyPositiveResult;
   QString apiUrl = UpdatesApi;
 
@@ -51,9 +53,9 @@ void UpdateChecker::onRequestFinished(QNetworkReply *reply) {
 
     QString latestVersionTag = obj.value("tag_name").toString();
     latestVersionTag.remove("v", Qt::CaseInsensitive);
-    auto latestVersion = QVersionNumber::fromString(latestVersionTag);
 
-    auto appVersion = QVersionNumber::fromString(QCoreApplication::applicationVersion());
+    auto latestVersion = QVersionNumber::fromString(latestVersionTag).normalized();
+    auto appVersion = QVersionNumber::fromString(QCoreApplication::applicationVersion()).normalized();
 
     if (latestVersion > appVersion) {
       emit checkedVersion(true, tr("New version available: %1\n Current version: %2").arg(latestVersion.toString(), appVersion.toString()));
@@ -62,7 +64,7 @@ void UpdateChecker::onRequestFinished(QNetworkReply *reply) {
       if (latestVersion == appVersion)
         emit checkedVersion(false, tr("You have the latest version (%1).").arg(appVersion.toString()));
       else
-        emit checkedVersion(false, tr("Your version (%1) is higher than latest official release (%2).").arg(latestVersion.toString(), appVersion.toString()));
+        emit checkedVersion(false, tr("Your version (%1) is higher than latest official release (%2).").arg(appVersion.toString(), latestVersion.toString()));
     }
 
   } else if (!onlyPosRes)

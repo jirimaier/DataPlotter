@@ -299,8 +299,9 @@ private slots: // Autoconnect slots
   void on_verticalScrollBarVertical_valueChanged(int value);
   void on_horizontalScrollBarHorizontal_valueChanged(int value);
   void on_pushButtonCheckForUpdates_clicked();
-
   void on_pushButtonOpenHelpEN_clicked();
+  void on_pushButtonGitHub_clicked();
+  void on_pushButtonHomePage_clicked();
 
 public slots:
   void printMessage(QString messageHeader, QByteArray messageBody, int type, MessageTarget::enumMessageTarget target);
