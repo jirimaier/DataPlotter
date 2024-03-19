@@ -1,0 +1,7 @@
+Package: data-plotter
+Version: {version}
+Architecture: amd64
+Essential: no
+Priority: optional
+Maintainer: Jiri Maier <jiri.maier.x@gmail.com>
+Description: Universal GUI for software-defined measuring instruments
