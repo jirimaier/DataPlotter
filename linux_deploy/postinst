@@ -1,0 +1,30 @@
+#!/bin/sh
+set -e
+
+# Determine the target user: prefer SUDO_USER if available, otherwise use logname.
+if [ -n "$SUDO_USER" ]; then
+    TARGET_USER="$SUDO_USER"
+else
+    TARGET_USER=$(logname 2>/dev/null || true)
+fi
+
+if [ -z "$TARGET_USER" ]; then
+    echo "Could not determine the target user. Please add your user to the dialout and tty groups manually." >&2
+else
+    echo "Adding user '$TARGET_USER' to dialout and tty groups..."
+    if id "$TARGET_USER" >/dev/null 2>&1; then
+        usermod -a -G dialout "$TARGET_USER" || {
+            echo "Failed to add $TARGET_USER to dialout group" >&2
+            exit 1
+        }
+        usermod -a -G tty "$TARGET_USER" || {
+            echo "Failed to add $TARGET_USER to tty group" >&2
+            exit 1
+        }
+        echo "User '$TARGET_USER' successfully added to dialout and tty groups. Please log out and log back in for the changes to take effect."
+    else
+        echo "User '$TARGET_USER' does not exist. Skipping group updates."
+    fi
+fi
+
+exit 0
