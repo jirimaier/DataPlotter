@@ -1,4 +1,4 @@
-VERSION = 3.2.1.0
+VERSION = 3.2.2.0
 
 QT += core gui serialport widgets printsupport opengl qml quickwidgets \
     quick quickcontrols2 network

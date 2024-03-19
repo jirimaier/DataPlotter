@@ -505,23 +505,6 @@ void MainWindow::on_lineEditHUnit_textChanged(const QString &arg1) {
   updateDivs(); // Aby se aktualizovala jednotka u kroku mřížky
 }
 
-void MainWindow::on_pushButtonProtocolGuideCZ_clicked() { openResourceFileCopiedToLocal(":/docs/documentation/Data protocol guide cz.pdf"); }
-
-void MainWindow::openResourceFileCopiedToLocal(QString file) {
-  QFile resource(file);
-  QString local = configFilePath.left(configFilePath.lastIndexOf('/') + 1) + file.mid(file.lastIndexOf('/'));
-  resource.open(QIODevice::ReadOnly);
-  QFile::remove(local);
-  resource.copy(local);
-  if (!QDesktopServices::openUrl(QUrl::fromLocalFile(local))) {
-    QMessageBox msgBox(this);
-    msgBox.setText(tr("Cant open file."));
-    msgBox.setInformativeText(local);
-    msgBox.setIcon(QMessageBox::Critical);
-    msgBox.exec();
-  }
-}
-
 void MainWindow::checkBoxEchoReply_toggled(bool checked) { emit replyEcho(checked); }
 
 void MainWindow::on_comboBoxBaud_currentTextChanged(const QString &arg1) {

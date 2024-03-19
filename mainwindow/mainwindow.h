@@ -137,7 +137,6 @@ private:
   void closeEvent(QCloseEvent *event);
   void autosetHrange();
   QIcon invertIconLightness(const QIcon &icon, QSize size);
-  void openResourceFileCopiedToLocal(QString file);
 
   void on_pushButtonRecordMeasurementsXXX_clicked(int n);
   void on_checkBoxCurXXXVisible_stateChanged(int n, int arg1);
@@ -147,6 +146,8 @@ private:
   void on_doubleSpinBoxYCurXXX_valueChanged(int n, double arg1);
 
   void horizontalSliderTimeCurXXX_realValueChanged(int n, int arg1);
+  void openDocs(QString filename);
+
 private slots:
   void updateCursors();
   void setAdaptiveSpinBoxes();
@@ -173,6 +174,7 @@ private slots:
   void pushButtonClearGraph_clicked();
   void checkBoxEchoReply_toggled(bool checked);
   void checkBoxMouseControls_toggled_new(bool checked);
+  void requestConfigFolderOpen();
 
 private slots: // Autoconnect slots
   void on_dialRollingRange_realValueChanged(double value) { ui->doubleSpinBoxRangeHorizontal->setValue(value); }

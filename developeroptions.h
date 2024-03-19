@@ -78,6 +78,7 @@ signals:
   void requestManualBufferClear();
   void requestManualBufferShow();
   void sendManualInput(QByteArray bytes);
+  void requestConfigFolderOpen();
 
 private:
   Ui::DeveloperOptions *ui;

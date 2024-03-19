@@ -181,18 +181,19 @@ void MainWindow::on_pushButtonInvert_toggled(bool checked) {
     ui->plot->setChInvert(ui->comboBoxSelectedChannel->currentIndex(), checked);
 }
 
-void MainWindow::on_pushButtonOpenHelpCZ_clicked() { openResourceFileCopiedToLocal(":/docs/documentation/Manual cz.pdf"); }
-void MainWindow::on_pushButtonOpenHelpEN_clicked() { openResourceFileCopiedToLocal(":/docs/documentation/Manual en.pdf"); }
-
-void MainWindow::on_pushButtonProtocolGuideEN_clicked() { openResourceFileCopiedToLocal(":/docs/documentation/Data protocol guide en.pdf"); }
-
+void MainWindow::on_pushButtonOpenHelpCZ_clicked() { openDocs("Manual cz.pdf"); }
+void MainWindow::on_pushButtonOpenHelpEN_clicked() { openDocs("Manual en.pdf"); }
+void MainWindow::on_pushButtonProtocolGuideCZ_clicked() { openDocs("Data protocol guide cz.pdf"); }
+void MainWindow::on_pushButtonProtocolGuideEN_clicked() { openDocs("Data protocol guide en.pdf"); }
 void MainWindow::on_pushButtonIntroVideoCZ_clicked() { QDesktopServices::openUrl(QUrl("https://www.youtube.com/watch?v=TpJgz6kfPvA")); }
-
 void MainWindow::on_pushButtonGitHub_clicked() { QDesktopServices::openUrl(QUrl("https://github.com/jirimaier/DataPlotter")); }
-
 void MainWindow::on_pushButtonHomePage_clicked() { QDesktopServices::openUrl(QUrl("https://jirimaier.github.io/DataPlotter")); }
-
 void MainWindow::on_labelLogo_clicked() { QDesktopServices::openUrl(QUrl("https://embedded.fel.cvut.cz/platformy")); }
+
+void MainWindow::openDocs(QString filename) {
+  if (!QDesktopServices::openUrl(QUrl::fromLocalFile(QApplication::applicationDirPath() + "/documentation/" + filename)))
+    QDesktopServices::openUrl(QUrl("https://jirimaier.github.io/DataPlotter/documentation/" + filename.replace(".pdf", ".html")));
+}
 
 void MainWindow::on_comboBoxFIR_currentIndexChanged(int index) {
   switch (index) {
@@ -489,6 +490,8 @@ void MainWindow::checkBoxMouseControls_toggled_new(bool checked) {
   ui->plotFFT->enableMouseCursorControll(checked);
   freqTimePlotDialog->getUi()->plotPeak->enableMouseCursorControll(checked);
 }
+
+void MainWindow::requestConfigFolderOpen() { QDesktopServices::openUrl(QUrl::fromLocalFile(configFilePath.left(configFilePath.lastIndexOf("/")))); }
 
 void MainWindow::on_checkBoxFFTCh1_toggled(bool checked) {
   setComboboxItemVisible(*ui->comboBoxCursor1Channel, FFT_INDEX(0), checked && ui->pushButtonFFT->isChecked());

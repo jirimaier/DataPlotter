@@ -80,6 +80,7 @@ void MainWindow::connectSignals() {
   connect(developerOptions, &DeveloperOptions::requestManualBufferShow, this, &MainWindow::requestManualBufferShow);
   connect(developerOptions, &DeveloperOptions::requestSerialBufferClear, this, &MainWindow::requestSerialBufferClear);
   connect(developerOptions, &DeveloperOptions::requestSerialBufferShow, this, &MainWindow::requestSerialBufferShow);
+  connect(developerOptions, &DeveloperOptions::requestConfigFolderOpen, this, &MainWindow::requestConfigFolderOpen);
   connect(&ansiTerminalModel, &AnsiTerminalModel::gridClickedSignal, developerOptions, &DeveloperOptions::addTerminalCursorPosCommand);
 
   connect(ui->plot, &MyMainPlot::vRangeChanged, this, &MainWindow::mainPlotVRangeChanged);

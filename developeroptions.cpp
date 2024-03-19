@@ -384,4 +384,4 @@ void DeveloperOptions::on_pushButtonScrollDown_2_clicked() {
   scroll->setValue(scroll->minimum());
 }
 
-void DeveloperOptions::on_pushButtonOpenConfig_clicked() { QDesktopServices::openUrl(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)); }
+void DeveloperOptions::on_pushButtonOpenConfig_clicked() { emit requestConfigFolderOpen(); }

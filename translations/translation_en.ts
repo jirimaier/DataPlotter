@@ -502,8 +502,8 @@
     </message>
     <message>
         <location filename="../developeroptions.ui" line="921"/>
-        <source>Open Config Folder</source>
-        <translation>Open Config Folder</translation>
+        <source>Open Config Folder (not possible on some platforms)</source>
+        <translation>Open Config Folder (not possible on some platforms)</translation>
     </message>
     <message>
         <location filename="../developeroptions.ui" line="942"/>
@@ -722,10 +722,10 @@
         <translation>Scale:</translation>
     </message>
     <message>
-        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="182"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="183"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="184"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="185"/>
+        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="186"/>
         <source>Free</source>
         <translation>Free</translation>
     </message>
@@ -776,8 +776,8 @@
     <message>
         <location filename="../mainwindow.ui" line="2333"/>
         <location filename="../mainwindow.ui" line="3097"/>
-        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="182"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="183"/>
+        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="184"/>
         <source>Sample</source>
         <translation>Sample</translation>
     </message>
@@ -1309,7 +1309,7 @@
     <message>
         <location filename="../mainwindow.ui" line="3510"/>
         <location filename="../mainwindow.ui" line="4282"/>
-        <location filename="../mainwindow/mainwindow.cpp" line="566"/>
+        <location filename="../mainwindow/mainwindow.cpp" line="549"/>
         <source>Record</source>
         <translation>Record</translation>
     </message>
@@ -1710,27 +1710,27 @@
         <translation>Product Identifier: %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow/mainwindow.cpp" line="554"/>
+        <location filename="../mainwindow/mainwindow.cpp" line="537"/>
         <source>Record measurements</source>
         <translation>Measurements recording</translation>
     </message>
     <message>
-        <location filename="../mainwindow/mainwindow.cpp" line="566"/>
+        <location filename="../mainwindow/mainwindow.cpp" line="549"/>
         <source>Stop</source>
         <translation>Stop</translation>
     </message>
     <message>
-        <location filename="../mainwindow/mainwindow.cpp" line="812"/>
+        <location filename="../mainwindow/mainwindow.cpp" line="795"/>
         <source>Download</source>
         <translation>Download</translation>
     </message>
     <message>
-        <location filename="../mainwindow/mainwindow.cpp" line="813"/>
+        <location filename="../mainwindow/mainwindow.cpp" line="796"/>
         <source>Close</source>
         <translation>Close</translation>
     </message>
     <message>
-        <location filename="../mainwindow/mainwindow.cpp" line="815"/>
+        <location filename="../mainwindow/mainwindow.cpp" line="798"/>
         <source>Check for updates at startup</source>
         <translation>Check for updates at startup</translation>
     </message>
@@ -1740,53 +1740,53 @@
         <translation>all</translation>
     </message>
     <message>
-        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="120"/>
+        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="121"/>
         <source>Version: </source>
         <translation>Version: </translation>
     </message>
     <message>
-        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="182"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="183"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="184"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="185"/>
+        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="186"/>
         <source>OFF</source>
         <translation>OFF</translation>
     </message>
     <message>
-        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="184"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="185"/>
+        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="186"/>
         <source>Track</source>
         <translation>Track</translation>
     </message>
     <message>
-        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="260"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="261"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="262"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="263"/>
+        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="264"/>
         <source>Logic %1</source>
         <translation>Logic %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="267"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="268"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="269"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="270"/>
+        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="271"/>
         <source>Logic</source>
         <translation>Logic</translation>
     </message>
     <message>
-        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="282"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="283"/>
+        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="284"/>
         <source>Absolute</source>
         <translation>Absolute</translation>
     </message>
     <message>
-        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="293"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="294"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="295"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="296"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="297"/>
         <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="298"/>
+        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="299"/>
         <source>Constant</source>
         <translation>Constant</translation>
     </message>
@@ -1829,7 +1829,7 @@
         <translation>Export %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow/mainwindow.cpp" line="554"/>
+        <location filename="../mainwindow/mainwindow.cpp" line="537"/>
         <location filename="../mainwindow/mainwindow_export.cpp" line="84"/>
         <source>Comma separated values (*.csv)</source>
         <translation>Comma separated values (*.csv)</translation>
@@ -1875,7 +1875,7 @@
         <translation>Export FFT plot as image</translation>
     </message>
     <message>
-        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="119"/>
+        <location filename="../mainwindow/mainwindow_gui_preset.cpp" line="120"/>
         <source>Build: </source>
         <translation>Build: </translation>
     </message>
@@ -1905,17 +1905,12 @@
         <translation>Don&apos;t show again</translation>
     </message>
     <message>
-        <location filename="../mainwindow/mainwindow.cpp" line="518"/>
-        <source>Cant open file.</source>
-        <translation>Cannot open file.</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow/mainwindow.cpp" line="833"/>
+        <location filename="../mainwindow/mainwindow.cpp" line="816"/>
         <source>Save file</source>
         <translation>Save file</translation>
     </message>
     <message>
-        <location filename="../mainwindow/mainwindow.cpp" line="833"/>
+        <location filename="../mainwindow/mainwindow.cpp" line="816"/>
         <source>Text file (*.txt);;Any file (*.*)</source>
         <translation>Text file (*.txt);;Any file (*.*)</translation>
     </message>
