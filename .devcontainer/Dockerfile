@@ -24,4 +24,6 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
      mesa-common-dev \
      libglu1-mesa-dev \
      qtquickcontrols2-5-dev \
-     libqt5opengl5-dev
+     libqt5opengl5-dev \
+     qt5dxcb-plugin \
+     libxcb-util-dev
