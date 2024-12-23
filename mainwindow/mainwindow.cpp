@@ -14,7 +14,7 @@
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include "mainwindow.h"
-
+#include "defaultpathmanager.h"
 #include "ui_developeroptions.h"
 #include "ui_freqtimeplotdialog.h"
 #include "ui_manualinputdialog.h"
@@ -616,7 +616,7 @@ void MainWindow::on_radioButtonDark_toggled(bool checked) {
     foreach (auto w, list3) {
       if (w == ui->labelLogo)
         continue;
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN) && (QT_VERSION > QT_VERSION_CHECK(5, 15, 0))
       if (!w->pixmap(Qt::ReturnByValue))
         continue;
       auto icon = w->pixmap(Qt::ReturnByValue).toImage();
@@ -625,6 +625,7 @@ void MainWindow::on_radioButtonDark_toggled(bool checked) {
         continue;
       auto icon = w->pixmap()->toImage();
 #endif
+
       icon.invertPixels(QImage::InvertRgb);
       w->setPixmap(QPixmap::fromImage(icon));
     }

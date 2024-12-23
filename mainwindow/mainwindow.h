@@ -32,7 +32,6 @@
 #include "communication/filesender.h"
 #include "communication/serialreader.h"
 #include "communication/serialsettingsdialog.h"
-#include "defaultpathmanager.h"
 #include "developeroptions.h"
 #include "freqtimeplotdialog.h"
 #include "global.h"
