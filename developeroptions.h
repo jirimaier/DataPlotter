@@ -34,8 +34,10 @@ public:
 
   Ui::DeveloperOptions *getUi();
   bool addColorToBlacklist(QByteArray code);
-  void updateColorBlacklist();
   void addPathToList(QString fileName);
+
+private:
+  void updateColorBlacklist();
 
 public slots:
   void addTerminalCursorPosCommand(int x, int y);

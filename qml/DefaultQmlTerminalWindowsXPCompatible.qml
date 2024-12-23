@@ -16,7 +16,7 @@ Rectangle {
     Material.elevation: 1
     color: dataPlotter.tabBackground
 
-    function send(data,format = "string") {
+    function send(data) {
         // Use this function to send data to serial port
         dataPlotter.transmitToSerial(data);
     }

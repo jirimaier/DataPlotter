@@ -43,9 +43,9 @@ void MainWindow::initQmlTerminal() {
 
 void MainWindow::resetQmlTerminal() {
 #if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
-  loadQmlFile(QUrl::fromLocalFile(":/qml/DefaultQmlTerminal.qml"));
+  loadQmlFile(QUrl("qrc:/qml/DefaultQmlTerminal.qml"));
 #else
-  loadQmlFile(QUrl::fromLocalFile(":/qml/DefaultQmlTerminalWindowsXPCompatible.qml"));
+  loadQmlFile(QUrl("qrc:/qml/DefaultQmlTerminalWindowsXPCompatible.qml"));
 #endif
 }
 

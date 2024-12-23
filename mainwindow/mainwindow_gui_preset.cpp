@@ -184,6 +184,8 @@ void MainWindow::setGuiDefaults() {
   ui->checkBoxCur2XMode->setLabels(tr("OFF"), tr("Sample"), tr("Free"));
   ui->checkBoxCur1YMode->setLabels(tr("OFF"), tr("Track"), tr("Free"));
   ui->checkBoxCur2YMode->setLabels(tr("OFF"), tr("Track"), tr("Free"));
+
+  developerOptions->addColorToBlacklist("40"); // Default is non-clikable black
 }
 
 void MainWindow::setGuiArrays() {

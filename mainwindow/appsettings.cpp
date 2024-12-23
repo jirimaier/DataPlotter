@@ -242,7 +242,6 @@ void AppSettings::useSettings(QByteArray settings, MessageTarget::enumMessageTar
       }
 
       mainwindow->developerOptions->getUi()->comboBoxTerminalColorListMode->setCurrentIndex(type == "noclickclr" ? 0 : 1);
-      mainwindow->developerOptions->updateColorBlacklist();
     }
 
     else if (type == "clearch") {
@@ -347,7 +346,6 @@ void AppSettings::resetSettings() {
     emit mainwindow->sendManualInput("$$S" + defaults.readAll().replace("\n", "") + "$$U");
     defaults.close();
   }
-  saveSettings();
 }
 
 void AppSettings::loadSettings() {
