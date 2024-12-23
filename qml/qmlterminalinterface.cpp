@@ -23,7 +23,7 @@ void QmlTerminalInterface::transmitToSerial(QVariant data, QString type) {
     list.append(data);
   }
 
-  if (type.at(0) == "s") {
+  if (type.at(0) == 's') {
     for (const auto &element : qAsConst(list)) {
       emit dataTransmitted(element.toByteArray());
       qDebug() << "QML terminal transmitted: " << element.toByteArray();
