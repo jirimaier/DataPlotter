@@ -50,8 +50,6 @@ DeveloperOptions::DeveloperOptions(QWidget *parent, QQuickWidget *qQuickWidget) 
   connect(qQuickWidget, &QQuickWidget::statusChanged, this, &DeveloperOptions::quickWidget_statusChanged);
 
   setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
-  addColorToBlacklist("40");
-  updateColorBlacklist();
 
   QDir dir(":/qml/");
   const QFileInfoList files = dir.entryInfoList(QStringList() << "*.qml", QDir::Files);
@@ -74,7 +72,6 @@ void DeveloperOptions::on_lineEditTerminalBlacklist_returnPressed() {
   if (addColorToBlacklist(ui->lineEditTerminalBlacklist->text().toLocal8Bit().trimmed())) {
     ui->lineEditTerminalBlacklist->clear();
     ui->lineEditTerminalBlacklist->setStyleSheet("");
-    updateColorBlacklist();
   } else
     ui->lineEditTerminalBlacklist->setStyleSheet("color: rgb(255, 0, 0);");
 }
@@ -96,6 +93,7 @@ bool DeveloperOptions::addColorToBlacklist(QByteArray code) {
     QPixmap colour = QPixmap(12, 12);
     colour.fill(clr);
     ui->listWidgetTerminalBlacklist->addItem(new QListWidgetItem(QIcon(colour), code, ui->listWidgetTerminalBlacklist));
+    updateColorBlacklist();
   }
   return valid;
 }
