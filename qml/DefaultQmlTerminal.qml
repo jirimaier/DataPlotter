@@ -48,7 +48,8 @@ Rectangle {
             id: messageConsole
             Layout.fillWidth: true
             Layout.fillHeight: !terminal.visible
-            Layout.preferredHeight: parent.height/5
+            // Completely hideding causes graphical glitches, setting prefered size to 1 instead
+            Layout.preferredHeight: empty ? 1 : parent.height/5
         }
 
         SerialSender {
