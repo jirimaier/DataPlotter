@@ -50,6 +50,7 @@ Rectangle {
             Layout.fillWidth: true
             Layout.fillHeight: !terminal.visible
             Layout.preferredHeight: parent.height/5
+
         }
 
         SerialSender {

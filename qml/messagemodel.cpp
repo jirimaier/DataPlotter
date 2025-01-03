@@ -54,10 +54,14 @@ void MessageModel::addMessage(const QString &message, QChar type) {
   beginInsertRows(QModelIndex(), rowCount(), rowCount());
   m_messages.append({message, QTime::currentTime(), type});
   endInsertRows();
+  emptyChanged(empty());
 }
 
 void MessageModel::clear() {
   beginResetModel();
   m_messages.clear();
   endResetModel();
+  emptyChanged(empty());
 }
+
+bool MessageModel::empty() const { return m_messages.isEmpty(); }

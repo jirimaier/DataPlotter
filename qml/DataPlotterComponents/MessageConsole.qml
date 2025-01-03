@@ -8,6 +8,7 @@ Rectangle {
     color: "transparent"
     border.color: darkThemeIsUsed ? "gray" : "gray"
     border.width: 1
+    property bool empty: messageModel.empty
     ListView {
         anchors.fill: parent
         anchors.margins: 1
