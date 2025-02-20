@@ -1,4 +1,4 @@
-**.pro.user
-**.autosave
-.qtc_clangd
+*.user
 build/*
+CMakeCache.txt
+CMakeFiles/**

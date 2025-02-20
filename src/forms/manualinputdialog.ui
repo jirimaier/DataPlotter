@@ -161,7 +161,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="resources.qrc">
+            <iconset resource="../../resources.qrc">
              <normaloff>:/images/icons/run.png</normaloff>:/images/icons/run.png</iconset>
            </property>
            <property name="iconSize">
@@ -328,7 +328,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="resources.qrc">
+            <iconset resource="../../resources.qrc">
              <normaloff>:/images/icons/run.png</normaloff>:/images/icons/run.png</iconset>
            </property>
            <property name="iconSize">
@@ -382,7 +382,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="resources.qrc"/>
+  <include location="../../resources.qrc"/>
  </resources>
  <connections/>
 </ui>
