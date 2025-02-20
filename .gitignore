@@ -2,4 +2,4 @@
 build/*
 CMakeCache.txt
 CMakeFiles/**
-linux_deploy/*.deb
+deploy_linux/*.deb
