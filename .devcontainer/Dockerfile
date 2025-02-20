@@ -1,29 +1,23 @@
 FROM mcr.microsoft.com/devcontainers/cpp:1-ubuntu-20.04
 
-ARG REINSTALL_CMAKE_VERSION_FROM_SOURCE="3.22.2"
+# Install dependencies
+RUN apt update && apt install -y \
+    qt5-default \
+    qtdeclarative5-dev \
+    libqt5quick5 \
+    libqt5quickcontrols2-5 \
+    libqt5serialport5-dev \
+    mesa-common-dev \
+    libglu1-mesa-dev \
+    qtquickcontrols2-5-dev \
+    libqt5opengl5-dev \
+    qt5dxcb-plugin \
+    libxcb-util-dev \
+    build-essential \
+    cmake \
+    ninja-build \
+    pkg-config \
+    git
 
-# Optionally install the cmake for vcpkg
-COPY ./reinstall-cmake.sh /tmp/
-
-RUN if [ "${REINSTALL_CMAKE_VERSION_FROM_SOURCE}" != "none" ]; then \
-        chmod +x /tmp/reinstall-cmake.sh && /tmp/reinstall-cmake.sh ${REINSTALL_CMAKE_VERSION_FROM_SOURCE}; \
-    fi \
-    && rm -f /tmp/reinstall-cmake.sh
-
-# [Optional] Uncomment this section to install additional vcpkg ports.
-# RUN su vscode -c "${VCPKG_ROOT}/vcpkg install <your-port-name-here>"
-
-# [Optional] Uncomment this section to install additional packages.
-RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-     && apt-get -y install --no-install-recommends \
-     qt5-default \
-     qtdeclarative5-dev \
-     libqt5quick5 \
-     libqt5quickcontrols2-5 \
-     libqt5serialport5-dev \
-     mesa-common-dev \
-     libglu1-mesa-dev \
-     qtquickcontrols2-5-dev \
-     libqt5opengl5-dev \
-     qt5dxcb-plugin \
-     libxcb-util-dev
+# Set working directory
+WORKDIR /workspaces
