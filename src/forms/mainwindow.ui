@@ -26,7 +26,7 @@
    <string>Data Plotter</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="resources.qrc">
+   <iconset resource="../../resources.qrc">
     <normaloff>:/images/icons/icon.ico</normaloff>:/images/icons/icon.ico</iconset>
   </property>
   <property name="styleSheet">
@@ -146,7 +146,7 @@
                     <string/>
                    </property>
                    <property name="icon">
-                    <iconset resource="resources.qrc">
+                    <iconset resource="../../resources.qrc">
                      <normaloff>:/images/icons/maximize.png</normaloff>:/images/icons/maximize.png</iconset>
                    </property>
                    <property name="checkable">
@@ -239,7 +239,7 @@
                     <string/>
                    </property>
                    <property name="icon">
-                    <iconset resource="resources.qrc">
+                    <iconset resource="../../resources.qrc">
                      <normaloff>:/images/icons/maximize.png</normaloff>:/images/icons/maximize.png</iconset>
                    </property>
                    <property name="checkable">
@@ -340,7 +340,7 @@
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="resources.qrc">
+              <iconset resource="../../resources.qrc">
                <normaloff>:/images/icons/run.png</normaloff>:/images/icons/run.png</iconset>
              </property>
              <property name="iconSize">
@@ -366,7 +366,7 @@
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="resources.qrc">
+              <iconset resource="../../resources.qrc">
                <normaloff>:/images/icons/spread.png</normaloff>:/images/icons/spread.png</iconset>
              </property>
              <property name="iconSize">
@@ -404,7 +404,7 @@
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="resources.qrc">
+              <iconset resource="../../resources.qrc">
                <normaloff>:/images/icons/nospred.png</normaloff>:/images/icons/nospred.png</iconset>
              </property>
              <property name="iconSize">
@@ -501,7 +501,7 @@
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="resources.qrc">
+                <iconset resource="../../resources.qrc">
                  <normaloff>:/images/icons/visible.png</normaloff>:/images/icons/visible.png</iconset>
                </property>
                <property name="iconSize">
@@ -539,7 +539,7 @@
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="resources.qrc">
+                <iconset resource="../../resources.qrc">
                  <normaloff>:/images/icons/color.png</normaloff>:/images/icons/color.png</iconset>
                </property>
                <property name="iconSize">
@@ -595,7 +595,7 @@
                  <string/>
                 </property>
                 <property name="icon">
-                 <iconset resource="resources.qrc">
+                 <iconset resource="../../resources.qrc">
                   <normaloff>:/images/icons/line.png</normaloff>:/images/icons/line.png</iconset>
                 </property>
                </item>
@@ -604,7 +604,7 @@
                  <string/>
                 </property>
                 <property name="icon">
-                 <iconset resource="resources.qrc">
+                 <iconset resource="../../resources.qrc">
                   <normaloff>:/images/icons/points.png</normaloff>:/images/icons/points.png</iconset>
                 </property>
                </item>
@@ -613,7 +613,7 @@
                  <string/>
                 </property>
                 <property name="icon">
-                 <iconset resource="resources.qrc">
+                 <iconset resource="../../resources.qrc">
                   <normaloff>:/images/icons/linePoint.png</normaloff>:/images/icons/linePoint.png</iconset>
                 </property>
                </item>
@@ -622,7 +622,7 @@
                  <string/>
                 </property>
                 <property name="icon">
-                 <iconset resource="resources.qrc">
+                 <iconset resource="../../resources.qrc">
                   <normaloff>:/images/icons/logicNotfilled.png</normaloff>:/images/icons/logicNotfilled.png</iconset>
                 </property>
                </item>
@@ -631,7 +631,7 @@
                  <string/>
                 </property>
                 <property name="icon">
-                 <iconset resource="resources.qrc">
+                 <iconset resource="../../resources.qrc">
                   <normaloff>:/images/icons/logicFilled.png</normaloff>:/images/icons/logicFilled.png</iconset>
                 </property>
                </item>
@@ -640,7 +640,7 @@
                  <string/>
                 </property>
                 <property name="icon">
-                 <iconset resource="resources.qrc">
+                 <iconset resource="../../resources.qrc">
                   <normaloff>:/images/icons/logicPoints.png</normaloff>:/images/icons/logicPoints.png</iconset>
                 </property>
                </item>
@@ -649,7 +649,7 @@
                  <string/>
                 </property>
                 <property name="icon">
-                 <iconset resource="resources.qrc">
+                 <iconset resource="../../resources.qrc">
                   <normaloff>:/images/icons/square.png</normaloff>:/images/icons/square.png</iconset>
                 </property>
                </item>
@@ -658,7 +658,7 @@
                  <string/>
                 </property>
                 <property name="icon">
-                 <iconset resource="resources.qrc">
+                 <iconset resource="../../resources.qrc">
                   <normaloff>:/images/icons/squareFilled.png</normaloff>:/images/icons/squareFilled.png</iconset>
                 </property>
                </item>
@@ -679,7 +679,7 @@
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="resources.qrc">
+                <iconset resource="../../resources.qrc">
                  <normaloff>:/images/icons/interpolate.png</normaloff>:/images/icons/interpolate.png</iconset>
                </property>
                <property name="iconSize">
@@ -809,7 +809,7 @@
                 <string/>
                </property>
                <property name="icon">
-                <iconset resource="resources.qrc">
+                <iconset resource="../../resources.qrc">
                  <normaloff>:/images/icons/invert.png</normaloff>:/images/icons/invert.png</iconset>
                </property>
                <property name="iconSize">
@@ -937,7 +937,7 @@
             </sizepolicy>
            </property>
            <attribute name="icon">
-            <iconset resource="resources.qrc">
+            <iconset resource="../../resources.qrc">
              <normaloff>:/images/icons/rangeTab.png</normaloff>:/images/icons/rangeTab.png</iconset>
            </attribute>
            <attribute name="title">
@@ -1379,7 +1379,7 @@
                        <string/>
                       </property>
                       <property name="pixmap">
-                       <pixmap resource="resources.qrc">:/images/icons/hrange.png</pixmap>
+                       <pixmap resource="../../resources.qrc">:/images/icons/hrange.png</pixmap>
                       </property>
                       <property name="alignment">
                        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -1446,7 +1446,7 @@
                        <string/>
                       </property>
                       <property name="pixmap">
-                       <pixmap resource="resources.qrc">:/images/icons/hrangeStep.png</pixmap>
+                       <pixmap resource="../../resources.qrc">:/images/icons/hrangeStep.png</pixmap>
                       </property>
                       <property name="alignment">
                        <set>Qt::AlignCenter</set>
@@ -1648,7 +1648,7 @@
                      <string/>
                     </property>
                     <property name="pixmap">
-                     <pixmap resource="resources.qrc">:/images/icons/zoom.png</pixmap>
+                     <pixmap resource="../../resources.qrc">:/images/icons/zoom.png</pixmap>
                     </property>
                     <property name="alignment">
                      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -1763,7 +1763,7 @@
                       <string/>
                      </property>
                      <property name="pixmap">
-                      <pixmap resource="resources.qrc">:/images/icons/vrange.png</pixmap>
+                      <pixmap resource="../../resources.qrc">:/images/icons/vrange.png</pixmap>
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -1965,7 +1965,7 @@
                         <string/>
                        </property>
                        <property name="icon">
-                        <iconset resource="resources.qrc">
+                        <iconset resource="../../resources.qrc">
                          <normaloff>:/images/icons/verticalPositive.png</normaloff>:/images/icons/verticalPositive.png</iconset>
                        </property>
                        <property name="iconSize">
@@ -1994,7 +1994,7 @@
                         <string/>
                        </property>
                        <property name="icon">
-                        <iconset resource="resources.qrc">
+                        <iconset resource="../../resources.qrc">
                          <normaloff>:/images/icons/verticalCenter.png</normaloff>:/images/icons/verticalCenter.png</iconset>
                        </property>
                        <property name="iconSize">
@@ -2026,7 +2026,7 @@
                         <string/>
                        </property>
                        <property name="icon">
-                        <iconset resource="resources.qrc">
+                        <iconset resource="../../resources.qrc">
                          <normaloff>:/images/icons/verticalNegative.png</normaloff>:/images/icons/verticalNegative.png</iconset>
                        </property>
                        <property name="iconSize">
@@ -2097,7 +2097,7 @@
           </widget>
           <widget class="QWidget" name="Cursors">
            <attribute name="icon">
-            <iconset resource="resources.qrc">
+            <iconset resource="../../resources.qrc">
              <normaloff>:/images/icons/deltaXLighter.png</normaloff>:/images/icons/deltaXLighter.png</iconset>
            </attribute>
            <attribute name="title">
@@ -2193,7 +2193,7 @@
                     <item>
                      <widget class="QLabel" name="label_17">
                       <property name="pixmap">
-                       <pixmap resource="resources.qrc">:/images/icons/valcur.png</pixmap>
+                       <pixmap resource="../../resources.qrc">:/images/icons/valcur.png</pixmap>
                       </property>
                       <property name="alignment">
                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -2431,7 +2431,7 @@
                     <item>
                      <widget class="QLabel" name="label_12">
                       <property name="pixmap">
-                       <pixmap resource="resources.qrc">:/images/icons/timecur.png</pixmap>
+                       <pixmap resource="../../resources.qrc">:/images/icons/timecur.png</pixmap>
                       </property>
                       <property name="alignment">
                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -2604,7 +2604,7 @@
                        <string/>
                       </property>
                       <property name="icon">
-                       <iconset resource="resources.qrc">
+                       <iconset resource="../../resources.qrc">
                         <normaloff>:/images/icons/multiply.png</normaloff>:/images/icons/multiply.png</iconset>
                       </property>
                       <property name="iconSize">
@@ -2696,7 +2696,7 @@
                   <string/>
                  </property>
                  <property name="pixmap">
-                  <pixmap resource="resources.qrc">:/images/icons/deltaX.png</pixmap>
+                  <pixmap resource="../../resources.qrc">:/images/icons/deltaX.png</pixmap>
                  </property>
                  <property name="scaledContents">
                   <bool>false</bool>
@@ -2737,7 +2737,7 @@
                   <string/>
                  </property>
                  <property name="pixmap">
-                  <pixmap resource="resources.qrc">:/images/icons/deltaY.png</pixmap>
+                  <pixmap resource="../../resources.qrc">:/images/icons/deltaY.png</pixmap>
                  </property>
                 </widget>
                </item>
@@ -2775,7 +2775,7 @@
                   <string/>
                  </property>
                  <property name="pixmap">
-                  <pixmap resource="resources.qrc">:/images/icons/divide.png</pixmap>
+                  <pixmap resource="../../resources.qrc">:/images/icons/divide.png</pixmap>
                  </property>
                 </widget>
                </item>
@@ -2813,7 +2813,7 @@
                   <string/>
                  </property>
                  <property name="pixmap">
-                  <pixmap resource="resources.qrc">:/images/icons/slope.png</pixmap>
+                  <pixmap resource="../../resources.qrc">:/images/icons/slope.png</pixmap>
                  </property>
                 </widget>
                </item>
@@ -2851,7 +2851,7 @@
                   <string/>
                  </property>
                  <property name="pixmap">
-                  <pixmap resource="resources.qrc">:/images/icons/freq.png</pixmap>
+                  <pixmap resource="../../resources.qrc">:/images/icons/freq.png</pixmap>
                  </property>
                 </widget>
                </item>
@@ -2957,7 +2957,7 @@
                     <item>
                      <widget class="QLabel" name="label_25">
                       <property name="pixmap">
-                       <pixmap resource="resources.qrc">:/images/icons/valcur.png</pixmap>
+                       <pixmap resource="../../resources.qrc">:/images/icons/valcur.png</pixmap>
                       </property>
                       <property name="alignment">
                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -3195,7 +3195,7 @@
                     <item>
                      <widget class="QLabel" name="label_16">
                       <property name="pixmap">
-                       <pixmap resource="resources.qrc">:/images/icons/timecur.png</pixmap>
+                       <pixmap resource="../../resources.qrc">:/images/icons/timecur.png</pixmap>
                       </property>
                       <property name="alignment">
                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -3371,7 +3371,7 @@
                        <string/>
                       </property>
                       <property name="icon">
-                       <iconset resource="resources.qrc">
+                       <iconset resource="../../resources.qrc">
                         <normaloff>:/images/icons/multiply.png</normaloff>:/images/icons/multiply.png</iconset>
                       </property>
                       <property name="iconSize">
@@ -3416,7 +3416,7 @@
           </widget>
           <widget class="QWidget" name="Measure">
            <attribute name="icon">
-            <iconset resource="resources.qrc">
+            <iconset resource="../../resources.qrc">
              <normaloff>:/images/icons/measure.png</normaloff>:/images/icons/measure.png</iconset>
            </attribute>
            <attribute name="title">
@@ -4475,7 +4475,7 @@
           </widget>
           <widget class="QWidget" name="Math">
            <attribute name="icon">
-            <iconset resource="resources.qrc">
+            <iconset resource="../../resources.qrc">
              <normaloff>:/images/icons/mathLogic.png</normaloff>:/images/icons/mathLogic.png</iconset>
            </attribute>
            <attribute name="title">
@@ -4581,7 +4581,7 @@
                     <string>Logic 2</string>
                    </property>
                    <property name="icon">
-                    <iconset resource="resources.qrc">
+                    <iconset resource="../../resources.qrc">
                      <normaloff>:/images/icons/logicConvert.png</normaloff>:/images/icons/logicConvert.png</iconset>
                    </property>
                    <property name="iconSize">
@@ -4607,7 +4607,7 @@
                     <string/>
                    </property>
                    <property name="icon">
-                    <iconset resource="resources.qrc">
+                    <iconset resource="../../resources.qrc">
                      <normaloff>:/images/icons/math.png</normaloff>:/images/icons/math.png</iconset>
                    </property>
                    <property name="checkable">
@@ -4646,7 +4646,7 @@
                      <string/>
                     </property>
                     <property name="icon">
-                     <iconset resource="resources.qrc">
+                     <iconset resource="../../resources.qrc">
                       <normaloff>:/images/icons/plus.png</normaloff>:/images/icons/plus.png</iconset>
                     </property>
                    </item>
@@ -4655,7 +4655,7 @@
                      <string/>
                     </property>
                     <property name="icon">
-                     <iconset resource="resources.qrc">
+                     <iconset resource="../../resources.qrc">
                       <normaloff>:/images/icons/minus.png</normaloff>:/images/icons/minus.png</iconset>
                     </property>
                    </item>
@@ -4664,7 +4664,7 @@
                      <string/>
                     </property>
                     <property name="icon">
-                     <iconset resource="resources.qrc">
+                     <iconset resource="../../resources.qrc">
                       <normaloff>:/images/icons/multiply.png</normaloff>:/images/icons/multiply.png</iconset>
                     </property>
                    </item>
@@ -4673,7 +4673,7 @@
                      <string/>
                     </property>
                     <property name="icon">
-                     <iconset resource="resources.qrc">
+                     <iconset resource="../../resources.qrc">
                       <normaloff>:/images/icons/divide.png</normaloff>:/images/icons/divide.png</iconset>
                     </property>
                    </item>
@@ -4724,7 +4724,7 @@
                     <string/>
                    </property>
                    <property name="icon">
-                    <iconset resource="resources.qrc">
+                    <iconset resource="../../resources.qrc">
                      <normaloff>:/images/icons/math.png</normaloff>:/images/icons/math.png</iconset>
                    </property>
                    <property name="checkable">
@@ -4878,7 +4878,7 @@
                     <string>Logic 1</string>
                    </property>
                    <property name="icon">
-                    <iconset resource="resources.qrc">
+                    <iconset resource="../../resources.qrc">
                      <normaloff>:/images/icons/logicConvert.png</normaloff>:/images/icons/logicConvert.png</iconset>
                    </property>
                    <property name="iconSize">
@@ -4929,7 +4929,7 @@
                     <string/>
                    </property>
                    <property name="icon">
-                    <iconset resource="resources.qrc">
+                    <iconset resource="../../resources.qrc">
                      <normaloff>:/images/icons/math.png</normaloff>:/images/icons/math.png</iconset>
                    </property>
                    <property name="checkable">
@@ -4968,7 +4968,7 @@
                      <string/>
                     </property>
                     <property name="icon">
-                     <iconset resource="resources.qrc">
+                     <iconset resource="../../resources.qrc">
                       <normaloff>:/images/icons/plus.png</normaloff>:/images/icons/plus.png</iconset>
                     </property>
                    </item>
@@ -4977,7 +4977,7 @@
                      <string/>
                     </property>
                     <property name="icon">
-                     <iconset resource="resources.qrc">
+                     <iconset resource="../../resources.qrc">
                       <normaloff>:/images/icons/minus.png</normaloff>:/images/icons/minus.png</iconset>
                     </property>
                    </item>
@@ -4986,7 +4986,7 @@
                      <string/>
                     </property>
                     <property name="icon">
-                     <iconset resource="resources.qrc">
+                     <iconset resource="../../resources.qrc">
                       <normaloff>:/images/icons/multiply.png</normaloff>:/images/icons/multiply.png</iconset>
                     </property>
                    </item>
@@ -4995,7 +4995,7 @@
                      <string/>
                     </property>
                     <property name="icon">
-                     <iconset resource="resources.qrc">
+                     <iconset resource="../../resources.qrc">
                       <normaloff>:/images/icons/divide.png</normaloff>:/images/icons/divide.png</iconset>
                     </property>
                    </item>
@@ -5070,7 +5070,7 @@
                      <string/>
                     </property>
                     <property name="icon">
-                     <iconset resource="resources.qrc">
+                     <iconset resource="../../resources.qrc">
                       <normaloff>:/images/icons/plus.png</normaloff>:/images/icons/plus.png</iconset>
                     </property>
                    </item>
@@ -5079,7 +5079,7 @@
                      <string/>
                     </property>
                     <property name="icon">
-                     <iconset resource="resources.qrc">
+                     <iconset resource="../../resources.qrc">
                       <normaloff>:/images/icons/minus.png</normaloff>:/images/icons/minus.png</iconset>
                     </property>
                    </item>
@@ -5088,7 +5088,7 @@
                      <string/>
                     </property>
                     <property name="icon">
-                     <iconset resource="resources.qrc">
+                     <iconset resource="../../resources.qrc">
                       <normaloff>:/images/icons/multiply.png</normaloff>:/images/icons/multiply.png</iconset>
                     </property>
                    </item>
@@ -5097,7 +5097,7 @@
                      <string/>
                     </property>
                     <property name="icon">
-                     <iconset resource="resources.qrc">
+                     <iconset resource="../../resources.qrc">
                       <normaloff>:/images/icons/divide.png</normaloff>:/images/icons/divide.png</iconset>
                     </property>
                    </item>
@@ -5200,7 +5200,7 @@
           </widget>
           <widget class="QWidget" name="Filter">
            <attribute name="icon">
-            <iconset resource="resources.qrc">
+            <iconset resource="../../resources.qrc">
              <normaloff>:/images/icons/filter.png</normaloff>:/images/icons/filter.png</iconset>
            </attribute>
            <attribute name="title">
@@ -5252,7 +5252,7 @@
                   <string>Average</string>
                  </property>
                  <property name="icon">
-                  <iconset resource="resources.qrc">
+                  <iconset resource="../../resources.qrc">
                    <normaloff>:/images/icons/average.png</normaloff>:/images/icons/average.png</iconset>
                  </property>
                  <property name="checkable">
@@ -5414,7 +5414,7 @@
           </widget>
           <widget class="QWidget" name="XY">
            <attribute name="icon">
-            <iconset resource="resources.qrc">
+            <iconset resource="../../resources.qrc">
              <normaloff>:/images/icons/xyTab.png</normaloff>:/images/icons/xyTab.png</iconset>
            </attribute>
            <attribute name="title">
@@ -5529,7 +5529,7 @@
                     <string/>
                    </property>
                    <property name="icon">
-                    <iconset resource="resources.qrc">
+                    <iconset resource="../../resources.qrc">
                      <normaloff>:/images/icons/color.png</normaloff>:/images/icons/color.png</iconset>
                    </property>
                    <property name="iconSize">
@@ -5709,7 +5709,7 @@
                    <string/>
                   </property>
                   <property name="icon">
-                   <iconset resource="resources.qrc">
+                   <iconset resource="../../resources.qrc">
                     <normaloff>:/images/icons/line.png</normaloff>:/images/icons/line.png</iconset>
                   </property>
                  </item>
@@ -5718,7 +5718,7 @@
                    <string/>
                   </property>
                   <property name="icon">
-                   <iconset resource="resources.qrc">
+                   <iconset resource="../../resources.qrc">
                     <normaloff>:/images/icons/points.png</normaloff>:/images/icons/points.png</iconset>
                   </property>
                  </item>
@@ -5727,7 +5727,7 @@
                    <string/>
                   </property>
                   <property name="icon">
-                   <iconset resource="resources.qrc">
+                   <iconset resource="../../resources.qrc">
                     <normaloff>:/images/icons/linePoint.png</normaloff>:/images/icons/linePoint.png</iconset>
                   </property>
                  </item>
@@ -5808,7 +5808,7 @@
                     <string/>
                    </property>
                    <property name="pixmap">
-                    <pixmap resource="resources.qrc">:/images/icons/valcur.png</pixmap>
+                    <pixmap resource="../../resources.qrc">:/images/icons/valcur.png</pixmap>
                    </property>
                   </widget>
                  </item>
@@ -5891,7 +5891,7 @@
                     <string/>
                    </property>
                    <property name="pixmap">
-                    <pixmap resource="resources.qrc">:/images/icons/timecur.png</pixmap>
+                    <pixmap resource="../../resources.qrc">:/images/icons/timecur.png</pixmap>
                    </property>
                   </widget>
                  </item>
@@ -5930,7 +5930,7 @@
                     <string/>
                    </property>
                    <property name="pixmap">
-                    <pixmap resource="resources.qrc">:/images/icons/deltaX.png</pixmap>
+                    <pixmap resource="../../resources.qrc">:/images/icons/deltaX.png</pixmap>
                    </property>
                    <property name="scaledContents">
                     <bool>false</bool>
@@ -5999,7 +5999,7 @@
                     <string/>
                    </property>
                    <property name="pixmap">
-                    <pixmap resource="resources.qrc">:/images/icons/xyphase.png</pixmap>
+                    <pixmap resource="../../resources.qrc">:/images/icons/xyphase.png</pixmap>
                    </property>
                    <property name="alignment">
                     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -6040,7 +6040,7 @@
                     <string/>
                    </property>
                    <property name="pixmap">
-                    <pixmap resource="resources.qrc">:/images/icons/deltaY.png</pixmap>
+                    <pixmap resource="../../resources.qrc">:/images/icons/deltaY.png</pixmap>
                    </property>
                    <property name="alignment">
                     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -6107,7 +6107,7 @@
           </widget>
           <widget class="QWidget" name="FFT">
            <attribute name="icon">
-            <iconset resource="resources.qrc">
+            <iconset resource="../../resources.qrc">
              <normaloff>:/images/icons/fft.png</normaloff>:/images/icons/fft.png</iconset>
            </attribute>
            <attribute name="title">
@@ -6563,7 +6563,7 @@
                    <string/>
                   </property>
                   <property name="icon">
-                   <iconset resource="resources.qrc">
+                   <iconset resource="../../resources.qrc">
                     <normaloff>:/images/icons/line.png</normaloff>:/images/icons/line.png</iconset>
                   </property>
                  </item>
@@ -6572,7 +6572,7 @@
                    <string/>
                   </property>
                   <property name="icon">
-                   <iconset resource="resources.qrc">
+                   <iconset resource="../../resources.qrc">
                     <normaloff>:/images/icons/points.png</normaloff>:/images/icons/points.png</iconset>
                   </property>
                  </item>
@@ -6581,7 +6581,7 @@
                    <string/>
                   </property>
                   <property name="icon">
-                   <iconset resource="resources.qrc">
+                   <iconset resource="../../resources.qrc">
                     <normaloff>:/images/icons/linePoint.png</normaloff>:/images/icons/linePoint.png</iconset>
                   </property>
                  </item>
@@ -6807,7 +6807,7 @@
                    <string/>
                   </property>
                   <property name="icon">
-                   <iconset resource="resources.qrc">
+                   <iconset resource="../../resources.qrc">
                     <normaloff>:/images/icons/line.png</normaloff>:/images/icons/line.png</iconset>
                   </property>
                  </item>
@@ -6816,7 +6816,7 @@
                    <string/>
                   </property>
                   <property name="icon">
-                   <iconset resource="resources.qrc">
+                   <iconset resource="../../resources.qrc">
                     <normaloff>:/images/icons/points.png</normaloff>:/images/icons/points.png</iconset>
                   </property>
                  </item>
@@ -6825,7 +6825,7 @@
                    <string/>
                   </property>
                   <property name="icon">
-                   <iconset resource="resources.qrc">
+                   <iconset resource="../../resources.qrc">
                     <normaloff>:/images/icons/linePoint.png</normaloff>:/images/icons/linePoint.png</iconset>
                   </property>
                  </item>
@@ -6864,7 +6864,7 @@
           </widget>
           <widget class="QWidget" name="CSV">
            <attribute name="icon">
-            <iconset resource="resources.qrc">
+            <iconset resource="../../resources.qrc">
              <normaloff>:/images/icons/export.png</normaloff>:/images/icons/export.png</iconset>
            </attribute>
            <attribute name="title">
@@ -6916,7 +6916,7 @@
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset resource="resources.qrc">
+                  <iconset resource="../../resources.qrc">
                    <normaloff>:/images/icons/spread.png</normaloff>:/images/icons/spread.png</iconset>
                  </property>
                  <property name="iconSize">
@@ -6936,7 +6936,7 @@
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset resource="resources.qrc">
+                  <iconset resource="../../resources.qrc">
                    <normaloff>:/images/icons/xyChannel.png</normaloff>:/images/icons/xyChannel.png</iconset>
                  </property>
                  <property name="iconSize">
@@ -6953,7 +6953,7 @@
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset resource="resources.qrc">
+                  <iconset resource="../../resources.qrc">
                    <normaloff>:/images/icons/fft.png</normaloff>:/images/icons/fft.png</iconset>
                  </property>
                  <property name="iconSize">
@@ -7015,7 +7015,7 @@
                     <string/>
                    </property>
                    <property name="icon">
-                    <iconset resource="resources.qrc">
+                    <iconset resource="../../resources.qrc">
                      <normaloff>:/images/icons/spread.png</normaloff>:/images/icons/spread.png</iconset>
                    </property>
                    <property name="iconSize">
@@ -7038,7 +7038,7 @@
                     <string/>
                    </property>
                    <property name="icon">
-                    <iconset resource="resources.qrc">
+                    <iconset resource="../../resources.qrc">
                      <normaloff>:/images/icons/xyChannel.png</normaloff>:/images/icons/xyChannel.png</iconset>
                    </property>
                    <property name="iconSize">
@@ -7055,7 +7055,7 @@
                     <string/>
                    </property>
                    <property name="icon">
-                    <iconset resource="resources.qrc">
+                    <iconset resource="../../resources.qrc">
                      <normaloff>:/images/icons/fft.png</normaloff>:/images/icons/fft.png</iconset>
                    </property>
                    <property name="iconSize">
@@ -7075,7 +7075,7 @@
                     <string/>
                    </property>
                    <property name="icon">
-                    <iconset resource="resources.qrc">
+                    <iconset resource="../../resources.qrc">
                      <normaloff>:/images/icons/singleChannel.png</normaloff>:/images/icons/singleChannel.png</iconset>
                    </property>
                    <property name="iconSize">
@@ -7280,7 +7280,7 @@
           </property>
           <widget class="QWidget" name="main">
            <attribute name="icon">
-            <iconset resource="resources.qrc">
+            <iconset resource="../../resources.qrc">
              <normaloff>:/images/icons/connection.png</normaloff>:/images/icons/connection.png</iconset>
            </attribute>
            <attribute name="title">
@@ -7437,7 +7437,7 @@
                  <string/>
                 </property>
                 <property name="icon">
-                 <iconset resource="resources.qrc">
+                 <iconset resource="../../resources.qrc">
                   <normaloff>:/images/icons/settings.png</normaloff>:/images/icons/settings.png</iconset>
                 </property>
                 <property name="iconSize">
@@ -7460,7 +7460,7 @@
                  <string/>
                 </property>
                 <property name="icon">
-                 <iconset resource="resources.qrc">
+                 <iconset resource="../../resources.qrc">
                   <normaloff>:/images/icons/about.png</normaloff>:/images/icons/about.png</iconset>
                 </property>
                 <property name="iconSize">
@@ -7483,7 +7483,7 @@
                  <string/>
                 </property>
                 <property name="icon">
-                 <iconset resource="resources.qrc">
+                 <iconset resource="../../resources.qrc">
                   <normaloff>:/images/icons/disconnected.png</normaloff>:/images/icons/disconnected.png</iconset>
                 </property>
                 <property name="iconSize">
@@ -7547,7 +7547,7 @@
           </widget>
           <widget class="QWidget" name="consoles">
            <attribute name="icon">
-            <iconset resource="resources.qrc">
+            <iconset resource="../../resources.qrc">
              <normaloff>:/images/icons/qmlterminal.png</normaloff>:/images/icons/qmlterminal.png</iconset>
            </attribute>
            <attribute name="title">
@@ -7671,7 +7671,7 @@
                     <string/>
                    </property>
                    <property name="icon">
-                    <iconset resource="resources.qrc">
+                    <iconset resource="../../resources.qrc">
                      <normaloff>:/images/icons/dollarsNewline.png</normaloff>:/images/icons/dollarsNewline.png</iconset>
                    </property>
                    <property name="iconSize">
@@ -7694,7 +7694,7 @@
                     <string/>
                    </property>
                    <property name="icon">
-                    <iconset resource="resources.qrc">
+                    <iconset resource="../../resources.qrc">
                      <normaloff>:/images/icons/clear.png</normaloff>:/images/icons/clear.png</iconset>
                    </property>
                    <property name="iconSize">
@@ -7720,7 +7720,7 @@
                     <string/>
                    </property>
                    <property name="icon">
-                    <iconset resource="resources.qrc">
+                    <iconset resource="../../resources.qrc">
                      <normaloff>:/images/icons/scrollDown.png</normaloff>:/images/icons/scrollDown.png</iconset>
                    </property>
                    <property name="iconSize">
@@ -7842,7 +7842,7 @@
                      <string/>
                     </property>
                     <property name="icon">
-                     <iconset resource="resources.qrc">
+                     <iconset resource="../../resources.qrc">
                       <normaloff>:/images/icons/messagesDevice.png</normaloff>:/images/icons/messagesDevice.png</iconset>
                     </property>
                    </item>
@@ -7851,7 +7851,7 @@
                      <string/>
                     </property>
                     <property name="icon">
-                     <iconset resource="resources.qrc">
+                     <iconset resource="../../resources.qrc">
                       <normaloff>:/images/icons/messagesErrors.png</normaloff>:/images/icons/messagesErrors.png</iconset>
                     </property>
                    </item>
@@ -7860,7 +7860,7 @@
                      <string/>
                     </property>
                     <property name="icon">
-                     <iconset resource="resources.qrc">
+                     <iconset resource="../../resources.qrc">
                       <normaloff>:/images/icons/messagesWarnings.png</normaloff>:/images/icons/messagesWarnings.png</iconset>
                     </property>
                    </item>
@@ -7869,7 +7869,7 @@
                      <string/>
                     </property>
                     <property name="icon">
-                     <iconset resource="resources.qrc">
+                     <iconset resource="../../resources.qrc">
                       <normaloff>:/images/icons/messagesAll.png</normaloff>:/images/icons/messagesAll.png</iconset>
                     </property>
                    </item>
@@ -7884,7 +7884,7 @@
                     <string/>
                    </property>
                    <property name="icon">
-                    <iconset resource="resources.qrc">
+                    <iconset resource="../../resources.qrc">
                      <normaloff>:/images/icons/clear.png</normaloff>:/images/icons/clear.png</iconset>
                    </property>
                    <property name="iconSize">
@@ -7910,7 +7910,7 @@
                     <string/>
                    </property>
                    <property name="icon">
-                    <iconset resource="resources.qrc">
+                    <iconset resource="../../resources.qrc">
                      <normaloff>:/images/icons/scrollDown.png</normaloff>:/images/icons/scrollDown.png</iconset>
                    </property>
                    <property name="iconSize">
@@ -7930,7 +7930,7 @@
           </widget>
           <widget class="QWidget" name="settings">
            <attribute name="icon">
-            <iconset resource="resources.qrc">
+            <iconset resource="../../resources.qrc">
              <normaloff>:/images/icons/settings.png</normaloff>:/images/icons/settings.png</iconset>
            </attribute>
            <attribute name="title">
@@ -7979,7 +7979,7 @@
                   <string>english</string>
                  </property>
                  <property name="icon">
-                  <iconset resource="resources.qrc">
+                  <iconset resource="../../resources.qrc">
                    <normaloff>:/images/icons/english.png</normaloff>:/images/icons/english.png</iconset>
                  </property>
                  <property name="iconSize">
@@ -7999,7 +7999,7 @@
                   <string>czech</string>
                  </property>
                  <property name="icon">
-                  <iconset resource="resources.qrc">
+                  <iconset resource="../../resources.qrc">
                    <normaloff>:/images/icons/czech.png</normaloff>:/images/icons/czech.png</iconset>
                  </property>
                  <property name="iconSize">
@@ -8305,7 +8305,7 @@
                <string>Reset Settings</string>
               </property>
               <property name="icon">
-               <iconset resource="resources.qrc">
+               <iconset resource="../../resources.qrc">
                 <normaloff>:/images/icons/reload.png</normaloff>:/images/icons/reload.png</iconset>
               </property>
               <property name="iconSize">
@@ -8328,7 +8328,7 @@
                <string>Developer Options</string>
               </property>
               <property name="icon">
-               <iconset resource="resources.qrc">
+               <iconset resource="../../resources.qrc">
                 <normaloff>:/images/icons/terminal.png</normaloff>:/images/icons/terminal.png</iconset>
               </property>
               <property name="iconSize">
@@ -8343,7 +8343,7 @@
           </widget>
           <widget class="QWidget" name="about">
            <attribute name="icon">
-            <iconset resource="resources.qrc">
+            <iconset resource="../../resources.qrc">
              <normaloff>:/images/icons/about.png</normaloff>:/images/icons/about.png</iconset>
            </attribute>
            <attribute name="title">
@@ -8464,7 +8464,7 @@
                <enum>Qt::PlainText</enum>
               </property>
               <property name="pixmap">
-               <pixmap resource="resources.qrc">:/images/icons/logoKatedry.png</pixmap>
+               <pixmap resource="../../resources.qrc">:/images/icons/logoKatedry.png</pixmap>
               </property>
               <property name="scaledContents">
                <bool>false</bool>
@@ -8690,7 +8690,7 @@
   <tabstop>comboBoxMath2Op</tabstop>
  </tabstops>
  <resources>
-  <include location="resources.qrc"/>
+  <include location="../../resources.qrc"/>
  </resources>
  <connections>
   <connection>

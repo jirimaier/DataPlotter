@@ -1,9 +1,4 @@
 {
-    "python.testing.pytestArgs": [
-        "mainwindow"
-    ],
-    "python.testing.unittestEnabled": false,
-    "python.testing.pytestEnabled": true,
     "cSpell.language": "en,cs",
     "cSpell.words": [
         "ansiterminalmodel",

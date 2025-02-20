@@ -39,7 +39,7 @@
           <string>Reload</string>
          </property>
          <property name="icon">
-          <iconset resource="resources.qrc">
+          <iconset resource="../../resources.qrc">
            <normaloff>:/images/icons/reload.png</normaloff>:/images/icons/reload.png</iconset>
          </property>
          <property name="iconSize">
@@ -59,7 +59,7 @@
           <string>Load File</string>
          </property>
          <property name="icon">
-          <iconset resource="resources.qrc">
+          <iconset resource="../../resources.qrc">
            <normaloff>:/images/icons/load.png</normaloff>:/images/icons/load.png</iconset>
          </property>
          <property name="iconSize">
@@ -79,7 +79,7 @@
           <string>Save Code to File</string>
          </property>
          <property name="icon">
-          <iconset resource="resources.qrc">
+          <iconset resource="../../resources.qrc">
            <normaloff>:/images/icons/save.png</normaloff>:/images/icons/save.png</iconset>
          </property>
          <property name="iconSize">
@@ -124,7 +124,7 @@
           <string>Export QML Data</string>
          </property>
          <property name="icon">
-          <iconset resource="resources.qrc">
+          <iconset resource="../../resources.qrc">
            <normaloff>:/images/icons/send.png</normaloff>:/images/icons/send.png</iconset>
          </property>
          <property name="iconSize">
@@ -175,7 +175,7 @@
             <string>Show Grid and Cursor</string>
            </property>
            <property name="icon">
-            <iconset resource="resources.qrc">
+            <iconset resource="../../resources.qrc">
              <normaloff>:/images/icons/terminalDebug.png</normaloff>:/images/icons/terminalDebug.png</iconset>
            </property>
            <property name="iconSize">
@@ -204,7 +204,7 @@
             <string>Clear (and show if hidden)</string>
            </property>
            <property name="icon">
-            <iconset resource="resources.qrc">
+            <iconset resource="../../resources.qrc">
              <normaloff>:/images/icons/clear.png</normaloff>:/images/icons/clear.png</iconset>
            </property>
            <property name="iconSize">
@@ -405,7 +405,7 @@
             <string>Apply to terminal</string>
            </property>
            <property name="icon">
-            <iconset resource="resources.qrc">
+            <iconset resource="../../resources.qrc">
              <normaloff>:/images/icons/send.png</normaloff>:/images/icons/send.png</iconset>
            </property>
           </widget>
@@ -416,7 +416,7 @@
             <string>Shift position command</string>
            </property>
            <property name="icon">
-            <iconset resource="resources.qrc">
+            <iconset resource="../../resources.qrc">
              <normaloff>:/images/icons/deltaY.png</normaloff>:/images/icons/deltaY.png</iconset>
            </property>
           </widget>
@@ -433,7 +433,7 @@
             <string>Copy to use in firmware</string>
            </property>
            <property name="icon">
-            <iconset resource="resources.qrc">
+            <iconset resource="../../resources.qrc">
              <normaloff>:/images/icons/copy.png</normaloff>:/images/icons/copy.png</iconset>
            </property>
           </widget>
@@ -450,7 +450,7 @@
             <string>Clear text</string>
            </property>
            <property name="icon">
-            <iconset resource="resources.qrc">
+            <iconset resource="../../resources.qrc">
              <normaloff>:/images/icons/clear.png</normaloff>:/images/icons/clear.png</iconset>
            </property>
           </widget>
@@ -584,7 +584,7 @@
             <string>Pick Color</string>
            </property>
            <property name="icon">
-            <iconset resource="resources.qrc">
+            <iconset resource="../../resources.qrc">
              <normaloff>:/images/icons/plus.png</normaloff>:/images/icons/plus.png</iconset>
            </property>
           </widget>
@@ -604,7 +604,7 @@
             <string>Remove selected</string>
            </property>
            <property name="icon">
-            <iconset resource="resources.qrc">
+            <iconset resource="../../resources.qrc">
              <normaloff>:/images/icons/minus.png</normaloff>:/images/icons/minus.png</iconset>
            </property>
           </widget>
@@ -626,7 +626,7 @@
           <string>Copy command to clipboard  (to use in firmware)</string>
          </property>
          <property name="icon">
-          <iconset resource="resources.qrc">
+          <iconset resource="../../resources.qrc">
            <normaloff>:/images/icons/copy.png</normaloff>:/images/icons/copy.png</iconset>
          </property>
         </widget>
@@ -731,7 +731,7 @@
                <string>Show Buffer Content</string>
               </property>
               <property name="icon">
-               <iconset resource="resources.qrc">
+               <iconset resource="../../resources.qrc">
                 <normaloff>:/images/icons/viewBuffer.png</normaloff>:/images/icons/viewBuffer.png</iconset>
               </property>
               <property name="iconSize">
@@ -751,7 +751,7 @@
                <string>Clear Buffer</string>
               </property>
               <property name="icon">
-               <iconset resource="resources.qrc">
+               <iconset resource="../../resources.qrc">
                 <normaloff>:/images/icons/clearBuffer.png</normaloff>:/images/icons/clearBuffer.png</iconset>
               </property>
               <property name="iconSize">
@@ -1029,7 +1029,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="resources.qrc">
+            <iconset resource="../../resources.qrc">
              <normaloff>:/images/icons/send.png</normaloff>:/images/icons/send.png</iconset>
            </property>
           </widget>
@@ -1050,7 +1050,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="resources.qrc">
+            <iconset resource="../../resources.qrc">
              <normaloff>:/images/icons/viewBuffer.png</normaloff>:/images/icons/viewBuffer.png</iconset>
            </property>
            <property name="iconSize">
@@ -1070,7 +1070,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="resources.qrc">
+            <iconset resource="../../resources.qrc">
              <normaloff>:/images/icons/clearBuffer.png</normaloff>:/images/icons/clearBuffer.png</iconset>
            </property>
            <property name="iconSize">
@@ -1090,7 +1090,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="resources.qrc">
+            <iconset resource="../../resources.qrc">
              <normaloff>:/images/icons/clear.png</normaloff>:/images/icons/clear.png</iconset>
            </property>
            <property name="iconSize">
@@ -1116,7 +1116,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="resources.qrc">
+            <iconset resource="../../resources.qrc">
              <normaloff>:/images/icons/scrollDown.png</normaloff>:/images/icons/scrollDown.png</iconset>
            </property>
            <property name="iconSize">
@@ -1136,7 +1136,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="resources.qrc"/>
+  <include location="../../resources.qrc"/>
  </resources>
  <connections>
   <connection>
