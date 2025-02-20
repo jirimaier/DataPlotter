@@ -1,3 +1,4 @@
 *.user
 build/*
 linux_deploy/*.deb
+CMakeCache.txt
