@@ -31,8 +31,7 @@ def check_tool_installed(tool):
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
 # Confirm current directory
-current_dir = os.getcwd()
-if not current_dir.endswith("/workspaces/DataPlotter"):
+if not os.path.exists("linux_deploy"):
     raise Exception("Please make sure you are in the /workspaces/DataPlotter/ directory")
 
 # Get the version
@@ -148,6 +147,7 @@ shutil.copy2(postinst_path, os.path.join(base_dir, "DEBIAN", "postinst"))
 os.chmod(os.path.join(base_dir, "DEBIAN", "postinst"), 0o755)
 
 # Delete old .deb files
+current_dir = os.getcwd()
 for file in os.listdir(current_dir):
     if file.endswith(".deb"):
         os.remove(file)
