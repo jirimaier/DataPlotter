@@ -4,17 +4,21 @@ import shutil
 import subprocess
 import multiprocessing
 import logging
+import re
 
 def get_version(file_path):
-    """Extracts the version from the .pro file."""
+    """Extracts the version from the CMakeLists.txt file."""
     try:
         with open(file_path, 'r') as file:
-            for line in file:
-                if line.startswith('VERSION'):
-                    return ".".join(line.split('=')[1].strip().split(".")[:3])
+            content = file.read()
+            match = re.search(r'project\(\s*\w+\s+VERSION\s+([\d.]+)', content, re.IGNORECASE)
+            if match:
+                return match.group(1)
     except FileNotFoundError:
-        logging.error(".pro file not found!")
+        logging.error("CMakeLists.txt file not found!")
         raise
+    
+    logging.error("Could not extract version from CMakeLists.txt")
     return None
 
 def check_tool_installed(tool):
@@ -32,14 +36,14 @@ if not current_dir.endswith("/workspaces/DataPlotter"):
     raise Exception("Please make sure you are in the /workspaces/DataPlotter/ directory")
 
 # Get the version
-version = get_version('DataPlotter.pro')
+version = get_version('CMakeLists.txt')
 if not version:
     raise Exception("Could not extract version from .pro file")
 
 logging.info(f"Building DataPlotter version {version}")
 
 # Define base directory
-base_dir = os.path.join("linux_deploy", f"data-plotter_{version}_amd64")
+base_dir = os.path.join("linux_deploy", f"data-plotter_{version.replace('.','_')}_amd64")
 if os.path.exists(base_dir):
     shutil.rmtree(base_dir)
 
@@ -69,8 +73,8 @@ else:
 
 # Build process
 os.chdir("build")
-subprocess.run(["qmake", ".."], check=True)
-subprocess.run(["make", f"-j{multiprocessing.cpu_count()}"], check=True)
+subprocess.run(["cmake", "..", "-DCMAKE_BUILD_TYPE=Release"], check=True)
+subprocess.run(["cmake", "--build", ".", f"-j{multiprocessing.cpu_count()}"], check=True)
 os.chdir("..")
 
 # File copying
