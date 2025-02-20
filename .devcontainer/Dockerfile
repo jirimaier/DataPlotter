@@ -1,7 +1,11 @@
+# Use a base image with C++ and Ubuntu 20.04
 FROM mcr.microsoft.com/devcontainers/cpp:1-ubuntu-20.04
 
-# Install dependencies
-RUN apt update && apt install -y \
+# Prevent interactive prompts
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install required dependencies
+RUN apt update && apt install -y --no-install-recommends \
     qt5-default \
     qtdeclarative5-dev \
     libqt5quick5 \
@@ -17,7 +21,10 @@ RUN apt update && apt install -y \
     cmake \
     ninja-build \
     pkg-config \
-    git
+    git \
+    qttools5-dev \
+    qttools5-dev-tools && \
+    rm -rf /var/lib/apt/lists/*
 
 # Set working directory
-WORKDIR /workspaces
+WORKDIR /workspaces/DataPlotter
