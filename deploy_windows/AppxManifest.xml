@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:uap10="http://schemas.microsoft.com/appx/manifest/uap/windows10/10" xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities" IgnorableNamespaces="uap uap10 rescap">
+  <Identity Name="JiMaier.DataPlotter" Publisher="CN=6F8CD499-23DE-4129-BE8E-D2503285A20A" Version="{version}" ProcessorArchitecture="x64" />
+  <Properties>
+    <DisplayName>Data Plotter</DisplayName>
+    <PublisherDisplayName>Jiří Maier</PublisherDisplayName>
+    <Description>None</Description>
+    <Logo>Assets\DATAPLOTTER-Square50x50Logo.png</Logo>
+    <uap10:PackageIntegrity>
+      <uap10:Content Enforcement="on" />
+    </uap10:PackageIntegrity>
+  </Properties>
+  <Resources>
+    <Resource Language="en-us" />
+  </Resources>
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.17763.0" MaxVersionTested="10.0.22000.1" />
+  </Dependencies>
+  <Applications>
+    <Application Id="DATAPLOTTER" Executable="DataPlotter.exe" EntryPoint="Windows.FullTrustApplication">
+      <uap:VisualElements BackgroundColor="transparent" DisplayName="Data Plotter" Square150x150Logo="Assets\DATAPLOTTER-Square150x150Logo.png" Square44x44Logo="Assets\DATAPLOTTER-Square44x44Logo.png" Description="Data Plotter">
+        <uap:DefaultTile Wide310x150Logo="Assets\DATAPLOTTER-Wide310x150Logo.png" Square310x310Logo="Assets\DATAPLOTTER-Square310x310Logo.png" Square71x71Logo="Assets\DATAPLOTTER-Square71x71Logo.png" />
+      </uap:VisualElements>
+    </Application>
+  </Applications>
+  <Capabilities>
+    <rescap:Capability Name="runFullTrust" />
+  </Capabilities>
+</Package>
