@@ -176,6 +176,15 @@ def copy_openssl_libs(app_folder, openssl_folder):
             print(f"Copied {dll} to {app_folder}")
         else:
             raise FileNotFoundError(f"{dll} not found in {openssl_folder}")
+        
+def remove_vcredist_installer_from_app_folder(app_folder):
+    """Remove the VCRedist installer from the application folder."""
+    vcredist_path = os.path.join(app_folder, "vc_redist.x64.exe")
+    if os.path.exists(vcredist_path):
+        os.remove(vcredist_path)
+        logging.warning(f"The VC Redist installer is in app directory. Removed {vcredist_path}")
+    else:
+        print(f"{vcredist_path} is not in {app_folder}")
 
 
 if __name__ == "__main__":
@@ -223,6 +232,7 @@ if __name__ == "__main__":
 
         version = get_version(CMAKE_FILE)
         if version:
+            remove_vcredist_installer_from_app_folder(app_folder)
             run_inno_setup(version, args.inno)
             create_portable_version(app_folder, args.vcredist, version)
         else:
