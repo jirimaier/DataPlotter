@@ -1,3 +1,5 @@
+name: Build and Deploy DataPlotter on Windows
+
 on:
   push:
     branches:
