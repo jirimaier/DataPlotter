@@ -131,11 +131,16 @@ jobs:
         # Convert the password to a SecureString
         $securePassword = ConvertTo-SecureString -String $password -Force -AsPlainText 
 
-        # Export the certificate
+        # Export the certificate with the private key (.pfx)
         Export-PfxCertificate `
           -Cert $cert `
           -FilePath "deploy_windows/deploy/test_certificate.pfx" `
           -Password $securePassword
+
+        # Export the certificate without the private key (.cer)
+        Export-Certificate `
+          -Cert $cert `
+          -FilePath "deploy_windows/deploy/test_certificate.cer"
 
         # Sign the MSIX package
         & "${{ env.SIGNTOOL_PATH }}" sign `
@@ -155,4 +160,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: temporary-testing-certificate
-        path: deploy_windows/deploy/test_certificate.pfx
+        path: deploy_windows/deploy/test_certificate.cer
