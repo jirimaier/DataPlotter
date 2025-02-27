@@ -36,7 +36,10 @@ jobs:
             ninja-build \
             pkg-config \
             qttools5-dev \
-            qttools5-dev-tools
+            qttools5-dev-tools \
+            gtk-update-icon-cache \
+            fuse libfuse2 \
+            zsync file appstream
 
       - name: Build DataPlotter
         run: |
@@ -47,10 +50,20 @@ jobs:
 
       - name: Package Debian Package
         run: |
-          python3 ./extras/deploy_debian_native/deploy.py
+          python3 ./extras/deploy_debian_native/deploy.py debian
 
       - name: Upload Debian Package
         uses: actions/upload-artifact@v4
         with:
           name: DataPlotter-Deb-Package
           path: ./extras/deploy_debian_native/deploy/*.deb
+
+      - name: Package AppImage
+        run: |
+          python3 ./extras/deploy_debian_native/deploy.py appimage
+
+      - name: Upload AppImage
+        uses: actions/upload-artifact@v4
+        with:
+          name: DataPlotter-AppImage
+          path: ./extras/deploy_debian_native/deploy/DataPlotter*.AppImage*

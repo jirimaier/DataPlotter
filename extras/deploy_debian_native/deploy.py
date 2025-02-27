@@ -1,8 +1,17 @@
+import enum
+import logging
 import os
+import re
 import shutil
 import subprocess
-import logging
-import re
+import sys
+import urllib.request
+
+
+class Target(enum.Enum):
+    DEBIAN = 1
+    APPIMAGE = 2
+
 
 def get_version(file_path):
     """Extracts the version from the CMakeLists.txt file."""
@@ -29,29 +38,33 @@ def setup_logging():
     """Configures logging."""
     logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
-def create_directories(deploy_dir):
+def create_directories(deploy_dir, target: Target):
     """Creates necessary directories for the Debian package."""
     dirs = [
-        os.path.join(deploy_dir, "DEBIAN"),
         os.path.join(deploy_dir, "usr", "bin"),
         os.path.join(deploy_dir, "usr", "share", "doc", "data-plotter"),
         os.path.join(deploy_dir, "usr", "lib"),
         os.path.join(deploy_dir, "usr", "share", "icons", "hicolor", "256x256", "apps"),
         os.path.join(deploy_dir, "usr", "share", "applications"),
     ]
+    if target == Target.DEBIAN:
+        dirs.append(os.path.join(deploy_dir, "DEBIAN"))
     for dir in dirs:
         os.makedirs(dir, exist_ok=True)
 
-def copy_files(deploy_dir):
+def copy_files(deploy_dir, target: Target):
     """Copies necessary files into the deployment directory."""
     files = {
-        "control": os.path.join(deploy_dir, "DEBIAN", "control"),
-        "qt.conf": os.path.join(deploy_dir, "usr", "bin", "qt.conf"),
         "../../build/target/data-plotter": os.path.join(deploy_dir, "usr", "bin", "data-plotter"),
         "../../documentation/license.txt": os.path.join(deploy_dir, "usr", "share", "doc", "data-plotter", "copyright"),
         "icon.png": os.path.join(deploy_dir, "usr", "share", "icons", "hicolor", "256x256", "apps", "data-plotter.png"),
         "data-plotter.desktop": os.path.join(deploy_dir, "usr", "share", "applications", "data-plotter.desktop")
     }
+    if target == Target.DEBIAN:
+        files.update({
+            "control": os.path.join(deploy_dir, "DEBIAN", "control"),
+            "qt.conf": os.path.join(deploy_dir, "usr", "bin", "qt.conf"),
+        })
     for src, dst in files.items():
         try:
             shutil.copy2(src, dst)
@@ -97,10 +110,11 @@ def update_desktop_file(deploy_dir, version):
     with open(file_path, "w") as file:
         file.write(content)
 
-def set_permissions(deploy_dir):
+def set_permissions(deploy_dir, target: Target):
     """Sets correct permissions for executable and DEBIAN directory."""
     subprocess.run(["chmod", "755", os.path.join(deploy_dir, "usr", "bin", "data-plotter")], check=True)
-    subprocess.run(["chmod", "-R", "755", os.path.join(deploy_dir, "DEBIAN")], check=True)
+    if target == Target.DEBIAN:
+        subprocess.run(["chmod", "-R", "755", os.path.join(deploy_dir, "DEBIAN")], check=True)
 
 def handle_postinst_script(deploy_dir):
     """Copies and sets permissions for postinst script."""
@@ -118,29 +132,99 @@ def add_platform_files(app_folder, platform):
     with open(os.path.join(app_folder, "platform.cfg"), "w") as f:
         f.write(platform)
 
+def update_appimage_recipe(deploy_root, version):
+    """Updates the AppImageBuilder recipe file with the correct version."""
+    final_recipe = os.path.join(deploy_root, "AppImageBuilder.yml")
+    with open('AppImageBuilder.yml', "r") as file:
+        content = file.read().replace("{version}", version)
+    with open(final_recipe, "w") as file:
+        file.write(content)
+
+def download_appimage_tools(deploy_root):
+    appimage_builder = os.path.join(deploy_root, "appimage-builder")
+    appimagetool = os.path.join(deploy_root, "appimagetool")
+    urllib.request.urlretrieve("https://github.com/AppImageCrafters/appimage-builder/releases/download/v1.1.0/"
+                               "appimage-builder-1.1.0-x86_64.AppImage", appimage_builder)
+    urllib.request.urlretrieve("https://github.com/AppImage/appimagetool/releases/download/continuous/"
+                               "appimagetool-x86_64.AppImage", appimagetool)
+    subprocess.run(["chmod", "755", appimage_builder], check=True)
+    subprocess.run(["chmod", "755", appimagetool], check=True)
+
+
+def build_appimage(deploy_root, deploy_dir, version):
+    """Builds the AppImage bundle."""
+
+    # First, complete the AppDir with external libraries using AppImageBuilder (see the recipe for details).
+    subprocess.run([os.path.join(deploy_root, "appimage-builder"),
+                    "--skip-appimage",  # this is deferred to a different tool
+                    "--appdir", deploy_dir,
+                    "--recipe", os.path.join(deploy_root, "AppImageBuilder.yml"),
+                    "--build-dir", os.path.join(deploy_root, "appimage-build")], check=True)
+
+    # Then, we use appimagetool directly to package the AppDir into a self-contained AppImage.
+    # There are two reasons for using appimagetool directly:
+    #  - We can use a newer version of it that uses an AppImage "type2 runtime" / "static runtime".
+    #    This allows us to avoid issues with missing libfuse2 package on recent Ubuntu versions.
+    #  - The newer tool and runtime support zstd compression, which leads to app launch times much faster than xz.
+
+    # place where external auto-update tools will look for incremental update files
+    update_info = "gh-releases-zsync|jirimaier|DataPlotter|latest|DataPlotter-*x86_64.AppImage.zsync"
+
+    appimagetool_env = os.environ.copy()
+    appimagetool_env["ARCH"] = "x86_64"
+    appimagetool_env["APPIMAGETOOL_APP_NAME"] = "DataPlotter"
+    appimagetool_env["VERSION"] = version
+
+    subprocess.run([os.path.join(deploy_root, "appimagetool"), "--updateinformation", update_info, deploy_dir],
+        env=appimagetool_env,
+        cwd=deploy_root,
+        check=True)
+
+    logging.info("AppImage created successfully!")
+
 def main():
     """Main function to execute the build steps."""
     os.chdir(os.path.dirname(os.path.realpath(__file__)))
     setup_logging()
-    
+
+    if len(sys.argv) < 2:
+        target = Target.DEBIAN
+    else:
+        target_str = sys.argv[1]
+        if target_str == "debian":
+            target = Target.DEBIAN
+        elif target_str == "appimage":
+            target = Target.APPIMAGE
+        else:
+            raise ValueError(f"Unknown target {target_str}, valid options are 'debian' and 'appimage'")
+
     version = get_version("../../CMakeLists.txt")
     if not version:
         raise Exception("Could not extract version from CMakeLists file")
     
     logging.info(f"Building DataPlotter version {version}")
-    deploy_dir = os.path.join("deploy", f"data-plotter_{version.replace('.','_')}_amd64")
-    if os.path.exists(deploy_dir):
-        shutil.rmtree(deploy_dir)
+    deploy_root = "deploy"
+    deploy_dir = os.path.join(deploy_root, f"data-plotter_{version.replace('.','_')}_amd64")
+    if os.path.exists(deploy_root):
+        shutil.rmtree(deploy_root)
     
-    create_directories(deploy_dir)
-    copy_files(deploy_dir)
-    check_tool_installed("dpkg-shlibdeps")
-    dependencies = generate_dependencies(deploy_dir)
-    update_control_file(deploy_dir, version, dependencies)
-    update_desktop_file(deploy_dir, version)
-    set_permissions(deploy_dir)
-    handle_postinst_script(deploy_dir)
-    build_package(deploy_dir)
+    create_directories(deploy_dir, target)
+    copy_files(deploy_dir, target)
+
+    if target == Target.DEBIAN:
+        check_tool_installed("dpkg-shlibdeps")
+        dependencies = generate_dependencies(deploy_dir)
+        update_control_file(deploy_dir, version, dependencies)
+        update_desktop_file(deploy_dir, version)
+        set_permissions(deploy_dir, target)
+        handle_postinst_script(deploy_dir)
+        build_package(deploy_dir)
+    elif target == Target.APPIMAGE:
+        update_appimage_recipe(deploy_root, version)
+        download_appimage_tools(deploy_root)
+        build_appimage(deploy_root, deploy_dir, version)
+    else:
+        raise NotImplementedError(f"Target {target} is not yet supported")
 
 if __name__ == "__main__":
     main()

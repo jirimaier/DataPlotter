@@ -1,0 +1,70 @@
+# appimage-builder recipe see https://appimage-builder.readthedocs.io for details
+version: 1
+AppDir:
+  app_info:
+    id: data-plotter
+    name: Data Plotter
+    icon: data-plotter
+    version: {version}
+    exec: usr/bin/data-plotter
+    exec_args: $@
+  apt:
+    arch:
+    - amd64
+    sources:
+    # jammy matches the GH Actions config
+    - sourceline: deb http://archive.ubuntu.com/ubuntu/ jammy main universe
+      key_url: 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x871920D1991BC93C'
+    - sourceline: deb http://archive.ubuntu.com/ubuntu/ jammy-updates main universe
+      key_url: 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x871920D1991BC93C'
+    - sourceline: deb http://security.ubuntu.com/ubuntu/ jammy-security main universe
+      key_url: 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x871920D1991BC93C'
+    include:
+    # Qt libraries
+    - libqt5core5a
+    - libqt5gui5
+    - libqt5network5
+    - libqt5printsupport5
+    - libqt5qml5
+    - libqt5quickcontrols2-5
+    - libqt5quickwidgets5
+    - libqt5serialport5
+    - libqt5svg5
+    - libqt5widgets5
+    # required by Qt X11 backend
+    - libxcb-render0
+    - libxcb-shape0
+    - libxcb-shm0
+    - libxcb-xfixes0
+    # QML libraries
+    - qml-module-qtgraphicaleffects
+    - qml-module-qtcharts
+    - qml-module-qtqml
+    - qml-module-qtquick-controls
+    - qml-module-qtquick-controls2
+    - qml-module-qtquick-dialogs
+    - qml-module-qtquick-templates2
+    - qml-module-qtquick-window2
+    # misc other libs
+    - libbrotli1
+    - libbz2-1.0
+    exclude:
+    # follow https://github.com/AppImageCommunity/pkg2appimage/blob/master/excludelist
+    # and https://github.com/AppImageCommunity/pkg2appimage/blob/master/excludedeblist
+    - libfontconfig1
+    - libfreetype6
+    - libharfbuzz0b
+    - libice6
+    - libsm6
+    - libuuid1
+    - libgmp10
+    - zlib1g
+    - libcups2
+    - libtasn1-6
+  files:
+    exclude:
+    - usr/share/man
+    - usr/share/doc/*/README.*
+    - usr/share/doc/*/changelog.*
+    - usr/share/doc/*/NEWS.*
+    - usr/share/doc/*/TODO.*
