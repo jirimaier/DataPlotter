@@ -109,6 +109,9 @@ configure_file(
 
 if(WIN32)
     set(PROJECT_SOURCES ${PROJECT_SOURCES} ${CMAKE_BINARY_DIR}/resources.rc)
+    # Ensure the icon is copied to the build directory
+    set(APP_ICON ${CMAKE_BINARY_DIR}/icon.ico)
+    configure_file(${CMAKE_SOURCE_DIR}/icons/icon.ico ${APP_ICON} COPYONLY)
 endif()
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
