@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.16)
 
 project(DataPlotter VERSION 3.3.1 LANGUAGES CXX)
 
+# Get current year dynamically
+string(TIMESTAMP CURRENT_YEAR "%Y")
+
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -99,6 +102,20 @@ set(PROJECT_SOURCES
     ${TS_FILES}
     ${RESOURCE_FILES}
 )
+
+
+configure_file(
+    ${CMAKE_SOURCE_DIR}/deploy_windows/resources.rc.in
+    ${CMAKE_BINARY_DIR}/resources.rc
+    @ONLY
+)
+
+if(WIN32)
+    set(PROJECT_SOURCES ${PROJECT_SOURCES} ${CMAKE_BINARY_DIR}/resources.rc)
+    # Ensure the icon is copied to the build directory
+    set(APP_ICON ${CMAKE_BINARY_DIR}/icon.ico)
+    configure_file(${CMAKE_SOURCE_DIR}/icons/icon.ico ${APP_ICON} COPYONLY)
+endif()
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(DataPlotter
