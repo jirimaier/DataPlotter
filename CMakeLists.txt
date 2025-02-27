@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.16)
 
 project(DataPlotter VERSION 3.3.1 LANGUAGES CXX)
 
+# Get current year dynamically
+string(TIMESTAMP CURRENT_YEAR "%Y")
+
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
