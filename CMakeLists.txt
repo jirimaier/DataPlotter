@@ -100,6 +100,17 @@ set(PROJECT_SOURCES
     ${RESOURCE_FILES}
 )
 
+
+configure_file(
+    ${CMAKE_SOURCE_DIR}/deploy_windows/resources.rc.in
+    ${CMAKE_BINARY_DIR}/resources.rc
+    @ONLY
+)
+
+if(WIN32)
+    set(PROJECT_SOURCES ${PROJECT_SOURCES} ${CMAKE_BINARY_DIR}/resources.rc)
+endif()
+
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(DataPlotter
         MANUAL_FINALIZATION
