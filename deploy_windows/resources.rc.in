@@ -10,20 +10,33 @@ VS_VERSION_INFO VERSIONINFO
 BEGIN
     BLOCK "StringFileInfo"
     BEGIN
-        BLOCK "040904b0"
+        BLOCK "040904b0"  // English (US)
         BEGIN
-            VALUE "CompanyName", "Jiri Maier"
+            VALUE "CompanyName", "Jiří Maier"
             VALUE "FileDescription", "DataPlotter Application"
             VALUE "FileVersion", "@PROJECT_VERSION@"
             VALUE "InternalName", "DataPlotter"
             VALUE "OriginalFilename", "DataPlotter.exe"
             VALUE "ProductName", "DataPlotter"
             VALUE "ProductVersion", "@PROJECT_VERSION@"
+            VALUE "LegalCopyright", "© @CURRENT_YEAR@ Jiří Maier"
+        END
+        BLOCK "0409051E"  // Czech (cs-CZ)
+        BEGIN
+            VALUE "CompanyName", "Jiří Maier"
+            VALUE "FileDescription", "Aplikace DataPlotter"
+            VALUE "FileVersion", "@PROJECT_VERSION@"
+            VALUE "InternalName", "DataPlotter"
+            VALUE "OriginalFilename", "DataPlotter.exe"
+            VALUE "ProductName", "DataPlotter"
+            VALUE "ProductVersion", "@PROJECT_VERSION@"
+            VALUE "LegalCopyright", "© @CURRENT_YEAR@ Jiří Maier"
         END
     END
     BLOCK "VarFileInfo"
     BEGIN
-        VALUE "Translation", 0x409, 1200
+        VALUE "Translation", 0x409, 1200   // English (US)
+        VALUE "Translation", 0x405, 1200   // Czech (cs-CZ)
     END
 END
 
