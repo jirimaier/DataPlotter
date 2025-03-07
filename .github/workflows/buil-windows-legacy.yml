@@ -5,7 +5,7 @@ on:
     branches:
       - main
   pull_request:
-      branches:
+    branches:
       - main
   workflow_dispatch:
 
@@ -22,6 +22,7 @@ jobs:
           choco install -y mingw --version=5.3.0
           choco install -y ninja
           choco install -y cmake --installargs 'ADD_CMAKE_TO_PATH=System'
+        shell: powershell
 
       - name: Download and Extract Qt 5.7.1 Source
         run: |
@@ -34,7 +35,7 @@ jobs:
           cd qt-src/qt-everywhere-opensource-src-5.7.1
           mkdir build
           cd build
-          ..\configure -prefix C:\Qt\5.7.1 -platform win32-g++ -opensource -confirm-license -release -nomake tests -nomake examples
+          bash ../configure -prefix C:/Qt/5.7.1 -platform win32-g++ -opensource -confirm-license -release -nomake tests -nomake examples
         shell: bash
 
       - name: Build Qt
