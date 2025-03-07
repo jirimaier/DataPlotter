@@ -17,13 +17,13 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Download and Extract Prebuilt Qt 5.7.1 (MSVC2015, 32-bit)
+    - name: Download and Install Qt 5.7.1 (MSVC2015, 32-bit)
       run: |
-        curl -L -o qt5.7.1.7z "https://downloads.sourceforge.net/project/qt/Qt/5.7/5.7.1/qt-opensource-windows-x86-msvc2015_5.7.1.7z"
-        mkdir -p D:/a/DataPlotter/Qt/5.7.1
-        "C:\Program Files\7-Zip\7z.exe" x qt5.7.1.7z -oD:/a/DataPlotter/Qt/5.7.1
-        echo "Qt 5.7.1 extracted to D:/a/DataPlotter/Qt/5.7.1"
+        curl -L -o qt5.7.1.exe "https://download.qt.io/new_archive/qt/5.7/5.7.1/qt-opensource-windows-x86-winrt-msvc2015-5.7.1.exe"
+        start /wait qt5.7.1.exe /S
+        echo "Qt 5.7.1 installed successfully"
       shell: cmd
+
 
     - name: Install dependencies with vcpkg
       run: |
