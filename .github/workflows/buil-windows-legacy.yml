@@ -17,22 +17,12 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Set up Python and Qt Installer
+    - name: Download and Extract Prebuilt Qt 5.7.2 (MSVC2015, 32-bit)
       run: |
-        python -m pip install --upgrade pip
-        python -m pip install aqtinstall
-      shell: cmd
-
-    - name: Cache Qt installation
-      uses: actions/cache@v3
-      with:
-        path: D:/a/DataPlotter/Qt
-        key: qt-5.7.2-msvc2015-${{ runner.os }}
-        restore-keys: qt-5.7.2-msvc2015-
-
-    - name: Install Qt 5.7.2 with Required Modules
-      run: |
-        python -m aqt install-qt windows desktop 5.7.2 win32_msvc2015 --outputdir D:/a/DataPlotter/Qt --archives qtbase qtserialport qtprintsupport qtopengl qtdeclarative qtquickcontrols2 qtnetwork qttools
+        curl -L -o qt5.7.2.zip "https://github.com/miurahr/aqtinstall/releases/download/qt-5.7.2-windows-x86/qt-5.7.2-win32-msvc2015.zip"
+        mkdir -p D:/a/DataPlotter/Qt/5.7.2
+        powershell -Command "Expand-Archive -Path qt5.7.2.zip -DestinationPath D:/a/DataPlotter/Qt/5.7.2"
+        echo "Qt 5.7.2 extracted to D:/a/DataPlotter/Qt/5.7.2"
       shell: cmd
 
     - name: Install dependencies with vcpkg
@@ -75,7 +65,6 @@ jobs:
       run: |
         python deploy_windows/deploy-legacy.py ^
           --windeployqt "D:/a/DataPlotter/Qt/5.7.2/msvc2015/bin/windeployqt.exe" ^
-          --inno "C:/Program Files (x86)/Inno Setup 6/ISCC.exe" ^
           --vcredist "C:/Windows/System32" ^
           --openssl "C:/Program Files/OpenSSL/bin"
       shell: cmd
