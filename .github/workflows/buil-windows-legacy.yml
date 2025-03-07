@@ -17,48 +17,17 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    # Cache the downloaded Qt installer
-    - name: Cache Qt Installer
-      id: cache-qt-installer
-      uses: actions/cache@v3
-      with:
-        path: D:/a/DataPlotter/qt5.7.1.exe
-        key: qt-installer-5.7.1
-
-    # Download the Qt installer only if it's not cached
-    - name: Download Qt 5.7.1 Installer
-      if: steps.cache-qt-installer.outputs.cache-hit != 'true'
-      run: |
-        curl -L -o D:/a/DataPlotter/qt5.7.1.exe "https://download.qt.io/new_archive/qt/5.7/5.7.1/qt-opensource-windows-x86-winrt-msvc2015-5.7.1.exe"
-      shell: cmd
-
-    # Cache the extracted Qt files
-    - name: Cache Extracted Qt
-      id: cache-qt
-      uses: actions/cache@v3
-      with:
-        path: D:/a/DataPlotter/Qt/5.7.1
-        key: qt-5.7.1-msvc2015
-
-    # Extract Qt only if it's not cached
-    - name: Extract Qt 5.7.1
+    # Install Qt using the official installer (only if not cached)
+    - name: Download and Install Qt 5.7.1
       if: steps.cache-qt.outputs.cache-hit != 'true'
       run: |
-        mkdir -p D:/a/DataPlotter/Qt/Extracted
-        "C:\Program Files\7-Zip\7z.exe" x D:/a/DataPlotter/qt5.7.1.exe -oD:/a/DataPlotter/Qt/Extracted
-        echo "Listing extracted files:"
-        dir D:/a/DataPlotter/Qt/Extracted
-      shell: cmd
-
-    - name: Locate Extracted Qt Path
-      run: |
-        echo "Checking extracted Qt files..."
-        dir D:/a/DataPlotter/Qt/Extracted
+        curl -L -o qt-installer.exe "https://download.qt.io/new_archive/qt/5.7/5.7.1/qt-opensource-windows-x86-msvc2015_5.7.1.exe"
+        start /wait qt-installer.exe --script qt-installer-script.qs
       shell: cmd
 
     - name: Configure CMake
       run: |
-        cmake -S . -B build -G "Ninja" -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="D:/a/DataPlotter/Qt/Extracted"
+        cmake -S . -B build -G "Ninja" -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="C:/Qt/5.7.1/msvc2015/lib/cmake"
       shell: cmd
 
     - name: Build project
