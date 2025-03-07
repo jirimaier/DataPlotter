@@ -35,8 +35,7 @@ BEGIN
     END
     BLOCK "VarFileInfo"
     BEGIN
-        VALUE "Translation", 0x409, 1200   // English (US)
-        VALUE "Translation", 0x405, 1200   // Czech (cs-CZ)
+        VALUE "Translation", 0x4090400, 0x4050400
     END
 END
 
