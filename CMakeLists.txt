@@ -29,10 +29,31 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS
 )
 set(CMAKE_AUTOUIC_SEARCH_PATHS "${CMAKE_SOURCE_DIR}/src/forms")
 
+find_package(Qt5 REQUIRED COMPONENTS LinguistTools)
+find_program(QT_LRELEASE_EXECUTABLE lrelease HINTS ${Qt5_DIR}/bin ${CMAKE_SOURCE_DIR})
+
+if(NOT QT_LRELEASE_EXECUTABLE)
+    message(FATAL_ERROR "lrelease executable not found. Make sure Qt Linguist is installed.")
+endif()
+
 set(TS_FILES
-    translations/translation_en.ts
-    translations/translation_cz.ts
+    ${CMAKE_SOURCE_DIR}/translations/translation_en.ts
+    ${CMAKE_SOURCE_DIR}/translations/translation_cz.ts
 )
+
+set(QM_FILES
+    ${CMAKE_SOURCE_DIR}/translations/translation_en.qm
+    ${CMAKE_SOURCE_DIR}/translations/translation_cz.qm
+)
+
+add_custom_command(
+    OUTPUT ${QM_FILES}
+    COMMAND ${QT_LRELEASE_EXECUTABLE} ${TS_FILES}
+    DEPENDS ${TS_FILES}
+    COMMENT "Compiling Qt translations..."
+)
+
+add_custom_target(translations ALL DEPENDS ${QM_FILES})
 
 include_directories(${CMAKE_SOURCE_DIR}/src)
 
@@ -151,6 +172,11 @@ set(PROJECT_SOURCES
     ${PROJECT_HEADERFILES}
 )
 
+if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
+   qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
+else()
+   qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
+endif()
 
 configure_file(
     ${CMAKE_SOURCE_DIR}/deploy_windows/resources.rc.in
@@ -170,15 +196,15 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
     )
-qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 else()
     if(ANDROID)
         add_library(DataPlotter SHARED ${PROJECT_SOURCES})
     else()
         add_executable(DataPlotter ${PROJECT_SOURCES})
+    endif()
 endif()
-qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
-endif()
+
+add_dependencies(DataPlotter translations)
 
 target_link_libraries(DataPlotter PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets
