@@ -17,10 +17,14 @@ jobs:
     - name: Checkout DataPlotter repository
       uses: actions/checkout@v4
 
-    # Install Visual Studio 2015 Build Tools
-    - name: Install MSVC 2015 Build Tools
+    # Download and Install Visual Studio 2015 Build Tools manually
+    - name: Download and Install VS2015 Build Tools
       run: |
-        choco install visualstudio2015buildtools -y
+        echo "Downloading Visual Studio 2015 Build Tools..."
+        curl -L -o vs_buildtools2015.exe "https://aka.ms/vs/15/release/vs_buildtools.exe"
+        
+        echo "Installing Visual Studio 2015 Build Tools..."
+        start /wait vs_buildtools2015.exe --quiet --wait --norestart --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64
       shell: cmd
 
     # Cache the compiled Qt 5.7.1 to avoid rebuilding on every run
@@ -65,9 +69,9 @@ jobs:
         cmake --build build --config Release
       shell: cmd
 
-    - name: Run deployment script
+    - name: Run legacy deployment script
       run: |
-        echo "Running deployment script..."
+        echo "Running legacy deployment script..."
         python deploy_windows/deploy-legacy.py ^
           --windeployqt "D:/a/DataPlotter/Qt/5.7.1/bin/windeployqt.exe" ^
           --vcredist "C:/Windows/System32" ^
