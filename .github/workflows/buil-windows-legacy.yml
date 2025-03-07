@@ -21,21 +21,21 @@ jobs:
     - name: Download and Install VS2015 Build Tools
       run: |
         echo "Downloading Visual Studio 2015 Build Tools..."
-        curl -L -o vs_buildtools2015.exe "https://aka.ms/vs/15/release/vs_buildtools.exe"
+        curl -L -o vs2015_buildtools.exe "https://download.microsoft.com/download/2/F/D/2FD2A33A-B5B6-4AC3-BCE0-4E10B5A7FCE3/vs_buildtools.exe"
         
         echo "Installing Visual Studio 2015 Build Tools..."
-        start /wait vs_buildtools2015.exe --quiet --wait --norestart --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64
+        start /wait vs2015_buildtools.exe --quiet --wait --norestart --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64
       shell: cmd
 
     # Locate and set up Visual Studio 2015 environment
     - name: Setup MSVC 2015 Environment
       run: |
-        echo "Searching for vcvarsall.bat..."
-        FOR /F "tokens=*" %%i IN ('where /R "C:\Program Files (x86)" vcvarsall.bat 2^>nul') DO SET VCVARS_PATH=%%i
-        IF NOT EXIST "%VCVARS_PATH%" (echo "Error: vcvarsall.bat not found!" && exit 1)
+        echo "Searching for Visual Studio 2015 vcvarsall.bat..."
+        FOR /F "tokens=*" %%i IN ('where /R "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC" vcvarsall.bat 2^>nul') DO SET VCVARS_PATH=%%i
+        IF NOT EXIST "%VCVARS_PATH%" (echo "Error: vcvarsall.bat for VS2015 not found!" && exit 1)
         
         echo "Using vcvarsall.bat from: %VCVARS_PATH%"
-        call "%VCVARS_PATH%" x86 || (echo "Error: Failed to load Visual Studio environment!" && exit 1)
+        call "%VCVARS_PATH%" x86 || (echo "Error: Failed to load Visual Studio 2015 environment!" && exit 1)
 
         echo "Checking if nmake is available..."
         where nmake || (echo "Error: nmake not found!" && exit 1)
