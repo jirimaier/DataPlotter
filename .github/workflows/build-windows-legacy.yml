@@ -19,7 +19,6 @@ jobs:
 
       - name: Install dependencies
         run: |
-          choco install -y mingw --version=5.3.0
           choco install -y ninja
           choco install -y cmake --installargs 'ADD_CMAKE_TO_PATH=System'
         shell: powershell
@@ -37,6 +36,13 @@ jobs:
         with:
           path: qt-src/qt-everywhere-opensource-src-5.7.1
           key: qt-5.7.1-source-folder
+
+      - name: Install MinGW 5.3.0
+        run: |
+          choco install -y mingw --version=5.3.0
+          echo "C:\ProgramData\chocolatey\lib\mingw\tools\install\mingw32\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+        shell: pwsh
+
 
       - name: Download Qt 5.7.1 Source with Progress (if not cached)
         if: steps.cache-qt-zip.outputs.cache-hit != 'true'
