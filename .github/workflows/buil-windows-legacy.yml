@@ -17,6 +17,7 @@ jobs:
     - name: Checkout DataPlotter repository
       uses: actions/checkout@v4
 
+    # Cache the compiled Qt 5.7.1 to avoid rebuilding on every run
     - name: Cache Compiled Qt 5.7.1
       id: cache-qt
       uses: actions/cache@v3
@@ -28,26 +29,39 @@ jobs:
     - name: Clone and Build Qt 5.7.1
       if: steps.cache-qt.outputs.cache-hit != 'true'
       run: |
+        echo "Cloning BlokasLabs Qt 5.7.1..."
         git clone --depth 1 https://github.com/BlokasLabs/Qt-5.7.1.git D:/a/DataPlotter/Qt/Source
         cd D:/a/DataPlotter/Qt/Source
-        mkdir -p D:/a/DataPlotter/Qt/5.7.1
+        
+        echo "Setting up Visual Studio 2015 environment..."
         call "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/vcvarsall.bat" x86
-        echo o | configure -release -opensource -confirm-license -platform win32-msvc2015 -prefix D:/a/DataPlotter/Qt/5.7.1
+        
+        echo "Checking if nmake is available..."
+        where nmake || (echo "Error: nmake not found!" && exit 1)
+        
+        echo "Building Qt 5.7.1..."
+        mkdir -p D:/a/DataPlotter/Qt/5.7.1
+        cd qtbase
+        configure.bat -top-level -release -opensource -confirm-license -platform win32-msvc2015 -prefix D:/a/DataPlotter/Qt/5.7.1
         nmake
         nmake install
       shell: cmd
 
     - name: Configure CMake
       run: |
+        echo "Configuring CMake..."
         cmake -S . -B build -G "Ninja" -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="D:/a/DataPlotter/Qt/5.7.1/lib/cmake"
       shell: cmd
 
     - name: Build DataPlotter
-      run: cmake --build build --config Release
+      run: |
+        echo "Building DataPlotter..."
+        cmake --build build --config Release
       shell: cmd
 
     - name: Run deployment script
       run: |
+        echo "Running deployment script..."
         python deploy_windows/deploy-legacy.py ^
           --windeployqt "D:/a/DataPlotter/Qt/5.7.1/bin/windeployqt.exe" ^
           --vcredist "C:/Windows/System32" ^
