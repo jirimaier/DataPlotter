@@ -14,38 +14,42 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - name: Checkout repository
+    - name: Checkout DataPlotter repository
       uses: actions/checkout@v4
 
-    # Cache Qt installation
-    - name: Cache Extracted Qt
+    - name: Cache Compiled Qt 5.7.1
       id: cache-qt
       uses: actions/cache@v3
       with:
-        path: C:/Qt/5.7.1
-        key: qt-5.7.1-msvc2015
+        path: D:/a/DataPlotter/Qt/5.7.1
+        key: qt-5.7.1-msvc2015-built
 
-    # Install Qt using the official installer (only if not cached)
-    - name: Download and Install Qt 5.7.1
+    # Clone and build Qt 5.7.1 from BlokasLabs repository if not cached
+    - name: Clone and Build Qt 5.7.1
       if: steps.cache-qt.outputs.cache-hit != 'true'
       run: |
-        curl -L -o qt-installer.exe "https://download.qt.io/new_archive/qt/5.7/5.7.1/qt-opensource-windows-x86-msvc2015_5.7.1.exe"
-        start /wait qt-installer.exe --script qt-installer-script.qs
+        git clone --depth 1 https://github.com/BlokasLabs/Qt-5.7.1.git D:/a/DataPlotter/Qt/Source
+        cd D:/a/DataPlotter/Qt/Source
+        mkdir -p D:/a/DataPlotter/Qt/5.7.1
+        call "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/vcvarsall.bat" x86
+        configure -release -platform win32-msvc2015 -prefix D:/a/DataPlotter/Qt/5.7.1
+        nmake
+        nmake install
       shell: cmd
 
     - name: Configure CMake
       run: |
-        cmake -S . -B build -G "Ninja" -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="C:/Qt/5.7.1/msvc2015/lib/cmake"
+        cmake -S . -B build -G "Ninja" -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="D:/a/DataPlotter/Qt/5.7.1/lib/cmake"
       shell: cmd
 
-    - name: Build project
+    - name: Build DataPlotter
       run: cmake --build build --config Release
       shell: cmd
 
     - name: Run deployment script
       run: |
         python deploy_windows/deploy-legacy.py ^
-          --windeployqt "C:/Qt/5.7.1/msvc2015/bin/windeployqt.exe" ^
+          --windeployqt "D:/a/DataPlotter/Qt/5.7.1/bin/windeployqt.exe" ^
           --vcredist "C:/Windows/System32" ^
           --openssl "C:/Program Files/OpenSSL/bin"
       shell: cmd
