@@ -64,24 +64,7 @@ def deploy_qt_dependencies(app_folder, windeployqt_path):
 
 
 def create_portable_version(app_folder, vcredist_folder, version):
-    """Create a portable version of the application by copying necessary files, including VC runtime DLLs."""
-
-    # List of required VC runtime DLLs (MSVC 2015, 32-bit)
-    vc_runtime_dlls = [
-        "concrt140.dll",
-        "msvcp140.dll",
-        "vccorlib140.dll",
-        "vcruntime140.dll",
-    ]
-
-    # Copy each required DLL from vcredist_folder to the application folder
-    for dll in vc_runtime_dlls:
-        dll_path = os.path.join(vcredist_folder, dll)
-        if os.path.exists(dll_path):
-            shutil.copy(dll_path, app_folder)
-            print(f"Copied {dll} to {app_folder}")
-        else:
-            raise FileNotFoundError(f"{dll} not found in {vcredist_folder}")
+    """Create a portable version of the application by zipping the application folder."""
 
     # Create a ZIP archive for the portable version, including all subdirectories
     zip_filename = f"deploy\\DataPlotter_{version.replace('.', '_')}_Portable.zip"
@@ -142,11 +125,6 @@ if __name__ == "__main__":
         help="Path to windeployqt.exe",
     )
     parser.add_argument(
-        "--vcredist",
-        default=r"C:\\Windows\\System32",
-        help="Path to Visual C++ Redistributable DLLs",
-    )
-    parser.add_argument(
         "--openssl",
         default=r"C:\\Program Files\\OpenSSL-Win32\\bin",
         help="Path to OpenSSL DLLs"
@@ -171,7 +149,7 @@ if __name__ == "__main__":
 
         version = get_version(CMAKE_FILE)
         if version:
-            create_portable_version(app_folder, args.vcredist, version)
+            create_portable_version(app_folder, version)
         else:
             print("Error: Version could not be determined.")
     except FileNotFoundError as e:
