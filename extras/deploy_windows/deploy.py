@@ -145,22 +145,47 @@ def delete_folder_contents(folder):
 
 
 def copy_openssl_libs(app_folder, openssl_folder):
-    """Copy OpenSSL libraries to the application folder, searching recursively."""
+    """Copy OpenSSL libraries and license files to the application folder, searching recursively."""
+
     openssl_dlls = ["libcrypto*.dll", "libssl*.dll"]
+    fallback_dlls = ["libeay32.dll", "ssleay32.dll"]  # OpenSSL 1.0.2 files
+    license_patterns = ["*licen[cs]e*.txt", "*Licen[cs]e*.txt"]  # Matches "license", "licence" (case-insensitive)
 
+    copied_files = []
+
+    # Try to find modern OpenSSL DLLs first
     for dll_pattern in openssl_dlls:
-        found_files = glob.glob(
-            os.path.join(openssl_folder, "**", dll_pattern), recursive=True
-        )
+        found_files = glob.glob(os.path.join(openssl_folder, "**", dll_pattern), recursive=True)
+        copied_files.extend(found_files)
 
-        if found_files:
-            for dll_path in found_files:
-                shutil.copy(dll_path, app_folder)
-                print(f"Copied {os.path.basename(dll_path)} to {app_folder}")
-        else:
-            raise FileNotFoundError(
-                f"No files matching {dll_pattern} found in {openssl_folder}"
-            )
+    # If modern DLLs are not found, use OpenSSL 1.0.2 fallback files
+    if not copied_files:
+        print("Warning: No modern OpenSSL DLLs found. Using OpenSSL 1.0.2 fallback...")
+        for dll in fallback_dlls:
+            dll_path = os.path.join(openssl_folder, dll)
+            if os.path.exists(dll_path):
+                copied_files.append(dll_path)
+
+    # Ensure at least one OpenSSL library is found
+    if not copied_files:
+        raise FileNotFoundError(f"No OpenSSL libraries found in {openssl_folder}")
+
+    # Copy all found libraries
+    for dll_path in copied_files:
+        shutil.copy(dll_path, app_folder)
+        print(f"Copied {os.path.basename(dll_path)} to {app_folder}")
+
+    # Find and copy any file containing "licence" or "license" (case-insensitive)
+    license_files = []
+    for pattern in license_patterns:
+        license_files.extend(glob.glob(os.path.join(openssl_folder, "**", pattern), recursive=True))
+
+    if license_files:
+        for license_path in license_files:
+            shutil.copy(license_path, app_folder)
+            print(f"Copied {os.path.basename(license_path)} to {app_folder}")
+    else:
+        print(f"Warning: No license files found in {openssl_folder}")
 
 
 def remove_vcredist_installer_from_app_folder(app_folder):
