@@ -64,26 +64,24 @@ jobs:
           Expand-Archive qt-src.zip -DestinationPath qt-src
         shell: pwsh
 
-      - name: Patch Qt to Fix `_FILE_ID_INFO` Error
-        run: |
-          sed -i 's/typedef struct _FILE_ID_INFO {/\/\/ typedef struct _FILE_ID_INFO {/' qt-src/qt-everywhere-opensource-src-5.7.1/qtbase/src/corelib/io/qfilesystemengine_win.cpp
-          sed -i 's/} FILE_ID_INFO, \*PFILE_ID_INFO;/\/\/ } FILE_ID_INFO, \*PFILE_ID_INFO;/' qt-src/qt-everywhere-opensource-src-5.7.1/qtbase/src/corelib/io/qfilesystemengine_win.cpp
-        shell: bash
+      - name: Cache Qt Build
+        id: cache-qt-build
+        uses: actions/cache@v4
+        with:
+          path: qt-src/qt-everywhere-opensource-src-5.7.1/build
+          key: qt-5.7.1-build-win32
 
-      - name: Clean Previous Qt Build
-        run: |
-          rm -rf qt-src/qt-everywhere-opensource-src-5.7.1/build || true
-        shell: bash
-
-      - name: Configure Qt build
+      - name: Configure Qt build (Skip Qt3D)
+        if: steps.cache-qt-build.outputs.cache-hit != 'true'
         run: |
           cd qt-src/qt-everywhere-opensource-src-5.7.1
-          mkdir build
+          mkdir -p build
           cd build
-          bash ../configure -prefix C:/Qt/5.7.1 -platform win32-g++ -opensource -confirm-license -release -nomake tests -nomake examples -xplatform win32-g++
+          bash ../configure -prefix C:/Qt/5.7.1 -platform win32-g++ -opensource -confirm-license -release -nomake tests -nomake examples -skip qt3d
         shell: bash
 
-      - name: Build Qt
+      - name: Build Qt (Only if not cached)
+        if: steps.cache-qt-build.outputs.cache-hit != 'true'
         run: |
           cd qt-src/qt-everywhere-opensource-src-5.7.1/build
           mingw32-make -j4
