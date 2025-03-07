@@ -64,6 +64,12 @@ jobs:
           Expand-Archive qt-src.zip -DestinationPath qt-src
         shell: pwsh
 
+      - name: Patch Qt to Fix `_FILE_ID_INFO` Redefinition Error
+        run: |
+          sed -i 's/typedef struct _FILE_ID_INFO {/\/\/ typedef struct _FILE_ID_INFO {/' qt-src/qt-everywhere-opensource-src-5.7.1/qtbase/src/corelib/io/qfilesystemengine_win.cpp
+          sed -i 's/} FILE_ID_INFO, \*PFILE_ID_INFO;/\/\/ } FILE_ID_INFO, \*PFILE_ID_INFO;/' qt-src/qt-everywhere-opensource-src-5.7.1/qtbase/src/corelib/io/qfilesystemengine_win.cpp
+        shell: bash
+
       - name: Cache Qt Build
         id: cache-qt-build
         uses: actions/cache@v4
