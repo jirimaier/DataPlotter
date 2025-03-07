@@ -12,6 +12,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+find_package(OpenGL REQUIRED)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS
     Widgets
@@ -206,6 +207,9 @@ endif()
 
 add_dependencies(DataPlotter translations)
 
+# Define the preprocessor macro for QCustomPlot OpenGL support
+target_compile_definitions(DataPlotter PRIVATE QCUSTOMPLOT_USE_OPENGL)
+
 target_link_libraries(DataPlotter PRIVATE
     Qt${QT_VERSION_MAJOR}::Widgets
     Qt${QT_VERSION_MAJOR}::Core
@@ -218,6 +222,7 @@ target_link_libraries(DataPlotter PRIVATE
     Qt${QT_VERSION_MAJOR}::Quick
     Qt${QT_VERSION_MAJOR}::QuickControls2
     Qt${QT_VERSION_MAJOR}::Network
+    OpenGL::GL
 )
 
 if(${QT_VERSION_MAJOR} VERSION_LESS 6.1.0)
