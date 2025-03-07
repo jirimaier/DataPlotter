@@ -27,6 +27,20 @@ jobs:
         start /wait vs_buildtools2015.exe --quiet --wait --norestart --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64
       shell: cmd
 
+    # Locate and set up Visual Studio 2015 environment
+    - name: Setup MSVC 2015 Environment
+      run: |
+        echo "Searching for vcvarsall.bat..."
+        FOR /F "tokens=*" %%i IN ('where /R "C:\Program Files (x86)" vcvarsall.bat 2^>nul') DO SET VCVARS_PATH=%%i
+        IF NOT EXIST "%VCVARS_PATH%" (echo "Error: vcvarsall.bat not found!" && exit 1)
+        
+        echo "Using vcvarsall.bat from: %VCVARS_PATH%"
+        call "%VCVARS_PATH%" x86 || (echo "Error: Failed to load Visual Studio environment!" && exit 1)
+
+        echo "Checking if nmake is available..."
+        where nmake || (echo "Error: nmake not found!" && exit 1)
+      shell: cmd
+
     # Cache the compiled Qt 5.7.1 to avoid rebuilding on every run
     - name: Cache Compiled Qt 5.7.1
       id: cache-qt
@@ -44,7 +58,7 @@ jobs:
         cd D:/a/DataPlotter/Qt/Source
         
         echo "Setting up Visual Studio 2015 environment..."
-        call "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/vcvarsall.bat" x86 || (echo "Error: vcvarsall.bat not found!" && exit 1)
+        call "%VCVARS_PATH%" x86 || (echo "Error: vcvarsall.bat not found!" && exit 1)
         
         echo "Checking if nmake is available..."
         where nmake || (echo "Error: nmake not found!" && exit 1)
