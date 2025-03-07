@@ -1,4 +1,4 @@
-name: Build and Deploy DataPlotter on Windows XP 32-bit
+name: Build and Deploy DataPlotter on Windows XP 32-bit (MinGW 5.3.0)
 
 on:
   push:
@@ -17,28 +17,25 @@ jobs:
     - name: Checkout DataPlotter repository
       uses: actions/checkout@v4
 
-    # Download and Install Visual Studio 2015 Build Tools manually
-    - name: Download and Install VS2015 Build Tools
+    # Download and Install MinGW 5.3.0 manually
+    - name: Download and Install MinGW 5.3.0
       run: |
-        echo "Downloading Visual Studio 2015 Build Tools..."
-        curl -L -o vs2015_buildtools.exe "https://download.microsoft.com/download/2/F/D/2FD2A33A-B5B6-4AC3-BCE0-4E10B5A7FCE3/vs_buildtools.exe"
+        echo "Downloading MinGW 5.3.0..."
+        curl -L -o mingw530.7z "https://downloads.sourceforge.net/project/mingw-w64/Toolchains targetting Win32/Personal Builds/mingw-builds/5.3.0/threads-win32/dwarf/i686-5.3.0-release-win32-dwarf-rt_v4-rev0.7z"
         
-        echo "Installing Visual Studio 2015 Build Tools..."
-        start /wait vs2015_buildtools.exe --quiet --wait --norestart --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64
+        echo "Extracting MinGW 5.3.0..."
+        mkdir -p D:/a/DataPlotter/MinGW530
+        "C:\Program Files\7-Zip\7z.exe" x mingw530.7z -oD:/a/DataPlotter/MinGW530
+
+        echo "Adding MinGW 5.3.0 to PATH..."
+        echo "D:/a/DataPlotter/MinGW530/bin" >> $GITHUB_PATH
       shell: cmd
 
-    # Locate and set up Visual Studio 2015 environment
-    - name: Setup MSVC 2015 Environment
+    # Verify MinGW installation
+    - name: Check MinGW installation
       run: |
-        echo "Searching for Visual Studio 2015 vcvarsall.bat..."
-        FOR /F "tokens=*" %%i IN ('where /R "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC" vcvarsall.bat 2^>nul') DO SET VCVARS_PATH=%%i
-        IF NOT EXIST "%VCVARS_PATH%" (echo "Error: vcvarsall.bat for VS2015 not found!" && exit 1)
-        
-        echo "Using vcvarsall.bat from: %VCVARS_PATH%"
-        call "%VCVARS_PATH%" x86 || (echo "Error: Failed to load Visual Studio 2015 environment!" && exit 1)
-
-        echo "Checking if nmake is available..."
-        where nmake || (echo "Error: nmake not found!" && exit 1)
+        echo "Checking if mingw32-make is available..."
+        where mingw32-make || (echo "Error: mingw32-make not found!" && exit 1)
       shell: cmd
 
     # Cache the compiled Qt 5.7.1 to avoid rebuilding on every run
@@ -47,34 +44,31 @@ jobs:
       uses: actions/cache@v3
       with:
         path: D:/a/DataPlotter/Qt/5.7.1
-        key: qt-5.7.1-msvc2015-built
+        key: qt-5.7.1-mingw530-built
 
     # Clone and build Qt 5.7.1 from BlokasLabs repository if not cached
-    - name: Clone and Build Qt 5.7.1
+    - name: Clone and Build Qt 5.7.1 with MinGW 5.3.0
       if: steps.cache-qt.outputs.cache-hit != 'true'
       run: |
         echo "Cloning BlokasLabs Qt 5.7.1..."
         git clone --depth 1 https://github.com/BlokasLabs/Qt-5.7.1.git D:/a/DataPlotter/Qt/Source
         cd D:/a/DataPlotter/Qt/Source
         
-        echo "Setting up Visual Studio 2015 environment..."
-        call "%VCVARS_PATH%" x86 || (echo "Error: vcvarsall.bat not found!" && exit 1)
+        echo "Checking if mingw32-make is available..."
+        where mingw32-make || (echo "Error: mingw32-make not found!" && exit 1)
         
-        echo "Checking if nmake is available..."
-        where nmake || (echo "Error: nmake not found!" && exit 1)
-        
-        echo "Building Qt 5.7.1..."
+        echo "Building Qt 5.7.1 with MinGW 5.3.0..."
         mkdir -p D:/a/DataPlotter/Qt/5.7.1
         cd qtbase
-        configure.bat -top-level -release -opensource -confirm-license -platform win32-msvc2015 -prefix D:/a/DataPlotter/Qt/5.7.1
-        nmake
-        nmake install
+        configure.bat -top-level -release -opensource -confirm-license -platform win32-g++ -prefix D:/a/DataPlotter/Qt/5.7.1
+        mingw32-make
+        mingw32-make install
       shell: cmd
 
     - name: Configure CMake
       run: |
         echo "Configuring CMake..."
-        cmake -S . -B build -G "Ninja" -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="D:/a/DataPlotter/Qt/5.7.1/lib/cmake"
+        cmake -S . -B build -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="D:/a/DataPlotter/Qt/5.7.1/lib/cmake"
       shell: cmd
 
     - name: Build DataPlotter
