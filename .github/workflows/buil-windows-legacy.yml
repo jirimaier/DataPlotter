@@ -1,0 +1,87 @@
+name: Build and Deploy DataPlotter on Windows XP 32-bit
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python and Qt Installer
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install aqtinstall
+      shell: cmd
+
+    - name: Cache Qt installation
+      uses: actions/cache@v3
+      with:
+        path: D:/a/DataPlotter/Qt
+        key: qt-5.7.2-msvc2015-${{ runner.os }}
+        restore-keys: qt-5.7.2-msvc2015-
+
+    - name: Install Qt 5.7.2 with Required Modules
+      run: |
+        python -m aqt install-qt windows desktop 5.7.2 win32_msvc2015 --outputdir D:/a/DataPlotter/Qt --archives qtbase qtserialport qtprintsupport qtopengl qtdeclarative qtquickcontrols2 qtnetwork qttools
+      shell: cmd
+
+    - name: Install dependencies with vcpkg
+      run: |
+        git clone https://github.com/microsoft/vcpkg.git C:/vcpkg
+        cd C:/vcpkg
+        bootstrap-vcpkg.bat
+        vcpkg integrate install
+        vcpkg install ninja
+        vcpkg install cmake
+      shell: cmd
+
+    - name: Cache OpenSSL installation
+      uses: actions/cache@v3
+      with:
+        path: C:/Program Files/OpenSSL
+        key: openssl-choco-${{ runner.os }}
+
+    - name: Install OpenSSL (if not cached)
+      if: steps.cache-openssl.outputs.cache-hit != 'true'
+      shell: cmd
+      run: |
+        choco install openssl -y
+
+    - name: Set up MSVC environment (MSVC 2015)
+      uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: x86
+
+    - name: Configure CMake
+      run: |
+        cmake -S . -B build -G "Ninja" -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="D:/a/DataPlotter/Qt/5.7.2/msvc2015/lib/cmake"
+      shell: cmd
+
+    - name: Build project
+      run: cmake --build build --config Release
+      shell: cmd
+
+    - name: Run deployment script
+      run: |
+        python deploy_windows/deploy-legacy.py ^
+          --windeployqt "D:/a/DataPlotter/Qt/5.7.2/msvc2015/bin/windeployqt.exe" ^
+          --inno "C:/Program Files (x86)/Inno Setup 6/ISCC.exe" ^
+          --vcredist "C:/Windows/System32" ^
+          --openssl "C:/Program Files/OpenSSL/bin"
+      shell: cmd
+
+    - name: Upload build artifact (zip)
+      uses: actions/upload-artifact@v4
+      with:
+        name: DataPlotter-WindowsXP-Portable
+        path: deploy_windows/deploy/DataPlotter*.zip
