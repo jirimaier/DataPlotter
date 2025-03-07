@@ -17,6 +17,12 @@ jobs:
     - name: Checkout DataPlotter repository
       uses: actions/checkout@v4
 
+    # Install Visual Studio 2015 Build Tools
+    - name: Install MSVC 2015 Build Tools
+      run: |
+        choco install visualstudio2015buildtools -y
+      shell: cmd
+
     # Cache the compiled Qt 5.7.1 to avoid rebuilding on every run
     - name: Cache Compiled Qt 5.7.1
       id: cache-qt
@@ -34,7 +40,7 @@ jobs:
         cd D:/a/DataPlotter/Qt/Source
         
         echo "Setting up Visual Studio 2015 environment..."
-        call "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/vcvarsall.bat" x86
+        call "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/vcvarsall.bat" x86 || (echo "Error: vcvarsall.bat not found!" && exit 1)
         
         echo "Checking if nmake is available..."
         where nmake || (echo "Error: nmake not found!" && exit 1)
