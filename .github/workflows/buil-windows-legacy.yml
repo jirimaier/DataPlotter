@@ -17,11 +17,12 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Download and Install Qt 5.7.1 (MSVC2015, 32-bit)
+    - name: Download and Extract Qt 5.7.1 (MSVC2015, 32-bit)
       run: |
         curl -L -o qt5.7.1.exe "https://download.qt.io/new_archive/qt/5.7/5.7.1/qt-opensource-windows-x86-winrt-msvc2015-5.7.1.exe"
-        start /wait qt5.7.1.exe /S
-        echo "Qt 5.7.1 installed successfully"
+        mkdir -p D:/a/DataPlotter/Qt/5.7.1
+        "C:\Program Files\7-Zip\7z.exe" x qt5.7.1.exe -oD:/a/DataPlotter/Qt/5.7.1
+        echo "Qt 5.7.1 extracted to D:/a/DataPlotter/Qt/5.7.1"
       shell: cmd
 
 
@@ -54,7 +55,7 @@ jobs:
 
     - name: Configure CMake
       run: |
-        cmake -S . -B build -G "Ninja" -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="D:/a/DataPlotter/Qt/5.7.2/msvc2015/lib/cmake"
+        cmake -S . -B build -G "Ninja" -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="D:/a/DataPlotter/Qt/5.7.1/msvc2015/lib/cmake"
       shell: cmd
 
     - name: Build project
