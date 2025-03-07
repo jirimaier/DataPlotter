@@ -1,4 +1,4 @@
-name: Build and Deploy DataPlotter on Windows XP 32-bit (MinGW 5.3.0)
+name: Build and Deploy DataPlotter on Windows XP 32-bit (Qt 5.7.1 + MinGW 5.3.0)
 
 on:
   push:
@@ -17,24 +17,21 @@ jobs:
     - name: Checkout DataPlotter repository
       uses: actions/checkout@v4
 
-    # Download and Install MinGW 5.3.0 manually
-    - name: Download and Install MinGW 5.3.0
+    # Install MinGW 5.3.0 using Qt Maintenance Tool
+    - name: Install MinGW 5.3.0 with Qt Maintenance Tool
       run: |
-        echo "Downloading MinGW 5.3.0..."
-        curl -L -o mingw530.7z "https://downloads.sourceforge.net/project/mingw-w64/Toolchains targetting Win32/Personal Builds/mingw-builds/5.3.0/threads-win32/dwarf/i686-5.3.0-release-win32-dwarf-rt_v4-rev0.7z"
+        echo "Downloading Qt Maintenance Tool..."
+        curl -L -o qt-maintenance-tool.exe "https://download.qt.io/official_releases/online_installers/qt-unified-windows-x86-online.exe"
         
-        echo "Extracting MinGW 5.3.0..."
-        mkdir -p D:/a/DataPlotter/MinGW530
-        "C:\Program Files\7-Zip\7z.exe" x mingw530.7z -oD:/a/DataPlotter/MinGW530
-
-        echo "Adding MinGW 5.3.0 to PATH..."
-        echo "D:/a/DataPlotter/MinGW530/bin" >> $GITHUB_PATH
+        echo "Installing MinGW 5.3.0 via Qt Maintenance Tool..."
+        start /wait qt-maintenance-tool.exe --silent --accept-licenses --accept-obligations --default-answer --confirm-command install qt.tools.win32_mingw530
       shell: cmd
 
     # Verify MinGW installation
     - name: Check MinGW installation
       run: |
         echo "Checking if mingw32-make is available..."
+        set PATH=C:/Qt/Tools/mingw530_32/bin;%PATH%
         where mingw32-make || (echo "Error: mingw32-make not found!" && exit 1)
       shell: cmd
 
@@ -43,24 +40,27 @@ jobs:
       id: cache-qt
       uses: actions/cache@v3
       with:
-        path: D:/a/DataPlotter/Qt/5.7.1
+        path: C:/Qt/5.7/mingw53_32
         key: qt-5.7.1-mingw530-built
 
-    # Clone and build Qt 5.7.1 from BlokasLabs repository if not cached
+    # Clone and build Qt 5.7.1 if not cached
     - name: Clone and Build Qt 5.7.1 with MinGW 5.3.0
       if: steps.cache-qt.outputs.cache-hit != 'true'
       run: |
         echo "Cloning BlokasLabs Qt 5.7.1..."
-        git clone --depth 1 https://github.com/BlokasLabs/Qt-5.7.1.git D:/a/DataPlotter/Qt/Source
-        cd D:/a/DataPlotter/Qt/Source
+        git clone --depth 1 https://github.com/BlokasLabs/Qt-5.7.1.git C:/Qt/Source
+        cd C:/Qt/Source
+        
+        echo "Setting up MinGW environment..."
+        set PATH=C:/Qt/Tools/mingw530_32/bin;%PATH%
         
         echo "Checking if mingw32-make is available..."
         where mingw32-make || (echo "Error: mingw32-make not found!" && exit 1)
         
         echo "Building Qt 5.7.1 with MinGW 5.3.0..."
-        mkdir -p D:/a/DataPlotter/Qt/5.7.1
+        mkdir -p C:/Qt/5.7/mingw53_32
         cd qtbase
-        configure.bat -top-level -release -opensource -confirm-license -platform win32-g++ -prefix D:/a/DataPlotter/Qt/5.7.1
+        configure.bat -top-level -release -opensource -confirm-license -platform win32-g++ -prefix C:/Qt/5.7/mingw53_32
         mingw32-make
         mingw32-make install
       shell: cmd
@@ -68,7 +68,7 @@ jobs:
     - name: Configure CMake
       run: |
         echo "Configuring CMake..."
-        cmake -S . -B build -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="D:/a/DataPlotter/Qt/5.7.1/lib/cmake"
+        cmake -S . -B build -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="C:/Qt/5.7/mingw53_32/lib/cmake"
       shell: cmd
 
     - name: Build DataPlotter
@@ -81,7 +81,7 @@ jobs:
       run: |
         echo "Running legacy deployment script..."
         python deploy_windows/deploy-legacy.py ^
-          --windeployqt "D:/a/DataPlotter/Qt/5.7.1/bin/windeployqt.exe" ^
+          --windeployqt "C:/Qt/5.7/mingw53_32/bin/windeployqt.exe" ^
           --vcredist "C:/Windows/System32" ^
           --openssl "C:/Program Files/OpenSSL/bin"
       shell: cmd
