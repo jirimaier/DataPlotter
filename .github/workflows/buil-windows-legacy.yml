@@ -21,10 +21,9 @@ jobs:
       run: |
         curl -L -o qt5.7.1.exe "https://download.qt.io/new_archive/qt/5.7/5.7.1/qt-opensource-windows-x86-winrt-msvc2015-5.7.1.exe"
         mkdir -p D:/a/DataPlotter/Qt/5.7.1
-        "C:\Program Files\7-Zip\7z.exe" x qt5.7.1.exe -oD:/a/DataPlotter/Qt/5.7.1
-        echo "Qt 5.7.1 extracted to D:/a/DataPlotter/Qt/5.7.1"
+        start /wait qt5.7.1.exe --extract D:/a/DataPlotter/Qt/5.7.1
+        echo "Qt 5.7.1 extracted successfully to D:/a/DataPlotter/Qt/5.7.1"
       shell: cmd
-
 
     - name: Install dependencies with vcpkg
       run: |
