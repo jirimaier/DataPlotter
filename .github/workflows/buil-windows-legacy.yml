@@ -17,6 +17,14 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
+    # Cache Qt installation
+    - name: Cache Extracted Qt
+      id: cache-qt
+      uses: actions/cache@v3
+      with:
+        path: C:/Qt/5.7.1
+        key: qt-5.7.1-msvc2015
+
     # Install Qt using the official installer (only if not cached)
     - name: Download and Install Qt 5.7.1
       if: steps.cache-qt.outputs.cache-hit != 'true'
@@ -37,7 +45,7 @@ jobs:
     - name: Run deployment script
       run: |
         python deploy_windows/deploy-legacy.py ^
-          --windeployqt "D:/a/DataPlotter/Qt/Extracted/bin/windeployqt.exe" ^
+          --windeployqt "C:/Qt/5.7.1/msvc2015/bin/windeployqt.exe" ^
           --vcredist "C:/Windows/System32" ^
           --openssl "C:/Program Files/OpenSSL/bin"
       shell: cmd
