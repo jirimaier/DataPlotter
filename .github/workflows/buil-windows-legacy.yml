@@ -11,60 +11,47 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+        runs-on: windows-latest
 
-    steps:
-    - name: Checkout DataPlotter repository
+  steps:
+    - name: Checkout repository
       uses: actions/checkout@v4
-
-    # Install MinGW 5.3.0 using Qt Maintenance Tool
-    - name: Install MinGW 5.3.0 with Qt Maintenance Tool
+    - name: Install dependencies
       run: |
-        echo "Downloading Qt Maintenance Tool..."
-        curl -L -o qt-maintenance-tool.exe "https://download.qt.io/official_releases/online_installers/qt-unified-windows-x86-online.exe"
-        
-        echo "Installing MinGW 5.3.0 via Qt Maintenance Tool..."
-        start /wait qt-maintenance-tool.exe --silent --accept-licenses --accept-obligations --default-answer --confirm-command install qt.tools.win32_mingw530
-      shell: cmd
-
-    # Verify MinGW installation
-    - name: Check MinGW installation
+        choco install -y mingw --version=5.3.0
+        choco install -y ninja
+        choco install -y cmake --installargs 'ADD_CMAKE_TO_PATH=System'
+        choco install -y python
+    - name: Download and Extract Qt 5.7.1 Source
       run: |
-        echo "Checking if mingw32-make is available..."
-        set PATH=C:/Qt/Tools/mingw530_32/bin;%PATH%
-        where mingw32-make || (echo "Error: mingw32-make not found!" && exit 1)
-      shell: cmd
-
-    # Cache the compiled Qt 5.7.1 to avoid rebuilding on every run
-    - name: Cache Compiled Qt 5.7.1
-      id: cache-qt
-      uses: actions/cache@v3
-      with:
-        path: C:/Qt/5.7/mingw53_32
-        key: qt-5.7.1-mingw530-built
-
-    # Clone and build Qt 5.7.1 if not cached
-    - name: Clone and Build Qt 5.7.1 with MinGW 5.3.0
-      if: steps.cache-qt.outputs.cache-hit != 'true'
+        Invoke-WebRequest -Uri "https://download.qt.io/archive/qt/5.7/5.7.1/single/qt-everywhere-opensource-src-5.7.1.zip" -OutFile qt-src.zip
+        Expand-Archive qt-src.zip -DestinationPath qt-src
+      shell: pwsh
+    - name: Configure Qt build
       run: |
-        echo "Cloning BlokasLabs Qt 5.7.1..."
-        git clone --depth 1 https://github.com/BlokasLabs/Qt-5.7.1.git C:/Qt/Source
-        cd C:/Qt/Source
-        
-        echo "Setting up MinGW environment..."
-        set PATH=C:/Qt/Tools/mingw530_32/bin;%PATH%
-        
-        echo "Checking if mingw32-make is available..."
-        where mingw32-make || (echo "Error: mingw32-make not found!" && exit 1)
-        
-        echo "Building Qt 5.7.1 with MinGW 5.3.0..."
-        mkdir -p C:/Qt/5.7/mingw53_32
-        cd qtbase
-        configure.bat -top-level -release -opensource -confirm-license -platform win32-g++ -prefix C:/Qt/5.7/mingw53_32
-        mingw32-make
+        cd qt-src/qt-everywhere-opensource-src-5.7.1
+        mkdir build
+        cd build
+        ..\configure -prefix C:\Qt\5.7.1 -platform win32-g++ -opensource -confirm-license -release -nomake tests -nomake examples
+      shell: bash
+    - name: Build Qt
+      run: |
+        cd qt-src/qt-everywhere-opensource-src-5.7.1/build
+        mingw32-make -j4
+      shell: bash
+    - name: Install Qt
+      run: |
+        cd qt-src/qt-everywhere-opensource-src-5.7.1/build
         mingw32-make install
-      shell: cmd
-
+      shell: bash
+    - name: Add Qt to PATH
+      run: echo "C:\Qt\5.7.1\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8
+      shell: pwsh
+    - name: Verify installation
+      run: |
+        qmake --version
+        mingw32-make --version
+      shell: bash
     - name: Configure CMake
       run: |
         echo "Configuring CMake..."
