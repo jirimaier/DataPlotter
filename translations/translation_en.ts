@@ -56,585 +56,585 @@
     <name>DeveloperOptions</name>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="14"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="672"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="672"/>
         <source>Developer Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="30"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="690"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="690"/>
         <source>QML Terminal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="36"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="674"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="674"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Reload current file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="39"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="676"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="676"/>
         <source>Reload</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="56"/>
         <location filename="../src/forms/developeroptions.ui" line="76"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="678"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="682"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="678"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="682"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load qml file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="59"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="680"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="680"/>
         <source>Load File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="79"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="684"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="684"/>
         <source>Save Code to File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="121"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="687"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="687"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Export qml file in compressed and encoded format&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="124"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="689"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="689"/>
         <source>Export QML Data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="155"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="760"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="760"/>
         <source>ANSI Terminal Editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="172"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="692"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="692"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Debug mode&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="175"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="694"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="694"/>
         <source>Show Grid and Cursor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="201"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="696"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="696"/>
         <source>Clear terminal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="204"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="698"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="698"/>
         <source>Clear (and show if hidden)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="267"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="703"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="703"/>
         <source>2J Clear all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="272"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="705"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="705"/>
         <source>3?m Font color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="277"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="707"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="707"/>
         <source>4?m Back color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="282"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="709"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="709"/>
         <source>0m Reset style</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="287"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="711"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="711"/>
         <source>1m Bold</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="292"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="713"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="713"/>
         <source>4m Underline</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="297"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="715"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="715"/>
         <source>7m Invert colors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="302"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="717"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="717"/>
         <source>A Up</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="307"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="719"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="719"/>
         <source>B Down</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="312"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="721"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="721"/>
         <source>C Right</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="317"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="723"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="723"/>
         <source>D Left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="322"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="725"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="725"/>
         <source>0J Clear down</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="327"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="727"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="727"/>
         <source>1J Clear up</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="332"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="729"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="729"/>
         <source>2K Clear line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="337"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="731"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="731"/>
         <source>0K Clear line right</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="342"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="733"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="733"/>
         <source>1K Clear line left</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="347"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="735"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="735"/>
         <source>E Next line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="352"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="737"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="737"/>
         <source>F Previous line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="357"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="739"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="739"/>
         <source>s Save position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="362"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="741"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="741"/>
         <source>u Load position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="367"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="743"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="743"/>
         <source>\n New line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="372"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="745"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="745"/>
         <source>\r Carriage return</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="377"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="747"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="747"/>
         <source>\b Backspace</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="382"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="749"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="749"/>
         <source>\e Escape</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="387"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="751"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="751"/>
         <source>\a Bell</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="392"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="753"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="753"/>
         <source>\t Tabulator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="405"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="756"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="756"/>
         <source>Apply to terminal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="416"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="757"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="757"/>
         <source>Shift position command</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="433"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="758"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="758"/>
         <source>Copy to use in firmware</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="450"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="759"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="759"/>
         <source>Clear text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="464"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="779"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="779"/>
         <source>ANSI Terminal Click-Colors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="476"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="761"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="761"/>
         <source>Clickable colors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="485"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="762"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="762"/>
         <source>Mode: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="499"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="763"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="763"/>
         <source>BlackList</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="504"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="764"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="764"/>
         <source>AllowedList</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="557"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="766"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="766"/>
         <source>Add by code (press enter to add)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="581"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="768"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="768"/>
         <source>Add color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="584"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="770"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="770"/>
         <source>Pick Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="601"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="772"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="772"/>
         <source>Delete selected color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="604"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="774"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="774"/>
         <source>Remove selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="623"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="776"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="776"/>
         <source>Copy list of colors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="626"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="778"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="778"/>
         <source>Copy command to clipboard  (to use in firmware)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="638"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="845"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="845"/>
         <source>Misc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="644"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="780"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="780"/>
         <source>Connection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="650"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="782"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="782"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clear graph after connecting&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="653"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="784"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="784"/>
         <source>Clear on reconnect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="663"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="786"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="786"/>
         <source>Enable responding to echo command</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="666"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="788"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="788"/>
         <source>Reply to echo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="676"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="790"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="790"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Do autoset function after first data for channel 1 is received&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="679"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="792"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="792"/>
         <source>Autoset on reconnect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="689"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="794"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="794"/>
         <source>If there is too much text printed to console or serial monitor, it will be disabled.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="692"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="796"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="796"/>
         <source>Prevent freezing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="704"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="797"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="797"/>
         <source>Send after reconnect:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="711"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="799"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="799"/>
         <source>If reset command is set, it will be sent to device on connect.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="728"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="804"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="804"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Print buffer content into the information console&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="731"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="806"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="806"/>
         <source>Show Buffer Content</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="748"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="808"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="808"/>
         <source>Clear buffer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="751"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="810"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="810"/>
         <source>Clear Buffer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="773"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="811"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="811"/>
         <source>Graph</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="779"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="813"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="813"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Trigger line can be controlled by commands from device to show level at which the trigger is set.&lt;/p&gt;&lt;p&gt;Unchecked: line is not shown&lt;/p&gt;&lt;p&gt;Checked: line is always shown&lt;/p&gt;&lt;p&gt;Partially checked (square): line is shown temporarily after level changes&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="782"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="815"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="815"/>
         <source>Enable trigger line (controlled by device)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="792"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="817"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="817"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show sample value when mouse cursor is near,set cursors by clicking on graph, mouse-drag cursors a zero-lines of channels.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="795"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="819"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="819"/>
         <source>Mouse interactions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="805"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="821"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="821"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Normaly, only nonempty channel are shown in channel selection, this allows to show all available channels.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="808"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="823"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="823"/>
         <source>Allow selecting unused channels</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="823"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="825"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="825"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Erase data in main plot&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="826"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="827"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="827"/>
         <source>Clear all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="852"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="829"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="829"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Graph to be cleared&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="868"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="832"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="832"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clear one graph&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="871"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="834"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="834"/>
         <source>Clear</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="883"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="835"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="835"/>
         <source>FFT</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="892"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="837"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="837"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show from -f&lt;span style=&quot; vertical-align:sub;&quot;&gt;s&lt;/span&gt;/2 to f&lt;span style=&quot; vertical-align:sub;&quot;&gt;s&lt;/span&gt;/2&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="895"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="839"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="839"/>
         <source>Zero-centered</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="905"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="841"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="841"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show from 0 to f&lt;span style=&quot; vertical-align:sub;&quot;&gt;s &lt;/span&gt; instead of only f&lt;span style=&quot; vertical-align:sub;&quot;&gt;s&lt;/span&gt;/2&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="908"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="843"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="843"/>
         <source>Two-sided</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="921"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="844"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="844"/>
         <source>Open Config Folder (not possible on some platforms)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="942"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="867"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="867"/>
         <source>Internal Parser</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="1001"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="846"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="846"/>
         <source>Manual input</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="1026"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="848"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="848"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Send&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="1047"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="852"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="852"/>
         <source>Print manual input buffer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="1067"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="856"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="856"/>
         <source>Clear manual input buffer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="1087"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="860"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="860"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clear console&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="1113"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="864"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_developeroptions.h" line="864"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Autoscroll&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -717,61 +717,61 @@
     <name>FreqTimePlotDialog</name>
     <message>
         <location filename="../src/forms/freqtimeplotdialog.ui" line="14"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_freqtimeplotdialog.h" line="163"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_freqtimeplotdialog.h" line="163"/>
         <source>Frequency vs Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/freqtimeplotdialog.ui" line="63"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_freqtimeplotdialog.h" line="164"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_freqtimeplotdialog.h" line="164"/>
         <source>Frequency grid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/freqtimeplotdialog.ui" line="85"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_freqtimeplotdialog.h" line="166"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_freqtimeplotdialog.h" line="166"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Value grid divisions&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/freqtimeplotdialog.ui" line="109"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_freqtimeplotdialog.h" line="168"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_freqtimeplotdialog.h" line="168"/>
         <source>Time grid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/freqtimeplotdialog.ui" line="128"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_freqtimeplotdialog.h" line="170"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_freqtimeplotdialog.h" line="170"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Time grid divisions&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/freqtimeplotdialog.ui" line="153"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_freqtimeplotdialog.h" line="172"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_freqtimeplotdialog.h" line="172"/>
         <source>Save as Image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/freqtimeplotdialog.ui" line="164"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_freqtimeplotdialog.h" line="174"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_freqtimeplotdialog.h" line="174"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Export to CSV&lt;/p&gt;&lt;p&gt;Refer to export page for settings&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/freqtimeplotdialog.ui" line="167"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_freqtimeplotdialog.h" line="176"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_freqtimeplotdialog.h" line="176"/>
         <source>Save to CSV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/freqtimeplotdialog.ui" line="184"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_freqtimeplotdialog.h" line="178"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_freqtimeplotdialog.h" line="178"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clear plot&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/freqtimeplotdialog.ui" line="187"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_freqtimeplotdialog.h" line="180"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_freqtimeplotdialog.h" line="180"/>
         <source>Clear</source>
         <translation type="unfinished"></translation>
     </message>
@@ -815,44 +815,44 @@
     <name>MainWindow</name>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="26"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4394"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4394"/>
         <source>Data Plotter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="337"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4398"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4398"/>
         <location filename="../src/mainwindow/mainwindow.cpp" line="218"/>
         <source>Running (click to pause)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="363"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4402"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4402"/>
         <source>Autoset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="401"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4406"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4406"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Reset (zero) channel offset and scale&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="479"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4410"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4410"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Select channel to change it&apos;s settings&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="498"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4413"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4413"/>
         <source>Show/hide channel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="536"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4417"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4417"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Change color&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -861,170 +861,170 @@
         <location filename="../src/forms/mainwindow.ui" line="5693"/>
         <location filename="../src/forms/mainwindow.ui" line="6547"/>
         <location filename="../src/forms/mainwindow.ui" line="6791"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4430"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4681"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4759"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4792"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4430"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4681"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4759"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4792"/>
         <source>Set style of channel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="676"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4434"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4434"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Interpolate&lt;/p&gt;&lt;p&gt;Signal is interpolated by factor of 8.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="721"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4437"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4437"/>
         <source>Offset:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="748"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4438"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4438"/>
         <source>Scale:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="778"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4440"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4440"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Channel scale&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Only affects how channel is displayed in plot. Does &lt;/span&gt;&lt;span style=&quot; font-size:8pt; text-decoration: underline;&quot;&gt;not&lt;/span&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt; affect values read using cursors!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="806"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4443"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4443"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Invert&lt;/p&gt;&lt;p&gt;Only affects how channel is displayed in plot. Does &lt;span style=&quot; text-decoration: underline;&quot;&gt;not&lt;/span&gt; affect values read using cursors!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="852"/>
         <location filename="../src/forms/mainwindow.ui" line="1926"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4447"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4490"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4447"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4490"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Move graph vertically&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="1035"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4450"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4450"/>
         <source>Horizontal grid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="1054"/>
         <location filename="../src/forms/mainwindow.ui" line="1210"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4452"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4458"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4452"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4458"/>
         <source>Grid resolution</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="1118"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4454"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4454"/>
         <source>Full</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="1137"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4455"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4455"/>
         <source>Rolling</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="1188"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4456"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4456"/>
         <source>Vertical grid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="1351"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4461"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4461"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;If percentage is set, rolling mode does move continuously, but rather skip ahead of the signal until the signal reaches the right edge again.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="1357"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4463"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4463"/>
         <source>Smooth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="1360"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4464"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4464"/>
         <source> %</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="1421"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4467"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4467"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Length of data shown&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="1480"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4471"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4471"/>
         <source>Length of data shown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="1527"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4473"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4473"/>
         <source>Auto Range</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="1602"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4475"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4475"/>
         <source>Zoom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="1695"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4479"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4479"/>
         <source>Move zoomed plot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="1800"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4483"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4483"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Value range&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="1856"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4486"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4486"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Value range&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="1896"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4488"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4488"/>
         <source>View vertical position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="1962"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4494"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4494"/>
         <source>Only positive</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="1991"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4498"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4498"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Symmetric positive and negative&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="2023"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4502"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4502"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Only negative&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="2054"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4505"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4505"/>
         <source>Fit selected channel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1054,47 +1054,47 @@
         <location filename="../src/forms/mainwindow.ui" line="4325"/>
         <location filename="../src/forms/mainwindow.ui" line="4347"/>
         <location filename="../src/forms/mainwindow.ui" line="4385"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4507"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4512"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4513"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4538"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4543"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4544"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4554"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4557"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4559"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4561"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4567"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4568"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4569"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4572"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4573"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4574"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4575"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4577"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4578"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4587"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4588"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4593"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4594"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4595"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4597"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4507"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4512"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4513"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4538"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4543"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4544"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4554"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4557"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4559"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4561"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4567"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4568"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4569"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4572"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4573"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4574"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4575"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4577"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4578"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4587"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4588"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4593"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4594"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4595"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4597"/>
         <source>---</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="2276"/>
         <location filename="../src/forms/mainwindow.ui" line="3040"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4509"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4540"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4509"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4540"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Position of vertical cursor, relative to zero value of selected channel&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="2333"/>
         <location filename="../src/forms/mainwindow.ui" line="3097"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4511"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4542"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4511"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4542"/>
         <location filename="../src/mainwindow/mainwindow_gui_preset.cpp" line="183"/>
         <location filename="../src/mainwindow/mainwindow_gui_preset.cpp" line="184"/>
         <source>Sample</source>
@@ -1103,54 +1103,54 @@
     <message>
         <location filename="../src/forms/mainwindow.ui" line="2601"/>
         <location filename="../src/forms/mainwindow.ui" line="3368"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4515"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4546"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4515"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4546"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hide cursor&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="2693"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4519"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4519"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Difference in time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="2734"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4523"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4523"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Difference of value cursors&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="2772"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4527"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4527"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ratio (cursor1 / cursor2)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="2810"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4531"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4531"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Slope between cursor intersections&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="2848"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4535"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4535"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Reciprocal of time interval between cursors&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="3507"/>
         <location filename="../src/forms/mainwindow.ui" line="4279"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4551"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4590"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4551"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4590"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Measured values will be saved to CSV file, refer to Export page for settings of CSV separator and number precision.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="3510"/>
         <location filename="../src/forms/mainwindow.ui" line="4282"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4553"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4592"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4553"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4592"/>
         <location filename="../src/mainwindow/mainwindow.cpp" line="549"/>
         <source>Record</source>
         <translation type="unfinished"></translation>
@@ -1158,88 +1158,88 @@
     <message>
         <location filename="../src/forms/mainwindow.ui" line="3547"/>
         <location filename="../src/forms/mainwindow.ui" line="4363"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4555"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4596"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4555"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4596"/>
         <source>Period</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="3563"/>
         <location filename="../src/forms/mainwindow.ui" line="4160"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4556"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4584"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4556"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4584"/>
         <source>max</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="3601"/>
         <location filename="../src/forms/mainwindow.ui" line="4096"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4558"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4580"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4558"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4580"/>
         <source>Fall</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="3639"/>
         <location filename="../src/forms/mainwindow.ui" line="4020"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4560"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4576"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4560"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4576"/>
         <source>Amplitude</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="3677"/>
         <location filename="../src/forms/mainwindow.ui" line="4128"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4562"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4582"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4562"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4582"/>
         <source>Rise</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="3715"/>
         <location filename="../src/forms/mainwindow.ui" line="4144"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4563"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4583"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4563"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4583"/>
         <source>Sampling freq</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="3731"/>
         <location filename="../src/forms/mainwindow.ui" line="4423"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4564"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4598"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4564"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4598"/>
         <source>min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="3747"/>
         <location filename="../src/forms/mainwindow.ui" line="4176"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4565"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4585"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4565"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4585"/>
         <source>Frequency</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="3763"/>
         <location filename="../src/forms/mainwindow.ui" line="4112"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4566"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4581"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4566"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4581"/>
         <source>Vrms</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="3867"/>
         <location filename="../src/forms/mainwindow.ui" line="4192"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4570"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4586"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4570"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4586"/>
         <source>dc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="3883"/>
         <location filename="../src/forms/mainwindow.ui" line="4080"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4571"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4579"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4571"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4579"/>
         <source>Samples</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1249,11 +1249,11 @@
         <location filename="../src/forms/mainwindow.ui" line="5759"/>
         <location filename="../src/forms/mainwindow.ui" line="6320"/>
         <location filename="../src/forms/mainwindow.ui" line="6333"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4599"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4686"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4690"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4723"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4727"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4599"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4686"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4690"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4723"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4727"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate from:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1261,9 +1261,9 @@
         <location filename="../src/forms/mainwindow.ui" line="4445"/>
         <location filename="../src/forms/mainwindow.ui" line="5749"/>
         <location filename="../src/forms/mainwindow.ui" line="6323"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4600"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4688"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4725"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4600"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4688"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4725"/>
         <source>Whole signal</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1271,39 +1271,39 @@
         <location filename="../src/forms/mainwindow.ui" line="4455"/>
         <location filename="../src/forms/mainwindow.ui" line="5762"/>
         <location filename="../src/forms/mainwindow.ui" line="6336"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4601"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4692"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4729"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4601"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4692"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4729"/>
         <source>Visible interval</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="4550"/>
         <location filename="../src/forms/mainwindow.ui" line="4696"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4605"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4618"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4605"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4618"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of bits shown (from least significant), auto means same as data type (for example 16 bits for U2).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="4556"/>
         <location filename="../src/forms/mainwindow.ui" line="4702"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4607"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4620"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4607"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4620"/>
         <source>Bits: auto</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="4562"/>
         <location filename="../src/forms/mainwindow.ui" line="4708"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4609"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4622"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4609"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4622"/>
         <source>Bits: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="4581"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4610"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4610"/>
         <source>Logic 2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1314,116 +1314,116 @@
         <location filename="../src/forms/mainwindow.ui" line="5115"/>
         <location filename="../src/forms/mainwindow.ui" line="5140"/>
         <location filename="../src/forms/mainwindow.ui" line="5165"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4624"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4626"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4633"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4639"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4640"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4641"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4624"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4626"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4633"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4639"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4640"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4641"/>
         <source>×</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="4878"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4625"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4625"/>
         <source>Logic 1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="5249"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4644"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4644"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable averaging&lt;/p&gt;&lt;p&gt;In channel mode ($$C), samples from a few newest sets are averaged.&lt;/p&gt;&lt;p&gt;In point mode ($$P) this acts as rolling average.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="5252"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4646"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4646"/>
         <source>Average</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="5266"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4648"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4648"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Use the same number of previous data sets for all channels&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="5269"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4650"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4650"/>
         <source>All</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="5276"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4652"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4652"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Set the number of previous data sets for each channel individually&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="5279"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4654"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4654"/>
         <source>Individual</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="5300"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4656"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4656"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Average is calculated from this amount of previous data sets/points&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="5356"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4658"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4658"/>
         <source>Interpolation filter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="5364"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4659"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4659"/>
         <source>Basic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="5369"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4660"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4660"/>
         <source>Medium</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="5374"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4661"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4661"/>
         <source>Good</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="5379"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4662"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4662"/>
         <source>Best</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="5447"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4665"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4665"/>
         <source>Enable XY</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="5486"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4666"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4666"/>
         <source>Grid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="5526"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4668"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4668"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Channel color&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="5552"/>
         <location filename="../src/forms/mainwindow.ui" line="6288"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4671"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4720"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4671"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4720"/>
         <source>Reset plot</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1431,9 +1431,9 @@
         <location filename="../src/forms/mainwindow.ui" line="5644"/>
         <location filename="../src/forms/mainwindow.ui" line="6501"/>
         <location filename="../src/forms/mainwindow.ui" line="6745"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4673"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4751"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4784"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4673"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4751"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4784"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove DC component from signal before calculating DFT.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1441,441 +1441,441 @@
         <location filename="../src/forms/mainwindow.ui" line="5647"/>
         <location filename="../src/forms/mainwindow.ui" line="6504"/>
         <location filename="../src/forms/mainwindow.ui" line="6748"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4675"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4753"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4786"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4675"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4753"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4786"/>
         <source>Remove DC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="5739"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4684"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4684"/>
         <source>Calculate from</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="5801"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4693"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4693"/>
         <source>Cursor1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="5840"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4695"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4695"/>
         <source>Cursor2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="5927"/>
         <location filename="../src/forms/mainwindow.ui" line="6037"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4698"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4706"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4698"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4706"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="5996"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4702"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4702"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Measure phase difference using cursors: arcsin(A/B)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="6142"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4710"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4710"/>
         <source>Enable FFT</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="6167"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4716"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4716"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Type of graph shown:&lt;/p&gt;&lt;p&gt;Spectrum: module of DFT result in linear scale, normalized by number of samples.&lt;/p&gt;&lt;p&gt;Periodogram: spectrum in decibel, 1 V&lt;span style=&quot; vertical-align:sub;&quot;&gt;DC&lt;/span&gt;  equals 0 dB.&lt;/p&gt;&lt;p&gt;Welch PSD: periodogram calculated using Welch&apos;s method.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="6174"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4711"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4711"/>
         <source>Linear</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="6179"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4712"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4712"/>
         <source>dB</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="6184"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4713"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4713"/>
         <source>Welch PSD</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="6236"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4718"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4718"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Values grid&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="6268"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4719"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4719"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Frequency grid&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="6304"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4721"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4721"/>
         <source>Frequency vs Time plot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="6407"/>
         <location filename="../src/forms/mainwindow.ui" line="6654"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4737"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4773"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4737"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4773"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Window&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="6414"/>
         <location filename="../src/forms/mainwindow.ui" line="6661"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4731"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4767"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4731"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4767"/>
         <source>Rectangular</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="6419"/>
         <location filename="../src/forms/mainwindow.ui" line="6666"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4732"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4768"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4732"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4768"/>
         <source>Hamming</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="6424"/>
         <location filename="../src/forms/mainwindow.ui" line="6671"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4733"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4769"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4733"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4769"/>
         <source>Hann</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="6429"/>
         <location filename="../src/forms/mainwindow.ui" line="6676"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4734"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4770"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4734"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4770"/>
         <source>Blackman</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="6439"/>
         <location filename="../src/forms/mainwindow.ui" line="6686"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4739"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4775"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4739"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4775"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;NFFT&lt;span style=&quot; vertical-align:sub;&quot;&gt;min&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="6446"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4741"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4741"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum number of samples for spectrum computation (signal is zero-padded to this length).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="6479"/>
         <location filename="../src/forms/mainwindow.ui" line="6723"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4747"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4780"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4747"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4780"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Number of segments for Welch&apos;s PSD estimate. (with 50% overlap)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="6485"/>
         <location filename="../src/forms/mainwindow.ui" line="6729"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4749"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4782"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4749"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4782"/>
         <source> segments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="6593"/>
         <location filename="../src/forms/mainwindow.ui" line="6837"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4763"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4796"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4763"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4796"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Keep maximum value for each sample. Useful for measuring amplitude frequency response.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="6596"/>
         <location filename="../src/forms/mainwindow.ui" line="6840"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4765"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4798"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4765"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4798"/>
         <source>Hold max</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="6889"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4800"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4800"/>
         <source>Export image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="6913"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4802"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4802"/>
         <source>Main plot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="6933"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4806"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4806"/>
         <source>XY plot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="6986"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4810"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4810"/>
         <source>Export data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="7012"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4812"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4812"/>
         <source>Export all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="7035"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4816"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4816"/>
         <source>Export XY</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="7072"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4821"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4821"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Export selected channel&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="7112"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4824"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4824"/>
         <source>CSV separators</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="7133"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4826"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4826"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Decimal comma, values separated by semicolon&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="7136"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4828"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4828"/>
         <source>Comma, Semicolon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="7143"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4830"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4830"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Decimal dot, values separated by comma&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="7146"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4832"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4832"/>
         <source>Dot, Comma</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="7172"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4833"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4833"/>
         <source> decimal places</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="7188"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4835"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4835"/>
         <source>Include hidden</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="7195"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4836"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4836"/>
         <source>Only viewed range</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="7434"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4840"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4840"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Additional settings&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="7521"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4845"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4845"/>
         <source>Not connected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="7575"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4848"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4848"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Capture serial port traffic (not recommended for large amount of data)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="7578"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4850"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4850"/>
         <source>Enable Serial monitor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="7668"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4852"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4852"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Print double-dolar on new line&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="7691"/>
         <location filename="../src/forms/mainwindow.ui" line="7881"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4856"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4872"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4856"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4872"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Clear console&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="7717"/>
         <location filename="../src/forms/mainwindow.ui" line="7907"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4860"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4876"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4860"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4876"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Autoscroll&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="7829"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4869"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4869"/>
         <source>Message filter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="7961"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4880"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4880"/>
         <source>Language</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="7979"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4881"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4881"/>
         <source>english</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="7999"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4882"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4882"/>
         <source>czech</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="8019"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4883"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4883"/>
         <source>Theme</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="8040"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4884"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4884"/>
         <source>Light</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="8050"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4885"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4885"/>
         <source>Dark</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="8060"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4886"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4886"/>
         <source>Plot</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="8081"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4888"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4888"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enable OpenGL hardware acceleration for drawing main plot (recommended for logic channels with fill under graph line)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="8084"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4890"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4890"/>
         <source>OpenGL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="8104"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4891"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4891"/>
         <source>Show vertical Axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="8139"/>
         <location filename="../src/forms/mainwindow.ui" line="8235"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4892"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4899"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4892"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4899"/>
         <source>title</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="8166"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4894"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4894"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Unit of values. Use base unit without any prefix.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="8169"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4896"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4896"/>
         <source>V</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="8178"/>
         <location filename="../src/forms/mainwindow.ui" line="8268"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4897"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4904"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4897"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4904"/>
         <source>unit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="8200"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4898"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4898"/>
         <source>Show horizontal Axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="8262"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4901"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4901"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Unit of values on horizontal axis. Use base unit without any prefix. If &apos;s&apos; is set as a unit, reciprocal of value has units of &apos;Hz&apos;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="8265"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4903"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4903"/>
         <source>time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="8302"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4906"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4906"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Load hard-coded defaults&lt;/p&gt;&lt;p&gt;This will also override default setting file (./settings/defaults.cfg)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="8305"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4908"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4908"/>
         <source>Reset Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="8328"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4909"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4909"/>
         <source>Developer Options</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1884,76 +1884,76 @@
         <location filename="../src/forms/mainwindow.ui" line="8378"/>
         <location filename="../src/forms/mainwindow.ui" line="8388"/>
         <location filename="../src/forms/mainwindow.ui" line="8398"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4912"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4916"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4920"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4924"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4912"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4916"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4920"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4924"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Click to open in external PDF browser&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="8371"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4914"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4914"/>
         <source>Open user manual (Czech)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="8381"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4918"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4918"/>
         <source>Open protocol guide (Czech)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="8391"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4922"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4922"/>
         <source>Open user manual (English)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="8401"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4926"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4926"/>
         <source>Open protocol guide (English)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="8408"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4928"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4928"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Click to open in external web browser&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="8411"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4930"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4930"/>
         <source>Video: features overview (Czech)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="8418"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4931"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4931"/>
         <source>Check For Updates</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="8425"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4932"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4932"/>
         <source>Open GitHub Repository</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="8432"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4933"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4933"/>
         <source>Open Project Webpage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="8501"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4934"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4934"/>
         <source>maierjir@fel.cvut.cz</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="8560"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4935"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_mainwindow.h" line="4935"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This program comes with absolutely no warranty. This is free software, and you are welcome to redistribute it under certain conditions. See the &lt;a href=&quot;https://www.gnu.org/licenses/gpl-3.0.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#007af4;&quot;&gt;GNU General Public License&lt;/span&gt;&lt;/a&gt; for more details.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2341,111 +2341,111 @@
     <name>ManualInputDialog</name>
     <message>
         <location filename="../src/forms/manualinputdialog.ui" line="14"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_manualinputdialog.h" line="248"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_manualinputdialog.h" line="248"/>
         <source>Simulated data input</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/manualinputdialog.ui" line="24"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_manualinputdialog.h" line="262"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_manualinputdialog.h" line="262"/>
         <source>Rolling</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/manualinputdialog.ui" line="64"/>
         <location filename="../src/forms/manualinputdialog.ui" line="234"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_manualinputdialog.h" line="250"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_manualinputdialog.h" line="264"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_manualinputdialog.h" line="250"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_manualinputdialog.h" line="264"/>
         <source>Expression</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/manualinputdialog.ui" line="69"/>
         <location filename="../src/forms/manualinputdialog.ui" line="239"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_manualinputdialog.h" line="252"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_manualinputdialog.h" line="266"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_manualinputdialog.h" line="252"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_manualinputdialog.h" line="266"/>
         <source>Validity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/manualinputdialog.ui" line="85"/>
         <location filename="../src/forms/manualinputdialog.ui" line="255"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_manualinputdialog.h" line="253"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_manualinputdialog.h" line="267"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_manualinputdialog.h" line="253"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_manualinputdialog.h" line="267"/>
         <source>Sample rate: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/manualinputdialog.ui" line="88"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_manualinputdialog.h" line="254"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_manualinputdialog.h" line="254"/>
         <source> Hz</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/manualinputdialog.ui" line="113"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_manualinputdialog.h" line="255"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_manualinputdialog.h" line="255"/>
         <source>Time: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/manualinputdialog.ui" line="116"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_manualinputdialog.h" line="256"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_manualinputdialog.h" line="256"/>
         <source>×</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/manualinputdialog.ui" line="158"/>
         <location filename="../src/forms/manualinputdialog.ui" line="325"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_manualinputdialog.h" line="258"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_manualinputdialog.h" line="272"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_manualinputdialog.h" line="258"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_manualinputdialog.h" line="272"/>
         <source>Running (click to pause)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/manualinputdialog.ui" line="184"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_manualinputdialog.h" line="261"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_manualinputdialog.h" line="261"/>
         <source>Reset Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/manualinputdialog.ui" line="194"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_manualinputdialog.h" line="275"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_manualinputdialog.h" line="275"/>
         <source>Oscilloscope</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/manualinputdialog.ui" line="258"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_manualinputdialog.h" line="268"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_manualinputdialog.h" line="268"/>
         <source> kHz</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/manualinputdialog.ui" line="283"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_manualinputdialog.h" line="269"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_manualinputdialog.h" line="269"/>
         <source> samples</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/manualinputdialog.ui" line="286"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_manualinputdialog.h" line="270"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_manualinputdialog.h" line="270"/>
         <source>Length: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/manualinputdialog.ui" line="348"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_manualinputdialog.h" line="277"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_manualinputdialog.h" line="277"/>
         <source>Logic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/manualinputdialog.ui" line="354"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_manualinputdialog.h" line="276"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_manualinputdialog.h" line="276"/>
         <source>8-bit Counting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/manualinputdialog.ui" line="378"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_manualinputdialog.h" line="278"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_manualinputdialog.h" line="278"/>
         <source>Clear plot</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3105,43 +3105,43 @@
     <name>SerialSettingsDialog</name>
     <message>
         <location filename="../src/forms/serialsettingsdialog.ui" line="20"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_serialsettingsdialog.h" line="134"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_serialsettingsdialog.h" line="134"/>
         <source>Additional port settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/serialsettingsdialog.ui" line="34"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_serialsettingsdialog.h" line="135"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_serialsettingsdialog.h" line="135"/>
         <source>Data bits:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/serialsettingsdialog.ui" line="44"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_serialsettingsdialog.h" line="136"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_serialsettingsdialog.h" line="136"/>
         <source>Parity:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/serialsettingsdialog.ui" line="54"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_serialsettingsdialog.h" line="137"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_serialsettingsdialog.h" line="137"/>
         <source>Stop bits:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/serialsettingsdialog.ui" line="67"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_serialsettingsdialog.h" line="138"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_serialsettingsdialog.h" line="138"/>
         <source>Flow control:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/serialsettingsdialog.ui" line="81"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_serialsettingsdialog.h" line="139"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_serialsettingsdialog.h" line="139"/>
         <source>Defaults</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/forms/serialsettingsdialog.ui" line="91"/>
-        <location filename="../build/DataPlotter_autogen/include/ui_serialsettingsdialog.h" line="140"/>
+        <location filename="../build/Desktop_Qt_5_15_2_MinGW_64_bit-Debug/DataPlotter_autogen/include/ui_serialsettingsdialog.h" line="140"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
