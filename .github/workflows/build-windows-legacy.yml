@@ -1,0 +1,75 @@
+name: Build and Deploy DataPlotter on Windows XP 32-bit (Qt 5.7.1 + MinGW 5.3.0)
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          choco install -y ninja cmake --installargs 'ADD_CMAKE_TO_PATH=System'
+          pip install gdown pillow pefile
+        shell: powershell
+
+      - name: Download and Extract Prebuilt Qt 5.7.1
+        env:
+          FILE_ID: ${{ secrets.QT571_FILE_ID }}
+        run: |
+          Write-Host "Downloading Qt 5.7.1 using gdown..."
+          gdown --id $env:FILE_ID --output qt.zip
+          7z x qt.zip -oC:\Qt
+        shell: powershell
+
+      - name: Add Qt and MinGW to PATH
+        run: |
+          echo "C:\\Qt\\Qt5.7.1\\5.7\\mingw53_32\\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          echo "C:\\Qt\\Qt5.7.1\\Tools\\mingw530_32\\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+        shell: powershell
+
+      - name: Configure CMake
+        run: |
+          cmake -S . -B build -G "MinGW Makefiles" ^
+            -DCMAKE_BUILD_TYPE=Release ^
+            -DCMAKE_PREFIX_PATH="C:\\Qt\\Qt5.7.1\\5.7\\mingw53_32\\lib\\cmake" ^
+            -DCMAKE_C_COMPILER="C:\\Qt\\Qt5.7.1\\Tools\\mingw530_32\\bin\\gcc.exe" ^
+            -DCMAKE_CXX_COMPILER="C:\\Qt\\Qt5.7.1\\Tools\\mingw530_32\\bin\\g++.exe" ^
+            -DCMAKE_CXX_FLAGS="-std=c++11 -Wall -Wextra -fpermissive" ^
+            -DCMAKE_EXE_LINKER_FLAGS="-static-libgcc -static-libstdc++ -L C:/Qt/Qt5.7.1/5.7/mingw53_32/lib -lQt5Core -lQt5Gui -lQt5Widgets -lQt5Network -lQt5SerialPort"
+        shell: cmd
+
+      - name: Build DataPlotter
+        run: |
+          cmake --build build --config Release
+        shell: cmd
+
+      - name: Download and Extract OpenSSL 1.0.2u
+        run: |
+          Invoke-WebRequest -Uri "https://github.com/IndySockets/OpenSSL-Binaries/raw/master/openssl-1.0.2u-i386-win32.zip" -OutFile "openssl.zip"
+          7z x openssl.zip -oC:\OpenSSL
+        shell: powershell
+
+      - name: Run legacy deployment script
+        run: |
+          python extras/deploy_windows/deploy.py ^
+            --config PS ^
+            --windeployqt "C:\\Qt\\Qt5.7.1\\5.7\\mingw53_32\\bin\\windeployqt.exe" ^
+            --openssl "C:\\OpenSSL"
+        shell: cmd
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: DataPlotter-WindowsXP-Portable
+          path: extras/deploy_windows/deploy/DataPlotter*Portable
