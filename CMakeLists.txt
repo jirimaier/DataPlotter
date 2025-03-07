@@ -36,6 +36,53 @@ include_directories(${CMAKE_SOURCE_DIR}/src)
 set(RESOURCES resources.qrc)
 qt5_add_resources(RESOURCE_FILES ${RESOURCES})
 
+set(PROJECT_HEADERFILES
+    src/communication/cobs.h
+    src/communication/filesender.h
+    src/communication/newserialparser.h
+    src/communication/plotdata.h
+    src/communication/serialreader.h
+    src/communication/serialsettingsdialog.h
+    src/communication/telnetserver.h
+    src/customwidgets/checkbuttons.h
+    src/customwidgets/clickablelabel.h
+    src/customwidgets/mycursorslider.h
+    src/customwidgets/mydial.h
+    src/customwidgets/mydoublespinboxwithunits.h
+    src/customwidgets/myelidedcombobox.h
+    src/customwidgets/myframewithresizesignal.h
+    src/customwidgets/mypow2spinbox.h
+    src/customwidgets/myscaledoublespinbox.h
+    src/defaultpathmanager.h
+    src/developeroptions.h
+    src/freqtimeplotdialog.h
+    src/mainwindow/appsettings.h
+    src/mainwindow/mainwindow.h
+    src/mainwindow/updatechecker.h
+    src/manualinputdialog.h
+    src/math/averager.h
+    src/math/expressionparser.h
+    src/math/interpolator.h
+    src/math/plotmath.h
+    src/math/signalprocessing.h
+    src/math/simpleexpressionparser.h
+    src/math/variableexpressionparser.h
+    src/math/xymode.h
+    src/customwidgets/myterminal.h
+    src/plots/myaxistickerwithunit.h
+    src/plots/myfftplot.h
+    src/plots/mymainplot.h
+    src/plots/mymodifiedqcptracer.h
+    src/plots/mypeakplot.h
+    src/plots/myplot.h
+    src/plots/myxyplot.h
+    src/plots/qcustomplot.h
+    src/qml/ansiterminalmodel.h
+    src/qml/messagemodel.h
+    src/qml/qmlterminalinterface.h
+    src/utils.h
+)
+
 set(PROJECT_SOURCES
     src/main.cpp
     src/communication/cobs.cpp
@@ -98,6 +145,7 @@ set(PROJECT_SOURCES
     src/forms/serialsettingsdialog.ui
     ${TS_FILES}
     ${RESOURCE_FILES}
+    ${PROJECT_HEADERFILES}
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
