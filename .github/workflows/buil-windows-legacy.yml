@@ -17,40 +17,37 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Download and Extract Qt 5.7.1 (MSVC2015, 32-bit)
-      run: |
-        curl -L -o qt5.7.1.exe "https://download.qt.io/new_archive/qt/5.7/5.7.1/qt-opensource-windows-x86-winrt-msvc2015-5.7.1.exe"
-        mkdir -p D:/a/DataPlotter/Qt/5.7.1
-        start /wait qt5.7.1.exe --extract D:/a/DataPlotter/Qt/5.7.1
-        echo "Qt 5.7.1 extracted successfully to D:/a/DataPlotter/Qt/5.7.1"
-      shell: cmd
-
-    - name: Install dependencies with vcpkg
-      run: |
-        git clone https://github.com/microsoft/vcpkg.git C:/vcpkg
-        cd C:/vcpkg
-        bootstrap-vcpkg.bat
-        vcpkg integrate install
-        vcpkg install ninja
-        vcpkg install cmake
-      shell: cmd
-
-    - name: Cache OpenSSL installation
+    # Cache the downloaded Qt installer
+    - name: Cache Qt Installer
+      id: cache-qt-installer
       uses: actions/cache@v3
       with:
-        path: C:/Program Files/OpenSSL
-        key: openssl-choco-${{ runner.os }}
+        path: D:/a/DataPlotter/qt5.7.1.exe
+        key: qt-installer-5.7.1
 
-    - name: Install OpenSSL (if not cached)
-      if: steps.cache-openssl.outputs.cache-hit != 'true'
-      shell: cmd
+    # Download the Qt installer only if it's not cached
+    - name: Download Qt 5.7.1 Installer
+      if: steps.cache-qt-installer.outputs.cache-hit != 'true'
       run: |
-        choco install openssl -y
+        curl -L -o D:/a/DataPlotter/qt5.7.1.exe "https://download.qt.io/new_archive/qt/5.7/5.7.1/qt-opensource-windows-x86-winrt-msvc2015-5.7.1.exe"
+      shell: cmd
 
-    - name: Set up MSVC environment (MSVC 2015)
-      uses: ilammy/msvc-dev-cmd@v1
+    # Cache the extracted Qt files
+    - name: Cache Extracted Qt
+      id: cache-qt
+      uses: actions/cache@v3
       with:
-        arch: x86
+        path: D:/a/DataPlotter/Qt/5.7.1
+        key: qt-5.7.1-msvc2015
+
+    # Extract Qt only if it's not cached
+    - name: Extract Qt 5.7.1
+      if: steps.cache-qt.outputs.cache-hit != 'true'
+      run: |
+        mkdir -p D:/a/DataPlotter/Qt/5.7.1
+        "C:\Program Files\7-Zip\7z.exe" x D:/a/DataPlotter/qt5.7.1.exe -oD:/a/DataPlotter/Qt/Extracted
+        "C:\Program Files\7-Zip\7z.exe" x D:/a/DataPlotter/Qt/Extracted/tools.7z -oD:/a/DataPlotter/Qt/5.7.1
+      shell: cmd
 
     - name: Configure CMake
       run: |
@@ -64,7 +61,7 @@ jobs:
     - name: Run deployment script
       run: |
         python deploy_windows/deploy-legacy.py ^
-          --windeployqt "D:/a/DataPlotter/Qt/5.7.2/msvc2015/bin/windeployqt.exe" ^
+          --windeployqt "D:/a/DataPlotter/Qt/5.7.1/msvc2015/bin/windeployqt.exe" ^
           --vcredist "C:/Windows/System32" ^
           --openssl "C:/Program Files/OpenSSL/bin"
       shell: cmd
