@@ -32,7 +32,7 @@ jobs:
         cd D:/a/DataPlotter/Qt/Source
         mkdir -p D:/a/DataPlotter/Qt/5.7.1
         call "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/vcvarsall.bat" x86
-        configure -release -platform win32-msvc2015 -prefix D:/a/DataPlotter/Qt/5.7.1
+        echo o | configure -release -opensource -confirm-license -platform win32-msvc2015 -prefix D:/a/DataPlotter/Qt/5.7.1
         nmake
         nmake install
       shell: cmd
