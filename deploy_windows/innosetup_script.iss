@@ -37,6 +37,7 @@ Source: "deploy\VC_redist.x64.exe"; DestDir: "{tmp}"; Flags: deleteafterinstall
 [Icons]
 ; Define icons with original application executable name.
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
+Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
 [Run]
 ; Execute the VC redistributable installer without forcing a reboot.
