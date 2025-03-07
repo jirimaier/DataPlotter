@@ -175,7 +175,7 @@ UnitOfMeasure::UnitOfMeasure(QString rawUnit) {
     text = rawUnit.mid(1);
   } else if (rawUnit == "index") {
     mode = index;
-  } else if (rawUnit.startsWith("time")) {
+  } else if (rawUnit.toLower().trimmed() == QString("time") || rawUnit.toLower().trimmed() == QObject::tr("time")) {
     mode = time;
     text = "s";
     static QRegularExpression regex("\\(([^)]+)\\)");
