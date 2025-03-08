@@ -57,6 +57,11 @@ jobs:
       run: |
         choco install openssl -y
 
+    - name: Add Qt bin directory to PATH
+      shell: bash
+      run: |
+        echo "D:/a/DataPlotter/Qt/5.15.2/msvc2019_64/bin" >> $GITHUB_PATH
+
     - name: Set up MSVC environment
       uses: ilammy/msvc-dev-cmd@v1
       with:
