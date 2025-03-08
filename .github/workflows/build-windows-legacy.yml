@@ -1,0 +1,137 @@
+name: Build and Deploy DataPlotter on Windows XP 32-bit (Qt 5.7.1 + MinGW 5.3.0)
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies (7-Zip, Ninja, CMake)
+        run: |
+          choco install -y ninja
+          choco install -y cmake --installargs 'ADD_CMAKE_TO_PATH=System'
+        shell: powershell
+
+      - name: Cache MinGW
+        id: cache-mingw
+        uses: actions/cache@v4
+        with:
+          path: C:\mingw
+          key: mingw-5.3.0
+
+      - name: Install MinGW 5.3.0 (Qt Prebuilt)
+        if: steps.cache-mingw.outputs.cache-hit != 'true'
+        run: |
+          Invoke-WebRequest -Uri "https://download.qt.io/development_releases/prebuilt/mingw_32/i686-5.3.0-release-posix-dwarf-rt_v4-rev0.7z" -OutFile mingw.7z
+          7z x mingw.7z -oC:\mingw
+          echo "C:\mingw\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+        shell: pwsh
+
+      - name: Cache Qt Source Zip
+        id: cache-qt-zip
+        uses: actions/cache@v4
+        with:
+          path: qt-src.zip
+          key: qt-5.7.1-source-zip
+
+      - name: Cache Extracted Qt Source
+        id: cache-qt-src
+        uses: actions/cache@v4
+        with:
+          path: qt-src/qt-everywhere-opensource-src-5.7.1
+          key: qt-5.7.1-source-folder
+
+      - name: Download Qt 5.7.1 Source with Progress
+        if: steps.cache-qt-zip.outputs.cache-hit != 'true'
+        run: |
+          curl -L -o qt-src.zip --progress-bar "https://download.qt.io/new_archive/qt/5.7/5.7.1/single/qt-everywhere-opensource-src-5.7.1.zip"
+        shell: bash
+
+      - name: Extract Qt 5.7.1 Source
+        if: steps.cache-qt-src.outputs.cache-hit != 'true'
+        run: |
+          Expand-Archive qt-src.zip -DestinationPath qt-src
+        shell: pwsh
+
+      - name: Patch Qt to Fix `_FILE_ID_INFO` Redefinition Error
+        run: |
+          sed -i 's/typedef struct _FILE_ID_INFO {/\/\/ typedef struct _FILE_ID_INFO {/' qt-src/qt-everywhere-opensource-src-5.7.1/qtbase/src/corelib/io/qfilesystemengine_win.cpp
+          sed -i 's/} FILE_ID_INFO, \*PFILE_ID_INFO;/\/\/ } FILE_ID_INFO, \*PFILE_ID_INFO;/' qt-src/qt-everywhere-opensource-src-5.7.1/qtbase/src/corelib/io/qfilesystemengine_win.cpp
+        shell: bash
+
+      - name: Cache Qt Build
+        id: cache-qt-build
+        uses: actions/cache@v4
+        with:
+          path: qt-src/qt-everywhere-opensource-src-5.7.1/build
+          key: qt-5.7.1-build-win32
+
+      - name: Configure Qt build (Skip Qt3D)
+        if: steps.cache-qt-build.outputs.cache-hit != 'true'
+        run: |
+          cd qt-src/qt-everywhere-opensource-src-5.7.1
+          mkdir -p build
+          cd build
+          bash ../configure -prefix C:/Qt/5.7.1 -platform win32-g++ -opensource -confirm-license -release -nomake tests -nomake examples -skip qt3d
+        shell: bash
+
+      - name: Build Qt (Only if not cached)
+        if: steps.cache-qt-build.outputs.cache-hit != 'true'
+        run: |
+          cd qt-src/qt-everywhere-opensource-src-5.7.1/build
+          mingw32-make -j4
+        shell: bash
+
+      - name: Install Qt
+        run: |
+          cd qt-src/qt-everywhere-opensource-src-5.7.1/build
+          mingw32-make install
+        shell: bash
+
+      - name: Add Qt to PATH
+        run: echo "C:\Qt\5.7.1\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+        shell: pwsh
+
+      - name: Verify installation
+        run: |
+          qmake --version
+          mingw32-make --version
+        shell: bash
+
+      - name: Configure CMake
+        run: |
+          echo "Configuring CMake..."
+          cmake -S . -B build -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="C:/Qt/5.7/mingw53_32/lib/cmake"
+        shell: cmd
+
+      - name: Build DataPlotter
+        run: |
+          echo "Building DataPlotter..."
+          cmake --build build --config Release
+        shell: cmd
+
+      - name: Run legacy deployment script
+        run: |
+          echo "Running legacy deployment script..."
+          python deploy_windows/deploy-legacy.py ^
+            --windeployqt "C:/Qt/5.7/mingw53_32/bin/windeployqt.exe" ^
+            --vcredist "C:/Windows/System32" ^
+            --openssl "C:/Program Files/OpenSSL/bin"
+        shell: cmd
+
+      - name: Upload build artifact (zip)
+        uses: actions/upload-artifact@v4
+        with:
+          name: DataPlotter-WindowsXP-Portable
+          path: deploy_windows/deploy/DataPlotter*.zip
