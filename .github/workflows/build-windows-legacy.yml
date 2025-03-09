@@ -65,7 +65,7 @@ jobs:
           cd qt-src
           mkdir -p build
           cd build
-          ..\configure -prefix %CD%\qtbase -opensource -confirm-license -release -nomake tests -nomake examples -opengl desktop
+          ..\configure -prefix %CD%\qtbase -opensource -confirm-license -release -nomake tests -nomake examples -opengl desktop -skip qt3d
         shell: cmd
 
       - name: Build Qt
