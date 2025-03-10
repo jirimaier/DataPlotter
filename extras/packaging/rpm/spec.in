@@ -1,0 +1,90 @@
+#
+# spec file for package @PACKAGE_NAME@
+#
+@COPYRIGHT_HASH_COMMENT@
+#
+# This program is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation, either version 3 of the License, or (at your option)
+# any later version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+
+# You should have received a copy of the GNU General Public License along with
+# this program. If not, see <https://www.gnu.org/licenses/>
+#
+# Please submit bugfixes or comments via
+#   @PROJECT_HOME_PAGE@
+# issues tracker.
+#
+
+
+Name:           @PACKAGE_NAME@
+Version:        @PACKAGE_VERSION@
+Release:        @PACKAGE_RELEASE@
+Summary:        @PACKAGE_DESCRIPTION@
+License:        @PACKAGE_LICENCE@
+Group:          System/Emulators/Other
+URL:            @PACKAGE_URL@
+Source:         @PACKAGE_SOURCE_ARCHIVE_FILE@
+BuildRequires:  cmake
+BuildRequires:  gcc-c++
+BuildRequires:  pkgconfig
+BuildRequires:  pkgconfig(Qt5Core)
+BuildRequires:  pkgconfig(Qt5Widgets)
+BuildRequires:  pkgconfig(Qt5Test)
+BuildRequires:  pkgconfig(Qt5PrintSupport)
+BuildRequires:  hicolor-icon-theme
+
+%if ! 0%{?suse_version}
+BuildRequires:  pkgconfig(libelf)
+BuildRequires:  desktop-file-utils
+%endif
+
+%if 0%{?suse_version}
+BuildRequires:  libelf-devel
+BuildRequires:  update-desktop-files
+%endif
+
+%description
+@PACKAGE_LONG_DESCRIPTION@
+
+%prep
+%setup -q
+
+%build
+%if 0%{?suse_version}
+%cmake -DCMAKE_CXX_FLAGS="-Wno-error" -DCMAKE_C_FLAGS="-Wno-error"
+%else
+%cmake
+%endif
+%cmake_build
+
+%install
+%cmake_install
+
+#desktop icon
+%if 0%{?suse_version}
+%suse_update_desktop_file -r -i @PACKAGE_NAME@ 'System Emulator'
+%endif
+
+%if 0%{?fedora} || 0%{?rhel} || 0%{?centos}
+desktop-file-validate %{buildroot}/usr/share/applications/@PACKAGE_NAME@.desktop
+%endif
+
+# TODO: this should be generated from CMake
+%files
+/usr/bin/qtrvsim_gui
+/usr/bin/qtrvsim_cli
+/usr/share/icons/hicolor/scalable/apps/qtrvsim_gui.svg
+/usr/share/icons/hicolor/48x48/apps/qtrvsim_gui.png
+/usr/share/applications/qtrvsim.desktop
+/usr/share/metainfo/cz.cvut.edu.comparch.qtrvsim.metainfo.xml
+
+%license LICENSE
+%doc README.md
+
+%changelog
