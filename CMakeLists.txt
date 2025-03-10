@@ -102,8 +102,8 @@ add_custom_command(
     DEPENDS ${TS_FILES}
     COMMENT "Compiling Qt translations..."
 )
-
-add_custom_target(translations ALL DEPENDS ${QM_FILES})
+#
+#add_custom_target(translations ALL DEPENDS ${QM_FILES})
 
 include_directories(${CMAKE_SOURCE_DIR}/src)
 
@@ -254,7 +254,7 @@ else()
     endif()
 endif()
 
-add_dependencies(DataPlotter translations)
+#add_dependencies(DataPlotter translations)
 
 # Define the preprocessor macro for QCustomPlot OpenGL support
 target_compile_definitions(DataPlotter PRIVATE QCUSTOMPLOT_USE_OPENGL)
