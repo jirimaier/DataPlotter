@@ -27,26 +27,35 @@ Version:        @PACKAGE_VERSION@
 Release:        @PACKAGE_RELEASE@
 Summary:        @PACKAGE_DESCRIPTION@
 License:        @PACKAGE_LICENCE@
-Group:          System/Emulators/Other
+Group:          Office/Visualization/Other
 URL:            @PACKAGE_URL@
 Source:         @PACKAGE_SOURCE_ARCHIVE_FILE@
 BuildRequires:  cmake
 BuildRequires:  gcc-c++
 BuildRequires:  pkgconfig
-BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Widgets)
-BuildRequires:  pkgconfig(Qt5Test)
+BuildRequires:  pkgconfig(Qt5Core)
+BuildRequires:  pkgconfig(Qt5Gui)
+BuildRequires:  pkgconfig(Qt5SerialPort)
 BuildRequires:  pkgconfig(Qt5PrintSupport)
+BuildRequires:  pkgconfig(Qt5OpenGL)
+BuildRequires:  pkgconfig(Qt5Qml)
+BuildRequires:  pkgconfig(Qt5QuickWidgets)
+BuildRequires:  pkgconfig(Qt5Quick)
+BuildRequires:  pkgconfig(Qt5QuickControls2)
+BuildRequires:  pkgconfig(Qt5Network)
+BuildRequires:  cmake(Qt5LinguistTools)
 BuildRequires:  hicolor-icon-theme
 
 %if ! 0%{?suse_version}
-BuildRequires:  pkgconfig(libelf)
 BuildRequires:  desktop-file-utils
+BuildRequires:  qt5-linguist
+BuildRequires:  qt5-qttools
 %endif
 
 %if 0%{?suse_version}
-BuildRequires:  libelf-devel
 BuildRequires:  update-desktop-files
+BuildRequires:  libqt5-linguist
 %endif
 
 %description
@@ -68,21 +77,21 @@ BuildRequires:  update-desktop-files
 
 #desktop icon
 %if 0%{?suse_version}
-%suse_update_desktop_file -r -i @PACKAGE_NAME@ 'System Emulator'
+%suse_update_desktop_file -r -i @PACKAGE_NAME@ 'Office Visualization'
 %endif
 
 %if 0%{?fedora} || 0%{?rhel} || 0%{?centos}
-desktop-file-validate %{buildroot}/usr/share/applications/@PACKAGE_NAME@.desktop
+#desktop-file-validate %{buildroot}/usr/share/applications/@PACKAGE_NAME@.desktop
+desktop-file-validate %{buildroot}/usr/share/applications/data-plotter.desktop
 %endif
 
 # TODO: this should be generated from CMake
 %files
-/usr/bin/qtrvsim_gui
-/usr/bin/qtrvsim_cli
-/usr/share/icons/hicolor/scalable/apps/qtrvsim_gui.svg
-/usr/share/icons/hicolor/48x48/apps/qtrvsim_gui.png
-/usr/share/applications/qtrvsim.desktop
-/usr/share/metainfo/cz.cvut.edu.comparch.qtrvsim.metainfo.xml
+/usr/bin/DataPlotter
+#/usr/share/icons/hicolor/scalable/apps/dataplotter.svg
+/usr/share/icons/hicolor/256x256/apps/dataplotter.png
+/usr/share/applications/data-plotter.desktop
+#/usr/share/metainfo/cz.cvut.fel.embedded.dataplotter.metainfo.xml
 
 %license LICENSE
 %doc README.md

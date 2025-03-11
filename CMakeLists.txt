@@ -80,7 +80,7 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS
 set(CMAKE_AUTOUIC_SEARCH_PATHS "${CMAKE_SOURCE_DIR}/src/forms")
 
 find_package(Qt5 REQUIRED COMPONENTS LinguistTools)
-find_program(QT_LRELEASE_EXECUTABLE lrelease HINTS ${Qt5_DIR}/bin ${CMAKE_SOURCE_DIR})
+find_program(QT_LRELEASE_EXECUTABLE NAMES lrelease-qt5 lrelease HINTS ${Qt5_DIR}/bin ${CMAKE_SOURCE_DIR})
 
 if(NOT QT_LRELEASE_EXECUTABLE)
     message(FATAL_ERROR "lrelease executable not found. Make sure Qt Linguist is installed.")
@@ -296,6 +296,28 @@ install(TARGETS DataPlotter
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(DataPlotter)
 endif()
+
+# =============================================================================
+# Installation
+# =============================================================================
+
+# Prior to CMake version 3.13, installation must be performed in the subdirectory,
+# there the target was created. Therefore executable installation is to be found
+# in corresponding CMakeLists.txt.
+
+if (NOT "${WASM}")
+#   install(FILES "deploy_linux/icons/icon.svg"
+#           DESTINATION "share/icons/hicolor/scalable/apps"
+#           RENAME "${MAIN_PROJECT_NAME_LOWER}.svg")
+    install(FILES "deploy_linux/icon.png"
+            DESTINATION "share/icons/hicolor/256x256/apps"
+            RENAME "${MAIN_PROJECT_NAME_LOWER}.png")
+    install(FILES "deploy_linux/data-plotter.desktop"
+            DESTINATION share/applications)
+
+#   install(FILES "${EXECUTABLE_OUTPUT_PATH}/${MAIN_PROJECT_APPID}.metainfo.xml"
+#           DESTINATION share/metainfo)
+endif ()
 
 # =============================================================================
 # Packages

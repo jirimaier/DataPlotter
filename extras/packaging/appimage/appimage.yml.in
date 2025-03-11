@@ -4,7 +4,6 @@ build:
   packages:
     - linuxdeployqt
     - pkgconfig(Qt5Widgets)
-    - pkgconfig(Qt5LinguistTools)
     - pkgconfig(Qt5Core)
     - pkgconfig(Qt5Gui)
     - pkgconfig(Qt5SerialPort)
@@ -15,7 +14,9 @@ build:
     - pkgconfig(Qt5Quick)
     - pkgconfig(Qt5QuickControls2)
     - pkgconfig(Qt5Network)
-    - qttools5-dev
+    - libqt5-linguist
+    - libqt5-linguist-devel
+
 
 script:
   - cd $BUILD_SOURCE_DIR

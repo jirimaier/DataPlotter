@@ -5,4 +5,4 @@ Name=Data Plotter
 Comment=Universal GUI for software-defined measuring instruments
 Exec=data-plotter
 Icon=data-plotter
-Categories=Office;
+Categories=Office;Visualization;
