@@ -17,7 +17,7 @@ V_DATE_RFC="$(date -R)"
 
 V_USER_NAME="$(git config user.name)"
 V_USER_EMAIL="$(git config user.email)"
-PACKAGE_NAME="dataplotter"
+PACKAGE_NAME="data-plotter"
 
 if grep -q "$PACKAGE_NAME ($V_TXT)" $CHANGELOG_FILE; then
   sed --in-place \

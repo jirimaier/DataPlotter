@@ -5,6 +5,15 @@ project(DataPlotter
         LANGUAGES CXX
         DESCRIPTION "GUI interface for custom software-defined instruments")
 
+set(MAIN_PROJECT_NAME_LOWER "data-plotter")
+
+if(WIN32)
+    set(MAIN_EXECUTEBLE_NAME "DataPlotter")
+else()
+    set(MAIN_EXECUTEBLE_NAME "data-plotter")
+endif()
+
+
 # Get current year dynamically
 string(TIMESTAMP CURRENT_YEAR "%Y")
 
@@ -54,7 +63,7 @@ set(MAIN_PROJECT_VERSION "${PROJECT_VERSION}")
 set(MAIN_PROJECT_APPID "cz.cvut.edu.comparch.qtrvsim")
 set(MAIN_PROJECT_ORGANIZATION "FEE CTU")
 set(MAIN_PROJECT_HOMEPAGE_URL "${PROJECT_HOMEPAGE_URL}")
-string(TOLOWER "${PROJECT_NAME}" MAIN_PROJECT_NAME_LOWER)
+#string(TOLOWER "${PROJECT_NAME}" MAIN_PROJECT_NAME_LOWER)
 string(TOUPPER "${PROJECT_NAME}" MAIN_PROJECT_NAME_UPPER)
 
 # =============================================================================
@@ -246,13 +255,18 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
     )
+    set_target_properties(DataPlotter PROPERTIES OUTPUT_NAME ${MAIN_EXECUTEBLE_NAME})
+    qt_finalize_target(DataPlotter)
 else()
     if(ANDROID)
         add_library(DataPlotter SHARED ${PROJECT_SOURCES})
     else()
         add_executable(DataPlotter ${PROJECT_SOURCES})
+        set_target_properties(DataPlotter PROPERTIES OUTPUT_NAME ${MAIN_EXECUTEBLE_NAME})
     endif()
 endif()
+
+
 
 #add_dependencies(DataPlotter translations)
 
@@ -312,7 +326,7 @@ if (NOT "${WASM}")
     install(FILES "deploy_linux/icon.png"
             DESTINATION "share/icons/hicolor/256x256/apps"
             RENAME "${MAIN_PROJECT_NAME_LOWER}.png")
-    install(FILES "deploy_linux/data-plotter.desktop"
+    install(FILES "deploy_linux/${MAIN_PROJECT_NAME_LOWER}.desktop"
             DESTINATION share/applications)
 
 #   install(FILES "${EXECUTABLE_OUTPUT_PATH}/${MAIN_PROJECT_APPID}.metainfo.xml"

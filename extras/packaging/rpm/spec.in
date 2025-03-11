@@ -87,13 +87,13 @@ desktop-file-validate %{buildroot}/usr/share/applications/data-plotter.desktop
 
 # TODO: this should be generated from CMake
 %files
-/usr/bin/DataPlotter
-#/usr/share/icons/hicolor/scalable/apps/dataplotter.svg
-/usr/share/icons/hicolor/256x256/apps/dataplotter.png
-/usr/share/applications/data-plotter.desktop
-#/usr/share/metainfo/cz.cvut.fel.embedded.dataplotter.metainfo.xml
+/usr/bin/@PACKAGE_NAME@
+#/usr/share/icons/hicolor/scalable/apps/@PACKAGE_NAME@.svg
+/usr/share/icons/hicolor/256x256/apps/@PACKAGE_NAME@.png
+/usr/share/applications/@PACKAGE_NAME@.desktop
+#/usr/share/metainfo/cz.cvut.fel.embedded.@PACKAGE_NAME@.metainfo.xml
 
-%license LICENSE
+%license documentation/license.txt
 %doc README.md
 
 %changelog
