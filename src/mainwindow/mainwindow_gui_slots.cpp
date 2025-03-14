@@ -103,7 +103,7 @@ void MainWindow::on_radioButtonEn_toggled(bool checked) {
 
 void MainWindow::on_radioButtonCz_toggled(bool checked) {
   if (checked)
-    changeLanguage("cz");
+    changeLanguage("cs");
 }
 
 void MainWindow::on_pushButtonScrollDown_clicked() {
