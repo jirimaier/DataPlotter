@@ -44,7 +44,7 @@ add_app_translations_resource(APP_RES ${QM_FILES})
 add_qt_translations_resource(QT_RES en cs)
 
 set(RESOURCES resources.qrc)
-qt_add_resources(RESOURCE_FILES ${RESOURCES})
+qt5_add_resources(RESOURCE_FILES ${RESOURCES})
 
 set(PROJECT_HEADERFILES
     src/communication/cobs.h
