@@ -824,7 +824,7 @@
         <location filename="../src/forms/mainwindow.ui" line="5526"/>
         <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4668"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Channel color&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>Chane graph color</translation>
+        <translation>Change graph color</translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="748"/>

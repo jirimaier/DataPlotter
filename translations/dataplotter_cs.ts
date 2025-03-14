@@ -34,12 +34,12 @@
     <message>
         <location filename="../src/mainwindow/appsettings.cpp" line="270"/>
         <source>Invalid channel in settings</source>
-        <translation>Neexistující kanál v nastavení</translation>
+        <translation>Neplatný kanál v nastavení</translation>
     </message>
     <message>
         <location filename="../src/mainwindow/appsettings.cpp" line="304"/>
         <source>Invalid logic in settings</source>
-        <translation>Neexistující logický kanál v nastavení</translation>
+        <translation>Neplatná logika v nastavení</translation>
     </message>
     <message>
         <location filename="../src/mainwindow/appsettings.cpp" line="335"/>
@@ -70,13 +70,13 @@
         <location filename="../src/forms/developeroptions.ui" line="36"/>
         <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="674"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Reload current file&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Znovu načíst aktuální soubor&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Načíst znovu aktuální soubor&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="39"/>
         <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="676"/>
         <source>Reload</source>
-        <translation>Znovu načíst</translation>
+        <translation>Načíst znovu</translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="56"/>
@@ -312,7 +312,7 @@
         <location filename="../src/forms/developeroptions.ui" line="433"/>
         <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="758"/>
         <source>Copy to use in firmware</source>
-        <translation>Zkopírovat pro použití ve firmwaru</translation>
+        <translation>Kopírovat pro použití ve firmwaru</translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="450"/>
@@ -324,7 +324,7 @@
         <location filename="../src/forms/developeroptions.ui" line="464"/>
         <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="779"/>
         <source>ANSI Terminal Click-Colors</source>
-        <translation>Klikací barvy v ANSI terminálu</translation>
+        <translation>Klikatelné barvy v ANSI terminálu</translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="476"/>
@@ -390,7 +390,7 @@
         <location filename="../src/forms/developeroptions.ui" line="626"/>
         <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="778"/>
         <source>Copy command to clipboard  (to use in firmware)</source>
-        <translation>Zkopírovat příkaz do schránky (pro použití ve firmwaru)</translation>
+        <translation>Kopírovat příkaz do schránky (pro použití ve firmwaru)</translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="638"/>
@@ -438,7 +438,7 @@
         <location filename="../src/forms/developeroptions.ui" line="679"/>
         <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="792"/>
         <source>Autoset on reconnect</source>
-        <translation>Autoset po připojení</translation>
+        <translation>Automatické nastavení po připojení</translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="689"/>
@@ -450,7 +450,7 @@
         <location filename="../src/forms/developeroptions.ui" line="692"/>
         <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="796"/>
         <source>Prevent freezing</source>
-        <translation>Zabránit zaseknutí</translation>
+        <translation>Zabránit zamrznutí</translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="704"/>
@@ -510,7 +510,7 @@
         <location filename="../src/forms/developeroptions.ui" line="792"/>
         <location filename="../build/DataPlotter_autogen/include/ui_developeroptions.h" line="817"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Show sample value when mouse cursor is near,set cursors by clicking on graph, mouse-drag cursors a zero-lines of channels.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>Zobrazí hodnotu vzorku, když je ukazatel myši poblíž grafu, kliknutím se na místo umístí kurzor (pravé tlačítko pro kurzor 2), také lze myší táhnout kurzory a offset (čáru nulové hodnoty)</translation>
+        <translation>Zobrazí hodnotu vzorku, když je ukazatel myši poblíž grafu. Kliknutím lze umístit kurzor (pravým tlačítkem kurzor 2) a myší lze posouvat kurzory i čáru nulové hodnoty.</translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="795"/>
@@ -692,7 +692,7 @@
     <message>
         <location filename="../src/developeroptions.cpp" line="351"/>
         <source>File loaded</source>
-        <translation>Soubor načten</translation>
+        <translation>Soubor byl načten</translation>
     </message>
 </context>
 <context>
