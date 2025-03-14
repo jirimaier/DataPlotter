@@ -88,10 +88,6 @@
         <file>icons/maximize.png</file>
         <file>icons/unmaximize.png</file>
     </qresource>
-    <qresource prefix="/translations">
-        <file>translations/translation_cz.qm</file>
-        <file>translations/translation_en.qm</file>
-    </qresource>
     <qresource prefix="/text">
         <file>settings/default.cfg</file>
         <file>fir/hamm_x8.csv</file>

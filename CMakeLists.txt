@@ -17,6 +17,7 @@ endif()
 # Get current year dynamically
 string(TIMESTAMP CURRENT_YEAR "%Y")
 
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -86,38 +87,22 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS
     QuickControls2
     Network
 )
-set(CMAKE_AUTOUIC_SEARCH_PATHS "${CMAKE_SOURCE_DIR}/src/forms")
-
-find_package(Qt5 REQUIRED COMPONENTS LinguistTools)
-find_program(QT_LRELEASE_EXECUTABLE NAMES lrelease-qt5 lrelease HINTS ${Qt5_DIR}/bin ${CMAKE_SOURCE_DIR})
-
-if(NOT QT_LRELEASE_EXECUTABLE)
-    message(FATAL_ERROR "lrelease executable not found. Make sure Qt Linguist is installed.")
-endif()
-
-set(TS_FILES
-    ${CMAKE_SOURCE_DIR}/translations/translation_en.ts
-    ${CMAKE_SOURCE_DIR}/translations/translation_cz.ts
-)
-
-set(QM_FILES
-    ${CMAKE_SOURCE_DIR}/translations/translation_en.qm
-    ${CMAKE_SOURCE_DIR}/translations/translation_cz.qm
-)
-
-add_custom_command(
-    OUTPUT ${QM_FILES}
-    COMMAND ${QT_LRELEASE_EXECUTABLE} ${TS_FILES}
-    DEPENDS ${TS_FILES}
-    COMMENT "Compiling Qt translations..."
-)
-#
-#add_custom_target(translations ALL DEPENDS ${QM_FILES})
+set(CMAKE_AUTOUIC_SEARCH_PATHS "${CMAKE_CURRENT_SOURCE_DIR}/src/forms")
 
 include_directories(${CMAKE_SOURCE_DIR}/src)
 
+set(TS_FILES
+    translations/dataplotter_cs.ts
+    translations/dataplotter_en.ts
+)
+
+qt5_add_translation(QM_FILES ${TS_FILES})
+include(TranslationUtils)
+add_app_translations_resource(APP_RES ${QM_FILES})
+add_qt_translations_resource(QT_RES en cs)
+
 set(RESOURCES resources.qrc)
-qt5_add_resources(RESOURCE_FILES ${RESOURCES})
+qt_add_resources(RESOURCE_FILES ${RESOURCES})
 
 set(PROJECT_HEADERFILES
     src/communication/cobs.h
@@ -226,16 +211,9 @@ set(PROJECT_SOURCES
     src/forms/freqtimeplotdialog.ui
     src/forms/manualinputdialog.ui
     src/forms/serialsettingsdialog.ui
-    ${TS_FILES}
     ${RESOURCE_FILES}
     ${PROJECT_HEADERFILES}
 )
-
-if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-   qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
-else()
-   qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
-endif()
 
 configure_file(
     ${CMAKE_SOURCE_DIR}/deploy_windows/resources.rc.in
@@ -251,24 +229,10 @@ if(WIN32)
 endif()
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    qt_add_executable(DataPlotter
-        MANUAL_FINALIZATION
-        ${PROJECT_SOURCES}
-    )
-    set_target_properties(DataPlotter PROPERTIES OUTPUT_NAME ${MAIN_EXECUTEBLE_NAME})
-    qt_finalize_target(DataPlotter)
+    qt_add_executable(DataPlotter MANUAL_FINALIZATION ${PROJECT_SOURCES})
 else()
-    if(ANDROID)
-        add_library(DataPlotter SHARED ${PROJECT_SOURCES})
-    else()
-        add_executable(DataPlotter ${PROJECT_SOURCES})
-        set_target_properties(DataPlotter PROPERTIES OUTPUT_NAME ${MAIN_EXECUTEBLE_NAME})
-    endif()
+    add_executable(DataPlotter ${PROJECT_SOURCES} ${APP_RES} ${QT_RES})
 endif()
-
-
-
-#add_dependencies(DataPlotter translations)
 
 # Define the preprocessor macro for QCustomPlot OpenGL support
 target_compile_definitions(DataPlotter PRIVATE QCUSTOMPLOT_USE_OPENGL)
@@ -288,28 +252,26 @@ target_link_libraries(DataPlotter PRIVATE
     OpenGL::GL
 )
 
-if(${QT_VERSION_MAJOR} VERSION_LESS 6.1.0)
-    set(BUNDLE_ID_OPTION MACOSX_BUNDLE_GUI_IDENTIFIER com.example.DataPlotter)
+if(WIN32)
+    set_target_properties(DataPlotter PROPERTIES
+        WIN32_EXECUTABLE TRUE
+    )
 endif()
-
-set_target_properties(DataPlotter PROPERTIES
-    ${BUNDLE_ID_OPTION}
-    MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
-    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
-    MACOSX_BUNDLE TRUE
-    WIN32_EXECUTABLE TRUE
-)
-
-include(GNUInstallDirs)
-install(TARGETS DataPlotter
-    BUNDLE DESTINATION .
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-)
 
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(DataPlotter)
 endif()
+
+add_custom_target(clean-all
+    COMMAND rm -rf ${CMAKE_BINARY_DIR}/*
+    COMMENT "Cleaning the build directory"
+)
+
+add_custom_target(lupdate
+    COMMAND ${Qt${QT_VERSION_MAJOR}_LUPDATE_EXECUTABLE} -no-obsolete ${PROJECT_SOURCE_DIR} -ts ${TS_FILES}
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+    COMMENT "Updating translations"
+)
 
 # =============================================================================
 # Installation
@@ -374,3 +336,5 @@ if ("${DEV_MODE}")
             DEPENDS ${PACKAGE_SOURCE_ARCHIVE_FILE} appimage archlinux deb rpm
             WORKING_DIRECTORY ${EXECUTABLE_OUTPUT_PATH}/pkg)
 endif ()
+=======
+add_dependencies(DataPlotter lupdate)

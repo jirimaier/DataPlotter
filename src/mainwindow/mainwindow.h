@@ -121,7 +121,7 @@ private:
   void setGuiDefaults();
   void setGuiArrays();
   void updateChScale();
-  void changeLanguage(QString code = "en");
+  void changeLanguage(QString code);
   void exportCSV(int ch);
   void fillChannelSelect();
   void updateChannelComboBox(QComboBox &combobox, int numberOfExcludedAtEnd);

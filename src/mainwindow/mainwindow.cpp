@@ -187,7 +187,7 @@ void MainWindow::init(QTranslator *translator, const PlotData *plotData, const P
   setGuiArrays();
   settings = new AppSettings(this);
   connectSignals();
-  changeLanguage();
+  changeLanguage("en_150");
   setGuiDefaults();
   updateChScale();
   setAdaptiveSpinBoxes();
@@ -196,8 +196,9 @@ void MainWindow::init(QTranslator *translator, const PlotData *plotData, const P
 }
 
 void MainWindow::changeLanguage(QString code) {
-  if (!translator->load(QString(":/translations/translations/translation_%1.qm").arg(code))) {
-    qDebug() << "Can not load " << QString(":/translations/translations/translation_%1.qm").arg(code);
+  QLocale locale = QLocale(code);
+  if (!translator->load(locale, "dataplotter", "_", ":/")) {
+    qDebug() << "Can not load translator:" << locale.name();
     return;
   }
   qApp->installTranslator(translator);
