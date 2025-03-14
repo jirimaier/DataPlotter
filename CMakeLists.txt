@@ -273,6 +273,8 @@ add_custom_target(lupdate
     COMMENT "Updating translations"
 )
 
+add_dependencies(DataPlotter lupdate)
+
 # =============================================================================
 # Installation
 # =============================================================================
@@ -336,5 +338,3 @@ if ("${DEV_MODE}")
             DEPENDS ${PACKAGE_SOURCE_ARCHIVE_FILE} appimage archlinux deb rpm
             WORKING_DIRECTORY ${EXECUTABLE_OUTPUT_PATH}/pkg)
 endif ()
-=======
-add_dependencies(DataPlotter lupdate)
