@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -36,7 +36,10 @@ jobs:
             ninja-build \
             pkg-config \
             qttools5-dev \
-            qttools5-dev-tools
+            qttools5-dev-tools \
+            gtk-update-icon-cache \
+            fuse libfuse2 \
+            zsync file appstream
 
       - name: Build DataPlotter
         run: |
@@ -54,3 +57,13 @@ jobs:
         with:
           name: DataPlotter-Deb-Package
           path: ./deploy_linux/deploy/*.deb
+
+      - name: Package AppImage
+        run: |
+          python3 ./deploy_linux/deploy_appimage.py
+
+      - name: Upload AppImage
+        uses: actions/upload-artifact@v4
+        with:
+          name: DataPlotter-AppImage
+          path: ./deploy_linux/deploy/DataPlotter*.AppImage*
