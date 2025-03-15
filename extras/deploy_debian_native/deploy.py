@@ -117,7 +117,7 @@ def main():
     os.chdir(os.path.dirname(os.path.realpath(__file__)))
     setup_logging()
     
-    version = get_version("../../CMakeLists.txt"))
+    version = get_version("../../CMakeLists.txt")
     if not version:
         raise Exception("Could not extract version from CMakeLists file")
     
