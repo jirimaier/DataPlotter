@@ -7,16 +7,6 @@ import urllib.request
 import argparse
 import zipfile
 
-
-def find_exe(build_dir):
-    """Find DataPlotter.exe in the build directory."""
-    exe_path = os.path.join(build_dir, "target", "DataPlotter.exe")
-    if os.path.exists(exe_path):
-        return exe_path
-    else:
-        raise FileNotFoundError(f"{exe_path} not found!")
-
-
 def get_version(file_path):
     """Extracts the version from the CMakeLists.txt file."""
     try:
@@ -211,6 +201,11 @@ if __name__ == "__main__":
          default=r"C:\\Program Files\\OpenSSL-Win64\\bin",
          help="Path to OpenSSL DLLs"
     )
+    parser.add_argument(
+        "--executable",
+        help="Path to the DataPlotter executable",
+        default=r"..\\build\\target\\DataPlotter.exe"
+    )
 
     args = parser.parse_args()
 
@@ -218,10 +213,7 @@ if __name__ == "__main__":
 
     BUILD_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "build"))
     DEPLOY_DIR = os.path.abspath(
-        os.path.join(os.path.dirname(__file__), "..", "deploy_windows", "deploy")
-    )
-    CMAKE_FILE = os.path.abspath(
-        os.path.join(os.path.dirname(__file__), "..", "CMakeLists.txt")
+        os.path.join(os.path.dirname(__file__), "deploy")
     )
 
     try:
