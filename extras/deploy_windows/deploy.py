@@ -123,8 +123,10 @@ def add_documentation(app_folder, doc_folder):
     # copy all pdf and txt files from the documentation folder to the app folder
     for file in os.listdir(doc_folder):
         if file.endswith(".pdf") or file.endswith(".txt"):
+            doc_dest_folder = os.path.join(app_folder, "documentation")
+            os.makedirs(doc_dest_folder, exist_ok=True)
             shutil.copy(
-                os.path.join(doc_folder, file), os.path.join(app_folder, "documenation")
+                os.path.join(doc_folder, file), doc_dest_folder
             )
 
 
