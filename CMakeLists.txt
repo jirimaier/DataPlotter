@@ -216,7 +216,7 @@ set(PROJECT_SOURCES
 )
 
 configure_file(
-    ${CMAKE_SOURCE_DIR}/deploy_windows/resources.rc.in
+    ${CMAKE_SOURCE_DIR}/extras/deploy_windows/resources.rc.in
     ${CMAKE_BINARY_DIR}/resources.rc
     @ONLY
 )
