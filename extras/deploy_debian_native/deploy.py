@@ -117,7 +117,7 @@ def main():
     os.chdir(os.path.dirname(os.path.realpath(__file__)))
     setup_logging()
 
-    base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+    base_dir = os.path.realpath(os.path.join(os.path.dirname(__file__), "..", ".."))
     
     version = get_version(os.path.join(base_dir, "CMakeLists.txt"))
     if not version:
