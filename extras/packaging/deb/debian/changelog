@@ -1,0 +1,5 @@
+data-plotter (3.3.1-1) unstable; urgency=medium
+
+  * Initial Debian packaging attempt
+
+-- Pavel Pisa <pisa@cmp.felk.cvut.cz>  Tue, 10 Mar 2025 20:45:22 +0200
