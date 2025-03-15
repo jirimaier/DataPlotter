@@ -1,6 +1,18 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(DataPlotter VERSION 3.3.1 LANGUAGES CXX)
+project(DataPlotter
+        VERSION 3.3.1
+        LANGUAGES CXX
+        DESCRIPTION "GUI interface for custom software-defined instruments")
+
+set(MAIN_PROJECT_NAME_LOWER "data-plotter")
+
+if(WIN32)
+    set(MAIN_EXECUTEBLE_NAME "DataPlotter")
+else()
+    set(MAIN_EXECUTEBLE_NAME "data-plotter")
+endif()
+
 
 # Get current year dynamically
 string(TIMESTAMP CURRENT_YEAR "%Y")
@@ -12,6 +24,52 @@ set(CMAKE_AUTORCC ON)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+set(JIRI_MAIER Jiri Maier <jiri.maier.x@gmail.com>)
+
+set(PROJECT_HOMEPAGE_URL "https://github.com/jirimaier/DataPlotter")
+set(GENERIC_NAME "DataPlotter")
+set(LICENCE "GPL-3.0-or-later")
+set(LONG_DESCRIPTION
+        "GUI interface for custom software-defined instruments.")
+
+include(cmake/CopyrightTools.cmake)
+
+copyright(
+        "Copyright (c) 2020-2025 ${JIRI_MAIER}")
+
+include(cmake/GPL-3.0-or-later.cmake)
+
+# =============================================================================
+# Configurable options
+# =============================================================================
+
+set(DEV_MODE false CACHE BOOL "Enable developer options in this CMake, like packaging.\
+    They should be ignored, when user just wants to build this project.")
+set(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/target"
+        CACHE STRING "Absolute path to place executables to.")
+set(PACKAGE_OUTPUT_PATH "${EXECUTABLE_OUTPUT_PATH}/pkg"
+        CACHE STRING "Absolute path to place generated package files.")
+
+# =============================================================================
+# Generated variables
+# =============================================================================
+
+# I don't want to relly on the assumption, that this file is invoked as root
+# project. Therefore I propagate the information to all subprojects
+# MAIN_PROJECT_*. Lowercase and uppercase are used for executable names and
+# C defines, respectively.
+set(MAIN_PROJECT_NAME "${PROJECT_NAME}")
+set(MAIN_PROJECT_VERSION "${PROJECT_VERSION}")
+set(MAIN_PROJECT_APPID "cz.cvut.edu.comparch.qtrvsim")
+set(MAIN_PROJECT_ORGANIZATION "FEE CTU")
+set(MAIN_PROJECT_HOMEPAGE_URL "${PROJECT_HOMEPAGE_URL}")
+#string(TOLOWER "${PROJECT_NAME}" MAIN_PROJECT_NAME_LOWER)
+string(TOUPPER "${PROJECT_NAME}" MAIN_PROJECT_NAME_UPPER)
+
+# =============================================================================
+# CMake config and tools
+# =============================================================================
 
 find_package(OpenGL REQUIRED)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools)
@@ -216,3 +274,67 @@ add_custom_target(lupdate
 )
 
 add_dependencies(DataPlotter lupdate)
+
+# =============================================================================
+# Installation
+# =============================================================================
+
+# Prior to CMake version 3.13, installation must be performed in the subdirectory,
+# there the target was created. Therefore executable installation is to be found
+# in corresponding CMakeLists.txt.
+
+if (NOT "${WASM}")
+#   install(FILES "deploy_linux/icons/icon.svg"
+#           DESTINATION "share/icons/hicolor/scalable/apps"
+#           RENAME "${MAIN_PROJECT_NAME_LOWER}.svg")
+    install(FILES "deploy_linux/icon.png"
+            DESTINATION "share/icons/hicolor/256x256/apps"
+            RENAME "${MAIN_PROJECT_NAME_LOWER}.png")
+    install(FILES "deploy_linux/${MAIN_PROJECT_NAME_LOWER}.desktop"
+            DESTINATION share/applications)
+
+#   install(FILES "${EXECUTABLE_OUTPUT_PATH}/${MAIN_PROJECT_APPID}.metainfo.xml"
+#           DESTINATION share/metainfo)
+endif ()
+
+# =============================================================================
+# Packages
+# =============================================================================
+
+if ("${DEV_MODE}")
+    # The condition prevents execution of this section during regular user installation.
+    # It created files useless to normal users and requires additional tools (git, xz).
+    message(STATUS "Packaging tools enabled.")
+
+    set(PACKAGE_NAME "${MAIN_PROJECT_NAME_LOWER}")
+    set(PACKAGE_VERSION "${PROJECT_VERSION}")
+    set(PACKAGE_RELEASE "1")
+    set(PACKAGE_SOURCE_ARCHIVE_FILE "${PACKAGE_NAME}_${PACKAGE_VERSION}.orig.tar.xz")
+    set(PACKAGE_SOURCE_ARCHIVE_PATH "${PACKAGE_OUTPUT_PATH}/${PACKAGE_SOURCE_ARCHIVE_FILE}")
+    set(PACKAGE_TOPLEVEL_DIR "${PACKAGE_NAME}-${PACKAGE_VERSION}")
+    set(PACKAGE_DESCRIPTION "${PROJECT_DESCRIPTION}")
+    set(PACKAGE_LONG_DESCRIPTION "${LONG_DESCRIPTION}")
+    set(PACKAGE_MAINTAINER "${JIRI_MAIER}")
+    set(PACKAGE_URL "${PROJECT_HOMEPAGE_URL}")
+    set(PACKAGE_GIT "github.com:/jirimaier/DataPlotter")
+    set(PACKAGE_LICENCE "${LICENCE} ")
+
+    include(cmake/PackageTools.cmake)
+
+    # Inject up-to-date information into package config files.
+    package_config_file(appimage appimage.yml extras/packaging/appimage/appimage.yml.in)
+    package_config_file(archlinux PKGBUILD extras/packaging/arch/PKGBUILD.in)
+    package_config_file(rpm ${PACKAGE_NAME}.spec extras/packaging/rpm/spec.in)
+    # Debian uses whole directory which has to be saved to archive and shipped.
+    package_debian_quilt(deb
+            ${PACKAGE_NAME}_${PACKAGE_VERSION}-${PACKAGE_RELEASE}.dsc
+            extras/packaging/deb/dsc.in
+            extras/packaging/deb/debian
+            ${PACKAGE_NAME}_${PACKAGE_VERSION}-${PACKAGE_RELEASE}.debian.tar.xz)
+    # Creates bunch of files in ${CMAKE_BINARY_DIR}/target/pkg that you can just pass to
+    # Open Build Service and it will build all packaging.
+    # TODO: Currently changelog is not handled automatically.
+    add_custom_target(open_build_service_bundle
+            DEPENDS ${PACKAGE_SOURCE_ARCHIVE_FILE} appimage archlinux deb rpm
+            WORKING_DIRECTORY ${EXECUTABLE_OUTPUT_PATH}/pkg)
+endif ()
