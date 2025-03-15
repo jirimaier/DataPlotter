@@ -6,22 +6,19 @@ import subprocess
 import urllib.request
 import argparse
 import zipfile
+import pefile
+import glob
+import create_msix
 
-def get_version(file_path):
-    """Extracts the version from the CMakeLists.txt file."""
-    try:
-        with open(file_path, "r") as file:
-            content = file.read()
-            match = re.search(
-                r"project\(\s*\w+\s+VERSION\s+([\d.]+)", content, re.IGNORECASE
-            )
-            if match:
-                return match.group(1)
-    except FileNotFoundError:
-        raise FileNotFoundError(f"{file_path} not found!")
-
-    logging.error("Could not extract version from CMakeLists.txt")
-    return None
+def get_exe_version(file_path):
+    pe = pefile.PE(file_path)
+    for file_info in pe.FileInfo:
+        for entry in file_info:
+            if entry.Key.decode() == "StringFileInfo":
+                for sub_entry in entry.StringTable:
+                    for key, value in sub_entry.entries.items():
+                        if key.decode() == "FileVersion":
+                            return value.decode()
 
 
 def download_vcredist_installer(deploy_folder):
@@ -53,11 +50,12 @@ def deploy_qt_dependencies(app_folder, windeployqt_path):
     try:
         subprocess.run(
             [
-                windeployqt_path, 
-                "--qmldir", "..",  
+                windeployqt_path,
+                "--qmldir",
+                "..",
                 "--no-translations",
                 "--release",
-                exe_path
+                exe_path,
             ],
             check=True,
             stdout=subprocess.PIPE,
@@ -68,7 +66,6 @@ def deploy_qt_dependencies(app_folder, windeployqt_path):
 
     except subprocess.CalledProcessError as e:
         logging.error(f"windeployqt failed: {e.stderr.decode()}")
-
 
 
 def run_inno_setup(version, inno_compiler):
@@ -95,8 +92,8 @@ def run_inno_setup(version, inno_compiler):
         logging.error(f"Inno Setup failed: {e}")
 
 
-def create_portable_version(app_folder, vcredist_folder, version):
-    """Create a portable version of the application by copying necessary files, including VC runtime DLLs."""
+def add_msvc_runtime_libs(app_folder, vcredist_folder):
+    """Copy the required Visual C++ runtime DLLs to the application folder."""
 
     # List of required VC runtime DLLs
     vc_runtime_dlls = [
@@ -120,59 +117,58 @@ def create_portable_version(app_folder, vcredist_folder, version):
         else:
             raise FileNotFoundError(f"{dll} not found in {vcredist_folder}")
 
-    # Create a ZIP archive for the portable version, including all subdirectories
-    zip_filename = f"deploy\\DataPlotter_{version.replace('.', '_')}_Portable.zip"
-    with zipfile.ZipFile(zip_filename, "w", zipfile.ZIP_DEFLATED) as zipf:
-        for root, dirs, files in os.walk(app_folder):
-            for file in files:
-                file_path = os.path.join(root, file)
-                archive_name = os.path.relpath(file_path, app_folder)  # Preserve directory structure
-                zipf.write(file_path, archive_name)
 
-    print(f"Portable version created as {zip_filename}")
-
+def add_documentation(app_folder, doc_folder):
+    """Copy the documentation folder to the application folder."""
+    # copy all pdf and txt files from the documentation folder to the app folder
+    for file in os.listdir(doc_folder):
+        if file.endswith(".pdf") or file.endswith(".txt"):
+            shutil.copy(
+                os.path.join(doc_folder, file), os.path.join(app_folder, "documenation")
+            )
 
 
-def copy_exe(build_dir, deploy_dir, cmake_file):
-    """Copy the executable to a versioned directory within the deployment directory."""
-    exe_path = find_exe(build_dir)
-    app_folder = os.path.join(deploy_dir, "DataPlotter")
-    dest_path = os.path.join(app_folder, "DataPlotter.exe")
+def delete_folder_contents(folder):
+    """Delete all files and folders within a directory."""
+    for root, dirs, files in os.walk(folder, topdown=False):
+        for file in files:
+            os.remove(os.path.join(root, file))
+        for directory in dirs:
+            try:
+                os.rmdir(os.path.join(root, directory))
+            except PermissionError:
+                logging.warning(
+                    f"Permission denied while removing directory {directory} in {folder} (but files in are removed), skipping."
+                )
 
-    if os.path.exists(app_folder):
-        for root, dirs, files in os.walk(app_folder, topdown=False):
-            for file in files:
-                os.remove(os.path.join(root, file))
-            for directory in dirs:
-                try:
-                    os.rmdir(os.path.join(root, directory))
-                except PermissionError:
-                    logging.warning(
-                        f"Permission denied while removing directory {directory} in {app_folder} (but files in are removed), skipping.")
-
-    os.makedirs(app_folder, exist_ok=True)
-    shutil.copy(exe_path, dest_path)
-    print(f"Copied {exe_path} to {dest_path}")
-
-    return app_folder, dest_path
 
 def copy_openssl_libs(app_folder, openssl_folder):
-    """Copy OpenSSL libraries to the application folder."""
-    openssl_dlls = ["libcrypto-1_1-x64.dll", "libssl-1_1-x64.dll"]
-    for dll in openssl_dlls:
-        dll_path = os.path.join(openssl_folder, dll)
-        if os.path.exists(dll_path):
-            shutil.copy(dll_path, app_folder)
-            print(f"Copied {dll} to {app_folder}")
+    """Copy OpenSSL libraries to the application folder, searching recursively."""
+    openssl_dlls = ["libcrypto*.dll", "libssl*.dll"]
+
+    for dll_pattern in openssl_dlls:
+        found_files = glob.glob(
+            os.path.join(openssl_folder, "**", dll_pattern), recursive=True
+        )
+
+        if found_files:
+            for dll_path in found_files:
+                shutil.copy(dll_path, app_folder)
+                print(f"Copied {os.path.basename(dll_path)} to {app_folder}")
         else:
-            raise FileNotFoundError(f"{dll} not found in {openssl_folder}")
-        
+            raise FileNotFoundError(
+                f"No files matching {dll_pattern} found in {openssl_folder}"
+            )
+
+
 def remove_vcredist_installer_from_app_folder(app_folder):
     """Remove the VCRedist installer from the application folder."""
     vcredist_path = os.path.join(app_folder, "vc_redist.x64.exe")
     if os.path.exists(vcredist_path):
         os.remove(vcredist_path)
-        logging.warning(f"The VC Redist installer is in app directory. Removed {vcredist_path}")
+        logging.warning(
+            f"The VC Redist installer is in app directory. Removed {vcredist_path}"
+        )
     else:
         print(f"{vcredist_path} is not in {app_folder}")
 
@@ -198,36 +194,53 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "--openssl",
-         default=r"C:\\Program Files\\OpenSSL-Win64\\bin",
-         help="Path to OpenSSL DLLs"
+        default=r"C:\\Qt\\Tools\\OpenSSLv3\\Win_x64",
+        help="Path to folder where to search for OpenSSL DLLs",
     )
     parser.add_argument(
-        "--executable",
-        help="Path to the DataPlotter executable",
-        default=r"..\\build\\target\\DataPlotter.exe"
+        "--msix_tool",
+        default=r"C:\\Program Files (x86)\\Windows Kits\\10\bin\\10.0.26100.0\\x64\\makeappx.exe",
+        help="Path to MakeAppx.exe",
     )
 
     args = parser.parse_args()
 
     os.chdir(os.path.dirname(__file__))
+    base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+    deploy_dir = os.path.join(os.path.dirname(__file__), "deploy")
+    app_folder = os.path.join(deploy_dir, "DataPlotter")
 
-    BUILD_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "build"))
-    DEPLOY_DIR = os.path.abspath(
-        os.path.join(os.path.dirname(__file__), "deploy")
+    delete_folder_contents(deploy_dir)
+    os.makedirs(deploy_dir, exist_ok=True)
+    os.makedirs(app_folder, exist_ok=True)
+
+
+    shutil.copy2(
+        os.path.join(base_dir, "build", "target", "DataPlotter.exe"), app_folder
     )
+    deploy_qt_dependencies(app_folder, args.windeployqt)
+    copy_openssl_libs(app_folder, args.openssl)
 
-    try:
-        app_folder, exe_path = copy_exe(BUILD_DIR, DEPLOY_DIR, CMAKE_FILE)
-        deploy_qt_dependencies(app_folder, args.windeployqt)
-        copy_openssl_libs(app_folder, args.openssl)
-        download_vcredist_installer(DEPLOY_DIR)
+    version = get_exe_version(os.path.join(app_folder, "DataPlotter.exe"))
+    if not version:
+        raise Exception("Could not extract version from DataPlotter.exe")
 
-        version = get_version(CMAKE_FILE)
-        if version:
-            remove_vcredist_installer_from_app_folder(app_folder)
-            run_inno_setup(version, args.inno)
-            create_portable_version(app_folder, args.vcredist, version)
-        else:
-            print("Error: Version could not be determined.")
-    except FileNotFoundError as e:
-        print(f"Error: {e}")
+    download_vcredist_installer(deploy_dir)
+    remove_vcredist_installer_from_app_folder(app_folder)
+    run_inno_setup(version, args.inno)
+
+    # make a copy of the app folder for the portable version
+    portable_folder = os.path.join(
+        deploy_dir, f"DataPlotter_{version.replace(".","_")}_Portable"
+    )
+    shutil.copytree(app_folder, portable_folder)
+    add_msvc_runtime_libs(portable_folder, args.vcredist)
+    add_documentation(portable_folder, os.path.join(base_dir, "documentation"))
+
+    # make a copy of the app folder for the msix version
+    msix_folder = os.path.join(
+        deploy_dir, f"DataPlotter_{version.replace(".","_")}_MSIX"
+    )
+    shutil.copytree(app_folder, msix_folder)
+    add_msvc_runtime_libs(msix_folder, args.vcredist)
+    create_msix.package_application(msix_folder, args.msix_tool, os.path.join(base_dir, "icons", "icon.ico"), deploy_dir, version)

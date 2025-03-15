@@ -2,6 +2,6 @@
 build/*
 CMakeCache.txt
 CMakeFiles/**
-deploy_linux/deploy/**
-deploy_windows/deploy/**
+extras/deploy_linux/deploy/**
+extras/deploy_windows/deploy/**
 translations/*.qm

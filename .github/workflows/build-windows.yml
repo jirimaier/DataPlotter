@@ -76,27 +76,6 @@ jobs:
       run: cmake --build build --config Release
       shell: cmd
 
-    - name: Run deployment script
-      run: |
-        python deploy_windows/deploy.py ^
-          --windeployqt "D:/a/DataPlotter/Qt/5.15.2/msvc2019_64/bin/windeployqt.exe" ^
-          --inno "C:/Program Files (x86)/Inno Setup 6/ISCC.exe" ^
-          --vcredist "C:/Windows/System32" ^
-          --openssl "C:/Program Files/OpenSSL/bin"
-      shell: cmd
-
-    - name: Upload build artifact (exe)
-      uses: actions/upload-artifact@v4
-      with:
-        name: DataPlotter-Windows-Installer
-        path: deploy_windows/deploy/DataPlotter*.exe
-
-    - name: Upload build artifact (zip)
-      uses: actions/upload-artifact@v4
-      with:
-        name: DataPlotter-Windows-Portable
-        path: deploy_windows/deploy/DataPlotter*.zip
-
     - name: Set MSIX Tool Paths
       shell: powershell
       run: |
@@ -106,18 +85,36 @@ jobs:
 
     - name: Install dependencies
       run: |
-        python -m pip install pillow
-
-    - name: Run MSIX packaging script (without signing)
+        python -m pip install pillow pefile
       shell: cmd
+
+    - name: Run deployment script
       run: |
-        python deploy_windows/create_msix.py --msix_tool "%MAKEAPPX_PATH%"
+        python extras/deploy_windows/deploy.py ^
+          --windeployqt "D:/a/DataPlotter/Qt/5.15.2/msvc2019_64/bin/windeployqt.exe" ^
+          --inno "C:/Program Files (x86)/Inno Setup 6/ISCC.exe" ^
+          --vcredist "C:/Windows/System32" ^
+          --openssl "C:/Program Files/OpenSSL/bin"
+          --msix_tool "%MAKEAPPX_PATH%"
+      shell: cmd
+
+    - name: Upload build artifact (exe)
+      uses: actions/upload-artifact@v4
+      with:
+        name: DataPlotter-Windows-Installer
+        path: extras/deploy_windows/deploy/DataPlotter*.exe
+
+    - name: Upload build artifact (zip)
+      uses: actions/upload-artifact@v4
+      with:
+        name: DataPlotter-Windows-Portable
+        path: extras/deploy_windows/deploy/DataPlotter*Portable
 
     - name: Upload MSIX artifact
       uses: actions/upload-artifact@v4
       with:
         name: msix-package-for-store
-        path: deploy_windows/deploy/*.msix
+        path: extras/deploy_windows/deploy/*.msix
 
     - name: Sign the package with a Temporary Code-Signing Certificate
       shell: powershell
@@ -139,30 +136,30 @@ jobs:
         # Export the certificate with the private key (.pfx)
         Export-PfxCertificate `
           -Cert $cert `
-          -FilePath "deploy_windows/deploy/test_certificate.pfx" `
+          -FilePath "extras/deploy_windows/deploy/test_certificate.pfx" `
           -Password $securePassword
 
         # Export the certificate without the private key (.cer)
         Export-Certificate `
           -Cert $cert `
-          -FilePath "deploy_windows/deploy/test_certificate.cer"
+          -FilePath "extras/deploy_windows/deploy/test_certificate.cer"
 
         # Sign the MSIX package
         & "${{ env.SIGNTOOL_PATH }}" sign `
           /fd SHA256 `
           /a `
-          /f "deploy_windows/deploy/test_certificate.pfx" `
+          /f "extras/deploy_windows/deploy/test_certificate.pfx" `
           /p "$password" `
-          deploy_windows/deploy/*.msix
+          extras/deploy_windows/deploy/*.msix
 
     - name: Upload Signed MSIX Package
       uses: actions/upload-artifact@v4
       with:
         name: msix-package-for-testing-signed
-        path: deploy_windows/deploy/*.msix
+        path: extras/deploy_windows/deploy/*.msix
 
     - name: Upload Temporary Certificate (for testing)
       uses: actions/upload-artifact@v4
       with:
         name: temporary-testing-certificate
-        path: deploy_windows/deploy/test_certificate.cer
+        path: extras/deploy_windows/deploy/test_certificate.cer
