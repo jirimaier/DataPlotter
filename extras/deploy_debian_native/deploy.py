@@ -42,7 +42,7 @@ def create_directories(deploy_dir):
     for dir in dirs:
         os.makedirs(dir, exist_ok=True)
 
-def copy_files(deploy_dir, base_dir):
+def copy_files(deploy_dir):
     """Copies necessary files into the deployment directory."""
     files = {
         "control": os.path.join(deploy_dir, "DEBIAN", "control"),
