@@ -231,7 +231,7 @@ if __name__ == "__main__":
 
     # make a copy of the app folder for the portable version
     portable_folder = os.path.join(
-        deploy_dir, f"DataPlotter_{version.replace(".","_")}_Portable"
+        deploy_dir, f"DataPlotter_{version.replace('.','_')}_Portable"
     )
     shutil.copytree(app_folder, portable_folder)
     add_msvc_runtime_libs(portable_folder, args.vcredist)
@@ -239,7 +239,7 @@ if __name__ == "__main__":
 
     # make a copy of the app folder for the msix version
     msix_folder = os.path.join(
-        deploy_dir, f"DataPlotter_{version.replace(".","_")}_MSIX"
+        deploy_dir, f"DataPlotter_{version.replace('.','_')}_MSIX"
     )
     shutil.copytree(app_folder, msix_folder)
     add_msvc_runtime_libs(msix_folder, args.vcredist)

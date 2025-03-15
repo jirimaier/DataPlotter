@@ -284,13 +284,13 @@ add_dependencies(DataPlotter lupdate)
 # in corresponding CMakeLists.txt.
 
 if (NOT "${WASM}")
-#   install(FILES "deploy_linux/icons/icon.svg"
+#   install(FILES "extras/deploy_debian_native/icons/icon.svg"
 #           DESTINATION "share/icons/hicolor/scalable/apps"
 #           RENAME "${MAIN_PROJECT_NAME_LOWER}.svg")
-    install(FILES "deploy_linux/icon.png"
+    install(FILES "extras/deploy_debian_native/icon.png"
             DESTINATION "share/icons/hicolor/256x256/apps"
             RENAME "${MAIN_PROJECT_NAME_LOWER}.png")
-    install(FILES "deploy_linux/${MAIN_PROJECT_NAME_LOWER}.desktop"
+    install(FILES "extras/deploy_debian_native/${MAIN_PROJECT_NAME_LOWER}.desktop"
             DESTINATION share/applications)
 
 #   install(FILES "${EXECUTABLE_OUTPUT_PATH}/${MAIN_PROJECT_APPID}.metainfo.xml"
