@@ -47,8 +47,8 @@ def copy_files(deploy_dir, base_dir):
     files = {
         "control": os.path.join(deploy_dir, "DEBIAN", "control"),
         "qt.conf": os.path.join(deploy_dir, "usr", "bin", "qt.conf"),
-        os.path.join(base_dir,"build","target","DataPlotter"): os.path.join(deploy_dir, "usr", "bin", "data-plotter"),
-        os.path.join(base_dir,"documentation","license.txt"): os.path.join(deploy_dir, "usr", "share", "doc", "data-plotter", "copyright"),
+        "../../build/target/DataPlotter": os.path.join(deploy_dir, "usr", "bin", "data-plotter"),
+        "../../documentation/license.txt": os.path.join(deploy_dir, "usr", "share", "doc", "data-plotter", "copyright"),
         "icon.png": os.path.join(deploy_dir, "usr", "share", "icons", "hicolor", "256x256", "apps", "data-plotter.png"),
         "data-plotter.desktop": os.path.join(deploy_dir, "usr", "share", "applications", "data-plotter.desktop")
     }
@@ -116,10 +116,8 @@ def main():
     """Main function to execute the build steps."""
     os.chdir(os.path.dirname(os.path.realpath(__file__)))
     setup_logging()
-
-    base_dir = os.path.realpath(os.path.join(os.path.dirname(__file__), "..", ".."))
     
-    version = get_version(os.path.join(base_dir, "CMakeLists.txt"))
+    version = get_version("../../CMakeLists.txt"))
     if not version:
         raise Exception("Could not extract version from CMakeLists file")
     
@@ -129,7 +127,7 @@ def main():
         shutil.rmtree(deploy_dir)
     
     create_directories(deploy_dir)
-    copy_files(deploy_dir, base_dir)
+    copy_files(deploy_dir)
     check_tool_installed("dpkg-shlibdeps")
     dependencies = generate_dependencies(deploy_dir)
     update_control_file(deploy_dir, version, dependencies)
