@@ -94,7 +94,7 @@ jobs:
           --windeployqt "D:/a/DataPlotter/Qt/5.15.2/msvc2019_64/bin/windeployqt.exe" ^
           --inno "C:/Program Files (x86)/Inno Setup 6/ISCC.exe" ^
           --vcredist "C:/Windows/System32" ^
-          --openssl "C:/Program Files/OpenSSL/bin"
+          --openssl "C:/Program Files/OpenSSL/bin" ^
           --msix_tool "%MAKEAPPX_PATH%"
       shell: cmd
 
