@@ -47,10 +47,10 @@ jobs:
 
       - name: Package Debian Package
         run: |
-          python3 ./deploy_linux/deploy.py
+          python3 ./extras/deploy_linux/deploy.py
 
       - name: Upload Debian Package
         uses: actions/upload-artifact@v4
         with:
           name: DataPlotter-Deb-Package
-          path: ./deploy_linux/deploy/*.deb
+          path: ./extras/deploy_linux/deploy/*.deb
