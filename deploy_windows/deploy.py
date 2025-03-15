@@ -10,7 +10,7 @@ import zipfile
 
 def find_exe(build_dir):
     """Find DataPlotter.exe in the build directory."""
-    exe_path = os.path.join(build_dir, "DataPlotter.exe")
+    exe_path = os.path.join(build_dir, "target", "DataPlotter.exe")
     if os.path.exists(exe_path):
         return exe_path
     else:
