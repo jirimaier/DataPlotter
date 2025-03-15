@@ -177,6 +177,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Deploy DataPlotter application for Windows."
     )
+    parser.add_argument("--config", default="IPVMS", help="Configuration flags: I=Installer, P=Portable, V=VCRedist libs in portable, M=MSIX, S=OpenSSL")
     parser.add_argument(
         "--windeployqt",
         default=r"C:\\Qt\\5.15.2\\msvc2019_64\\bin\\windeployqt.exe",
@@ -214,33 +215,44 @@ if __name__ == "__main__":
     os.makedirs(deploy_dir, exist_ok=True)
     os.makedirs(app_folder, exist_ok=True)
 
-
     shutil.copy2(
         os.path.join(base_dir, "build", "target", "DataPlotter.exe"), app_folder
     )
     deploy_qt_dependencies(app_folder, args.windeployqt)
-    copy_openssl_libs(app_folder, args.openssl)
+
+    if "S" in args.config.upper():
+        copy_openssl_libs(app_folder, args.openssl)
 
     version = get_exe_version(os.path.join(app_folder, "DataPlotter.exe"))
     if not version:
         raise Exception("Could not extract version from DataPlotter.exe")
 
-    download_vcredist_installer(deploy_dir)
-    remove_vcredist_installer_from_app_folder(app_folder)
-    run_inno_setup(version, args.inno)
+    if "I" in args.config.upper():
+        download_vcredist_installer(deploy_dir)
+        remove_vcredist_installer_from_app_folder(app_folder)
+        run_inno_setup(version, args.inno)
 
-    # make a copy of the app folder for the portable version
-    portable_folder = os.path.join(
-        deploy_dir, f"DataPlotter_{version.replace('.','_')}_Portable"
-    )
-    shutil.copytree(app_folder, portable_folder)
-    add_msvc_runtime_libs(portable_folder, args.vcredist)
-    add_documentation(portable_folder, os.path.join(base_dir, "documentation"))
+    if "P" in args.config:
+        # make a copy of the app folder for the portable version
+        portable_folder = os.path.join(
+            deploy_dir, f"DataPlotter_{version.replace('.','_')}_Portable"
+        )
+        shutil.copytree(app_folder, portable_folder)
+        if "V" in args.config.upper():
+            add_msvc_runtime_libs(portable_folder, args.vcredist)
+        add_documentation(portable_folder, os.path.join(base_dir, "documentation"))
 
-    # make a copy of the app folder for the msix version
-    msix_folder = os.path.join(
-        deploy_dir, f"DataPlotter_{version.replace('.','_')}_MSIX"
-    )
-    shutil.copytree(app_folder, msix_folder)
-    add_msvc_runtime_libs(msix_folder, args.vcredist)
-    create_msix.package_application(msix_folder, args.msix_tool, os.path.join(base_dir, "icons", "icon.ico"), deploy_dir, version)
+    if "M" in args.config:
+        # make a copy of the app folder for the msix version
+        msix_folder = os.path.join(
+            deploy_dir, f"DataPlotter_{version.replace('.','_')}_MSIX"
+        )
+        shutil.copytree(app_folder, msix_folder)
+        add_msvc_runtime_libs(msix_folder, args.vcredist)
+        create_msix.package_application(
+            msix_folder,
+            args.msix_tool,
+            os.path.join(base_dir, "icons", "icon.ico"),
+            deploy_dir,
+            version,
+        )
