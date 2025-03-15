@@ -45,6 +45,18 @@ jobs:
         vcpkg install cmake
       shell: cmd
 
+    - name: Cache OpenSSL installation
+      uses: actions/cache@v3
+      with:
+        path: C:/Program Files/OpenSSL
+        key: openssl-choco-${{ runner.os }}
+
+    - name: Install OpenSSL (if not cached)
+      if: steps.cache-openssl.outputs.cache-hit != 'true'
+      shell: cmd
+      run: |
+        choco install openssl -y
+
     - name: Add Qt bin directory to PATH
       shell: bash
       run: |
@@ -82,7 +94,7 @@ jobs:
           --windeployqt "D:/a/DataPlotter/Qt/5.15.2/msvc2019_64/bin/windeployqt.exe" ^
           --inno "C:/Program Files (x86)/Inno Setup 6/ISCC.exe" ^
           --vcredist "C:/Windows/System32" ^
-          --openssl "D:/a/DataPlotter/Qt/Tools/OpenSSLv3/Win_x64/bin" ^
+          --openssl "C:/Program Files/OpenSSL/bin"
           --msix_tool "%MAKEAPPX_PATH%"
       shell: cmd
 
