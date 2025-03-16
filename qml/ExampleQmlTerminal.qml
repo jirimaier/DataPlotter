@@ -1,8 +1,10 @@
+// These packages are included in the DataPlotter installation:
 import QtQuick 2.15
 import QtQml 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.15
 import QtQuick.Layouts 1.15
+import QtQuick.Dialogs 1.3
 
 import "qrc:/qml/DataPlotterComponents"
 // Components provided by DataPlotter:

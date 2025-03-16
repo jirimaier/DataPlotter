@@ -1,7 +1,9 @@
+// These pcakges are included in the DataPlotter installation for Windows XP:
 import QtQuick 2.7
 import QtQml 2.0
-import QtQuick.Controls 1.4  // Use older Controls version for Qt 5.7.1
+import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.2
+import QtQuick.Dialogs 1.2
 
 import "qrc:/qml/DataPlotterComponents"
 
@@ -76,8 +78,8 @@ Rectangle {
 
             SpinBox {
                 id: txNumber
-                from: 0
-                to: 65535
+                minimumValue: 0
+                maximumValue: 65535
                 value: 258
             }
 

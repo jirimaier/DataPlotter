@@ -5,3 +5,6 @@ CMakeFiles/**
 extras/deploy_debian_native/deploy/**
 extras/deploy_windows/deploy/**
 translations/*.qm
+__pycache__/
+*.pyc
+*.pyo
