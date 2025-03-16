@@ -10,6 +10,7 @@ import pefile
 import glob
 import create_msix
 
+
 def get_exe_version(file_path):
     pe = pefile.PE(file_path)
     for file_info in pe.FileInfo:
@@ -52,7 +53,7 @@ def deploy_qt_dependencies(app_folder, windeployqt_path):
             [
                 windeployqt_path,
                 "--qmldir",
-                "..",
+                os.path.join("..", "..", "qml"),
                 "--no-translations",
                 "--release",
                 exe_path,
@@ -125,9 +126,7 @@ def add_documentation(app_folder, doc_folder):
         if file.endswith(".pdf") or file.endswith(".txt"):
             doc_dest_folder = os.path.join(app_folder, "documentation")
             os.makedirs(doc_dest_folder, exist_ok=True)
-            shutil.copy(
-                os.path.join(doc_folder, file), doc_dest_folder
-            )
+            shutil.copy(os.path.join(doc_folder, file), doc_dest_folder)
 
 
 def delete_folder_contents(folder):
@@ -143,68 +142,53 @@ def delete_folder_contents(folder):
                     f"Permission denied while removing directory {directory} in {folder} (but files in are removed), skipping."
                 )
 
+def vcredist_workaround(app_folder):
+    """VC redist installer sometimes randomly appears inside the app folder, this function deletes it."""
+    if os.path.exists(os.path.join(app_folder, "vc_redist.x64.exe")):
+        os.remove(os.path.join(app_folder, "vc_redist.x64.exe"))
+        print("Deleted vc_redist.x64.exe from app folder. (Workaround for Inno Setup bug)")
+
 
 def copy_openssl_libs(app_folder, openssl_folder):
     """Copy OpenSSL libraries and license files to the application folder, searching recursively."""
 
-    openssl_dlls = ["libcrypto*.dll", "libssl*.dll"]
-    fallback_dlls = ["libeay32.dll", "ssleay32.dll"]  # OpenSSL 1.0.2 files
-    license_patterns = ["*licen[cs]e*.txt", "*Licen[cs]e*.txt"]  # Matches "license", "licence" (case-insensitive)
+    openssl_dll_groups = [
+        ["libcrypto-1_1-x64.dll", "libssl-1_1-x64.dll"],  # | OpenSSL 1.1         
+        ["libeay32.dll", "ssleay32.dll"],  # | OpenSSL 1.0.2   
+        ["libcrypto*.dll", "libssl*.dll"],  # | Fall back to any OpenSSL version
 
-    copied_files = []
+    ]
 
-    # Try to find modern OpenSSL DLLs first
-    for dll_pattern in openssl_dlls:
-        found_files = glob.glob(os.path.join(openssl_folder, "**", dll_pattern), recursive=True)
-        copied_files.extend(found_files)
+    # Try to find OpenSSL DLLs in order of priority
+    for dll_group in openssl_dll_groups:
+        found_files = []
+        for dll_pattern in dll_group:
+            found_file = glob.glob(
+                os.path.join(openssl_folder, "**", dll_pattern), recursive=True
+            )
+            if found_file:
+                found_files.extend(found_file)
+        if len(found_files) == 2:
+            break
 
-    # If modern DLLs are not found, use OpenSSL 1.0.2 fallback files
-    if not copied_files:
-        print("Warning: No modern OpenSSL DLLs found. Using OpenSSL 1.0.2 fallback...")
-        for dll in fallback_dlls:
-            dll_path = os.path.join(openssl_folder, dll)
-            if os.path.exists(dll_path):
-                copied_files.append(dll_path)
-
-    # Ensure at least one OpenSSL library is found
-    if not copied_files:
+    if not found_files:
         raise FileNotFoundError(f"No OpenSSL libraries found in {openssl_folder}")
 
     # Copy all found libraries
-    for dll_path in copied_files:
+    for dll_path in found_files:
         shutil.copy(dll_path, app_folder)
         print(f"Copied {os.path.basename(dll_path)} to {app_folder}")
-
-    # Find and copy any file containing "licence" or "license" (case-insensitive)
-    license_files = []
-    for pattern in license_patterns:
-        license_files.extend(glob.glob(os.path.join(openssl_folder, "**", pattern), recursive=True))
-
-    if license_files:
-        for license_path in license_files:
-            shutil.copy(license_path, app_folder)
-            print(f"Copied {os.path.basename(license_path)} to {app_folder}")
-    else:
-        print(f"Warning: No license files found in {openssl_folder}")
-
-
-def remove_vcredist_installer_from_app_folder(app_folder):
-    """Remove the VCRedist installer from the application folder."""
-    vcredist_path = os.path.join(app_folder, "vc_redist.x64.exe")
-    if os.path.exists(vcredist_path):
-        os.remove(vcredist_path)
-        logging.warning(
-            f"The VC Redist installer is in app directory. Removed {vcredist_path}"
-        )
-    else:
-        print(f"{vcredist_path} is not in {app_folder}")
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Deploy DataPlotter application for Windows."
     )
-    parser.add_argument("--config", default="IPVMS", help="Configuration flags: I=Installer, P=Portable, V=VCRedist libs in portable, M=MSIX, S=OpenSSL")
+    parser.add_argument(
+        "--config",
+        default="IPVMS",
+        help="Configuration flags: I=Installer, P=Portable, V=VCRedist libs in portable, M=MSIX, S=OpenSSL",
+    )
     parser.add_argument(
         "--windeployqt",
         default=r"C:\\Qt\\5.15.2\\msvc2019_64\\bin\\windeployqt.exe",
@@ -246,6 +230,9 @@ if __name__ == "__main__":
         os.path.join(base_dir, "build", "target", "DataPlotter.exe"), app_folder
     )
     deploy_qt_dependencies(app_folder, args.windeployqt)
+    assert os.path.exists(
+        os.path.join(app_folder, "QtQml")
+    ), "QtQml folder not created (Is qmldir set correctly in windeployqt?)"
 
     if "S" in args.config.upper():
         copy_openssl_libs(app_folder, args.openssl)
@@ -256,7 +243,7 @@ if __name__ == "__main__":
 
     if "I" in args.config.upper():
         download_vcredist_installer(deploy_dir)
-        remove_vcredist_installer_from_app_folder(app_folder)
+        vcredist_workaround(app_folder)
         run_inno_setup(version, args.inno)
 
     if "P" in args.config:
