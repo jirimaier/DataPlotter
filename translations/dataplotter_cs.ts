@@ -1964,7 +1964,7 @@
         <location filename="../src/forms/mainwindow.ui" line="8501"/>
         <location filename="../build/DataPlotter_autogen/include/ui_mainwindow.h" line="4934"/>
         <source>maierjir@fel.cvut.cz</source>
-        <translation>maierjir@fel.cvut.czsdfghj</translation>
+        <translation>maierjir@fel.cvut.cz</translation>
     </message>
     <message>
         <location filename="../src/mainwindow/mainwindow.cpp" line="110"/>
