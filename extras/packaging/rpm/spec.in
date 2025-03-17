@@ -31,21 +31,21 @@ Group:          Office/Visualization/Other
 URL:            @PACKAGE_URL@
 Source:         @PACKAGE_SOURCE_ARCHIVE_FILE@
 BuildRequires:  cmake
+BuildRequires:  cmake(Qt5LinguistTools)
 BuildRequires:  gcc-c++
+BuildRequires:  hicolor-icon-theme
 BuildRequires:  pkgconfig
-BuildRequires:  pkgconfig(Qt5Widgets)
 BuildRequires:  pkgconfig(Qt5Core)
 BuildRequires:  pkgconfig(Qt5Gui)
-BuildRequires:  pkgconfig(Qt5SerialPort)
-BuildRequires:  pkgconfig(Qt5PrintSupport)
+BuildRequires:  pkgconfig(Qt5Network)
 BuildRequires:  pkgconfig(Qt5OpenGL)
+BuildRequires:  pkgconfig(Qt5PrintSupport)
 BuildRequires:  pkgconfig(Qt5Qml)
-BuildRequires:  pkgconfig(Qt5QuickWidgets)
 BuildRequires:  pkgconfig(Qt5Quick)
 BuildRequires:  pkgconfig(Qt5QuickControls2)
-BuildRequires:  pkgconfig(Qt5Network)
-BuildRequires:  cmake(Qt5LinguistTools)
-BuildRequires:  hicolor-icon-theme
+BuildRequires:  pkgconfig(Qt5QuickWidgets)
+BuildRequires:  pkgconfig(Qt5SerialPort)
+BuildRequires:  pkgconfig(Qt5Widgets)
 
 %if ! 0%{?suse_version}
 BuildRequires:  desktop-file-utils
@@ -54,8 +54,8 @@ BuildRequires:  qt5-qttools
 %endif
 
 %if 0%{?suse_version}
-BuildRequires:  update-desktop-files
 BuildRequires:  libqt5-linguist
+BuildRequires:  update-desktop-files
 %endif
 
 %description
@@ -81,17 +81,16 @@ BuildRequires:  libqt5-linguist
 %endif
 
 %if 0%{?fedora} || 0%{?rhel} || 0%{?centos}
-#desktop-file-validate %{buildroot}/usr/share/applications/@PACKAGE_NAME@.desktop
-desktop-file-validate %{buildroot}/usr/share/applications/data-plotter.desktop
+desktop-file-validate %{buildroot}%{_datadir}/applications/@PACKAGE_NAME@.desktop
 %endif
 
 # TODO: this should be generated from CMake
 %files
-/usr/bin/@PACKAGE_NAME@
-#/usr/share/icons/hicolor/scalable/apps/@PACKAGE_NAME@.svg
-/usr/share/icons/hicolor/256x256/apps/@PACKAGE_NAME@.png
-/usr/share/applications/@PACKAGE_NAME@.desktop
-#/usr/share/metainfo/cz.cvut.fel.embedded.@PACKAGE_NAME@.metainfo.xml
+%{_bindir}/@MAIN_EXECUTEBLE_NAME@
+#%{_datadir}/icons/hicolor/scalable/apps/@PACKAGE_NAME@.svg
+%{_datadir}/icons/hicolor/256x256/apps/@PACKAGE_NAME@.png
+%{_datadir}/applications/@PACKAGE_NAME@.desktop
+#%{_datadir}/metainfo/cz.cvut.fel.embedded.@PACKAGE_NAME@.metainfo.xml
 
 %license documentation/license.txt
 %doc README.md
