@@ -61,7 +61,7 @@ set(PACKAGE_OUTPUT_PATH "${EXECUTABLE_OUTPUT_PATH}/pkg"
 # C defines, respectively.
 set(MAIN_PROJECT_NAME "${PROJECT_NAME}")
 set(MAIN_PROJECT_VERSION "${PROJECT_VERSION}")
-set(MAIN_PROJECT_APPID "cz.cvut.edu.comparch.qtrvsim")
+set(MAIN_PROJECT_APPID "cz.cvut.fel.embedded.sdi.data-plotter")
 set(MAIN_PROJECT_ORGANIZATION "FEE CTU")
 set(MAIN_PROJECT_HOMEPAGE_URL "${PROJECT_HOMEPAGE_URL}")
 #string(TOLOWER "${PROJECT_NAME}" MAIN_PROJECT_NAME_LOWER)
@@ -233,6 +233,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
 else()
     add_executable(DataPlotter ${PROJECT_SOURCES} ${APP_RES} ${QT_RES})
 endif()
+set_target_properties(DataPlotter PROPERTIES OUTPUT_NAME ${MAIN_EXECUTEBLE_NAME})
 
 # Define the preprocessor macro for QCustomPlot OpenGL support
 target_compile_definitions(DataPlotter PRIVATE QCUSTOMPLOT_USE_OPENGL)
@@ -284,6 +285,7 @@ add_dependencies(DataPlotter lupdate)
 # in corresponding CMakeLists.txt.
 
 if (NOT "${WASM}")
+    install(TARGETS DataPlotter)
 #   install(FILES "extras/deploy_debian_native/icons/icon.svg"
 #           DESTINATION "share/icons/hicolor/scalable/apps"
 #           RENAME "${MAIN_PROJECT_NAME_LOWER}.svg")
