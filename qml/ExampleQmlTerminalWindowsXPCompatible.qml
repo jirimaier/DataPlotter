@@ -126,9 +126,9 @@ Rectangle {
         Column {
             anchors.centerIn: parent
             Label { text: "You can use a pop-up" }
-            Slider { id: slider_r; from: 0; to: 255 }
-            Slider { id: slider_g; from: 0; to: 255 }
-            Slider { id: slider_b; from: 0; to: 255 }
+            Slider { id: slider_r; minimumValue: 0; maximumValue: 255 }
+            Slider { id: slider_g; minimumValue: 0; maximumValue: 255 }
+            Slider { id: slider_b; minimumValue: 0; maximumValue: 255 }
             Rectangle {
                 width: 100; height: 50
                 color: Qt.rgba(slider_r.value/255., slider_g.value/255., slider_b.value/255., 1)
