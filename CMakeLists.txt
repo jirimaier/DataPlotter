@@ -106,6 +106,11 @@ include(TranslationUtils)
 add_app_translations_resource(APP_RES ${QM_FILES})
 add_qt_translations_resource(QT_RES en cs)
 
+# MACOS
+set(ICON_NAME data-plotter)
+set(ICON_PATH ${CMAKE_SOURCE_DIR}/extras/deploy_macos/${ICON_NAME}.icns)
+# END MACOS
+
 set(RESOURCES resources.qrc)
 qt5_add_resources(RESOURCE_FILES ${RESOURCES})
 
@@ -234,9 +239,9 @@ if(WIN32)
 endif()
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
-    qt_add_executable(DataPlotter MANUAL_FINALIZATION ${PROJECT_SOURCES})
+    qt_add_executable(DataPlotter MANUAL_FINALIZATION ${ICON_PATH} ${PROJECT_SOURCES})
 else()
-    add_executable(DataPlotter ${PROJECT_SOURCES} ${APP_RES} ${QT_RES})
+    add_executable(DataPlotter ${PROJECT_SOURCES} ${ICON_PATH} ${APP_RES} ${QT_RES})
 endif()
 set_target_properties(DataPlotter PROPERTIES OUTPUT_NAME ${MAIN_EXECUTEBLE_NAME})
 
@@ -281,6 +286,19 @@ add_custom_target(lupdate
 
 add_dependencies(DataPlotter lupdate)
 
+# MACOS
+set_property(SOURCE ${ICON_PATH}
+        PROPERTY MACOSX_PACKAGE_LOCATION Resources)
+set_target_properties(DataPlotter PROPERTIES
+        MACOSX_BUNDLE true
+        MACOSX_BUNDLE_GUI_IDENTIFIER cz.cvut.fel.embedded.${MAIN_PROJECT_NAME}
+        MACOSX_BUNDLE_BUNDLE_NAME ${MAIN_PROJECT_NAME}
+        MACOSX_BUNDLE_BUNDLE_VERSION "${MAIN_PROJECT_VERSION}"
+        MACOSX_BUNDLE_SHORT_VERSION_STRING "${MAIN_PROJECT_VERSION}"
+        MACOSX_BUNDLE_ICONFILE ${ICON_NAME}
+        )
+# END MACOS
+
 # =============================================================================
 # Installation
 # =============================================================================
@@ -290,7 +308,9 @@ add_dependencies(DataPlotter lupdate)
 # in corresponding CMakeLists.txt.
 
 if (NOT "${WASM}")
-    install(TARGETS DataPlotter)
+    install(TARGETS DataPlotter
+            RUNTIME DESTINATION bin
+            BUNDLE DESTINATION ${EXECUTABLE_OUTPUT_PATH})
 #   install(FILES "extras/deploy_debian_native/icons/icon.svg"
 #           DESTINATION "share/icons/hicolor/scalable/apps"
 #           RENAME "${MAIN_PROJECT_NAME_LOWER}.svg")
