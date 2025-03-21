@@ -159,6 +159,7 @@ set(PROJECT_HEADERFILES
     src/qml/messagemodel.h
     src/qml/qmlterminalinterface.h
     src/utils.h
+    src/global.h
 )
 
 set(PROJECT_SOURCES

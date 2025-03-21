@@ -148,6 +148,12 @@ def vcredist_workaround(app_folder):
         os.remove(os.path.join(app_folder, "vc_redist.x64.exe"))
         print("Deleted vc_redist.x64.exe from app folder. (Workaround for Inno Setup bug)")
 
+def add_platform_files(app_folder, platform):
+    if os.path.exists(os.path.join(app_folder, "platform.cfg")):
+        os.remove(os.path.join(app_folder, "platform.cfg"))
+    with open(os.path.join(app_folder, "platform.cfg"), "w") as f:
+        f.write(platform)
+
 
 def copy_openssl_libs(app_folder, openssl_folder):
     """Copy OpenSSL libraries and license files to the application folder, searching recursively."""
@@ -242,6 +248,7 @@ if __name__ == "__main__":
         raise Exception("Could not extract version from DataPlotter.exe")
 
     if "I" in args.config.upper():
+        add_platform_files(app_folder, "windows_instaler")
         download_vcredist_installer(deploy_dir)
         vcredist_workaround(app_folder)
         run_inno_setup(version, args.inno)
@@ -252,6 +259,7 @@ if __name__ == "__main__":
             deploy_dir, f"DataPlotter_{version.replace('.','_')}_Portable"
         )
         shutil.copytree(app_folder, portable_folder)
+        add_platform_files(portable_folder, "windows_portable")
         if "V" in args.config.upper():
             add_msvc_runtime_libs(portable_folder, args.vcredist)
         add_documentation(portable_folder, os.path.join(base_dir, "documentation"))
@@ -262,6 +270,7 @@ if __name__ == "__main__":
             deploy_dir, f"DataPlotter_{version.replace('.','_')}_MSIX"
         )
         shutil.copytree(app_folder, msix_folder)
+        add_platform_files(msix_folder, "windows_store")
         add_msvc_runtime_libs(msix_folder, args.vcredist)
         create_msix.package_application(
             msix_folder,

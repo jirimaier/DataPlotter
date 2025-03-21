@@ -107,6 +107,7 @@ private:
   int dataUpdates = 0;
   bool hasMaximizedPlot = false;
   UpdateChecker updateChecker;
+  QString updateDownloadUrl;
 
   bool writeConfigInAppDirectory = false;
   QByteArray versionstring;
