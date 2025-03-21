@@ -13,6 +13,11 @@ else()
     set(MAIN_EXECUTEBLE_NAME "data-plotter")
 endif()
 
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
+configure_file(
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/version.h.in
+  ${CMAKE_CURRENT_BINARY_DIR}/include/version.h
+)
 
 # Get current year dynamically
 string(TIMESTAMP CURRENT_YEAR "%Y")

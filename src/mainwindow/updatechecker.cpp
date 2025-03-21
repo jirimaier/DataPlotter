@@ -21,6 +21,7 @@
 #include <QNetworkReply>
 #include <QVersionNumber>
 #include <qcoreapplication.h>
+#include "version.h"
 
 UpdateChecker::UpdateChecker(QObject *parent) : QObject(parent) {
   if (QSslSocket::sslLibraryVersionString().isEmpty()) {
@@ -55,7 +56,7 @@ void UpdateChecker::onRequestFinished(QNetworkReply *reply) {
     latestVersionTag.remove("v", Qt::CaseInsensitive);
 
     auto latestVersion = QVersionNumber::fromString(latestVersionTag).normalized();
-    auto appVersion = QVersionNumber::fromString(QCoreApplication::applicationVersion()).normalized();
+    auto appVersion = QVersionNumber::fromString(PROJECT_VERSION).normalized();
 
     if (latestVersion > appVersion) {
       emit checkedVersion(true, tr("New version available: %1\n Current version: %2").arg(latestVersion.toString(), appVersion.toString()));

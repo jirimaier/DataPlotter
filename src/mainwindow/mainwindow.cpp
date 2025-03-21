@@ -19,6 +19,7 @@
 #include "ui_freqtimeplotdialog.h"
 #include "ui_manualinputdialog.h"
 #include "ui_serialsettingsdialog.h"
+#include "version.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), serialSettingsDialog(new SerialSettingsDialog(this)) {
   ui->setupUi(this);
@@ -33,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     QFile version(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/version.txt");
 
     QVersionNumber configVersion(0, 0, 0);
-    QVersionNumber appVersion = QVersionNumber::fromString(QCoreApplication::applicationVersion());
+    QVersionNumber appVersion = QVersionNumber::fromString(PROJECT_VERSION);
     if (version.open(QIODevice::ReadOnly)) {
       configVersion = QVersionNumber::fromString(version.readAll());
       version.close();
@@ -44,7 +45,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
       dir.removeRecursively();
       dir.mkpath(".");
       if (version.open(QIODevice::WriteOnly)) {
-        version.write(QCoreApplication::applicationVersion().toLocal8Bit());
+        version.write(QString(PROJECT_VERSION).toLocal8Bit());
         version.close();
       }
     }

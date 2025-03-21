@@ -1,0 +1,6 @@
+#pragma once
+
+#define PROJECT_VERSION_MAJOR @DataPlotter_VERSION_MAJOR@
+#define PROJECT_VERSION_MINOR @DataPlotter_VERSION_MINOR@
+#define PROJECT_VERSION_PATCH @DataPlotter_VERSION_PATCH@
+#define PROJECT_VERSION "@DataPlotter_VERSION@"

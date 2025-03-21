@@ -16,6 +16,7 @@
 #include "mainwindow.h"
 #include "ui_developeroptions.h"
 #include "ui_freqtimeplotdialog.h"
+#include "version.h"
 
 void MainWindow::connectSignals() {
   connect(ui->pushButtonPause, &QPushButton::clicked, ui->plot, &MyMainPlot::togglePause);
@@ -118,7 +119,7 @@ void MainWindow::setGuiDefaults() {
   ui->tabsControll->setCurrentIndex(0);
   ui->comboBoxOutputLevel->setCurrentIndex((int)OutputLevel::warning);
   ui->labelBuildDate->setText(tr("Build: ") + QString(__DATE__) + " " + QString(__TIME__));
-  ui->labelVersion->setText(tr("Version: ") + QCoreApplication::applicationVersion());
+  ui->labelVersion->setText(tr("Version: ") + QString(PROJECT_VERSION));
   ui->pushButtonCheckForUpdates->setVisible(updateChecker.getCanCheckforUpdates());
   ui->pushButtonPause->setIcon(iconRun);
 
