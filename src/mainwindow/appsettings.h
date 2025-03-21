@@ -39,6 +39,9 @@ public:
   bool checkForUpdatesAtStartup = false;
   bool recommendOpenGL = true;
 
+  static QString getPlatformInfo();
+  static QString getPlatformInfoText();
+
 private:
   MainWindow *mainwindow;
   void applyGuiElementSettings(QWidget *target, QString value);
