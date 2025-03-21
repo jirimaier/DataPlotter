@@ -112,6 +112,12 @@ def build_package(deploy_dir):
     subprocess.run(["dpkg-deb", "--build", deploy_dir], check=True)
     logging.info("Debian package created successfully!")
 
+def add_platform_files(app_folder, platform):
+    if os.path.exists(os.path.join(app_folder, "platform.cfg")):
+        os.remove(os.path.join(app_folder, "platform.cfg"))
+    with open(os.path.join(app_folder, "platform.cfg"), "w") as f:
+        f.write(platform)
+
 def main():
     """Main function to execute the build steps."""
     os.chdir(os.path.dirname(os.path.realpath(__file__)))

@@ -24,7 +24,8 @@
 #include <QVector>
 
 const char UpdatesApi[] = "https://api.github.com/repos/jirimaier/DataPlotter/releases/latest";
-const char DownloadUrl[] = "https://github.com/jirimaier/DataPlotter/releases";
+const char GithubReleasesUrl[] = "https://github.com/jirimaier/DataPlotter/releases";
+const char MisrosoftStoreUrl[] = "https://apps.microsoft.com/detail/9NVBN2G853FP?hl=en-us&gl=CZ&ocid=pdpshare";
 
 #define ANALOG_COUNT 16
 #define MATH_COUNT 3

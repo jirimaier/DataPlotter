@@ -348,6 +348,30 @@ void AppSettings::resetSettings() {
   }
 }
 
+QString AppSettings::getPlatformInfo()
+{
+    QFile platform(QApplication::applicationDirPath() + "/platform.cfg");
+    if (platform.open(QFile::ReadOnly | QFile::Text)) {
+        return platform.readAll().simplified();
+    }
+    return "";
+}
+
+QString AppSettings::getPlatformInfoText()
+{
+    auto platform = getPlatformInfo();
+    if (platform.isEmpty())
+        return tr("Generic");
+    if (platform == "windows_portable")
+        return tr("Windows portable");
+    if (platform == "windows_store")
+        return tr("Windows Store");
+    if (platform == "windows_installer")
+        return tr("Windows");
+    else
+        return("error");
+}
+
 void AppSettings::loadSettings() {
   QFile settingsFile(mainwindow->configFilePath);
   if (settingsFile.open(QFile::ReadOnly | QFile::Text)) {

@@ -26,37 +26,24 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
   qApp->setStyle("Fusion");
   this->setAttribute(Qt::WA_NativeWindow);
 
-  QFileInfo fileInfo(QCoreApplication::applicationDirPath() + "/config.ini");
-  writeConfigInAppDirectory = fileInfo.exists();
-
-  if (!writeConfigInAppDirectory) {
-    configFilePath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/config.ini";
-    QFile version(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/version.txt");
-
-    QVersionNumber configVersion(0, 0, 0);
-    QVersionNumber appVersion = QVersionNumber::fromString(PROJECT_VERSION);
-    if (version.open(QIODevice::ReadOnly)) {
-      configVersion = QVersionNumber::fromString(version.readAll());
-      version.close();
-    }
-    if (appVersion.majorVersion() != configVersion.majorVersion() || appVersion.minorVersion() != configVersion.minorVersion()) {
-      qDebug() << "Version changed, configuration will be reset";
-      QDir dir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
-      dir.removeRecursively();
-      dir.mkpath(".");
-      if (version.open(QIODevice::WriteOnly)) {
-        version.write(QString(PROJECT_VERSION).toLocal8Bit());
-        version.close();
-      }
-    }
-  } else {
-    configFilePath = fileInfo.absoluteFilePath();
-  }
-  qDebug() << "Config file:" << configFilePath;
-
   developerOptions = new DeveloperOptions(this, ui->quickWidget);
   freqTimePlotDialog = new FreqTimePlotDialog(nullptr);
   simulatedInputDialog.reset(new ManualInputDialog(nullptr));
+
+  configFilePath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/config.ini";
+  updateDownloadUrl = GithubReleasesUrl;
+
+  auto platform = AppSettings::getPlatformInfo();
+  if(platform == "windows_portable"){
+    updateDownloadUrl = GithubReleasesUrl;
+  }
+
+  if (platform == "windows_store"){
+    updateDownloadUrl = MisrosoftStoreUrl;
+    developerOptions->getUi()->pushButtonOpenConfig->setVisible(false);
+  }
+
+  qDebug() << "Config file:" << configFilePath;
 
   ui->doubleSpinBoxRangeVerticalRange->trimDecimalZeroes = true;
   ui->doubleSpinBoxRangeVerticalRange->emptyDefaultValue = 1;
@@ -803,7 +790,7 @@ void MainWindow::checkedVersion(bool isNew, QString message) {
   msgBox.setCheckBox(checkBox);
   int returnValue = msgBox.exec();
   if (returnValue == QMessageBox::Yes)
-    QDesktopServices::openUrl(QString(DownloadUrl));
+    QDesktopServices::openUrl(QString(updateDownloadUrl));
   settings->checkForUpdatesAtStartup = checkBox->isChecked();
 }
 

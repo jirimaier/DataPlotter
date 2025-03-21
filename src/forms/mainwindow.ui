@@ -7261,7 +7261,7 @@
            </size>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>3</number>
           </property>
           <property name="iconSize">
            <size>
@@ -8479,8 +8479,8 @@
             </item>
             <item>
              <layout class="QGridLayout" name="gridLayout_2">
-              <item row="8" column="0" colspan="2">
-               <widget class="QLabel" name="labelBuildDate">
+              <item row="7" column="0" colspan="2">
+               <widget class="QLabel" name="labelVersion">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
                   <horstretch>0</horstretch>
@@ -8488,7 +8488,7 @@
                  </sizepolicy>
                 </property>
                 <property name="text">
-                 <string notr="true">Build:  ???</string>
+                 <string notr="true">Version:  ???</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>
@@ -8498,7 +8498,7 @@
               <item row="6" column="0" colspan="2">
                <widget class="QLabel" name="label_58">
                 <property name="text">
-                 <string>maierjir@fel.cvut.cz</string>
+                 <string notr="true">maierjir@fel.cvut.cz</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>
@@ -8515,6 +8515,22 @@
                 </property>
                </widget>
               </item>
+              <item row="8" column="0" colspan="2">
+               <widget class="QLabel" name="labelBuildDate">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string notr="true">Build:  ???</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
               <item row="5" column="0" colspan="2">
                <widget class="QLabel" name="label_24">
                 <property name="text">
@@ -8525,8 +8541,8 @@
                 </property>
                </widget>
               </item>
-              <item row="7" column="0" colspan="2">
-               <widget class="QLabel" name="labelVersion">
+              <item row="9" column="0" colspan="2">
+               <widget class="QLabel" name="labelPlatform">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
                   <horstretch>0</horstretch>
@@ -8534,7 +8550,7 @@
                  </sizepolicy>
                 </property>
                 <property name="text">
-                 <string notr="true">Version:  ???</string>
+                 <string notr="true">Platform:  ???</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>
