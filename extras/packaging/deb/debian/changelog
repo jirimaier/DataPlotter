@@ -1,3 +1,9 @@
+data-plotter (3.3.2-1) unstable; urgency=medium
+
+  * Debian package updated to version 3.3.2.
+
+ -- Pavel Pisa <pisa@fel.cvut.cz>  Mon, 24 Mar 2025 23:26:19 +0100
+
 data-plotter (3.3.1-1) unstable; urgency=medium
 
   * Initial Debian packaging attempt
