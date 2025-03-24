@@ -35,6 +35,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
   auto platform = AppSettings::getPlatformInfo();
   if(platform == "windows_portable"){
+      configFilePath = QApplication::applicationDirPath() + "/settings/config.ini";
     updateDownloadUrl = GithubReleasesUrl;
   }
 
