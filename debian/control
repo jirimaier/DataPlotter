@@ -1,0 +1,15 @@
+Source: data-plotter
+Section: devel
+Priority: optional
+Maintainer: Jiri;Maier;<jiri.maier.x@gmail.com>
+Build-Depends: debhelper (>= 9), qtbase5-dev, qttools5-dev, libqt5serialport5-dev, libqt5opengl5-dev, qtdeclarative5-dev, qtquickcontrols2-5-dev, cmake
+Standards-Version: 3.9.8
+Homepage: https://github.com/jirimaier/DataPlotter
+Vcs-Git: github.com:/jirimaier/DataPlotter
+Vcs-Browser: https://github.com/jirimaier/DataPlotter
+
+Package: data-plotter
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: GUI interface for custom software-defined instruments
+ GUI interface for custom software-defined instruments.
