@@ -203,7 +203,7 @@ def main():
         raise Exception("Could not extract version from CMakeLists file")
     
     logging.info(f"Building DataPlotter version {version}")
-    deploy_root = "deploy"
+    deploy_root = os.path.abspath("deploy")
     deploy_dir = os.path.join(deploy_root, f"data-plotter_{version.replace('.','_')}_amd64")
     if os.path.exists(deploy_root):
         shutil.rmtree(deploy_root)
