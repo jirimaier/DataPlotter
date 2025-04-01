@@ -1,12 +1,10 @@
-# Use a base image with C++ and Ubuntu 20.04
-FROM mcr.microsoft.com/devcontainers/cpp:1-ubuntu-20.04
+FROM mcr.microsoft.com/devcontainers/cpp:1-ubuntu-24.04
 
 # Prevent interactive prompts
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Install required dependencies
 RUN apt update && apt install -y --no-install-recommends \
-    qt5-default \
     qtdeclarative5-dev \
     libqt5quick5 \
     libqt5quickcontrols2-5 \
