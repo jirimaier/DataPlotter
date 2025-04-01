@@ -89,6 +89,7 @@ def update_control_file(deploy_dir, version, dependencies):
     with open(file_path, "r") as file:
         content = file.read().replace("${shlibs:Depends}", dependencies).replace("${misc:Depends},","")
         content = content.rstrip('\n') + '\n' + f"Version: {version}\n"
+    os.remove(file_path)
     with open(file_path, "w") as file:
         file.write(content)
 
