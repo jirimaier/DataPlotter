@@ -1,0 +1,13 @@
+Source: data-plotter
+Section: devel
+Priority: optional
+Maintainer: Jiri Maier <jiri.maier.x@gmail.com>
+Build-Depends: qml-module-qtquick-controls2,qml-module-qtquick-controls,qml-module-qtquick-layouts,qml-module-qtquick-dialogs,qml-module-qtgraphicaleffects,qml-module-qtquick-window2,qml-module-qtquick2,qml-module-qtcharts, debhelper (>= 9), qtbase5-dev, qttools5-dev, libqt5serialport5-dev, libqt5opengl5-dev, qtdeclarative5-dev, qtquickcontrols2-5-dev, cmake
+Standards-Version: 3.9.8
+Homepage: https://jirimaier.github.io/DataPlotter/
+Vcs-Git: https://github.com/jirimaier/DataPlotter.git
+Vcs-Browser: https://github.com/jirimaier/DataPlotter
+Package: data-plotter
+Architecture: any
+Depends: ${shlibs:Depends},${misc:Depends},qml-module-qtquick-controls2,qml-module-qtquick-controls,qml-module-qtquick-layouts,qml-module-qtquick-dialogs,qml-module-qtgraphicaleffects,qml-module-qtquick-window2,qml-module-qtquick2,qml-module-qtcharts
+Description: GUI interface for custom software-defined instruments
