@@ -7,6 +7,7 @@ Standards-Version: 3.9.8
 Homepage: https://jirimaier.github.io/DataPlotter/
 Vcs-Git: https://github.com/jirimaier/DataPlotter.git
 Vcs-Browser: https://github.com/jirimaier/DataPlotter
+
 Package: data-plotter
 Architecture: any
 Depends: ${shlibs:Depends},${misc:Depends},qml-module-qtquick-controls2,qml-module-qtquick-controls,qml-module-qtquick-layouts,qml-module-qtquick-dialogs,qml-module-qtgraphicaleffects,qml-module-qtquick-window2,qml-module-qtquick2,qml-module-qtcharts
