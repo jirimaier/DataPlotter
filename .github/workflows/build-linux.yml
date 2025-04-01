@@ -45,7 +45,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake -G Ninja ..
+          cmake -G Ninja -DDEV_MODE=true ..
           ninja
 
       - name: Package Debian Package
@@ -67,3 +67,9 @@ jobs:
         with:
           name: DataPlotter-AppImage
           path: ./extras/deploy_debian_native/deploy/DataPlotter*.AppImage*
+
+      - name: Upload pkg
+        uses: actions/upload-artifact@v4
+        with:
+          name: DataPlotter-pkg
+          path: ./build/target/pkg/*.tar.xz
