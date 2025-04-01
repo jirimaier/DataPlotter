@@ -62,7 +62,7 @@ def copy_files(deploy_dir, target: Target):
     }
     if target == Target.DEBIAN:
         files.update({
-            "control": os.path.join(deploy_dir, "DEBIAN", "control"),
+            "../../build/debian/control": os.path.join(deploy_dir, "DEBIAN", "control"),
             "qt.conf": os.path.join(deploy_dir, "usr", "bin", "qt.conf"),
         })
     for src, dst in files.items():
@@ -81,24 +81,14 @@ def generate_dependencies(deploy_dir):
     shlib_deps = shlib_deps_output.decode().strip().split("=", 1)[1]
     os.rename("debian", "DEBIAN")
     os.chdir(prev_dir)
-    
-    qml_modules = [
-        "qml-module-qtquick-controls2",
-        "qml-module-qtquick-controls",
-        "qml-module-qtquick-layouts",
-        "qml-module-qtquick-dialogs",
-        "qml-module-qtgraphicaleffects",
-        "qml-module-qtquick-window2",
-        "qml-module-qtquick2",
-        "qml-module-qtcharts"
-    ]
-    return f"{shlib_deps}, {', '.join(qml_modules)}"
+    return shlib_deps
 
 def update_control_file(deploy_dir, version, dependencies):
     """Updates the Debian control file with the correct version and dependencies."""
     file_path = os.path.join(deploy_dir, "DEBIAN", "control")
     with open(file_path, "r") as file:
-        content = file.read().replace("{version}", version).replace("{depends}", dependencies)
+        content = file.read().replace("${shlibs:Depends}", dependencies).replace("${misc:Depends},","")
+        content = content.rstrip('\n') + '\n' + f"Version: {version}\n"
     with open(file_path, "w") as file:
         file.write(content)
 
@@ -201,8 +191,7 @@ def main():
     version = get_version("../../CMakeLists.txt")
     if not version:
         raise Exception("Could not extract version from CMakeLists file")
-    
-    logging.info(f"Building DataPlotter version {version}")
+
     deploy_root = os.path.abspath("deploy")
     deploy_dir = os.path.join(deploy_root, f"data-plotter_{version.replace('.','_')}_amd64")
     if os.path.exists(deploy_root):
