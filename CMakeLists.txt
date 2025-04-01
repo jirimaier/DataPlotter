@@ -203,7 +203,7 @@ if("${DEV_MODE}")
     set(PACKAGE_LONG_DESCRIPTION "${LONG_DESCRIPTION}")
     set(PACKAGE_MAINTAINER "${JIRI_MAIER}")
     set(PACKAGE_URL "${PROJECT_HOMEPAGE_URL}")
-    set(PACKAGE_GIT "github.com:/jirimaier/DataPlotter")
+    set(PACKAGE_GIT "https://github.com/jirimaier/DataPlotter")
     set(PACKAGE_LICENCE "${LICENCE} ")
 
     include(cmake/PackageTools.cmake)
