@@ -6,8 +6,8 @@ Version: @PACKAGE_VERSION@-@PACKAGE_RELEASE@
 Maintainer: @PACKAGE_MAINTAINER@
 Homepage: @PACKAGE_URL@
 Standards-Version: 3.9.8
-Vcs-Browser: @PACKAGE_URL@
-Vcs-Git: @PACKAGE_GIT@
+Vcs-Browser: @PACKAGE_GIT@
+Vcs-Git: @PACKAGE_GIT@.git
 Build-Depends: debhelper (>= 9), qtbase5-dev, qttools5-dev, libqt5serialport5-dev, libqt5opengl5-dev, qtdeclarative5-dev, qtquickcontrols2-5-dev, cmake
 Package-List:
  @PACKAGE_NAME@ deb devel optional arch=any
