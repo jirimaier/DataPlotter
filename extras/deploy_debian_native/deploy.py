@@ -88,6 +88,7 @@ def update_control_file(deploy_dir, version, dependencies):
     file_path = os.path.join(deploy_dir, "DEBIAN", "control")
     with open(file_path, "r") as file:
         content = file.read().replace("${shlibs:Depends}", dependencies).replace("${misc:Depends},","")
+        content = "\n".join([line for line in content.splitlines() if line.strip()])
         content = content.rstrip('\n') + '\n' + f"Version: {version}\n"
     os.remove(file_path)
     with open(file_path, "w") as file:
