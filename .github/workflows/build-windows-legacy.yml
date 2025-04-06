@@ -11,10 +11,17 @@ on:
 
 jobs:
   build:
-    if: ${{ github.event_name != 'pull_request' || secrets.QT571_FILE_ID != '' }}
     runs-on: windows-latest
-    
+    env:
+      QT571_FILE_ID: ${{ secrets.QT571_FILE_ID }}
+
     steps:
+      - name: Early exit if secret is missing in pull_request
+        if: ${{ github.event_name == 'pull_request' && env.QT571_FILE_ID == '' }}
+        run: |
+          echo "QT571_FILE_ID is not available on pull requests from forks. Skipping build."
+          exit 0
+          
       - name: Checkout repository
         uses: actions/checkout@v4
 
