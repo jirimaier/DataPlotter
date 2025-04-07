@@ -1,5 +1,11 @@
 [![Get it from Microsoft Store](https://img.shields.io/badge/Get%20it%20from-Microsoft%20Store-blue?style=for-the-badge&logo=microsoft)](https://apps.microsoft.com/detail/9NVBN2G853FP?hl=en-us&gl=CZ&ocid=pdpshare)
 
+```bash
+sudo add-apt-repository ppa:cvut-fel-sdi/ppa
+sudo apt update
+sudo apt install data-plotter
+```
+
 Data Plotter is a tool for plotting data received over a serial port. Typical use cases are microcontroller-based SDI (Software-defined instruments), for example, an oscilloscope based on STM32 MCU, or data logging of some sensor connected to Arduino.
 
 The communication protocol is designed to be as simple as possible to implement on the MCU firmware side.
