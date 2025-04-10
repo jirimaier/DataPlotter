@@ -62,7 +62,7 @@ def copy_files(deploy_dir, target: Target):
     }
     if target == Target.DEBIAN:
         files.update({
-            "../../build/debian/control": os.path.join(deploy_dir, "DEBIAN", "control"),
+            "../packaging/deb/debian/control": os.path.join(deploy_dir, "DEBIAN", "control"),
             "qt.conf": os.path.join(deploy_dir, "usr", "bin", "qt.conf"),
         })
     for src, dst in files.items():
