@@ -19,6 +19,31 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y cmake osc build-essential
 
+    - name: Install Build Dependencies
+        run: |
+          sudo apt update && sudo apt install -y --no-install-recommends \
+            qtbase5-dev \
+            qtchooser \
+            qtdeclarative5-dev \
+            libqt5quick5 \
+            libqt5quickcontrols2-5 \
+            libqt5serialport5-dev \
+            mesa-common-dev \
+            libglu1-mesa-dev \
+            qtquickcontrols2-5-dev \
+            libqt5opengl5-dev \
+            qt5dxcb-plugin \
+            libxcb-util-dev \
+            build-essential \
+            cmake \
+            ninja-build \
+            pkg-config \
+            qttools5-dev \
+            qttools5-dev-tools \
+            gtk-update-icon-cache \
+            fuse libfuse2 \
+            zsync file appstream
+
     - name: Configure and build CMake target
       run: |
         mkdir -p build
