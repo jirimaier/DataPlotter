@@ -45,8 +45,8 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake -G Ninja
-          ninja DataPlotter
+          cmake -G Ninja ..
+          ninja
 
       - name: Package Debian Package
         run: |
