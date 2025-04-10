@@ -181,10 +181,10 @@ void MainWindow::on_pushButtonInvert_toggled(bool checked) {
     ui->plot->setChInvert(ui->comboBoxSelectedChannel->currentIndex(), checked);
 }
 
-void MainWindow::on_pushButtonOpenHelpCZ_clicked() { openDocs("Manual cz.pdf"); }
-void MainWindow::on_pushButtonOpenHelpEN_clicked() { openDocs("Manual en.pdf"); }
-void MainWindow::on_pushButtonProtocolGuideCZ_clicked() { openDocs("Data protocol guide cz.pdf"); }
-void MainWindow::on_pushButtonProtocolGuideEN_clicked() { openDocs("Data protocol guide en.pdf"); }
+void MainWindow::on_pushButtonOpenHelpCZ_clicked() { openDocs("Manual_cz.pdf"); }
+void MainWindow::on_pushButtonOpenHelpEN_clicked() { openDocs("Manual_en.pdf"); }
+void MainWindow::on_pushButtonProtocolGuideCZ_clicked() { openDocs("Data_protocol_guide_cz.pdf"); }
+void MainWindow::on_pushButtonProtocolGuideEN_clicked() { openDocs("Data_protocol_guide_en.pdf"); }
 void MainWindow::on_pushButtonIntroVideoCZ_clicked() { QDesktopServices::openUrl(QUrl("https://www.youtube.com/watch?v=TpJgz6kfPvA")); }
 void MainWindow::on_pushButtonGitHub_clicked() { QDesktopServices::openUrl(QUrl("https://github.com/jirimaier/DataPlotter")); }
 void MainWindow::on_pushButtonHomePage_clicked() { QDesktopServices::openUrl(QUrl("https://jirimaier.github.io/DataPlotter")); }
