@@ -1,0 +1,62 @@
+name: Build OBS Bundle and Upload
+
+on:
+  push:
+    tags:
+      - '*'
+  workflow_dispatch:
+
+jobs:
+  build-and-upload:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout source code
+      uses: actions/checkout@v3
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cmake osc build-essential
+
+    - name: Configure and build CMake target
+      run: |
+        mkdir -p build
+        cd build
+        cmake .. -DDEV_MODE=true
+        cmake --build . --target open_build_service_bundle
+
+    - name: Install osc
+      run: |
+        sudo apt-get install -y osc
+
+    - name: Configure osc credentials
+      run: |
+        mkdir -p ~/.config/osc
+        cat <<EOF > ~/.config/osc/oscrc
+        [general]
+        apiurl = https://api.opensuse.org
+
+        [https://api.opensuse.org]
+        user = ${OBS_USERNAME}
+        pass = ${OBS_PASSWORD}
+        EOF
+        chmod 600 ~/.config/osc/oscrc
+      env:
+        OBS_USERNAME: ${{ secrets.OBS_USERNAME }}
+        OBS_PASSWORD: ${{ secrets.OBS_PASSWORD }}
+
+    - name: Checkout OBS package
+      run: |
+        osc checkout home:maierjir/data-plotter
+
+    - name: Copy built OBS bundle into package
+      run: |
+        cp build/target/pkg/* home:maierjir/data-plotter/
+        cd home:maierjir/data-plotter
+        osc addremove
+
+    - name: Commit and upload to OBS
+      run: |
+        cd home:maierjir/data-plotter
+        osc commit -m "Automated upload from GitHub CI for tag ${{ github.ref_name }}"
