@@ -14,10 +14,10 @@ jobs:
     - name: Checkout source code
       uses: actions/checkout@v3
 
-    - name: Install dependencies
+    - name: Install osc from PyPI
       run: |
-        sudo apt-get update
-        sudo apt-get install -y cmake osc build-essential
+        pip install --upgrade pip
+        pip install osc
 
     - name: Install Dependencies
       run: |
