@@ -1,5 +1,7 @@
 [![Get it from Microsoft Store](https://img.shields.io/badge/Get%20it%20from-Microsoft%20Store-blue?style=for-the-badge&logo=microsoft)](https://apps.microsoft.com/detail/9NVBN2G853FP?hl=en-us&gl=CZ&ocid=pdpshare)
 
+[![build result](https://build.opensuse.org/projects/home:maierjir/packages/data-plotter/badge.svg?type=percent)](https://build.opensuse.org/package/show/home:maierjir/data-plotter)
+
 Install on Linux:
 ```bash
 sudo add-apt-repository ppa:cvut-fel-sdi/ppa
