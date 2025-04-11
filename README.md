@@ -1,6 +1,7 @@
-[![Get it from Microsoft Store](https://img.shields.io/badge/Get%20it%20from-Microsoft%20Store-blue?style=for-the-badge&logo=microsoft)](https://apps.microsoft.com/detail/9NVBN2G853FP?hl=en-us&gl=CZ&ocid=pdpshare)
-
 [![build result](https://build.opensuse.org/projects/home:maierjir/packages/data-plotter/badge.svg?type=percent)](https://build.opensuse.org/package/show/home:maierjir/data-plotter)
+
+[![Get it from Microsoft Store](https://img.shields.io/badge/Get%20it%20from-Microsoft%20Store-blue?style=for-the-badge&logo=microsoft)](https://apps.microsoft.com/detail/9NVBN2G853FP?hl=en-us&gl=CZ&ocid=pdpshare)
+[![Download for Linux (openSUSE, Fedora, Debian, Raspbian)](https://img.shields.io/badge/Download-Linux%20(distributions)-green?style=for-the-badge&logo=linux)](https://software.opensuse.org//download.html?project=home%3Amaierjir&package=data-plotter)
 
 Install on Linux:
 ```bash
