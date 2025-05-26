@@ -9,6 +9,8 @@ on:
       - main
   workflow_dispatch:
 
+  workflow_call:
+
 jobs:
   build:
     runs-on: windows-latest
