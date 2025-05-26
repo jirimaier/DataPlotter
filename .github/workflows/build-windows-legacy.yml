@@ -65,8 +65,14 @@ jobs:
             --openssl "C:\\OpenSSL"
         shell: cmd
 
+      - name: Rename Portable Build
+        run: |
+          Get-ChildItem -Path extras\deploy_windows\deploy -Filter "DataPlotter*Portable.zip" | 
+          Rename-Item -NewName { $_.Name -replace 'Portable', 'DataPlotter_WindowsXP' }
+        shell: powershell
+
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
           name: DataPlotter-WindowsXP-Portable
-          path: extras/deploy_windows/deploy/DataPlotter*Portable.zip
+          path: extras/deploy_windows/deploy/DataPlotter*DataPlotter_WindowsXP.zip
