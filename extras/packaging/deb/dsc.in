@@ -3,6 +3,7 @@ Source: @PACKAGE_NAME@
 Binary: @PACKAGE_NAME@
 Architecture: any
 Version: @PACKAGE_VERSION@-@PACKAGE_RELEASE@
+Distribution: unstable
 Maintainer: @PACKAGE_MAINTAINER@
 Homepage: @PACKAGE_URL@
 Standards-Version: 3.9.8
