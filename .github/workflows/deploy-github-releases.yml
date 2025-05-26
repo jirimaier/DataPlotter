@@ -55,16 +55,20 @@ jobs:
           path: ./artifacts
           extract: false
 
+      - name: Download AppImage artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: DataPlotter-AppImage
+          path: ./artifacts
+          extract: false
+
       - name: Generate custom release notes
         run: |
           echo '[![Get it from Microsoft Store](https://img.shields.io/badge/Get%20it%20from-Microsoft%20Store-blue?style=for-the-badge&logo=microsoft)](https://apps.microsoft.com/detail/9NVBN2G853FP?hl=en-us&gl=CZ&ocid=pdpshare)' > header.md
           echo '[![Download for Linux (openSUSE, Fedora, Debian, Raspbian)](https://img.shields.io/badge/Download-Linux%20(distributions)-green?style=for-the-badge&logo=linux)](https://software.opensuse.org//download.html?project=home%3Amaierjir&package=data-plotter)' >> header.md
           echo -e '\n```bash\nsudo add-apt-repository ppa:cvut-fel-sdi/ppa\nsudo apt update\nsudo apt install data-plotter\n```\n' >> header.md
 
-          echo "## 🔄 Changes" > changes.md
-          gh release view ${{ github.ref_name }} --json body -q .body >> changes.md || echo "_No changes found_" >> changes.md
-
-          cat header.md changes.md > full_notes.md
+          cat header.md > full_notes.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
