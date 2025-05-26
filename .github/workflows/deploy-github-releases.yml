@@ -32,24 +32,28 @@ jobs:
         with:
           name: DataPlotter-Windows-Installer
           path: ./artifacts
+          extract: false
 
       - name: Download Win Portable artifact
         uses: actions/download-artifact@v4
         with:
           name: DataPlotter-Windows-Portable
           path: ./artifacts
+          extract: false
 
       - name: Download winXP Portable artifact
         uses: actions/download-artifact@v4
         with:
           name: DataPlotter-WindowsXP-Portable
           path: ./artifacts
+          extract: false
 
       - name: Download Deb Package artifact
         uses: actions/download-artifact@v4
         with:
           name: DataPlotter-Deb-Package
           path: ./artifacts
+          extract: false
 
       - name: Generate custom release notes
         run: |
