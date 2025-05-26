@@ -8,7 +8,8 @@ on:
     branches:
       - main  # Run on PRs to main
   workflow_dispatch: # Manual triggering
-
+  workflow_call: # Allow this workflow to be called by other workflows
+  
 jobs:
   build:
     runs-on: ubuntu-22.04
