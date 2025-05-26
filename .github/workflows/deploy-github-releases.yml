@@ -1,0 +1,76 @@
+name: Create Release with Artifacts
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'  # e.g., v1.0.0
+
+jobs:
+  build-windows:
+    uses: ./.github/workflows/build-windows.yml
+    secrets: inherit
+
+  build-windows-xp:
+    uses: ./.github/workflows/build-windows-legacy.yml
+    secrets: inherit
+
+  build-linux:
+    uses: ./.github/workflows/build-linux.yml
+    secrets: inherit
+
+  release:
+    needs: [build-windows, build-windows-xp, build-linux]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up GitHub CLI
+        uses: cli/cli-action@v2
+
+      - name: Download Win Installer artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: DataPlotter-Windows-Installer
+          path: ./artifacts
+
+      - name: Download Win Portable artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: DataPlotter-Windows-Portable
+          path: ./artifacts
+
+      - name: Download winXP Portable artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: DataPlotter-WindowsXP-Portable
+          path: ./artifacts
+
+      - name: Download Deb Package artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: DataPlotter-Deb-Package
+          path: ./artifacts
+
+      - name: Generate custom release notes
+        run: |
+          echo '[![Get it from Microsoft Store](https://img.shields.io/badge/Get%20it%20from-Microsoft%20Store-blue?style=for-the-badge&logo=microsoft)](https://apps.microsoft.com/detail/9NVBN2G853FP?hl=en-us&gl=CZ&ocid=pdpshare)' > header.md
+          echo '[![Download for Linux (openSUSE, Fedora, Debian, Raspbian)](https://img.shields.io/badge/Download-Linux%20(distributions)-green?style=for-the-badge&logo=linux)](https://software.opensuse.org//download.html?project=home%3Amaierjir&package=data-plotter)' >> header.md
+          echo -e '\n```bash\nsudo add-apt-repository ppa:cvut-fel-sdi/ppa\nsudo apt update\nsudo apt install data-plotter\n```\n' >> header.md
+
+          echo "## 🔄 Changes" > changes.md
+          gh release view ${{ github.ref_name }} --json body -q .body >> changes.md || echo "_No changes found_" >> changes.md
+
+          cat header.md changes.md > full_notes.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          files: ./artifacts/**
+          body_path: full_notes.md
+          overwrite: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
