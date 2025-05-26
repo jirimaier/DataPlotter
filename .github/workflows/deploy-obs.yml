@@ -2,7 +2,7 @@ name: Build OBS Bundle and Upload
 
 on:
   workflow_dispatch: # Manual triggering
-  workflow_call: # Allow this workflow to be called by other workflows
+  workflow_call:     # Allow this workflow to be called by other workflows
 
 jobs:
   build-and-upload:
@@ -49,17 +49,12 @@ jobs:
         cmake .. -DDEV_MODE=true
         cmake --build . --target open_build_service_bundle
 
-    - name: Install osc
-      run: |
-        sudo apt-get install -y osc
-
     - name: Configure osc credentials
       run: |
         mkdir -p ~/.config/osc
         cat <<EOF > ~/.config/osc/oscrc
         [general]
         apiurl = https://api.opensuse.org
-
         [https://api.opensuse.org]
         user = ${OBS_USERNAME}
         pass = ${OBS_PASSWORD}
@@ -72,6 +67,14 @@ jobs:
     - name: Checkout OBS package
       run: |
         osc checkout home:maierjir/data-plotter
+
+    - name: Clean old versioned files in OBS package
+      run: |
+        cd home:maierjir/data-plotter
+        # Remove previous .dsc, .orig.tar.*, .debian.tar.*
+        rm -f *.dsc *.orig.tar.* *.debian.tar.* || true
+        # Optionally remove other stale artifacts
+        rm -f *.spec *.pkg.tar.* || true
 
     - name: Copy built OBS bundle into package
       run: |
