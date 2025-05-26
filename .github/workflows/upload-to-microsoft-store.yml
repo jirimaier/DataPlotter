@@ -1,0 +1,63 @@
+name: Deploy DataPlotter MSIX to Microsoft Store
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    uses: ./.github/workflows/build-windows.yml  # Call the reusable build workflow
+
+  check-tag-origin:
+    runs-on: ubuntu-latest
+    needs: build
+    outputs:
+      is_main: ${{ steps.check.outputs.is_main }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Required to fetch full git history for branch detection
+
+      - name: Check if tag points to main
+        id: check
+        run: |
+          TAG_COMMIT=$(git rev-list -n 1 ${{ github.ref }})
+          BRANCH=$(git branch --contains $TAG_COMMIT | grep "main" || true)
+          if [ "$BRANCH" == "" ]; then
+            echo "is_main=false" >> $GITHUB_OUTPUT
+          else
+            echo "is_main=true" >> $GITHUB_OUTPUT
+          fi
+
+  deploy:
+    runs-on: windows-latest
+    needs: [build, check-tag-origin]
+    if: needs.check-tag-origin.outputs.is_main == 'true'
+
+    steps:
+      - name: Checkout tag
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Download unsigned MSIX artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: msix-package-for-store
+          path: msix_upload
+
+      - name: Install Windows Partner Center CLI
+        run: pip install windows-partner-center-cli
+
+      - name: Upload MSIX to Microsoft Store
+        env:
+          WPC_CLIENT_ID: ${{ secrets.WPC_CLIENT_ID }}
+          WPC_CLIENT_SECRET: ${{ secrets.WPC_CLIENT_SECRET }}
+          WPC_TENANT_ID: ${{ secrets.WPC_TENANT_ID }}
+          WPC_APP_ID: ${{ secrets.WPC_APP_ID }}
+        run: |
+          wpc login --client-id "$env:WPC_CLIENT_ID" --client-secret "$env:WPC_CLIENT_SECRET" --tenant-id "$env:WPC_TENANT_ID"
+          $msixPath = Get-ChildItem -Path "msix_upload" -Filter *.msix | Select-Object -First 1
+          wpc flight create-package --app-id "$env:WPC_APP_ID" --file-path $msixPath.FullName --target-ring "Insider Fast"
