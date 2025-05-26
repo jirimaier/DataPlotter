@@ -49,8 +49,9 @@ jobs:
           name: msix-package-for-store
           path: msix_upload
 
-      - name: Install Windows Partner Center CLI
-        run: pip install windows-partner-center-cli
+      - name: Install Windows Partner Center CLI (wpc)
+        run: |
+          dotnet tool install --global WindowsPartnerCenter.Cli
 
       - name: Upload MSIX to Microsoft Store
         env:
