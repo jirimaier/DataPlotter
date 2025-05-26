@@ -1,14 +1,13 @@
-name: Deploy DataPlotter MSIX to Microsoft Store
+name: Publish to Microsoft Store (on tag from main)
 
 on:
   push:
     tags:
-      - "v*"
-  workflow_dispatch:
+      - 'v*'
 
 jobs:
   build:
-    uses: ./.github/workflows/build-windows.yml  # Call the reusable build workflow
+    uses: ./.github/workflows/build-windows.yml  # Call reusable build
 
   check-tag-origin:
     runs-on: ubuntu-latest
@@ -16,20 +15,19 @@ jobs:
     outputs:
       is_main: ${{ steps.check.outputs.is_main }}
     steps:
-      - name: Checkout repo
+      - name: Checkout with full history
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Required to fetch full git history for branch detection
+          fetch-depth: 0
 
-      - name: Check if tag points to main
+      - name: Check if tag is on main
         id: check
         run: |
           TAG_COMMIT=$(git rev-list -n 1 ${{ github.ref }})
-          BRANCH=$(git branch --contains $TAG_COMMIT | grep "main" || true)
-          if [ "$BRANCH" == "" ]; then
-            echo "is_main=false" >> $GITHUB_OUTPUT
-          else
+          if git branch --contains $TAG_COMMIT | grep -q "main"; then
             echo "is_main=true" >> $GITHUB_OUTPUT
+          else
+            echo "is_main=false" >> $GITHUB_OUTPUT
           fi
 
   deploy:
@@ -38,28 +36,52 @@ jobs:
     if: needs.check-tag-origin.outputs.is_main == 'true'
 
     steps:
-      - name: Checkout tag
+      - name: Checkout at tag
         uses: actions/checkout@v4
         with:
           ref: ${{ github.ref }}
 
-      - name: Download unsigned MSIX artifact
+      - name: Download MSIX artifact
         uses: actions/download-artifact@v4
         with:
           name: msix-package-for-store
           path: msix_upload
 
-      - name: Install Windows Partner Center CLI (wpc)
+      - name: Find MSIX file path
+        id: msix
         run: |
-          dotnet tool install --global WindowsPartnerCenter.Cli
+          $file = Get-ChildItem -Path msix_upload -Filter *.msix | Select-Object -First 1
+          echo "msix_path=$($file.FullName)" >> $env:GITHUB_ENV
+        shell: pwsh
 
-      - name: Upload MSIX to Microsoft Store
-        env:
-          WPC_CLIENT_ID: ${{ secrets.WPC_CLIENT_ID }}
-          WPC_CLIENT_SECRET: ${{ secrets.WPC_CLIENT_SECRET }}
-          WPC_TENANT_ID: ${{ secrets.WPC_TENANT_ID }}
-          WPC_APP_ID: ${{ secrets.WPC_APP_ID }}
-        run: |
-          wpc login --client-id "$env:WPC_CLIENT_ID" --client-secret "$env:WPC_CLIENT_SECRET" --tenant-id "$env:WPC_TENANT_ID"
-          $msixPath = Get-ChildItem -Path "msix_upload" -Filter *.msix | Select-Object -First 1
-          wpc flight create-package --app-id "$env:WPC_APP_ID" --file-path $msixPath.FullName --target-ring "Insider Fast"
+      - name: Configure Store Submission
+        uses: microsoft/store-submission@v1
+        with:
+          command: configure
+          type: win32
+          seller-id: ${{ secrets.SELLER_ID }}
+          product-id: ${{ secrets.PRODUCT_ID }}
+          tenant-id: ${{ secrets.TENANT_ID }}
+          client-id: ${{ secrets.CLIENT_ID }}
+          client-secret: ${{ secrets.CLIENT_SECRET }}
+
+      - name: Update Submission with local MSIX
+        uses: microsoft/store-submission@v1
+        with:
+          command: update
+          product-update: |
+            {
+              "packages": [
+                {
+                  "filePath": "${{ env.msix_path }}",
+                  "languages": ["en"],
+                  "architectures": ["x64"],
+                  "isSilentInstall": true
+                }
+              ]
+            }
+
+      - name: Publish to Microsoft Store
+        uses: microsoft/store-submission@v1
+        with:
+          command: publish
