@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.18)
 
-project(DataPlotter VERSION 3.3.2 LANGUAGES CXX DESCRIPTION "GUI interface for custom software-defined instruments")
+project(DataPlotter VERSION 3.3.3 LANGUAGES CXX DESCRIPTION "GUI interface for custom software-defined instruments")
 
 # ============================================================================
 # Project Metadata
