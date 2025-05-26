@@ -81,6 +81,8 @@ Q_DECLARE_METATYPE(QSerialPort::FlowControl);
 
 int main(int argc, char *argv[]) {
   QGuiApplication::setAttribute(Qt::AA_DisableHighDpiScaling);
+  QGuiApplication::setAttribute(Qt::AA_SynthesizeTouchForUnhandledMouseEvents);
+  QGuiApplication::setAttribute(Qt::AA_SynthesizeMouseForUnhandledTouchEvents);
   QQuickStyle::setStyle("Material");
   QApplication application(argc, argv);
 

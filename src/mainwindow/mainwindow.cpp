@@ -26,6 +26,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
   qApp->setStyle("Fusion");
   this->setAttribute(Qt::WA_NativeWindow);
 
+  ui->quickWidget->setAttribute(Qt::WA_AcceptTouchEvents);
+  ui->quickWidget->setAttribute(Qt::WA_TouchPadAcceptSingleTouchEvents);
+
   developerOptions = new DeveloperOptions(this, ui->quickWidget);
   freqTimePlotDialog = new FreqTimePlotDialog(nullptr);
   simulatedInputDialog.reset(new ManualInputDialog(nullptr));
