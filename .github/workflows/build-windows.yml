@@ -89,7 +89,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: DataPlotter-Windows-Portable
-        path: extras/deploy_windows/deploy/DataPlotter*Portable
+        path: extras/deploy_windows/deploy/DataPlotter*Portable.zip
 
     - name: Upload MSIX artifact
       uses: actions/upload-artifact@v4

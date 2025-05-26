@@ -263,6 +263,16 @@ if __name__ == "__main__":
         if "V" in args.config.upper():
             add_msvc_runtime_libs(portable_folder, args.vcredist)
         add_documentation(portable_folder, os.path.join(base_dir, "documentation"))
+        # create a zip archive of the portable version
+        portable_zip = os.path.join(
+            deploy_dir, f"DataPlotter_{version.replace('.', '_')}_Portable.zip"
+        )
+        with zipfile.ZipFile(portable_zip, "w", zipfile.ZIP_DEFLATED) as zipf:
+            for root, dirs, files in os.walk(portable_folder):
+                for file in files:
+                    file_path = os.path.join(root, file)
+                    arcname = os.path.relpath(file_path, portable_folder)
+                    zipf.write(file_path, arcname)
 
     if "M" in args.config:
         # make a copy of the app folder for the msix version

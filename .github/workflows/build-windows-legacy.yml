@@ -69,4 +69,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: DataPlotter-WindowsXP-Portable
-          path: extras/deploy_windows/deploy/DataPlotter*Portable
+          path: extras/deploy_windows/deploy/DataPlotter*Portable.zip
