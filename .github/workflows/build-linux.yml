@@ -1,12 +1,6 @@
 name: Debian Build
 
 on:
-  push:
-    branches:
-      - main  # Run on every push to main (modify as needed)
-  pull_request:
-    branches:
-      - main  # Run on PRs to main
   workflow_dispatch: # Manual triggering
   workflow_call: # Allow this workflow to be called by other workflows
 
