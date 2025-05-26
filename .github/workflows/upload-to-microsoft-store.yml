@@ -1,9 +1,6 @@
-name: Publish to Microsoft Store (on tag from main)
+name: Publish to Microsoft Store (not functional)
 
 on:
-  push:
-    tags:
-      - 'v*'
   workflow_dispatch:
 
 jobs:
