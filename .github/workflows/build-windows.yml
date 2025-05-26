@@ -1,12 +1,6 @@
-name: Build and Deploy DataPlotter on Windows
+name: Windows Build
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
   workflow_dispatch: # Manual triggering
   workflow_call: # Allow this workflow to be called by other workflows
 

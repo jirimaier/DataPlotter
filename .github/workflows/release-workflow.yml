@@ -1,0 +1,16 @@
+name: Release Workflow
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'  # e.g., v1.0.0
+
+jobs:
+  github-release:
+    uses: ./.github/workflows/deploy-github-releases.yml
+    secrets: inherit
+  
+  OBS-release:
+    uses: ./.github/workflows/deploy-obs.yml
+    secrets: inherit

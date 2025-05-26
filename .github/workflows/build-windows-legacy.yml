@@ -1,12 +1,6 @@
-name: Build and Deploy DataPlotter on Windows XP 32-bit (Qt 5.7.1 + MinGW 5.3.0)
+name: Windows XP Build
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
   workflow_dispatch: # Manual triggering
   workflow_call:  # Allow this workflow to be called by other workflows
 
@@ -16,13 +10,7 @@ jobs:
     env:
       QT571_FILE_ID: ${{ secrets.QT571_FILE_ID }}
 
-    steps:
-      - name: Early exit if secret is missing in pull_request
-        if: ${{ github.event_name == 'pull_request' && env.QT571_FILE_ID == '' }}
-        run: |
-          echo "QT571_FILE_ID is not available on pull requests from forks. Skipping build."
-          exit 0
-          
+    steps:         
       - name: Checkout repository
         uses: actions/checkout@v4
 

@@ -1,0 +1,16 @@
+name: PR test build
+
+on:
+  workflow_dispatch: # Manual triggering
+  pull_request: # Trigger on pull requests
+      branches:
+      - main # Adjust this to your main branch if different
+
+jobs:
+  windows-build:
+    uses: ./.github/workflows/build-windows.yml
+    secrets: inherit
+
+  linux-build:
+    uses: ./.github/workflows/build-linux.yml
+    secrets: inherit
