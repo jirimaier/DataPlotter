@@ -68,13 +68,11 @@ jobs:
       run: |
         osc checkout home:maierjir/data-plotter
 
-    - name: Clean old versioned files in OBS package
+    - name: Clean old files in OBS package
       run: |
         cd home:maierjir/data-plotter
-        # Remove previous .dsc, .orig.tar.*, .debian.tar.*
-        rm -f *.dsc *.orig.tar.* *.debian.tar.* || true
-        # Optionally remove other stale artifacts
-        rm -f *.spec *.pkg.tar.* || true
+        # Remove old packaging files — safe patterns
+        rm -f *.dsc *.orig.tar.* *.debian.tar.* *.spec appimage.yml || true
 
     - name: Copy built OBS bundle into package
       run: |
