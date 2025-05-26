@@ -6,8 +6,23 @@ pkgdesc="@PACKAGE_DESCRIPTION@"
 arch=("any")
 url="@PACKAGE_URL@"
 license=('@PACKAGE_LICENCE@')
-depends=("qt5-base")
-makedepends=("cmake" "elfutils")
+depends=(
+  'qt5-base'
+  'qt5-tools'
+  'qt5-declarative'
+  'qt5-quickcontrols2'
+  'qt5-graphicaleffects'
+  'qt5-charts'
+  'qt5-serialport'
+  'qt5-svg'
+)
+makedepends=(
+  'cmake'
+  'gcc'
+  'make'
+  'qt5-tools'
+  'elfutils'
+)
 source=("@PACKAGE_SOURCE_ARCHIVE_FILE@")
 md5sums=("@FILE_MD5@")
 
