@@ -86,7 +86,7 @@ int main(int argc, char *argv[]) {
   QQuickStyle::setStyle("Material");
   QApplication application(argc, argv);
 
-  // Zaregistruje typy aby je šlo posílat signály mezi vlákny
+  // Register types so signals can be sent between threads
   qRegisterMetaType<ChannelSettings_t>();
   qRegisterMetaType<QPair<QVector<double>, QVector<double>>>();
   qRegisterMetaType<DataMode::enumDataMode>();
@@ -109,10 +109,10 @@ int main(int argc, char *argv[]) {
   qRegisterMetaType<QSerialPort::Parity>();
   qRegisterMetaType<QSerialPort::FlowControl>();
 
-  // Vytvoří instance hlavních objektů
+  // Create instances of the main objects
   MainWindow mainWindow;
-  QTranslator translator; // Musí být zde aby dokázal přeložit i texty v
-                          // objektech jiných než MainWindow
+  QTranslator translator; // Must be here so it can translate texts in objects
+                          // other than MainWindow
   PlotData *plotData = new PlotData();
   NewSerialParser *serialParser = new NewSerialParser(MessageTarget::serial1);
   NewSerialParser *serialParserM = new NewSerialParser(MessageTarget::manual);
@@ -126,7 +126,7 @@ int main(int argc, char *argv[]) {
   Interpolator *interpolator = new Interpolator();
   Averager *averager = new Averager();
 
-  // Vytvoří vlákna
+  // Create threads
   // QThread plotDataThread;
   QThread serialParserThread;
   QThread plotMathThread;
@@ -136,7 +136,7 @@ int main(int argc, char *argv[]) {
   QThread averagerThread;
   QThread xyThread;
 
-  // Propojí signály
+  // Connect signals
   QObject::connect(serial1, &SerialReader::sendData, serialParser, &NewSerialParser::parse);
   QObject::connect(serial1, &SerialReader::started, serialParser, &NewSerialParser::getReady);
   QObject::connect(serialParser, &NewSerialParser::ready, serial1, &SerialReader::parserReady);
@@ -217,10 +217,10 @@ int main(int argc, char *argv[]) {
   QObject::connect(&mainWindow, &MainWindow::replyEcho, serialParser, &NewSerialParser::replyEcho);
   QObject::connect(&mainWindow, &MainWindow::changeSerialBaud, serial1, &SerialReader::changeBaud);
 
-  // Funkce init je zavolána až z nového vlákna
+  // The init function is called from the new thread
   QObject::connect(&serialReaderThread, &QThread::started, serial1, &SerialReader::init);
 
-  // Přesuny do vláken
+  // Move objects to threads
   serial1->moveToThread(&serialReaderThread);
   serialParser->moveToThread(&serialParserThread);
   serialParserM->moveToThread(&serialParserThread);
@@ -235,7 +235,7 @@ int main(int argc, char *argv[]) {
   interpolator->moveToThread(&interpolatorThread);
   averager->moveToThread(&averagerThread);
 
-  // Zahájí vlákna
+  // Start threads
   serialReaderThread.start();
   serialParserThread.start();
   plotMathThread.start();
@@ -247,12 +247,12 @@ int main(int argc, char *argv[]) {
   averagerThread.start();
   xyThread.start();
 
-  // Zobrazí okno a čeká na ukončení
+  // Show the window and wait for it to close
   mainWindow.init(&translator, plotData, plotMath, serial1, averager);
   mainWindow.show();
   int returnValue = application.exec();
 
-  // Smazat objekty až budou dokončeny procesy v nich
+  // Delete objects once their processes are finished
   serialParser->deleteLater();
   serialParserM->deleteLater();
   plotData->deleteLater();
@@ -266,7 +266,7 @@ int main(int argc, char *argv[]) {
   averager->deleteLater();
   xyMode->deleteLater();
 
-  // Vyžádá ukončení event loopu
+  // Request event loop termination
   serialParserThread.quit();
   plotMathThread.quit();
   serialReaderThread.quit();
@@ -278,7 +278,7 @@ int main(int argc, char *argv[]) {
   averagerThread.quit();
   xyThread.quit();
 
-  // Čeká na ukončení procesů
+  // Wait for processes to finish
   serialParserThread.wait();
   plotMathThread.wait();
   serialReaderThread.wait();

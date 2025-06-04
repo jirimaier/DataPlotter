@@ -21,35 +21,35 @@
 
 #include "global.h"
 
-/// Slide může mít hodnotu (real value) mimo rozsah pohybu posuvníku
-/// Posuvníkem se mění hodnota v rozsahu min max (zobrazený interval v grafu)
-/// ale pokud si min max změní tak, že původní hodnota je mimo rozsah, tak hodnota zůstane zachována,
-/// dokud není sliderem prhnuto na nové místo. Když je nastavená hodnota vně rozsahu posuvníku, je posuvník šedý.
+/// The slider can hold a real value outside its movement range.
+/// Moving the slider changes the value within the min/max range (displayed interval in the plot),
+/// but if the range changes so the original value is outside, the value is kept
+/// until the slider is dragged again. If the stored value is out of range, the slider appears grey.
 class myCursorSlider : public QSlider {
   Q_OBJECT
  public:
   explicit myCursorSlider(QWidget* parent = nullptr);
 
-  /// Nastaví rozsah v kterém lze posuvník tahat
+  /// Set the range in which the slider can be moved
   void updateRange(int min, int max);
 
-  /// Vrátí nastavenou hodnotu (která může být mimo rozsah pohybu
+  /// Return the stored value (which may be outside the range)
   int getRealValue() { return realPos;};
 
  private slots:
-  /// Změnila se poloha posuvníku
+  /// Slider position changed
   void positionChanged(int newpos);
 
  private:
-  /// Nastavená hodnota (může být mimo rozsah, tedy jiná než value() ).
+  /// Stored value (may be outside the range and thus differ from value())
   int realPos = 0;
 
  public slots:
-  /// Nastavý hodnotu, která může být mimo rozsah pohybu
+  /// Set a value that may be outside the slider range
   void setRealValue(int newValue);
 
  signals:
-  /// Změnila se nastavená hodnota
+  /// Stored value changed
   void realValueChanged(int);
 };
 

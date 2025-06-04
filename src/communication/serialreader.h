@@ -45,34 +45,34 @@ private slots:
   void read();
   void errorOccurred();
 signals:
-  /// Pošle informaci jestli je port připojen
+  /// Sends information whether the port is connected
   void connectionResult(bool connected, QString caption, QString details);
-  /// Oznámý dokončení zápisu dat do portu
+  /// Notifies that writing to the port has finished
   void finishedWriting();
-  /// Počle přečtená data
+  /// Sends the read data
   void sendData(QByteArray data);
-  /// Oznámí připojení (očekává odpověď že parser je připravený)
+  /// Reports connection (expects a reply that the parser is ready)
   void started();
-  /// Přeposílá data
+  /// Forwards data
   void monitor(QByteArray data);
 
   void stopManualInputData();
 public slots:
-  /// Vytvoří instanci QSerialPortu
+  /// Creates a QSerialPort instance
   void init();
-  /// Připojí nebo odpojí port
+  /// Connects or disconnects the port
   void toggle(QString portName, int baudRate, QSerialPort::DataBits dataBits, QSerialPort::Parity parity, QSerialPort::StopBits stopBits, QSerialPort::FlowControl flowControll);
-  /// Pokusí se otevřít port
+  /// Attempts to open the port
   void begin(QString portName, int baudRate, QSerialPort::DataBits dataBits, QSerialPort::Parity parity, QSerialPort::StopBits stopBits, QSerialPort::FlowControl flowControll);
-  /// Zavře port
+  /// Closes the port
   void end();
-  /// Zapíše data do portu
+  /// Writes data to the port
   void write(QByteArray data);
-  /// Zahájí přeposílání dat
+  /// Starts forwarding data
   void parserReady();
-  /// Zapne předávání dat
+  /// Enables data forwarding
   void enableMonitoring(bool en) { serialMonitor = en; }
-  /// Pokud je port připojen, změní baud bez odpojení
+  /// If the port is connected, change baud without disconnecting
   void changeBaud(qint32 baud);
 };
 

@@ -22,7 +22,7 @@
 
 #include "global.h"
 
-/// Dial který skáče po hodnotách ze seznamu (1,2,5,10,20,50,100 ...)
+/// Dial that jumps over preset values (1,2,5,10,20,50,100 ...)
 class myDial : public QDial {
   Q_OBJECT
  public:
@@ -37,11 +37,11 @@ class myDial : public QDial {
   void positionChanged(int position);
 
  public slots:
-  /// Dial se pohne tak, aby poloha byla co nejblýže zvolené hodnotě (zaokrouhluje nahoru)
+  /// Move the dial so its position is as close as possible to the selected value (rounded up)
   void updatePosition(double value);
 
  signals:
-  /// Hodnota byla zněněna uživatelem
+  /// The value was changed by the user
   void realValueChanged(double);
 };
 

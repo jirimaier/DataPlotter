@@ -46,7 +46,7 @@ void NewSerialParser::sendMessageIfAllowed(QString header, QString message, Mess
 void NewSerialParser::showBuffer() {
   if ((!buffer.isEmpty()) || (!pendingDataBuffer.isEmpty())) {
     QByteArray bufferToPrint = pendingDataBuffer + buffer;
-    // nahradí netisknutelné znaky hex číslem
+    // replace non-printable characters with their hex value
     for (unsigned char ch = 0;; ch++) {
       if (ch == 32)
         ch = 127;
@@ -100,7 +100,7 @@ void NewSerialParser::parse(QByteArray newData) {
       if (buffer.length() >= 3) {
         if (buffer.left(2) == "$$") {
           if (currentMode == DataMode::info || currentMode == DataMode::warning)
-            emit sendDeviceMessage("", false, true); // Pokud byl předchozí režim výpis zprávy, ohlásí její konec
+            emit sendDeviceMessage("", false, true); // If the previous mode was a message print, announce its end
           if (currentMode == DataMode::initialEcho)
             initialEchoPending = false;
           parseMode(buffer.at(2));
@@ -224,12 +224,12 @@ void NewSerialParser::parse(QByteArray newData) {
               channelHeaderRead = true;
               try {
                 if (pendingPointBuffer.at(0).first.isBinary || !pendingPointBuffer.at(0).second.contains('+')) {
-                  // Jen jeden kanál
+                  // Only one channel
                   channelNumber.append(arrayToUint(pendingPointBuffer.at(0)));
                   if (channelNumber.at(0) == 0 || channelNumber.at(0) > ANALOG_COUNT)
                     throw(tr("out of range (1 - %1): %2").arg(ANALOG_COUNT).arg(channelNumber.at(0)));
                 } else {
-                  // Vícero kanálů na přeskáčku
+                  // Multiple channels interleaved
                   QByteArrayList values = pendingPointBuffer.at(0).second.split('+');
                   for (int i = 0; i < values.size(); i++) {
                     channelNumber.append(values.at(i).toUInt());
@@ -337,7 +337,7 @@ void NewSerialParser::parse(QByteArray newData) {
                 throw(tr("Invalid channel: ") + tr("Invalid zero position - ") + msg);
               }
             }
-            // Delší by neprošlo kontrolou při čtení záhlaví
+            // A longer value would not pass the header check
           } else if (channel.first.type == ValueType::Type::integer) {
             if (!additionalHeaderParameters.isEmpty()) {
               if (additionalHeaderParameters.size() == 1) {
@@ -444,7 +444,7 @@ void NewSerialParser::parse(QByteArray newData) {
               throw(tr("Invalid logic channel: ") + tr("Invalid zero position - ") + msg);
             }
           }
-          // Delší by neprošlo kontrolou při čtení záhlaví
+          // A longer value would not pass the header check
 
           emit sendLogicChannel(channel, channelTime, channelBits, zeroIndex);
 
@@ -610,7 +610,7 @@ void NewSerialParser::parse(QByteArray newData) {
 
 NewSerialParser::readResult NewSerialParser::bufferReadPoint(QList<QPair<ValueType, QByteArray>> &result) {
   while (!buffer.isEmpty()) {
-    // Textové číslo
+    // Text number
     if (buffer.at(0) == ' ') {
       buffer.remove(0, 1);
       continue;
@@ -659,16 +659,16 @@ NewSerialParser::readResult NewSerialParser::bufferReadPoint(QList<QPair<ValueTy
     }
 
     if (IS_NUMERIC_CHAR(buffer.at(0))) {
-      // Hledám který znak je nejblýž: , ; nebo $
-      // Pokud se nevyskytuje, funkce vrátí -1, což se v unsigned int zmení na max hodnotu int a tedy rozhodně nebude nejblýže
+      // Look for the nearest character: ',' ';' or '$'
+      // If none is found the function returns -1 which becomes the maximum unsigned value and thus certainly isn't the nearest
       ValueType valType(false);
       unsigned int comma = buffer.indexOf(',');
       unsigned int semicolon = buffer.indexOf(';');
       unsigned int dollar = buffer.indexOf('$');
       if (comma < semicolon && comma < dollar) {
-        // Nejblýže je čárka
+        // The comma is the nearest
         QByteArray value = buffer.left(comma);
-        // Samotná pomlčka se považuje za vynechaní kanál
+        // A single dash means the channel is skipped
         if (value == "-")
           value.clear();
         if (value.toLower() == "-inf") {
@@ -701,7 +701,7 @@ NewSerialParser::readResult NewSerialParser::bufferReadPoint(QList<QPair<ValueTy
         buffer.remove(0, dollar);
         return notProperlyEnded;
       } else
-        // Žádné není nejmenší (jsou si rovny a jsou na maximu, tedy znak není)
+        // None is smaller (they are equal and at maximum, so there is no such character)
         return incomplete;
     } else {
       if (buffer.length() == 1) {
@@ -710,7 +710,7 @@ NewSerialParser::readResult NewSerialParser::bufferReadPoint(QList<QPair<ValueTy
           buffer.remove(0, 1);
           return complete;
         } else
-          // V bufferu není celý bod
+          // The buffer does not contain the entire point
           return incomplete;
       }
 

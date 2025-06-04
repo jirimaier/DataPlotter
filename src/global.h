@@ -44,7 +44,7 @@ const char MisrosoftStoreUrl[] = "https://apps.microsoft.com/detail/9NVBN2G853FP
 
 #define LOGIC_COUNT LOGIC_BITS *LOGIC_GROUPS
 
-/// Počet kanálů v grafu (každý logický bit počítá jako samostatný kanál, nezahrnuje interpolační kanály
+/// Number of channels in the plot (each logic bit counts as a separate channel; interpolation channels excluded)
 #define ALL_COUNT (ANALOG_COUNT + MATH_COUNT + LOGIC_COUNT)
 
 #define POINT_STYLE QCPScatterStyle::ssDisc

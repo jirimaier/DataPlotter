@@ -184,7 +184,7 @@ void DeveloperOptions::on_pushButtonQmlLoad_clicked() {
 
 void DeveloperOptions::on_pushButtonTerminalDebugSend_clicked() {
   QByteArray data = ui->textEditTerminalDebug->toPlainText().toUtf8();
-  data.replace("\n", "\r\n"); // Odřádkování v textovém poli
+  data.replace("\n", "\r\n"); // Line breaks in the text field
   data.replace("\\n", "\n");
   data.replace("\\e", "\u001b");
   data.replace("\\r", "\r");
