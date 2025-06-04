@@ -69,7 +69,7 @@
     <message>
         <location filename="../src/mainwindow/appsettings.cpp" line="370"/>
         <source>Windows</source>
-        <translation type="unfinished"></translation>
+        <translation>Windows</translation>
     </message>
 </context>
 <context>
@@ -228,7 +228,7 @@
     <message>
         <location filename="../src/forms/developeroptions.ui" line="347"/>
         <source>E Next line</source>
-        <translation></translation>
+        <translation>E Další řádek</translation>
     </message>
     <message>
         <location filename="../src/forms/developeroptions.ui" line="352"/>
@@ -1028,7 +1028,7 @@
         <location filename="../src/forms/mainwindow.ui" line="5927"/>
         <location filename="../src/forms/mainwindow.ui" line="6037"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/forms/mainwindow.ui" line="6184"/>
