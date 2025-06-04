@@ -110,7 +110,7 @@ void MyFFTPlot::newData(int chID, QSharedPointer<QCPGraphDataContainer> data) {
     if (cursorsKey[Cursors::Cursor1]->visible() && cur1Graph == chID)
       emit moveTimeCursor(Cursors::Cursor1, cur1Graph == -1 ? 0 : keyToNearestSample(graph(cur1Graph), cur1ShouldBeAtKey), cur1ShouldBeAtKey);
     if (cursorsKey[Cursors::Cursor2]->visible() && cur2Graph == chID)
-      emit moveTimeCursor(Cursors::Cursor2, cur2Graph == -1 ? 0 : keyToNearestSample(graph(cur2Graph), cur2ShouldBeAtKey), cur1ShouldBeAtKey);
+      emit moveTimeCursor(Cursors::Cursor2, cur2Graph == -1 ? 0 : keyToNearestSample(graph(cur2Graph), cur2ShouldBeAtKey), cur2ShouldBeAtKey);
 
   } else {
     int len = data->size();
