@@ -111,20 +111,20 @@ double floorToNiceValue(double value);
 
 int getAnalogChId(int number, ChannelType::enumChannelType type);
 
-/// Skupina od 0, bit od 0, Vrátí chID
+/// Group from 0 and bit from 0, returns chID
 int getLogicChannelID(int group, int bit);
 
-/// Chid od 0
+/// chid starting from 0
 QString getChName(int chid);
 
 int intLog10(double x);
 
-/// Nejbližší vyšší (nebo rovná) mocnina 2
+/// Nearest power of two that is greater or equal
 int nextPow2(int number);
 
-/// Převede číslo na text s (prec) platnými ciframi
-/// TrimZeroes odstraní nuly na konci desetinych míst
-/// (např. namísto 1.200 zobrazí jako 1.2)
+/// Converts the number to text with (prec) significant digits
+/// TrimZeroes removes zeros at the end of the decimal part
+/// (e.g. instead of 1.200 it shows 1.2)
 QString toSignificantDigits(double x, int prec, bool trimZeroes = false);
 
 QString floatToNiceString(double d, int significantDigits, bool justify, bool justifyUnit, bool noDecimalsIfInteger = false, UnitOfMeasure unit = UnitOfMeasure(""));

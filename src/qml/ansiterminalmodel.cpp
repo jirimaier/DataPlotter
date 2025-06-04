@@ -219,7 +219,7 @@ void AnsiTerminalModel::printText(QByteArray bytes) {
       QApplication::beep();
       continue;
     }
-    if (text.at(i) == '\t') { // Tabulátor posune kursor na další sloupec který je násobkem 8 (počítáno od 0)
+    if (text.at(i) == '\t') { // Tab moves cursor to the next column that is a multiple of 8 (counted from 0)
       do
         moveCursorRelative(1, 0);
       while (cursorX % 8);
@@ -265,20 +265,20 @@ void AnsiTerminalModel::parseFontEscapeCode(QByteArray data) {
 }
 
 void AnsiTerminalModel::parseEscapeCode(QByteArray data) {
-  // Uložit pozici kursoru
+  // Save cursor position
   if (data == "s") {
     cursorX_saved = cursorX;
     cursorY_saved = cursorY;
   }
-  // Vrátit kursor na uloženou posici
+  // Restore cursor to saved position
   else if (data == "u") {
     moveCursorAbsolute(cursorX_saved, cursorY_saved);
   }
-  // Nastavení barev a stylů
+  // Set colors and styles
   else if (data.right(1) == "m") {
     parseFontEscapeCode(data.left(data.length() - 1));
   }
-  // Pohyb kursoru
+  // Cursor movement
   else if (data.right(1) == "A" || data.right(1) == "B" || data.right(1) == "C" || data.right(1) == "D" || data.right(1) == "E" || data.right(1) == "F") {
     int value = 1;
     if (data.length() > 1) {
@@ -289,23 +289,23 @@ void AnsiTerminalModel::parseEscapeCode(QByteArray data) {
         return;
       }
     }
-    if (data.right(1) == "A") // Nahoru
+    if (data.right(1) == "A") // Up
       moveCursorRelative(0, -value);
-    else if (data.right(1) == "B") // Dolů
+    else if (data.right(1) == "B") // Down
       moveCursorRelative(0, value);
-    else if (data.right(1) == "C") // Vpravo
+    else if (data.right(1) == "C") // Right
       moveCursorRelative(value, 0);
-    else if (data.right(1) == "D") // Vlevo
+    else if (data.right(1) == "D") // Left
       moveCursorRelative(-value, 0);
-    else if (data.right(1) == "E") // Řádek dolů
+    else if (data.right(1) == "E") // Line down
       moveCursorAbsolute(0, cursorY + value);
-    else if (data.right(1) == "F") // Řádek nahoru
+    else if (data.right(1) == "F") // Line up
       moveCursorAbsolute(0, cursorY - value);
-    else if (data.right(1) == "G") // Sloupec
+    else if (data.right(1) == "G") // Column
       moveCursorAbsolute(value - 1, cursorY);
   }
 
-  // Posunout kursor na pozici (v příkazu se čísluje od 1)
+  // Move cursor to position (command numbering starts at 1)
   else if (data.right(1) == "H" || data.right(1) == "f") {
     int n = 1;
     int m = 1;
@@ -338,27 +338,27 @@ void AnsiTerminalModel::parseEscapeCode(QByteArray data) {
     emit sendMessage(tr("Invalid escape sequence").toUtf8(), data, MessageLevel::error);
   }
 
-  // Vymazat od kursoru na konec všeho
+  // Clear from cursor to the end
   else if (data == "0J" || data == "J") {
     clearLineRight();
     clearDown();
   }
-  // Vymazet od kursoru po začátek všeho
+  // Clear from cursor to the beginning
   else if (data == "1J") {
     clearLineLeft();
     clearUp();
   }
-  // Vymazat všechno
+  // Clear everything
   else if (data == "2J")
     clear();
 
-  // Vymazat od kursoru na konec řádku
+  // Clear from cursor to end of line
   else if (data == "0K" || data == "K")
     clearLineRight();
-  // Vymazet od kursoru po začátek řádku
+  // Clear from cursor to start of line
   else if (data == "1K")
     clearLineLeft();
-  // Vymazat řádek
+  // Clear line
   else if (data == "2K")
     clearLine();
 
@@ -426,7 +426,7 @@ bool AnsiTerminalModel::colorFromSequence(QByteArray code, QColor &clr) {
     return true;
   }
 
-  // Základní a rozšířené (16) barvy
+  // Basic and extended (16) colors
   else if (colorCodes().contains(code)) {
     clr = colorCodes().value(code);
     return true;
@@ -456,7 +456,7 @@ void AnsiTerminalModel::printToTerminal(QByteArray data) {
   while (!buffer.isEmpty()) {
     if ((((uint8_t)buffer.at(buffer.length() - 1)) & 0b10000000) == 0b10000000) {   // 1xxxxxxx
       if ((((uint8_t)buffer.at(buffer.length() - 1)) & 0b11000000) == 0b10000000) { // 10xxxxxx
-        // Poslední znak je UTF-8, ale ne první bajt, je potřeba zjistit, jestli jde o poslední z bajtů (kompletní znak)
+        // Last character is UTF-8 but not the first byte, need to check if it is the final byte of the character
         bool complete = false;
         if ((buffer.length() >= 2) && (((uint8_t)buffer.at(buffer.length() - 2)) & 0b11100000) == 0b11000000) // 110xxxxx 10xxxxxx
           complete = true;
@@ -470,7 +470,7 @@ void AnsiTerminalModel::printToTerminal(QByteArray data) {
         if (!complete)
           return;
       } else
-        return; // Pozlední znak je začátek UTF-8 znaku, je potřeba počkat na zbytek
+        return; // Last character is the start of a UTF-8 sequence, wait for the rest
     }
 
     if (buffer.at(0) != '\u001b') {

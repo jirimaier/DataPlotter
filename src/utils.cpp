@@ -64,7 +64,7 @@ QString getChName(int chid) {
 }
 
 int intLog10(double x) {
-  if (qFuzzyIsNull(x)) // - nekonečno
+  if (qFuzzyIsNull(x)) // minus infinity
     return -1000;
   if (qIsInf(x) || qIsInf(-x))
     return 100;
@@ -95,23 +95,23 @@ QString toSignificantDigits(double x, int prec, bool trimZeroes) {
     return zeroes;
   }
 
-  // Vlivem zaokrouhlní může hodnota být trochu menší než měla být,
-  // například 1.000000 se může změnit na 0.99999999, proto je číslo mírně
-  // zvětšeno, aby se zajistilo, že rád nevfijde o jedna mensí než měl být.
+  // Due to rounding the value may be slightly lower than it should be,
+  // for example 1.000000 can turn into 0.99999999, so the number is
+  // slightly increased to ensure the exponent does not drop by one.
   int log10ofX = intLog10(x);
 
   if (log10ofX >= prec - 1) {
     return QString::number((int)round(x));
   } else {
-    // Převedu na text jako celé číslo
+    // Convert to text as an integer
     QString result = QString::number((int)round(x * (pow(10, prec - log10ofX - 1))));
 
-    // Na příslušné místo vloží desetinnou tečku
+    // Insert decimal point at the proper place
     int decimalPoint = result.length() - prec + log10ofX + 1;
     if (decimalPoint > 0) {
       result.insert(decimalPoint, '.');
       if (trimZeroes) {
-        // Odřízne nuly z desetinných míst
+        // Trim trailing zeros in the decimal part
         for (int i = result.length() - 1; i >= decimalPoint; i--) {
           if (result.at(i) == '0' || result.at(i) == '.')
             result.remove(i, 1);
@@ -120,8 +120,8 @@ QString toSignificantDigits(double x, int prec, bool trimZeroes) {
         }
       }
     } else {
-      // Pokud číslo nemá celou část, je před něj přidána nula s desettinou tečkou
-      // Případně další nuly za tečkou
+      // If there is no integer part, prepend zero with decimal point
+      // and add zeros after the point if needed
       for (; decimalPoint < 0; decimalPoint++)
         result.push_front('0');
       result.push_front('.');
