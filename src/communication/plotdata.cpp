@@ -249,7 +249,7 @@ void PlotData::addPoint(QList<QPair<ValueType, QByteArray>> data) {
   }
   lastTime = time;
   if (debugLevel == OutputLevel::info) {
-    message.remove(message.length() - 2, 2); // Odstraní ", " na konci
+    message.remove(message.length() - 2, 2); // Remove ", " at the end
     emit sendMessage(tr("Parsed point").toUtf8(), message.toUtf8(), MessageLevel::info);
   }
 }
@@ -295,10 +295,10 @@ void PlotData::addLogicPoint(QPair<ValueType, QByteArray> timeArray, QPair<Value
 }
 
 void PlotData::addChannel(QPair<ValueType, QByteArray> data, unsigned int ch, QPair<ValueType, QByteArray> timeRaw, int zeroIndex, int bits, QPair<ValueType, QByteArray> min, QPair<ValueType, QByteArray> max) {
-  // Zjistí datový typ vstupu
+  // Determine input data type
   // QByteArray typeID, numberBytes;
 
-  // Převede časový interval na číslo
+  // Convert the time interval to a number
   bool isok;
   double timeStep = getValue(timeRaw, isok);
   if (!isok) {
@@ -306,10 +306,10 @@ void PlotData::addChannel(QPair<ValueType, QByteArray> data, unsigned int ch, QP
     return;
   }
 
-  // Přemapování provede poud je vyplněno max
+  // Perform remapping only if max is specified
   bool remap = !max.second.isEmpty();
 
-  // Převede minimální hodnotu na číslo na číslo
+  // Convert the minimum value to a number
   double minimum = 0;
   if (!min.second.isEmpty()) {
     if (!remap)
@@ -321,7 +321,7 @@ void PlotData::addChannel(QPair<ValueType, QByteArray> data, unsigned int ch, QP
     }
   }
 
-  // Převede minimální hodnotu na číslo na číslo
+  // Convert the maximum value to a number
   double maximum = 0;
   if (remap || !min.second.isEmpty()) {
     maximum = getValue(max, isok);
@@ -331,7 +331,7 @@ void PlotData::addChannel(QPair<ValueType, QByteArray> data, unsigned int ch, QP
     }
   }
 
-  // Informace o přijatém kanálu
+  // Information about the received channel
   if (debugLevel == OutputLevel::info) {
     QByteArray message = tr("%1 samples, sampling period %2s").arg(data.second.length() / data.first.bytes).arg(floatToNiceString(timeStep, 4, false, false)).toUtf8();
     message.append(tr(", %n bit(s)", "", bits).toUtf8());
@@ -354,7 +354,7 @@ void PlotData::addChannel(QPair<ValueType, QByteArray> data, unsigned int ch, QP
   if (remap)
     data.first.multiplier *= (maximum - minimum) / (1 << bits);
 
-  // Vektory se pošlou jako pointer, graf je po zpracování smaže.
+  // Vectors are passed as pointers; the plot will delete them after processing.
   auto analogData = QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer);
   QVector<double> times;
   QVector<uint32_t> valuesDigital;
@@ -368,7 +368,7 @@ void PlotData::addChannel(QPair<ValueType, QByteArray> data, unsigned int ch, QP
     analogData->add(point);
   }
 
-  // Pošle kanál do grafu a případně do výpočtů
+  // Send the channel to the plot and possibly to calculations
   for (int math = 0; math < MATH_COUNT; math++) {
     if (mathFirsts[math] == ch)
       emit addMathData(math, true, analogData);
@@ -389,7 +389,7 @@ void PlotData::addChannel(QPair<ValueType, QByteArray> data, unsigned int ch, QP
     emit addVectorToPlot(ch - 1, analogData);
 
   if (isLogic) {
-    // Pošle do grafu logický kanál
+    // Send a logic channel to the plot
     QVector<QSharedPointer<QCPGraphDataContainer>> digitalChannels;
     for (uint8_t bit = 0; bit < bits; bit++)
       digitalChannels.append(QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer));
@@ -410,7 +410,7 @@ void PlotData::addChannel(QPair<ValueType, QByteArray> data, unsigned int ch, QP
 }
 
 void PlotData::addLogicChannel(QPair<ValueType, QByteArray> data, QPair<ValueType, QByteArray> timeRaw, int bits, int zeroIndex) {
-  // Převede časový interval na číslo
+  // Convert the time interval to a number
   bool isok;
   double timeStep = getValue(timeRaw, isok);
   if (!isok) {
@@ -418,7 +418,7 @@ void PlotData::addLogicChannel(QPair<ValueType, QByteArray> data, QPair<ValueTyp
     return;
   }
 
-  // Informace o přijatém kanálu
+  // Information about the received channel
   if (debugLevel == OutputLevel::info) {
     QByteArray message = tr("%1 samples, sampling period %2s").arg(data.second.length() / data.first.bytes).arg(floatToNiceString(timeStep, 4, false, false)).toUtf8();
     message.append(tr(", %n bit(s)", "", bits).toUtf8());
@@ -436,7 +436,7 @@ void PlotData::addLogicChannel(QPair<ValueType, QByteArray> data, QPair<ValueTyp
 
   updatesCounters[-1]++;
 
-  // Pošle do grafu logický kanál
+  // Send a logic channel to the plot
   QVector<QSharedPointer<QCPGraphDataContainer>> digitalChannels;
   for (uint8_t bit = 0; bit < bits; bit++)
     digitalChannels.append(QSharedPointer<QCPGraphDataContainer>(new QCPGraphDataContainer));
@@ -446,7 +446,7 @@ void PlotData::addLogicChannel(QPair<ValueType, QByteArray> data, QPair<ValueTyp
 
   for (uint8_t bit = 0; bit < bits; bit++)
     emit addVectorToPlot(getLogicChannelID(LOGIC_GROUPS - 1, bit),
-                         digitalChannels.at(bit)); // Posláno jako poslední logické skupina
+                         digitalChannels.at(bit)); // Sent as the last logic group
 }
 
 void PlotData::reset() {

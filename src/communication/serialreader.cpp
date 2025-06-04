@@ -46,12 +46,13 @@ void SerialReader::endSim() {
 }
 
 void SerialReader::init() {
-  // QSerialPrort musí být vytvořen tady (fungkce init zavolána po spuštění
-  // vlákna), ne v konstruktoru, protože pak by SerialPort byl v GUI vláknu.
+  // QSerialPort must be created here (the init function is called after the
+  // thread starts), not in the constructor, otherwise SerialPort would be in
+  // the GUI thread.
   serial = new QSerialPort(this);
   telnet = new TelnetServer(this);
   connect(serial, &QSerialPort::bytesWritten, this, &SerialReader::finishedWriting);
-  // V starším Qt (Win XP) není signál pro error
+  // Older Qt versions (e.g. Windows XP) do not have the error signal
 #if QT_VERSION >= 0x050800
   connect(serial, &QSerialPort::errorOccurred, this, &SerialReader::errorOccurred);
 #endif
@@ -59,7 +60,7 @@ void SerialReader::init() {
 
 void SerialReader::begin(QString portName, int baudRate, QSerialPort::DataBits dataBits, QSerialPort::Parity parity, QSerialPort::StopBits stopBits, QSerialPort::FlowControl flowControll) {
   if (serial->isOpen() || simConnected || telnetConnected)
-    end(); // Pokud je port otevřen, tak ho zavře
+    end(); // Close the port if it is already open
 
   if (portName == "~SPECIAL~SIM") {
     startSimulatedInput();
@@ -104,8 +105,8 @@ void SerialReader::begin(QString portName, int baudRate, QSerialPort::DataBits d
   if (serial->isOpen()) {
     serial->clear();
     serial->setDataTerminalReady(true);
-    emit started(); // Parser si vymaže buffer a odpoví že je připraven, teprve
-                    // po odpovědi se začnou číst data.
+    emit started(); // The parser clears its buffer and replies that it is ready
+                    // only after the reply will data start being read.
   }
 }
 
@@ -139,8 +140,8 @@ void SerialReader::changeBaud(qint32 baud) {
   }
   if (serial->isOpen()) {
     serial->clear();
-    emit started(); // Parser si vymaže buffer a odpoví že je připraven, teprve
-                    // po odpovědi se začnou číst data.
+    emit started(); // The parser clears its buffer and replies that it is ready
+                    // only after the reply will data start being read.
   }
 }
 

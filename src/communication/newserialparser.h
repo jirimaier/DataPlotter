@@ -30,31 +30,31 @@ public:
   ~NewSerialParser();
 
 signals:
-  /// Pošle zprávu do záznamu
+  /// Sends a message to the log
   void sendDeviceMessage(QByteArray header, bool warning, bool ended);
-  /// Předá zprávu od zařízení
+  /// Forwards a message from the device
   void sendMessage(QString header, QByteArray message, MessageLevel::enumMessageLevel type, MessageTarget::enumMessageTarget target);
-  /// Pošle obsah bufferu
+  /// Sends the buffer contents
   void sendBuffer(QByteArray buffer);
-  /// Pošle data do terminálu
+  /// Sends data to the terminal
   void sendTerminal(QByteArray message);
-  /// Pošle nastavení (jedno, ne celý úsek)
+  /// Sends a single setting value
   void sendSettings(QByteArray message, MessageTarget::enumMessageTarget source);
-  /// Pošle požadavek na soubor
+  /// Sends a file request
   void sendFileRequest(QByteArray message, MessageTarget::enumMessageTarget source);
-  /// Pošle bod ke zpracování
+  /// Sends a point for processing
   void sendPoint(QList<QPair<ValueType, QByteArray>> data);
-  /// Pošle logický bod ke zpracování
+  /// Sends a logic point for processing
   void sendLogicPoint(QPair<ValueType, QByteArray> timeArray, QPair<ValueType, QByteArray> valueArray, unsigned int bits);
-  /// Pošle kanál ke zpracování
+  /// Sends a channel for processing
   void sendChannel(QPair<ValueType, QByteArray> data, unsigned int ch, QPair<ValueType, QByteArray> timeRaw, int zeroIndex, int bits, QPair<ValueType, QByteArray> min, QPair<ValueType, QByteArray> max);
-  /// Pošle logický kanál ke zpracování
+  /// Sends a logic channel for processing
   void sendLogicChannel(QPair<ValueType, QByteArray> data, QPair<ValueType, QByteArray> timeRaw, int bits, int zeroIndex);
-  /// Potvrdí připravenost
+  /// Confirms readiness
   void ready();
-  /// Pošle data která mají být poslána zpět do portu
+  /// Sends data that should be echoed back to the port
   void sendEcho(QByteArray);
-  /// Pošle chabovou zprávu od zařízení
+  /// Sends an error message from the device
   void deviceError(QByteArray, MessageTarget::enumMessageTarget source);
   /// Send compressed and stuffed qml file
   void sendQmlCode(QByteArray data);
@@ -102,7 +102,7 @@ private slots:
   void printUnknownToTerminalTimerSlot();
 
 public slots:
-  /// Zpracuje data
+  /// Processes data
   void parse(QByteArray newData);
   /// Clear buffers
   void clearBuffer();
@@ -110,9 +110,9 @@ public slots:
   void showBuffer();
   /// Set messages level
   void setMsgLevel(OutputLevel::enumOutputLevel level) { debugLevel = level; }
-  /// Vymaže buffer a potvrdí připravenost
+  /// Clears the buffer and confirms readiness
   void getReady();
-  /// Nastaví jestli se má posílad odpověď na echo
+  /// Sets whether the reply to echo should be sent
   void replyEcho(bool enabled) { replyToEcho = enabled; }
 };
 

@@ -69,7 +69,7 @@ public slots:
 
   void reset();
 
-  /// Nastavý úroveň výpisu
+  /// Sets the output level
   void setDebugLevel(OutputLevel::enumOutputLevel debugLevel) { this->debugLevel = debugLevel; }
 
   void setDigitalChannel(int logicGroup, int ch);
@@ -85,13 +85,13 @@ private slots:
   void updateCounterTimer();
 
 signals:
-  /// Pošle zprávu do výpisu
+  /// Sends a message to the log
   void sendMessage(QString header, QByteArray message, MessageLevel::enumMessageLevel type, MessageTarget::enumMessageTarget target = MessageTarget::serial1);
 
-  /// Předá data do grafu
+  /// Passes data to the plot
   void addVectorToPlot(int ch, QSharedPointer<QCPGraphDataContainer>, bool isMath = false);
 
-  /// Předá data do grafu
+  /// Passes data to the plot
   void addPointToPlot(int ch, double time, double value, bool append);
   void clearLogic(int group, int fromBit);
   void addMathData(int mathNumber, bool isFirst, QSharedPointer<QCPGraphDataContainer> in, bool shouldIgnorePause = false);
