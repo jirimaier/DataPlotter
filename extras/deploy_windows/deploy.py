@@ -248,7 +248,7 @@ if __name__ == "__main__":
         raise Exception("Could not extract version from DataPlotter.exe")
 
     if "I" in args.config.upper():
-        add_platform_files(app_folder, "windows_instaler")
+        add_platform_files(app_folder, "windows_installer")
         download_vcredist_installer(deploy_dir)
         vcredist_workaround(app_folder)
         run_inno_setup(version, args.inno)
