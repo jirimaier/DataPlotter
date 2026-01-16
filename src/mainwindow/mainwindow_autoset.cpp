@@ -16,10 +16,19 @@
 #include "mainwindow.h"
 
 void MainWindow::on_pushButtonAutoset_clicked() {
+  autosetVrange();
+  autosetVrange(); // Run twice, because the div size updates after first run
+  autosetHrange();
+}
+
+void MainWindow::autosetVrange() {
   QVector<int> activeAnalogs, activeLogic;
   for (int i = 0; i < ANALOG_COUNT + MATH_COUNT; i++)
-    if (ui->plot->isChUsed(i) && ui->plot->isChVisible(i))
+    if (ui->plot->isChUsed(i) && ui->plot->isChVisible(i)) {
       activeAnalogs.append(i);
+    } else {
+      ui->plot->setChOffset(i, 0);
+    }
   for (int i = 0; i < LOGIC_GROUPS; i++)
     if (ui->plot->getLogicBitsUsed(i) > 0)
       activeLogic.append(i);
@@ -132,8 +141,6 @@ void MainWindow::on_pushButtonAutoset_clicked() {
   }
   on_comboBoxSelectedChannel_currentIndexChanged(
       ui->comboBoxSelectedChannel->currentIndex());
-
-  autosetHrange();
 }
 
 void MainWindow::autosetHrange() {
@@ -146,7 +153,7 @@ void MainWindow::autosetHrange() {
   } else {
     // Pevný režim
     on_pushButtonModeFull_clicked();
-    ui->dialZoom->setValue(ui->dialZoom->maximum());  // Zoom žádný
+    ui->dialZoom->setValue(ui->dialZoom->maximum()); // Zoom žádný
   }
 }
 

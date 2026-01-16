@@ -136,6 +136,7 @@ private:
   void resetQmlTerminal();
   void closeEvent(QCloseEvent *event);
   void autosetHrange();
+  void autosetVrange();
   QIcon invertIconLightness(const QIcon &icon, QSize size);
 
   void on_pushButtonRecordMeasurementsXXX_clicked(int n);
