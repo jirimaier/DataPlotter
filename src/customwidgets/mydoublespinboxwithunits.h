@@ -53,7 +53,6 @@ private:
   QString textFromValue(double val) const;
   double valueFromText(const QString &text) const;
   bool useUnitPrefix = true;
-  QString replaceUnitPrefixes(QString expr) const;
 
 signals:
 };

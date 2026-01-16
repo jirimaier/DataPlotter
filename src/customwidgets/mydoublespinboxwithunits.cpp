@@ -46,7 +46,8 @@ QString MyDoubleSpinBoxWithUnits::textFromValue(double val) const {
       return (QString::number(val, 'g', 3) + " ");
   }
 
-  return (floatToNiceString(val, 4, false, false, trimDecimalZeroes));
+  UnitOfMeasure unit = useUnitPrefix ? UnitOfMeasure("-") : UnitOfMeasure("");
+  return (floatToNiceString(val, 4, false, false, trimDecimalZeroes, unit));
 }
 
 double MyDoubleSpinBoxWithUnits::valueFromText(const QString &text) const {
@@ -54,6 +55,9 @@ double MyDoubleSpinBoxWithUnits::valueFromText(const QString &text) const {
   SimpleExpressionParser parser;
   if (!suffix().isEmpty())
     expr = expr.left(expr.lastIndexOf(suffix()));
+  expr = expr.trimmed();
+  if (expr.isEmpty())
+    return emptyDefaultValue;
   bool isOK;
   double newValue = parser.evaluate(expr, &isOK);
   if (isOK)
@@ -89,7 +93,8 @@ void MyDoubleSpinBoxWithUnits::stepBy(int steps) {
 
 void MyDoubleSpinBoxWithUnits::setUnit(UnitOfMeasure unit) {
   QDoubleSpinBox::setSuffix(unit.text);
-  this->useUnitPrefix = unit.mode == UnitOfMeasure::time || UnitOfMeasure::usePrefix;
+  this->useUnitPrefix =
+      (unit.mode == UnitOfMeasure::time || unit.mode == UnitOfMeasure::usePrefix);
 }
 
 void MyDoubleSpinBoxWithUnits::showEvent(QShowEvent *event) {
