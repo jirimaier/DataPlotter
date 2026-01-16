@@ -362,7 +362,13 @@ final_justify:
 bool operator==(const QSerialPortInfo &lhs, const QSerialPortInfo &rhs) { return lhs.portName() == rhs.portName() && lhs.serialNumber() == rhs.serialNumber() && lhs.description() == rhs.description(); }
 
 int nextPow2(int number) {
-  for (int i = 0;; i++)
-    if (pow(2, i) >= number)
-      return (pow(2, i));
+  if (number <= 1)
+    return 1;
+  number--;
+  number |= number >> 1;
+  number |= number >> 2;
+  number |= number >> 4;
+  number |= number >> 8;
+  number |= number >> 16;
+  return number + 1;
 }
