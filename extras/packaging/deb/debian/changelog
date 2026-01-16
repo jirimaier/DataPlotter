@@ -1,3 +1,9 @@
+data-plotter (3.3.5-1) unstable; urgency=medium
+
+  * Debian package updated to version 3.3.5.
+
+ -- Jiří Maier <jiri.maier.x@gmail.com>  Fri, 16 Jan 2026 12:15:49 +0000
+
 data-plotter (3.3.3-1) unstable; urgency=medium
 
   * Debian package updated to version 3.3.3.
