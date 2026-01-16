@@ -144,8 +144,8 @@ void MyMainPlot::updateMinMaxTimes() {
       setMaxZoomX(QCPRange(minT, maxT + xAxis->range().size()), xRangeUnknown || maxT > maxZoomX.upper || minT < maxZoomX.lower);
       updateRollingState(maxT);
     } else {
-      double diff = abs(maxT - maxZoomX.upper) / maxZoomX.upper + abs(minT - maxZoomX.lower) / maxZoomX.lower;
-      setMaxZoomX(QCPRange(minT, maxT), xRangeUnknown || diff > 0.1);
+      double diff = abs(maxT - maxZoomX.upper) + abs(minT - maxZoomX.lower);
+      setMaxZoomX(QCPRange(minT, maxT), xRangeUnknown || false);
       if (!qFuzzyIsNull(diff))
         emit hRangeMaxChanged(maxZoomX);
     }

@@ -37,12 +37,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
   updateDownloadUrl = GithubReleasesUrl;
 
   auto platform = AppSettings::getPlatformInfo();
-  if(platform == "windows_portable"){
-      configFilePath = QApplication::applicationDirPath() + "/settings/config.ini";
+  if (platform == "windows_portable") {
+    configFilePath = QApplication::applicationDirPath() + "/settings/config.ini";
     updateDownloadUrl = GithubReleasesUrl;
   }
 
-  if (platform == "windows_store"){
+  if (platform == "windows_store") {
     updateDownloadUrl = MisrosoftStoreUrl;
     developerOptions->getUi()->pushButtonOpenConfig->setVisible(false);
   }
@@ -721,6 +721,10 @@ void MainWindow::mainPlotHRangeMaxChanged(QCPRange range) {
   double sizeRatio = qBound(0.0, range.size() / fullrange, 1.0);
   int zoomFactor = round(m * sizeRatio);
 
+  bool preserveFullRange = ui->dialZoom->value() == ui->dialZoom->maximum();
+  qDebug() << "preserveFullRange:" << preserveFullRange;
+  qDebug() << "zoomFactor:" << zoomFactor;
+
   ui->dialZoom->blockSignals(true);
   ui->dialZoom->setValue(zoomFactor);
   ui->dialZoom->blockSignals(false);
@@ -734,6 +738,10 @@ void MainWindow::mainPlotHRangeMaxChanged(QCPRange range) {
   ui->horizontalScrollBarHorizontal->setValue(posFactor);
   ui->horizontalScrollBarHorizontal->setSliderPosition(posFactor);
   ui->horizontalScrollBarHorizontal->blockSignals(false);
+
+  if (preserveFullRange) {
+    ui->dialZoom->setValue(ui->dialZoom->maximum());
+  }
 }
 
 void MainWindow::mainPlotVRangeChanged(QCPRange range) {
